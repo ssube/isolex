@@ -11,7 +11,8 @@ const path = {
   root: process.env.ROOT_PATH,
   source: process.env.SOURCE_PATH,
   target: process.env.TARGET_PATH,
-  test: process.env.TEST_PATH
+  test: process.env.TEST_PATH,
+  vendor: process.env.VENDOR_PATH
 };
 
 const modulePath = {
@@ -91,6 +92,10 @@ module.exports = {
     }, {
       name: 'test',
       alias: path.test,
+      onlyModule: false
+    }, {
+      name: 'vendor',
+      alias: path.vendor,
       onlyModule: false
     }],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],

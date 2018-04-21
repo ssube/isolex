@@ -1,0 +1,16 @@
+---
+
+# so isolex
+aws:
+  bot:
+    name: aws-lex-bot-name
+    alias: aws-lex-bot-alias
+  creds:
+    access_key: aws-account-key
+    secret_key: aws-secret-key
+  region: us-east-1
+stack:
+  creds:
+    email: stack-account-email
+    password: stack-account-key
+  rooms: [17]

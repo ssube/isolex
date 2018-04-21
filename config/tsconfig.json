@@ -29,6 +29,7 @@
     ],
     "typeRoots": [
       "node_modules/@types",
+      "vendor/so-client/src",
       "node_modules"
     ]
   },

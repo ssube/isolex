@@ -1,0 +1,3 @@
+[submodule "vendor/so-client"]
+	path = vendor/so-client
+	url = git@github.com:xbenjii/so-client.git

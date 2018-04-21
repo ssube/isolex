@@ -23,6 +23,7 @@ export TARGET_PATH	?= $(ROOT_PATH)/out
 export TARGET_LOG		?= $(TARGET_PATH)/apex-reference.log
 export TARGET_MAIN 	?= $(TARGET_PATH)/main-bundle.js
 export TEST_PATH		?= $(ROOT_PATH)/test
+export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 
 # Node options
 NODE_BIN		:= $(ROOT_PATH)/node_modules/.bin
