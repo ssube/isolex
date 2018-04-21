@@ -10,7 +10,9 @@ aws:
     secret_key: aws-secret-key
   region: us-east-1
 stack:
+  bot:
+    prefix: '!!lex'
   creds:
     email: stack-account-email
     password: stack-account-key
-  rooms: [17]
+  rooms: [1]

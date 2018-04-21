@@ -29,8 +29,8 @@
     ],
     "typeRoots": [
       "node_modules/@types",
-      "vendor/so-client/src",
-      "node_modules"
+      "node_modules",
+      "vendor"
     ]
   },
   "exclude": [
