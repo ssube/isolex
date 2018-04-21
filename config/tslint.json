@@ -1,0 +1,32 @@
+{
+  "extends": "tslint:latest",
+  "rules": {
+    "array-type": [true, "generic"],
+    "ban-types": true,
+    "curly": true,
+    "cyclomatic-complexity": [true, 20],
+    "interface-name": [true, "never-prefix"],
+    "max-classes-per-file": [false, 2],
+    "max-line-length": [true, 180],
+    "no-bitwise": false,
+    "no-console": [true, "log"],
+    "no-floating-promises": true,
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+    "no-implicit-dependencies": false,
+    "no-namespace": [true, "allow-declarations"],
+    "no-shadowed-variable": true,
+    "no-string-literal": true,
+    "no-submodule-imports": false,
+    "no-unused-expression": false,
+    "prefer-for-of": true,
+    "quotemark": [true, "single", "jsx-double", "avoid-escape"],
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "variable-name": [true, "ban-keywords", "check-format"]
+  },
+  "jsRules": {
+    "curly": true,
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}]
+  },
+  "rulesDirectory": [
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "../",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2017"
+    ],
+    "module": "es6",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "paths": {},
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es2017",
+    "types": [
+      "chai-as-promised",
+      "lodash",
+      "mocha",
+      "sinon-chai",
+      "source-map-support"
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "../src/**/*",
+    "../test/**/*"
+  ]
+}

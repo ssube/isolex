@@ -1,0 +1,15 @@
+build:
+  image: apextoaster/node
+  stage: build
+  script:
+    - yarn
+    - make strict
+  tags:
+    - runner:k8s
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - out/coverage
+      - out/docs
+      - out/main-bundle.*
+      - out/version.json
