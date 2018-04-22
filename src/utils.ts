@@ -16,3 +16,12 @@ export function getEventDest(event: Event): Destination {
     userName: event.user_name
   };
 }
+
+export function leftPad(val: string, min: number = 8, fill: string = '0'): string {
+  if (val.length < min) {
+    const pre = Array(min - val.length).fill(fill).join('');
+    return `${pre}${val}`;
+  } else {
+    return val;
+  }
+}

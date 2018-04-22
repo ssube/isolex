@@ -3,8 +3,9 @@ import * as bunyan from 'bunyan';
 import { clone } from 'lodash';
 import { Bot } from 'src/Bot';
 import { Command, CommandOptions, CommandType } from 'src/command/Command';
+import { BaseParser } from 'src/parser/BaseParser';
 import { Parser } from 'src/parser/Parser';
-import { getEventDest, isEventMessage } from 'src/utils';
+import { getEventDest, isEventMessage, leftPad } from 'src/utils';
 import { Event } from 'vendor/so-client/src/events';
 
 export interface LexParserConfig {
@@ -26,17 +27,7 @@ export interface LexParserOptions {
   logger: bunyan;
 }
 
-export class LexParser implements Parser {
-  public static padUserId(id: number): string {
-    const fixed = id.toFixed(0);
-    if (fixed.length < 8) {
-      const pre = Array(8 - fixed.length).fill('0').join('');
-      return `${pre}${fixed}`;
-    } else {
-      return fixed;
-    }
-  }
-
+export class LexParser extends BaseParser implements Parser {
   protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;
@@ -45,6 +36,7 @@ export class LexParser implements Parser {
   protected tags: Array<string>;
 
   constructor(options: LexParserOptions) {
+    super();
     this.logger = options.logger.child({
       class: LexParser.name
     });
@@ -62,33 +54,17 @@ export class LexParser implements Parser {
     });
   }
 
-  public async match(event: Event): Promise<boolean> {
-    if (isEventMessage(event)) {
-      for (const t of this.tags) {
-        if (event.content.includes(t)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
   public async parse(event: Event): Promise<Command> {
     if (!isEventMessage(event)) {
       throw new Error('invalid event type');
     }
 
-    let content = event.content;
-    for (const t of this.tags) {
-      content = content.replace(t, '');
-    }
-
+    const body = this.removeTags(event.content);
     const reply = await this.postText({
       botAlias: this.alias,
       botName: this.name,
-      inputText: content,
-      userId: LexParser.padUserId(event.user_id)
+      inputText: body,
+      userId: leftPad(event.user_id.toString())
     });
 
     const intent = reply.intentName || 'none';
