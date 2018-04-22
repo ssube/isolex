@@ -3,15 +3,16 @@ import { Observable, Subject } from 'rxjs';
 import { Command } from 'src/command/Command';
 import { Destination } from 'src/Destination';
 import { Filter, FilterBehavior } from 'src/filter/Filter';
+import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
 import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
 import { Message } from 'src/Message';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
+import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
+import { isEventMessage } from 'src/utils';
 import { Client } from 'vendor/so-client/src/client';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
-import { UserFilter, UserFilterConfig } from './filter/UserFilter';
-import { isEventMessage } from './utils';
 
 export interface BotConfig {
   filter: {
@@ -26,6 +27,7 @@ export interface BotConfig {
   };
   parser: {
     lex: LexParserConfig;
+    yaml: YamlParserConfig;
   };
   stack: {
     account: {
@@ -76,6 +78,10 @@ export class Bot {
     this.parsers = [new LexParser({
       bot: this,
       config: options.config.parser.lex,
+      logger: this.logger
+    }), new YamlParser({
+      bot: this,
+      config: options.config.parser.yaml,
       logger: this.logger
     })];
 

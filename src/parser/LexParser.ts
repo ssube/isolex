@@ -5,7 +5,7 @@ import { Bot } from 'src/Bot';
 import { Command, CommandOptions, CommandType } from 'src/command/Command';
 import { Parser } from 'src/parser/Parser';
 import { getEventDest, isEventMessage } from 'src/utils';
-import { Event, MessagePosted } from 'vendor/so-client/src/events';
+import { Event } from 'vendor/so-client/src/events';
 
 export interface LexParserConfig {
   account: {
@@ -75,7 +75,7 @@ export class LexParser implements Parser {
   }
 
   public async parse(event: Event): Promise<Command> {
-    if (event.event_type !== 1 && event.event_type !== 2) {
+    if (!isEventMessage(event)) {
       throw new Error('invalid event type');
     }
 
