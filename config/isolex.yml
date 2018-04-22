@@ -1,18 +1,23 @@
 ---
 
-# so isolex
-aws:
-  bot:
-    name: aws-lex-bot-name
-    alias: aws-lex-bot-alias
-  creds:
-    access_key: aws-account-key
-    secret_key: aws-secret-key
-  region: us-east-1
-stack:
-  bot:
-    prefix: '!!lex'
-  creds:
-    email: stack-account-email
-    password: stack-account-key
-  rooms: [1]
+# example config
+
+bot:
+  aws:
+    lex:
+      bot:
+        name: isolex
+        alias: test
+      account:
+        accessKey: AKIAABCDEFGH
+        secretKey: 12334567890/abcdefghijklmnop
+      region: us-east-1
+  log:
+    level: debug
+    name: isolex
+  stack:
+    account:
+      email: yourname@email.com
+      password: password
+    rooms: [1, 17]
+

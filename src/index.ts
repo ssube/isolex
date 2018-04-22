@@ -23,9 +23,14 @@ async function main(): Promise<number> {
     throw new Error('config did not load');
   }
 
-  const bot = new Bot(config);
+  console.info('===marker', 'main', config);
+
+  const bot = new Bot({
+    config: config.bot
+  });
   await bot.start();
   await signal();
+  await bot.stop();
 
   return STATUS_SUCCESS;
 }

@@ -1,13 +1,27 @@
 import * as AWS from 'aws-sdk';
+import * as bunyan from 'bunyan';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
+import { Bot } from 'src/Bot';
 import { Command, CommandType } from 'src/command/Command';
 import { Parser } from 'src/parser/Parser';
 
-export interface LexParserOptions {
+export interface LexParserConfig {
   account: {
     accessKey: string;
     secretKey: string;
   };
+  bot: {
+    alias: string;
+    name: string;
+  };
+  region: string;
+  tags: Array<string>;
+}
+
+export interface LexParserOptions {
+  bot: Bot;
+  config: LexParserConfig;
+  logger: bunyan;
 }
 
 export class LexParser implements Parser {
@@ -21,16 +35,64 @@ export class LexParser implements Parser {
     }
   }
 
+  protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;
+  protected logger: bunyan;
   protected name: string;
-  protected alias: string;
+  protected tags: Array<string>;
 
   constructor(options: LexParserOptions) {
-    this.creds = new AWS.Credentials(options.account.accessKey, options.account.secretKey);
+    this.logger = options.logger.child({
+      class: LexParser.name
+    });
+    this.logger.debug(options, 'creating lex parser');
+
+    this.alias = options.config.bot.alias;
+    this.name = options.config.bot.name;
+    this.tags = options.config.tags;
+
+    // aws
+    this.creds = new AWS.Credentials(options.config.account.accessKey, options.config.account.secretKey);
     this.lex = new AWS.LexRuntime({
       credentials: this.creds,
-      region: 'us-east-1'
+      region: options.config.region
+    });
+  }
+
+  public async match(event: MessagePosted): Promise<boolean> {
+    if (event.event_type === 1) {
+      for (const t of this.tags) {
+        if (event.content.includes(t)) {
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  }
+
+  public async parse(event: MessagePosted): Promise<Command> {
+    const reply = await this.postText({
+      botAlias: this.alias,
+      botName: this.name,
+      inputText: event.content,
+      userId: LexParser.padUserId(event.user_id)
+    });
+
+    const intent = reply.intentName || 'none';
+    this.logger.debug({intent, reply}, 'lex parsed message');
+
+    // turn reply into a command
+    return new Command({
+      data: new Map(),
+      from: {
+        roomId: event.room_id.toString(),
+        userId: event.user_id.toString(),
+        userName: event.user_name
+      },
+      name: intent,
+      type: CommandType.None
     });
   }
 
@@ -43,26 +105,6 @@ export class LexParser implements Parser {
           res(reply);
         }
       });
-    });
-  }
-
-  public async match(event: MessagePosted): Promise<boolean> {
-    return event.event_type === 1;
-  }
-
-  public async parse(event: MessagePosted): Promise<Command> {
-    const reply = await this.postText({
-      botAlias: this.alias,
-      botName: this.name,
-      inputText: event.content,
-      userId: LexParser.padUserId(event.user_id)
-    });
-
-    // turn reply into a command
-    return new Command({
-      data: new Map(),
-      name: '',
-      type: CommandType.None
     });
   }
 }
