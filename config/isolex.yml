@@ -27,10 +27,13 @@ bot:
         accessKey: ADECBA
         secretKey: 123/abc
       region: us-east-1
-      tags: ['--lex']
+      tags:
+        - '--lex'
 
     yaml:
-      tags: ['--yaml']
+      tags:
+        - '--json'
+        - '--yaml'
 
   stack:
     account:
