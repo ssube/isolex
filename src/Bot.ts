@@ -2,7 +2,7 @@ import * as bunyan from 'bunyan';
 import { Observable, Subject } from 'rxjs';
 import { Command } from 'src/command/Command';
 import { Destination } from 'src/Destination';
-import { EchoHandler } from 'src/handler/EchoHandler';
+import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
 import { Message } from 'src/Message';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
@@ -11,9 +11,8 @@ import { Client } from 'vendor/so-client/src/client';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
 
 export interface BotConfig {
-  aws: {
-    lex: LexParserConfig;
-  };
+  echo: EchoHandlerConfig;
+  lex: LexParserConfig;
   log: {
     name: string;
     [other: string]: string;
@@ -23,8 +22,12 @@ export interface BotConfig {
       email: string;
       password: string;
     };
+    delay: {
+      next: number;
+      rate: number;
+    }
     rooms: Array<number>;
-  }
+  };
 }
 
 export interface BotOptions {
@@ -33,6 +36,7 @@ export interface BotOptions {
 
 export class Bot {
   protected client: Client;
+  protected config: BotConfig;
   protected commands: Subject<Command>;
   protected handlers: Array<Handler>;
   protected interval: Observable<number>;
@@ -49,17 +53,18 @@ export class Bot {
     // set up deps
     this.handlers = [new EchoHandler({
       bot: this,
+      config: options.config.echo,
       logger: this.logger
     })];
     this.parsers = [new LexParser({
       bot: this,
-      config: options.config.aws.lex,
+      config: options.config.lex,
       logger: this.logger
     })];
 
     // set up streams
     this.commands = new Subject();
-    this.interval = Observable.interval(100);
+    this.interval = Observable.interval(options.config.stack.delay.next);
     this.messages = new Subject();
     this.outgoing = new Subject();
 
@@ -78,8 +83,7 @@ export class Bot {
     this.commands.subscribe((next: Command) => this.handle(next));
     this.messages.subscribe((next: Event) => this.receive(next));
     Observable.zip(this.outgoing, this.interval).subscribe((next: [Message, number]) => {
-      this.logger.debug('dispatching throttled message');
-      this.dispatch(next[0])
+      this.dispatch(next[0]);
     });
 
     this.logger.info('authenticating with chat');
@@ -125,8 +129,16 @@ export class Bot {
   public async dispatch(msg: Message) {
     this.logger.debug({msg}, 'dispatching message');
 
-    const body = `@${msg.dest.userName}: ${msg.body}`;
-    await this.client.send(body, this.room);
+    try {
+      await this.client.send(msg.body, this.room);
+    } catch (err) {
+      if (err.message.includes('StatusCodeError: 409')) {
+        this.logger.warn('reply was rate-limited, putting back on queue');
+        setTimeout(() => {
+          this.send(msg);
+        }, this.config.stack.delay.rate);
+      }
+    }
   }
 
   public async send(msg: Message): Promise<void> {

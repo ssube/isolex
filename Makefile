@@ -39,10 +39,10 @@ DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
 MOCHA_OPTS  ?= --check-leaks --colors --sort --ui bdd
 
-all: configure bundle test docs ## builds, bundles, and tests the application
+all: configure bundle test ## builds, bundles, and tests the application
 	@echo Success! make run-terminal to launch
 
-strict: configure bundle-check test-check docs ## builds, bundles, and tests the application with type checks and extra warnings (slow)
+strict: configure bundle-check test-check ## builds, bundles, and tests the application with type checks and extra warnings (slow)
 	@echo Success! make run-terminal to launch
 
 # from https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -77,6 +77,9 @@ docs: ## generate html docs
 push: ## push to both gitlab and github (this assumes you have both remotes set up)
 	git push gitlab
 	git push github
+
+run-terminal: ## run the bot in a terminal
+	node $(TARGET_PATH)/main-bundle.js
 
 test: test-check ## run mocha unit tests
 

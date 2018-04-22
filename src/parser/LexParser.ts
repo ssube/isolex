@@ -1,9 +1,10 @@
 import * as AWS from 'aws-sdk';
 import * as bunyan from 'bunyan';
-import { Event, MessagePosted } from 'vendor/so-client/src/events';
+import { clone } from 'lodash';
 import { Bot } from 'src/Bot';
-import { Command, CommandType } from 'src/command/Command';
+import { Command, CommandType, CommandOptions } from 'src/command/Command';
 import { Parser } from 'src/parser/Parser';
+import { Event, MessagePosted } from 'vendor/so-client/src/events';
 
 export interface LexParserConfig {
   account: {
@@ -60,19 +61,23 @@ export class LexParser implements Parser {
     });
   }
 
-  public async match(event: MessagePosted): Promise<boolean> {
-    if (event.event_type === 1) {
+  public async match(event: Event): Promise<boolean> {
+    if (event.event_type === 1 || event.event_type === 2) {
       for (const t of this.tags) {
         if (event.content.includes(t)) {
           return true;
         }
       }
     }
-    
+
     return false;
   }
 
-  public async parse(event: MessagePosted): Promise<Command> {
+  public async parse(event: Event): Promise<Command> {
+    if (event.event_type !== 1 && event.event_type !== 2) {
+      throw new Error('invalid event type');
+    }
+
     const reply = await this.postText({
       botAlias: this.alias,
       botName: this.name,
@@ -83,9 +88,8 @@ export class LexParser implements Parser {
     const intent = reply.intentName || 'none';
     this.logger.debug({intent, reply}, 'lex parsed message');
 
-    // turn reply into a command
-    return new Command({
-      data: new Map(),
+    const cmdOptions: CommandOptions = {
+      data: reply,
       from: {
         roomId: event.room_id.toString(),
         userId: event.user_id.toString(),
@@ -93,7 +97,10 @@ export class LexParser implements Parser {
       },
       name: intent,
       type: CommandType.None
-    });
+    };
+
+    this.logger.debug({cmdOptions}, 'command options');
+    return new Command(cmdOptions);
   }
 
   protected postText(params: AWS.LexRuntime.PostTextRequest): Promise<AWS.LexRuntime.PostTextResponse> {

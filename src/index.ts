@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
-import { readFileSync } from 'fs';
-import { safeLoad } from 'js-yaml';
 import { Bot } from 'src/Bot';
+import { loadConfig } from 'src/Config';
 import { Event } from 'vendor/so-client/src/events';
 
 const STATUS_SUCCESS = 0;
@@ -16,17 +15,9 @@ function signal(): Promise<void> {
 async function main(): Promise<number> {
   console.info('hello bot');
 
-  const data = readFileSync('/home/ssube/.isolex.yml', 'utf-8');
-  const config = safeLoad(data) as any;
-
-  if (!config) {
-    throw new Error('config did not load');
-  }
-
-  console.info('===marker', 'main', config);
-
+  const config = await loadConfig();
   const bot = new Bot({
-    config: config.bot
+    config: config
   });
   await bot.start();
   await signal();
