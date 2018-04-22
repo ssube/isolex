@@ -79,15 +79,20 @@ export class LexParser implements Parser {
       throw new Error('invalid event type');
     }
 
+    let content = event.content;
+    for (const t of this.tags) {
+      content = content.replace(t, '');
+    }
+
     const reply = await this.postText({
       botAlias: this.alias,
       botName: this.name,
-      inputText: event.content,
+      inputText: content,
       userId: LexParser.padUserId(event.user_id)
     });
 
     const intent = reply.intentName || 'none';
-    this.logger.debug({intent, reply}, 'lex parsed message');
+    this.logger.debug({event, intent, reply}, 'lex parsed message');
 
     const cmdOptions: CommandOptions = {
       data: reply,

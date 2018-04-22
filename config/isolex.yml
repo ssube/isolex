@@ -29,6 +29,9 @@ bot:
       region: us-east-1
       tags: ['--lex']
 
+    yaml:
+      tags: ['--yaml']
+
   stack:
     account:
       email: yourname@email.com
