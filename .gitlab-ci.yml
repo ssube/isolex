@@ -1,5 +1,5 @@
 build:
-  image: apextoaster/node
+  image: apextoaster/node:master
   stage: build
   tags:
     - runner:k8s
