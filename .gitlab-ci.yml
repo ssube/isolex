@@ -4,12 +4,9 @@ build:
   tags:
     - runner:k8s
 
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-  before_script:
-    - ssh-keyscan github.com >> ~/.ssh/known_hosts
-    - ssh-keyscan git.apextoaster.com >> ~/.ssh/known_hosts
   script:
+    - git submodule init
+    - git submodule update
     - yarn
     - make strict
 
