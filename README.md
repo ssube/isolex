@@ -5,6 +5,8 @@ Unified observable chat bot with [AWS Lex](https://aws.amazon.com/lex/) integrat
 
 ## Build
 
+[![pipeline status](https://git.apextoaster.com/apex-open/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/apex-open/isolex/commits/master)
+
 ```shell
 $ yarn
 
