@@ -67,13 +67,15 @@ export class LexParser extends BaseParser implements Parser {
       userId: leftPad(event.user_id.toString())
     });
 
-    const intent = reply.intentName || 'none';
-    this.logger.debug({event, intent, reply}, 'lex parsed message');
+    const name = reply.intentName || 'none';
+    this.logger.debug({event, name, reply}, 'lex parsed message');
 
+    // merge lex reply and slots
+    const data = {...reply, ...reply.slots};
     const cmdOptions: CommandOptions = {
-      data: reply,
+      data,
       from: getEventDest(event),
-      name: intent,
+      name,
       type: CommandType.None
     };
 

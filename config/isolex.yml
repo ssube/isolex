@@ -14,6 +14,10 @@ bot:
       pattern: >-
         @{{cmd.from.userName}}: {{cmd.data.message}} ({{cmd.name}})
 
+    time:
+      locale: en-US
+      zone: UTC
+
   log:
     level: debug
     name: isolex

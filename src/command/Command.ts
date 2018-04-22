@@ -30,10 +30,14 @@ export class Command implements CommandOptions {
     this.type = options.type;
   }
 
+  public has(key: string): boolean {
+    return Object.getOwnPropertyDescriptor(this.data, key) !== undefined;
+  }
+
   /**
    * Get a data item. Makes the command act like a read-only map.
    */
   public get(key: string): any {
-    return this.data.get(key);
+    return this.data[key];
   }
 }

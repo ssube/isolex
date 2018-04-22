@@ -13,6 +13,7 @@ import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { isEventMessage } from 'src/utils';
 import { Client } from 'vendor/so-client/src/client';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
+import { TimeHandler, TimeHandlerConfig } from './handler/TimeHandler';
 
 export interface BotConfig {
   filter: {
@@ -20,6 +21,7 @@ export interface BotConfig {
   };
   handler: {
     echo: EchoHandlerConfig;
+    time: TimeHandlerConfig;
   };
   log: {
     name: string;
@@ -70,7 +72,11 @@ export class Bot {
       config: options.config.filter.user,
       logger: this.logger
     })];
-    this.handlers = [new EchoHandler({
+    this.handlers = [new TimeHandler({
+      bot: this,
+      config: options.config.handler.time,
+      logger: this.logger
+    }), new EchoHandler({
       bot: this,
       config: options.config.handler.echo,
       logger: this.logger
