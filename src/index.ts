@@ -16,9 +16,8 @@ async function main(): Promise<number> {
   console.info('hello bot');
 
   const config = await loadConfig();
-  const bot = new Bot({
-    config: config
-  });
+  const bot = new Bot({config});
+
   await bot.start();
   await signal();
   await bot.stop();

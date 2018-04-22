@@ -1,3 +1,4 @@
+import * as escape from 'escape-html';
 import { Destination } from 'src/Destination';
 
 export interface MessageOptions {
@@ -12,5 +13,9 @@ export class Message {
   constructor(options: MessageOptions) {
     this.body = options.body;
     this.dest = options.dest;
+  }
+
+  get escaped(): string {
+    return escape(this.body);
   }
 }

@@ -83,7 +83,7 @@ export class Bot {
     this.commands.subscribe((next: Command) => this.handle(next));
     this.messages.subscribe((next: Event) => this.receive(next));
     Observable.zip(this.outgoing, this.interval).subscribe((next: [Message, number]) => {
-      this.dispatch(next[0]);
+      this.dispatch(next[0]).catch((err) => this.logger.error(err, 'error dispatching message'));
     });
 
     this.logger.info('authenticating with chat');
@@ -130,12 +130,12 @@ export class Bot {
     this.logger.debug({msg}, 'dispatching message');
 
     try {
-      await this.client.send(msg.body, this.room);
+      await this.client.send(msg.escaped, this.room);
     } catch (err) {
       if (err.message.includes('StatusCodeError: 409')) {
         this.logger.warn('reply was rate-limited, putting back on queue');
         setTimeout(() => {
-          this.send(msg);
+          this.send(msg).catch((err) => this.logger.error(err, 'error resending message'));
         }, this.config.stack.delay.rate);
       }
     }

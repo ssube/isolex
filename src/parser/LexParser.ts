@@ -2,7 +2,7 @@ import * as AWS from 'aws-sdk';
 import * as bunyan from 'bunyan';
 import { clone } from 'lodash';
 import { Bot } from 'src/Bot';
-import { Command, CommandType, CommandOptions } from 'src/command/Command';
+import { Command, CommandOptions, CommandType } from 'src/command/Command';
 import { Parser } from 'src/parser/Parser';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
 
