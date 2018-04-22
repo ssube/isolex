@@ -3,21 +3,38 @@
 # example config
 
 bot:
-  aws:
+  filter:
+    user:
+      ignore:
+        - 1
+        - name
+
+  handler:
+    echo:
+      pattern: >-
+        @{{cmd.from.userName}}: {{cmd.data.message}} ({{cmd.name}})
+
+  log:
+    level: debug
+    name: isolex
+
+  parser:
     lex:
       bot:
         name: isolex
         alias: test
       account:
-        accessKey: AKIAABCDEFGH
-        secretKey: 12334567890/abcdefghijklmnop
+        accessKey: ADECBA
+        secretKey: 123/abc
       region: us-east-1
-  log:
-    level: debug
-    name: isolex
+      tags: ['--lex']
+
   stack:
     account:
       email: yourname@email.com
-      password: password
+      password: 'pass$word'
+    delay:
+      next: 100
+      rate: 2000
     rooms: [1, 17]
 

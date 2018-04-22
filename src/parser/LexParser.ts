@@ -4,6 +4,7 @@ import { clone } from 'lodash';
 import { Bot } from 'src/Bot';
 import { Command, CommandOptions, CommandType } from 'src/command/Command';
 import { Parser } from 'src/parser/Parser';
+import { getEventDest, isEventMessage } from 'src/utils';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
 
 export interface LexParserConfig {
@@ -62,7 +63,7 @@ export class LexParser implements Parser {
   }
 
   public async match(event: Event): Promise<boolean> {
-    if (event.event_type === 1 || event.event_type === 2) {
+    if (isEventMessage(event)) {
       for (const t of this.tags) {
         if (event.content.includes(t)) {
           return true;
@@ -90,11 +91,7 @@ export class LexParser implements Parser {
 
     const cmdOptions: CommandOptions = {
       data: reply,
-      from: {
-        roomId: event.room_id.toString(),
-        userId: event.user_id.toString(),
-        userName: event.user_name
-      },
+      from: getEventDest(event),
       name: intent,
       type: CommandType.None
     };
