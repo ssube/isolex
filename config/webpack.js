@@ -83,14 +83,17 @@ module.exports = {
       name: 'dtrace-provider',
       alias: modulePath.shim
     }, {
-      name: 'term.js',
-      alias: modulePath.shim
+      name: 'handlebars',
+      alias: 'handlebars/dist/handlebars'
+    }, {
+      name: 'later',
+      alias: 'later/later.js'
     }, {
       name: 'pty.js',
       alias: modulePath.shim
     }, {
-      name: 'handlebars',
-      alias: 'handlebars/dist/handlebars'
+      name: 'term.js',
+      alias: modulePath.shim
     }, {
       name: 'src',
       alias: path.source,

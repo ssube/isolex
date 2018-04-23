@@ -1,6 +1,7 @@
 import * as bunyan from 'bunyan';
+import * as later from 'later';
 import { Observable, Subject } from 'rxjs';
-import { Command } from 'src/command/Command';
+import { Command, CommandOptions } from 'src/command/Command';
 import { Destination } from 'src/Destination';
 import { Filter, FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
@@ -10,6 +11,7 @@ import { Message } from 'src/Message';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
+import { Cooldown } from 'src/util/Cooldown';
 import { isEventMessage } from 'src/utils';
 import { Client } from 'vendor/so-client/src/client';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
@@ -23,6 +25,10 @@ export interface BotConfig {
     echo: EchoHandlerConfig;
     time: TimeHandlerConfig;
   };
+  interval: Array<{
+    cron: string;
+    data: Array<CommandOptions>;
+  }>;
   log: {
     name: string;
     [other: string]: string;
@@ -36,9 +42,9 @@ export interface BotConfig {
       email: string;
       password: string;
     };
-    delay: {
-      next: number;
-      rate: number;
+    rate: {
+      base: number;
+      grow: number;
     }
     rooms: Array<number>;
   };
@@ -54,14 +60,14 @@ export class Bot {
   protected commands: Subject<Command>;
   protected filters: Array<Filter>;
   protected handlers: Array<Handler>;
-  protected interval: Observable<number>;
   protected logger: bunyan;
   protected messages: Subject<Event>;
   protected outgoing: Subject<Message>;
   protected parsers: Array<Parser>;
-  protected rate: number;
+  protected rate: Cooldown;
   protected room: number;
   protected strict: boolean;
+  protected timers: Set<later.Timer>;
 
   constructor(options: BotOptions) {
     this.logger = bunyan.createLogger(options.config.log);
@@ -94,9 +100,22 @@ export class Bot {
 
     // set up streams
     this.commands = new Subject();
-    this.interval = Observable.interval(options.config.stack.delay.next);
+    this.rate = new Cooldown(options.config.stack.rate);
     this.messages = new Subject();
     this.outgoing = new Subject();
+
+    // set up crons
+    this.timers = new Set();
+    for (const i of options.config.interval) {
+      const cron = later.parse.cron(i.cron);
+      const interval = later.setInterval(async () => {
+        for (const data of i.data) {
+          const cmd = new Command(data);
+          this.commands.next(cmd);
+        }
+      }, cron);
+      this.timers.add(interval);
+    }
 
     // set up SO client
     const clientOptions = {
@@ -112,7 +131,7 @@ export class Bot {
     this.logger.info('setting up streams');
     this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
     this.messages.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
-    Observable.zip(this.outgoing, this.interval).subscribe((next: [Message, number]) => {
+    Observable.zip(this.outgoing, this.rate.getStream()).subscribe((next: [Message, number]) => {
       this.dispatch(next[0]).catch((err) => this.looseError(err));
     });
 
@@ -123,7 +142,7 @@ export class Bot {
     await this.client.join();
 
     this.client.on('event', async (event: Event) => {
-      this.logger.debug({event}, 'client got event');
+      this.logger.debug({ event }, 'client got event');
       if (isEventMessage(event)) {
         this.messages.next(event);
       }
@@ -134,13 +153,24 @@ export class Bot {
 
   public async stop() {
     this.logger.info('stopping bot');
+
+    this.logger.debug('stopping cron timers');
+    for (const timer of this.timers) {
+      timer.clear();
+    }
+    this.timers.clear();
+
+    this.logger.debug('stopping streams');
+    this.commands.complete();
+    this.messages.complete();
+    this.outgoing.complete();
   }
 
   public async receive(event: Event) {
-    this.logger.debug({event}, 'received event');
+    this.logger.debug({ event }, 'received event');
 
     if (!await this.checkFilters(event)) {
-      this.logger.warn({event}, 'dropped event due to filters');
+      this.logger.warn({ event }, 'dropped event due to filters');
       return;
     }
 
@@ -155,10 +185,10 @@ export class Bot {
   }
 
   public async handle(cmd: Command) {
-    this.logger.debug({cmd}, 'handling command');
+    this.logger.debug({ cmd }, 'handling command');
 
     if (!await this.checkFilters(cmd)) {
-      this.logger.warn({cmd}, 'dropped command due to filters');
+      this.logger.warn({ cmd }, 'dropped command due to filters');
       return;
     }
 
@@ -170,22 +200,23 @@ export class Bot {
   }
 
   public async dispatch(msg: Message) {
-    this.logger.debug({msg}, 'dispatching message');
+    this.logger.debug({ msg }, 'dispatching message');
 
     if (!await this.checkFilters(msg)) {
-      this.logger.warn({msg}, 'dropped message due to filters');
+      this.logger.warn({ msg }, 'dropped message due to filters');
       return;
     }
 
     try {
       await this.client.send(msg.escaped, this.room);
-      this.logger.debug({msg}, 'dispatched message');
+      this.logger.debug({ msg }, 'dispatched message');
     } catch (err) {
       if (err.message.includes('StatusCodeError: 409')) {
         this.logger.warn('reply was rate-limited');
+        this.rate.inc();
         setTimeout(() => {
           this.send(msg).catch((err) => this.logger.error(err, 'error resending message'));
-        }, this.config.stack.delay.rate);
+        }, this.rate.getRate());
       } else {
         this.logger.error(err, 'reply failed');
       }
@@ -199,7 +230,7 @@ export class Bot {
   protected async checkFilters(next: Command | Event | Message): Promise<boolean> {
     const results = await Promise.all(this.filters.map(async (filter) => {
       const result = await filter.filter(next);
-      this.logger.debug({filter, result}, 'checked filter');
+      this.logger.debug({ filter, result }, 'checked filter');
       return result;
     }));
 
@@ -211,6 +242,6 @@ export class Bot {
   }
 
   protected async looseError(err: Error) {
-
+    this.logger.error(err, 'bot stream did not handle error');
   }
 }

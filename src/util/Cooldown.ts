@@ -62,6 +62,10 @@ export class Cooldown implements Runnable {
     return this.rate;
   }
 
+  public getStream(): Observable<number> {
+    return this.stream;
+  }
+
   public getTicks(): number {
     return this.ticks;
   }

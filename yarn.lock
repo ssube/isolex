@@ -81,6 +81,10 @@
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.11.1.tgz#ac5bab26be5f9c6f74b6b23420f2cfa5a7a6ba40"
 
+"@types/later@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@types/later/-/later-1.2.4.tgz#5a12e66f735c4d529337bc9a58c5a4864e2faa7f"
+
 "@types/lodash@4.14.104":
   version "4.14.104"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.104.tgz#53ee2357fa2e6e68379341d92eb2ecea4b11bb80"
@@ -3316,6 +3320,10 @@ kind-of@^5.0.0:
 kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+
+later@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/later/-/later-1.2.0.tgz#f2cf6c4dd7956dd2f520adf0329836e9876bad0f"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
