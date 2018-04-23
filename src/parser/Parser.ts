@@ -14,5 +14,5 @@ export interface Parser {
   /**
    * Parse an event into commands.
    */
-  parse(event: Event): Promise<Command>;
+  parse(event: Event): Promise<Array<Command>>;
 }

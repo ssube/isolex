@@ -34,26 +34,32 @@ module.exports = {
   module: {
     rules: [{
       test: /\.tsx?$/,
-      enforce: 'pre',
-      loader: 'tslint-loader',
-      options: {
-        configFile: 'config/tslint.json',
-        typeCheck
-      }
-    }, {
-      test: /\.tsx?$/,
-      loader: 'awesome-typescript-loader',
-      options: {
-        configFileName: 'config/tsconfig.json',
-        inlineSourceMap: false,
-        sourceMap: true
-      }
-    }, {
-      test: /\.tsx?$/,
-      enforce: 'post',
-      loader: 'istanbul-instrumenter-loader',
-      exclude: /node_modules/,
-      options: require('./istanbul')
+      rules: [{
+        enforce: 'pre',
+        use: [{
+          loader: 'tslint-loader',
+          options: {
+            configFile: 'config/tslint.json',
+            typeCheck
+          }
+        }]
+      }, {
+        use: [{
+          loader: 'awesome-typescript-loader',
+          options: {
+            configFileName: 'config/tsconfig.json',
+            inlineSourceMap: false,
+            sourceMap: true
+          }
+        }]
+      }, {
+        enforce: 'post',
+        exclude: /node_modules/,
+        use: [{
+          loader: 'istanbul-instrumenter-loader',
+          options: require('./istanbul')
+        }]
+      }]
     }]
   },
   output: {

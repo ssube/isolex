@@ -14,7 +14,7 @@ export abstract class BaseParser implements Parser {
     return false;
   }
 
-  public abstract parse(event: Event): Promise<Command>;
+  public abstract parse(event: Event): Promise<Array<Command>>;
 
   protected includesTag(body: string): boolean {
     for (const t of this.tags) {

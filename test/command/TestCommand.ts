@@ -10,6 +10,7 @@ describeAsync('command', async () => {
       data: {'test': 1},
       from: {
         roomId: '',
+        threadId: '',
         userId: '',
         userName: ''
       },

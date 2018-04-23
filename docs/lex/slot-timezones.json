@@ -1,0 +1,2138 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "importType": "LEX",
+    "importFormat": "JSON"
+  },
+  "resource": {
+    "name": "timezones",
+    "version": "2",
+    "enumerationValues": [
+      {
+        "value": "None",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Abidjan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Accra",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Addis_Ababa",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Algiers",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Asmara",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Bamako",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Bangui",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Banjul",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Bissau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Blantyre",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Brazzaville",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Bujumbura",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Cairo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Casablanca",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Ceuta",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Conakry",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Dakar",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Dar_es_Salaam",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Djibouti",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Douala",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/El_Aaiun",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Freetown",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Gaborone",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Harare",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Johannesburg",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Juba",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Kampala",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Khartoum",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Kigali",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Kinshasa",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Lagos",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Libreville",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Lome",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Luanda",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Lubumbashi",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Lusaka",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Malabo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Maputo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Maseru",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Mbabane",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Mogadishu",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Monrovia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Nairobi",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Ndjamena",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Niamey",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Nouakchott",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Ouagadougou",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Porto-Novo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Sao_Tome",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Tripoli",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Tunis",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Africa/Windhoek",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Adak",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Anchorage",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Anguilla",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Antigua",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Araguaina",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Buenos_Aires",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Catamarca",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Cordoba",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Jujuy",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/La_Rioja",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Mendoza",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Rio_Gallegos",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Salta",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/San_Juan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/San_Luis",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Tucuman",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Argentina/Ushuaia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Aruba",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Asuncion",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Atikokan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Bahia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Bahia_Banderas",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Barbados",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Belem",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Belize",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Blanc-Sablon",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Boa_Vista",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Bogota",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Boise",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Cambridge_Bay",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Campo_Grande",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Cancun",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Caracas",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Cayenne",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Cayman",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Chicago",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Chihuahua",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Costa_Rica",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Creston",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Cuiaba",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Curacao",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Danmarkshavn",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Dawson",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Dawson_Creek",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Denver",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Detroit",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Dominica",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Edmonton",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Eirunepe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/El_Salvador",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Fortaleza",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Fort_Nelson",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Glace_Bay",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Godthab",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Goose_Bay",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Grand_Turk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Grenada",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Guadeloupe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Guatemala",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Guayaquil",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Guyana",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Halifax",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Havana",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Hermosillo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Indianapolis",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Knox",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Marengo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Petersburg",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Tell_City",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Vevay",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Vincennes",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Indiana/Winamac",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Inuvik",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Iqaluit",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Jamaica",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Juneau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Kentucky/Louisville",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Kentucky/Monticello",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Kralendijk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/La_Paz",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Lima",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Los_Angeles",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Lower_Princes",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Maceio",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Managua",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Manaus",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Marigot",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Martinique",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Matamoros",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Mazatlan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Menominee",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Merida",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Metlakatla",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Mexico_City",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Miquelon",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Moncton",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Monterrey",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Montevideo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Montserrat",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Nassau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/New_York",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Nipigon",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Nome",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Noronha",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/North_Dakota/Beulah",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/North_Dakota/Center",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/North_Dakota/New_Salem",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Ojinaga",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Panama",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Pangnirtung",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Paramaribo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Phoenix",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Port-au-Prince",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Port_of_Spain",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Porto_Velho",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Puerto_Rico",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Punta_Arenas",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Rainy_River",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Rankin_Inlet",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Recife",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Regina",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Resolute",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Rio_Branco",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Santarem",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Santiago",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Santo_Domingo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Sao_Paulo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Scoresbysund",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Sitka",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/St_Barthelemy",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/St_Johns",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/St_Kitts",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/St_Lucia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/St_Thomas",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/St_Vincent",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Swift_Current",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Tegucigalpa",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Thule",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Thunder_Bay",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Tijuana",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Toronto",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Tortola",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Vancouver",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Whitehorse",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Winnipeg",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Yakutat",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "America/Yellowknife",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Casey",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Davis",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/DumontDUrville",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Macquarie",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Mawson",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/McMurdo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Palmer",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Rothera",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Syowa",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Troll",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Antarctica/Vostok",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Arctic/Longyearbyen",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Aden",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Almaty",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Amman",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Anadyr",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Aqtau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Aqtobe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Ashgabat",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Atyrau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Baghdad",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Bahrain",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Baku",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Bangkok",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Barnaul",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Beirut",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Bishkek",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Brunei",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Chita",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Choibalsan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Colombo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Damascus",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Dhaka",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Dili",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Dubai",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Dushanbe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Famagusta",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Gaza",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Hebron",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Ho_Chi_Minh",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Hong_Kong",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Hovd",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Irkutsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Jakarta",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Jayapura",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Jerusalem",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kabul",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kamchatka",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Karachi",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kathmandu",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Khandyga",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kolkata",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Krasnoyarsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kuala_Lumpur",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kuching",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Kuwait",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Macau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Magadan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Makassar",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Manila",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Muscat",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Nicosia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Novokuznetsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Novosibirsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Omsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Oral",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Phnom_Penh",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Pontianak",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Pyongyang",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Qatar",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Qyzylorda",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Riyadh",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Sakhalin",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Samarkand",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Seoul",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Shanghai",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Singapore",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Srednekolymsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Taipei",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Tashkent",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Tbilisi",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Tehran",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Thimphu",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Tokyo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Tomsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Ulaanbaatar",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Urumqi",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Ust-Nera",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Vientiane",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Vladivostok",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Yakutsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Yangon",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Yekaterinburg",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Asia/Yerevan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Azores",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Bermuda",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Canary",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Cape_Verde",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Faroe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Madeira",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Reykjavik",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/South_Georgia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/Stanley",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Atlantic/St_Helena",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Adelaide",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Brisbane",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Broken_Hill",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Currie",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Darwin",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Eucla",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Hobart",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Lindeman",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Lord_Howe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Melbourne",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Perth",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Australia/Sydney",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Amsterdam",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Andorra",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Astrakhan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Athens",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Belgrade",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Berlin",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Bratislava",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Brussels",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Bucharest",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Budapest",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Busingen",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Chisinau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Copenhagen",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Dublin",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Gibraltar",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Guernsey",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Helsinki",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Isle_of_Man",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Istanbul",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Jersey",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Kaliningrad",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Kiev",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Kirov",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Lisbon",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Ljubljana",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/London",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Luxembourg",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Madrid",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Malta",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Mariehamn",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Minsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Monaco",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Moscow",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Oslo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Paris",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Podgorica",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Prague",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Riga",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Rome",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Samara",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/San_Marino",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Sarajevo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Saratov",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Simferopol",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Skopje",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Sofia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Stockholm",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Tallinn",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Tirane",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Ulyanovsk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Uzhgorod",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Vaduz",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Vatican",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Vienna",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Vilnius",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Volgograd",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Warsaw",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Zagreb",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Zaporozhye",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Europe/Zurich",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Antananarivo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Chagos",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Christmas",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Cocos",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Comoro",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Kerguelen",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Mahe",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Maldives",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Mauritius",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Mayotte",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Indian/Reunion",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Apia",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Auckland",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Bougainville",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Chatham",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Chuuk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Easter",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Efate",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Enderbury",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Fakaofo",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Fiji",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Funafuti",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Galapagos",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Gambier",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Guadalcanal",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Guam",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Honolulu",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Kiritimati",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Kosrae",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Kwajalein",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Majuro",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Marquesas",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Midway",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Nauru",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Niue",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Norfolk",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Noumea",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Pago_Pago",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Palau",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Pitcairn",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Pohnpei",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Port_Moresby",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Rarotonga",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Saipan",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Tahiti",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Tarawa",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Tongatapu",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Wake",
+        "synonyms": []
+      }
+      ,
+      {
+        "value": "Pacific/Wallis",
+        "synonyms": []
+      }
+    ],
+    "valueSelectionStrategy": "ORIGINAL_VALUE"
+  }
+}

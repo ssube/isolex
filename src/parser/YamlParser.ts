@@ -32,7 +32,7 @@ export class YamlParser extends BaseParser implements Parser {
     this.tags = options.config.tags;
   }
 
-  public async parse(event: Event): Promise<Command> {
+  public async parse(event: Event): Promise<Array<Command>> {
     if (!isEventMessage(event)) {
       throw new Error('invalid event type');
     }
@@ -43,6 +43,6 @@ export class YamlParser extends BaseParser implements Parser {
       throw new Error('invalid parse value');
     }
 
-    return new Command(data as any); // @todo: make this better
+    return [new Command(data as any)]; // @todo: make this better
   }
 }

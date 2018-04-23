@@ -59,6 +59,7 @@ export class Bot {
   protected messages: Subject<Event>;
   protected outgoing: Subject<Message>;
   protected parsers: Array<Parser>;
+  protected rate: number;
   protected room: number;
   protected strict: boolean;
 
@@ -109,10 +110,10 @@ export class Bot {
 
   public async start() {
     this.logger.info('setting up streams');
-    this.commands.subscribe((next) => this.handle(next));
-    this.messages.subscribe((next) => this.receive(next));
+    this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
+    this.messages.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
     Observable.zip(this.outgoing, this.interval).subscribe((next: [Message, number]) => {
-      this.dispatch(next[0]).catch((err) => this.logger.error(err, 'error dispatching message'));
+      this.dispatch(next[0]).catch((err) => this.looseError(err));
     });
 
     this.logger.info('authenticating with chat');
@@ -122,7 +123,7 @@ export class Bot {
     await this.client.join();
 
     this.client.on('event', async (event: Event) => {
-      this.logger.debug(event, 'client got event');
+      this.logger.debug({event}, 'client got event');
       if (isEventMessage(event)) {
         this.messages.next(event);
       }
@@ -138,15 +139,17 @@ export class Bot {
   public async receive(event: Event) {
     this.logger.debug({event}, 'received event');
 
-    if (!await this.check(event)) {
+    if (!await this.checkFilters(event)) {
       this.logger.warn({event}, 'dropped event due to filters');
       return;
     }
 
     for (const p of this.parsers) {
       if (await p.match(event)) {
-        const cmd = await p.parse(event);
-        this.commands.next(cmd);
+        const cmds = await p.parse(event);
+        for (const c of cmds) {
+          this.commands.next(c);
+        }
       }
     }
   }
@@ -154,7 +157,7 @@ export class Bot {
   public async handle(cmd: Command) {
     this.logger.debug({cmd}, 'handling command');
 
-    if (!await this.check(cmd)) {
+    if (!await this.checkFilters(cmd)) {
       this.logger.warn({cmd}, 'dropped command due to filters');
       return;
     }
@@ -169,19 +172,22 @@ export class Bot {
   public async dispatch(msg: Message) {
     this.logger.debug({msg}, 'dispatching message');
 
-    if (!await this.check(msg)) {
+    if (!await this.checkFilters(msg)) {
       this.logger.warn({msg}, 'dropped message due to filters');
       return;
     }
 
     try {
       await this.client.send(msg.escaped, this.room);
+      this.logger.debug({msg}, 'dispatched message');
     } catch (err) {
       if (err.message.includes('StatusCodeError: 409')) {
-        this.logger.warn('reply was rate-limited, putting back on queue');
+        this.logger.warn('reply was rate-limited');
         setTimeout(() => {
           this.send(msg).catch((err) => this.logger.error(err, 'error resending message'));
         }, this.config.stack.delay.rate);
+      } else {
+        this.logger.error(err, 'reply failed');
       }
     }
   }
@@ -190,7 +196,7 @@ export class Bot {
     this.outgoing.next(msg);
   }
 
-  protected async check(next: Command | Event | Message): Promise<boolean> {
+  protected async checkFilters(next: Command | Event | Message): Promise<boolean> {
     const results = await Promise.all(this.filters.map(async (filter) => {
       const result = await filter.filter(next);
       this.logger.debug({filter, result}, 'checked filter');
@@ -202,5 +208,9 @@ export class Bot {
     } else {
       return results.some((r) => r === FilterBehavior.Allow);
     }
+  }
+
+  protected async looseError(err: Error) {
+
   }
 }

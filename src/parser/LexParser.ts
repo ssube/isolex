@@ -54,7 +54,7 @@ export class LexParser extends BaseParser implements Parser {
     });
   }
 
-  public async parse(event: Event): Promise<Command> {
+  public async parse(event: Event): Promise<Array<Command>> {
     if (!isEventMessage(event)) {
       throw new Error('invalid event type');
     }
@@ -80,7 +80,7 @@ export class LexParser extends BaseParser implements Parser {
     };
 
     this.logger.debug({cmdOptions}, 'command options');
-    return new Command(cmdOptions);
+    return [new Command(cmdOptions)];
   }
 
   protected postText(params: AWS.LexRuntime.PostTextRequest): Promise<AWS.LexRuntime.PostTextResponse> {
