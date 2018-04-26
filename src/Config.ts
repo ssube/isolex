@@ -4,7 +4,7 @@ import { dirname, join } from 'path';
 import { BotConfig } from 'src/Bot';
 import { promisify } from 'util';
 
-const CONFIG_ENV = 'ISOLEX_CONFIG';
+const CONFIG_ENV = 'ISOLEX_HOME';
 const CONFIG_NAME = '.isolex.yml';
 
 const readFileSync = promisify(readFile);
@@ -44,7 +44,7 @@ export async function loadConfig(): Promise<BotConfig> {
       });
 
       const config = safeLoad(data) as any;
-      return config.bot;
+      return config;
     } catch (err) {
       console.warn('error trying to load config', p, err);
     }

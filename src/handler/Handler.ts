@@ -1,5 +1,8 @@
 import { Command } from 'src/command/Command';
 
+/**
+ * Handlers react to commands, consuming them before sending replies or performing background work.
+ */
 export interface Handler {
   /**
    * Handle a command, sending any replies.

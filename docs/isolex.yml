@@ -2,52 +2,50 @@
 
 # example config
 
-bot:
-  filters:
-    - type: user-filter
-      ignore:
-        - yourself
+filters:
+  - type: user-filter
+    ignore:
+      - yourself
 
-  handlers:
-    - type: time-handler
-      locale: en-US
-      zone: UTC
+handlers:
+  - type: time-handler
+    locale: en-US
+    zone: UTC
 
-    - type: echo-handler
-      pattern: >-
-        {{reply cmd.from}}: {{cmd.data.message}} ({{cmd.name}})
+  - type: echo-handler
+    pattern: >-
+      {{reply cmd.from}}: {{cmd.data.message}} ({{cmd.name}})
 
-  intervals:
-    - cron: '*/15 * * * * *'
-      data: {}
+intervals:
+  - cron: '*/15 * * * * *'
+    data: {}
 
-  log:
-    level: debug
-    name: isolex
+logger:
+  level: debug
+  name: isolex
 
-  parsers:
-    - type: lex-parser
-      bot:
-        name: isolex
-        alias: test
-      account:
-        accessKey: aws-access-key
-        secretKey: aws-secret-key
-      region: us-east-1
-      tags:
-        - '--lex'
-
-    - type: yaml-parser
-      tags:
-        - '--json'
-        - '--yaml'
-
-  stack:
+parsers:
+  - type: lex-parser
+    bot:
+      name: isolex
+      alias: test
     account:
-      email: your.name@email.com
-      password: 'password'
-    rate:
-      base: 100
-      grow: 2000
-    rooms: [1, 17]
+      accessKey: aws-access-key
+      secretKey: aws-secret-key
+    region: us-east-1
+    tags:
+      - '--lex'
 
+  - type: yaml-parser
+    tags:
+      - '--json'
+      - '--yaml'
+
+stack:
+  account:
+    email: your.name@email.com
+    password: 'password'
+  rate:
+    base: 100
+    grow: 2000
+  rooms: [1, 17]

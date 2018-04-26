@@ -9,6 +9,9 @@ export enum FilterBehavior {
 
 export type FilterValue = Command | Event | Message;
 
+/**
+ * Filters take commands, events, and messages to determine if they should continue through the system or be discarded.
+ */
 export interface Filter {
   filter(val: FilterValue): Promise<FilterBehavior>;
 }

@@ -25,7 +25,7 @@ export interface BotConfig {
     cron: string;
     data: Array<CommandOptions>;
   }>;
-  log: {
+  logger: {
     name: string;
     [other: string]: string;
   };
@@ -82,7 +82,7 @@ export class Bot {
   constructor(options: BotOptions) {
     this.config = options.config;
     this.container = options.container;
-    this.logger = bunyan.createLogger(options.config.log);
+    this.logger = bunyan.createLogger(options.config.logger);
     this.logger.info(options, 'starting bot');
 
     // set up deps
@@ -110,6 +110,19 @@ export class Bot {
   }
 
   /**
+   * These are all created the same way, so they should probably have a common base...
+   */
+  protected async createPart<T>(type: string, config: any): Promise<T> {
+    return this.container.create<T, any>(type, {
+      bot: this,
+      config,
+      logger: this.logger.child({
+        class: type
+      })
+    });
+  }
+
+  /**
    * Set up the async resources that cannot be created in the constructor: filters, handlers, parsers, etc
    */
   public async start() {
@@ -121,35 +134,21 @@ export class Bot {
     });
 
     for (const filterData of this.config.filters) {
-      const {type, ...config} = filterData;
-      this.logger.debug({type}, 'configuring filter');
-      const filter = await this.container.create<Filter, any>(type, {
-        bot: this,
-        config,
-        logger: this.logger.child({
-          class: type
-        })
-      });
-
+      const { type, ...config } = filterData;
+      this.logger.debug({ type }, 'configuring filter');
+      const filter = await this.createPart<Filter>(type, config);
       this.filters.push(filter);
     }
 
     for (const handlerData of this.config.handlers) {
-      const {type, ...config} = handlerData;
-      this.logger.debug({type}, 'configuring handler');
-      const handler = await this.container.create<Handler, any>(type, {
-        bot: this,
-        config,
-        logger: this.logger.child({
-          class: type
-        })
-      });
-
+      const { type, ...config } = handlerData;
+      this.logger.debug({ type }, 'configuring handler');
+      const handler = await this.createPart<Handler>(type, config);
       this.handlers.push(handler);
     }
 
     for (const intervalData of this.config.intervals) {
-      this.logger.debug({interval: intervalData}, 'configuring interval');
+      this.logger.debug({ interval: intervalData }, 'configuring interval');
       const cron = new CronJob(intervalData.cron, async () => {
         for (const data of intervalData.data) {
           const cmd = new Command(data);
@@ -160,16 +159,9 @@ export class Bot {
     }
 
     for (const parserData of this.config.parsers) {
-      const {type, ...config} = parserData;
-      this.logger.debug({type}, 'configuring parser');
-      const parser = await this.container.create<Parser, any>(type, {
-        bot: this,
-        config,
-        logger: this.logger.child({
-          class: type
-        })
-      });
-
+      const { type, ...config } = parserData;
+      this.logger.debug({ type }, 'configuring parser');
+      const parser = await this.createPart<Parser>(type, config);
       this.parsers.push(parser);
     }
 
@@ -179,6 +171,14 @@ export class Bot {
 
     this.logger.info('joining rooms');
     await this.client.join();
+
+    this.client.on('debug', (msg: string) => {
+      this.logger.debug(msg);
+    });
+
+    this.client.on('error', (err: Error) => {
+      this.logger.error(err, 'error from SO client');
+    });
 
     this.client.on('event', async (event: Event) => {
       this.logger.debug({ event }, 'client got event');
@@ -225,7 +225,7 @@ export class Bot {
     }
 
     if (!matched) {
-      this.logger.debug({event}, 'event was not matched by any parsers');
+      this.logger.debug({ event }, 'event was not matched by any parsers');
     }
   }
 
