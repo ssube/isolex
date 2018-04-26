@@ -19,6 +19,7 @@ export interface UserFilterOptions {
 
 export class UserFilter implements Filter {
   protected ignore: Array<number | string>;
+  protected logger: bunyan;
 
   constructor(options: UserFilterOptions) {
     this.ignore = options.config.ignore;
@@ -37,8 +38,9 @@ export class UserFilter implements Filter {
   public async filter(val: FilterValue): Promise<FilterBehavior> {
     const user = this.getUser(val);
 
-    for (const i of this.ignore) {
-      if (user.userId === i || user.userName === i) {
+    for (const ignore of this.ignore) {
+      if (user.userId === ignore || user.userName === ignore) {
+        this.logger.debug({ignore, user}, 'filter is ignoring user');
         return FilterBehavior.Drop;
       }
     }

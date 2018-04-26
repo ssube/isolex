@@ -25,7 +25,6 @@ export class TimeHandler implements Handler {
     this.logger = options.logger.child({
       class: TimeHandler.name
     });
-    this.logger.debug({options}, 'creating time handler');
 
     this.bot = options.bot;
     this.config = options.config;

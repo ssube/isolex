@@ -27,7 +27,6 @@ export class YamlParser extends BaseParser implements Parser {
     this.logger = options.logger.child({
       class: YamlParser.name
     });
-    this.logger.debug(options, 'creating yaml parser');
 
     this.tags = options.config.tags;
   }

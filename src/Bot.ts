@@ -1,5 +1,6 @@
 import * as bunyan from 'bunyan';
-import * as later from 'later';
+import { CronJob } from 'cron';
+import { Container, Module } from 'noicejs';
 import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/command/Command';
 import { Destination } from 'src/Destination';
@@ -18,14 +19,9 @@ import { Event, MessagePosted } from 'vendor/so-client/src/events';
 import { TimeHandler, TimeHandlerConfig } from './handler/TimeHandler';
 
 export interface BotConfig {
-  filter: {
-    user: UserFilterConfig;
-  };
-  handler: {
-    echo: EchoHandlerConfig;
-    time: TimeHandlerConfig;
-  };
-  interval: Array<{
+  filters: Array<any>;
+  handlers: Array<any>;
+  intervals: Array<{
     cron: string;
     data: Array<CommandOptions>;
   }>;
@@ -33,10 +29,7 @@ export interface BotConfig {
     name: string;
     [other: string]: string;
   };
-  parser: {
-    lex: LexParserConfig;
-    yaml: YamlParserConfig;
-  };
+  parsers: Array<any>;
   stack: {
     account: {
       email: string;
@@ -52,70 +45,59 @@ export interface BotConfig {
 
 export interface BotOptions {
   config: BotConfig;
+  container: Container;
+}
+
+export class BotModule extends Module {
+  public async configure() {
+    this.bind(UserFilter).toConstructor(UserFilter);
+    this.bind(TimeHandler).toConstructor(TimeHandler);
+    this.bind(EchoHandler).toConstructor(EchoHandler);
+    this.bind(LexParser).toConstructor(LexParser);
+    this.bind(YamlParser).toConstructor(YamlParser);
+    this.bind('logger').toFactory(this.createLogger);
+  }
+
+  protected async createLogger(options: bunyan.LoggerOptions) {
+    return bunyan.createLogger(options);
+  }
 }
 
 export class Bot {
   protected client: Client;
   protected config: BotConfig;
   protected commands: Subject<Command>;
+  protected container: Container;
   protected filters: Array<Filter>;
   protected handlers: Array<Handler>;
   protected logger: bunyan;
   protected messages: Subject<Event>;
   protected outgoing: Subject<Message>;
   protected parsers: Array<Parser>;
-  protected rate: Cooldown;
+  protected rate: Observable<number>;
   protected room: number;
   protected strict: boolean;
-  protected timers: Set<later.Timer>;
+  protected timers: Set<CronJob>;
 
   constructor(options: BotOptions) {
+    this.config = options.config;
+    this.container = options.container;
     this.logger = bunyan.createLogger(options.config.log);
     this.logger.info(options, 'starting bot');
 
     // set up deps
-    this.filters = [new UserFilter({
-      bot: this,
-      config: options.config.filter.user,
-      logger: this.logger
-    })];
-    this.handlers = [new TimeHandler({
-      bot: this,
-      config: options.config.handler.time,
-      logger: this.logger
-    }), new EchoHandler({
-      bot: this,
-      config: options.config.handler.echo,
-      logger: this.logger
-    })];
-    this.parsers = [new LexParser({
-      bot: this,
-      config: options.config.parser.lex,
-      logger: this.logger
-    }), new YamlParser({
-      bot: this,
-      config: options.config.parser.yaml,
-      logger: this.logger
-    })];
+    this.filters = [];
+    this.handlers = [];
+    this.parsers = [];
 
     // set up streams
     this.commands = new Subject();
-    this.rate = new Cooldown(options.config.stack.rate);
+    this.rate = Observable.interval(options.config.stack.rate.base); // new Cooldown(options.config.stack.rate);
     this.messages = new Subject();
     this.outgoing = new Subject();
 
     // set up crons
     this.timers = new Set();
-    for (const i of options.config.interval) {
-      const cron = later.parse.cron(i.cron);
-      const interval = later.setInterval(async () => {
-        for (const data of i.data) {
-          const cmd = new Command(data);
-          this.commands.next(cmd);
-        }
-      }, cron);
-      this.timers.add(interval);
-    }
 
     // set up SO client
     const clientOptions = {
@@ -127,14 +109,71 @@ export class Bot {
     this.client = new Client(clientOptions);
   }
 
+  /**
+   * Set up the async resources that cannot be created in the constructor: filters, handlers, parsers, etc
+   */
   public async start() {
     this.logger.info('setting up streams');
     this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
     this.messages.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
-    Observable.zip(this.outgoing, this.rate.getStream()).subscribe((next: [Message, number]) => {
+    Observable.zip(this.outgoing, this.rate).subscribe((next: [Message, number]) => {
       this.dispatch(next[0]).catch((err) => this.looseError(err));
     });
 
+    for (const filterData of this.config.filters) {
+      const {type, ...config} = filterData;
+      this.logger.debug({type}, 'configuring filter');
+      const filter = await this.container.create<Filter, any>(type, {
+        bot: this,
+        config,
+        logger: this.logger.child({
+          class: type
+        })
+      });
+
+      this.filters.push(filter);
+    }
+
+    for (const handlerData of this.config.handlers) {
+      const {type, ...config} = handlerData;
+      this.logger.debug({type}, 'configuring handler');
+      const handler = await this.container.create<Handler, any>(type, {
+        bot: this,
+        config,
+        logger: this.logger.child({
+          class: type
+        })
+      });
+
+      this.handlers.push(handler);
+    }
+
+    for (const intervalData of this.config.intervals) {
+      this.logger.debug({interval: intervalData}, 'configuring interval');
+      const cron = new CronJob(intervalData.cron, async () => {
+        for (const data of intervalData.data) {
+          const cmd = new Command(data);
+          this.commands.next(cmd);
+        }
+      });
+      this.timers.add(cron);
+    }
+
+    for (const parserData of this.config.parsers) {
+      const {type, ...config} = parserData;
+      this.logger.debug({type}, 'configuring parser');
+      const parser = await this.container.create<Parser, any>(type, {
+        bot: this,
+        config,
+        logger: this.logger.child({
+          class: type
+        })
+      });
+
+      this.parsers.push(parser);
+    }
+
+    // connect to chat
     this.logger.info('authenticating with chat');
     await this.client.auth();
 
@@ -156,7 +195,7 @@ export class Bot {
 
     this.logger.debug('stopping cron timers');
     for (const timer of this.timers) {
-      timer.clear();
+      timer.stop();
     }
     this.timers.clear();
 
@@ -174,13 +213,19 @@ export class Bot {
       return;
     }
 
+    let matched = false;
     for (const p of this.parsers) {
       if (await p.match(event)) {
+        matched = true;
         const cmds = await p.parse(event);
         for (const c of cmds) {
           this.commands.next(c);
         }
       }
+    }
+
+    if (!matched) {
+      this.logger.debug({event}, 'event was not matched by any parsers');
     }
   }
 
@@ -213,10 +258,9 @@ export class Bot {
     } catch (err) {
       if (err.message.includes('StatusCodeError: 409')) {
         this.logger.warn('reply was rate-limited');
-        this.rate.inc();
         setTimeout(() => {
           this.send(msg).catch((err) => this.logger.error(err, 'error resending message'));
-        }, this.rate.getRate());
+        }, this.config.stack.rate.grow);
       } else {
         this.logger.error(err, 'reply failed');
       }
@@ -228,6 +272,10 @@ export class Bot {
   }
 
   protected async checkFilters(next: Command | Event | Message): Promise<boolean> {
+    if (this.filters.length === 0) {
+      return true;
+    }
+
     const results = await Promise.all(this.filters.map(async (filter) => {
       const result = await filter.filter(next);
       this.logger.debug({ filter, result }, 'checked filter');

@@ -1,14 +1,20 @@
+import * as bunyan from 'bunyan';
 import { Command } from 'src/command/Command';
 import { Parser } from 'src/parser/Parser';
 import { isEventMessage } from 'src/utils';
 import { Event } from 'vendor/so-client/src/events';
 
 export abstract class BaseParser implements Parser {
+  protected logger: bunyan;
   protected tags: Array<string>;
 
   public async match(event: Event): Promise<boolean> {
+    this.logger.debug({event, tags: this.tags}, 'matching event against tags');
+
     if (isEventMessage(event)) {
-      return this.includesTag(event.content);
+      const hasTags = this.includesTag(event.content);
+      this.logger.debug({event, hasTags}, 'parser matches event');
+      return hasTags;
     }
 
     return false;

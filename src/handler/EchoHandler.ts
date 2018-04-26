@@ -2,6 +2,7 @@ import * as bunyan from 'bunyan';
 import * as handlebars from 'handlebars';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/command/Command';
+import { Destination } from 'src/Destination';
 import { Handler } from 'src/handler/Handler';
 import { Message } from 'src/Message';
 
@@ -25,19 +26,24 @@ export class EchoHandler implements Handler {
     this.logger = options.logger.child({
       class: EchoHandler.name
     });
-    this.logger.debug({options}, 'creating echo handler');
 
     this.bot = options.bot;
-    this.template = handlebars.compile(options.config.pattern);
+    const compiler = handlebars.create();
+    compiler.registerHelper('reply', (dest: Destination) => this.formatDestination(dest));
+    this.template = compiler.compile(options.config.pattern);
   }
 
   public async handle(cmd: Command): Promise<boolean> {
-    this.logger.debug({cmd}, 'echoing command');
     const msg = new Message({
       body: this.template({cmd}),
       dest: cmd.from
     });
+    this.logger.debug({cmd, msg}, 'echoing command');
     await this.bot.send(msg);
     return true;
+  }
+
+  public formatDestination(dest: Destination): string {
+    return `@${dest.userName}`;
   }
 }

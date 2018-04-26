@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
-import { Bot } from 'src/Bot';
+import { Container } from 'noicejs';
+import { Bot, BotModule } from 'src/Bot';
 import { loadConfig } from 'src/Config';
 import { Event } from 'vendor/so-client/src/events';
 
@@ -15,8 +16,11 @@ function signal(): Promise<void> {
 async function main(): Promise<number> {
   console.info('hello bot');
 
+  const ctr = Container.from(new BotModule());
+  await ctr.configure();
+
   const config = await loadConfig();
-  const bot = new Bot({config});
+  const bot = await ctr.create<Bot, any>(Bot, {config});
 
   await bot.start();
   await signal();

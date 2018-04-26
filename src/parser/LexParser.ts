@@ -40,7 +40,6 @@ export class LexParser extends BaseParser implements Parser {
     this.logger = options.logger.child({
       class: LexParser.name
     });
-    this.logger.debug(options, 'creating lex parser');
 
     this.alias = options.config.bot.alias;
     this.name = options.config.bot.name;

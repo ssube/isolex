@@ -51,7 +51,7 @@ export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.ITest {
     return it(expectation, function trackTest(this: any) {
       return new Promise((res, rej) => {
         cb.call(this).then((value: any) => {
-          res();
+          res(value);
         }, (err: Error) => {
           rej(err);
         });
