@@ -18,12 +18,16 @@ export function resolvePath(name: string, ...extras: Array<string>): Array<strin
     paths.push(env);
   }
 
-  if (require && require.main && require.main.filename) {
-    paths.push(join(dirname(require.main.filename), name));
-  }
-
   if (process.env.HOME) {
     paths.push(join(process.env.HOME, name));
+  }
+
+  if (__dirname) {
+    paths.push(join(__dirname, name));
+  }
+
+  if (require && require.main && require.main.filename) {
+    paths.push(join(dirname(require.main.filename), name));
   }
 
   for (const e of extras) {

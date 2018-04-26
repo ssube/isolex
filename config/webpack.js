@@ -62,6 +62,10 @@ module.exports = {
       }]
     }]
   },
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   output: {
     devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     filename: '[name]-bundle.js',

@@ -4,7 +4,9 @@ Config will be loaded from YAML document named `.isolex.yml` located in one of:
 
 1. the *directory* indicated by `${ISOLEX_HOME}` (if set)
 1. the *directory* indicated by `${HOME}` (again, if set)
-1. the current directory
+1. the current working directory (`__dirname`)
+1. the directory the JS bundle is located in
+1. any extra paths passed
 
 Only the first file will be loaded and used.
 
