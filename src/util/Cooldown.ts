@@ -51,10 +51,8 @@ export class Cooldown implements Runnable {
    * @returns the new rate
    */
   public dec(): number {
-    console.info('===marker dec in', this.grow, this.rate, this.config);
     this.grow = Math.max(this.grow / 2, this.config.grow);
     this.rate = Math.max(this.rate - this.grow, this.config.base);
-    console.info('===marker dec out', this.grow, this.rate);
     return this.rate;
   }
 
@@ -71,12 +69,10 @@ export class Cooldown implements Runnable {
 
   public next() {
     const ticks = this.ticks++;
-    console.info('===marker ticks', ticks, this.ticks);
 
     this.stream.next(ticks);
 
     if (this.active) {
-      console.info('===marker set timeout', this.rate, this.grow);
       this.timer = setTimeout(this.boundNext, this.rate);
     }
   }

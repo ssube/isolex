@@ -36,6 +36,7 @@
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
     "mocha": "^5.1.1",
+    "noicejs": "^2.0.0",
     "nyc": "^11.7.1",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
