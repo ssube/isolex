@@ -41,7 +41,9 @@ describeAsync('cooldown', async () => {
     await cd.start();
     await defer(50);
     await cd.stop();
+    expect(cd.getTicks()).to.equal(3);
 
+    await defer(50);
     expect(cd.getTicks()).to.equal(3);
   });
 });

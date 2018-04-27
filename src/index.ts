@@ -8,14 +8,12 @@ const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
 function signal(): Promise<void> {
-  return new Promise((res, rej) => {
+  return new Promise((res, _) => {
     process.on('SIGINT', () => res());
   });
 }
 
 async function main(): Promise<number> {
-  console.info('hello bot');
-
   const ctr = Container.from(new BotModule());
   await ctr.configure();
 
@@ -30,6 +28,6 @@ async function main(): Promise<number> {
 }
 
 main().then((status) => process.exit(status)).catch((err) => {
-  console.error('uncaught error:', err);
-  process.exit(1);
+  console.error('uncaught error during main:', err);
+  process.exit(STATUS_ERROR);
 });

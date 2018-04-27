@@ -35,7 +35,6 @@ export function resolvePath(name: string, ...extras: Array<string>): Array<strin
 
 export async function loadConfig(): Promise<BotConfig> {
   const paths = resolvePath(CONFIG_NAME);
-  console.info('loading config from paths', paths);
 
   for (const p of paths) {
     try {
@@ -46,7 +45,9 @@ export async function loadConfig(): Promise<BotConfig> {
       const config = safeLoad(data) as any;
       return config;
     } catch (err) {
-      console.warn('error trying to load config', p, err);
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
     }
   }
 
