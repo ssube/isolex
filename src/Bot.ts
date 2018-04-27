@@ -226,10 +226,16 @@ export class Bot {
       return;
     }
 
+    let handled = false;
     for (const h of this.handlers) {
       if (await h.handle(cmd)) {
+        handled = true;
         break;
       }
+    }
+
+    if (!handled) {
+      this.logger.warn({ cmd }, 'unhandled command');
     }
   }
 
@@ -247,7 +253,7 @@ export class Bot {
     } catch (err) {
       if (err.message.includes('StatusCodeError: 409')) {
         const rate = this.rate.inc();
-        this.logger.warn({rate}, 'reply was rate-limited');
+        this.logger.warn({ rate }, 'reply was rate-limited');
         setTimeout(() => {
           this.send(msg).catch((err) => this.logger.error(err, 'error resending message'));
         }, rate);
