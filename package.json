@@ -1,9 +1,9 @@
 {
-  "name": "webpack-template",
+  "name": "isolex",
   "version": "0.1.0",
-  "description": "webpack template project",
+  "description": "isolex SO chat bot",
   "main": "out/main-bundle.js",
-  "repository": "https://github.com/ssube/webpack-template",
+  "repository": "https://github.com/ssube/isolex",
   "author": "ssube",
   "license": "MIT",
   "private": false,
