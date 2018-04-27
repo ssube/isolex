@@ -1,4 +1,4 @@
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 import { Event } from 'vendor/so-client/src/events';
 
 /**

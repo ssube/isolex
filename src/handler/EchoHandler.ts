@@ -1,7 +1,7 @@
 import * as bunyan from 'bunyan';
 import * as handlebars from 'handlebars';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 import { Destination } from 'src/Destination';
 import { Handler } from 'src/handler/Handler';
 import { Message } from 'src/Message';

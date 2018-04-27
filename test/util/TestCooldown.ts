@@ -13,9 +13,13 @@ describeAsync('cooldown', async () => {
     });
 
     expect(cd.inc()).to.equal(12);
-    expect(cd.inc()).to.equal(14);
+    expect(cd.inc()).to.equal(16);
+    expect(cd.inc()).to.equal(24);
+    expect(cd.dec()).to.equal(16);
     expect(cd.dec()).to.equal(12);
-    expect(cd.getRate()).to.equal(12);
+    expect(cd.dec()).to.equal(10);
+    expect(cd.dec()).to.equal(10);
+    expect(cd.getRate()).to.equal(10);
   });
 
   itAsync('should stop a pending timer', async () => {
@@ -35,7 +39,7 @@ describeAsync('cooldown', async () => {
     });
 
     await cd.start();
-    await defer(150);
+    await defer(50);
     await cd.stop();
 
     expect(cd.getTicks()).to.equal(3);

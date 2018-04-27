@@ -1,4 +1,4 @@
-# isolex Documentation
+# Documentation
 
 Hopefully this explains what the bot is and how it works.
 

@@ -1,7 +1,7 @@
 import * as bunyan from 'bunyan';
 import { isNumber, isString } from 'lodash';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 import { Destination } from 'src/Destination';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Message } from 'src/Message';

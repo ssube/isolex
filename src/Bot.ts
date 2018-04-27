@@ -2,7 +2,7 @@ import * as bunyan from 'bunyan';
 import { CronJob } from 'cron';
 import { Container, Module } from 'noicejs';
 import { Observable, Subject } from 'rxjs';
-import { Command, CommandOptions } from 'src/command/Command';
+import { Command, CommandOptions } from 'src/Command';
 import { Destination } from 'src/Destination';
 import { Filter, FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
@@ -74,7 +74,7 @@ export class Bot {
   protected messages: Subject<Event>;
   protected outgoing: Subject<Message>;
   protected parsers: Array<Parser>;
-  protected rate: Observable<number>;
+  protected rate: Cooldown;
   protected room: number;
   protected strict: boolean;
   protected timers: Set<CronJob>;
@@ -92,7 +92,6 @@ export class Bot {
 
     // set up streams
     this.commands = new Subject();
-    this.rate = Observable.interval(options.config.stack.rate.base); // new Cooldown(options.config.stack.rate);
     this.messages = new Subject();
     this.outgoing = new Subject();
 
@@ -110,26 +109,16 @@ export class Bot {
   }
 
   /**
-   * These are all created the same way, so they should probably have a common base...
-   */
-  protected async createPart<T>(type: string, config: any): Promise<T> {
-    return this.container.create<T, any>(type, {
-      bot: this,
-      config,
-      logger: this.logger.child({
-        class: type
-      })
-    });
-  }
-
-  /**
    * Set up the async resources that cannot be created in the constructor: filters, handlers, parsers, etc
    */
   public async start() {
     this.logger.info('setting up streams');
+    // base streams
     this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
     this.messages.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
-    Observable.zip(this.outgoing, this.rate).subscribe((next: [Message, number]) => {
+
+    this.rate = new Cooldown(this.config.stack.rate);
+    Observable.zip(this.outgoing, this.rate.getStream()).subscribe((next: [Message, number]) => {
       this.dispatch(next[0]).catch((err) => this.looseError(err));
     });
 
@@ -257,10 +246,11 @@ export class Bot {
       this.logger.debug({ msg }, 'dispatched message');
     } catch (err) {
       if (err.message.includes('StatusCodeError: 409')) {
-        this.logger.warn('reply was rate-limited');
+        const rate = this.rate.inc();
+        this.logger.warn({rate}, 'reply was rate-limited');
         setTimeout(() => {
           this.send(msg).catch((err) => this.logger.error(err, 'error resending message'));
-        }, this.config.stack.rate.grow);
+        }, rate);
       } else {
         this.logger.error(err, 'reply failed');
       }
@@ -291,5 +281,18 @@ export class Bot {
 
   protected async looseError(err: Error) {
     this.logger.error(err, 'bot stream did not handle error');
+  }
+
+  /**
+   * These are all created the same way, so they should probably have a common base...
+   */
+  protected async createPart<T>(type: string, config: any): Promise<T> {
+    return this.container.create<T, any>(type, {
+      bot: this,
+      config,
+      logger: this.logger.child({
+        class: type
+      })
+    });
   }
 }

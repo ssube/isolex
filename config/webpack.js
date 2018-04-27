@@ -90,9 +90,6 @@ module.exports = {
       name: 'handlebars',
       alias: 'handlebars/dist/handlebars'
     }, {
-      name: 'later',
-      alias: 'later/later.js'
-    }, {
       name: 'pty.js',
       alias: modulePath.shim
     }, {

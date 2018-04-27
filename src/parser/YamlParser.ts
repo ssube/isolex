@@ -1,7 +1,7 @@
 import * as bunyan from 'bunyan';
 import { safeLoad } from 'js-yaml';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser } from 'src/parser/Parser';
 import { isEventMessage } from 'src/utils';

@@ -1,5 +1,5 @@
 import * as bunyan from 'bunyan';
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 import { Parser } from 'src/parser/Parser';
 import { isEventMessage } from 'src/utils';
 import { Event } from 'vendor/so-client/src/events';

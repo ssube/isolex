@@ -3,7 +3,7 @@ import { Event, MessageEdited, MessagePosted } from 'vendor/so-client/src/events
 
 export function defer<T = undefined>(ms: number, val?: T): Promise<T> {
   return new Promise((res, rej) => {
-    setTimeout(() => res(val));
+    setTimeout(() => res(val), ms);
   });
 }
 

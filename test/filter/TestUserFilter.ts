@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { Container } from 'noicejs';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 import { FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterOptions } from 'src/filter/UserFilter';
 import { describeAsync, itAsync } from 'test/helpers/async';

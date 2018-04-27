@@ -8,11 +8,14 @@ export interface CooldownOptions {
 
 /**
  * Cooldown is a specialized counter for rate limiting, bans, and the like.
+ *
+ * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
+ * an exponential interval with an observable.
  */
 export class Cooldown implements Runnable {
   protected active: boolean;
-  protected base: number;
-  protected call: Function;
+  protected boundNext: Function;
+  protected config: CooldownOptions;
   protected grow: number;
   protected rate: number;
   protected stream: Subject<number>;
@@ -21,8 +24,8 @@ export class Cooldown implements Runnable {
 
   constructor(options: CooldownOptions) {
     this.active = false;
-    this.base = options.base;
-    this.call = this.next.bind(this);
+    this.boundNext = this.next.bind(this);
+    this.config = options;
     this.grow = options.grow;
     this.rate = options.base;
     this.stream = new Subject();
@@ -32,7 +35,7 @@ export class Cooldown implements Runnable {
 
   public async start() {
     this.active = true;
-    this.next();
+    this.boundNext();
   }
 
   public async stop() {
@@ -42,19 +45,39 @@ export class Cooldown implements Runnable {
     }
   }
 
+  /**
+   * Decrease the rate and the growth rate by the current growth rate.
+   *
+   * @returns the new rate
+   */
   public dec(): number {
-    return this.rate -= this.grow;
+    console.info('===marker dec in', this.grow, this.rate, this.config);
+    this.grow = Math.max(this.grow / 2, this.config.grow);
+    this.rate = Math.max(this.rate - this.grow, this.config.base);
+    console.info('===marker dec out', this.grow, this.rate);
+    return this.rate;
   }
 
+  /**
+   * Increase the rate and the growth rate by the current growth rate.
+   *
+   * @returns the new rate
+   */
   public inc(): number {
-    return this.rate += this.grow;
+    this.rate += this.grow;
+    this.grow += this.grow;
+    return this.rate;
   }
 
   public next() {
-    this.stream.next(this.ticks++);
+    const ticks = this.ticks++;
+    console.info('===marker ticks', ticks, this.ticks);
+
+    this.stream.next(ticks);
 
     if (this.active) {
-      this.timer = setTimeout(this.call, this.rate);
+      console.info('===marker set timeout', this.rate, this.grow);
+      this.timer = setTimeout(this.boundNext, this.rate);
     }
   }
 

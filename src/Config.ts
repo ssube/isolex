@@ -26,10 +26,6 @@ export function resolvePath(name: string, ...extras: Array<string>): Array<strin
     paths.push(join(__dirname, name));
   }
 
-  if (require && require.main && require.main.filename) {
-    paths.push(join(dirname(require.main.filename), name));
-  }
-
   for (const e of extras) {
     paths.push(join(e, name));
   }

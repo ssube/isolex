@@ -1,4 +1,4 @@
-import { Command } from 'src/command/Command';
+import { Command } from 'src/Command';
 
 /**
  * Handlers react to commands, consuming them before sending replies or performing background work.
