@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { Container, Module } from 'noicejs';
+import { ConsoleLogger, Container, Module } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { spy } from 'sinon';
 
@@ -15,9 +15,6 @@ describeAsync('echo handler', async () => {
     const container = Container.from();
     await container.configure();
 
-    const logger = ineeda<Logger>({
-      child: () => logger
-    });
     const options: EchoHandlerOptions = {
       bot: ineeda<Bot>(),
       compiler: ineeda<TemplateCompiler>({
@@ -27,7 +24,7 @@ describeAsync('echo handler', async () => {
         pattern: ''
       },
       container,
-      logger,
+      logger: ConsoleLogger.global,
     };
     const handler = await container.create(EchoHandler, options);
     expect(handler).to.be.an.instanceOf(EchoHandler);

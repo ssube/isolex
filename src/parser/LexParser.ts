@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import * as bunyan from 'bunyan';
+import { Logger } from 'noicejs/logger/Logger';
 import { clone } from 'lodash';
 import { Bot } from 'src/Bot';
 import { Command, CommandOptions, CommandType } from 'src/Command';
@@ -24,14 +24,14 @@ export interface LexParserConfig {
 export interface LexParserOptions {
   bot: Bot;
   config: LexParserConfig;
-  logger: bunyan;
+  logger: Logger;
 }
 
 export class LexParser extends BaseParser implements Parser {
   protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;
-  protected logger: bunyan;
+  protected logger: Logger;
   protected name: string;
   protected tags: Array<string>;
 

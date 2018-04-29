@@ -1,5 +1,5 @@
-import * as bunyan from 'bunyan';
 import { safeLoad } from 'js-yaml';
+import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
 import { BaseParser } from 'src/parser/BaseParser';
@@ -14,11 +14,11 @@ export interface YamlParserConfig {
 export interface YamlParserOptions {
   bot: Bot;
   config: YamlParserConfig;
-  logger: bunyan;
+  logger: Logger;
 }
 
 export class YamlParser extends BaseParser implements Parser {
-  protected logger: bunyan;
+  protected logger: Logger;
   protected tags: Array<string>;
 
   constructor(options: YamlParserOptions) {

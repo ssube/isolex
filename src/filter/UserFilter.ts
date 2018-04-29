@@ -1,5 +1,5 @@
-import * as bunyan from 'bunyan';
 import { isNumber, isString } from 'lodash';
+import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
 import { Destination } from 'src/Destination';
@@ -14,12 +14,12 @@ export interface UserFilterConfig {
 export interface UserFilterOptions {
   bot: Bot;
   config: UserFilterConfig;
-  logger: bunyan;
+  logger: Logger;
 }
 
 export class UserFilter implements Filter {
   protected ignore: Array<number | string>;
-  protected logger: bunyan;
+  protected logger: Logger;
 
   constructor(options: UserFilterOptions) {
     this.ignore = options.config.ignore;

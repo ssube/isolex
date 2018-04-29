@@ -1,7 +1,8 @@
 import * as bunyan from 'bunyan';
 import { CronJob } from 'cron';
 import { kebabCase } from 'lodash';
-import { Container, Module } from 'noicejs';
+import { Container, Module, Inject } from 'noicejs';
+import { Logger } from 'noicejs/logger/Logger';
 import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/Command';
 import { Destination } from 'src/Destination';
@@ -48,6 +49,7 @@ export interface BotConfig {
 export interface BotOptions {
   config: BotConfig;
   container: Container;
+  logger: Logger;
 }
 
 export class BotModule extends Module {
@@ -61,11 +63,12 @@ export class BotModule extends Module {
     this.bind('logger').toFactory(this.createLogger);
   }
 
-  protected async createLogger(options: bunyan.LoggerOptions) {
+  protected async createLogger(options: bunyan.LoggerOptions): Promise<Logger> {
     return bunyan.createLogger(options);
   }
 }
 
+@Inject('logger')
 export class Bot {
   protected client: Client;
   protected config: BotConfig;
@@ -73,7 +76,7 @@ export class Bot {
   protected container: Container;
   protected filters: Array<Filter>;
   protected handlers: Array<Handler>;
-  protected logger: bunyan;
+  protected logger: Logger;
   protected messages: Subject<Event>;
   protected outgoing: Subject<Message>;
   protected parsers: Array<Parser>;
@@ -85,7 +88,7 @@ export class Bot {
   constructor(options: BotOptions) {
     this.config = options.config;
     this.container = options.container;
-    this.logger = bunyan.createLogger(options.config.logger);
+    this.logger = options.logger.child(options.config.logger);
     this.logger.info(options, 'starting bot');
 
     // set up deps

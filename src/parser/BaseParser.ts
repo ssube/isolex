@@ -1,11 +1,11 @@
-import * as bunyan from 'bunyan';
+import { Logger } from 'noicejs/logger/Logger';
 import { Command } from 'src/Command';
 import { Parser } from 'src/parser/Parser';
 import { isEventMessage } from 'src/utils';
 import { Event } from 'vendor/so-client/src/events';
 
 export abstract class BaseParser implements Parser {
-  protected logger: bunyan;
+  protected logger: Logger;
   protected tags: Array<string>;
 
   public async match(event: Event): Promise<boolean> {
