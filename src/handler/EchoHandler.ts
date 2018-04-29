@@ -19,7 +19,7 @@ export interface EchoHandlerOptions extends BaseOptions {
   logger: Logger;
 }
 
-// @Inject(TemplateCompiler)
+@Inject(TemplateCompiler)
 export class EchoHandler implements Handler {
   protected bot: Bot;
   protected logger: Logger;

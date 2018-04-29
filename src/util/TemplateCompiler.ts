@@ -1,3 +1,5 @@
+import * as Handlebars from 'handlebars';
+
 import { Destination } from 'src/Destination';
 import { Template } from 'src/util/Template';
 
