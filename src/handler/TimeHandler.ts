@@ -1,4 +1,4 @@
-import * as bunyan from 'bunyan';
+import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
 import { Handler } from 'src/handler/Handler';
@@ -12,13 +12,13 @@ export interface TimeHandlerConfig {
 export interface TimeHandlerOptions {
   bot: Bot;
   config: TimeHandlerConfig;
-  logger: bunyan;
+  logger: Logger;
 }
 
 export class TimeHandler implements Handler {
   protected bot: Bot;
   protected config: TimeHandlerConfig;
-  protected logger: bunyan;
+  protected logger: Logger;
   protected template: HandlebarsTemplateDelegate;
 
   constructor(options: TimeHandlerOptions) {

@@ -42,6 +42,7 @@ export class Cooldown implements Runnable {
     this.stream.complete();
     if (this.timer) {
       clearTimeout(this.timer);
+      this.timer = 0;
     }
   }
 

@@ -14,11 +14,13 @@ function signal(): Promise<void> {
 }
 
 async function main(): Promise<number> {
-  const ctr = Container.from(new BotModule());
+  const mod = new BotModule();
+  const ctr = Container.from(mod);
   await ctr.configure();
 
   const config = await loadConfig();
   const bot = await ctr.create<Bot, any>(Bot, {config});
+  mod.bind('bot').toInstance(bot);
 
   await bot.start();
   await signal();

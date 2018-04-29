@@ -24,8 +24,7 @@
       "chai-as-promised",
       "lodash",
       "mocha",
-      "sinon-chai",
-      "source-map-support"
+      "sinon-chai"
     ],
     "typeRoots": [
       "node_modules/@types",

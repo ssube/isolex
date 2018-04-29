@@ -2,7 +2,6 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import {ineeda} from 'ineeda';
 import * as sinonChai from 'sinon-chai';
-import * as sourceMapSupport from 'source-map-support';
 
 /**
  * This will break the whole test run if any test leaks an unhandled rejection.
@@ -21,8 +20,6 @@ ineeda.intercept({
   then: null,
   unsubscribe: null
 });
-
-sourceMapSupport.install();
 
 const context = (require as any).context('.', true, /Test.*$/);
 context.keys().forEach(context);

@@ -1,5 +1,6 @@
 import * as bunyan from 'bunyan';
 import { CronJob } from 'cron';
+import { kebabCase } from 'lodash';
 import { Container, Module } from 'noicejs';
 import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/Command';
@@ -13,6 +14,7 @@ import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { Cooldown } from 'src/util/Cooldown';
+import { TemplateCompiler } from 'src/util/TemplateCompiler';
 import { isEventMessage } from 'src/utils';
 import { Client } from 'vendor/so-client/src/client';
 import { Event, MessagePosted } from 'vendor/so-client/src/events';
@@ -50,11 +52,12 @@ export interface BotOptions {
 
 export class BotModule extends Module {
   public async configure() {
-    this.bind(UserFilter).toConstructor(UserFilter);
-    this.bind(TimeHandler).toConstructor(TimeHandler);
-    this.bind(EchoHandler).toConstructor(EchoHandler);
-    this.bind(LexParser).toConstructor(LexParser);
-    this.bind(YamlParser).toConstructor(YamlParser);
+    this.bind(TemplateCompiler).toConstructor(TemplateCompiler);
+    this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
+    this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
+    this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
+    this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
+    this.bind(kebabCase(YamlParser.name)).toConstructor(YamlParser);
     this.bind('logger').toFactory(this.createLogger);
   }
 
