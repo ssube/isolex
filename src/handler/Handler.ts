@@ -1,4 +1,12 @@
+import { BaseOptions } from 'noicejs/Container';
+import { Logger } from 'noicejs/logger/Logger';
+import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+
+export interface HandlerOptions extends BaseOptions {
+  bot: Bot;
+  logger: Logger;
+}
 
 /**
  * Handlers react to commands, consuming them before sending replies or performing background work.
