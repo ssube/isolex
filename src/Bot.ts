@@ -53,6 +53,8 @@ export interface BotOptions {
 }
 
 export class BotModule extends Module {
+  protected bot: Bot;
+
   public async configure() {
     this.bind(TemplateCompiler).toConstructor(TemplateCompiler);
     this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
@@ -61,6 +63,14 @@ export class BotModule extends Module {
     this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
     this.bind(kebabCase(YamlParser.name)).toConstructor(YamlParser);
     this.bind('logger').toFactory(this.createLogger);
+  }
+
+  public setBot(bot: Bot) {
+    this.bot = bot;
+  }
+
+  protected async createBot(options: any): Promise<Bot> {
+    return this.bot;
   }
 
   protected async createLogger(options: bunyan.LoggerOptions): Promise<Logger> {

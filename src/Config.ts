@@ -33,8 +33,8 @@ export function resolvePath(name: string, ...extras: Array<string>): Array<strin
   return paths;
 }
 
-export async function loadConfig(): Promise<BotConfig> {
-  const paths = resolvePath(CONFIG_NAME);
+export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
+  const paths = resolvePath(CONFIG_NAME, ...extras);
 
   for (const p of paths) {
     try {
@@ -43,7 +43,9 @@ export async function loadConfig(): Promise<BotConfig> {
       });
 
       const config = safeLoad(data) as any;
-      return config;
+      if (config) {
+        return config;
+      }
     } catch (err) {
       if (err.code !== 'ENOENT') {
         throw err;
