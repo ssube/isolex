@@ -109,6 +109,12 @@
   version "9.6.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.6.tgz#439b91f9caf3983cad2eef1e11f6bedcbf9431d2"
 
+"@types/request-promise-native@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@types/request-promise-native/-/request-promise-native-1.0.14.tgz#20f2ba136e6f29c2ea745c60767738d434793d31"
+  dependencies:
+    "@types/request" "*"
+
 "@types/request-promise@^4.1.41":
   version "4.1.41"
   resolved "https://registry.yarnpkg.com/@types/request-promise/-/request-promise-4.1.41.tgz#1e254d51362d7edcb714b60cde303bcbe0ab1ee0"
@@ -4628,6 +4634,14 @@ request-promise-core@1.1.1:
   resolved "https://registry.yarnpkg.com/request-promise-core/-/request-promise-core-1.1.1.tgz#3eee00b2c5aa83239cfb04c5700da36f81cd08b6"
   dependencies:
     lodash "^4.13.1"
+
+request-promise-native@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/request-promise-native/-/request-promise-native-1.0.5.tgz#5281770f68e0c9719e5163fd3fab482215f4fda5"
+  dependencies:
+    request-promise-core "1.1.1"
+    stealthy-require "^1.1.0"
+    tough-cookie ">=2.3.3"
 
 request-promise@^4.2.2:
   version "4.2.2"

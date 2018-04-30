@@ -24,6 +24,8 @@
       "chai-as-promised",
       "lodash",
       "mocha",
+      "request",
+      "request-promise-native",
       "sinon-chai"
     ],
     "typeRoots": [

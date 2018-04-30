@@ -30,8 +30,8 @@ describeAsync('echo handler', async () => {
     };
     const handler = await container.create(EchoHandler, options);
     expect(handler).to.be.an.instanceOf(EchoHandler);
- 
   });
+
   itAsync('should handle commands', async () => {
     const container = Container.from();
     await container.configure();
