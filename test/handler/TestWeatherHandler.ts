@@ -14,7 +14,13 @@ import { describeAsync, itAsync } from 'test/helpers/async';
 
 describeAsync('weather handler', async () => {
   itAsync('should send a message', async () => {
-    const container = Container.from();
+    class TestModule extends Module {
+      public async configure() {
+        this.bind('compiler').toConstructor(TemplateCompiler);
+      }
+    }
+
+    const container = Container.from(new TestModule());
     await container.configure();
 
     let msg = new Message({} as any);
@@ -29,6 +35,7 @@ describeAsync('weather handler', async () => {
       }),
       config: {
         api: {
+          key: '0',
           root: 'https://api.openweathermap.org/data/2.5/'
         },
         template: '{{ data.name }}'
@@ -40,14 +47,14 @@ describeAsync('weather handler', async () => {
     expect(handler).to.be.an.instanceOf(WeatherHandler);
 
     const handled = await handler.handle(new Command({
-      data: {
-        zip: 94040
-      },
-      from: {
+      context: {
         roomId: '',
         threadId: '',
         userId: '',
         userName: ''
+      },
+      data: {
+        zip: 94040
       },
       name: 'test_weather',
       type: 0

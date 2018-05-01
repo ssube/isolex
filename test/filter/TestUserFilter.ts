@@ -44,13 +44,13 @@ describeAsync('user filter', async () => {
       })
     });
     const cmd = new Command({
-      data: {},
-      from: {
+      context: {
         roomId: '',
         threadId: '',
         userId: '',
         userName: 'test'
       },
+      data: {},
       name: 'test',
       type: 0
     });

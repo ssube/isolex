@@ -1,4 +1,4 @@
-import { Destination } from 'src/Destination';
+import { Context } from 'src/Context';
 
 export enum CommandType {
   None,
@@ -7,15 +7,15 @@ export enum CommandType {
 }
 
 export interface CommandOptions {
+  context: Context;
   data: any;
-  from: Destination;
   name: string;
   type: CommandType;
 }
 
 export class Command implements CommandOptions {
+  public readonly context: Context;
   public readonly data: any;
-  public readonly from: Destination;
   public readonly name: string;
   public readonly type: CommandType;
 
@@ -24,8 +24,8 @@ export class Command implements CommandOptions {
    * @todo copy data
    */
   constructor(options: CommandOptions) {
+    this.context = options.context;
     this.data = options.data;
-    this.from = options.from;
     this.name = options.name;
     this.type = options.type;
   }

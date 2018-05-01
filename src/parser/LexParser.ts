@@ -1,12 +1,11 @@
 import * as AWS from 'aws-sdk';
 import { Logger } from 'noicejs/logger/Logger';
-import { clone } from 'lodash';
 import { Bot } from 'src/Bot';
 import { Command, CommandOptions, CommandType } from 'src/Command';
+import { Message } from 'src/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser } from 'src/parser/Parser';
-import { getEventDest, isEventMessage, leftPad } from 'src/utils';
-import { Event } from 'vendor/so-client/src/events';
+import { leftPad } from 'src/utils';
 
 export interface LexParserConfig {
   account: {
@@ -53,32 +52,28 @@ export class LexParser extends BaseParser implements Parser {
     });
   }
 
-  public async parse(event: Event): Promise<Array<Command>> {
-    if (!isEventMessage(event)) {
-      throw new Error('invalid event type');
-    }
-
-    const body = this.removeTags(event.content);
+  public async parse(msg: Message): Promise<Array<Command>> {
+    const body = this.removeTags(msg.body);
     const reply = await this.postText({
       botAlias: this.alias,
       botName: this.name,
       inputText: body,
-      userId: leftPad(event.user_id.toString())
+      userId: leftPad(msg.context.userId)
     });
 
     const name = reply.intentName || 'none';
-    this.logger.debug({event, name, reply}, 'lex parsed message');
+    this.logger.debug({ msg, name, reply }, 'lex parsed message');
 
     // merge lex reply and slots
-    const data = {...reply, ...reply.slots};
+    const data = { ...reply, ...reply.slots };
     const cmdOptions: CommandOptions = {
+      context: msg.context,
       data,
-      from: getEventDest(event),
       name,
       type: CommandType.None
     };
 
-    this.logger.debug({cmdOptions}, 'command options');
+    this.logger.debug({ cmdOptions }, 'command options');
     return [new Command(cmdOptions)];
   }
 

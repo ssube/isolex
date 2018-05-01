@@ -1,10 +1,12 @@
 import { Observable, Subject } from 'rxjs';
-import { Runnable } from 'src/Runnable';
+import { Service, ServiceOptions } from 'src/Service';
 
-export interface CooldownOptions {
+export interface CooldownConfig {
   base: number;
   grow: number;
 }
+
+export type CooldownOptions = ServiceOptions<CooldownConfig>;
 
 /**
  * Cooldown is a specialized counter for rate limiting, bans, and the like.
@@ -12,10 +14,10 @@ export interface CooldownOptions {
  * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
  * an exponential interval with an observable.
  */
-export class Cooldown implements Runnable {
+export class Cooldown implements Service {
   protected active: boolean;
   protected boundNext: Function;
-  protected config: CooldownOptions;
+  protected config: CooldownConfig;
   protected grow: number;
   protected rate: number;
   protected stream: Subject<number>;
@@ -25,9 +27,9 @@ export class Cooldown implements Runnable {
   constructor(options: CooldownOptions) {
     this.active = false;
     this.boundNext = this.next.bind(this);
-    this.config = options;
-    this.grow = options.grow;
-    this.rate = options.base;
+    this.config = options.config;
+    this.grow = options.config.grow;
+    this.rate = options.config.base;
     this.stream = new Subject();
     this.ticks = 0;
     this.timer = 0;

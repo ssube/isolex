@@ -1,5 +1,5 @@
 import { Command } from 'src/Command';
-import { Event } from 'vendor/so-client/src/events';
+import { Message } from 'src/Message';
 
 /**
  * Parse incoming events into valid commands for the bot to handle.
@@ -7,12 +7,12 @@ import { Event } from 'vendor/so-client/src/events';
 export interface Parser {
   /**
    * Check whether this parser can parse an event (has the correct type, tags, etc).
-   * @param event the event to be parsed
+   * @param msg the incoming message to be parsed
    */
-  match(event: Event): Promise<boolean>;
+  match(msg: Message): Promise<boolean>;
 
   /**
    * Parse an event into commands.
    */
-  parse(event: Event): Promise<Array<Command>>;
+  parse(msg: Message): Promise<Array<Command>>;
 }

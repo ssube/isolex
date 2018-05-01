@@ -1,6 +1,6 @@
 import * as Handlebars from 'handlebars';
 
-import { Destination } from 'src/Destination';
+import { Context } from 'src/Context';
 import { Template } from 'src/util/Template';
 
 export interface TemplateCompilerOptions {
@@ -25,6 +25,6 @@ export class TemplateCompiler {
   }
 }
 
-function formatDestination(dest: Destination): string {
-  return `@${dest.userName}`;
+function formatDestination(context: Context): string {
+  return `@${context.userName}`;
 }

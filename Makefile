@@ -37,7 +37,7 @@ COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statem
 COVER_OPTS	?= --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage"
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
-MOCHA_OPTS  ?= --check-leaks --colors --sort --ui bdd
+MOCHA_OPTS  ?= --check-leaks --colors --max-old-space-size=4096 --sort --ui bdd
 
 all: configure bundle test ## builds, bundles, and tests the application
 	@echo Success! make run-terminal to launch

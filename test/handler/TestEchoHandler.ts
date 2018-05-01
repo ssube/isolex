@@ -14,7 +14,13 @@ import { describeAsync, itAsync } from 'test/helpers/async';
 
 describeAsync('echo handler', async () => {
   itAsync('should exist', async () => {
-    const container = Container.from();
+    class TestModule extends Module {
+      public async configure() {
+        this.bind('compiler').toConstructor(TemplateCompiler);
+      }
+    }
+
+    const container = Container.from(new TestModule());
     await container.configure();
 
     const options: EchoHandlerOptions = {
@@ -26,7 +32,7 @@ describeAsync('echo handler', async () => {
         template: ''
       },
       container,
-      logger: ConsoleLogger.global,
+      logger: ConsoleLogger.global
     };
     const handler = await container.create(EchoHandler, options);
     expect(handler).to.be.an.instanceOf(EchoHandler);
@@ -48,18 +54,18 @@ describeAsync('echo handler', async () => {
         template: ''
       },
       container,
-      logger: ConsoleLogger.global,
+      logger: ConsoleLogger.global
     };
     const handler = await container.create(EchoHandler, options);
 
     const cmd = new Command({
-      data: {},
-      from: {
+      context: {
         roomId: '',
         threadId: '',
         userId: '',
         userName: ''
       },
+      data: {},
       name: 'test_cmd',
       type: 0
     });

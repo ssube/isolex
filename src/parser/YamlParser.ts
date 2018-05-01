@@ -2,10 +2,9 @@ import { safeLoad } from 'js-yaml';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { Message } from 'src/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser } from 'src/parser/Parser';
-import { isEventMessage } from 'src/utils';
-import { Event } from 'vendor/so-client/src/events';
 
 export interface YamlParserConfig {
   tags: Array<string>;
@@ -31,12 +30,8 @@ export class YamlParser extends BaseParser implements Parser {
     this.tags = options.config.tags;
   }
 
-  public async parse(event: Event): Promise<Array<Command>> {
-    if (!isEventMessage(event)) {
-      throw new Error('invalid event type');
-    }
-
-    const body = this.removeTags(event.content);
+  public async parse(msg: Message): Promise<Array<Command>> {
+    const body = this.removeTags(msg.body);
     const data = safeLoad(body);
     if (!data) {
       throw new Error('invalid parse value');

@@ -1,18 +1,18 @@
 import * as escape from 'escape-html';
-import { Destination } from 'src/Destination';
+import { Context } from 'src/Context';
 
 export interface MessageOptions {
   body: string;
-  dest: Destination;
+  context: Context;
 }
 
 export class Message {
   public readonly body: string;
-  public readonly dest: Destination;
+  public readonly context: Context;
 
   constructor(options: MessageOptions) {
     this.body = options.body;
-    this.dest = options.dest;
+    this.context = options.context;
   }
 
   get escaped(): string {

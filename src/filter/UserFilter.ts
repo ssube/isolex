@@ -2,10 +2,8 @@ import { isNumber, isString } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
-import { Destination } from 'src/Destination';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Message } from 'src/Message';
-import { getEventDest } from 'src/utils';
 
 export interface UserFilterConfig {
   ignore: Array<number | string>;
@@ -25,19 +23,8 @@ export class UserFilter implements Filter {
     this.ignore = options.config.ignore;
   }
 
-  public getUser(val: FilterValue): Destination {
-    if (val instanceof Command) {
-      return val.from;
-    } else if (val instanceof Message) {
-      return val.dest;
-    } else {
-      return getEventDest(val);
-    }
-  }
-
   public async filter(val: FilterValue): Promise<FilterBehavior> {
-    const user = this.getUser(val);
-
+    const user = val.context;
     for (const ignore of this.ignore) {
       if (user.userId === ignore || user.userName === ignore) {
         this.logger.debug({ignore, user}, 'filter is ignoring user');

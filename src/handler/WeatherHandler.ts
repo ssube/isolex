@@ -8,7 +8,7 @@ import { Message } from 'src/Message';
 import { Template } from 'src/util/Template';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
 
-export type WeatherQuery = {
+export interface WeatherQuery {
   /**
    * City id lookup.
    */
@@ -26,12 +26,12 @@ export type WeatherQuery = {
    * Zip code lookup, optionally with country code, like `12345` or `12345,us`.
    */
   zip: string;
-};
+}
 
 /**
  * Reply model for https://openweathermap.org/current
  */
-export type WeatherReply = {
+export interface WeatherReply {
   clouds: {
     all: number;
   };
@@ -39,7 +39,7 @@ export type WeatherReply = {
   coord: {
     lat: number;
     lon: number;
-  }
+  };
   dt: number;
   id: number;
   main: {
@@ -57,7 +57,7 @@ export type WeatherReply = {
     country: string;
     sunrise: number;
     sunset: number;
-  }
+  };
   weather: Array<{
     id: number;
     name: string;
@@ -72,17 +72,17 @@ export type WeatherReply = {
 
 export interface WeatherHandlerConfig {
   api: {
+    key: string;
     root: string;
-  }
+  };
   template: string;
 }
 
-export interface WeatherHandlerOptions extends HandlerOptions {
+export interface WeatherHandlerOptions extends HandlerOptions<WeatherHandlerConfig> {
   compiler: TemplateCompiler;
-  config: WeatherHandlerConfig;
 }
 
-// @Inject(TemplateCompiler)
+@Inject('compiler')
 export class WeatherHandler implements Handler {
   protected bot: Bot;
   protected config: WeatherHandlerConfig;
@@ -103,7 +103,9 @@ export class WeatherHandler implements Handler {
       return false;
     }
 
-    const qs: any = {}; // @todo: this should be a Partial<WeatherQuery>
+    const qs: any = {
+      APPID: this.config.api.key
+    }; // @todo: this should be a Partial<WeatherQuery>
     for (const key of ['id', 'lat', 'lon', 'q', 'zip']) {
       if (cmd.has(key)) {
         qs[key] = cmd.get(key);
@@ -121,7 +123,7 @@ export class WeatherHandler implements Handler {
 
     await this.bot.send(new Message({
       body,
-      dest: cmd.from
+      context: cmd.context
     }));
 
     return true;

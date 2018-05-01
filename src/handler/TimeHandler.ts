@@ -44,7 +44,7 @@ export class TimeHandler implements Handler {
     this.logger.debug({date, timeZone, locale: this.config.locale}, 'handling time');
     const msg = new Message({
       body: date.toLocaleString(this.config.locale, {timeZone}),
-      dest: cmd.from
+      context: cmd.context
     });
     await this.bot.send(msg);
     return true;

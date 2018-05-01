@@ -11,12 +11,11 @@ export interface EchoHandlerConfig {
   template: string;
 }
 
-export interface EchoHandlerOptions extends HandlerOptions {
+export interface EchoHandlerOptions extends HandlerOptions<EchoHandlerConfig> {
   compiler: TemplateCompiler;
-  config: EchoHandlerConfig;
 }
 
-// @Inject(TemplateCompiler)
+@Inject('compiler')
 export class EchoHandler implements Handler {
   protected bot: Bot;
   protected logger: Logger;
@@ -31,11 +30,11 @@ export class EchoHandler implements Handler {
   }
 
   public async handle(cmd: Command): Promise<boolean> {
+    this.logger.debug({ cmd }, 'echoing command');
     const msg = new Message({
-      body: this.template.render({cmd}),
-      dest: cmd.from
+      body: this.template.render({ cmd }),
+      context: cmd.context
     });
-    this.logger.debug({cmd, msg}, 'echoing command');
     await this.bot.send(msg);
     return true;
   }
