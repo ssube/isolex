@@ -60,6 +60,6 @@ describeAsync('weather handler', async () => {
       type: 0
     }));
     expect(handled).to.be.true;
-    expect(msg.body).to.equal('Mountain View');
+    expect(msg.body).to.equal('unknown or missing location');
   });
 });

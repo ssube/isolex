@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "importType": "LEX",
+    "importFormat": "JSON"
+  },
+  "resource": {
+    "description": "get the current weather",
+    "name": "test_weather",
+    "version": "4",
+    "fulfillmentActivity": {
+      "type": "ReturnIntent"
+    },
+    "sampleUtterances": [
+      "what is the weather in {location}",
+      "how is the weather in {location}",
+      "what is the weather like in {location}",
+      "what does the weather look like in {location}"
+    ],
+    "slots": [{
+      "name": "location",
+      "description": "location for the weather",
+      "slotConstraint": "Required",
+      "slotType": "Amazon.US_CITY",
+      "valueElicitationPrompt": {
+        "maxAttempts": 2,
+        "messages": [{
+          "contentType": "PlainText",
+          "content": "Where at?"
+        }]
+      },
+      "priority": 1,
+      "sampleUtterances": []
+    }],
+    "slotTypes": []
+  }
+}

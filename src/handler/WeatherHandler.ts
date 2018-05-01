@@ -9,6 +9,8 @@ import { Template } from 'src/util/Template';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
 
 export interface WeatherQuery {
+  APPID: string;
+
   /**
    * City id lookup.
    */
@@ -103,14 +105,26 @@ export class WeatherHandler implements Handler {
       return false;
     }
 
-    const qs: any = {
+    const qs: Partial<WeatherQuery> = {
       APPID: this.config.api.key
-    }; // @todo: this should be a Partial<WeatherQuery>
-    for (const key of ['id', 'lat', 'lon', 'q', 'zip']) {
-      if (cmd.has(key)) {
-        qs[key] = cmd.get(key);
-      }
+    };
+
+    const location = cmd.get('location');
+    if (!location) {
+      await this.bot.send(new Message({
+        body: 'unknown or missing location',
+        context: cmd.context
+      }));
+      return true;
     }
+    if (/^[0-9]+$/.test(location)) {
+      // all digits = zip code
+      qs.zip = location;
+    } else {
+      qs.q = location;
+    }
+
+    this.logger.debug({ location, qs }, 'requesting weather data from API');
 
     const weather: WeatherReply = await request({
       json: true,
@@ -119,7 +133,11 @@ export class WeatherHandler implements Handler {
       uri: `${this.config.api.root}/weather`
     });
 
-    const body = this.template.render(weather);
+    const body = this.template.render({
+      cmd,
+      weather
+    });
+    this.logger.debug({ body, weather }, 'rendering weather data');
 
     await this.bot.send(new Message({
       body,
