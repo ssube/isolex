@@ -105,18 +105,43 @@ export class WeatherHandler implements Handler {
       return false;
     }
 
-    const qs: Partial<WeatherQuery> = {
-      APPID: this.config.api.key
-    };
-
     const location = cmd.get('location');
     if (!location) {
       await this.bot.send(new Message({
         body: 'unknown or missing location',
-        context: cmd.context
+        context: cmd.context,
+        reactions: []
       }));
       return true;
     }
+
+    try {
+      const weather = await this.getWeather(location);
+      const body = this.template.render({
+        cmd,
+        weather
+      });
+      this.logger.debug({ body, weather }, 'rendering weather data');
+
+      await this.bot.send(new Message({
+        body,
+        context: cmd.context,
+        reactions: []
+      }));
+
+      return true;
+    } catch (err) {
+      this.logger.error(err, 'error getting weather');
+
+      return false;
+    }
+  }
+
+  protected async getWeather(location: string): Promise<WeatherReply> {
+    const qs: Partial<WeatherQuery> = {
+      APPID: this.config.api.key
+    };
+
     if (/^[0-9]+$/.test(location)) {
       // all digits = zip code
       qs.zip = location;
@@ -126,24 +151,25 @@ export class WeatherHandler implements Handler {
 
     this.logger.debug({ location, qs }, 'requesting weather data from API');
 
-    const weather: WeatherReply = await request({
-      json: true,
-      method: 'GET',
-      qs,
-      uri: `${this.config.api.root}/weather`
-    });
+    try {
+      const weather: WeatherReply = await request({
+        json: true,
+        method: 'GET',
+        qs,
+        uri: `${this.config.api.root}/weather`
+      });
 
-    const body = this.template.render({
-      cmd,
-      weather
-    });
-    this.logger.debug({ body, weather }, 'rendering weather data');
+      return weather;
+    } catch (err) {
+      if (err.name === 'StatusCodeError') {
+        const [code, body] = err.message.split(' - ');
+        const data = JSON.parse(body);
 
-    await this.bot.send(new Message({
-      body,
-      context: cmd.context
-    }));
-
-    return true;
+        this.logger.warn({ code }, 'error from weather API');
+        throw err;
+      } else {
+        throw err;
+      }
+    }
   }
 }

@@ -33,7 +33,8 @@ export class EchoHandler implements Handler {
     this.logger.debug({ cmd }, 'echoing command');
     const msg = new Message({
       body: this.template.render({ cmd }),
-      context: cmd.context
+      context: cmd.context,
+      reactions: []
     });
     await this.bot.send(msg);
     return true;

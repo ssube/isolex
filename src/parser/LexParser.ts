@@ -30,9 +30,7 @@ export class LexParser extends BaseParser implements Parser {
   protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;
-  protected logger: Logger;
   protected name: string;
-  protected tags: Array<string>;
 
   constructor(options: LexParserOptions) {
     super();

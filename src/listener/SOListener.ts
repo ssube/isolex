@@ -114,7 +114,8 @@ export class SOListener implements Listener {
     if (SOListener.isEventMessage(event)) {
       const msg = new Message({
         body: event.content,
-        context: SOListener.getEventContext(event)
+        context: SOListener.getEventContext(event),
+        reactions: []
       })
       this.bot.receive(msg);
     }

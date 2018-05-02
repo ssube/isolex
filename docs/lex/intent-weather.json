@@ -21,7 +21,7 @@
       "name": "location",
       "description": "location for the weather",
       "slotConstraint": "Required",
-      "slotType": "Amazon.US_CITY",
+      "slotType": "AMAZON.US_CITY",
       "valueElicitationPrompt": {
         "maxAttempts": 2,
         "messages": [{

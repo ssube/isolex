@@ -58,7 +58,21 @@ export class DiscordListener implements Listener {
     if (msg.context.threadId) {
       const thread = this.threads.get(msg.context.threadId);
       if (thread) {
-        thread.reply(msg.body);
+        for (const reaction of msg.reactions) {
+          this.client.emojis.forEach((e) => this.logger.debug({ e }, 'found emoji'));
+
+          const emoji = this.client.emojis.find('name', reaction);
+          if (emoji) {
+            await thread.react(emoji.id);
+          } else {
+            this.logger.warn({ reaction }, 'missing emoji for reaction');
+          }
+        }
+
+        if (msg.body.length) {
+          await thread.reply(msg.body);
+        }
+
         return;
       } else {
         this.logger.warn({ msg }, 'error emitting message to missing thread');
@@ -91,7 +105,8 @@ export class DiscordListener implements Listener {
         threadId: value.id,
         userId: value.author.id,
         userName: value.author.username
-      }
+      },
+      reactions: value.reactions.map((r) => r.emoji.name)
     });
     await this.bot.receive(msg);
   }

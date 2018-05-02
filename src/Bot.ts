@@ -23,6 +23,8 @@ import { Parser } from 'src/parser/Parser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { Cooldown } from 'src/util/Cooldown';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { ReactionHandler } from './handler/ReactionHandler';
+import { EchoParser } from './parser/EchoParser';
 
 export interface BotConfig {
   bot: {
@@ -72,14 +74,16 @@ export class BotModule extends Module {
     this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
 
     // handlers
-    this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
+    this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
+    this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
     this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
 
     // listeners
     this.bind(kebabCase(DiscordListener.name)).toConstructor(DiscordListener);
 
     // parsers
+    this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);
     this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
     this.bind(kebabCase(YamlParser.name)).toConstructor(YamlParser);
   }
@@ -153,7 +157,7 @@ export class Bot {
     this.logger.info('setting up filters');
     for (const filterData of this.config.filters) {
       const { type, ...config } = filterData;
-      this.logger.debug({ type }, 'configuring filter');
+      this.logger.debug({ filter: filterData }, 'configuring filter');
       const filter = await this.createPart<Filter>(type, config);
       this.filters.push(filter);
     }
@@ -161,7 +165,7 @@ export class Bot {
     this.logger.info('setting up handlers');
     for (const handlerData of this.config.handlers) {
       const { type, ...config } = handlerData;
-      this.logger.debug({ type }, 'configuring handler');
+      this.logger.debug({ handler: handlerData }, 'configuring handler');
       const handler = await this.createPart<Handler>(type, config);
       this.handlers.push(handler);
     }
@@ -181,7 +185,7 @@ export class Bot {
     this.logger.info('setting up listeners');
     for (const listenerData of this.config.listeners) {
       const { type, ...config } = listenerData;
-      this.logger.debug({ type }, 'configuring listener');
+      this.logger.debug({ listener: listenerData }, 'configuring listener');
       const listener = await this.createPart<Listener>(type, config);
       this.listeners.push(listener);
     }
@@ -189,7 +193,7 @@ export class Bot {
     this.logger.info('setting up parsers');
     for (const parserData of this.config.parsers) {
       const { type, ...config } = parserData;
-      this.logger.debug({ type }, 'configuring parser');
+      this.logger.debug({ parser: parserData }, 'configuring parser');
       const parser = await this.createPart<Parser>(type, config);
       this.parsers.push(parser);
     }
