@@ -7,10 +7,15 @@ import { Message } from 'src/Message';
 import { Template } from 'src/util/Template';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
 
+export interface ReactionChance {
+  chance: number;
+  name: string;
+}
+
 export interface ReactionHandlerConfig {
   field: string;
   name: string;
-  reactions: Map<string, Array<string>>;
+  reactions: Map<string, Array<ReactionChance>>;
 }
 
 export interface ReactionHandlerOptions extends HandlerOptions<ReactionHandlerConfig> {
@@ -21,7 +26,7 @@ export class ReactionHandler implements Handler {
   protected bot: Bot;
   protected config: ReactionHandlerConfig;
   protected logger: Logger;
-  protected reactions: Map<string, Array<string>>;
+  protected reactions: Map<string, Array<ReactionChance>>;
 
   constructor(options: ReactionHandlerOptions) {
     this.bot = options.bot;
@@ -41,7 +46,11 @@ export class ReactionHandler implements Handler {
     const body = cmd.get(this.config.field);
     for (const [key, next] of this.reactions) {
       if (body.includes(key)) {
-        reactions.push(...next);
+        for (const reaction of next) {
+          if (Math.random() < reaction.chance) {
+            reactions.push(reaction.name);
+          }
+        }
       }
     }
 

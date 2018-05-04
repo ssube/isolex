@@ -11,7 +11,12 @@ handlers:
     name: test_reaction
     field: body
     reactions:
-      match: ["emoji"]
+      tag:
+        - chance: 0.01
+          name: emoji
+      magic:
+        - chance: 1.00
+          name: k8s
 
   - type: time-handler
     locale: en-US
