@@ -84,13 +84,16 @@ run-terminal: ## run the bot in a terminal
 test: test-check ## run mocha unit tests
 
 test-check: ## run mocha unit tests with coverage reports
+	$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
+
+test-cover: ## run mocha unit tests with coverage reports
 	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
 
 test-leaks: ## run mocha unit tests with coverage reports
 	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
 
 test-watch:
-	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
+	$(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
 
 todo:
 	@echo "Remaining tasks:"

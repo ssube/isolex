@@ -1,6 +1,5 @@
 const {resolve} = require('path');
 const {CheckerPlugin, TsConfigPathsPlugin} = require('awesome-typescript-loader');
-const instrument = require('istanbul-instrumenter-loader');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
@@ -51,13 +50,6 @@ module.exports = {
             inlineSourceMap: false,
             sourceMap: true
           }
-        }]
-      }, {
-        enforce: 'post',
-        exclude: /node_modules/,
-        use: [{
-          loader: 'istanbul-instrumenter-loader',
-          options: require('./istanbul')
         }]
       }]
     }]
