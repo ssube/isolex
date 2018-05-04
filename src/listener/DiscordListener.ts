@@ -1,4 +1,4 @@
-import { Channel, Client, Message as DiscordMessage, TextChannel, ChannelLogsQueryOptions } from 'discord.js';
+import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, TextChannel } from 'discord.js';
 import { isNil } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';

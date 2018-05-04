@@ -53,4 +53,17 @@ export class Command implements CommandOptions {
   public get(key: string): any {
     return this.data.get(key);
   }
+
+  public toJSON(): object {
+    return {
+      context: this.context,
+      data: this.data.entries(),
+      name: this.name,
+      type: this.type
+    };
+  }
+
+  public toString(): string {
+    return JSON.stringify(this.toJSON());
+  }
 }

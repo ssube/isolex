@@ -29,6 +29,7 @@ describeAsync('echo handler', async () => {
         compile: () => ineeda<Template>()
       }),
       config: {
+        name: 'test_echo',
         template: ''
       },
       container,
@@ -51,6 +52,7 @@ describeAsync('echo handler', async () => {
         compile: () => ineeda<Template>()
       }),
       config: {
+        name: 'test_echo',
         template: ''
       },
       container,

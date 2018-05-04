@@ -8,6 +8,7 @@ import { Template } from 'src/util/Template';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
 
 export interface EchoHandlerConfig {
+  name: string;
   template: string;
 }
 
@@ -19,6 +20,7 @@ export interface EchoHandlerOptions extends HandlerOptions<EchoHandlerConfig> {
 export class EchoHandler implements Handler {
   protected bot: Bot;
   protected logger: Logger;
+  protected name: string;
   protected template: Template;
 
   constructor(options: EchoHandlerOptions) {
@@ -26,10 +28,15 @@ export class EchoHandler implements Handler {
     this.logger = options.logger.child({
       class: EchoHandler.name
     });
+    this.name = options.config.name;
     this.template = options.compiler.compile(options.config.template);
   }
 
   public async handle(cmd: Command): Promise<boolean> {
+    if (cmd.name !== this.name) {
+      return false;
+    }
+
     this.logger.debug({ cmd }, 'echoing command');
     const msg = new Message({
       body: this.template.render({ cmd }),

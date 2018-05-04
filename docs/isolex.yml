@@ -63,3 +63,15 @@ parsers:
     tags:
       - '!!json'
       - '!!yaml'
+
+  - type: split-parser
+    name: test_split
+    delims: [' ', '\t', '\n', '.', ',']
+    tags:
+      - '!!args'
+
+  - type: split-parser
+    name: test_split
+    regexp: '([0-9]+)d([0-9]+)'
+    tags:
+      - '!!dice'
