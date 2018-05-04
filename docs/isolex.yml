@@ -51,7 +51,8 @@ parsers:
     field: body
     name: test_reaction
     tags:
-      - match
+      - magic
+      - tag
 
   - type: lex-parser
     bot:
