@@ -1,8 +1,8 @@
-import { Channel, Client, Message as DiscordMessage, TextChannel } from 'discord.js';
+import { Channel, Client, Message as DiscordMessage, TextChannel, ChannelLogsQueryOptions } from 'discord.js';
 import { isNil } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
-import { Listener } from 'src/listener/Listener';
+import { Listener, FetchOptions } from 'src/listener/Listener';
 import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
 
@@ -59,8 +59,6 @@ export class DiscordListener implements Listener {
       const thread = this.threads.get(msg.context.threadId);
       if (thread) {
         for (const reaction of msg.reactions) {
-          this.client.emojis.forEach((e) => this.logger.debug({ e }, 'found emoji'));
-
           const emoji = this.client.emojis.find('name', reaction);
           if (emoji) {
             await thread.react(emoji.id);
@@ -94,20 +92,60 @@ export class DiscordListener implements Listener {
     this.logger.error('invalid destination for message');
   }
 
+  public async fetch(options: FetchOptions): Promise<Array<Message>> {
+    const channel = this.client.channels.get(options.channel);
+    if (!DiscordListener.isTextChannel(channel)) {
+      throw new Error();
+    }
+
+    // transform the options into https://discord.js.org/#/docs/main/stable/typedef/ChannelLogsQueryOptions
+    const queryOptions = this.convertQueryOptions(options);
+    const msgs = [];
+    for (const [_, msg] of await channel.fetchMessages(queryOptions)) {
+      msgs.push(this.convertMessage(msg));
+    }
+
+    return msgs;
+  }
+
   public async receive(value: DiscordMessage) {
     this.threads.set(value.id, value);
 
     // turn it into an internal Message
-    const msg = new Message({
-      body: value.content,
+    await this.bot.receive(this.convertMessage(value));
+  }
+
+  protected convertMessage(msg: DiscordMessage): Message {
+    return new Message({
+      body: msg.content,
       context: {
-        roomId: value.channel.id,
-        threadId: value.id,
-        userId: value.author.id,
-        userName: value.author.username
+        roomId: msg.channel.id,
+        threadId: msg.id,
+        userId: msg.author.id,
+        userName: msg.author.username
       },
-      reactions: value.reactions.map((r) => r.emoji.name)
+      reactions: msg.reactions.map((r) => r.emoji.name)
     });
-    await this.bot.receive(msg);
+  }
+
+  protected convertQueryOptions(options: FetchOptions): ChannelLogsQueryOptions {
+    if (options.after) {
+      return {
+        after: options.id,
+        limit: options.count
+      };
+    }
+
+    if (options.before) {
+      return {
+        before: options.id,
+        limit: options.count
+      };
+    }
+
+    return {
+      around: options.id,
+      limit: options.count
+    };
   }
 }

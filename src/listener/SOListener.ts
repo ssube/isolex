@@ -3,7 +3,7 @@ import { Logger } from 'noicejs/logger/Logger';
 import { Observable, Subject } from 'rxjs';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/Context';
-import { Listener } from 'src/listener/Listener';
+import { Listener, FetchOptions } from 'src/listener/Listener';
 import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
 import { Cooldown, CooldownOptions, CooldownConfig } from 'src/util/Cooldown';
@@ -107,6 +107,10 @@ export class SOListener implements Listener {
         this.logger.error(err, 'reply failed');
       }
     }
+  }
+
+  async fetch(options: FetchOptions): Promise<Array<Message>> {
+    throw new Error('not implemented');
   }
 
   async receive(event: Event): Promise<void> {
