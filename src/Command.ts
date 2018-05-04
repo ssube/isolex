@@ -1,3 +1,4 @@
+import { isMap } from 'lodash';
 import { Context } from 'src/Context';
 
 export enum CommandType {
@@ -13,9 +14,21 @@ export interface CommandOptions {
   type: CommandType;
 }
 
+export type CommandPropMap = Map<string, CommandPropValue>;
+export type CommandPropObject = {[key: string]: CommandPropValue};
+export type CommandPropValue = string | Array<string>;
+
 export class Command implements CommandOptions {
+  public static toPropMap(value: CommandPropMap | CommandPropObject): CommandPropMap {
+    if (isMap(value)) {
+      return value;
+    } else {
+      return new Map(Object.entries(value));
+    }
+  }
+
   public readonly context: Context;
-  public readonly data: any;
+  public readonly data: CommandPropMap;
   public readonly name: string;
   public readonly type: CommandType;
 
@@ -25,19 +38,19 @@ export class Command implements CommandOptions {
    */
   constructor(options: CommandOptions) {
     this.context = options.context;
-    this.data = options.data;
+    this.data = Command.toPropMap(options.data);
     this.name = options.name;
     this.type = options.type;
   }
 
   public has(key: string): boolean {
-    return Object.getOwnPropertyDescriptor(this.data, key) !== undefined;
+    return this.data.has(key);
   }
 
   /**
    * Get a data item. Makes the command act like a read-only map.
    */
   public get(key: string): any {
-    return this.data[key];
+    return this.data.get(key);
   }
 }
