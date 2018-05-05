@@ -23,6 +23,7 @@
     "types": [
       "chai-as-promised",
       "lodash",
+      "mathjs",
       "mocha",
       "request",
       "request-promise-native",

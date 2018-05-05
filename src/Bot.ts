@@ -26,6 +26,7 @@ import { TemplateCompiler } from 'src/util/TemplateCompiler';
 import { ReactionHandler } from './handler/ReactionHandler';
 import { EchoParser } from './parser/EchoParser';
 import { SplitParser } from './parser/SplitParser';
+import { MathHandler } from './handler/MathHandler';
 
 export interface BotConfig {
   bot: {
@@ -76,6 +77,7 @@ export class BotModule extends Module {
 
     // handlers
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
+    this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
     this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
     this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
