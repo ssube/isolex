@@ -107,7 +107,7 @@ export class WeatherHandler implements Handler {
 
     const location = cmd.get('location');
     if (!location) {
-      await this.bot.send(new Message({
+      await this.bot.send(Message.create({
         body: 'unknown or missing location',
         context: cmd.context,
         reactions: []
@@ -123,7 +123,7 @@ export class WeatherHandler implements Handler {
       });
       this.logger.debug({ body, weather }, 'rendering weather data');
 
-      await this.bot.send(new Message({
+      await this.bot.send(Message.create({
         body,
         context: cmd.context,
         reactions: []

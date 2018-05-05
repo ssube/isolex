@@ -43,7 +43,7 @@ describeAsync('user filter', async () => {
         name: 'test-user-filter'
       })
     });
-    const cmd = new Command({
+    const cmd = Command.create({
       context: {
         roomId: '',
         threadId: '',

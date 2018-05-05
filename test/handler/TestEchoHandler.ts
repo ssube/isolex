@@ -60,7 +60,7 @@ describeAsync('echo handler', async () => {
     };
     const handler = await container.create(EchoHandler, options);
 
-    const cmd = new Command({
+    const cmd = Command.create({
       context: {
         roomId: '',
         threadId: '',

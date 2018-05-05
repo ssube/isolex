@@ -9,7 +9,7 @@ describeAsync('command', async () => {
     const data = {
       test: 1
     };
-    const cmd = new Command({
+    const cmd = Command.create({
       context: {
         roomId: '',
         threadId: '',

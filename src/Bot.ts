@@ -12,21 +12,22 @@ import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
 import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
+import { MathHandler } from 'src/handler/MathHandler';
+import { ReactionHandler } from 'src/handler/ReactionHandler';
 import { TimeHandler, TimeHandlerConfig } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
 import { DiscordListener } from 'src/listener/DiscordListener';
 import { Listener } from 'src/listener/Listener';
 import { SOListener } from 'src/listener/SOListener';
 import { Message } from 'src/Message';
+import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
+import { SplitParser } from 'src/parser/SplitParser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { Cooldown } from 'src/util/Cooldown';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
-import { ReactionHandler } from './handler/ReactionHandler';
-import { EchoParser } from './parser/EchoParser';
-import { SplitParser } from './parser/SplitParser';
-import { MathHandler } from './handler/MathHandler';
+import { createConnection, ConnectionOptions, Connection } from 'typeorm';
 
 export interface BotConfig {
   bot: {
@@ -44,6 +45,7 @@ export interface BotConfig {
     [other: string]: string;
   };
   parsers: Array<any>;
+  storage: ConnectionOptions;
 }
 
 export interface BotOptions {
@@ -105,6 +107,11 @@ export class BotModule extends Module {
   protected async createLogger(options: any): Promise<Logger> {
     return this.logger;
   }
+
+  @Provides('storage')
+  protected async createStorage(options: any): Promise<Connection> {
+    return this.bot.getStorage();
+  }
 }
 
 @Inject('logger')
@@ -113,6 +120,7 @@ export class Bot {
   protected commands: Subject<Command>;
   protected container: Container;
   protected logger: Logger;
+  protected storage: Connection;
   protected strict: boolean;
   protected timers: Set<CronJob>;
 
@@ -149,6 +157,10 @@ export class Bot {
     this.timers = new Set();
   }
 
+  getStorage(): Connection {
+    return this.storage;
+  }
+
   /**
    * Set up the async resources that cannot be created in the constructor: filters, handlers, parsers, etc
    */
@@ -157,6 +169,12 @@ export class Bot {
     this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
     this.incoming.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
     this.outgoing.subscribe((next) => this.dispatch(next).catch((err) => this.looseError(err)));
+
+    this.logger.info('connecting to storage');
+    this.storage = await createConnection({
+      ...this.config.storage,
+      entities: [Command, Message]
+    });
 
     this.logger.info('setting up filters');
     for (const filterData of this.config.filters) {
@@ -179,7 +197,7 @@ export class Bot {
       this.logger.debug({ interval: intervalData }, 'configuring interval');
       const cron = new CronJob(intervalData.cron, async () => {
         for (const data of intervalData.data) {
-          const cmd = new Command(data);
+          const cmd = Command.create(data);
           this.commands.next(cmd);
         }
       });
@@ -223,7 +241,7 @@ export class Bot {
     this.commands.complete();
     this.incoming.complete();
     this.outgoing.complete();
- }
+  }
 
   /**
    * Receive an incoming message and turn it into commands.
@@ -267,6 +285,8 @@ export class Bot {
       return;
     }
 
+    await this.storage.getRepository(Command).save(cmd);
+
     let handled = false;
     for (const h of this.handlers) {
       if (await h.handle(cmd)) {
@@ -290,6 +310,8 @@ export class Bot {
       this.logger.warn({ msg }, 'dropped outgoing message due to filters');
       return;
     }
+
+    await this.storage.getRepository(Message).save(msg);
 
     for (const l of this.listeners) {
       // @todo: select the correct listener

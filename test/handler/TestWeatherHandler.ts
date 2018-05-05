@@ -23,7 +23,7 @@ describeAsync('weather handler', async () => {
     const container = Container.from(new TestModule());
     await container.configure();
 
-    let msg = new Message({} as any);
+    let msg = Message.create({} as any);
     const options: WeatherHandlerOptions = {
       bot: ineeda<Bot>({
         send: (inMsg: Message) => {
@@ -46,7 +46,7 @@ describeAsync('weather handler', async () => {
     const handler = await container.create(WeatherHandler, options);
     expect(handler).to.be.an.instanceOf(WeatherHandler);
 
-    const handled = await handler.handle(new Command({
+    const handled = await handler.handle(Command.create({
       context: {
         roomId: '',
         threadId: '',

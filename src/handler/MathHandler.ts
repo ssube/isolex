@@ -51,7 +51,7 @@ export class MathHandler implements Handler {
       const body = this.eval(expr, { cmd });
       this.logger.debug({ body, expr }, 'compiled expression');
 
-      const msg = new Message({
+      const msg = Message.create({
         body,
         context: cmd.context,
         reactions: []
@@ -65,12 +65,7 @@ export class MathHandler implements Handler {
   protected eval(expr: string, scope: any): string {
     try {
       const body = this.math.eval(expr, scope);
-
-      if (isNumber(body)) {
-        return body.toString();
-      } else {
-        return this.format(body, scope);
-      }
+      return this.format(body, scope);
     } catch (err) {
       return `error evaluating math: ${err.message}`;
     }

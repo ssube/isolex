@@ -42,7 +42,7 @@ export class TimeHandler implements Handler {
 
     const date = new Date();
     this.logger.debug({date, timeZone, locale: this.config.locale}, 'handling time');
-    const msg = new Message({
+    const msg = Message.create({
       body: date.toLocaleString(this.config.locale, {timeZone}),
       context: cmd.context,
       reactions: []

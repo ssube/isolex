@@ -38,7 +38,7 @@ export class EchoHandler implements Handler {
     }
 
     this.logger.debug({ cmd }, 'echoing command');
-    const msg = new Message({
+    const msg = Message.create({
       body: this.template.render({ cmd }),
       context: cmd.context,
       reactions: []

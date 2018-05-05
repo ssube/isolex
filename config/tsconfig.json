@@ -4,6 +4,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": false,
     "baseUrl": "../",
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "jsx": "react",

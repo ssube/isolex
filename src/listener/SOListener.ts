@@ -116,7 +116,7 @@ export class SOListener implements Listener {
   async receive(event: Event): Promise<void> {
     this.logger.debug({ event }, 'client got event');
     if (SOListener.isEventMessage(event)) {
-      const msg = new Message({
+      const msg = Message.create({
         body: event.content,
         context: SOListener.getEventContext(event),
         reactions: []

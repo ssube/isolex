@@ -50,7 +50,7 @@ export class SplitParser extends BaseParser implements Parser {
     const body = this.removeTags(msg.body);
     const args = this.split(body);
 
-    return [new Command({
+    return [Command.create({
       context: msg.context,
       data: { args },
       name: this.name,

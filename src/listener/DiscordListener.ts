@@ -116,7 +116,7 @@ export class DiscordListener implements Listener {
   }
 
   protected convertMessage(msg: DiscordMessage): Message {
-    return new Message({
+    return Message.create({
       body: msg.content,
       context: {
         roomId: msg.channel.id,

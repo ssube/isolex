@@ -29,6 +29,9 @@ module.exports = {
     main: modulePath.index,
     test: [modulePath.harness, 'sinon', 'chai']
   },
+  externals: {
+    'sqlite3': 'commonjs sqlite3'
+  },
   mode: 'none',
   module: {
     rules: [{

@@ -55,7 +55,7 @@ export class ReactionHandler implements Handler {
     }
 
     this.logger.debug({ cmd, reactions }, 'reacting to command');
-    const msg = new Message({
+    const msg = Message.create({
       body: '',
       context: cmd.context,
       reactions

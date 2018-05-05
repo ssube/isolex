@@ -32,7 +32,7 @@ export class EchoParser extends BaseParser implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    return [new Command({
+    return [Command.create({
       context: msg.context,
       data: {
         [this.config.field]: [this.removeTags(msg.body)]

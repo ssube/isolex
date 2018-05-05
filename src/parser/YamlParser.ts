@@ -37,6 +37,6 @@ export class YamlParser extends BaseParser implements Parser {
       throw new Error('invalid parse value');
     }
 
-    return [new Command(data as any)]; // @todo: make this better
+    return [Command.create(data as any)]; // @todo: make this better
   }
 }

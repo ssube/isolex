@@ -1,5 +1,6 @@
 import { isMap } from 'lodash';
 import { Context } from 'src/Context';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 export enum CommandType {
   None,
@@ -18,6 +19,7 @@ export type CommandPropMap = Map<string, CommandPropValue>;
 export type CommandPropObject = {[key: string]: CommandPropValue};
 export type CommandPropValue = string | Array<string>;
 
+@Entity()
 export class Command implements CommandOptions {
   public static toPropMap(value: CommandPropMap | CommandPropObject): CommandPropMap {
     if (isMap(value)) {
@@ -27,20 +29,28 @@ export class Command implements CommandOptions {
     }
   }
 
-  public readonly context: Context;
-  public readonly data: CommandPropMap;
-  public readonly name: string;
-  public readonly type: CommandType;
+  @Column('simple-json')
+  public context: Context;
 
-  /**
-   * Create a new command
-   * @todo copy data
-   */
-  constructor(options: CommandOptions) {
-    this.context = options.context;
-    this.data = Command.toPropMap(options.data);
-    this.name = options.name;
-    this.type = options.type;
+  @Column('simple-json')
+  public data: CommandPropMap;
+
+  @PrimaryColumn()
+  public id: string;
+
+  @Column()
+  public name: string;
+
+  @Column()
+  public type: CommandType;
+
+  public static create(options: CommandOptions) {
+    const cmd = new Command();
+    cmd.context = options.context;
+    cmd.data = Command.toPropMap(options.data);
+    cmd.name = options.name;
+    cmd.type = options.type;
+    return cmd;
   }
 
   public has(key: string): boolean {

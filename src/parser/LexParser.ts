@@ -72,7 +72,7 @@ export class LexParser extends BaseParser implements Parser {
     };
 
     this.logger.debug({ cmdOptions }, 'command options');
-    return [new Command(cmdOptions)];
+    return [Command.create(cmdOptions)];
   }
 
   protected postText(params: AWS.LexRuntime.PostTextRequest): Promise<AWS.LexRuntime.PostTextResponse> {

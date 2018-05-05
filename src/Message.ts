@@ -1,5 +1,6 @@
 import * as escape from 'escape-html';
 import { Context } from 'src/Context';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 export interface MessageOptions {
   body: string;
@@ -7,15 +8,26 @@ export interface MessageOptions {
   reactions: Array<string>;
 }
 
+@Entity()
 export class Message implements MessageOptions {
-  public readonly body: string;
-  public readonly context: Context;
-  public readonly reactions: Array<string>;
+  @Column()
+  public body: string;
 
-  constructor(options: MessageOptions) {
-    this.body = options.body;
-    this.context = options.context;
-    this.reactions = Array.from(options.reactions);
+  @Column('simple-json')
+  public context: Context;
+
+  @PrimaryColumn()
+  public id: string;
+
+  @Column('simple-array')
+  public reactions: Array<string>;
+
+  public static create(options: MessageOptions): Message {
+    const msg = new Message();
+    msg.body = options.body;
+    msg.context = options.context;
+    msg.reactions = Array.from(options.reactions);
+    return msg;
   }
 
   get escaped(): string {
