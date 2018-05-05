@@ -29,9 +29,9 @@
       "sinon-chai"
     ],
     "typeRoots": [
-      "node_modules/@types",
-      "node_modules",
-      "vendor"
+      "../node_modules/@types",
+      "../node_modules",
+      "../vendor"
     ]
   },
   "exclude": [
