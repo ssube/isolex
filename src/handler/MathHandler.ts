@@ -42,10 +42,12 @@ export class MathHandler implements Handler {
 
     const args = cmd.get('args');
     if (!args || !args.length) {
-      throw new Error('');
+      throw new Error('invalid arguments to math handler');
     }
 
     for (const expr of args) {
+      this.logger.debug({ expr }, 'evaluating expression');
+
       const body = this.eval(expr, { cmd });
       this.logger.debug({ body, expr }, 'compiled expression');
 
@@ -61,12 +63,20 @@ export class MathHandler implements Handler {
   }
 
   protected eval(expr: string, scope: any): string {
-    const body = this.math.eval(expr, scope);
+    try {
+      const body = this.math.eval(expr, scope);
 
-    if (isNumber(body)) {
-      return body.toString();
+      if (isNumber(body)) {
+        return body.toString();
+      } else {
+        return this.format(body, scope);
+      }
+    } catch (err) {
+      return `error evaluating math: ${err.message}`;
     }
+  }
 
+  protected format(body: any, scope: any) {
     switch (mathjs.typeof(body)) {
       case 'null':
         return 'null';
@@ -93,6 +103,8 @@ export class MathHandler implements Handler {
       case 'Range':
       case 'Unit':
         return mathjs.format(body);
+      case 'ResultSet':
+        return body.entries.map((it: any) => this.format(it, scope)).join(',');
       default:
         return `unknown result type: ${JSON.stringify(body)}`;
     }

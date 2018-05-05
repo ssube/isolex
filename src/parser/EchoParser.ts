@@ -35,7 +35,7 @@ export class EchoParser extends BaseParser implements Parser {
     return [new Command({
       context: msg.context,
       data: {
-        [this.config.field]: msg.body
+        [this.config.field]: [this.removeTags(msg.body)]
       },
       name: this.config.name,
       type: CommandType.None
