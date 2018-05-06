@@ -8,9 +8,18 @@ filters:
 
 handlers:
   - type: math-handler
-    matrix: Array
     name: test_math
-    number: BigNumber
+    join: ','
+    math:
+      matrix: Array
+      number: Number
+    format:
+      notation: exponential
+      precision: 4
+      fraction: ratio
+    node:
+      implicit: show
+      parenthesis: keep
 
   - type: reaction-handler
     name: test_reaction
@@ -34,11 +43,9 @@ handlers:
     template: >-
       {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
       and {{#each weather.weather}}{{this.description}}{{/each}}!
-
   - type: echo-handler
     template: >-
       {{reply cmd.context}}: {{cmd.data.message}} ({{cmd.name}})
-
 intervals:
   - cron: '* * * * *'
     data: {}
@@ -92,3 +99,7 @@ parsers:
     name: test_math
     tags:
       - '!!math'
+
+storage:
+  type: sqlite
+  database: "./out/isolex.db"
