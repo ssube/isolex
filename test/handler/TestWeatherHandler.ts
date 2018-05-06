@@ -6,6 +6,7 @@ import { spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { Context } from 'src/Context';
 import { WeatherHandler, WeatherHandlerOptions } from 'src/handler/WeatherHandler';
 import { Message } from 'src/Message';
 import { Template } from 'src/utils/Template';
@@ -41,20 +42,24 @@ describeAsync('weather handler', async () => {
     const handler = await container.create(WeatherHandler, options);
     expect(handler).to.be.an.instanceOf(WeatherHandler);
 
-    const handled = await handler.handle(Command.create({
-      context: {
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: ''
-      },
+    const context = new Context({
+      roomId: '',
+      threadId: '',
+      userId: '',
+      userName: ''
+    });
+
+    const cmd = Command.create({
+      context,
       data: {
         zip: 94040
       },
       name: 'test_weather',
       type: 0
-    }));
-    expect(handled).to.be.true;
+    });
+
+    expect(await handler.check(cmd)).to.be.true;
+    await handler.handle(cmd);
     expect(msg.body).to.equal('unknown or missing location');
   });
 });

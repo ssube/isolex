@@ -6,7 +6,6 @@ import { ContainerOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { ModuleOptions } from 'noicejs/Module';
 import { RequestAPI } from 'request';
-import { RequestPromise, RequestPromiseOptions } from 'request-promise';
 import * as request from 'request-promise';
 import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/Command';

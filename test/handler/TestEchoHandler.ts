@@ -63,7 +63,7 @@ describeAsync('echo handler', async () => {
         userName: ''
       },
       data: {},
-      name: 'test_cmd',
+      name: 'test_echo',
       type: 0
     });
 

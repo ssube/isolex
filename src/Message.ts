@@ -14,7 +14,7 @@ export class Message implements MessageOptions {
     const msg = new Message();
     msg.body = options.body;
     msg.context = options.context;
-    msg.reactions = Array.from(options.reactions);
+    msg.reactions = Array.from(options.reactions || []);
     return msg;
   }
 
