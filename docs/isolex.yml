@@ -8,9 +8,18 @@ filters:
 
 handlers:
   - type: math-handler
-    matrix: Array
     name: test_math
-    number: BigNumber
+    join: ','
+    math:
+      matrix: Array
+      number: Number
+    format:
+      notation: exponential
+      precision: 4
+      fraction: ratio
+    node:
+      implicit: show
+      parenthesis: keep
 
   - type: reaction-handler
     name: test_reaction

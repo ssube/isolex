@@ -9,9 +9,21 @@ import { isObject } from 'util';
 import { BaseHandler } from './BaseHandler';
 
 export interface MathHandlerConfig {
-  matrix: string;
+  format: {
+    fraction: string;
+    notation: string;
+    precision: number;
+  };
+  join: string;
+  math: {
+    matrix: string;
+    number: string;
+  };
   name: string;
-  number: string;
+  node: {
+    implicit: string;
+    parenthesis: string;
+  };
 }
 
 export type MathHandlerOptions = HandlerOptions<MathHandlerConfig>;
@@ -74,7 +86,7 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
       case 'Date':
         return body.toString();
       case 'Array':
-        return body.join(',');
+        return body.join(this.config.join);
       case 'Function':
         return body.call(this, scope);
       case 'Object':
@@ -89,9 +101,24 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
       case 'Matrix':
       case 'Range':
       case 'Unit':
-        return mathjs.format(body);
+        return mathjs.format(body, this.config.format);
       case 'ResultSet':
         return body.entries.map((it: any) => this.format(it, scope)).join(',');
+      case 'AccessorNode':
+      case 'ArrayNode':
+      case 'AssignmentNode':
+      case 'BlockNode':
+      case 'ConditionalNode':
+      case 'ConstantNode':
+      case 'FunctionAssignmentNode':
+      case 'FunctionNode':
+      case 'IndexNode':
+      case 'ObjectNode':
+      case 'OperatorNode':
+      case 'ParenthesisNode':
+      case 'RangeNode':
+      case 'SymbolNode':
+        return body.toString(this.config.node);
       default:
         return `unknown result type: ${JSON.stringify(body)}`;
     }
