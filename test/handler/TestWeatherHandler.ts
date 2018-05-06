@@ -6,22 +6,17 @@ import { spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { Context } from 'src/Context';
 import { WeatherHandler, WeatherHandlerOptions } from 'src/handler/WeatherHandler';
 import { Message } from 'src/Message';
-import { Template } from 'src/util/Template';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { Template } from 'src/utils/Template';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
+import { createContainer } from 'test/helpers/container';
 
 describeAsync('weather handler', async () => {
   itAsync('should send a message', async () => {
-    class TestModule extends Module {
-      public async configure() {
-        this.bind('compiler').toConstructor(TemplateCompiler);
-      }
-    }
-
-    const container = Container.from(new TestModule());
-    await container.configure();
+    const { container } = await createContainer();
 
     let msg = Message.create({} as any);
     const options: WeatherHandlerOptions = {
@@ -38,6 +33,7 @@ describeAsync('weather handler', async () => {
           key: '0',
           root: 'https://api.openweathermap.org/data/2.5/'
         },
+        name: 'test_weather',
         template: '{{ data.name }}'
       },
       container,
@@ -46,20 +42,24 @@ describeAsync('weather handler', async () => {
     const handler = await container.create(WeatherHandler, options);
     expect(handler).to.be.an.instanceOf(WeatherHandler);
 
-    const handled = await handler.handle(Command.create({
-      context: {
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: ''
-      },
+    const context = new Context({
+      roomId: '',
+      threadId: '',
+      userId: '',
+      userName: ''
+    });
+
+    const cmd = Command.create({
+      context,
       data: {
         zip: 94040
       },
       name: 'test_weather',
       type: 0
-    }));
-    expect(handled).to.be.true;
+    });
+
+    expect(await handler.check(cmd)).to.be.true;
+    await handler.handle(cmd);
     expect(msg.body).to.equal('unknown or missing location');
   });
 });

@@ -4,10 +4,11 @@ import { Bot } from 'src/Bot';
 import { Command, CommandOptions, CommandType } from 'src/Command';
 import { Message } from 'src/Message';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser } from 'src/parser/Parser';
+import { Parser, ParserConfig } from 'src/parser/Parser';
+import { ServiceOptions } from 'src/Service';
 import { leftPad } from 'src/utils';
 
-export interface LexParserConfig {
+export interface LexParserConfig extends ParserConfig {
   account: {
     accessKey: string;
     secretKey: string;
@@ -17,30 +18,21 @@ export interface LexParserConfig {
     name: string;
   };
   region: string;
-  tags: Array<string>;
 }
 
-export interface LexParserOptions {
-  bot: Bot;
-  config: LexParserConfig;
-  logger: Logger;
-}
+export type LexParserOptions = ServiceOptions<LexParserConfig>;
 
-export class LexParser extends BaseParser implements Parser {
+export class LexParser extends BaseParser<LexParserConfig> implements Parser {
   protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;
   protected name: string;
 
   constructor(options: LexParserOptions) {
-    super();
-    this.logger = options.logger.child({
-      class: LexParser.name
-    });
+    super(options);
 
     this.alias = options.config.bot.alias;
     this.name = options.config.bot.name;
-    this.tags = options.config.tags;
 
     // aws
     this.creds = new AWS.Credentials(options.config.account.accessKey, options.config.account.secretKey);

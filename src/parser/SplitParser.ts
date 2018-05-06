@@ -4,45 +4,29 @@ import { Bot } from 'src/Bot';
 import { Command, CommandType } from 'src/Command';
 import { Message } from 'src/Message';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser } from 'src/parser/Parser';
+import { Parser, ParserConfig } from 'src/parser/Parser';
+import { ServiceOptions } from 'src/Service';
+import * as split from 'split-string';
 
-export interface SplitParserConfig {
-  delims?: Array<string>;
+export interface SplitParserConfig extends ParserConfig, SplitString.SplitOptions {
   name: string;
-  regexp?: string;
-  tags: Array<string>;
+  regexp: string;
 }
 
-export interface SplitParserOptions {
-  bot: Bot;
-  config: SplitParserConfig;
-  logger: Logger;
-}
+export type SplitParserOptions = ServiceOptions<SplitParserConfig>;
 
-export class SplitParser extends BaseParser implements Parser {
-  protected config: SplitParserConfig;
+export class SplitParser extends BaseParser<SplitParserConfig> implements Parser {
   protected delims?: Array<string>;
-  protected logger: Logger;
   protected name: string;
   protected regexp?: RegExp;
-  protected tags: Array<string>;
 
   constructor(options: SplitParserOptions) {
-    super();
+    super(options);
 
-    this.config = options.config;
-    this.logger = options.logger.child({
-      class: SplitParser.name
-    });
     this.name = options.config.name;
-    this.tags = options.config.tags;
 
     if (options.config.regexp) {
       this.regexp = new RegExp(options.config.regexp);
-    }
-
-    if (options.config.delims) {
-      this.delims = ['\n'].concat(options.config.delims);
     }
   }
 
@@ -67,12 +51,11 @@ export class SplitParser extends BaseParser implements Parser {
       } else {
         throw new Error('unable to split message on regexp');
       }
-    } else if (this.delims) {
-      const args = this.delims.reduce((p, d) => flatten(p.map((i) => i.split(d))), [msg]).filter((i) => !!i);
+    } else {
+      this.logger.debug({ config: this.config, split: msg }, 'splitting string');
+      const args = split(msg, this.config);
       this.logger.debug({ args }, 'splitting on delimiters');
       return args;
-    } else {
-      throw new Error('unable to split message');
     }
   }
 }

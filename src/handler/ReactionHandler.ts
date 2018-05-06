@@ -2,10 +2,11 @@ import { Inject } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
 import { Message } from 'src/Message';
-import { Template } from 'src/util/Template';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { Template } from 'src/utils/Template';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface ReactionChance {
   chance: number;
@@ -18,30 +19,35 @@ export interface ReactionHandlerConfig {
   reactions: Map<string, Array<ReactionChance>>;
 }
 
-export interface ReactionHandlerOptions extends HandlerOptions<ReactionHandlerConfig> {
-  // noop
-}
+export type ReactionHandlerOptions = HandlerOptions<ReactionHandlerConfig>;
 
-export class ReactionHandler implements Handler {
-  protected bot: Bot;
-  protected config: ReactionHandlerConfig;
-  protected logger: Logger;
+export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implements Handler {
+  protected tags: Array<string>;
   protected reactions: Map<string, Array<ReactionChance>>;
 
   constructor(options: ReactionHandlerOptions) {
-    this.bot = options.bot;
-    this.config = options.config;
-    this.logger = options.logger.child({
-      class: ReactionHandler.name
-    });
+    super(options);
+
     this.reactions = new Map(Object.entries(options.config.reactions));
+    this.tags = Array.from(this.reactions.keys());
   }
 
-  public async handle(cmd: Command): Promise<boolean> {
-    if (cmd.name !== this.config.name) {
+  public async check(cmd: Command): Promise<boolean> {
+    const body = cmd.get(this.config.field);
+    if (!body) {
       return false;
     }
 
+    for (const key of this.tags) {
+      if (body.includes(key)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public async handle(cmd: Command): Promise<void> {
     const reactions = [];
     const body = cmd.get(this.config.field);
     for (const [key, next] of this.reactions) {
@@ -61,6 +67,5 @@ export class ReactionHandler implements Handler {
       reactions
     });
     await this.bot.send(msg);
-    return true;
   }
 }

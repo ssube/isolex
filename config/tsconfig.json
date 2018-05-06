@@ -28,7 +28,8 @@
       "mocha",
       "request",
       "request-promise-native",
-      "sinon-chai"
+      "sinon-chai",
+      "string-split"
     ],
     "typeRoots": [
       "../node_modules/@types",
