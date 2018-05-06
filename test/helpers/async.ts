@@ -26,7 +26,12 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
       // @todo: this should only exclude the single Immediate set by the Tracker
       if (leaked > 1) {
         tracker.dump();
-        throw new Error(`test leaked ${leaked - 1} async resources`);
+        const msg = `test leaked ${leaked - 1} async resources`;
+        if (process.env.DEBUG) {
+          throw new Error(msg);
+        } else {
+          console.warn(msg);
+        }
       }
 
       tracker.clear();

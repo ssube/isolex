@@ -23,7 +23,7 @@ export class TemplateCompiler {
 
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));
     this.compiler.registerHelper('json', this.formatJSON.bind(this));
-    this.compiler.registerHelper('reply', this.formatDestination.bind(this));
+    this.compiler.registerHelper('reply', this.formatContext.bind(this));
   }
 
   public compile(body: string): Template {
@@ -32,7 +32,7 @@ export class TemplateCompiler {
     });
   }
 
-  public formatDestination(context: Context): string {
+  public formatContext(context: Context): string {
     return `@${context.userName}`;
   }
 

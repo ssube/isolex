@@ -11,17 +11,11 @@ import { Message } from 'src/Message';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
+import { createContainer } from 'test/helpers/container';
 
 describeAsync('weather handler', async () => {
   itAsync('should send a message', async () => {
-    class TestModule extends Module {
-      public async configure() {
-        this.bind('compiler').toConstructor(TemplateCompiler);
-      }
-    }
-
-    const container = Container.from(new TestModule());
-    await container.configure();
+    const { container } = await createContainer();
 
     let msg = Message.create({} as any);
     const options: WeatherHandlerOptions = {
@@ -38,6 +32,7 @@ describeAsync('weather handler', async () => {
           key: '0',
           root: 'https://api.openweathermap.org/data/2.5/'
         },
+        name: 'test_weather',
         template: '{{ data.name }}'
       },
       container,

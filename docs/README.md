@@ -31,7 +31,7 @@ multiple `<command>`s. A single `<event>` can produce any number of `<command>`s
 The `[filter] -> [handler]` pair behaves similarly, filtering commands and performing some work on them. For each
 `<command>`, the `[handler]`s are run in order until one returns true and consumes the command.Handlers may
 directly reply to users (the `<command>` has reply-to data) or create additional `<command>`s to be handled later
-(which should have the reply-to destination attached).
+(which should have the reply-to `context` attached).
 
 The `(send)` queue has retry logic to dispatch messages on an adjusting interval, with errors increasing the time
 between ticks and success decreasing it (see the [cooldown](../src/utils/Cooldown.ts)).

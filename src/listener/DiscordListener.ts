@@ -52,7 +52,7 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
   }
 
   public async emit(msg: Message) {
-    // direct reply msg
+    // direct reply to message
     if (msg.context.threadId) {
       const thread = this.threads.get(msg.context.threadId);
       if (thread) {
@@ -75,11 +75,11 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
       }
     }
 
-    // broad reply channel
+    // broad reply to channel
     if (msg.context.roomId) {
       const channel = this.client.channels.get(msg.context.roomId);
       if (DiscordListener.isTextChannel(channel)) {
-        channel.send(msg.body);
+        await channel.send(msg.body);
         return;
       } else {
         this.logger.warn({ msg }, 'cannot emit message to missing channel');
@@ -87,7 +87,7 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     }
 
     // fail
-    this.logger.error('invalid destination for message');
+    this.logger.error('could not find destination in message context');
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {

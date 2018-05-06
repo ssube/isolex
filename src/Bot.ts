@@ -5,6 +5,9 @@ import { Container, Inject, Module, Provides } from 'noicejs';
 import { ContainerOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { ModuleOptions } from 'noicejs/Module';
+import { RequestAPI } from 'request';
+import { RequestPromise, RequestPromiseOptions } from 'request-promise';
+import * as request from 'request-promise';
 import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/Command';
 import { Context } from 'src/Context';
@@ -112,6 +115,12 @@ export class BotModule extends Module {
   @Provides('storage')
   protected async createStorage(options: any): Promise<Connection> {
     return this.bot.getStorage();
+  }
+
+  @Provides('request')
+  protected async createRequest(options: any): Promise<Request> {
+    this.logger.debug({ options }, 'creating request');
+    return request(options);
   }
 }
 
@@ -298,7 +307,7 @@ export class Bot {
   }
 
   /**
-   * Dispatch a message to the appropriate listeners (based on the destination).
+   * Dispatch a message to the appropriate listeners (based on the context).
    */
   public async dispatch(msg: Message) {
     this.logger.debug({ msg }, 'dispatching outgoing message');

@@ -7,28 +7,29 @@ import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
 
 export interface UserFilterConfig {
-  ignore: Array<number | string>;
+  ignore: Array<string>;
 }
 
 export type UserFilterOptions = ServiceOptions<UserFilterConfig>;
 
 export class UserFilter extends BaseFilter<UserFilterConfig> implements Filter {
-  protected ignore: Array<number | string>;
+  protected ignore: Array<string>;
 
   constructor(options: UserFilterOptions) {
     super(options);
 
     this.ignore = options.config.ignore;
-    this.logger = options.logger.child({
-      class: UserFilter.name
-    });
   }
 
-  public async filter(val: FilterValue): Promise<FilterBehavior> {
-    const user = val.context;
+  public getIgnore(): Array<string> {
+    return this.ignore;
+  }
+
+  public async filter(value: FilterValue): Promise<FilterBehavior> {
+    const context = value.context;
     for (const ignore of this.ignore) {
-      if (user.userId === ignore || user.userName === ignore) {
-        this.logger.debug({ignore, user}, 'filter is ignoring user');
+      if (context.userId === ignore || context.userName === ignore) {
+        this.logger.debug({ context, ignore }, 'filter is ignoring context');
         return FilterBehavior.Drop;
       }
     }
