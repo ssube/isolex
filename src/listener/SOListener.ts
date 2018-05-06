@@ -3,10 +3,11 @@ import { Logger } from 'noicejs/logger/Logger';
 import { Observable, Subject } from 'rxjs';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/Context';
+import { BaseListener } from 'src/listener/BaseListener';
 import { Listener, FetchOptions } from 'src/listener/Listener';
 import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
-import { Cooldown, CooldownOptions, CooldownConfig } from 'src/util/Cooldown';
+import { Cooldown, CooldownOptions, CooldownConfig } from 'src/utils/Cooldown';
 import { Client } from 'vendor/so-client/src/client';
 import { Event, MessageEdited, MessagePosted } from 'vendor/so-client/src/events';
 
@@ -21,12 +22,9 @@ export interface SOListenerConfig {
 
 export type SOListenerOptions = ServiceOptions<SOListenerConfig>;
 
-export class SOListener implements Listener {
-  bot: Bot;
+export class SOListener extends BaseListener<SOListenerConfig> implements Listener {
   client: Client;
-  config: SOListenerConfig;
   container: Container;
-  logger: Logger;
   outgoing: Subject<Message>;
   rate: Cooldown;
   room: number;
@@ -49,7 +47,8 @@ export class SOListener implements Listener {
   }
 
   constructor(options: SOListenerOptions) {
-    this.config = options.config;
+    super(options);
+
     this.container = options.container;
   }
 

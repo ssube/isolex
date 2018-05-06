@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { ConsoleLogger, Container, Module } from 'noicejs';
+import { ConsoleLogger, Container, Module, Provides } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { match, spy } from 'sinon';
 
@@ -8,20 +8,14 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
 import { EchoHandler, EchoHandlerOptions } from 'src/handler/EchoHandler';
 import { Message } from 'src/Message';
-import { Template } from 'src/util/Template';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { Template } from 'src/utils/Template';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
+import { createContainer } from 'test/helpers/container';
 
 describeAsync('echo handler', async () => {
   itAsync('should exist', async () => {
-    class TestModule extends Module {
-      public async configure() {
-        this.bind('compiler').toConstructor(TemplateCompiler);
-      }
-    }
-
-    const container = Container.from(new TestModule());
-    await container.configure();
+    const { container } = await createContainer();
 
     const options: EchoHandlerOptions = {
       bot: ineeda<Bot>(),
@@ -40,8 +34,7 @@ describeAsync('echo handler', async () => {
   });
 
   itAsync('should handle commands', async () => {
-    const container = Container.from();
-    await container.configure();
+    const { container } = await createContainer();
 
     const send = spy();
     const options: EchoHandlerOptions = {
@@ -49,7 +42,9 @@ describeAsync('echo handler', async () => {
         send
       }),
       compiler: ineeda<TemplateCompiler>({
-        compile: () => ineeda<Template>()
+        compile: () => ineeda<Template>({
+          render: () => 'test_echo'
+        })
       }),
       config: {
         name: 'test_echo',
@@ -68,11 +63,12 @@ describeAsync('echo handler', async () => {
         userName: ''
       },
       data: {},
-      name: 'test_cmd',
+      name: 'test_echo',
       type: 0
     });
-    const handled = await handler.handle(cmd);
-    expect(handled).to.be.true;
+
+    expect(await handler.check(cmd)).to.be.true;
+    await handler.handle(cmd);
     expect(send).to.have.been.calledWithMatch(match.instanceOf(Message));
   });
 });

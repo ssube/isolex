@@ -1,12 +1,110 @@
-import { Inject } from 'noicejs';
+import { Container, Inject } from 'noicejs';
+import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
-import * as request from 'request-promise';
+import { CoreOptions, RequiredUriUrl } from 'request';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
 import { Message } from 'src/Message';
-import { Template } from 'src/util/Template';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { Template } from 'src/utils/Template';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+
+export interface WeatherHandlerConfig {
+  api: {
+    key: string;
+    root: string;
+  };
+  name: string;
+  template: string;
+}
+
+export interface WeatherHandlerOptions extends HandlerOptions<WeatherHandlerConfig> {
+  compiler: TemplateCompiler;
+}
+
+@Inject('compiler')
+export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements Handler {
+  protected container: Container;
+  protected name: string;
+  protected template: Template;
+
+  constructor(options: WeatherHandlerOptions) {
+    super(options);
+
+    this.container = options.container;
+    this.name = options.config.name;
+    this.template = options.compiler.compile(options.config.template);
+  }
+
+  public async check(cmd: Command): Promise<boolean> {
+    return cmd.name === this.name;
+  }
+
+  public async handle(cmd: Command): Promise<void> {
+    const location = cmd.get('location');
+    if (!location) {
+      await this.bot.send(Message.create({
+        body: 'unknown or missing location',
+        context: cmd.context,
+        reactions: []
+      }));
+    }
+
+    try {
+      const weather = await this.getWeather(location);
+      const body = this.template.render({
+        cmd,
+        weather
+      });
+      this.logger.debug({ body, weather }, 'rendering weather data');
+
+      await this.bot.send(Message.create({
+        body,
+        context: cmd.context,
+        reactions: []
+      }));
+    } catch (err) {
+      this.logger.error(err, 'error getting weather');
+    }
+  }
+
+  protected async getWeather(location: string): Promise<WeatherReply> {
+    const qs: Partial<WeatherQuery> = {
+      APPID: this.config.api.key
+    };
+
+    if (/^[0-9]+$/.test(location)) {
+      // all digits = zip code
+      qs.zip = location;
+    } else {
+      qs.q = location;
+    }
+
+    this.logger.debug({ location, qs }, 'requesting weather data from API');
+
+    try {
+      const weather = await this.container.create<WeatherReply, BaseOptions & CoreOptions & RequiredUriUrl>('request', {
+        json: true,
+        method: 'GET',
+        qs,
+        uri: `${this.config.api.root}/weather`
+      });
+
+      return weather;
+    } catch (err) {
+      if (err.name === 'StatusCodeError') {
+        const [code, body] = err.message.split(' - ');
+        const data = JSON.parse(body);
+
+        this.logger.warn({ code }, 'error from weather API');
+        throw err;
+      } else {
+        throw err;
+      }
+    }
+  }
+}
 
 export interface WeatherQuery {
   APPID: string;
@@ -70,106 +168,4 @@ export interface WeatherReply {
     deg: number;
     speed: number;
   };
-}
-
-export interface WeatherHandlerConfig {
-  api: {
-    key: string;
-    root: string;
-  };
-  template: string;
-}
-
-export interface WeatherHandlerOptions extends HandlerOptions<WeatherHandlerConfig> {
-  compiler: TemplateCompiler;
-}
-
-@Inject('compiler')
-export class WeatherHandler implements Handler {
-  protected bot: Bot;
-  protected config: WeatherHandlerConfig;
-  protected logger: Logger;
-  protected template: Template;
-
-  constructor(options: WeatherHandlerOptions) {
-    this.bot = options.bot;
-    this.config = options.config;
-    this.logger = options.logger.child({
-      class: WeatherHandler.name
-    });
-    this.template = options.compiler.compile(options.config.template);
-  }
-
-  public async handle(cmd: Command) {
-    if (cmd.name !== 'test_weather') {
-      return false;
-    }
-
-    const location = cmd.get('location');
-    if (!location) {
-      await this.bot.send(Message.create({
-        body: 'unknown or missing location',
-        context: cmd.context,
-        reactions: []
-      }));
-      return true;
-    }
-
-    try {
-      const weather = await this.getWeather(location);
-      const body = this.template.render({
-        cmd,
-        weather
-      });
-      this.logger.debug({ body, weather }, 'rendering weather data');
-
-      await this.bot.send(Message.create({
-        body,
-        context: cmd.context,
-        reactions: []
-      }));
-
-      return true;
-    } catch (err) {
-      this.logger.error(err, 'error getting weather');
-
-      return false;
-    }
-  }
-
-  protected async getWeather(location: string): Promise<WeatherReply> {
-    const qs: Partial<WeatherQuery> = {
-      APPID: this.config.api.key
-    };
-
-    if (/^[0-9]+$/.test(location)) {
-      // all digits = zip code
-      qs.zip = location;
-    } else {
-      qs.q = location;
-    }
-
-    this.logger.debug({ location, qs }, 'requesting weather data from API');
-
-    try {
-      const weather: WeatherReply = await request({
-        json: true,
-        method: 'GET',
-        qs,
-        uri: `${this.config.api.root}/weather`
-      });
-
-      return weather;
-    } catch (err) {
-      if (err.name === 'StatusCodeError') {
-        const [code, body] = err.message.split(' - ');
-        const data = JSON.parse(body);
-
-        this.logger.warn({ code }, 'error from weather API');
-        throw err;
-      } else {
-        throw err;
-      }
-    }
-  }
 }

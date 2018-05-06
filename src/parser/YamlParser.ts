@@ -5,29 +5,17 @@ import { Command } from 'src/Command';
 import { Message } from 'src/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser } from 'src/parser/Parser';
+import { ServiceOptions } from '../Service';
 
 export interface YamlParserConfig {
   tags: Array<string>;
 }
 
-export interface YamlParserOptions {
-  bot: Bot;
-  config: YamlParserConfig;
-  logger: Logger;
-}
+export type YamlParserOptions = ServiceOptions<YamlParserConfig>;
 
-export class YamlParser extends BaseParser implements Parser {
-  protected logger: Logger;
-  protected tags: Array<string>;
-
+export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
   constructor(options: YamlParserOptions) {
-    super();
-
-    this.logger = options.logger.child({
-      class: YamlParser.name
-    });
-
-    this.tags = options.config.tags;
+    super(options);
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {

@@ -103,3 +103,4 @@ parsers:
 storage:
   type: sqlite
   database: "./out/isolex.db"
+

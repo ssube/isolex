@@ -6,38 +6,44 @@ import { Command } from 'src/Command';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
 import { Message } from 'src/Message';
 import { isObject } from 'util';
+import { BaseHandler } from './BaseHandler';
 
 export interface MathHandlerConfig {
-  matrix: string;
+  format: {
+    fraction: string;
+    notation: string;
+    precision: number;
+  };
+  join: string;
+  math: {
+    matrix: string;
+    number: string;
+  };
   name: string;
-  number: string;
+  node: {
+    implicit: string;
+    parenthesis: string;
+  };
 }
 
-export interface MathHandlerOptions extends HandlerOptions<MathHandlerConfig> {
-  /* empty */
-}
+export type MathHandlerOptions = HandlerOptions<MathHandlerConfig>;
 
-export class MathHandler implements Handler {
-  protected bot: Bot;
-  protected config: MathHandlerConfig;
-  protected logger: Logger;
+export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handler {
   protected math: mathjs.MathJsStatic;
   protected name: string;
 
   constructor(options: MathHandlerOptions) {
-    this.bot = options.bot;
-    this.logger = options.logger.child({
-      class: MathHandler.name
-    });
+    super(options);
+
     this.math = (mathjs as any).create(options.config);
     this.name = options.config.name;
   }
 
-  public async handle(cmd: Command): Promise<boolean> {
-    if (cmd.name !== this.name) {
-      return false;
-    }
+  public async check(cmd: Command): Promise<boolean> {
+    return cmd.name === this.name;
+  }
 
+  public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'calculating command');
 
     const args = cmd.get('args');
@@ -48,7 +54,7 @@ export class MathHandler implements Handler {
     for (const expr of args) {
       this.logger.debug({ expr }, 'evaluating expression');
 
-      const body = this.eval(expr, { cmd });
+      const body = '`' + this.eval(expr, { cmd }) + '`';
       this.logger.debug({ body, expr }, 'compiled expression');
 
       const msg = Message.create({
@@ -58,8 +64,6 @@ export class MathHandler implements Handler {
       });
       await this.bot.send(msg);
     }
-
-    return true;
   }
 
   protected eval(expr: string, scope: any): string {
@@ -82,7 +86,7 @@ export class MathHandler implements Handler {
       case 'Date':
         return body.toString();
       case 'Array':
-        return body.join(',');
+        return body.join(this.config.join);
       case 'Function':
         return body.call(this, scope);
       case 'Object':
@@ -97,9 +101,24 @@ export class MathHandler implements Handler {
       case 'Matrix':
       case 'Range':
       case 'Unit':
-        return mathjs.format(body);
+        return mathjs.format(body, this.config.format);
       case 'ResultSet':
         return body.entries.map((it: any) => this.format(it, scope)).join(',');
+      case 'AccessorNode':
+      case 'ArrayNode':
+      case 'AssignmentNode':
+      case 'BlockNode':
+      case 'ConditionalNode':
+      case 'ConstantNode':
+      case 'FunctionAssignmentNode':
+      case 'FunctionNode':
+      case 'IndexNode':
+      case 'ObjectNode':
+      case 'OperatorNode':
+      case 'ParenthesisNode':
+      case 'RangeNode':
+      case 'SymbolNode':
+        return body.toString(this.config.node);
       default:
         return `unknown result type: ${JSON.stringify(body)}`;
     }

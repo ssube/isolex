@@ -1,6 +1,6 @@
 import { isMap } from 'lodash';
 import { Context } from 'src/Context';
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 export enum CommandType {
   None,
@@ -16,8 +16,11 @@ export interface CommandOptions {
 }
 
 export type CommandPropMap = Map<string, CommandPropValue>;
-export type CommandPropObject = {[key: string]: CommandPropValue};
 export type CommandPropValue = string | Array<string>;
+
+export interface CommandPropObject {
+  [key: string]: CommandPropValue;
+}
 
 @Entity()
 export class Command implements CommandOptions {
@@ -27,6 +30,15 @@ export class Command implements CommandOptions {
     } else {
       return new Map(Object.entries(value));
     }
+  }
+
+  public static create(options: CommandOptions) {
+    const cmd = new Command();
+    cmd.context = options.context;
+    cmd.data = Command.toPropMap(options.data);
+    cmd.name = options.name;
+    cmd.type = options.type;
+    return cmd;
   }
 
   @Column('simple-json')
@@ -44,15 +56,6 @@ export class Command implements CommandOptions {
   @Column()
   public type: CommandType;
 
-  public static create(options: CommandOptions) {
-    const cmd = new Command();
-    cmd.context = options.context;
-    cmd.data = Command.toPropMap(options.data);
-    cmd.name = options.name;
-    cmd.type = options.type;
-    return cmd;
-  }
-
   public has(key: string): boolean {
     return this.data.has(key);
   }
@@ -67,7 +70,7 @@ export class Command implements CommandOptions {
   public toJSON(): object {
     return {
       context: this.context,
-      data: this.data.entries(),
+      data: Array.from(this.data.entries()),
       name: this.name,
       type: this.type
     };

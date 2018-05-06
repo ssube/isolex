@@ -2,7 +2,9 @@ import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, Te
 import { isNil } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
-import { Listener, FetchOptions } from 'src/listener/Listener';
+import { Context } from 'src/Context';
+import { BaseListener } from 'src/listener/BaseListener';
+import { FetchOptions, Listener } from 'src/listener/Listener';
 import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
 
@@ -10,29 +12,21 @@ export interface DiscordListenerConfig {
   token: string;
 }
 
-export interface DiscordListenerOptions extends ServiceOptions<DiscordListenerConfig> {
+export type DiscordListenerOptions = ServiceOptions<DiscordListenerConfig>;
 
-}
-
-export class DiscordListener implements Listener {
+export class DiscordListener extends BaseListener<DiscordListenerConfig> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return !isNil(chan) && chan.type === 'text';
   }
 
-  protected bot: Bot;
   protected client: Client;
-  protected config: DiscordListenerConfig;
-  protected logger: Logger;
   // @todo: this should be a WeakMap but lodash has a bad typedef
   protected threads: Map<string, DiscordMessage>;
 
   constructor(options: DiscordListenerOptions) {
-    this.bot = options.bot;
+    super(options);
+
     this.client = new Client();
-    this.config = options.config;
-    this.logger = options.logger.child({
-      class: DiscordListener.name
-    });
     this.threads = new Map();
   }
 
@@ -53,8 +47,12 @@ export class DiscordListener implements Listener {
     this.client.removeAllListeners('ready');
   }
 
+  public async check(context: Context) {
+    return true;
+  }
+
   public async emit(msg: Message) {
-    // direct reply msg
+    // direct reply to message
     if (msg.context.threadId) {
       const thread = this.threads.get(msg.context.threadId);
       if (thread) {
@@ -77,11 +75,11 @@ export class DiscordListener implements Listener {
       }
     }
 
-    // broad reply channel
+    // broad reply to channel
     if (msg.context.roomId) {
       const channel = this.client.channels.get(msg.context.roomId);
       if (DiscordListener.isTextChannel(channel)) {
-        channel.send(msg.body);
+        await channel.send(msg.body);
         return;
       } else {
         this.logger.warn({ msg }, 'cannot emit message to missing channel');
@@ -89,7 +87,7 @@ export class DiscordListener implements Listener {
     }
 
     // fail
-    this.logger.error('invalid destination for message');
+    this.logger.error('could not find destination in message context');
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {

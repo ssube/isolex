@@ -5,6 +5,8 @@ import { Container, Inject, Module, Provides } from 'noicejs';
 import { ContainerOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { ModuleOptions } from 'noicejs/Module';
+import { RequestAPI } from 'request';
+import * as request from 'request-promise';
 import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/Command';
 import { Context } from 'src/Context';
@@ -25,11 +27,10 @@ import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
 import { SplitParser } from 'src/parser/SplitParser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
-import { Cooldown } from 'src/util/Cooldown';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
-import { createConnection, ConnectionOptions, Connection } from 'typeorm';
-import { DiceHandler } from './handler/DiceHandler';
-import { RandomHandler } from './handler/RandomHandler';
+import { Service } from 'src/Service';
+import { Cooldown } from 'src/utils/Cooldown';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+import { Connection, ConnectionOptions, createConnection, Entity } from 'typeorm';
 
 export interface BotConfig {
   bot: {
@@ -116,6 +117,17 @@ export class BotModule extends Module {
   protected async createStorage(options: any): Promise<Connection> {
     return this.bot.getStorage();
   }
+
+  @Provides('request')
+  protected async createRequest(options: any): Promise<Request> {
+    this.logger.debug({ options }, 'creating request');
+    return request(options);
+  }
+
+  @Provides('entities')
+  protected async createEntities(): Promise<Array<Function>> {
+    return [Command, Message];
+  }
 }
 
 @Inject('logger')
@@ -175,9 +187,10 @@ export class Bot {
     this.outgoing.subscribe((next) => this.dispatch(next).catch((err) => this.looseError(err)));
 
     this.logger.info('connecting to storage');
+    const entities = await this.container.create<Array<Function>, any>('entities');
     this.storage = await createConnection({
       ...this.config.storage,
-      entities: [Command, Message]
+      entities
     });
 
     this.logger.info('setting up filters');
@@ -291,21 +304,17 @@ export class Bot {
 
     await this.storage.getRepository(Command).save(cmd);
 
-    let handled = false;
     for (const h of this.handlers) {
-      if (await h.handle(cmd)) {
-        handled = true;
-        break;
+      if (await h.check(cmd)) {
+        return h.handle(cmd);
       }
     }
 
-    if (!handled) {
-      this.logger.warn({ cmd }, 'unhandled command');
-    }
+    this.logger.warn({ cmd }, 'unhandled command');
   }
 
   /**
-   * Dispatch a message to the appropriate listeners (based on the destination).
+   * Dispatch a message to the appropriate listeners (based on the context).
    */
   public async dispatch(msg: Message) {
     this.logger.debug({ msg }, 'dispatching outgoing message');
@@ -317,9 +326,16 @@ export class Bot {
 
     await this.storage.getRepository(Message).save(msg);
 
-    for (const l of this.listeners) {
-      // @todo: select the correct listener
-      l.emit(msg);
+    let emitted = false;
+    for (const listener of this.listeners) {
+      if (await listener.check(msg.context)) {
+        await listener.emit(msg);
+        emitted = true;
+      }
+    }
+
+    if (!emitted) {
+      this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
     }
   }
 
@@ -337,7 +353,7 @@ export class Bot {
 
     const results = await Promise.all(this.filters.map(async (filter) => {
       const result = await filter.filter(next);
-      this.logger.debug({ filter, result }, 'checked filter');
+      this.logger.debug({ result }, 'checked filter');
       return result;
     }));
 
@@ -355,7 +371,7 @@ export class Bot {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  protected async createPart<T>(type: string, config: any): Promise<T> {
+  protected async createPart<T extends Service>(type: string, config: any): Promise<T> {
     return this.container.create<T, any>(type, {
       bot: this,
       config,

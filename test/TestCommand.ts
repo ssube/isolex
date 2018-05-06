@@ -27,10 +27,10 @@ describeAsync('command', async () => {
 
   itAsync('convert objects to maps', async () => {
     const map = Command.toPropMap({
-      foo: '1',
-      bar: '2'
+      bar: '2',
+      foo: '1'
     });
 
-    expect(Array.from(map.entries())).to.deep.equal([['foo', '1'], ['bar', '2']]);
+    expect(Array.from(map.entries())).to.deep.equal([['bar', '2'], ['foo', '1']]);
   });
 });

@@ -30,6 +30,7 @@ module.exports = {
     test: [modulePath.harness, 'sinon', 'chai']
   },
   externals: {
+    'uws': 'commonjs uws',
     'sqlite3': 'commonjs sqlite3'
   },
   mode: 'none',
