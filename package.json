@@ -7,6 +7,11 @@
   "author": "ssube",
   "license": "MIT",
   "private": false,
+  "dependencies": {
+    "grpc": "^1.11.3",
+    "sqlite3": "^4.0.0",
+    "uws": "^9.148.0"
+  },
   "devDependencies": {
     "@types/bluebird": "^3.5.20",
     "@types/bunyan": "^1.8.4",
@@ -50,7 +55,6 @@
     "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0",
     "source-map-support": "^0.5.5",
-    "sqlite3": "^4.0.0",
     "tslint": "^5.9.1",
     "tslint-loader": "^3.6.0",
     "typedoc": "^0.11.1",

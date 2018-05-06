@@ -30,7 +30,7 @@ import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { Service } from 'src/Service';
 import { Cooldown } from 'src/utils/Cooldown';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
-import { Connection, ConnectionOptions, createConnection } from 'typeorm';
+import { Connection, ConnectionOptions, createConnection, Entity } from 'typeorm';
 
 export interface BotConfig {
   bot: {
@@ -121,6 +121,11 @@ export class BotModule extends Module {
     this.logger.debug({ options }, 'creating request');
     return request(options);
   }
+
+  @Provides('entities')
+  protected async createEntities(): Promise<Array<Function>> {
+    return [Command, Message];
+  }
 }
 
 @Inject('logger')
@@ -180,9 +185,10 @@ export class Bot {
     this.outgoing.subscribe((next) => this.dispatch(next).catch((err) => this.looseError(err)));
 
     this.logger.info('connecting to storage');
+    const entities = await this.container.create<Array<Function>, any>('entities');
     this.storage = await createConnection({
       ...this.config.storage,
-      entities: [Command, Message]
+      entities
     });
 
     this.logger.info('setting up filters');
