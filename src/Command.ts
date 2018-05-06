@@ -70,7 +70,7 @@ export class Command implements CommandOptions {
   public toJSON(): object {
     return {
       context: this.context,
-      data: this.data.entries(),
+      data: Array.from(this.data.entries()),
       name: this.name,
       type: this.type
     };

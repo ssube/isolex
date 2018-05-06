@@ -54,7 +54,7 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
     for (const expr of args) {
       this.logger.debug({ expr }, 'evaluating expression');
 
-      const body = this.eval(expr, { cmd });
+      const body = '`' + this.eval(expr, { cmd }) + '`';
       this.logger.debug({ body, expr }, 'compiled expression');
 
       const msg = Message.create({

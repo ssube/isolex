@@ -6,11 +6,11 @@ import { Message } from 'src/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
+import * as split from 'split-string';
 
-export interface SplitParserConfig extends ParserConfig {
-  delims?: Array<string>;
+export interface SplitParserConfig extends ParserConfig, SplitString.SplitOptions {
   name: string;
-  regexp?: string;
+  regexp: string;
 }
 
 export type SplitParserOptions = ServiceOptions<SplitParserConfig>;
@@ -27,10 +27,6 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
 
     if (options.config.regexp) {
       this.regexp = new RegExp(options.config.regexp);
-    }
-
-    if (options.config.delims) {
-      this.delims = ['\n'].concat(options.config.delims);
     }
   }
 
@@ -55,12 +51,11 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
       } else {
         throw new Error('unable to split message on regexp');
       }
-    } else if (this.delims) {
-      const args = this.delims.reduce((p, d) => flatten(p.map((i) => i.split(d))), [msg]).filter((i) => !!i);
+    } else {
+      this.logger.debug({ config: this.config, split: msg }, 'splitting string');
+      const args = split(msg, this.config);
       this.logger.debug({ args }, 'splitting on delimiters');
       return args;
-    } else {
-      throw new Error('unable to split message');
     }
   }
 }

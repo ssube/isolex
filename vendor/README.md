@@ -1,0 +1,1 @@
+Vendored dependencies (`so-client`) and external typedefs.
