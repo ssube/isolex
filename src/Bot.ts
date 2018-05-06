@@ -28,6 +28,8 @@ import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { Cooldown } from 'src/util/Cooldown';
 import { TemplateCompiler } from 'src/util/TemplateCompiler';
 import { createConnection, ConnectionOptions, Connection } from 'typeorm';
+import { DiceHandler } from './handler/DiceHandler';
+import { RandomHandler } from './handler/RandomHandler';
 
 export interface BotConfig {
   bot: {
@@ -78,8 +80,10 @@ export class BotModule extends Module {
     this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
 
     // handlers
+    this.bind(kebabCase(DiceHandler.name)).toConstructor(DiceHandler);
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
     this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
+    this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
     this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
     this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
@@ -157,7 +161,7 @@ export class Bot {
     this.timers = new Set();
   }
 
-  getStorage(): Connection {
+  public getStorage(): Connection {
     return this.storage;
   }
 
