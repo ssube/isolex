@@ -14,7 +14,9 @@ import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
 import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
+import { DiceHandler } from 'src/handler/DiceHandler'
 import { MathHandler } from 'src/handler/MathHandler';
+import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
 import { TimeHandler, TimeHandlerConfig } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
