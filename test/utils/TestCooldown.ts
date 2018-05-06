@@ -3,8 +3,8 @@ import { ineeda } from 'ineeda';
 import { Container } from 'noicejs';
 import { spy } from 'sinon';
 
-import { Cooldown, CooldownOptions } from 'src/util/Cooldown';
 import { defer } from 'src/utils';
+import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 import { describeAsync, itAsync } from 'test/helpers/async';
 
 describeAsync('cooldown', async () => {

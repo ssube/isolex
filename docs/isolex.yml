@@ -92,3 +92,7 @@ parsers:
     name: test_math
     tags:
       - '!!math'
+
+storage:
+  type: sqlite
+  database: "./out/isolex.db"

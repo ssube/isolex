@@ -3,10 +3,11 @@ import { Logger } from 'noicejs/logger/Logger';
 import * as request from 'request-promise';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
 import { Message } from 'src/Message';
-import { Template } from 'src/util/Template';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { Template } from 'src/utils/Template';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherQuery {
   APPID: string;
@@ -85,26 +86,21 @@ export interface WeatherHandlerOptions extends HandlerOptions<WeatherHandlerConf
 }
 
 @Inject('compiler')
-export class WeatherHandler implements Handler {
-  protected bot: Bot;
-  protected config: WeatherHandlerConfig;
-  protected logger: Logger;
+export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements Handler {
+  protected name: string;
   protected template: Template;
 
   constructor(options: WeatherHandlerOptions) {
-    this.bot = options.bot;
-    this.config = options.config;
-    this.logger = options.logger.child({
-      class: WeatherHandler.name
-    });
+    super(options);
+
     this.template = options.compiler.compile(options.config.template);
   }
 
-  public async handle(cmd: Command) {
-    if (cmd.name !== 'test_weather') {
-      return false;
-    }
+  public async check(cmd: Command): Promise<boolean> {
+    return cmd.name === this.name;
+  }
 
+  public async handle(cmd: Command): Promise<void> {
     const location = cmd.get('location');
     if (!location) {
       await this.bot.send(Message.create({
@@ -112,7 +108,6 @@ export class WeatherHandler implements Handler {
         context: cmd.context,
         reactions: []
       }));
-      return true;
     }
 
     try {
@@ -128,12 +123,8 @@ export class WeatherHandler implements Handler {
         context: cmd.context,
         reactions: []
       }));
-
-      return true;
     } catch (err) {
       this.logger.error(err, 'error getting weather');
-
-      return false;
     }
   }
 

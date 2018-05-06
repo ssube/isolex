@@ -1,26 +1,27 @@
 import { isNumber, isString } from 'lodash';
-import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Message } from 'src/Message';
+import { ServiceOptions } from 'src/Service';
 
 export interface UserFilterConfig {
   ignore: Array<number | string>;
 }
 
-export interface UserFilterOptions {
-  bot: Bot;
-  config: UserFilterConfig;
-  logger: Logger;
-}
+export type UserFilterOptions = ServiceOptions<UserFilterConfig>;
 
-export class UserFilter implements Filter {
+export class UserFilter extends BaseFilter<UserFilterConfig> implements Filter {
   protected ignore: Array<number | string>;
-  protected logger: Logger;
 
   constructor(options: UserFilterOptions) {
+    super(options);
+
     this.ignore = options.config.ignore;
+    this.logger = options.logger.child({
+      class: UserFilter.name
+    });
   }
 
   public async filter(val: FilterValue): Promise<FilterBehavior> {

@@ -1,4 +1,5 @@
 import { Command } from 'src/Command';
+import { Context } from 'src/Context';
 import { Message } from 'src/Message';
 import { Service } from 'src/Service';
 
@@ -11,6 +12,8 @@ export interface FetchOptions {
 }
 
 export interface Listener extends Service {
+  check(context: Context): Promise<boolean>;
+
   /**
    * Emit a message.
    */

@@ -8,8 +8,8 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
 import { EchoHandler, EchoHandlerOptions } from 'src/handler/EchoHandler';
 import { Message } from 'src/Message';
-import { Template } from 'src/util/Template';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
+import { Template } from 'src/utils/Template';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
 
 describeAsync('echo handler', async () => {

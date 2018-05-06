@@ -25,9 +25,10 @@ import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
 import { SplitParser } from 'src/parser/SplitParser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
-import { Cooldown } from 'src/util/Cooldown';
-import { TemplateCompiler } from 'src/util/TemplateCompiler';
-import { createConnection, ConnectionOptions, Connection } from 'typeorm';
+import { Service } from 'src/Service';
+import { Cooldown } from 'src/utils/Cooldown';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 export interface BotConfig {
   bot: {
@@ -157,7 +158,7 @@ export class Bot {
     this.timers = new Set();
   }
 
-  getStorage(): Connection {
+  public getStorage(): Connection {
     return this.storage;
   }
 
@@ -287,17 +288,13 @@ export class Bot {
 
     await this.storage.getRepository(Command).save(cmd);
 
-    let handled = false;
     for (const h of this.handlers) {
-      if (await h.handle(cmd)) {
-        handled = true;
-        break;
+      if (await h.check(cmd)) {
+        return h.handle(cmd);
       }
     }
 
-    if (!handled) {
-      this.logger.warn({ cmd }, 'unhandled command');
-    }
+    this.logger.warn({ cmd }, 'unhandled command');
   }
 
   /**
@@ -313,9 +310,16 @@ export class Bot {
 
     await this.storage.getRepository(Message).save(msg);
 
-    for (const l of this.listeners) {
-      // @todo: select the correct listener
-      l.emit(msg);
+    let emitted = false;
+    for (const listener of this.listeners) {
+      if (await listener.check(msg.context)) {
+        await listener.emit(msg);
+        emitted = true;
+      }
+    }
+
+    if (!emitted) {
+      this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
     }
   }
 
@@ -333,7 +337,7 @@ export class Bot {
 
     const results = await Promise.all(this.filters.map(async (filter) => {
       const result = await filter.filter(next);
-      this.logger.debug({ filter, result }, 'checked filter');
+      this.logger.debug({ result }, 'checked filter');
       return result;
     }));
 
@@ -351,7 +355,7 @@ export class Bot {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  protected async createPart<T>(type: string, config: any): Promise<T> {
+  protected async createPart<T extends Service>(type: string, config: any): Promise<T> {
     return this.container.create<T, any>(type, {
       bot: this,
       config,

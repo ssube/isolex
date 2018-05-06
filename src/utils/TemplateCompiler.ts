@@ -2,7 +2,7 @@ import * as Handlebars from 'handlebars';
 import { Inject } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Context } from 'src/Context';
-import { Template } from 'src/util/Template';
+import { Template } from 'src/utils/Template';
 
 export interface TemplateCompilerOptions {
   logger: Logger;

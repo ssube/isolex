@@ -26,6 +26,7 @@ describeAsync('user filter', async () => {
       config: {
         ignore: ['test']
       },
+      container: ineeda<Container>(),
       logger: bunyan.createLogger({
         name: 'test-user-filter'
       })
@@ -39,6 +40,7 @@ describeAsync('user filter', async () => {
       config: {
         ignore: ['test']
       },
+      container: ineeda<Container>(),
       logger: bunyan.createLogger({
         name: 'test-user-filter'
       })

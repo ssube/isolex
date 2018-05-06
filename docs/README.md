@@ -34,4 +34,4 @@ directly reply to users (the `<command>` has reply-to data) or create additional
 (which should have the reply-to destination attached).
 
 The `(send)` queue has retry logic to dispatch messages on an adjusting interval, with errors increasing the time
-between ticks and success decreasing it (see the [cooldown](../src/util/Cooldown.ts)).
+between ticks and success decreasing it (see the [cooldown](../src/utils/Cooldown.ts)).

@@ -6,6 +6,7 @@ import { Command } from 'src/Command';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
 import { Message } from 'src/Message';
 import { isObject } from 'util';
+import { BaseHandler } from './BaseHandler';
 
 export interface MathHandlerConfig {
   matrix: string;
@@ -13,31 +14,24 @@ export interface MathHandlerConfig {
   number: string;
 }
 
-export interface MathHandlerOptions extends HandlerOptions<MathHandlerConfig> {
-  /* empty */
-}
+export type MathHandlerOptions = HandlerOptions<MathHandlerConfig>;
 
-export class MathHandler implements Handler {
-  protected bot: Bot;
-  protected config: MathHandlerConfig;
-  protected logger: Logger;
+export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handler {
   protected math: mathjs.MathJsStatic;
   protected name: string;
 
   constructor(options: MathHandlerOptions) {
-    this.bot = options.bot;
-    this.logger = options.logger.child({
-      class: MathHandler.name
-    });
+    super(options);
+
     this.math = (mathjs as any).create(options.config);
     this.name = options.config.name;
   }
 
-  public async handle(cmd: Command): Promise<boolean> {
-    if (cmd.name !== this.name) {
-      return false;
-    }
+  public async check(cmd: Command): Promise<boolean> {
+    return cmd.name === this.name;
+  }
 
+  public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'calculating command');
 
     const args = cmd.get('args');
@@ -58,8 +52,6 @@ export class MathHandler implements Handler {
       });
       await this.bot.send(msg);
     }
-
-    return true;
   }
 
   protected eval(expr: string, scope: any): string {

@@ -1,40 +1,31 @@
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Command } from 'src/Command';
+import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler } from 'src/handler/Handler';
 import { Message } from 'src/Message';
+import { ServiceOptions } from 'src/Service';
 
 export interface TimeHandlerConfig {
   locale: string;
   zone: string;
 }
 
-export interface TimeHandlerOptions {
-  bot: Bot;
-  config: TimeHandlerConfig;
-  logger: Logger;
-}
+export type TimeHandlerOptions = ServiceOptions<TimeHandlerConfig>;
 
-export class TimeHandler implements Handler {
-  protected bot: Bot;
-  protected config: TimeHandlerConfig;
-  protected logger: Logger;
+export class TimeHandler extends BaseHandler<TimeHandlerConfig> implements Handler {
+  protected name: string;
   protected template: HandlebarsTemplateDelegate;
 
   constructor(options: TimeHandlerOptions) {
-    this.logger = options.logger.child({
-      class: TimeHandler.name
-    });
-
-    this.bot = options.bot;
-    this.config = options.config;
+    super(options);
   }
 
-  public async handle(cmd: Command): Promise<boolean> {
-    if (cmd.name !== 'test_time') {
-      return false;
-    }
+  public async check(cmd: Command): Promise<boolean> {
+    return cmd.name === this.name;
+  }
 
+  public async handle(cmd: Command): Promise<void> {
     let timeZone = this.config.zone;
     if (cmd.has('zone')) {
       timeZone = cmd.get('zone');
@@ -48,6 +39,5 @@ export class TimeHandler implements Handler {
       reactions: []
     });
     await this.bot.send(msg);
-    return true;
   }
 }

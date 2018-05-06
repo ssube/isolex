@@ -1,6 +1,6 @@
 import * as escape from 'escape-html';
 import { Context } from 'src/Context';
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 export interface MessageOptions {
   body: string;
@@ -10,6 +10,14 @@ export interface MessageOptions {
 
 @Entity()
 export class Message implements MessageOptions {
+  public static create(options: MessageOptions): Message {
+    const msg = new Message();
+    msg.body = options.body;
+    msg.context = options.context;
+    msg.reactions = Array.from(options.reactions);
+    return msg;
+  }
+
   @Column()
   public body: string;
 
@@ -21,14 +29,6 @@ export class Message implements MessageOptions {
 
   @Column('simple-array')
   public reactions: Array<string>;
-
-  public static create(options: MessageOptions): Message {
-    const msg = new Message();
-    msg.body = options.body;
-    msg.context = options.context;
-    msg.reactions = Array.from(options.reactions);
-    return msg;
-  }
 
   get escaped(): string {
     return escape(this.body);
