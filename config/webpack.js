@@ -1,8 +1,8 @@
-const {resolve} = require('path');
-const {CheckerPlugin, TsConfigPathsPlugin} = require('awesome-typescript-loader');
+const { resolve } = require('path');
+const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const tsconfig = require('./tsconfig');
 
@@ -83,18 +83,48 @@ module.exports = {
       name: 'dtrace-provider',
       alias: modulePath.shim
     }, {
+      name: 'erlpack',
+      alias: modulePath.shim
+    }, {
+      name: 'ffmpeg-binaries',
+      alias: modulePath.shim
+    }, {
       name: 'handlebars',
       alias: 'handlebars/dist/handlebars'
+    }, {
+      name: 'mongodb',
+      alias: modulePath.shim
+    }, {
+      name: 'mssql',
+      alias: modulePath.shim
+    }, {
+      name: 'mysql',
+      alias: modulePath.shim
+    }, {
+      name: 'mysql2',
+      alias: modulePath.shim
+    }, {
+      name: 'node-opus',
+      alias: modulePath.shim
+    }, {
+      name: 'opusscript',
+      alias: modulePath.shim
+    }, {
+      name: 'oracledb',
+      alias: modulePath.shim
     }, {
       name: 'pty.js',
       alias: modulePath.shim
     }, {
-      name: 'term.js',
+      name: 'react-native-sqlite-storage',
       alias: modulePath.shim
     }, {
       name: 'src',
       alias: path.source,
       onlyModule: false
+    }, {
+      name: 'term.js',
+      alias: modulePath.shim
     }, {
       name: 'test',
       alias: path.test,
@@ -106,7 +136,7 @@ module.exports = {
     }],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     plugins: [
-      new TsConfigPathsPlugin({tsconfig, compiler: 'typescript'})
+      new TsConfigPathsPlugin({ tsconfig, compiler: 'typescript' })
     ]
   },
   target: 'node'

@@ -5,9 +5,10 @@ import { Logger } from 'noicejs/logger/Logger';
 import { match, spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { EchoHandler, EchoHandlerOptions } from 'src/handler/EchoHandler';
-import { Message } from 'src/Message';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
@@ -56,12 +57,12 @@ describeAsync('echo handler', async () => {
     const handler = await container.create(EchoHandler, options);
 
     const cmd = Command.create({
-      context: {
+      context: Context.create({
         roomId: '',
         threadId: '',
         userId: '',
         userName: ''
-      },
+      }),
       data: {},
       name: 'test_echo',
       type: 0

@@ -5,10 +5,10 @@ import { Logger } from 'noicejs/logger/Logger';
 import { spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
-import { Command } from 'src/Command';
-import { Context } from 'src/Context';
+import { Command } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { WeatherHandler, WeatherHandlerOptions } from 'src/handler/WeatherHandler';
-import { Message } from 'src/Message';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
@@ -18,7 +18,16 @@ describeAsync('weather handler', async () => {
   itAsync('should send a message', async () => {
     const { container } = await createContainer();
 
-    let msg = Message.create({} as any);
+    let msg = Message.create({
+      body: '',
+      context: Context.create({
+        roomId: '',
+        threadId: '',
+        userId: '',
+        userName: ''
+      }),
+      reactions: []
+    });
     const options: WeatherHandlerOptions = {
       bot: ineeda<Bot>({
         send: (inMsg: Message) => {
@@ -42,7 +51,7 @@ describeAsync('weather handler', async () => {
     const handler = await container.create(WeatherHandler, options);
     expect(handler).to.be.an.instanceOf(WeatherHandler);
 
-    const context = new Context({
+    const context = Context.create({
       roomId: '',
       threadId: '',
       userId: '',

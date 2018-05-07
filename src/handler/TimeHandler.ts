@@ -1,9 +1,9 @@
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler } from 'src/handler/Handler';
-import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
 
 export interface TimeHandlerConfig {

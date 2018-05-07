@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-import { Command, CommandType } from 'src/Command';
+import { Command, CommandType } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { describeAsync, itAsync } from 'test/helpers/async';
 
 describeAsync('command', async () => {
@@ -10,12 +11,12 @@ describeAsync('command', async () => {
       test: 1
     };
     const cmd = Command.create({
-      context: {
+      context: Context.create({
         roomId: '',
         threadId: '',
         userId: '',
         userName: ''
-      },
+      }),
       data,
       name: '',
       type: CommandType.None

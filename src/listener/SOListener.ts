@@ -2,10 +2,10 @@ import { Container } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Observable, Subject } from 'rxjs';
 import { Bot } from 'src/Bot';
-import { Context } from 'src/Context';
+import { Context } from 'src/entity/Context';
 import { BaseListener } from 'src/listener/BaseListener';
 import { Listener, FetchOptions } from 'src/listener/Listener';
-import { Message } from 'src/Message';
+import { Message } from 'src/entity/Message';
 import { ServiceOptions } from 'src/Service';
 import { Cooldown, CooldownOptions, CooldownConfig } from 'src/utils/Cooldown';
 import { Client } from 'vendor/so-client/src/client';
@@ -38,12 +38,12 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
       throw new Error('invalid event type');
     }
 
-    return {
+    return Context.create({
       roomId: event.room_id.toString(),
       threadId: event.message_id.toString(),
       userId: event.user_id.toString(),
       userName: event.user_name
-    };
+    });
   }
 
   constructor(options: SOListenerOptions) {
@@ -100,7 +100,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
         const rate = this.rate.inc();
         this.logger.warn({ rate }, 'reply was rate-limited');
         setTimeout(() => {
-          this.emit(msg).catch((err) => this.logger.error(err, 'error resending message'));
+          this.emit(msg).catch((err) => this.logger.error(err, 'error re-sending message'));
         }, rate);
       } else {
         this.logger.error(err, 'reply failed');

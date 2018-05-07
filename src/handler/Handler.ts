@@ -1,4 +1,4 @@
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
 import { Service, ServiceOptions } from 'src/Service';
 
 export type HandlerOptions<T> = ServiceOptions<T>;

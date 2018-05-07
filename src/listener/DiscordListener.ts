@@ -2,10 +2,10 @@ import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, Te
 import { isNil } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
-import { Context } from 'src/Context';
+import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
-import { Message } from 'src/Message';
 import { ServiceOptions } from 'src/Service';
 
 export interface DiscordListenerConfig {
@@ -98,12 +98,12 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
 
     // transform the options into https://discord.js.org/#/docs/main/stable/typedef/ChannelLogsQueryOptions
     const queryOptions = this.convertQueryOptions(options);
-    const msgs = [];
+    const messages = [];
     for (const [_, msg] of await channel.fetchMessages(queryOptions)) {
-      msgs.push(this.convertMessage(msg));
+      messages.push(this.convertMessage(msg));
     }
 
-    return msgs;
+    return messages;
   }
 
   public async receive(value: DiscordMessage) {
@@ -116,12 +116,12 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
   protected convertMessage(msg: DiscordMessage): Message {
     return Message.create({
       body: msg.content,
-      context: {
+      context: Context.create({
         roomId: msg.channel.id,
         threadId: msg.id,
         userId: msg.author.id,
         userName: msg.author.username
-      },
+      }),
       reactions: msg.reactions.map((r) => r.emoji.name)
     });
   }

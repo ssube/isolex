@@ -1,10 +1,10 @@
 import { Inject } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
-import { Message } from 'src/Message';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 

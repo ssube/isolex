@@ -1,6 +1,6 @@
 import * as escape from 'escape-html';
-import { Context } from 'src/Context';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Context } from 'src/entity/Context';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export interface MessageOptions {
   body: string;
@@ -13,7 +13,7 @@ export class Message implements MessageOptions {
   public static create(options: MessageOptions): Message {
     const msg = new Message();
     msg.body = options.body;
-    msg.context = options.context;
+    msg.context = Context.create(options.context);
     msg.reactions = Array.from(options.reactions || []);
     return msg;
   }
@@ -21,10 +21,10 @@ export class Message implements MessageOptions {
   @Column()
   public body: string;
 
-  @Column('simple-json')
+  @OneToOne((type) => Context, (context) => context.id)
   public context: Context;
 
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   public id: string;
 
   @Column('simple-array')

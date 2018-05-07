@@ -1,6 +1,6 @@
-import { Context } from 'src/Context';
+import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { FetchOptions, Listener } from 'src/listener/Listener';
-import { Message } from 'src/Message';
 import { BaseService } from 'src/Service';
 
 export abstract class BaseListener<TConfig> extends BaseService<TConfig> implements Listener {

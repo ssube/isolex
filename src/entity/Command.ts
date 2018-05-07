@@ -1,6 +1,6 @@
 import { isMap } from 'lodash';
-import { Context } from 'src/Context';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Context } from 'src/entity/Context';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum CommandType {
   None,
@@ -34,20 +34,20 @@ export class Command implements CommandOptions {
 
   public static create(options: CommandOptions) {
     const cmd = new Command();
-    cmd.context = options.context;
+    cmd.context = Context.create(options.context);
     cmd.data = Command.toPropMap(options.data);
     cmd.name = options.name;
     cmd.type = options.type;
     return cmd;
   }
 
-  @Column('simple-json')
+  @OneToOne((type) => Context, (context) => context.id)
   public context: Context;
 
   @Column('simple-json')
   public data: CommandPropMap;
 
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   public id: string;
 
   @Column()

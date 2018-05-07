@@ -1,6 +1,6 @@
 import { Logger } from 'noicejs/logger/Logger';
-import { Command } from 'src/Command';
-import { Message } from 'src/Message';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { BaseService, ServiceOptions } from 'src/Service';
 

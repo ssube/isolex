@@ -1,10 +1,10 @@
 import { max, min, random, randomInt } from 'mathjs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerOptions } from 'src/handler/Handler';
-import { Message } from 'src/Message';
 
 export interface RandomHandlerConfig {
   name: string;
@@ -14,7 +14,7 @@ export type RandomHandlerOptions = HandlerOptions<RandomHandlerConfig>;
 
 export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements Handler {
   protected name: string;
-  
+
   constructor(options: RandomHandlerOptions) {
     super(options);
 
@@ -26,7 +26,7 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const args = cmd.data.get('args');   
+    const args = cmd.data.get('args');
     if (!args) {
       throw new Error('no arguments were provided!');
     }
@@ -75,7 +75,7 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
     const minimum = val2 === undefined ? min(val1, 0) : min(val1, val2);
     const maximum = val2 === undefined ? max(val1, 0) : max(val1, val2);
 
-    console.log(precision);
+    this.logger.debug({ precision }, 'getting random value');
     if (precision === 0) {
       return randomInt(minimum, maximum);
     }
@@ -84,16 +84,16 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
     return this.round(random(minimum, maximum), precision);
   }
 
-  private getPrecision(...values: number[]) {
-    const precision = values.map(value => {
+  private getPrecision(...values: Array<number>) {
+    const precision = values.map((value) => {
       const parts = value.toString().split('.');
       return parts[1] !== undefined ? parts[1].length : 0;
     })
-    .reduce((previous, current) => {
-      console.log(previous + "   " + current)
-      return current > previous ? current : previous;
-    });
-    
+      .reduce((previous, current) => {
+        this.logger.debug({ previous, current }, 'calculating precision');
+        return current > previous ? current : previous;
+      });
+
     return precision;
   }
 

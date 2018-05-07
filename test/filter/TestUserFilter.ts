@@ -3,7 +3,8 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { ConsoleLogger, Container } from 'noicejs';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterOptions } from 'src/filter/UserFilter';
 import { describeAsync, itAsync } from 'test/helpers/async';
@@ -44,12 +45,12 @@ describeAsync('user filter', async () => {
     expect(filter.getIgnore()).to.deep.equal(ignore);
 
     const cmd = Command.create({
-      context: {
+      context: Context.create({
         roomId: '',
         threadId: '',
         userId: '',
         userName: 'safe'
-      },
+      }),
       data: {},
       name: 'test',
       type: 0
@@ -69,12 +70,12 @@ describeAsync('user filter', async () => {
     expect(filter.getIgnore()).to.deep.equal(ignore);
 
     const cmd = Command.create({
-      context: {
+      context: Context.create({
         roomId: '',
         threadId: '',
         userId: '',
         userName: 'test'
-      },
+      }),
       data: {},
       name: 'test',
       type: 0

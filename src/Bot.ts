@@ -8,13 +8,14 @@ import { ModuleOptions } from 'noicejs/Module';
 import { RequestAPI } from 'request';
 import * as request from 'request-promise';
 import { Observable, Subject } from 'rxjs';
-import { Command, CommandOptions } from 'src/Command';
-import { Context } from 'src/Context';
+import { Command, CommandOptions } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
+import { DiceHandler } from 'src/handler/DiceHandler';
 import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
-import { DiceHandler } from 'src/handler/DiceHandler'
 import { MathHandler } from 'src/handler/MathHandler';
 import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
@@ -23,7 +24,6 @@ import { WeatherHandler } from 'src/handler/WeatherHandler';
 import { DiscordListener } from 'src/listener/DiscordListener';
 import { Listener } from 'src/listener/Listener';
 import { SOListener } from 'src/listener/SOListener';
-import { Message } from 'src/Message';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
 import { Parser } from 'src/parser/Parser';
@@ -128,7 +128,7 @@ export class BotModule extends Module {
 
   @Provides('entities')
   protected async createEntities(): Promise<Array<Function>> {
-    return [Command, Message];
+    return [Command, Context, Message];
   }
 }
 
@@ -192,7 +192,28 @@ export class Bot {
     const entities = await this.container.create<Array<Function>, any>('entities');
     this.storage = await createConnection({
       ...this.config.storage,
-      entities
+      entities,
+      logger: {
+        log: (level: string, message: any) => {
+          // @todo make this log at the appropriate level
+          this.logger.debug({ level }, message);
+        },
+        logMigration: (migration: string) => {
+          this.logger.info({ migration }, 'orm running migration');
+        },
+        logQuery: (query: string, params?: Array<any>) => {
+          this.logger.debug({ params, query }, 'orm logged query');
+        },
+        logQueryError: (error: string, query: string, params?: Array<any>) => {
+          this.logger.warn({ error, params, query }, 'orm logged query error');
+        },
+        logQuerySlow: (time: number, query: string, params?: Array<any>) => {
+          this.logger.warn({ params, query, time }, 'orm logged slow query');
+        },
+        logSchemaBuild: (schema: string) => {
+          this.logger.info({ schema }, 'orm building schema');
+        }
+      }
     });
 
     this.logger.info('setting up filters');
@@ -274,13 +295,13 @@ export class Bot {
     }
 
     let matched = false;
-    for (const p of this.parsers) {
+    for (const parser of this.parsers) {
       try {
-        if (await p.match(msg)) {
+        if (await parser.match(msg)) {
           matched = true;
-          const cmds = await p.parse(msg);
-          for (const c of cmds) {
-            this.commands.next(c);
+          const commands = await parser.parse(msg);
+          for (const cmd of commands) {
+            this.commands.next(cmd);
           }
         }
       } catch (err) {

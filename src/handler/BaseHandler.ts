@@ -1,4 +1,4 @@
-import { Command } from 'src/Command';
+import { Command } from 'src/entity/Command';
 import { Handler } from 'src/handler/Handler';
 import { BaseService } from 'src/Service';
 

@@ -1,12 +1,12 @@
 import { flatten } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
+import * as split from 'split-string';
 import { Bot } from 'src/Bot';
-import { Command, CommandType } from 'src/Command';
-import { Message } from 'src/Message';
+import { Command, CommandType } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import * as split from 'split-string';
 
 export interface SplitParserConfig extends ParserConfig, SplitString.SplitOptions {
   name: string;
