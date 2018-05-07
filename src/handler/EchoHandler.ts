@@ -4,12 +4,11 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerOptions } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface EchoHandlerConfig {
-  name: string;
+export interface EchoHandlerConfig extends HandlerConfig {
   template: string;
 }
 
@@ -19,18 +18,12 @@ export interface EchoHandlerOptions extends HandlerOptions<EchoHandlerConfig> {
 
 @Inject('compiler')
 export class EchoHandler extends BaseHandler<EchoHandlerConfig> implements Handler {
-  protected name: string;
   protected template: Template;
 
   constructor(options: EchoHandlerOptions) {
     super(options);
 
-    this.name = options.config.name;
     this.template = options.compiler.compile(options.config.template);
-  }
-
-  public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
   }
 
   public async handle(cmd: Command): Promise<void> {

@@ -4,25 +4,15 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerOptions } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 
-export interface DiceHandlerConfig {
-  name: string;
-}
+export type DiceHandlerConfig = HandlerConfig;
 
 export type DiceHandlerOptions = HandlerOptions<DiceHandlerConfig>;
 
 export class DiceHandler extends BaseHandler<DiceHandlerConfig> implements Handler {
-  protected name: string;
-
   constructor(options: DiceHandlerOptions) {
     super(options);
-
-    this.name = options.config.name;
-  }
-
-  public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
   }
 
   public async handle(cmd: Command): Promise<void> {

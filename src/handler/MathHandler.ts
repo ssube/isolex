@@ -5,10 +5,10 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerOptions } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 import { isObject } from 'util';
 
-export interface MathHandlerConfig {
+export interface MathHandlerConfig extends HandlerConfig {
   format: {
     fraction: string;
     notation: string;
@@ -19,7 +19,6 @@ export interface MathHandlerConfig {
     matrix: string;
     number: string;
   };
-  name: string;
   node: {
     implicit: string;
     parenthesis: string;
@@ -30,17 +29,11 @@ export type MathHandlerOptions = HandlerOptions<MathHandlerConfig>;
 
 export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handler {
   protected math: mathjs.MathJsStatic;
-  protected name: string;
 
   constructor(options: MathHandlerOptions) {
     super(options);
 
     this.math = (mathjs as any).create(options.config);
-    this.name = options.config.name;
-  }
-
-  public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
   }
 
   public async handle(cmd: Command): Promise<void> {

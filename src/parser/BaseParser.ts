@@ -22,11 +22,7 @@ export abstract class BaseParser<TConfig extends ParserConfig> extends BaseServi
   }
 
   public async match(msg: Message): Promise<boolean> {
-    this.logger.debug({msg, tags: this.tags}, 'matching event against tags');
-
-    const hasTags = this.includesTag(msg.body);
-    this.logger.debug({msg, hasTags}, 'parser matches event');
-    return hasTags;
+    return this.includesTag(msg.body);
   }
 
   public abstract parse(msg: Message): Promise<Array<Command>>;

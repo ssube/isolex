@@ -4,7 +4,7 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerOptions } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -13,9 +13,8 @@ export interface ReactionChance {
   name: string;
 }
 
-export interface ReactionHandlerConfig {
+export interface ReactionHandlerConfig extends HandlerConfig {
   field: string;
-  name: string;
   reactions: Map<string, Array<ReactionChance>>;
 }
 

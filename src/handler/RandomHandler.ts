@@ -4,12 +4,9 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerOptions } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 
-export interface RandomHandlerConfig {
-  name: string;
-}
-
+export type RandomHandlerConfig = HandlerConfig;
 export type RandomHandlerOptions = HandlerOptions<RandomHandlerConfig>;
 
 export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements Handler {
@@ -19,10 +16,6 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
     super(options);
 
     this.name = options.config.name;
-  }
-
-  public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
   }
 
   public async handle(cmd: Command): Promise<void> {

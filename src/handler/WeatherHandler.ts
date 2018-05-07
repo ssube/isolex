@@ -6,16 +6,15 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerOptions } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface WeatherHandlerConfig {
+export interface WeatherHandlerConfig extends HandlerConfig {
   api: {
     key: string;
     root: string;
   };
-  name: string;
   template: string;
 }
 
@@ -26,19 +25,13 @@ export interface WeatherHandlerOptions extends HandlerOptions<WeatherHandlerConf
 @Inject('compiler')
 export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements Handler {
   protected container: Container;
-  protected name: string;
   protected template: Template;
 
   constructor(options: WeatherHandlerOptions) {
     super(options);
 
     this.container = options.container;
-    this.name = options.config.name;
     this.template = options.compiler.compile(options.config.template);
-  }
-
-  public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
   }
 
   public async handle(cmd: Command): Promise<void> {

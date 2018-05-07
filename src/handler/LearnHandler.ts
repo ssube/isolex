@@ -1,14 +1,13 @@
 import { Command } from 'src/entity/Command';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 import { ServiceOptions } from 'src/Service';
 
-export interface LearnHandlerConfig {
+export interface LearnHandlerConfig extends HandlerConfig {
   emit: string;
-  name: string;
 }
 
-export type LearnHandlerOptions = ServiceOptions<LearnHandlerConfig>;
+export type LearnHandlerOptions = HandlerOptions<LearnHandlerConfig>;
 
 export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Handler {
   constructor(options: LearnHandlerOptions) {

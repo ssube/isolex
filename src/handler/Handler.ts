@@ -1,6 +1,10 @@
 import { Command } from 'src/entity/Command';
 import { Service, ServiceOptions } from 'src/Service';
 
+export interface HandlerConfig {
+  name: string;
+}
+
 export type HandlerOptions<T> = ServiceOptions<T>;
 
 /**

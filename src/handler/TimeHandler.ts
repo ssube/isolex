@@ -3,26 +3,21 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler } from 'src/handler/Handler';
+import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
 import { ServiceOptions } from 'src/Service';
 
-export interface TimeHandlerConfig {
+export interface TimeHandlerConfig extends HandlerConfig {
   locale: string;
   zone: string;
 }
 
-export type TimeHandlerOptions = ServiceOptions<TimeHandlerConfig>;
+export type TimeHandlerOptions = HandlerOptions<TimeHandlerConfig>;
 
 export class TimeHandler extends BaseHandler<TimeHandlerConfig> implements Handler {
-  protected name: string;
   protected template: HandlebarsTemplateDelegate;
 
   constructor(options: TimeHandlerOptions) {
     super(options);
-  }
-
-  public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
   }
 
   public async handle(cmd: Command): Promise<void> {
