@@ -1,6 +1,6 @@
 import { isMap } from 'lodash';
 import { Context } from 'src/entity/Context';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum CommandType {
   None,
@@ -41,7 +41,13 @@ export class Command implements CommandOptions {
     return cmd;
   }
 
-  @OneToOne((type) => Context, (context) => context.id)
+  @OneToOne((type) => Context, (context) => context.id, {
+    cascade: true
+  })
+  @JoinColumn({
+    name: 'context',
+    referencedColumnName: 'id'
+  })
   public context: Context;
 
   @Column('simple-json')

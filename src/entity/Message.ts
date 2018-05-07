@@ -1,6 +1,6 @@
 import * as escape from 'escape-html';
 import { Context } from 'src/entity/Context';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export interface MessageOptions {
   body: string;
@@ -21,7 +21,13 @@ export class Message implements MessageOptions {
   @Column()
   public body: string;
 
-  @OneToOne((type) => Context, (context) => context.id)
+  @OneToOne((type) => Context, (context) => context.id, {
+    cascade: true
+  })
+  @JoinColumn({
+    name: 'context',
+    referencedColumnName: 'id'
+  })
   public context: Context;
 
   @PrimaryGeneratedColumn('uuid')
