@@ -14,7 +14,9 @@ import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
 import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
+import { DiceHandler } from 'src/handler/DiceHandler'
 import { MathHandler } from 'src/handler/MathHandler';
+import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
 import { TimeHandler, TimeHandlerConfig } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
@@ -81,8 +83,10 @@ export class BotModule extends Module {
     this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
 
     // handlers
+    this.bind(kebabCase(DiceHandler.name)).toConstructor(DiceHandler);
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
     this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
+    this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
     this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
     this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);

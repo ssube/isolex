@@ -7,6 +7,9 @@ filters:
     ignore: []
 
 handlers:
+  - type: dice-handler
+    name: dice_split
+
   - type: math-handler
     name: test_math
     join: ','
@@ -20,6 +23,9 @@ handlers:
     node:
       implicit: show
       parenthesis: keep
+
+  - type: random-handler
+    name: rand_split
 
   - type: reaction-handler
     name: test_reaction
@@ -43,11 +49,9 @@ handlers:
     template: >-
       {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
       and {{#each weather.weather}}{{this.description}}{{/each}}!
-
   - type: echo-handler
     template: >-
       {{reply cmd.context}}: {{cmd.data.message}} ({{cmd.name}})
-
 intervals:
   - cron: '* * * * *'
     data: {}
@@ -86,15 +90,21 @@ parsers:
 
   - type: split-parser
     name: test_split
-    delims: [' ', '\t', '\n', '.', ',']
+    separator: ' '
     tags:
       - '!!args'
 
   - type: split-parser
-    name: test_split
-    regexp: '([0-9]+)d([0-9]+)'
+    name: dice_split
+    regexp: '(\d+)(?:d|D)(\d+)'
     tags:
       - '!!dice'
+
+  - type: split-parser
+    name: rand_split
+    separator: ' '
+    tags:
+      - '!!rand'
 
   - type: echo-parser
     field: args
