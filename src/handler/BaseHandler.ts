@@ -1,6 +1,6 @@
+import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
-import { BaseService } from 'src/Service';
 
 export abstract class BaseHandler<TConfig extends HandlerConfig> extends BaseService<TConfig> implements Handler {
   protected name: string;
