@@ -5,6 +5,7 @@ export interface ContextOptions {
   threadId: string;
   userId: string;
   userName: string;
+  listenerId: string;
 }
 
 @Entity()
@@ -15,11 +16,15 @@ export class Context implements ContextOptions {
     ctx.threadId = options.threadId;
     ctx.userId = options.userId;
     ctx.userName = options.userName;
+    ctx.listenerId = options.listenerId;
     return ctx;
   }
 
   @PrimaryGeneratedColumn('uuid')
   public id: string;
+
+  @Column()
+  public listenerId: string;
 
   @Column()
   public roomId: string;
