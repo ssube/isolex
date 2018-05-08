@@ -1,5 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { Service, ServiceOptions } from 'src/Service';
+import * as uuid from 'uuid/v1';
 
 export interface CooldownConfig {
   base: number;
@@ -15,6 +16,8 @@ export type CooldownOptions = ServiceOptions<CooldownConfig>;
  * an exponential interval with an observable.
  */
 export class Cooldown implements Service {
+  public id: string;
+
   protected active: boolean;
   protected boundNext: Function;
   protected config: CooldownConfig;
@@ -29,6 +32,7 @@ export class Cooldown implements Service {
     this.boundNext = this.next.bind(this);
     this.config = options.config;
     this.grow = options.config.grow;
+    this.id = uuid();
     this.rate = options.config.base;
     this.stream = new Subject();
     this.ticks = 0;
