@@ -46,6 +46,7 @@ describeAsync('user filter', async () => {
 
     const cmd = Command.create({
       context: Context.create({
+        listenerId: '',
         roomId: '',
         threadId: '',
         userId: '',
@@ -71,6 +72,7 @@ describeAsync('user filter', async () => {
 
     const cmd = Command.create({
       context: Context.create({
+        listenerId: '',
         roomId: '',
         threadId: '',
         userId: '',

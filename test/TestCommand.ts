@@ -12,6 +12,7 @@ describeAsync('command', async () => {
     };
     const cmd = Command.create({
       context: Context.create({
+        listenerId: '',
         roomId: '',
         threadId: '',
         userId: '',
