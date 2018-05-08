@@ -4,7 +4,7 @@
 
 filters:
   - type: user-filter
-    ignore: []
+    ignore: [isolex, IsoFork, Yuela]
 
 handlers:
   - type: dice-handler
@@ -23,6 +23,9 @@ handlers:
     node:
       implicit: show
       parenthesis: keep
+
+  - type: sed-handler
+    name: sed_echo
 
   - type: random-handler
     name: rand_split
@@ -111,6 +114,12 @@ parsers:
     name: test_math
     tags:
       - '!!math'
+
+  - type: echo-parser
+    field: args
+    name: sed_echo
+    tags:
+      - '!!s'
 
 storage:
   type: sqlite
