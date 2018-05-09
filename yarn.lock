@@ -4278,8 +4278,8 @@ node-pre-gyp@^0.9.0, node-pre-gyp@~0.9.0:
     tar "^4"
 
 noicejs@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.1.0.tgz#a8c8b985b929082377229315b9231f8e635447a8"
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.2.1.tgz#d78edb06d38206419faf56e1a9743b42d1fd06f4"
 
 nomnom@^1.8.1:
   version "1.8.1"
