@@ -9,20 +9,7 @@ export interface ServiceOptions<TConfig> extends BaseOptions {
 }
 
 export interface Service {
+  id: string;
   start(): Promise<void>;
   stop(): Promise<void>;
-}
-
-export abstract class BaseService<TConfig> {
-  protected bot: Bot;
-  protected config: TConfig;
-  protected logger: Logger;
-
-  constructor(options: ServiceOptions<TConfig>) {
-    this.bot = options.bot;
-    this.config = options.config;
-    this.logger = options.logger.child({
-      class: Reflect.getPrototypeOf(this).constructor.name
-    });
-  }
 }

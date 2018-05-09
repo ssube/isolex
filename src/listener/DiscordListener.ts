@@ -117,6 +117,7 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     return Message.create({
       body: msg.content,
       context: Context.create({
+        listenerId: this.id,
         roomId: msg.channel.id,
         threadId: msg.id,
         userId: msg.author.id,

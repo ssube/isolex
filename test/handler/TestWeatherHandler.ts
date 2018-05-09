@@ -21,6 +21,7 @@ describeAsync('weather handler', async () => {
     let msg = Message.create({
       body: '',
       context: Context.create({
+        listenerId: '',
         roomId: '',
         threadId: '',
         userId: '',
@@ -52,6 +53,7 @@ describeAsync('weather handler', async () => {
     expect(handler).to.be.an.instanceOf(WeatherHandler);
 
     const context = Context.create({
+      listenerId: '',
       roomId: '',
       threadId: '',
       userId: '',

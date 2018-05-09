@@ -33,12 +33,13 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     return (event.event_type === 1 || event.event_type === 2);
   }
 
-  public static getEventContext(event: Event): Context {
+  public getEventContext(event: Event): Context {
     if (!SOListener.isEventMessage(event)) {
       throw new Error('invalid event type');
     }
 
     return Context.create({
+      listenerId: this.id,
       roomId: event.room_id.toString(),
       threadId: event.message_id.toString(),
       userId: event.user_id.toString(),
@@ -117,7 +118,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     if (SOListener.isEventMessage(event)) {
       const msg = Message.create({
         body: event.content,
-        context: SOListener.getEventContext(event),
+        context: this.getEventContext(event),
         reactions: []
       })
       this.bot.receive(msg);

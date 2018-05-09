@@ -11,6 +11,11 @@ export interface FetchOptions {
   id?: string;
 }
 
+export interface ContextFetchOptions extends FetchOptions {
+  listenerId: string;
+  useFilters: boolean;
+}
+
 export interface Listener extends Service {
   check(context: Context): Promise<boolean>;
 

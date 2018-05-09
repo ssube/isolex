@@ -19,10 +19,11 @@ import { Handler } from 'src/handler/Handler';
 import { MathHandler } from 'src/handler/MathHandler';
 import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
+import { SedHandler } from 'src/handler/SedHandler';
 import { TimeHandler, TimeHandlerConfig } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
 import { DiscordListener } from 'src/listener/DiscordListener';
-import { Listener } from 'src/listener/Listener';
+import { Listener, ContextFetchOptions } from 'src/listener/Listener';
 import { SOListener } from 'src/listener/SOListener';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
@@ -88,6 +89,7 @@ export class BotModule extends Module {
     this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
     this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
+    this.bind(kebabCase(SedHandler.name)).toConstructor(SedHandler);
     this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
     this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
 
@@ -312,6 +314,30 @@ export class Bot {
     if (!matched) {
       this.logger.debug({ msg }, 'incoming message was not matched by any parsers');
     }
+  }
+
+  /**
+   * Fetches messages using a specified listener.
+   */
+  public async fetch(options: ContextFetchOptions) {
+    const listener = this.listeners.find((listener) => listener.id === options.listenerId);
+    if (!listener) {
+      throw new Error('Could not find listener with given id.');
+    }
+
+    const messages = await listener.fetch(options);
+    if (options.useFilters) {
+      const filtered: Array<Message> = [];
+      for (const message of messages) {
+        if (await this.checkFilters(message)) {
+          filtered.push(message);
+        }
+      }
+
+      return filtered;
+    }
+
+    return messages;
   }
 
   /**

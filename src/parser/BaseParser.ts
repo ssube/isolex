@@ -1,8 +1,9 @@
 import { Logger } from 'noicejs/logger/Logger';
+import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserConfig } from 'src/parser/Parser';
-import { BaseService, ServiceOptions } from 'src/Service';
+import { ServiceOptions } from 'src/Service';
 
 export abstract class BaseParser<TConfig extends ParserConfig> extends BaseService<TConfig> implements Parser {
   protected tags: Array<string>;
