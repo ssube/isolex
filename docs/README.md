@@ -9,29 +9,35 @@ commands are then `handled`, with replies being sent back through the bot. Betwe
 
 The flow is:
 
-*With `[class]` denoting an interface, `<class>` denoting a bot primitive, and `(func)` denoting a function call.*
-
 ```none
-                               (cron) ---> [interval]
-                                               |
-                                               v
-room -> <event> -> [filter] -> [parser] -> <command> <-\
-                                               |       |
-                                               v       |
-                                           [filter]    |
-                                               |       |
-                                               v       |
-room <- (send) <------------- <message> <- [handler] --/
+                                   cron ---> interval
+                                                |
+                                                v
+listener -> <message> -> filter -> parser -> <command> <-\
+                                                |        |
+                                                v        |
+                                              filter     |
+                                                |        |
+                                                v        |
+listener <---------------------- <message> <- handler ---/
 ```
 
-The `[filter] -> [parser]` pair handles user input, filtering messages that match strings or to ban users, then parsing
-the content into commands. For each incoming `<event>`, each `[parser]` is checked and potentially run, producing
-multiple `<command>`s. A single `<event>` can produce any number of `<command>`s.
+*With `<class>` denoting an entity.*
 
-The `[filter] -> [handler]` pair behaves similarly, filtering commands and performing some work on them. For each
-`<command>`, the `[handler]`s are run in order until one returns true and consumes the command.Handlers may
-directly reply to users (the `<command>` has reply-to data) or create additional `<command>`s to be handled later
-(which should have the reply-to `context` attached).
+### Incoming
 
-The `(send)` queue has retry logic to dispatch messages on an adjusting interval, with errors increasing the time
-between ticks and success decreasing it (see the [cooldown](../src/utils/Cooldown.ts)).
+The `listener -> filter -> parser` sequence handles user input, filtering messages that should be ignored before
+matching and parsing messages into executable commands. Each `parser` is checked and potentially run, so a single
+incoming message can produce any number of commands (and may not produce them immediately, so context must be
+passed).
+
+### Execution
+
+The `filter -> handler` pair behaves similarly, filtering commands and performing some work based on them. For each
+`<command>`, the `handler`s are checked in order until one is found that can handle the `<command>`, which is then
+passed to the `handler` and consumed. Only a single handler will be run for each command.
+
+### Outgoing
+
+The bot handles an outgoing message queue, dispatched to `listener`s based on the message context. Listeners may
+implement their own rate limiting and add failed messages back to the queue after some delay.

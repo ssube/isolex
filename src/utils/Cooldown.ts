@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { Service, ServiceOptions } from 'src/Service';
-import * as uuid from 'uuid/v1';
+import * as uuid from 'uuid/v4';
 
 export interface CooldownConfig {
   base: number;
