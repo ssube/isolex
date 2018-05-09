@@ -113,10 +113,22 @@ module.exports = {
       name: 'oracledb',
       alias: modulePath.shim
     }, {
+      name: 'pg',
+      alias: modulePath.shim
+    }, {
+      name: 'pg-native',
+      alias: modulePath.shim
+    }, {
+      name: 'pg-query-stream',
+      alias: modulePath.shim
+    }, {
       name: 'pty.js',
       alias: modulePath.shim
     }, {
       name: 'react-native-sqlite-storage',
+      alias: modulePath.shim
+    }, {
+      name: 'redis',
       alias: modulePath.shim
     }, {
       name: 'src',

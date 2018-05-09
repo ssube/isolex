@@ -1,3 +1,4 @@
 CREATE TABLE context (id VARCHAR, listenerId VARCHAR, roomId VARCHAR, threadId VARCHAR, userId VARCHAR, userName VARCHAR);
-CREATE TABLE command (context VARCHAR, data VARCHAR, id VARCHAR, name VARCHAR, type INT);
-CREATE TABLE message (body VARCHAR, context VARCHAR, id VARCHAR, reactions VARCHAR);
+CREATE TABLE command (id VARCHAR, contextId VARCHAR, name VARCHAR, type INT, data VARCHAR);
+CREATE TABLE message (id VARCHAR, contextId VARCHAR, body VARCHAR, reactions VARCHAR);
+CREATE TABLE trigger (name VARCHAR, commandId VARCHAR);

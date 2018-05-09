@@ -11,11 +11,13 @@ import { Observable, Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { Trigger } from 'src/entity/Trigger';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
 import { DiceHandler } from 'src/handler/DiceHandler';
 import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
 import { Handler } from 'src/handler/Handler';
+import { LearnHandler } from 'src/handler/LearnHandler';
 import { MathHandler } from 'src/handler/MathHandler';
 import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
@@ -23,7 +25,7 @@ import { SedHandler } from 'src/handler/SedHandler';
 import { TimeHandler, TimeHandlerConfig } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
 import { DiscordListener } from 'src/listener/DiscordListener';
-import { Listener, ContextFetchOptions } from 'src/listener/Listener';
+import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { SOListener } from 'src/listener/SOListener';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser, LexParserConfig } from 'src/parser/LexParser';
@@ -86,6 +88,7 @@ export class BotModule extends Module {
     // handlers
     this.bind(kebabCase(DiceHandler.name)).toConstructor(DiceHandler);
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
+    this.bind(kebabCase(LearnHandler.name)).toConstructor(LearnHandler);
     this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
     this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
@@ -130,7 +133,7 @@ export class BotModule extends Module {
 
   @Provides('entities')
   protected async createEntities(): Promise<Array<Function>> {
-    return [Command, Context, Message];
+    return [Command, Context, Message, Trigger];
   }
 }
 
@@ -320,7 +323,7 @@ export class Bot {
    * Fetches messages using a specified listener.
    */
   public async fetch(options: ContextFetchOptions) {
-    const listener = this.listeners.find((listener) => listener.id === options.listenerId);
+    const listener = this.listeners.find((it) => it.id === options.listenerId);
     if (!listener) {
       throw new Error('Could not find listener with given id.');
     }

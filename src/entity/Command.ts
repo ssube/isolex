@@ -1,6 +1,6 @@
 import { isMap } from 'lodash';
 import { Context } from 'src/entity/Context';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum CommandType {
   None,
@@ -26,7 +26,7 @@ export interface CommandPropObject {
 export class Command implements CommandOptions {
   public static toPropMap(value: CommandPropMap | CommandPropObject): CommandPropMap {
     if (isMap(value)) {
-      return value;
+      return new Map(value.entries());
     } else {
       return new Map(Object.entries(value));
     }
@@ -44,13 +44,9 @@ export class Command implements CommandOptions {
   @OneToOne((type) => Context, (context) => context.id, {
     cascade: true
   })
-  @JoinColumn({
-    name: 'context',
-    referencedColumnName: 'id'
-  })
+  @JoinColumn()
   public context: Context;
 
-  @Column('simple-json')
   public data: CommandPropMap;
 
   @PrimaryGeneratedColumn('uuid')
@@ -61,6 +57,15 @@ export class Command implements CommandOptions {
 
   @Column()
   public type: CommandType;
+
+  @Column({
+    name: 'data'
+  })
+  protected dataStr: string;
+
+  constructor() {
+    this.data = new Map();
+  }
 
   public has(key: string): boolean {
     return this.data.has(key);
@@ -73,10 +78,22 @@ export class Command implements CommandOptions {
     return this.data.get(key);
   }
 
+  @AfterLoad()
+  public syncMap() {
+    this.data = new Map(JSON.parse(this.dataStr));
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  public syncStr() {
+    this.dataStr = JSON.stringify(Array.from(this.data));
+  }
+
   public toJSON(): object {
     return {
       context: this.context,
       data: Array.from(this.data.entries()),
+      id: this.id,
       name: this.name,
       type: this.type
     };

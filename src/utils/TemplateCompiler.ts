@@ -46,7 +46,7 @@ export class TemplateCompiler {
     return parts.join('');
   }
 
-  public formatJSON(value: object): string {
-    return JSON.stringify(value);
+  public formatJSON(value: object): hbs.SafeString {
+    return new Handlebars.SafeString(JSON.stringify(value));
   }
 }

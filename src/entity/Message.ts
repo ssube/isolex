@@ -24,10 +24,7 @@ export class Message implements MessageOptions {
   @OneToOne((type) => Context, (context) => context.id, {
     cascade: true
   })
-  @JoinColumn({
-    name: 'context',
-    referencedColumnName: 'id'
-  })
+  @JoinColumn()
   public context: Context;
 
   @PrimaryGeneratedColumn('uuid')

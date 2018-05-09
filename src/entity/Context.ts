@@ -1,22 +1,22 @@
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 export interface ContextOptions {
+  listenerId: string;
   roomId: string;
   threadId: string;
   userId: string;
   userName: string;
-  listenerId: string;
 }
 
 @Entity()
 export class Context implements ContextOptions {
   public static create(options: ContextOptions) {
     const ctx = new Context();
+    ctx.listenerId = options.listenerId;
     ctx.roomId = options.roomId;
     ctx.threadId = options.threadId;
     ctx.userId = options.userId;
     ctx.userName = options.userName;
-    ctx.listenerId = options.listenerId;
     return ctx;
   }
 
