@@ -9,7 +9,11 @@ import { ServiceOptions } from 'src/Service';
 import { Connection, Repository } from 'typeorm';
 
 export interface LearnHandlerConfig extends HandlerConfig {
-  emit: string;
+  emit: {
+    field: string;
+    source: string;
+    value: string;
+  };
   mode: {
     create: string;
     delete: string;
@@ -58,7 +62,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
       command: Command.create({
         context: cmd.context,
         data: { args },
-        name: this.config.emit,
+        name: cmd.name,
         type: cmd.type
       }),
       name
@@ -116,11 +120,32 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
       throw new Error('missing trigger or command');
     }
 
-    const emit = Command.create(trigger.command);
-    emit.context = Context.create(cmd.context);
+    const emit = trigger.command.extend({
+      context: cmd.context,
+      // data: cmd.data,
+      name: this.emitName(trigger.command, cmd)
+    });
 
     this.logger.debug({ emit, trigger }, 'triggering command');
 
     await this.bot.handle(emit);
+  }
+
+  protected emitName(saved: Command, invocation: Command): string {
+    const [_mode, _name, cmdName] = invocation.get(this.config.emit.field);
+    return cmdName;
+
+    /*
+    switch (this.config.emit.source) {
+      case 'saved':
+        return saved.get(this.config.emit.field);
+      case 'invocation':
+        return invocation.get(this.config.emit.field);
+      case 'literal':
+        return this.config.emit.value;
+      default:
+        throw new Error('invalid emit source');
+    }
+    */
   }
 }

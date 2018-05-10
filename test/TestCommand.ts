@@ -26,13 +26,4 @@ describeAsync('command', async () => {
     expect(cmd.get('test')).to.equal(1);
     expect(cmd.data).not.to.equal(data);
   });
-
-  itAsync('convert objects to maps', async () => {
-    const map = Command.toPropMap({
-      bar: '2',
-      foo: '1'
-    });
-
-    expect(Array.from(map.entries())).to.deep.equal([['bar', '2'], ['foo', '1']]);
-  });
 });

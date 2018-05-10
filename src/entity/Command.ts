@@ -1,5 +1,5 @@
-import { isMap } from 'lodash';
 import { Context } from 'src/entity/Context';
+import { mergeMap, normalizeMap } from 'src/utils';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum CommandType {
@@ -18,24 +18,12 @@ export interface CommandOptions {
 export type CommandPropMap = Map<string, CommandPropValue>;
 export type CommandPropValue = string | Array<string>;
 
-export interface CommandPropObject {
-  [key: string]: CommandPropValue;
-}
-
 @Entity()
 export class Command implements CommandOptions {
-  public static toPropMap(value: CommandPropMap | CommandPropObject): CommandPropMap {
-    if (isMap(value)) {
-      return new Map(value.entries());
-    } else {
-      return new Map(Object.entries(value));
-    }
-  }
-
   public static create(options: CommandOptions) {
     const cmd = new Command();
     cmd.context = Context.create(options.context);
-    cmd.data = Command.toPropMap(options.data);
+    cmd.data = normalizeMap(options.data);
     cmd.name = options.name;
     cmd.type = options.type;
     return cmd;
@@ -65,6 +53,23 @@ export class Command implements CommandOptions {
 
   constructor() {
     this.data = new Map();
+  }
+
+  public extend(options: Partial<CommandOptions>) {
+    const cmd = Command.create(this);
+    if (options.context) {
+      cmd.context = Context.create(options.context);
+    }
+    if (options.data) {
+      cmd.data = mergeMap(cmd.data, options.data);
+    }
+    if (options.name) {
+      cmd.name = options.name;
+    }
+    if (options.type) {
+      cmd.type = options.type;
+    }
+    return cmd;
   }
 
   public has(key: string): boolean {
