@@ -1,3 +1,8 @@
+stages:
+  - build
+  - image
+  - image-tag
+
 build-node:
   image: apextoaster/node:master
   stage: build
@@ -37,7 +42,7 @@ build-node:
     IMAGE_TAG: ssube/isolex:$CI_COMMIT_REF_SLUG
 
 .build-retag: &build-retag
-  stage: tag
+  stage: image-tag
   script:
     - docker pull ${IMAGE_SRC}
     - docker tag ${IMAGE_SRC} ${IMAGE_DST}
@@ -45,6 +50,8 @@ build-node:
 
 build-image:
   <<: [*build-docker]
+  stage: image
+
   dependencies:
     - build-node
   script:
