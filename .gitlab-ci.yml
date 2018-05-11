@@ -61,7 +61,7 @@ build-image:
     - docker push $IMAGE_TAG
 
 # tag releases
-tag:latest:
+tag-latest:
   <<: [*build-docker, *build-retag]
   only:
     - master
@@ -71,7 +71,7 @@ tag:latest:
     IMAGE_SRC: ssube/isolex:master
     IMAGE_DST: ssube/isolex:latest
 
-tag:version:
+tag-version:
   <<: [*build-docker, *build-retag]
   only:
     - tags
