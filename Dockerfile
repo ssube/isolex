@@ -1,11 +1,10 @@
 FROM apextoaster/node:10.1
 
 # copy native modules
-COPY node_modules/sqlite3 /app/node_modules/sqlite3
-COPY node_modules/uws /app/node_modules/uws
+COPY node_modules/ /app/node_modules/
 
 # copy build output
-COPY out/ /app/out
+COPY out/ /app/out/
 
 WORKDIR /app
 
