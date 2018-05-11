@@ -1,40 +1,17 @@
-import * as bunyan from 'bunyan';
 import { CronJob } from 'cron';
-import { kebabCase } from 'lodash';
 import { Container, Inject, Module, Provides } from 'noicejs';
-import { ContainerOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
-import { ModuleOptions } from 'noicejs/Module';
-import { RequestAPI } from 'request';
-import * as request from 'request-promise';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Command, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Trigger } from 'src/entity/Trigger';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
-import { UserFilter, UserFilterConfig } from 'src/filter/UserFilter';
-import { DiceHandler } from 'src/handler/DiceHandler';
-import { EchoHandler, EchoHandlerConfig } from 'src/handler/EchoHandler';
-import { Handler } from 'src/handler/Handler';
-import { LearnHandler } from 'src/handler/LearnHandler';
-import { MathHandler } from 'src/handler/MathHandler';
-import { RandomHandler } from 'src/handler/RandomHandler';
-import { ReactionHandler } from 'src/handler/ReactionHandler';
-import { SedHandler } from 'src/handler/SedHandler';
-import { TimeHandler, TimeHandlerConfig } from 'src/handler/TimeHandler';
-import { WeatherHandler } from 'src/handler/WeatherHandler';
-import { DiscordListener } from 'src/listener/DiscordListener';
+import { Handler, HandlerConfig } from 'src/handler/Handler';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
-import { SOListener } from 'src/listener/SOListener';
-import { EchoParser } from 'src/parser/EchoParser';
-import { LexParser, LexParserConfig } from 'src/parser/LexParser';
-import { Parser } from 'src/parser/Parser';
-import { SplitParser } from 'src/parser/SplitParser';
-import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
-import { Service } from 'src/Service';
+import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Service, ServiceConfig } from 'src/Service';
 import { Cooldown } from 'src/utils/Cooldown';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { Connection, ConnectionOptions, createConnection, Entity } from 'typeorm';
 
 export interface BotConfig {
@@ -62,79 +39,9 @@ export interface BotOptions {
   logger: Logger;
 }
 
-export interface BotModuleOptions {
-  logger: Logger;
-}
-
-export class BotModule extends Module {
-  protected bot: Bot;
-  protected logger: Logger;
-
-  constructor(options: BotModuleOptions) {
-    super();
-
-    this.logger = options.logger;
-  }
-
-  public async configure(options: ModuleOptions) {
-    await super.configure(options);
-
-    // utils
-    this.bind('compiler').toConstructor(TemplateCompiler);
-
-    // filters
-    this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
-
-    // handlers
-    this.bind(kebabCase(DiceHandler.name)).toConstructor(DiceHandler);
-    this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
-    this.bind(kebabCase(LearnHandler.name)).toConstructor(LearnHandler);
-    this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
-    this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
-    this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
-    this.bind(kebabCase(SedHandler.name)).toConstructor(SedHandler);
-    this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
-    this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
-
-    // listeners
-    this.bind(kebabCase(DiscordListener.name)).toConstructor(DiscordListener);
-
-    // parsers
-    this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);
-    this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
-    this.bind(kebabCase(SplitParser.name)).toConstructor(SplitParser);
-    this.bind(kebabCase(YamlParser.name)).toConstructor(YamlParser);
-  }
-
-  public setBot(bot: Bot) {
-    this.bot = bot;
-  }
-
-  @Provides('bot')
-  protected async createBot(options: any): Promise<Bot> {
-    return this.bot;
-  }
-
-  @Provides('logger')
-  protected async createLogger(options: any): Promise<Logger> {
-    return this.logger;
-  }
-
-  @Provides('storage')
-  protected async createStorage(options: any): Promise<Connection> {
-    return this.bot.getStorage();
-  }
-
-  @Provides('request')
-  protected async createRequest(options: any): Promise<Request> {
-    this.logger.debug({ options }, 'creating request');
-    return request(options);
-  }
-
-  @Provides('entities')
-  protected async createEntities(): Promise<Array<Function>> {
-    return [Command, Context, Message, Trigger];
-  }
+export interface BotService {
+  type: string;
+  [other: string]: string;
 }
 
 @Inject('logger')
@@ -222,18 +129,14 @@ export class Bot {
     });
 
     this.logger.info('setting up filters');
-    for (const filterData of this.config.filters) {
-      const { type, ...config } = filterData;
-      this.logger.debug({ filter: filterData }, 'configuring filter');
-      const filter = await this.createPart<Filter>(type, config);
+    for (const data of this.config.filters) {
+      const filter = await this.createPart<Filter, ServiceConfig>(data);
       this.filters.push(filter);
     }
 
     this.logger.info('setting up handlers');
-    for (const handlerData of this.config.handlers) {
-      const { type, ...config } = handlerData;
-      this.logger.debug({ handler: handlerData }, 'configuring handler');
-      const handler = await this.createPart<Handler>(type, config);
+    for (const data of this.config.handlers) {
+      const handler = await this.createPart<Handler, HandlerConfig>(data);
       this.handlers.push(handler);
     }
 
@@ -250,18 +153,14 @@ export class Bot {
     }
 
     this.logger.info('setting up listeners');
-    for (const listenerData of this.config.listeners) {
-      const { type, ...config } = listenerData;
-      this.logger.debug({ listener: listenerData }, 'configuring listener');
-      const listener = await this.createPart<Listener>(type, config);
+    for (const data of this.config.listeners) {
+      const listener = await this.createPart<Listener, ServiceConfig>(data);
       this.listeners.push(listener);
     }
 
     this.logger.info('setting up parsers');
-    for (const parserData of this.config.parsers) {
-      const { type, ...config } = parserData;
-      this.logger.debug({ parser: parserData }, 'configuring parser');
-      const parser = await this.createPart<Parser>(type, config);
+    for (const data of this.config.parsers) {
+      const parser = await this.createPart<Parser, ParserConfig>(data);
       this.parsers.push(parser);
     }
 
@@ -423,8 +322,11 @@ export class Bot {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  protected async createPart<T extends Service>(type: string, config: any): Promise<T> {
-    return this.container.create<T, any>(type, {
+  protected async createPart<TService extends Service, TConfig extends ServiceConfig>(data: TConfig & BotService): Promise<TService> {
+    const { type, ...config } = data as BotService; // narrow this back to the object half of the union (generic unions cannot be spread)
+    this.logger.debug({ data, type }, 'configuring service');
+
+    return this.container.create<TService, any>(type, {
       bot: this,
       config,
       logger: this.logger.child({

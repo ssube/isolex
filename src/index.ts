@@ -1,8 +1,9 @@
 import * as AWS from 'aws-sdk';
 import * as bunyan from 'bunyan';
 import { Container } from 'noicejs';
-import { Bot, BotModule } from 'src/Bot';
+import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/Config';
+import { BotModule } from 'src/module/BotModule';
 
 const SIGNALS: Array<NodeJS.Signals> = ['SIGINT', 'SIGTERM'];
 const STATUS_SUCCESS = 0;
