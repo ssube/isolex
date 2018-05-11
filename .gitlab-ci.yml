@@ -1,4 +1,4 @@
-build:
+build-node:
   image: apextoaster/node:master
   stage: build
   tags:
@@ -17,3 +17,57 @@ build:
       - out/docs
       - out/main-bundle.*
       - out/version.json
+
+.build-docker: &build-docker
+  image: docker
+  services:
+    - docker:dind
+  tags:
+    - runner:k8s
+    - cloud:aws
+
+  before_script:
+    # prep secrets
+    - mkdir /root/.docker
+    - ln -s /secrets/docker /root/.docker/config.json
+    - docker info
+  variables: &vars-docker
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    IMAGE_TAG: ssube/isolex:$CI_COMMIT_REF_SLUG
+
+.build-retag: &build-retag
+  stage: tag
+  script:
+    - docker pull ${IMAGE_SRC}
+    - docker tag ${IMAGE_SRC} ${IMAGE_DST}
+    - docker push ${IMAGE_DST}
+
+build-image:
+  <<: [*build-docker]
+  dependencies:
+    - build-node
+  script:
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+
+# tag releases
+tag:latest:
+  <<: [*build-docker, *build-retag]
+  only:
+    - master
+
+  variables:
+    <<: *vars-docker
+    IMAGE_SRC: ssube/isolex:master
+    IMAGE_DST: ssube/isolex:latest
+
+tag:version:
+  <<: [*build-docker, *build-retag]
+  only:
+    - tags
+
+  variables:
+    <<: *vars-docker
+    IMAGE_SRC: ssube/isolex:master
+    IMAGE_DST: ssube/isolex:${CI_COMMIT_TAG}
