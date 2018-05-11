@@ -81,6 +81,9 @@ push: ## push to both gitlab and github (this assumes you have both remotes set 
 run-terminal: ## run the bot in a terminal
 	node $(TARGET_PATH)/main-bundle.js
 
+run-bunyan: ## run the bot with bunyan logs
+	node $(TARGET_PATH)/main-bundle.js | $(NODE_BIN)/bunyan
+
 test: test-check ## run mocha unit tests
 
 test-check: ## run mocha unit tests with coverage reports

@@ -25,7 +25,13 @@ function signal(): Promise<void> {
 
 async function main(): Promise<number> {
   const config = await loadConfig();
-  const logger = bunyan.createLogger(config.logger);
+  const logger = bunyan.createLogger({
+    ...config.logger,
+    serializers: {
+      logger: (l) => Reflect.getPrototypeOf(l).constructor.name,
+      module: (m) => Reflect.getPrototypeOf(m).constructor.name
+    }
+  });
 
   const mod = new BotModule({ logger });
   const ctr = Container.from(mod);
