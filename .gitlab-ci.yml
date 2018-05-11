@@ -18,6 +18,8 @@ build-node:
   artifacts:
     expire_in: 1 week
     paths:
+      - node_modules/sqlite3
+      - node_modules/uws
       - out/coverage
       - out/docs
       - out/main-bundle.*
