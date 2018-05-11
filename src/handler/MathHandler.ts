@@ -44,19 +44,18 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
       throw new Error('invalid arguments to math handler');
     }
 
-    for (const expr of args) {
-      this.logger.debug({ expr }, 'evaluating expression');
+    const expr = args.join(';\n');
+    this.logger.debug({ expr }, 'evaluating expression');
 
-      const body = '`' + this.eval(expr, { cmd }) + '`';
-      this.logger.debug({ body, expr }, 'compiled expression');
+    const body = '`' + this.eval(expr, { cmd }) + '`';
+    this.logger.debug({ body, expr }, 'compiled expression');
 
-      const msg = Message.create({
-        body,
-        context: cmd.context,
-        reactions: []
-      });
-      await this.bot.send(msg);
-    }
+    const msg = Message.create({
+      body,
+      context: cmd.context,
+      reactions: []
+    });
+    await this.bot.send(msg);
   }
 
   protected eval(expr: string, scope: any): string {

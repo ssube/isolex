@@ -24,7 +24,8 @@ describeAsync('user filter', async () => {
     const { container, filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
-        ignore: ['test']
+        ignore: ['test'],
+        name: 'test-filter'
       },
       container: ineeda<Container>(),
       logger: bunyan.createLogger({
@@ -38,7 +39,10 @@ describeAsync('user filter', async () => {
     const ignore = ['test'];
     const { container, filter } = await createUserFilter({
       bot: ineeda<Bot>(),
-      config: { ignore },
+      config: {
+        ignore,
+        name: 'test-filter'
+      },
       container: ineeda<Container>(),
       logger: ConsoleLogger.global
     });
@@ -64,7 +68,10 @@ describeAsync('user filter', async () => {
     const ignore = ['test'];
     const { container, filter } = await createUserFilter({
       bot: ineeda<Bot>(),
-      config: { ignore },
+      config: {
+        ignore,
+        name: 'test-filter'
+      },
       container: ineeda<Container>(),
       logger: ConsoleLogger.global
     });

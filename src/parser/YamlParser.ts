@@ -5,9 +5,9 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser } from 'src/parser/Parser';
-import { ServiceOptions } from '../Service';
+import { ServiceConfig, ServiceOptions } from 'src/Service';
 
-export interface YamlParserConfig {
+export interface YamlParserConfig extends ServiceConfig {
   tags: Array<string>;
 }
 

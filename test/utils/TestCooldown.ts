@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { Container } from 'noicejs';
+import { ConsoleLogger, Container } from 'noicejs';
+import { Logger } from 'noicejs/logger/Logger';
 import { spy } from 'sinon';
 
 import { defer } from 'src/utils';
@@ -15,8 +16,10 @@ describeAsync('cooldown', async () => {
     const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
       config: {
         base: 10,
-        grow: 2
-      }
+        grow: 2,
+        name: 'test-cooldown'
+      },
+      logger: ConsoleLogger.global
     });
 
     expect(cd.inc()).to.equal(12);
@@ -36,8 +39,10 @@ describeAsync('cooldown', async () => {
     const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
       config: {
         base: 5000,
-        grow: 0
-      }
+        grow: 0,
+        name: 'test-cooldown'
+      },
+      logger: ConsoleLogger.global
     });
 
     cd.start();
@@ -51,8 +56,10 @@ describeAsync('cooldown', async () => {
     const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
       config: {
         base: 20,
-        grow: 0
-      }
+        grow: 0,
+        name: 'test-cooldown'
+      },
+      logger: ConsoleLogger.global
     });
 
     await cd.start();

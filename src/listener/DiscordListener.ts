@@ -6,9 +6,9 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
-import { ServiceOptions } from 'src/Service';
+import { ServiceConfig, ServiceOptions } from 'src/Service';
 
-export interface DiscordListenerConfig {
+export interface DiscordListenerConfig extends ServiceConfig {
   token: string;
 }
 

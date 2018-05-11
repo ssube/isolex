@@ -9,7 +9,6 @@ import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
 export interface SplitParserConfig extends ParserConfig, SplitString.SplitOptions {
-  name: string;
   regexp: string;
 }
 
@@ -17,13 +16,10 @@ export type SplitParserOptions = ServiceOptions<SplitParserConfig>;
 
 export class SplitParser extends BaseParser<SplitParserConfig> implements Parser {
   protected delims?: Array<string>;
-  protected name: string;
   protected regexp?: RegExp;
 
   constructor(options: SplitParserOptions) {
     super(options);
-
-    this.name = options.config.name;
 
     if (options.config.regexp) {
       this.regexp = new RegExp(options.config.regexp);

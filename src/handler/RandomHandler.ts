@@ -10,12 +10,8 @@ export type RandomHandlerConfig = HandlerConfig;
 export type RandomHandlerOptions = HandlerOptions<RandomHandlerConfig>;
 
 export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements Handler {
-  protected name: string;
-
   constructor(options: RandomHandlerOptions) {
     super(options);
-
-    this.name = options.config.name;
   }
 
   public async handle(cmd: Command): Promise<void> {

@@ -61,7 +61,7 @@ export class Command implements CommandOptions {
       cmd.context = Context.create(options.context);
     }
     if (options.data) {
-      cmd.data = mergeMap(cmd.data, options.data);
+      cmd.data = mergeMap(cmd.data, normalizeMap(options.data));
     }
     if (options.name) {
       cmd.name = options.name;

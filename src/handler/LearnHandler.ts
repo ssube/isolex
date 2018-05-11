@@ -45,13 +45,15 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
 
     const [mode, name, ...body] = args;
 
+    this.logger.debug({ body, mode, trigger: name }, 'handling learned trigger');
+
     switch (mode) {
       case this.config.mode.create:
         return this.createTrigger(name, body, cmd);
       case this.config.mode.delete:
         return this.deleteTrigger(name, cmd);
       case this.config.mode.execute:
-        return this.executeTrigger(name, cmd);
+        return this.executeTrigger(name, body, cmd);
       default:
         throw new Error('unknown learn mode');
     }
@@ -111,7 +113,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
     }));
   }
 
-  protected async executeTrigger(name: string, cmd: Command) {
+  protected async executeTrigger(name: string, body: Array<string>, cmd: Command) {
     const trigger = await this.triggerRepository.findOne(name, {
       relations: ['command', 'command.context']
     });
@@ -120,32 +122,20 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
       throw new Error('missing trigger or command');
     }
 
+    const [dest, ...args] = body;
+
+    this.logger.debug({ args, dest}, 'building command');
+
     const emit = trigger.command.extend({
       context: cmd.context,
-      // data: cmd.data,
-      name: this.emitName(trigger.command, cmd)
+      data: {
+        [this.config.emit.field]: args
+      },
+      name: dest
     });
 
     this.logger.debug({ emit, trigger }, 'triggering command');
 
     await this.bot.handle(emit);
-  }
-
-  protected emitName(saved: Command, invocation: Command): string {
-    const [_mode, _name, cmdName] = invocation.get(this.config.emit.field);
-    return cmdName;
-
-    /*
-    switch (this.config.emit.source) {
-      case 'saved':
-        return saved.get(this.config.emit.field);
-      case 'invocation':
-        return invocation.get(this.config.emit.field);
-      case 'literal':
-        return this.config.emit.value;
-      default:
-        throw new Error('invalid emit source');
-    }
-    */
   }
 }

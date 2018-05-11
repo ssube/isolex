@@ -4,9 +4,9 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
-import { ServiceOptions } from 'src/Service';
+import { ServiceConfig, ServiceOptions } from 'src/Service';
 
-export interface UserFilterConfig {
+export interface UserFilterConfig extends ServiceConfig {
   ignore: Array<string>;
 }
 

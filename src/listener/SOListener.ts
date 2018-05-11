@@ -6,12 +6,12 @@ import { Context } from 'src/entity/Context';
 import { BaseListener } from 'src/listener/BaseListener';
 import { Listener, FetchOptions } from 'src/listener/Listener';
 import { Message } from 'src/entity/Message';
-import { ServiceOptions } from 'src/Service';
+import { ServiceConfig, ServiceOptions } from 'src/Service';
 import { Cooldown, CooldownOptions, CooldownConfig } from 'src/utils/Cooldown';
 import { Client } from 'vendor/so-client/src/client';
 import { Event, MessageEdited, MessagePosted } from 'vendor/so-client/src/events';
 
-export interface SOListenerConfig {
+export interface SOListenerConfig extends ServiceConfig {
   account: {
     email: string;
     password: string;

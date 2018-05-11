@@ -1,11 +1,8 @@
 import { Command } from 'src/entity/Command';
-import { Service, ServiceOptions } from 'src/Service';
+import { Service, ServiceConfig, ServiceOptions } from 'src/Service';
 
-export interface HandlerConfig {
-  name: string;
-}
-
-export type HandlerOptions<T> = ServiceOptions<T>;
+export type HandlerConfig = ServiceConfig;
+export type HandlerOptions<T extends HandlerConfig> = ServiceOptions<T>;
 
 /**
  * Handlers react to commands, consuming them before sending replies or performing background work.

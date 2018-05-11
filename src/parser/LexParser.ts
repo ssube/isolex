@@ -26,13 +26,11 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
   protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;
-  protected name: string;
 
   constructor(options: LexParserOptions) {
     super(options);
 
     this.alias = options.config.bot.alias;
-    this.name = options.config.bot.name;
 
     // aws
     this.creds = new AWS.Credentials(options.config.account.accessKey, options.config.account.secretKey);
@@ -45,8 +43,8 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const body = this.removeTags(msg.body);
     const reply = await this.postText({
-      botAlias: this.alias,
-      botName: this.name,
+      botAlias: this.config.bot.alias,
+      botName: this.config.bot.name,
       inputText: body,
       userId: leftPad(msg.context.userId)
     });
