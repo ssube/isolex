@@ -55,7 +55,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
       case this.config.mode.execute:
         return this.executeTrigger(name, body, cmd);
       default:
-        throw new Error('unknown learn mode');
+        return this.executeTrigger(mode, [name, ...body], cmd);
     }
   }
 
@@ -67,6 +67,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
         name: cmd.name,
         type: cmd.type
       }),
+      handler: this.name,
       name
     });
 
