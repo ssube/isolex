@@ -50,12 +50,7 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
     const body = '`' + this.eval(expr, { cmd }) + '`';
     this.logger.debug({ body, expr }, 'compiled expression');
 
-    const msg = Message.create({
-      body,
-      context: cmd.context,
-      reactions: []
-    });
-    await this.bot.send(msg);
+    return this.bot.send(Message.reply(body, cmd.context));
   }
 
   protected eval(expr: string, scope: any): string {

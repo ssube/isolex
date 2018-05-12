@@ -25,11 +25,7 @@ export class SedHandler extends BaseHandler<SedHandlerConfig> implements Handler
     if (!parts) {
       this.logger.debug({ args }, 'incorrect input.');
 
-      return this.bot.send(Message.create({
-        body: 'Incorrect input. Please use \`!!s/e/d/[flags]\`',
-        context: cmd.context,
-        reactions: []
-      }));
+      return this.bot.send(Message.reply('Incorrect input. Please use \`!!s/e/d/[flags]\`', cmd.context));
     }
 
     this.logger.debug({ parts }, 'fetching messages');
@@ -51,11 +47,7 @@ export class SedHandler extends BaseHandler<SedHandlerConfig> implements Handler
     }
 
     // No matches
-    await this.bot.send(Message.create({
-      body: 'No messages were matched!',
-      context: cmd.context,
-      reactions: []
-    }));
+    return this.bot.send(Message.reply('No messages were matched!', cmd.context));
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
@@ -64,13 +56,9 @@ export class SedHandler extends BaseHandler<SedHandlerConfig> implements Handler
     }
 
     if (!!message.body.match(parts[1])) {
-      const result = message.body.replace(new RegExp(parts[1], parts[3]), parts[2]);
+      const body = message.body.replace(new RegExp(parts[1], parts[3]), parts[2]);
 
-      await this.bot.send(Message.create({
-        body: result,
-        context: command.context,
-        reactions: []
-      }));
+      await this.bot.send(Message.reply(body, command.context));
       return true;
     }
 

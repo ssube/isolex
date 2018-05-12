@@ -74,44 +74,24 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
     this.logger.debug({ args, cmd, name, trigger }, 'learning command');
 
     if (await this.triggerRepository.findOne(name)) {
-      await this.bot.send(Message.create({
-        body: `Command already exists: ${name}`,
-        context: cmd.context,
-        reactions: []
-      }));
-
-      return;
+      return this.bot.send(Message.reply(`Command already exists: ${name}`, cmd.context));
     }
 
     await this.triggerRepository.save(trigger);
 
-    await this.bot.send(Message.create({
-      body: `Learned command ${name}.`,
-      context: cmd.context,
-      reactions: []
-    }));
+    return this.bot.send(Message.reply(`Learned command ${name}.`, cmd.context));
   }
 
   protected async deleteTrigger(name: string, cmd: Command) {
     const trigger = await this.triggerRepository.findOne(name);
 
     if (!trigger) {
-      await this.bot.send(Message.create({
-        body: `Command ${name} does not exist.`,
-        context: cmd.context,
-        reactions: []
-      }));
-
-      return;
+      return this.bot.send(Message.reply(`Command ${name} does not exist.`, cmd.context));
     }
 
     await this.triggerRepository.delete(name);
 
-    await this.bot.send(Message.create({
-      body: `Deleted command ${name}.`,
-      context: cmd.context,
-      reactions: []
-    }));
+    return this.bot.send(Message.reply(`Deleted command ${name}.`, cmd.context));
   }
 
   protected async executeTrigger(name: string, body: Array<string>, cmd: Command) {
@@ -137,6 +117,6 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
 
     this.logger.debug({ emit, trigger }, 'triggering command');
 
-    await this.bot.handle(emit);
+    return this.bot.handle(emit);
   }
 }

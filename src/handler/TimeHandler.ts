@@ -28,11 +28,6 @@ export class TimeHandler extends BaseHandler<TimeHandlerConfig> implements Handl
 
     const date = new Date();
     this.logger.debug({date, timeZone, locale: this.config.locale}, 'handling time');
-    const msg = Message.create({
-      body: date.toLocaleString(this.config.locale, {timeZone}),
-      context: cmd.context,
-      reactions: []
-    });
-    await this.bot.send(msg);
+    return this.bot.send(Message.reply(date.toLocaleString(this.config.locale, {timeZone}), cmd.context));
   }
 }

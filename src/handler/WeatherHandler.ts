@@ -37,11 +37,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
   public async handle(cmd: Command): Promise<void> {
     const location = cmd.get('location');
     if (!location) {
-      await this.bot.send(Message.create({
-        body: 'unknown or missing location',
-        context: cmd.context,
-        reactions: []
-      }));
+      return this.bot.send(Message.reply('unknown or missing location', cmd.context));
     }
 
     try {
@@ -52,11 +48,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
       });
       this.logger.debug({ body, weather }, 'rendering weather data');
 
-      await this.bot.send(Message.create({
-        body,
-        context: cmd.context,
-        reactions: []
-      }));
+      return this.bot.send(Message.reply(body, cmd.context));
     } catch (err) {
       this.logger.error(err, 'error getting weather');
     }

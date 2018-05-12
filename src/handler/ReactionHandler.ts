@@ -60,11 +60,6 @@ export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implemen
     }
 
     this.logger.debug({ cmd, reactions }, 'reacting to command');
-    const msg = Message.create({
-      body: '',
-      context: cmd.context,
-      reactions
-    });
-    await this.bot.send(msg);
+    await this.bot.send(Message.reply('', cmd.context));
   }
 }

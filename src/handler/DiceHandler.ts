@@ -29,12 +29,7 @@ export class DiceHandler extends BaseHandler<DiceHandlerConfig> implements Handl
 
     this.logger.debug({ args }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b);
-    const msg = Message.create({
-      body: `The results of your rolls were: ${results}. The sum is ${sum}.`,
-      context: cmd.context,
-      reactions: []
-    });
 
-    await this.bot.send(msg);
+    return this.bot.send(Message.reply(`The results of your rolls were: ${results}. The sum is ${sum}.`, cmd.context));
   }
 }

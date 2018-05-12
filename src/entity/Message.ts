@@ -14,8 +14,16 @@ export class Message implements MessageOptions {
     const msg = new Message();
     msg.body = options.body;
     msg.context = Context.create(options.context);
-    msg.reactions = Array.from(options.reactions || []);
+    msg.reactions = Array.from(options.reactions);
     return msg;
+  }
+
+  public static reply(body: string, context: Context) {
+    return Message.create({
+      body,
+      context,
+      reactions: []
+    });
   }
 
   @Column()

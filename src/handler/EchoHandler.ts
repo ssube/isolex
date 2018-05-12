@@ -28,11 +28,6 @@ export class EchoHandler extends BaseHandler<EchoHandlerConfig> implements Handl
 
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'echoing command');
-    const msg = Message.create({
-      body: this.template.render({ cmd }),
-      context: cmd.context,
-      reactions: []
-    });
-    await this.bot.send(msg);
+    return this.bot.send(Message.reply(this.template.render({ cmd }), cmd.context));
   }
 }

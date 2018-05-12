@@ -18,21 +18,11 @@ describeAsync('weather handler', async () => {
   itAsync('should send a message', async () => {
     const { container } = await createContainer();
 
-    let msg = Message.create({
-      body: '',
-      context: Context.create({
-        listenerId: '',
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: ''
-      }),
-      reactions: []
-    });
+    const sent: Array<Message> = [];
     const options: WeatherHandlerOptions = {
       bot: ineeda<Bot>({
-        send: (inMsg: Message) => {
-          msg = inMsg;
+        send: (msg: Message) => {
+          sent.push(msg);
         }
       }),
       compiler: ineeda<TemplateCompiler>({
@@ -71,6 +61,8 @@ describeAsync('weather handler', async () => {
 
     expect(await handler.check(cmd)).to.be.true;
     await handler.handle(cmd);
-    expect(msg.body).to.equal('unknown or missing location');
+
+    expect(sent.length).to.equal(1);
+    expect(sent[0].body).to.equal('unknown or missing location');
   });
 });

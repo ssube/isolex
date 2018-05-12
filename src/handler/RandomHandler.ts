@@ -40,13 +40,8 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
     }
 
     this.logger.debug({ args }, 'Returning random results');
-    const msg = Message.create({
-      body: `The result of your roll is: ${result}`,
-      context: cmd.context,
-      reactions: []
-    });
 
-    await this.bot.send(msg);
+    return this.bot.send(Message.reply(`The result of your roll is: ${result}`, cmd.context));
   }
 
   private getRandomDefault(): number {
