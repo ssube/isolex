@@ -36,10 +36,10 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     });
 
     this.client.on('message', (msg) => {
-      this.receive(msg);
+      this.receive(msg).catch((err) => this.logger.error(err, 'error receiving message'));
     });
 
-    this.client.login(this.config.token);
+    await this.client.login(this.config.token);
   }
 
   public async stop() {

@@ -1,4 +1,5 @@
 import { CronJob } from 'cron';
+import { bindAll } from 'lodash';
 import { Container, Inject, Module, Provides } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
@@ -12,24 +13,22 @@ import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { Service, ServiceConfig } from 'src/Service';
 import { Cooldown } from 'src/utils/Cooldown';
+import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 import { Connection, ConnectionOptions, createConnection, Entity } from 'typeorm';
 
 export interface BotConfig {
-  bot: {
-    name: string;
-  };
-  filters: Array<any>;
-  handlers: Array<any>;
+  filters: Array<BotService>;
+  handlers: Array<BotService & HandlerConfig>;
   intervals: Array<{
     cron: string;
     data: Array<CommandOptions>;
   }>;
-  listeners: Array<any>;
+  listeners: Array<BotService>;
   logger: {
     name: string;
     [other: string]: string;
   };
-  parsers: Array<any>;
+  parsers: Array<BotService & ParserConfig>;
   storage: ConnectionOptions;
 }
 
@@ -39,7 +38,7 @@ export interface BotOptions {
   logger: Logger;
 }
 
-export interface BotService {
+export interface BotService extends ServiceConfig {
   type: string;
   [other: string]: string;
 }
@@ -47,20 +46,20 @@ export interface BotService {
 @Inject('logger')
 export class Bot {
   protected config: BotConfig;
-  protected commands: Subject<Command>;
   protected container: Container;
   protected logger: Logger;
   protected storage: Connection;
   protected strict: boolean;
-  protected timers: Set<CronJob>;
 
   // services
   protected filters: Array<Filter>;
   protected handlers: Array<Handler>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
+  protected timers: Set<CronJob>;
 
-  // message observables
+  // observables
+  protected commands: Subject<Command>;
   protected incoming: Subject<Message>;
   protected outgoing: Subject<Message>;
 
@@ -85,6 +84,8 @@ export class Bot {
 
     // set up crons
     this.timers = new Set();
+
+    bindAll(this, 'looseError');
   }
 
   public getStorage(): Connection {
@@ -96,36 +97,19 @@ export class Bot {
    */
   public async start() {
     this.logger.info('setting up streams');
-    this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
-    this.incoming.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
-    this.outgoing.subscribe((next) => this.dispatch(next).catch((err) => this.looseError(err)));
+    this.commands.subscribe((next) => this.handle(next).catch(this.looseError));
+    this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
+    this.outgoing.subscribe((next) => this.dispatch(next).catch(this.looseError));
 
     this.logger.info('connecting to storage');
+    const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
+      logger: this.logger
+    });
     const entities = await this.container.create<Array<Function>, any>('entities');
     this.storage = await createConnection({
       ...this.config.storage,
       entities,
-      logger: {
-        log: (level: string, message: any) => {
-          // @todo make this log at the appropriate level
-          this.logger.debug({ level }, message);
-        },
-        logMigration: (migration: string) => {
-          this.logger.info({ migration }, 'orm running migration');
-        },
-        logQuery: (query: string, params?: Array<any>) => {
-          this.logger.debug({ params, query }, 'orm logged query');
-        },
-        logQueryError: (error: string, query: string, params?: Array<any>) => {
-          this.logger.warn({ error, params, query }, 'orm logged query error');
-        },
-        logQuerySlow: (time: number, query: string, params?: Array<any>) => {
-          this.logger.warn({ params, query, time }, 'orm logged slow query');
-        },
-        logSchemaBuild: (schema: string) => {
-          this.logger.info({ schema }, 'orm building schema');
-        }
-      }
+      logger: storageLogger
     });
 
     this.logger.info('setting up filters');

@@ -45,8 +45,8 @@ describeAsync('cooldown', async () => {
       logger: ConsoleLogger.global
     });
 
-    cd.start();
-    cd.stop();
+    await cd.start();
+    await cd.stop();
   });
 
   itAsync('should track ticks', async () => {
