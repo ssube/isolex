@@ -62,6 +62,7 @@ export class BotModule extends Module {
 
     // listeners
     this.bind(kebabCase(DiscordListener.name)).toConstructor(DiscordListener);
+    this.bind(kebabCase(SOListener.name)).toConstructor(SOListener);
 
     // parsers
     this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);

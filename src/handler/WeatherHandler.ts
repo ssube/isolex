@@ -54,7 +54,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
     }
   }
 
-  protected async getWeather(location: string): Promise<WeatherReply> {
+  public async getWeather(location: string): Promise<WeatherReply> {
     const query = this.getQuery(location);
     this.logger.debug({ location, query }, 'requesting weather data from API');
 

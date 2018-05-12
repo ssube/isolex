@@ -3,9 +3,9 @@ import { Logger } from 'noicejs/logger/Logger';
 import { Observable, Subject } from 'rxjs';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
-import { BaseListener } from 'src/listener/BaseListener';
-import { Listener, FetchOptions } from 'src/listener/Listener';
 import { Message } from 'src/entity/Message';
+import { BaseListener } from 'src/listener/BaseListener';
+import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceConfig, ServiceOptions } from 'src/Service';
 import { Cooldown, CooldownOptions, CooldownConfig } from 'src/utils/Cooldown';
 import { Client } from 'vendor/so-client/src/client';
@@ -23,11 +23,11 @@ export interface SOListenerConfig extends ServiceConfig {
 export type SOListenerOptions = ServiceOptions<SOListenerConfig>;
 
 export class SOListener extends BaseListener<SOListenerConfig> implements Listener {
-  client: Client;
-  container: Container;
-  outgoing: Subject<Message>;
-  rate: Cooldown;
-  room: number;
+  protected client: Client;
+  protected container: Container;
+  protected outgoing: Subject<Message>;
+  protected rate: Cooldown;
+  protected room: number;
 
   public static isEventMessage(event: Event): event is MessagePosted | MessageEdited {
     return (event.event_type === 1 || event.event_type === 2);
@@ -120,7 +120,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
         body: event.content,
         context: this.getEventContext(event),
         reactions: []
-      })
+      });
       this.bot.receive(msg);
     }
   }
