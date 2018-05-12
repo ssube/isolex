@@ -1,11 +1,12 @@
 FROM apextoaster/node:10.1
 
-# copy native modules
-COPY node_modules/ /app/node_modules/
-
 # copy build output
+COPY package.json /app/package.json
 COPY out/ /app/out/
 
 WORKDIR /app
+
+# install native modules
+RUN yarn
 
 ENTRYPOINT [ "/usr/bin/node", "/app/out/main-bundle.js" ]
