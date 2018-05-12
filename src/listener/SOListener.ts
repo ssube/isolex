@@ -33,6 +33,12 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     return (event.event_type === 1 || event.event_type === 2);
   }
 
+  constructor(options: SOListenerOptions) {
+    super(options);
+
+    this.container = options.container;
+  }
+
   public getEventContext(event: Event): Context {
     if (!SOListener.isEventMessage(event)) {
       throw new Error('invalid event type');
@@ -47,13 +53,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     });
   }
 
-  constructor(options: SOListenerOptions) {
-    super(options);
-
-    this.container = options.container;
-  }
-
-  async start() {
+  public async start() {
     this.rate = await this.container.create<Cooldown, CooldownOptions>(Cooldown, { config: this.config.rate });
     Observable.zip(this.outgoing, this.rate.getStream()).subscribe((next: [Message, number]) => {
       this.emit(next[0]).catch((err) => this.logger.error(err));
@@ -86,13 +86,13 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     });
   }
 
-  async stop() {
+  public async stop() {
     this.client.removeAllListeners('debug');
     this.client.removeAllListeners('error');
     this.client.removeAllListeners('event');
   }
 
-  async emit(msg: Message) {
+  public async emit(msg: Message) {
     try {
       await this.client.send(msg.escaped, this.room);
       this.logger.debug({ msg }, 'dispatched message');
@@ -109,11 +109,11 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     }
   }
 
-  async fetch(options: FetchOptions): Promise<Array<Message>> {
+  public async fetch(options: FetchOptions): Promise<Array<Message>> {
     throw new Error('not implemented');
   }
 
-  async receive(event: Event): Promise<void> {
+  public async receive(event: Event): Promise<void> {
     this.logger.debug({ event }, 'client got event');
     if (SOListener.isEventMessage(event)) {
       const msg = Message.create({

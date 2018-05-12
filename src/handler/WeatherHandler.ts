@@ -55,24 +55,14 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
   }
 
   protected async getWeather(location: string): Promise<WeatherReply> {
-    const qs: Partial<WeatherQuery> = {
-      APPID: this.config.api.key
-    };
-
-    if (/^[0-9]+$/.test(location)) {
-      // all digits = zip code
-      qs.zip = location;
-    } else {
-      qs.q = location;
-    }
-
-    this.logger.debug({ location, qs }, 'requesting weather data from API');
+    const query = this.getQuery(location);
+    this.logger.debug({ location, query }, 'requesting weather data from API');
 
     try {
       const weather = await this.container.create<WeatherReply, BaseOptions & CoreOptions & RequiredUriUrl>('request', {
         json: true,
         method: 'GET',
-        qs,
+        qs: query,
         uri: `${this.config.api.root}/weather`
       });
 
@@ -88,6 +78,21 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
         throw err;
       }
     }
+  }
+
+  public getQuery(location: string) {
+    const qs: Partial<WeatherQuery> = {
+      APPID: this.config.api.key
+    };
+
+    if (/^[0-9]+$/.test(location)) {
+      // all digits = zip code
+      qs.zip = location;
+    } else {
+      qs.q = location;
+    }
+
+    return qs;
   }
 }
 
