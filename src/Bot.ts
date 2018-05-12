@@ -1,4 +1,3 @@
-import { CronJob } from 'cron';
 import { bindAll } from 'lodash';
 import { Container, Inject, Module, Provides } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
@@ -19,10 +18,6 @@ import { Connection, ConnectionOptions, createConnection, Entity } from 'typeorm
 export interface BotConfig {
   filters: Array<BotService>;
   handlers: Array<BotService & HandlerConfig>;
-  intervals: Array<{
-    cron: string;
-    data: Array<CommandOptions>;
-  }>;
   listeners: Array<BotService>;
   logger: {
     name: string;
@@ -56,7 +51,6 @@ export class Bot {
   protected handlers: Array<Handler>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
-  protected timers: Set<CronJob>;
 
   // observables
   protected commands: Subject<Command>;
@@ -81,9 +75,6 @@ export class Bot {
     this.commands = new Subject();
     this.incoming = new Subject();
     this.outgoing = new Subject();
-
-    // set up crons
-    this.timers = new Set();
 
     bindAll(this, 'looseError');
   }
@@ -114,38 +105,22 @@ export class Bot {
 
     this.logger.info('setting up filters');
     for (const data of this.config.filters) {
-      const filter = await this.createPart<Filter, ServiceConfig>(data);
-      this.filters.push(filter);
+      this.filters.push(await this.createPart<Filter, ServiceConfig>(data));
     }
 
     this.logger.info('setting up handlers');
     for (const data of this.config.handlers) {
-      const handler = await this.createPart<Handler, HandlerConfig>(data);
-      this.handlers.push(handler);
-    }
-
-    this.logger.info('setting up intervals');
-    for (const intervalData of this.config.intervals) {
-      this.logger.debug({ interval: intervalData }, 'configuring interval');
-      const cron = new CronJob(intervalData.cron, async () => {
-        for (const data of intervalData.data) {
-          const cmd = Command.create(data);
-          this.commands.next(cmd);
-        }
-      });
-      this.timers.add(cron);
+      this.handlers.push(await this.createPart<Handler, HandlerConfig>(data));
     }
 
     this.logger.info('setting up listeners');
     for (const data of this.config.listeners) {
-      const listener = await this.createPart<Listener, ServiceConfig>(data);
-      this.listeners.push(listener);
+      this.listeners.push(await this.createPart<Listener, ServiceConfig>(data));
     }
 
     this.logger.info('setting up parsers');
     for (const data of this.config.parsers) {
-      const parser = await this.createPart<Parser, ParserConfig>(data);
-      this.parsers.push(parser);
+      this.parsers.push(await this.createPart<Parser, ParserConfig>(data));
     }
 
     this.logger.info('starting listeners');
@@ -157,18 +132,12 @@ export class Bot {
   }
 
   public async stop() {
-    this.logger.info('stopping bot');
-
-    this.logger.debug('stopping cron timers');
-    for (const timer of this.timers) {
-      timer.stop();
-    }
-    this.timers.clear();
-
     this.logger.debug('stopping streams');
     this.commands.complete();
     this.incoming.complete();
     this.outgoing.complete();
+
+    this.logger.info('bot has stopped');
   }
 
   /**

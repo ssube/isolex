@@ -2,7 +2,7 @@ import { Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
-export interface StorageLoggerOptions extends BaseOptions { 
+export interface StorageLoggerOptions extends BaseOptions {
   logger: Logger;
 }
 
