@@ -31,6 +31,7 @@ The map parser can match many triggers and emit different messages based on whic
 > input: `echo a b echo c d`
 >
 > reply: `cmd{name: echo, args: [a, b]}`
+>
 > reply: `cmd{name: echo, args: [c, d]}`
 
 ## Usage
