@@ -26,6 +26,52 @@ The map parser can match many triggers and emit different messages based on whic
       separator: " "
 ```
 
+### Alias
+
+Each alias defines another keyword and the command it will emit. The value of each alias must be a key in
+[`emit`](#emit).
+
+### Emit
+
+Each entry defines a keyword and the command it will emit, with name and destination fields.
+
+Input tokens are placed in output fields based on [`fields`](#fields) and [`rest`](#rest). The original keyword can be
+included (as the first item) by setting `remove: false`.
+
+Each item in `fields` will consume one token and add it to the given data field. Any remaining tokens will be added to
+the `rest` field.
+
+For example, with the config:
+
+```yaml
+echo:
+  name: debug_echo
+  fields: [body, next]
+  remove: true
+  rest: args
+```
+
+The input string `echo 1 2 3 4` will be split and the keyword `echo` matched. Since `remove` is set, the keyword will
+not be included in the output. The emitted command will look like:
+
+```yaml
+command:
+  name: debug_echo
+  data:
+    body: [1]
+    next: [2]
+    args: [3, 4]
+```
+
+### Name
+
+The service's name.
+
+### Split
+
+Nested [split-string options](https://www.npmjs.com/package/split-string#options). The most frequently useful are
+`brackets` (boolean or object, enable bracket groups) and `separator` (the characters on which to split).
+
 ## Examples
 
 > input: `echo a b echo c d`
