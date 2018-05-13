@@ -50,40 +50,63 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     return true;
   }
 
-  public async emit(msg: Message) {
+  public async emit(msg: Message): Promise<void> {
     // direct reply to message
     if (msg.context.threadId) {
-      const thread = this.threads.get(msg.context.threadId);
-      if (thread) {
-        for (const reaction of msg.reactions) {
-          const reactionEmoji = this.convertEmoji(reaction);
-          this.logger.debug({ reactionEmoji }, 'reacting to thread');
-          await thread.react(reactionEmoji);
-        }
-
-        if (msg.body.length) {
-          await thread.reply(msg.body);
-        }
-
-        return;
-      } else {
-        this.logger.warn({ msg }, 'error emitting message to missing thread');
-      }
+      return this.replyToThread(msg);
     }
 
     // broad reply to channel
     if (msg.context.roomId) {
-      const channel = this.client.channels.get(msg.context.roomId);
-      if (DiscordListener.isTextChannel(channel)) {
-        await channel.send(msg.body);
-        return;
-      } else {
-        this.logger.warn({ msg }, 'cannot emit message to missing channel');
-      }
+      return this.replyToChannel(msg);
     }
 
     // fail
     this.logger.error('could not find destination in message context');
+  }
+
+  public async replyToThread(msg: Message) {
+    const thread = this.threads.get(msg.context.threadId);
+    if (!thread) {
+      this.logger.warn({ msg }, 'message thread is missing');
+      return;
+    }
+
+    if (msg.body.length) {
+      await thread.reply(msg.body);
+    }
+
+    const reactions = this.filterEmoji(msg.reactions);
+    for (const reaction of reactions) {
+      this.logger.debug({ reaction }, 'adding reaction to thread');
+      await thread.react(reaction);
+    }
+
+    return;
+  }
+
+  public async replyToChannel(msg: Message) {
+    const channel = this.client.channels.get(msg.context.roomId);
+    if (!channel) {
+      this.logger.warn({ msg }, 'message channel is missing');
+      return;
+    }
+
+    if (!DiscordListener.isTextChannel(channel)) {
+      this.logger.warn('channel is not a text channel');
+      return;
+    }
+
+    await channel.send(msg.body);
+    return;
+  }
+
+  public filterEmoji(names: Array<string>) {
+    const emoji = new Set();
+    for (const name of names) {
+      emoji.add(this.convertEmoji(name));
+    }
+    return Array.from(emoji);
   }
 
   public convertEmoji(name: string): string {
