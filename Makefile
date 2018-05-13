@@ -45,6 +45,12 @@ all: configure bundle test ## builds, bundles, and tests the application
 strict: configure bundle-check test-check ## builds, bundles, and tests the application with type checks and extra warnings (slow)
 	@echo Success! make run-terminal to launch
 
+clean: ## clean up the target directory
+	rm -rf $(TARGET_PATH)
+
+configure: ## create the target directory and other files not in git
+	mkdir -p $(TARGET_PATH)
+
 # from https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## print this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort \
@@ -65,16 +71,10 @@ bundle-stats: ## bundle the application and emit statistics
 bundle-watch: ## bundle the application and watch for changes
 	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --watch
 
-clean: ## clean up the target directory
-	rm -rf $(TARGET_PATH)
-
-configure: ## create the target directory and other files not in git
-	mkdir -p $(TARGET_PATH)
-
-docs: ## generate html docs
+bundle-docs: ## generate html docs
 	$(NODE_BIN)/typedoc $(DOCS_OPTS)
 
-push: ## push to both gitlab and github (this assumes you have both remotes set up)
+git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
 	git push gitlab ${GIT_BRANCH}
 	git push github ${GIT_BRANCH}
 
@@ -101,11 +101,11 @@ test-watch:
 todo:
 	@echo "Remaining tasks:"
 	@echo ""
-	@grep "todo" -r src/
+	@grep "todo" -r src/ || true
 	@echo ""
 	@echo "Pending tests:"
 	@echo ""
-	@grep "[[:space:]]xit" -r $(TEST_PATH)
+	@grep "[[:space:]]xit" -r test/ || true
 
-update: ## check yarn for outdated packages
+yarn-update: ## check yarn for outdated packages
 	yarn -L -C -P '.*'

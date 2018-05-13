@@ -61,7 +61,6 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
 
   /**
    * Map a string into some commands, after checking for emit keys.
-   * @todo check each token for a key, split args, and map multiple commands
    */
   public mapCommand(val: string): Array<MappedMessage> {
     const parts = split(val, this.config.split).reverse();
