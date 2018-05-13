@@ -85,9 +85,9 @@ export class Bot {
    */
   public async start() {
     this.logger.info('setting up streams');
-    this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
-    this.incoming.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
-    this.outgoing.subscribe((next) => this.dispatch(next).catch((err) => this.looseError(err)));
+    this.commands.subscribe((next) => this.handle(next).catch(this.looseError));
+    this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
+    this.outgoing.subscribe((next) => this.dispatch(next).catch(this.looseError));
 
     this.logger.info('connecting to storage');
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {

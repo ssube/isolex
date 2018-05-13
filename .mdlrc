@@ -1,1 +1,2 @@
-rules "~MD103"
+rules all
+rules ~"MD103"
