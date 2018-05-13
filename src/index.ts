@@ -29,6 +29,7 @@ async function main(): Promise<number> {
 }
 
 main().then((status) => process.exit(status)).catch((err) => {
+  /* tslint:disable-next-line:no-console */
   console.error('uncaught error during main:', err);
   process.exit(STATUS_ERROR);
 });

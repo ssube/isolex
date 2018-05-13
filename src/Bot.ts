@@ -85,9 +85,11 @@ export class Bot {
    */
   public async start() {
     this.logger.info('setting up streams');
+    /* tslint:disable:no-unbound-method */
     this.commands.subscribe((next) => this.handle(next).catch(this.looseError));
     this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
     this.outgoing.subscribe((next) => this.dispatch(next).catch(this.looseError));
+    /* tslint:enable */
 
     this.logger.info('connecting to storage');
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {

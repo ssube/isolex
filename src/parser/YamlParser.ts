@@ -3,7 +3,7 @@ import { Command, CommandType } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
-import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { ServiceOptions } from 'src/Service';
 
 export interface YamlParserConfig extends ParserConfig {
   emit: string;
