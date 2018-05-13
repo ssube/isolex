@@ -4,35 +4,17 @@ import { Container } from 'noicejs';
 import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/Config';
 import { BotModule } from 'src/module/BotModule';
+import { signal } from 'src/utils';
+import { BunyanLogger } from 'src/utils/BunyanLogger';
 
-const SIGNALS: Array<NodeJS.Signals> = ['SIGINT', 'SIGTERM'];
+const SIGNAL_RELOAD: Array<NodeJS.Signals> = ['SIGHUP'];
+const SIGNAL_STOP: Array<NodeJS.Signals> = ['SIGINT', 'SIGTERM'];
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
-function signal(): Promise<void> {
-  return new Promise((res, _) => {
-    function handler() {
-      for (const sig of SIGNALS) {
-        process.removeListener(sig, handler);
-      }
-      res();
-    }
-
-    for (const sig of SIGNALS) {
-      process.on(sig, handler);
-    }
-  });
-}
-
 async function main(): Promise<number> {
   const config = await loadConfig();
-  const logger = bunyan.createLogger({
-    ...config.logger,
-    serializers: {
-      logger: (l) => Reflect.getPrototypeOf(l).constructor.name,
-      module: (m) => Reflect.getPrototypeOf(m).constructor.name
-    }
-  });
+  const logger = BunyanLogger.create(config.logger);
 
   const mod = new BotModule({ logger });
   const ctr = Container.from(mod);
@@ -42,7 +24,7 @@ async function main(): Promise<number> {
   mod.setBot(bot);
 
   await bot.start();
-  await signal();
+  await signal(SIGNAL_STOP);
   await bot.stop();
 
   return STATUS_SUCCESS;

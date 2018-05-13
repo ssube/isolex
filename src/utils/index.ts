@@ -75,3 +75,22 @@ export function normalizeMap<TVal>(val: Map<string, TVal> | FakeMap<TVal>): Map<
     return new Map(Object.entries(val));
   }
 }
+
+export function prototypeName(val: any) {
+  return Reflect.getPrototypeOf(val).constructor.name;
+}
+
+export function signal(signals: Array<NodeJS.Signals>): Promise<void> {
+  return new Promise((res, _) => {
+    function handler() {
+      for (const sig of signals) {
+        process.removeListener(sig, handler);
+      }
+      res();
+    }
+
+    for (const sig of signals) {
+      process.on(sig, handler);
+    }
+  });
+}

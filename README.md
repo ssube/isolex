@@ -1,11 +1,12 @@
 # isolex
 
-Unified observable chat bot with [AWS Lex](https://aws.amazon.com/lex/) integration,
-[handlebars templates](https://handlebarsjs.com/) and [buzzwords](https://www.youtube.com/watch?v=PYtXuBN1Hvc).
+Unified chat bot with [AWS Lex](https://aws.amazon.com/lex/) integration, observables,
+[templates](https://handlebarsjs.com/) and [buzzwords](https://www.youtube.com/watch?v=PYtXuBN1Hvc).
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/maintainability)](https://codeclimate.com/github/ssube/isolex/maintainability)
+[![pipeline status](https://git.apextoaster.com/apex-open/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/apex-open/isolex/commits/master)
 
 ## Build
-
-[![pipeline status](https://git.apextoaster.com/apex-open/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/apex-open/isolex/commits/master)
 
 ```shell
 $ yarn
@@ -20,6 +21,10 @@ $ make
 ...
 Success! make run-terminal to launch
 ```
+
+## Config
+
+Create [a config file](docs/config.md) at `${HOME}/.isolex.yml`.
 
 ## Usage
 

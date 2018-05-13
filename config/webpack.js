@@ -35,6 +35,9 @@ module.exports = {
   },
   mode: 'none',
   module: {
+    noParse: [
+      /dtrace-provider/
+    ],
     rules: [{
       test: /\.tsx?$/,
       rules: [{
@@ -80,9 +83,6 @@ module.exports = {
   ],
   resolve: {
     alias: [{
-      name: 'dtrace-provider',
-      alias: modulePath.shim
-    }, {
       name: 'erlpack',
       alias: modulePath.shim
     }, {

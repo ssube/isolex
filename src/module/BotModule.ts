@@ -25,6 +25,7 @@ import { SplitParser } from 'src/parser/SplitParser';
 import { YamlParser, YamlParserConfig } from 'src/parser/YamlParser';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { Connection } from 'typeorm';
+import { MapParser } from '../parser/MapParser';
 
 export interface BotModuleOptions {
   logger: Logger;
@@ -67,6 +68,7 @@ export class BotModule extends Module {
     // parsers
     this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);
     this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
+    this.bind(kebabCase(MapParser.name)).toConstructor(MapParser);
     this.bind(kebabCase(SplitParser.name)).toConstructor(SplitParser);
     this.bind(kebabCase(YamlParser.name)).toConstructor(YamlParser);
   }
@@ -92,7 +94,6 @@ export class BotModule extends Module {
 
   @Provides('request')
   protected async createRequest(options: any): Promise<Request> {
-    this.logger.debug({ options }, 'creating request');
     return request(options);
   }
 

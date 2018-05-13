@@ -2,7 +2,19 @@
 
 The learn handler handles learning new commands.
 
-## Modes
+## Config
+
+## Examples
+
+> input: `add solve 's(x) = simplify("x^2 / x", {x: x});'`
+>
+> reply: Command 'solve' learned.
+>
+> input: `solve math s(10)`
+>
+> reply: `10`
+
+## Usage
 
 The learn handler allows creating, deleting, and executing commands. The mode is passed as the first argument; if no
 mode is specific (any other string passed instead), execute will be assumed.
@@ -32,13 +44,3 @@ To execute an existing command, pass the trigger name, destination handler (comm
 > input: `run test 1 2 3`
 >
 > reply: `"a b", c, 1, 2, 3`
-
-## Examples
-
-> input: `add solve 's(x) = simplify("x^2 / x", {x: x});'`
->
-> reply: Command 'solve' learned.
->
-> input: `solve math s(10)`
->
-> reply: `10`

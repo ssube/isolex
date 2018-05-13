@@ -31,28 +31,16 @@ export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implemen
     this.tags = Array.from(this.reactions.keys());
   }
 
-  public async check(cmd: Command): Promise<boolean> {
-    const body = cmd.get(this.config.field);
-    if (!body) {
-      return false;
-    }
-
-    for (const key of this.tags) {
-      if (body.includes(key)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   public async handle(cmd: Command): Promise<void> {
     const reactions = [];
     const body = cmd.get(this.config.field);
     for (const [key, next] of this.reactions) {
+      this.logger.debug({ body, key }, 'checking reaction');
       if (body.includes(key)) {
         for (const reaction of next) {
-          if (Math.random() < reaction.chance) {
+          const result = Math.random();
+          this.logger.debug({ body, key, next, result, reaction }, 'rolling reaction');
+          if (result < reaction.chance) {
             reactions.push(reaction.name);
           }
         }
@@ -60,6 +48,10 @@ export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implemen
     }
 
     this.logger.debug({ cmd, reactions }, 'reacting to command');
-    await this.bot.send(Message.reply('', cmd.context));
+    await this.bot.send(Message.create({
+      body: '',
+      context: cmd.context,
+      reactions
+    }));
   }
 }

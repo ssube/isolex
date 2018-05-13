@@ -1,5 +1,6 @@
 import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, TextChannel } from 'discord.js';
 import { isNil } from 'lodash';
+import * as emoji from 'node-emoji';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
@@ -57,12 +58,9 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
       const thread = this.threads.get(msg.context.threadId);
       if (thread) {
         for (const reaction of msg.reactions) {
-          const emoji = this.client.emojis.find('name', reaction);
-          if (emoji) {
-            await thread.react(emoji.id);
-          } else {
-            this.logger.warn({ reaction }, 'missing emoji for reaction');
-          }
+          const reactionEmoji = this.convertEmoji(reaction);
+          this.logger.debug({ reactionEmoji }, 'reacting to thread');
+          await thread.react(reactionEmoji);
         }
 
         if (msg.body.length) {
@@ -88,6 +86,15 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
 
     // fail
     this.logger.error('could not find destination in message context');
+  }
+
+  public convertEmoji(name: string): string {
+    const custom = this.client.emojis.find('name', name);
+    if (custom) {
+      return custom.id;
+    }
+
+    return emoji.get(name);
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
