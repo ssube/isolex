@@ -64,13 +64,8 @@
     "no-string-literal": true,
     "no-submodule-imports": false,
     "no-unbound-method": true,
+    "no-unused-declaration": true,
     "no-unused-expression": true,
-    "no-unused-variable": [
-      true,
-      {
-        "ignore-pattern": "^_"
-      }
-    ],
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "prefer-const": true,
@@ -83,6 +78,7 @@
       "avoid-escape"
     ],
     "radix": true,
+    "throw-error": true,
     "trailing-comma": [
       true,
       {
