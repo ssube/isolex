@@ -102,26 +102,32 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
   }
 
   public filterEmoji(names: Array<string>) {
-    const emoji = new Set();
+    const out = new Set();
     for (const name of names) {
-      emoji.add(this.convertEmoji(name));
+      out.add(this.convertEmoji(name));
     }
-    return Array.from(emoji);
+    return Array.from(out);
   }
 
   public convertEmoji(name: string): string {
+    const results = emoji.search(name);
+    if (results.length) {
+      return results[0].emoji;
+    }
+
     const custom = this.client.emojis.find('name', name);
+
     if (custom) {
       return custom.id;
     }
 
-    return emoji.get(name);
+    throw new Error(`could not find emoji: ${name}`);
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
     const channel = this.client.channels.get(options.channel);
     if (!DiscordListener.isTextChannel(channel)) {
-      throw new Error();
+      throw new Error('channel is not a text channel');
     }
 
     // transform the options into https://discord.js.org/#/docs/main/stable/typedef/ChannelLogsQueryOptions
