@@ -1,5 +1,3 @@
-import * as handlebars from 'handlebars';
-
 export interface TemplateOptions {
   template: HandlebarsTemplateDelegate;
 }

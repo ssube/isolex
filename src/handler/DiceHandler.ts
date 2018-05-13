@@ -1,10 +1,10 @@
 import * as mathjs from 'mathjs';
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+
+const DICE_MINIMUM = 1;
 
 export type DiceHandlerConfig = HandlerConfig;
 
@@ -23,7 +23,7 @@ export class DiceHandler extends BaseHandler<DiceHandlerConfig> implements Handl
 
     const results: Array<number> = [];
     for (let i = 0; i < Number(args[1]); i++) {
-      const rollResult = mathjs.randomInt(1, Number(args[2]));
+      const rollResult = mathjs.randomInt(DICE_MINIMUM, Number(args[2]));
       results.push(rollResult);
     }
 

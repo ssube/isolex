@@ -1,7 +1,3 @@
-import { isNumber, isString } from 'lodash';
-import { Bot } from 'src/Bot';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { ServiceConfig, ServiceOptions } from 'src/Service';

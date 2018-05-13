@@ -1,6 +1,4 @@
 import { safeLoad } from 'js-yaml';
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';

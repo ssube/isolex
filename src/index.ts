@@ -1,5 +1,3 @@
-import * as AWS from 'aws-sdk';
-import * as bunyan from 'bunyan';
 import { Container } from 'noicejs';
 import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/Config';

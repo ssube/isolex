@@ -21,7 +21,7 @@ async function createUserFilter(options: UserFilterOptions) {
 
 describeAsync('user filter', async () => {
   itAsync('should have a working helper', async () => {
-    const { container, filter } = await createUserFilter({
+    const { filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
         ignore: ['test'],
@@ -37,7 +37,7 @@ describeAsync('user filter', async () => {
 
   itAsync('should allow commands from allowed users', async () => {
     const ignore = ['test'];
-    const { container, filter } = await createUserFilter({
+    const { filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
         ignore,
@@ -66,7 +66,7 @@ describeAsync('user filter', async () => {
 
   itAsync('should filter out commands from banned users', async () => {
     const ignore = ['test'];
-    const { container, filter } = await createUserFilter({
+    const { filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
         ignore,

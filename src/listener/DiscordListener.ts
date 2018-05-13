@@ -1,8 +1,6 @@
 import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, TextChannel } from 'discord.js';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';

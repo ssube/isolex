@@ -1,8 +1,5 @@
 import { expect } from 'chai';
-import { ineeda } from 'ineeda';
 import { ConsoleLogger, Container } from 'noicejs';
-import { Logger } from 'noicejs/logger/Logger';
-import { spy } from 'sinon';
 
 import { defer } from 'src/utils';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';

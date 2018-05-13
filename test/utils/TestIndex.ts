@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { spy } from 'sinon';
 
 import { normalizeMap } from 'src/utils';
 import { describeAsync, itAsync } from 'test/helpers/async';

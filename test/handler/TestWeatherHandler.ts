@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { ConsoleLogger, Container, Module } from 'noicejs';
-import { Logger } from 'noicejs/logger/Logger';
-import { spy } from 'sinon';
+import { ConsoleLogger } from 'noicejs';
 
 import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';

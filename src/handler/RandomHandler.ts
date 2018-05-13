@@ -1,10 +1,10 @@
+import { isNil } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { countList } from 'src/utils';
 
 export type RandomHandlerConfig = HandlerConfig;
 export type RandomHandlerOptions = HandlerOptions<RandomHandlerConfig>;
@@ -16,11 +16,13 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
 
   public async handle(cmd: Command): Promise<void> {
     const args = cmd.data.get('args');
-    if (!args) {
+    if (!Array.isArray(args)) {
       throw new Error('no arguments were provided!');
     }
 
-    this.logger.debug({ args }, 'computing random..');
+    const [minVal, maxVal] = args.map(Number);
+
+    this.logger.debug({ max, min }, 'computing random');
     let result = 0 as number | string;
     switch (args.length) {
       case 0: {
@@ -28,13 +30,13 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
         break;
       }
       case 1: {
-        const precision = this.getPrecision(Number(args[0]));
-        result = this.getRandomValue(precision, Number(args[0]));
+        const precision = this.getPrecision(minVal);
+        result = this.getRandomValue(precision, minVal);
         break;
       }
       case 2: {
-        const precision = this.getPrecision(Number(args[0]), Number([args[1]]));
-        result = this.getRandomValue(precision, Number(args[0]), Number(args[1]));
+        const precision = this.getPrecision(minVal, maxVal);
+        result = this.getRandomValue(precision, minVal, maxVal);
         break;
       }
     }
@@ -48,16 +50,16 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
     return randomInt(1, 6);
   }
 
-  private getRandomValue(precision: number, val1: number, val2?: number): number | string {
-    if (isNaN(val1)) {
-      throw new Error(`Provided value: ${val1} is not a number!`);
+  private getRandomValue(precision: number, minVal: number, maxVal?: number): number | string {
+    if (isNaN(minVal)) {
+      throw new Error(`Provided value: ${minVal} is not a number!`);
     }
-    if (!!val2 && isNaN(val2)) {
-      throw new Error(`Provided value: ${val2} is not a number!`);
+    if (isNil(maxVal) || isNaN(maxVal)) {
+      throw new Error(`Provided value: ${maxVal} is not a number!`);
     }
 
-    const minimum = val2 === undefined ? min(val1, 0) : min(val1, val2);
-    const maximum = val2 === undefined ? max(val1, 0) : max(val1, val2);
+    const minimum = isNil(maxVal) ? min(minVal, 0) : min(minVal, maxVal);
+    const maximum = isNil(maxVal) ? max(minVal, 0) : max(minVal, maxVal);
 
     this.logger.debug({ precision }, 'getting random value');
     if (precision === 0) {
@@ -71,11 +73,11 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
   private getPrecision(...values: Array<number>) {
     const precision = values.map((value) => {
       const parts = value.toString().split('.');
-      return parts[1] !== undefined ? parts[1].length : 0;
+      return countList(parts[1]);
     })
       .reduce((previous, current) => {
         this.logger.debug({ previous, current }, 'calculating precision');
-        return current > previous ? current : previous;
+        return max(current, previous);
       });
 
     return precision;

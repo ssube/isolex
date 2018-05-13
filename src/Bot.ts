@@ -1,19 +1,16 @@
 import { bindAll } from 'lodash';
-import { Container, Inject, Module, Provides } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
-import { Command, CommandOptions } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
+import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { Trigger } from 'src/entity/Trigger';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Handler, HandlerConfig } from 'src/handler/Handler';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { Service, ServiceConfig } from 'src/Service';
-import { Cooldown } from 'src/utils/Cooldown';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
-import { Connection, ConnectionOptions, createConnection, Entity } from 'typeorm';
+import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 export interface BotConfig {
   filters: Array<BotService>;
@@ -88,9 +85,9 @@ export class Bot {
    */
   public async start() {
     this.logger.info('setting up streams');
-    this.commands.subscribe((next) => this.handle(next).catch(this.looseError));
-    this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
-    this.outgoing.subscribe((next) => this.dispatch(next).catch(this.looseError));
+    this.commands.subscribe((next) => this.handle(next).catch((err) => this.looseError(err)));
+    this.incoming.subscribe((next) => this.receive(next).catch((err) => this.looseError(err)));
+    this.outgoing.subscribe((next) => this.dispatch(next).catch((err) => this.looseError(err)));
 
     this.logger.info('connecting to storage');
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
