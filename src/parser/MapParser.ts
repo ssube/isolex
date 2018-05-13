@@ -4,7 +4,7 @@ import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { setOrPush, normalizeMap } from 'src/utils';
+import { normalizeMap, setOrPush } from 'src/utils';
 
 /**
  * Mapped commands are the stored form of a command to be produced by a mapping.
@@ -64,22 +64,30 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
    * @todo check each token for a key, split args, and map multiple commands
    */
   public mapCommand(val: string): Array<MappedMessage> {
-    const [key, ...args] = split(this.replaceAlias(val), this.config.split);
-    this.logger.debug({ args, key }, 'mapping resolved command');
+    const parts = split(val, this.config.split).reverse();
+    this.logger.debug({ parts }, 'mapping resolved command');
 
-    const cmd = this.emit.get(key);
-    if (!cmd) {
-      throw new Error('missing command');
+    const pending = [];
+    const mapped = [];
+    for (const part of parts) {
+      const resolved = this.replaceAlias(part);
+      const cmd = this.emit.get(resolved);
+
+      if (cmd) {
+        const args = Array.from(pending);
+
+        if (!cmd.remove) {
+          args.unshift(part);
+        }
+
+        mapped.push({ args, cmd });
+        pending.length = 0;
+      } else {
+        pending.unshift(part);
+      }
     }
 
-    if (!cmd.remove) {
-      args.unshift(key);
-    }
-
-    return [{
-      args,
-      cmd
-    }];
+    return mapped;
   }
 
   public mapFields(args: Array<string>, fields: Array<string>, rest: string): CommandPropMap {
