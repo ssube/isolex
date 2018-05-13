@@ -1,4 +1,4 @@
-import { isMap } from 'lodash';
+import { isMap, isNil } from 'lodash';
 
 export function defer<T = undefined>(ms: number, val?: T): Promise<T> {
   return new Promise((res, rej) => {
@@ -15,32 +15,47 @@ export function leftPad(val: string, min: number = 8, fill: string = '0'): strin
   }
 }
 
+/**
+ * Calculate the "length" of an array or single value.
+ *
+ * Arrays return their length, single values return 1, and missing values return 0. This counts the number
+ * of elements that setOrPush would add.
+ */
 export function countList(val: any): number {
   if (Array.isArray(val)) {
     return val.length;
-  } else {
+  }
+
+  if (!isNil(val)) {
     return 1;
   }
+
+  return 0;
 }
 
-export function mergeList<TVal extends TItem | Array<TItem>, TItem>(prev: TVal, next: TVal): Array<TItem> {
+/**
+ * Merge arguments, which may or may not be arrays, into one return that is definitely an array.
+ */
+export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Array<TVal>): Array<TItem> {
   const out = [];
 
-  if (Array.isArray(prev)) {
-    out.push(...prev);
-  } else {
-    out.push(prev);
-  }
-
-  if (Array.isArray(next)) {
-    out.push(...next);
-  } else {
-    out.push(next);
+  for (const part of parts) {
+    if (Array.isArray(part)) {
+      out.push(...part);
+    } else {
+      out.push(part);
+    }
   }
 
   return out;
 }
 
+/**
+ * Set a map key to a new array or push to the existing value.
+ * @param map The destination map and source of existing values.
+ * @param key The key to get and set.
+ * @param val The value to add.
+ */
 export function setOrPush<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey, val: TVal | Array<TVal>) {
   const prev = map.get(key);
   if (prev) {
@@ -64,11 +79,14 @@ export function mergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<TVal>
   return out;
 }
 
-interface FakeMap<TVal> {
+interface MapLike<TVal> {
   [key: string]: TVal;
 }
 
-export function normalizeMap<TVal>(val: Map<string, TVal> | FakeMap<TVal>): Map<string, TVal> {
+/**
+ * Clone a map or map-like object into a new map.
+ */
+export function normalizeMap<TVal>(val: Map<string, TVal> | MapLike<TVal>): Map<string, TVal> {
   if (isMap(val)) {
     return new Map(val.entries());
   } else {

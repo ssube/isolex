@@ -23,6 +23,10 @@ const modulePath = {
 // if `make test-check` was run, type check during lint (takes _forever_)
 const typeCheck = process.env['TEST_CHECK'] === 'true';
 
+function ignoreModules(names) {
+  return names.map((it) => new webpack.IgnorePlugin(it));
+}
+
 module.exports = {
   devtool: 'source-map',
   entry: {
@@ -79,64 +83,32 @@ module.exports = {
       generateStatsFile: true,
       openAnalyzer: false,
       reportFilename: 'bundles.html'
-    })
+    }),
+    ...ignoreModules([
+      /^erlpack$/,
+      /^ffmpeg-binaries$/,
+      /^mssql$/,
+      /^mysql$/,
+      /^mysql2$/,
+      /^mongodb$/,
+      /^node-opus$/,
+      /^opusscript$/,
+      /^oracledb$/,
+      /^(pg|pg-.*)/,
+      /^pty.js/,
+      /^react-native-sqlite-storage$/,
+      /^redis$/,
+      /^term.js$/
+    ])
   ],
   resolve: {
     alias: [{
-      name: 'erlpack',
-      alias: modulePath.shim
-    }, {
-      name: 'ffmpeg-binaries',
-      alias: modulePath.shim
-    }, {
       name: 'handlebars',
       alias: 'handlebars/dist/handlebars'
-    }, {
-      name: 'mongodb',
-      alias: modulePath.shim
-    }, {
-      name: 'mssql',
-      alias: modulePath.shim
-    }, {
-      name: 'mysql',
-      alias: modulePath.shim
-    }, {
-      name: 'mysql2',
-      alias: modulePath.shim
-    }, {
-      name: 'node-opus',
-      alias: modulePath.shim
-    }, {
-      name: 'opusscript',
-      alias: modulePath.shim
-    }, {
-      name: 'oracledb',
-      alias: modulePath.shim
-    }, {
-      name: 'pg',
-      alias: modulePath.shim
-    }, {
-      name: 'pg-native',
-      alias: modulePath.shim
-    }, {
-      name: 'pg-query-stream',
-      alias: modulePath.shim
-    }, {
-      name: 'pty.js',
-      alias: modulePath.shim
-    }, {
-      name: 'react-native-sqlite-storage',
-      alias: modulePath.shim
-    }, {
-      name: 'redis',
-      alias: modulePath.shim
     }, {
       name: 'src',
       alias: path.source,
       onlyModule: false
-    }, {
-      name: 'term.js',
-      alias: modulePath.shim
     }, {
       name: 'test',
       alias: path.test,

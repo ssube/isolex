@@ -1,7 +1,8 @@
 import { Observable, Subject } from 'rxjs';
 import { BaseService } from 'src/BaseService';
-import { Service, ServiceConfig, ServiceOptions } from 'src/Service';
+import { ServiceConfig, ServiceOptions } from 'src/Service';
 
+export const GROWTH_FACTOR = 2;
 export interface CooldownConfig extends ServiceConfig {
   base: number;
   grow: number;
@@ -60,7 +61,7 @@ export class Cooldown extends BaseService<CooldownConfig> {
    * @returns the new rate
    */
   public dec(): number {
-    this.grow = Math.max(this.grow / 2, this.config.grow);
+    this.grow = Math.max(this.grow / GROWTH_FACTOR, this.config.grow);
     this.rate = Math.max(this.rate - this.grow, this.config.base);
     return this.rate;
   }

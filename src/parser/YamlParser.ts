@@ -1,14 +1,12 @@
 import { safeLoad } from 'js-yaml';
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
-import { Command } from 'src/entity/Command';
+import { Command, CommandType } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser } from 'src/parser/Parser';
-import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { Parser, ParserConfig } from 'src/parser/Parser';
+import { ServiceOptions } from 'src/Service';
 
-export interface YamlParserConfig extends ServiceConfig {
-  tags: Array<string>;
+export interface YamlParserConfig extends ParserConfig {
+  emit: string;
 }
 
 export type YamlParserOptions = ServiceOptions<YamlParserConfig>;
@@ -25,6 +23,11 @@ export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
       throw new Error('invalid parse value');
     }
 
-    return [Command.create(data as any)]; // @todo: make this better
+    return [Command.create({
+      context: msg.context,
+      data,
+      name: this.config.emit,
+      type: CommandType.None
+    })];
   }
 }

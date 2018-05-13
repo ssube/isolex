@@ -1,6 +1,6 @@
 import { readFile } from 'fs';
 import { safeLoad } from 'js-yaml';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { BotConfig } from 'src/Bot';
 import { promisify } from 'util';
 

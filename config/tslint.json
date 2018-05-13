@@ -1,32 +1,106 @@
 {
   "extends": "tslint:latest",
   "rules": {
-    "array-type": [true, "generic"],
+    "adjacent-overload-signatures": true,
+    "array-type": [
+      true,
+      "generic"
+    ],
+    "await-promise": true,
     "ban-types": true,
     "curly": true,
-    "cyclomatic-complexity": [true, 20],
-    "interface-name": [true, "never-prefix"],
-    "max-classes-per-file": [false, 2],
-    "max-line-length": [true, 180],
+    "cyclomatic-complexity": [
+      true,
+      12
+    ],
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "max-classes-per-file": [
+      true,
+      1
+    ],
+    "max-line-length": [
+      true,
+      180
+    ],
+    "member-access": true,
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-method",
+          "public-static-field",
+          "public-instance-field",
+          "protected-instance-field",
+          "public-constructor",
+          "public-instance-method",
+          "protected-instance-method"
+        ]
+      }
+    ],
+    "no-arg": true,
     "no-bitwise": false,
-    "no-console": [true, "log"],
+    "no-conditional-assignment": true,
+    "no-console": true,
+    "no-duplicate-super": true,
+    "no-empty-interface": true,
     "no-floating-promises": true,
-    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
     "no-implicit-dependencies": false,
-    "no-namespace": [true, "allow-declarations"],
+    "no-inferred-empty-object-type": true,
+    "no-inferrable-types": [
+      true,
+      "ignore-params",
+      "ignore-properties"
+    ],
+    "no-internal-module": true,
+    "no-magic-numbers": [true, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "no-namespace": true,
+    "no-null-keyword": true,
+    "no-parameter-reassignment": true,
+    "no-return-await": true,
     "no-shadowed-variable": true,
     "no-string-literal": true,
     "no-submodule-imports": false,
-    "no-unused-expression": false,
+    "no-unbound-method": true,
+    "no-unused-declaration": true,
+    "no-unused-expression": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "prefer-const": true,
     "prefer-for-of": true,
-    "quotemark": [true, "single", "jsx-double", "avoid-escape"],
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
-    "variable-name": [true, "ban-keywords", "check-format"]
+    "prefer-readonly": true,
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double",
+      "avoid-escape"
+    ],
+    "radix": true,
+    "throw-error": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format"
+    ]
   },
   "jsRules": {
     "curly": true,
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}]
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ]
   },
-  "rulesDirectory": [
-  ]
+  "rulesDirectory": []
 }

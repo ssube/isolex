@@ -1,4 +1,3 @@
-import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Bot } from 'src/Bot';
 import { Service, ServiceConfig, ServiceOptions } from 'src/Service';

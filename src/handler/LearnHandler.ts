@@ -1,11 +1,9 @@
 import { Inject } from 'noicejs';
 import { Command } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Trigger } from 'src/entity/Trigger';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
-import { ServiceOptions } from 'src/Service';
 import { Connection, Repository } from 'typeorm';
 
 export interface LearnHandlerConfig extends HandlerConfig {

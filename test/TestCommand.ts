@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { spy } from 'sinon';
 
 import { Command, CommandType } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';

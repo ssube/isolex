@@ -18,9 +18,21 @@ Then explain what each block or key does.
 
 Provide a few examples of common uses and the expected response.
 
+> input: `this is a test`
+>
+> reply: `response: test`
+
 ## Usage
 
 Provide detailed usage instructions for each feature of the service.
+
+### Command
+
+```none
+cmd [arg] [...options]
+```
+
+Start with the arguments, then elaborate on each command.
 
 ### Interactions
 

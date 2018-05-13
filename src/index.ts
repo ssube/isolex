@@ -1,5 +1,3 @@
-import * as AWS from 'aws-sdk';
-import * as bunyan from 'bunyan';
 import { Container } from 'noicejs';
 import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/Config';
@@ -31,6 +29,7 @@ async function main(): Promise<number> {
 }
 
 main().then((status) => process.exit(status)).catch((err) => {
+  /* tslint:disable-next-line:no-console */
   console.error('uncaught error during main:', err);
   process.exit(STATUS_ERROR);
 });

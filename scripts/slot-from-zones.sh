@@ -24,10 +24,10 @@ EOF
 
 # the None zone above isn't really necessary, but makes commas and testing easier
 
-while read line;
+while read -r line;
 do
-  zone="$(echo ${line} | awk '{ print $1; }')"
-  syns="$(echo ${line} | awk '{ print $2; }')"
+  zone="$(echo "${line}" | awk '{ print $1; }')"
+  syns="$(echo "${line}" | awk '{ print $2; }')"
 
   cat <<EOF
       ,

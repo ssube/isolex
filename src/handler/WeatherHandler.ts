@@ -1,8 +1,6 @@
 import { Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
-import { Logger } from 'noicejs/logger/Logger';
 import { CoreOptions, RequiredUriUrl } from 'request';
-import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
@@ -72,7 +70,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
         const [code, body] = err.message.split(' - ');
         const data = JSON.parse(body);
 
-        this.logger.warn({ code }, 'error from weather API');
+        this.logger.warn({ code, data }, 'error from weather API');
         throw err;
       } else {
         throw err;

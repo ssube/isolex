@@ -1,12 +1,8 @@
-import { isNumber } from 'lodash';
 import * as mathjs from 'mathjs';
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
-import { isObject } from 'util';
 
 export interface MathHandlerConfig extends HandlerConfig {
   format: {

@@ -1,4 +1,3 @@
-import { Logger } from 'noicejs/logger/Logger';
 import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';

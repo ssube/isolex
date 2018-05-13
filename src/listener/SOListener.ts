@@ -1,7 +1,5 @@
 import { Container } from 'noicejs';
-import { Logger } from 'noicejs/logger/Logger';
 import { Observable, Subject } from 'rxjs';
-import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
@@ -82,7 +80,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     });
 
     this.client.on('event', async (event: Event) => {
-      this.receive(event);
+      this.receive(event).catch((err) => this.logger.error(err, 'error receiving event'));
     });
   }
 
@@ -121,7 +119,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
         context: this.getEventContext(event),
         reactions: []
       });
-      this.bot.receive(msg);
+      return this.bot.receive(msg);
     }
   }
 }

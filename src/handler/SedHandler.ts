@@ -1,10 +1,7 @@
-import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
-import { Listener } from 'src/listener/Listener';
 
 export type SedHandlerConfig = HandlerConfig;
 export type SedHandlerOptions = HandlerOptions<SedHandlerConfig>;
@@ -55,8 +52,10 @@ export class SedHandler extends BaseHandler<SedHandlerConfig> implements Handler
       return false;
     }
 
-    if (!!message.body.match(parts[1])) {
-      const body = message.body.replace(new RegExp(parts[1], parts[3]), parts[2]);
+    const [_, pattern, replacement, flags] = parts;
+
+    if (!!message.body.match(pattern)) {
+      const body = message.body.replace(new RegExp(pattern, flags), replacement);
 
       await this.bot.send(Message.reply(body, command.context));
       return true;

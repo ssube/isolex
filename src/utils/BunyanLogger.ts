@@ -1,5 +1,4 @@
 import * as bunyan from 'bunyan';
-import { Logger } from 'noicejs';
 import { prototypeName } from 'src/utils';
 
 /**
