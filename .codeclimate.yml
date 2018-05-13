@@ -2,6 +2,10 @@ version: "2"
 plugins:
   fixme:
     enabled: true
+  markdownlint:
+    enabled: true
+  shellcheck:
+    enabled: true
   tslint:
     enabled: true
     config: config/tslint.json
