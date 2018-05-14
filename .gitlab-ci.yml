@@ -2,6 +2,7 @@ stages:
   - build
   - image
   - image-tag
+  - deploy
 
 build-node:
   image: apextoaster/node:master
@@ -80,3 +81,14 @@ tag-version:
     <<: *vars-docker
     IMAGE_SRC: ssube/isolex:master
     IMAGE_DST: ssube/isolex:${CI_COMMIT_TAG}
+
+# deploy master
+deploy-bot:
+  stage: deploy
+  image: apextoaster/kube:1.9
+  tags:
+    - runner:k8s
+    - cloud:ovh
+
+  script:
+    - kubectl describe deployment isolex
