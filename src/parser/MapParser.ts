@@ -47,7 +47,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const commands = [];
-    for (const {args, cmd} of this.mapCommand(msg.body)) {
+    for (const {args, cmd} of this.mapCommands(msg.body)) {
       commands.push(Command.create({
         context: msg.context,
         data: this.mapFields(args, cmd.fields, cmd.rest),
@@ -60,16 +60,16 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   }
 
   /**
-   * Map a string into some commands, after checking for emit keys.
+   * Map a string into some commands, splitting on keywords.
    */
-  public mapCommand(val: string): Array<MappedMessage> {
+  public mapCommands(val: string): Array<MappedMessage> {
     const parts = split(val, this.config.split).reverse();
     this.logger.debug({ parts }, 'mapping resolved command');
 
     const pending = [];
     const mapped = [];
     for (const part of parts) {
-      const resolved = this.replaceAlias(part);
+      const resolved = this.resolveAlias(part);
       const cmd = this.emit.get(resolved);
 
       if (cmd) {
@@ -104,7 +104,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     return data;
   }
 
-  public replaceAlias(val: string) {
+  public resolveAlias(val: string) {
     let out = val;
     for (const [alias, emit] of this.alias) {
       out = out.replace(alias, emit);

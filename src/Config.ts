@@ -42,10 +42,7 @@ export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
         encoding: 'utf-8'
       });
 
-      const config = safeLoad(data) as any;
-      if (config) {
-        return config;
-      }
+      return safeLoad(data) as any;
     } catch (err) {
       if (err.code !== 'ENOENT') {
         throw err;

@@ -180,18 +180,18 @@ export class Bot {
     }
 
     const messages = await listener.fetch(options);
-    if (options.useFilters) {
-      const filtered: Array<Message> = [];
-      for (const message of messages) {
-        if (await this.checkFilters(message)) {
-          filtered.push(message);
-        }
-      }
-
-      return filtered;
+    if (!options.useFilters) {
+      return messages;
     }
 
-    return messages;
+    const filtered: Array<Message> = [];
+    for (const message of messages) {
+      if (await this.checkFilters(message)) {
+        filtered.push(message);
+      }
+    }
+
+    return filtered;
   }
 
   /**
