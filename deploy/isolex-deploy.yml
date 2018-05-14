@@ -1,0 +1,34 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: isolex
+  labels:
+    k8s-app: isolex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: isolex
+  template:
+    metadata:
+      labels:
+        k8s-app: isolex
+    spec:
+      containers:
+        - name: isolex-bot
+          image: ssube/isolex:master
+          imagePullPolicy: Always
+
+          volumeMounts:
+            - name: config
+              mountPath: "/root/.isolex.yml"
+              subPath: ".isolex.yml"
+              readOnly: true
+      
+      volumes:
+        - name: config
+          secret:
+            secretName: isolex-config
+
