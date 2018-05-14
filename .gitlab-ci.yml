@@ -91,7 +91,7 @@ deploy-bot:
     - cloud:ovh
 
   variables:
-    KUBERNETES_NAMESPACE_OVERWRITE: default
+    KUBERNETES_NAMESPACE_OVERWRITE: isolex
     KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-isolex
   script:
-    - kubectl describe deployment isolex
+    - kubectl describe deployment isolex --namespace isolex
