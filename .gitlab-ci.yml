@@ -93,5 +93,5 @@ deploy-bot:
   variables:
     KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-isolex
   script:
-    - kubectl describe deployment isolex --namespace isolex
-    - kubectl delete pod $(kubectl get pods --namespace=isolex | tail -n 1 | awk '{ print $1; }')
+    - kubectl describe deployment isolex --namespace=isolex
+    - kubectl delete pod $(kubectl get pods --namespace=isolex | tail -n 1 | awk '{ print $1; }') --namespace=isolex
