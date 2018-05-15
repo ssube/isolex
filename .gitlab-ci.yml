@@ -19,8 +19,6 @@ build-node:
   artifacts:
     expire_in: 1 week
     paths:
-      - node_modules/sqlite3
-      - node_modules/uws
       - out/coverage
       - out/docs
       - out/main-bundle.*
@@ -67,6 +65,7 @@ tag-latest:
   only:
     - master
 
+  dependencies: []
   variables:
     <<: *vars-docker
     IMAGE_SRC: ssube/isolex:master
@@ -77,6 +76,7 @@ tag-version:
   only:
     - tags
 
+  dependencies: []
   variables:
     <<: *vars-docker
     IMAGE_SRC: ssube/isolex:master
@@ -90,6 +90,7 @@ deploy-bot:
     - runner:k8s
     - cloud:ovh
 
+  dependencies: []
   variables:
     KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-isolex
   script:
