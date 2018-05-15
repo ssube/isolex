@@ -1,6 +1,6 @@
 import { Container } from 'noicejs';
 import { Bot } from 'src/Bot';
-import { loadConfig } from 'src/Config';
+import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
 import { signal } from 'src/utils';
 import { BunyanLogger } from 'src/utils/BunyanLogger';

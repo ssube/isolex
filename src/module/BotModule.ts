@@ -15,6 +15,7 @@ import { MathHandler } from 'src/handler/MathHandler';
 import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
 import { SedHandler } from 'src/handler/SedHandler';
+import { SearchHandler } from 'src/handler/SearchHandler';
 import { TimeHandler } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
 import { DiscordListener } from 'src/listener/DiscordListener';
@@ -58,6 +59,7 @@ export class BotModule extends Module {
     this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
     this.bind(kebabCase(SedHandler.name)).toConstructor(SedHandler);
+    this.bind(kebabCase(SearchHandler.name)).toConstructor(SearchHandler);
     this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
     this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
 
