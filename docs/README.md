@@ -10,15 +10,15 @@ commands are then `handled`, with replies being sent back through the bot. Betwe
 The flow is:
 
 ```none
-                                   cron ---> interval
-                                                |
-                                                v
+                                   cron ----> interval
+                                                 |
+                                                 v
 listener -> <message> -> filter -> parser -> <command> <-\
-                                                |        |
-                                                v        |
+                                                 |       |
+                                                 v       |
                                               filter     |
-                                                |        |
-                                                v        |
+                                                 |       |
+                                                 v       |
 listener <---------------------- <message> <- handler ---/
 ```
 
