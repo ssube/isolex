@@ -52,9 +52,6 @@ handlers:
       maple:
         - chance: 0.25
           name: maple_leaf
-      towc:
-        - chance: 0.01
-          name: towc
 
   - type: search-handler
     name: search_mdn
@@ -158,7 +155,6 @@ parsers:
       canada: react
       hockey: react
       maple: react
-      towc: react
     emit:
       "!!echo":
         name: test_echo

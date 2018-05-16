@@ -23,7 +23,7 @@ export class UserFilter extends BaseFilter<UserFilterConfig> implements Filter {
       this.logger.debug({ context }, 'filter ignoring user id');
       return FilterBehavior.Drop;
     }
-    
+
     if (!this.check.check(context.userName)) {
       this.logger.debug({ context }, 'filter ignoring user name');
       return FilterBehavior.Drop;

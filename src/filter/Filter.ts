@@ -6,7 +6,7 @@ export enum FilterBehavior {
   /**
    * Drop the entity and skip any further processing.
    */
-  Drop = 0x00, 
+  Drop = 0x00,
 
   /**
    * Allow the entity and perform full processing.

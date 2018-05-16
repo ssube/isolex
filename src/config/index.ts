@@ -1,5 +1,5 @@
 import { readFile } from 'fs';
-import { safeLoad, Schema, DEFAULT_SAFE_SCHEMA } from 'js-yaml';
+import { DEFAULT_SAFE_SCHEMA, safeLoad, Schema } from 'js-yaml';
 import { join } from 'path';
 import { BotConfig } from 'src/Bot';
 import { EnvYamlType } from 'src/config/EnvYamlType';

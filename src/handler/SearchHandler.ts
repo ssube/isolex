@@ -16,7 +16,7 @@ export interface SearchHandlerConfig extends HandlerConfig {
   template: {
     body: string;
     url: string;
-  }
+  };
 }
 
 export interface SearchHandlerOptions extends HandlerOptions<SearchHandlerConfig> {
