@@ -3,14 +3,16 @@ import { safeLoad, Schema, DEFAULT_SAFE_SCHEMA } from 'js-yaml';
 import { join } from 'path';
 import { BotConfig } from 'src/Bot';
 import { EnvYamlType } from 'src/config/EnvYamlType';
+import { IncludeYamlType } from 'src/config/IncludeYamlType';
 import { promisify } from 'util';
 
-const CONFIG_ENV = 'ISOLEX_HOME';
-const CONFIG_NAME = '.isolex.yml';
-const CONFIG_SCHEMA = Schema.create([
+export const CONFIG_ENV = 'ISOLEX_HOME';
+export const CONFIG_NAME = '.isolex.yml';
+export const CONFIG_SCHEMA = Schema.create([
   DEFAULT_SAFE_SCHEMA
 ], [
-  EnvYamlType
+  EnvYamlType,
+  IncludeYamlType
 ]);
 
 const readFileSync = promisify(readFile);
