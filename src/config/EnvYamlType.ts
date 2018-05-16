@@ -6,10 +6,6 @@ class EnvString {
   constructor(key: string) {
     this.key = key;
   }
-
-  toString() {
-    return process.env[this.key];
-  }
 }
 
 export const EnvYamlType = new YamlType('!env', {
@@ -17,11 +13,7 @@ export const EnvYamlType = new YamlType('!env', {
   resolve(name: string) {
     return Reflect.has(process.env, name);
   },
-  construct(key: string) {
-    return new EnvString(key);
-  },
-  instanceOf: EnvString,
-  represent(data: EnvString) {
-    return data.key;
+  construct(name: string) {
+    return Reflect.get(process.env, name);
   }
 });

@@ -254,17 +254,16 @@ export class Bot {
       return true;
     }
 
-    const results = await Promise.all(this.filters.map(async (filter) => {
+    for (const filter of this.filters) {
       const result = await filter.filter(next);
       this.logger.debug({ result }, 'checked filter');
-      return result;
-    }));
 
-    if (this.strict) {
-      return results.every((r) => r === FilterBehavior.Allow);
-    } else {
-      return results.some((r) => r === FilterBehavior.Allow);
+      if (result === FilterBehavior.Drop || (this.strict && result !== FilterBehavior.Allow)) {
+        return false;
+      }
     }
+
+    return true;
   }
 
   protected async looseError(err: Error) {

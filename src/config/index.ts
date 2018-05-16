@@ -48,7 +48,9 @@ export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
         encoding: 'utf-8'
       });
 
-      return safeLoad(data) as any;
+      return safeLoad(data, {
+        schema: CONFIG_SCHEMA
+      }) as any;
     } catch (err) {
       if (err.code !== 'ENOENT') {
         throw err;

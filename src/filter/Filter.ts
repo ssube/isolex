@@ -3,8 +3,20 @@ import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 
 export enum FilterBehavior {
-  Drop = 0x00,
-  Allow = 0x80
+  /**
+   * Drop the entity and skip any further processing.
+   */
+  Drop = 0x00, 
+
+  /**
+   * Allow the entity and perform full processing.
+   */
+  Allow = 0x80,
+
+  /**
+   * Ignore the entity, providing no opinion on what should be done with it.
+   */
+  Ignore = 0xFF
 }
 
 export type FilterValue = Command | Message;

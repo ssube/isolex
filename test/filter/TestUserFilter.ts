@@ -9,6 +9,7 @@ import { FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterOptions } from 'src/filter/UserFilter';
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
+import { ChecklistMode } from 'src/utils/Checklist';
 
 async function createUserFilter(options: UserFilterOptions) {
   const { container } = await createContainer();
@@ -24,7 +25,8 @@ describeAsync('user filter', async () => {
     const { filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
-        ignore: ['test'],
+        data: ['test'],
+        mode: ChecklistMode.EXCLUDE,
         name: 'test-filter'
       },
       container: ineeda<Container>(),
@@ -36,17 +38,16 @@ describeAsync('user filter', async () => {
   });
 
   itAsync('should allow commands from allowed users', async () => {
-    const ignore = ['test'];
     const { filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
-        ignore,
+        data: ['test'],
+        mode: ChecklistMode.EXCLUDE,
         name: 'test-filter'
       },
       container: ineeda<Container>(),
       logger: ConsoleLogger.global
     });
-    expect(filter.getIgnore()).to.deep.equal(ignore);
 
     const cmd = Command.create({
       context: Context.create({
@@ -65,17 +66,16 @@ describeAsync('user filter', async () => {
   });
 
   itAsync('should filter out commands from banned users', async () => {
-    const ignore = ['test'];
     const { filter } = await createUserFilter({
       bot: ineeda<Bot>(),
       config: {
-        ignore,
+        data: ['test'],
+        mode: ChecklistMode.EXCLUDE,
         name: 'test-filter'
       },
       container: ineeda<Container>(),
       logger: ConsoleLogger.global
     });
-    expect(filter.getIgnore()).to.deep.equal(ignore);
 
     const cmd = Command.create({
       context: Context.create({

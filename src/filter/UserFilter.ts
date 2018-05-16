@@ -1,33 +1,32 @@
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
-export interface UserFilterConfig extends ServiceConfig {
-  ignore: Array<string>;
-}
+export type UserFilterConfig = ChecklistOptions & ServiceConfig;
 
 export type UserFilterOptions = ServiceOptions<UserFilterConfig>;
 
 export class UserFilter extends BaseFilter<UserFilterConfig> implements Filter {
-  protected ignore: Array<string>;
+  protected check: Checklist;
 
   constructor(options: UserFilterOptions) {
     super(options);
 
-    this.ignore = options.config.ignore;
-  }
-
-  public getIgnore(): Array<string> {
-    return this.ignore;
+    this.check = new Checklist(options.config);
   }
 
   public async filter(value: FilterValue): Promise<FilterBehavior> {
     const context = value.context;
-    for (const ignore of this.ignore) {
-      if (context.userId === ignore || context.userName === ignore) {
-        this.logger.debug({ context, ignore }, 'filter is ignoring context');
-        return FilterBehavior.Drop;
-      }
+
+    if (!this.check.check(context.userId)) {
+      this.logger.debug({ context }, 'filter ignoring user id');
+      return FilterBehavior.Drop;
+    }
+    
+    if (!this.check.check(context.userName)) {
+      this.logger.debug({ context }, 'filter ignoring user name');
+      return FilterBehavior.Drop;
     }
 
     return FilterBehavior.Allow;
