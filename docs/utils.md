@@ -6,8 +6,8 @@ For developers, this document explains what libraries and utilities are availabl
 | ------------- | --------------- | ----------- | ----------------------------------- | ---------------- |
 |           AWS |         aws-sdk | main bundle |          `import {} from 'aws-sdk'` |                  |
 |     blacklist |       Checklist | main bundle |                                     |       bot filter |
-|          cron |            cron | main bundle |            config `interval` stanza |                  |
-|      database |         sqlite3 |  production |             config `storage` stanza |                  |
+|          cron |            cron | main bundle |           config `interval` section |                  |
+|      database |         sqlite3 |  production |            config `storage` section |                  |
 |      database |         typeorm | main bundle |       `container.create('storage')` |       entity orm |
 |            DI |         noicejs | main bundle |     `constructor` options container |                  |
 |       discord | DiscordListener | main bundle |                                     |      bot service |

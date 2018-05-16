@@ -79,7 +79,7 @@ spec:
 ### Remote Database
 
 To use a remote database connection and one of the other drivers, create a container with the drivers installed, and
-change the config `storage` stanza:
+change the config `storage` section:
 
 ```yaml
 storage:

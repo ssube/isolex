@@ -1,14 +1,29 @@
 ---
-
-# example config
+# {% raw %}
 
 filters:
   - type: user-filter
-    ignore: [isolex, IsoFork, Yuela]
+    name: ignore-bots
+    mode: exclude
+    data:
+      - isolex
+      - IsoFork
+      - Yuela
+      - !env ISOLEX_BLOCK_USER
 
 handlers:
   - type: dice-handler
     name: dice_split
+
+  - type: learn-handler
+    name: test_learn
+    emit:
+      from: incoming
+      field: args
+    mode:
+      create: add
+      delete: del
+      execute: run
 
   - type: math-handler
     name: test_math
@@ -17,15 +32,12 @@ handlers:
       matrix: Array
       number: Number
     format:
-      notation: exponential
+      notation: auto
       precision: 4
       fraction: ratio
     node:
       implicit: show
       parenthesis: keep
-
-  - type: sed-handler
-    name: sed_echo
 
   - type: random-handler
     name: rand_split
@@ -34,80 +46,93 @@ handlers:
     name: test_reaction
     field: body
     reactions:
-      tag:
+      boo:
+        - chance: 0.1
+          name: ghost
+      maple:
+        - chance: 0.25
+          name: maple_leaf
+      towc:
         - chance: 0.01
-          name: emoji
-      magic:
-        - chance: 1.00
-          name: k8s
+          name: towc
+
+  - type: search-handler
+    name: search_mdn
+    count: 3
+    field: args
+    filter: '$..documents.*'
+    method: GET
+    template:
+      body: |
+        {{#each data}}
+          *{{ title }}*: <{{ url }}> ({{ score }})
+          {{ excerpt }}
+        {{/each}}
+      url: https://developer.mozilla.org/en-US/search.json?q={{ data }}
+
+  - type: sed-handler
+    name: sed_echo
 
   - type: time-handler
+    name: test_time
     locale: en-US
     zone: UTC
 
   - type: weather-handler
     api:
-      key: api-key
+      key: !env ISOLEX_WEATHER_TOKEN
       root: https://api.openweathermap.org/data/2.5/
+    name: test_weather
     template: >-
       {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
       and {{#each weather.weather}}{{this.description}}{{/each}}!
+
   - type: echo-handler
+    name: test_split
+    template: |
+      name = {{ cmd.name }}
+      type = {{ cmd.type }}
+      {{#entries cmd.data}}
+      {{ key }} = {{ value }}
+      {{/entries}}
+
+  - type: echo-handler
+    name: test_echo
     template: >-
-      {{reply cmd.context}}: {{cmd.data.message}} ({{cmd.name}})
+      {{json cmd}}
+
 intervals:
   - cron: '* * * * *'
     data: {}
 
 listeners:
   - type: discord-listener
-    token: discord-token
+    name: discord-isolex
+    token: !env ISOLEX_DISCORD_TOKEN
 
 logger:
   level: debug
   name: isolex
 
 parsers:
-  - type: echo-parser
-    field: body
-    name: test_reaction
-    tags:
-      - magic
-      - tag
-
   - type: lex-parser
+    account:
+      accessKey: !env ISOLEX_AWS_ACCESS
+      secretKey: !env ISOLEX_AWS_SECRET
     bot:
       name: isolex
       alias: test
-    account:
-      accessKey: access-key
-      secretKey: secret-key
+    name: test_lex
     region: us-east-1
     tags:
-      - '!!lex'
+      - '@isolex'
+      - '@440714238286364672'
 
   - type: yaml-parser
+    name: test_yaml
     tags:
       - '!!json'
       - '!!yaml'
-
-  - type: split-parser
-    name: test_split
-    separator: ' '
-    tags:
-      - '!!args'
-
-  - type: split-parser
-    name: dice_split
-    regexp: '(\d+)(?:d|D)(\d+)'
-    tags:
-      - '!!dice'
-
-  - type: split-parser
-    name: rand_split
-    separator: ' '
-    tags:
-      - '!!rand'
 
   - type: echo-parser
     field: args
@@ -115,12 +140,48 @@ parsers:
     tags:
       - '!!math'
 
+  - type: split-parser
+    name: test_learn
+    separator: ' '
+    tags:
+      - '!!member'
+
   - type: echo-parser
     field: args
     name: sed_echo
     tags:
-      - '!!s'
+      - '!!sed'
+
+  - type: map-parser
+    alias:
+      boo: react
+      canada: react
+      hockey: react
+      maple: react
+      towc: react
+    emit:
+      "!!echo":
+        name: test_echo
+        fields: []
+        remove: true
+        rest: args
+      "!!mdn":
+        name: search_mdn
+        fields: []
+        remove: true
+        rest: args
+      react:
+        fields: [body]
+        name: test_reaction
+        remove: false
+        rest: args
+    name: map_echo
+    split:
+      brackets: true
+      separator: " "
 
 storage:
   type: sqlite
-  database: "./out/isolex.db"
+  database: "/data/isolex.db"
+
+# {% endraw %}
