@@ -10,9 +10,25 @@ import { normalizeMap, setOrPush } from 'src/utils';
  * Mapped commands are the stored form of a command to be produced by a mapping.
  */
 export interface MappedCommand {
+  /**
+   * The fields into which arguments should be put.
+   */
   fields: Array<string>;
+  /**
+   * The name of the emitted command.
+   */
   name: string;
+  /**
+   * Remove the matched tag (usually the first argument).
+   */
   remove: boolean;
+  /**
+   * Resolve the matched tag, replacing any aliases.
+   */
+  resolve: boolean;
+  /**
+   * The field into which any remaining arguments should be put.
+   */
   rest: string;
 }
 
@@ -76,7 +92,11 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
         const args = Array.from(pending);
 
         if (!cmd.remove) {
-          args.unshift(part);
+          if (cmd.resolve) {
+            args.unshift(resolved);
+          } else {
+            args.unshift(part);
+          }
         }
 
         mapped.push({ args, cmd });

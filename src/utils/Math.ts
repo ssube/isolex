@@ -12,7 +12,7 @@ export interface ResultFormatOptions {
   node: {
     implicit: string;
     parenthesis: string;
-  }
+  };
 }
 
 export function formatResult(body: any, scope: any, options: ResultFormatOptions): string {

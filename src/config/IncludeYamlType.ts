@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'fs';
 import { safeLoad, Type as YamlType } from 'js-yaml';
 import { CONFIG_SCHEMA } from 'src/config';
 
-export const IncludeYamlType = new YamlType('!include', {
+export const includeType = new YamlType('!include', {
   kind: 'scalar',
   resolve(path: string) {
     return existsSync(path);

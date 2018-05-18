@@ -1,6 +1,6 @@
 import { safeLoad, Type as YamlType } from 'js-yaml';
 
-export const EnvYamlType = new YamlType('!env', {
+export const envType = new YamlType('!env', {
   kind: 'scalar',
   resolve(name: string) {
     return Reflect.has(process.env, name);
