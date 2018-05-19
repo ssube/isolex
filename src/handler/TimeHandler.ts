@@ -1,3 +1,4 @@
+import { defaultTo } from 'lodash';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
@@ -18,13 +19,11 @@ export class TimeHandler extends BaseHandler<TimeHandlerConfig> implements Handl
   }
 
   public async handle(cmd: Command): Promise<void> {
-    let timeZone = this.config.zone;
-    if (cmd.has('zone')) {
-      timeZone = cmd.get('zone');
-    }
-
     const date = new Date();
-    this.logger.debug({date, timeZone, locale: this.config.locale}, 'handling time');
-    return this.bot.send(Message.reply(date.toLocaleString(this.config.locale, {timeZone}), cmd.context));
+    const locale = cmd.getHeadOrDefault('locale', this.config.locale);
+    const zone = cmd.getHeadOrDefault('zone', this.config.zone);
+
+    this.logger.debug({ date, locale, zone }, 'handling time');
+    return this.bot.send(Message.reply(date.toLocaleString(locale, { timeZone: zone }), cmd.context));
   }
 }

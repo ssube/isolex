@@ -12,6 +12,7 @@ import { DiceHandler } from 'src/handler/DiceHandler';
 import { EchoHandler } from 'src/handler/EchoHandler';
 import { LearnHandler } from 'src/handler/LearnHandler';
 import { MathHandler } from 'src/handler/MathHandler';
+import { PickHandler } from 'src/handler/PickHandler';
 import { RandomHandler } from 'src/handler/RandomHandler';
 import { ReactionHandler } from 'src/handler/ReactionHandler';
 import { SearchHandler } from 'src/handler/SearchHandler';
@@ -22,11 +23,11 @@ import { DiscordListener } from 'src/listener/DiscordListener';
 import { SOListener } from 'src/listener/SOListener';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser } from 'src/parser/LexParser';
+import { MapParser } from 'src/parser/MapParser';
 import { SplitParser } from 'src/parser/SplitParser';
 import { YamlParser } from 'src/parser/YamlParser';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { Connection } from 'typeorm';
-import { MapParser } from '../parser/MapParser';
 
 export interface BotModuleOptions {
   logger: Logger;
@@ -56,6 +57,7 @@ export class BotModule extends Module {
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
     this.bind(kebabCase(LearnHandler.name)).toConstructor(LearnHandler);
     this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
+    this.bind(kebabCase(PickHandler.name)).toConstructor(PickHandler);
     this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
     this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
     this.bind(kebabCase(SedHandler.name)).toConstructor(SedHandler);

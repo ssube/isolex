@@ -35,7 +35,7 @@ export class Command implements CommandOptions {
   @JoinColumn()
   public context: Context;
 
-  public data: CommandPropMap;
+  public data: Map<string, Array<string>>;
 
   @PrimaryGeneratedColumn('uuid')
   public id: string;
@@ -79,8 +79,21 @@ export class Command implements CommandOptions {
   /**
    * Get a data item. Makes the command act like a read-only map.
    */
-  public get(key: string): any {
-    return this.data.get(key);
+  public get(key: string): Array<string> {
+    const value = this.data.get(key);
+    if (value === undefined) {
+      throw new Error(`missing key: ${key}`);
+    }
+    return value;
+  }
+
+  public getHeadOrDefault(key: string, defaultValue: string): string {
+    if (this.has(key)) {
+      const data = this.get(key);
+      return data[0];
+    } else {
+      return defaultValue;
+    }
   }
 
   @AfterLoad()

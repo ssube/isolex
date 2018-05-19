@@ -14,7 +14,8 @@ import { createContainer } from 'test/helpers/container';
 
 describeAsync('weather handler', async () => {
   itAsync('should send a message', async () => {
-    const { container } = await createContainer();
+    const { container, module } = await createContainer();
+    module.bind('request').toFactory(async () => ({test: 'test'}));
 
     const sent: Array<Message> = [];
     const options: WeatherHandlerOptions = {
@@ -24,7 +25,9 @@ describeAsync('weather handler', async () => {
         }
       }),
       compiler: ineeda<TemplateCompiler>({
-        compile: () => ineeda<Template>()
+        compile: () => ineeda<Template>({
+          render: () => 'test'
+        })
       }),
       config: {
         api: {
@@ -32,7 +35,7 @@ describeAsync('weather handler', async () => {
           root: 'https://api.openweathermap.org/data/2.5/'
         },
         name: 'test_weather',
-        template: '{{ data.name }}'
+        template: '{{ weather.test }}'
       },
       container,
       logger: ConsoleLogger.global
@@ -51,7 +54,7 @@ describeAsync('weather handler', async () => {
     const cmd = Command.create({
       context,
       data: {
-        zip: 94040
+        location: '94040'
       },
       name: 'test_weather',
       type: 0
@@ -61,6 +64,6 @@ describeAsync('weather handler', async () => {
     await handler.handle(cmd);
 
     expect(sent.length).to.equal(1);
-    expect(sent[0].body).to.equal('unknown or missing location');
+    expect(sent[0].body).to.equal('test');
   });
 });

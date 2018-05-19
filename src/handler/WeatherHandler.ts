@@ -33,7 +33,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const location = cmd.get('location');
+    const [location] = cmd.get('location');
     if (!location) {
       return this.bot.send(Message.reply('unknown or missing location', cmd.context));
     }
