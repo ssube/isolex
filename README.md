@@ -4,7 +4,7 @@ Unified chat bot with [AWS Lex](https://aws.amazon.com/lex/) integration, observ
 [templates](https://handlebarsjs.com/) and [buzzwords](https://www.youtube.com/watch?v=PYtXuBN1Hvc).
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/maintainability)](https://codeclimate.com/github/ssube/isolex/maintainability)
-[![pipeline status](https://git.apextoaster.com/apex-open/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/apex-open/isolex/commits/master)
+[![pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
 
 ## Build
 
