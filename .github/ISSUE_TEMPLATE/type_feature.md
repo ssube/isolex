@@ -1,27 +1,19 @@
 ### Summary
 
-(quick summary of the issue)
+(elevator pitch of the feature)
 
-### Steps to Reproduce
+### Scope
 
-- install
-- configure
-- run
-- ...
-- :(
+(what needs to be implemented for v1, what might be included in v2)
 
-### Actual Behavior
+### Use Case
 
-```none
-example
-```
+(at least one solid use case for the feature)
 
-### Expected Behavior
+### Issues
 
-```none
-example
-```
+(potential problems, questions, research)
 
 ### Details
 
-(detailed description of the expected behavior and what goes wrong)
+(dependencies, requirements, other changes that need to happen first)
