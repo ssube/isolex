@@ -3,21 +3,21 @@ export enum ChecklistMode {
   EXCLUDE = 'exclude'
 }
 
-export interface ChecklistOptions {
-  data: Array<string>;
+export interface ChecklistOptions<T> {
+  data: Array<T>;
   mode: ChecklistMode;
 }
 
-export class Checklist {
-  protected data: Array<string>;
-  protected mode: ChecklistMode;
+export class Checklist<T> implements ChecklistOptions<T> {
+  public readonly data: Array<T>;
+  public readonly mode: ChecklistMode;
 
-  constructor(options: ChecklistOptions) {
+  constructor(options: ChecklistOptions<T>) {
     this.data = Array.from(options.data);
     this.mode = options.mode;
   }
 
-  public check(value: string): boolean {
+  public check(value: T): boolean {
     if (this.mode === ChecklistMode.INCLUDE) {
       return this.data.includes(value);
     }
