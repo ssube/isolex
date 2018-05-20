@@ -6,3 +6,6 @@ This directory contains the TypeORM migrations for each entity schema change.
 
 Each migration should be a class named `DescriptiveName0000000000000` in its own file `0000000000000-DescriptiveName`.
 The class must `implements MigrationInterface` to work with the ORM logic.
+
+Considering the size of migration objects (especially table definitions), lint may complain. Use comments to disable
+the function length

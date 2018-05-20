@@ -4,9 +4,9 @@ export class InitialSetup0001526853117 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<any> {
     await query.createTable(new Table({
       columns: [{
+        isPrimary: true,
         name: 'id',
         type: 'varchar',
-        isPrimary: true
       }, {
         name: 'listenerId',
         type: 'varchar'
@@ -28,9 +28,9 @@ export class InitialSetup0001526853117 implements MigrationInterface {
 
     await query.createTable(new Table({
       columns: [{
+        isPrimary: true,
         name: 'id',
         type: 'varchar',
-        isPrimary: true
       }, {
         name: 'contextId',
         type: 'varchar',
@@ -44,14 +44,14 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'type',
         type: 'varchar',
       }],
-      name: 'command'
+      name: 'command',
     }));
 
     await query.createTable(new Table({
       columns: [{
+        isPrimary: true,
         name: 'id',
         type: 'varchar',
-        isPrimary: true,
       }, {
         name: 'body',
         type: 'varchar',
@@ -62,25 +62,29 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'reactions',
         type: 'varchar',
       }],
-      name: 'message'
+      name: 'message',
     }));
 
     await query.createTable(new Table({
       columns: [{
+        isPrimary: true,
+        name: 'name',
+        type: 'varchar',
+      }, {
         name: 'commandId',
         type: 'varchar',
       }, {
         name: 'handler',
         type: 'varchar',
-      }, {
-        name: 'name',
-        type: 'varchar',
       }],
-      name: 'trigger'
+      name: 'trigger',
     }));
   }
 
   public async down(query: QueryRunner): Promise<any> {
     await query.dropTable('context');
+    await query.dropTable('command');
+    await query.dropTable('message');
+    await query.dropTable('trigger');
   }
 }
