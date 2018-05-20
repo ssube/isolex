@@ -63,7 +63,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const commands = [];
-    for (const {args, cmd} of this.mapCommands(msg.body)) {
+    for (const { args, cmd } of this.mapCommands(msg.body)) {
       commands.push(Command.create({
         context: msg.context,
         data: this.mapFields(args, cmd.fields, cmd.rest),
@@ -75,6 +75,21 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     return commands;
   }
 
+  public mapArgs(cmd: MappedCommand, pending: Array<string>, original: string, resolved: string) {
+    const result = Array.from(pending);
+
+    if (cmd.remove) {
+      return result;
+    }
+
+    if (cmd.resolve) {
+      result.unshift(resolved);
+    } else {
+      result.unshift(original);
+    }
+
+    return result;
+  }
   /**
    * Map a string into some commands, splitting on keywords.
    */
@@ -85,20 +100,11 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     const pending = [];
     const mapped = [];
     for (const part of parts) {
-      const resolved = this.resolveAlias(part);
-      const cmd = this.emit.get(resolved);
+      const key = this.resolveAlias(part);
+      const cmd = this.emit.get(key);
 
       if (cmd) {
-        const args = Array.from(pending);
-
-        if (!cmd.remove) {
-          if (cmd.resolve) {
-            args.unshift(resolved);
-          } else {
-            args.unshift(part);
-          }
-        }
-
+        const args = this.mapArgs(cmd, pending, part, key);
         mapped.push({ args, cmd });
         pending.length = 0;
       } else {

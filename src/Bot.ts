@@ -20,6 +20,7 @@ export interface BotConfig {
     name: string;
     [other: string]: string;
   };
+  migrate: boolean;
   parsers: Array<BotService & ParserConfig>;
   storage: ConnectionOptions;
 }
@@ -96,12 +97,26 @@ export class Bot {
       logger: this.logger
     });
     const entities = await this.container.create<Array<Function>, any>('entities');
+    const migrations = await this.container.create<Array<Function>, any>('migrations');
     this.storage = await createConnection({
       ...this.config.storage,
       entities,
-      logger: storageLogger
+      logger: storageLogger,
+      migrations
     });
 
+    if (this.config.migrate) {
+      this.logger.info('running pending database migrations');
+      await this.storage.runMigrations();
+      this.logger.info('database migrations complete');
+    }
+
+    await this.startService();
+
+    this.logger.info('bot started');
+  }
+
+  public async startService() {
     this.logger.info('setting up filters');
     for (const data of this.config.filters) {
       this.filters.push(await this.createPart<Filter, ServiceConfig>(data));
@@ -127,7 +142,7 @@ export class Bot {
       await listener.start();
     }
 
-    this.logger.info('bot is ready');
+    this.logger.info('services started');
   }
 
   public async stop() {
@@ -266,6 +281,12 @@ export class Bot {
     return true;
   }
 
+  /**
+   * Log an otherwise-unhandled but non-fatal error (typically leaked from one of the observables).
+   *
+   * Note: this method is already bound, so it can be passed with `this.looseError`. Using that requires
+   * `tslint:disable:no-unbound-method` as well.
+   */
   protected async looseError(err: Error) {
     this.logger.error(err, 'bot stream did not handle error');
   }

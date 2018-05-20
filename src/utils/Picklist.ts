@@ -27,11 +27,11 @@ export class Picklist<T> implements PicklistOptions<T> {
     this.data = Array.from(options.data);
   }
 
-  pick(n: number): Array<T> {
+  public pick(n: number): Array<T> {
     return new Array(n).fill(0).map(() => this.pickOne());
   }
 
-  pickOne(): T {
+  public pickOne(): T {
     const sum = this.data.reduce((p, d) => p + d.weight, 0);
     let target = random(0, sum);
 

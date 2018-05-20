@@ -28,7 +28,7 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     case 'Array':
       return body.map((it: any) => formatResult(it, scope, options)).join(options.list.join);
     case 'Function':
-      return body.call(undefined, scope);
+      return body.call(undefined, scope); // TODO: make sure this doesn't allow math to escape the library
     case 'Object':
       return JSON.stringify(body);
     case 'RegExp':

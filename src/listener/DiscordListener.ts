@@ -19,7 +19,7 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
   }
 
   protected client: Client;
-  // @todo: this should be a WeakMap but lodash has a bad typedef
+  // @TODO: this should be a WeakMap but lodash has a bad typedef
   protected threads: Map<string, DiscordMessage>;
 
   constructor(options: DiscordListenerOptions) {

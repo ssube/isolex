@@ -14,7 +14,7 @@ export class StorageLogger implements OrmLogger {
   }
 
   public log(level: string, message: any) {
-    // @todo make this log at the appropriate level
+    // @TODO make this log at the appropriate level
     this.logger.debug({ level }, message);
   }
 

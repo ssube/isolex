@@ -30,4 +30,3 @@ export class PickHandler extends BaseHandler<PickHandlerConfig> implements Handl
     return this.bot.send(Message.reply(puck.join(','), cmd.context));
   }
 }
-

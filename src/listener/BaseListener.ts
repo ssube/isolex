@@ -6,7 +6,7 @@ import { ServiceConfig } from 'src/Service';
 
 export abstract class BaseListener<TConfig extends ServiceConfig> extends BaseService<TConfig> implements Listener {
   /**
-   * @todo implement this for real
+   * @TODO implement this for real
    */
   public async check(context: Context): Promise<boolean> {
     return true;

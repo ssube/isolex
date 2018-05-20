@@ -15,7 +15,7 @@ export type EchoParserOptions = ServiceOptions<EchoParserConfig>;
 /**
  * Forwards the message body as a field. Does not split or otherwise parse, optionally removes the matched tag.
  *
- * @todo: implement optional removal
+ * @TODO: implement optional removal
  */
 export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
   constructor(options: EchoParserOptions) {

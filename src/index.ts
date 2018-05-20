@@ -1,9 +1,17 @@
-import { Container } from 'noicejs';
+import { Container, Module } from 'noicejs';
+import * as sourceMapSupport from 'source-map-support';
 import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
+import { MigrationModule } from 'src/module/MigrationModule';
 import { signal } from 'src/utils';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
+
+sourceMapSupport.install({
+  environment: 'node',
+  handleUncaughtExceptions: true,
+  hookRequire: true
+});
 
 const SIGNAL_RELOAD: Array<NodeJS.Signals> = ['SIGHUP'];
 const SIGNAL_STOP: Array<NodeJS.Signals> = ['SIGINT', 'SIGTERM'];
@@ -14,12 +22,18 @@ async function main(): Promise<number> {
   const config = await loadConfig();
   const logger = BunyanLogger.create(config.logger);
 
-  const mod = new BotModule({ logger });
-  const ctr = Container.from(mod);
+  const botModule = new BotModule({ logger });
+  const mod: Array<Module> = [botModule];
+
+  if (config.migrate) {
+    mod.push(new MigrationModule());
+  }
+
+  const ctr = Container.from(...mod);
   await ctr.configure({ logger });
 
   const bot = await ctr.create<Bot, any>(Bot, { config });
-  mod.setBot(bot);
+  botModule.setBot(bot);
 
   await bot.start();
   await signal(SIGNAL_STOP);
