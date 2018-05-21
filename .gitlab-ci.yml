@@ -4,25 +4,11 @@ stages:
   - image-tag
   - deploy
 
-build-node:
-  image: apextoaster/node:master
-  stage: build
-  tags:
-    - runner:k8s
+# template jobs
 
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-  script:
-    - yarn
-    - make strict
-
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - out/coverage
-      - out/docs
-      - out/main-bundle.*
-      - out/version.json
+.branch-deploy: &branch-deploy
+  only:
+    - master
 
 .build-docker: &build-docker
   image: docker
@@ -49,6 +35,27 @@ build-node:
     - docker tag ${IMAGE_SRC} ${IMAGE_DST}
     - docker push ${IMAGE_DST}
 
+# build jobs
+build-node:
+  image: apextoaster/node:master
+  stage: build
+  tags:
+    - runner:k8s
+
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - yarn
+    - make strict
+
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - out/coverage
+      - out/docs
+      - out/main-bundle.*
+      - out/version.json
+
 build-image:
   <<: [*build-docker]
   stage: image
@@ -61,14 +68,12 @@ build-image:
 
 # tag releases
 tag-latest:
-  <<: [*build-docker, *build-retag]
-  only:
-    - master
+  <<: [*branch-deploy, *build-docker, *build-retag]
 
   dependencies: []
   variables:
     <<: *vars-docker
-    IMAGE_SRC: ssube/isolex:master
+    IMAGE_SRC: ssube/isolex:$CI_COMMIT_REF_SLUG
     IMAGE_DST: ssube/isolex:latest
 
 tag-version:
@@ -79,11 +84,12 @@ tag-version:
   dependencies: []
   variables:
     <<: *vars-docker
-    IMAGE_SRC: ssube/isolex:master
+    IMAGE_SRC: ssube/isolex:latest
     IMAGE_DST: ssube/isolex:${CI_COMMIT_TAG}
 
 # deploy master
 deploy-bot:
+  <<: [*branch-deploy]
   stage: deploy
   image: apextoaster/kube:1.9
   tags:
