@@ -85,6 +85,13 @@ module.exports = {
       openAnalyzer: false,
       reportFilename: 'bundles.html'
     }),
+    new webpack.DefinePlugin({
+      // make sure to stringify these (handles quotes, escapes, etc)
+      BUILD_JOB: JSON.stringify(process.env['CI_JOB_ID']),
+      BUILD_RUNNER: JSON.stringify(process.env['CI_RUNNER_ID']),
+      GIT_BRANCH: JSON.stringify(process.env['CI_COMMIT_REF_SLUG']),
+      GIT_COMMIT: JSON.stringify(process.env['CI_COMMIT_SHA']),
+    }),
     ...ignoreModules([
       /^erlpack$/,
       /^ffmpeg-binaries$/,

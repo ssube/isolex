@@ -7,6 +7,12 @@ import { MigrationModule } from 'src/module/MigrationModule';
 import { signal } from 'src/utils';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 
+// webpack environment defines
+declare const BUILD_JOB: string;
+declare const BUILD_RUNNER: string;
+declare const GIT_BRANCH: string;
+declare const GIT_COMMIT: string;
+
 sourceMapSupport.install({
   environment: 'node',
   handleUncaughtExceptions: true,
@@ -21,6 +27,17 @@ const STATUS_ERROR = 1;
 async function main(): Promise<number> {
   const config = await loadConfig();
   const logger = BunyanLogger.create(config.logger);
+
+  logger.info({
+    build: {
+      job: BUILD_JOB,
+      runner: BUILD_RUNNER,
+    },
+    git: {
+      branch: GIT_BRANCH,
+      commit: GIT_COMMIT,
+    }
+  }, 'version info');
 
   const botModule = new BotModule({ logger });
   const mod: Array<Module> = [botModule];

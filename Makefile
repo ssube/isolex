@@ -5,8 +5,11 @@ export GIT_REMOTES	= $(shell git remote -v | awk '{ print $1; }' | sort | uniq)
 
 # CI
 export CI_COMMIT_REF_SLUG		?= $(GIT_BRANCH)
+export CI_COMMIT_SHA ?= $(GIT_COMMIT)
 export CI_ENVIRONMENT_SLUG 	?= local
+export CI_JOB_ID ?= 0
 export CI_RUNNER_DESCRIPTION ?= $(shell hostname)
+export CI_RUNNER_ID ?= $(shell hostname)
 
 # Debug
 export DEBUG_BIND  ?= 127.0.0.1
