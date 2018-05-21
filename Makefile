@@ -10,6 +10,7 @@ export CI_ENVIRONMENT_SLUG 	?= local
 export CI_JOB_ID ?= 0
 export CI_RUNNER_DESCRIPTION ?= $(shell hostname)
 export CI_RUNNER_ID ?= $(shell hostname)
+export CI_RUNNER_VERSION ?= 0.0.0
 
 # Debug
 export DEBUG_BIND  ?= 127.0.0.1
@@ -32,7 +33,6 @@ export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 NODE_BIN		:= $(ROOT_PATH)/node_modules/.bin
 NODE_CMD		?= $(shell env node)
 NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
-NODE_INFO		:= $(shell node -v)
 
 # Tool options
 BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
@@ -41,6 +41,11 @@ COVER_OPTS	?= --reporter=text-summary --reporter=html --report-dir="$(TARGET_PAT
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
 MOCHA_OPTS  ?= --check-leaks --colors --max-old-space-size=4096 --sort --ui bdd
+
+# Versions
+export NODE_VERSION		:= $(shell node -v)
+export RUNNER_VERSION  := $(CI_RUNNER_VERSION)
+export WEBPACK_VERSION := $(shell $(NODE_BIN)/webpack -v)
 
 all: configure bundle test ## builds, bundles, and tests the application
 	@echo Success! make run-terminal to launch

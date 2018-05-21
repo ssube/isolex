@@ -91,6 +91,9 @@ module.exports = {
       BUILD_RUNNER: JSON.stringify(process.env['CI_RUNNER_ID']),
       GIT_BRANCH: JSON.stringify(process.env['CI_COMMIT_REF_SLUG']),
       GIT_COMMIT: JSON.stringify(process.env['CI_COMMIT_SHA']),
+      NODE_VERSION: JSON.stringify(process.env['NODE_VERSION']),
+      RUNNER_VERSION: JSON.stringify(process.env['RUNNER_VERSION']),
+      WEBPACK_VERSION: JSON.stringify(process.env['WEBPACK_VERSION']),
     }),
     ...ignoreModules([
       /^erlpack$/,

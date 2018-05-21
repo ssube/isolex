@@ -12,6 +12,9 @@ declare const BUILD_JOB: string;
 declare const BUILD_RUNNER: string;
 declare const GIT_BRANCH: string;
 declare const GIT_COMMIT: string;
+declare const NODE_VERSION: string;
+declare const RUNNER_VERSION: string;
+declare const WEBPACK_VERSION: string;
 
 sourceMapSupport.install({
   environment: 'node',
@@ -36,6 +39,11 @@ async function main(): Promise<number> {
     git: {
       branch: GIT_BRANCH,
       commit: GIT_COMMIT,
+    },
+    version: {
+      node: NODE_VERSION,
+      runner: RUNNER_VERSION,
+      webpack: WEBPACK_VERSION,
     }
   }, 'version info');
 

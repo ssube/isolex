@@ -74,7 +74,5 @@ describeAsync('pick list', async () => {
       expect(puck).to.have.property('length', 3);
       expect(puck).to.deep.equal(['x', 'x', 'x']);
     }
-
-    list.pick(45);
   });
 });
