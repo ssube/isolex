@@ -49,10 +49,10 @@ export class SearchHandler extends BaseHandler<SearchHandlerConfig> implements H
     const response = await this.container.create<any, any>('request', {
       json: true,
       method: this.config.method,
-      uri: requestUrl
+      uri: requestUrl,
     });
 
-    const data = await jp.query(response, this.config.filter, this.config.count);
+    const data = jp.query(response, this.config.filter, this.config.count);
     this.logger.debug({ data }, 'rendering request data');
 
     if (!data.length) {

@@ -24,7 +24,7 @@ export abstract class BaseService<TConfig extends ServiceConfig> implements Serv
 
     this.logger = options.logger.child({
       class: Reflect.getPrototypeOf(this).constructor.name,
-      service: options.config.name
+      service: options.config.name,
     });
   }
 

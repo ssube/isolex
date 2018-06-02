@@ -20,14 +20,14 @@ describeAsync('echo handler', async () => {
     const options: EchoHandlerOptions = {
       bot: ineeda<Bot>(),
       compiler: ineeda<TemplateCompiler>({
-        compile: () => ineeda<Template>()
+        compile: () => ineeda<Template>(),
       }),
       config: {
         name: 'test_echo',
-        template: ''
+        template: '',
       },
       container,
-      logger: ConsoleLogger.global
+      logger: ConsoleLogger.global,
     };
     const handler = await container.create(EchoHandler, options);
     expect(handler).to.be.an.instanceOf(EchoHandler);
@@ -39,19 +39,19 @@ describeAsync('echo handler', async () => {
     const send = spy();
     const options: EchoHandlerOptions = {
       bot: ineeda<Bot>({
-        send
+        send,
       }),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
-          render: () => 'test_echo'
-        })
+          render: () => 'test_echo',
+        }),
       }),
       config: {
         name: 'test_echo',
-        template: ''
+        template: '',
       },
       container,
-      logger: ConsoleLogger.global
+      logger: ConsoleLogger.global,
     };
     const handler = await container.create(EchoHandler, options);
 
@@ -61,14 +61,14 @@ describeAsync('echo handler', async () => {
         roomId: '',
         threadId: '',
         userId: '',
-        userName: ''
+        userName: '',
       }),
       data: {},
       name: 'test_echo',
-      type: 0
+      type: 0,
     });
 
-    expect(await handler.check(cmd)).to.be.true;
+    expect(await handler.check(cmd)).to.equal(true);
     await handler.handle(cmd);
     expect(send).to.have.been.calledWithMatch(match.instanceOf(Message));
   });

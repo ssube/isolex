@@ -155,9 +155,9 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
         roomId: msg.channel.id,
         threadId: msg.id,
         userId: msg.author.id,
-        userName: msg.author.username
+        userName: msg.author.username,
       }),
-      reactions: msg.reactions.map((r) => r.emoji.name)
+      reactions: msg.reactions.map((r) => r.emoji.name),
     });
   }
 
@@ -165,20 +165,20 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     if (options.after) {
       return {
         after: options.id,
-        limit: options.count
+        limit: options.count,
       };
     }
 
     if (options.before) {
       return {
         before: options.id,
-        limit: options.count
+        limit: options.count,
       };
     }
 
     return {
       around: options.id,
-      limit: options.count
+      limit: options.count,
     };
   }
 }

@@ -9,9 +9,9 @@ export const includeType = new YamlType('!include', {
   },
   construct(path: string): any {
     return safeLoad(readFileSync(path, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     }), {
-      schema: CONFIG_SCHEMA
+      schema: CONFIG_SCHEMA,
     });
-  }
+  },
 });

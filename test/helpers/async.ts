@@ -41,12 +41,12 @@ export class Tracker {
         this.resources.set(id, {
           source,
           triggerAsyncId,
-          type
+          type,
         });
       },
       promiseResolve: (id: number) => {
         this.resources.delete(id);
-      }
+      },
     });
   }
 

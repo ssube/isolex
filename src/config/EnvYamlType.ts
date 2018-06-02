@@ -7,5 +7,5 @@ export const envType = new YamlType('!env', {
   },
   construct(name: string) {
     return Reflect.get(process.env, name);
-  }
+  },
 });

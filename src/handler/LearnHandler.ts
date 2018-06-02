@@ -63,10 +63,10 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
         context: cmd.context,
         data: { args },
         name: cmd.name,
-        type: cmd.type
+        type: cmd.type,
       }),
       handler: this.name,
-      name
+      name,
     });
 
     this.logger.debug({ args, cmd, name, trigger }, 'learning command');
@@ -94,7 +94,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
 
   protected async executeTrigger(name: string, body: Array<string>, cmd: Command) {
     const trigger = await this.triggerRepository.findOne(name, {
-      relations: ['command', 'command.context']
+      relations: ['command', 'command.context'],
     });
 
     if (!trigger || !trigger.command) {
@@ -108,9 +108,9 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
     const emit = trigger.command.extend({
       context: cmd.context,
       data: {
-        [this.config.emit.field]: args
+        [this.config.emit.field]: args,
       },
-      name: dest
+      name: dest,
     });
 
     this.logger.debug({ emit, trigger }, 'triggering command');

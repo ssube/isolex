@@ -18,7 +18,7 @@ export class Trigger implements TriggerOptions {
   }
 
   @OneToOne((type) => Command, (cmd) => cmd.id, {
-    cascade: true
+    cascade: true,
   })
   @JoinColumn()
   public command: Command;

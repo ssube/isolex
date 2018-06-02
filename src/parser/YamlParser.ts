@@ -27,7 +27,7 @@ export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
       context: msg.context,
       data,
       name: this.config.emit,
-      type: CommandType.None
+      type: CommandType.None,
     })];
   }
 }

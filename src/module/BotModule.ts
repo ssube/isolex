@@ -17,7 +17,6 @@ import { SedHandler } from 'src/handler/SedHandler';
 import { TimeHandler } from 'src/handler/TimeHandler';
 import { WeatherHandler } from 'src/handler/WeatherHandler';
 import { DiscordListener } from 'src/listener/DiscordListener';
-import { SOListener } from 'src/listener/SOListener';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser } from 'src/parser/LexParser';
 import { MapParser } from 'src/parser/MapParser';
@@ -65,7 +64,6 @@ export class BotModule extends Module {
 
     // listeners
     this.bind(kebabCase(DiscordListener.name)).toConstructor(DiscordListener);
-    this.bind(kebabCase(SOListener.name)).toConstructor(SOListener);
 
     // parsers
     this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);

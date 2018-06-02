@@ -5,7 +5,7 @@ import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneT
 export enum CommandType {
   None,
   Admin,
-  Query
+  Query,
 }
 
 export interface CommandOptions {
@@ -30,7 +30,7 @@ export class Command implements CommandOptions {
   }
 
   @OneToOne((type) => Context, (context) => context.id, {
-    cascade: true
+    cascade: true,
   })
   @JoinColumn()
   public context: Context;
@@ -47,7 +47,7 @@ export class Command implements CommandOptions {
   public type: CommandType;
 
   @Column({
-    name: 'data'
+    name: 'data',
   })
   protected dataStr: string;
 
@@ -113,7 +113,7 @@ export class Command implements CommandOptions {
       data: Array.from(this.data.entries()),
       id: this.id,
       name: this.name,
-      type: this.type
+      type: this.type,
     };
   }
 

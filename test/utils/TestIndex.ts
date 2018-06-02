@@ -7,7 +7,7 @@ describeAsync('utils', async () => {
   itAsync('convert objects to maps', async () => {
     const map = normalizeMap({
       bar: '2',
-      foo: '1'
+      foo: '1',
     });
 
     expect(Array.from(map.entries())).to.deep.equal([['bar', '2'], ['foo', '1']]);

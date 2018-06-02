@@ -16,7 +16,7 @@ export class MigrationModule extends Module {
 
     this.bind('migrations').toInstance([
       InitialSetup0001526853117,
-      AddCounter0001527939908
+      AddCounter0001527939908,
     ]);
   }
 

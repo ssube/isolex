@@ -34,7 +34,7 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
       context: msg.context,
       data: { args },
       name: this.name,
-      type: CommandType.None
+      type: CommandType.None,
     })];
   }
 

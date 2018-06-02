@@ -16,14 +16,14 @@ export enum FilterBehavior {
   /**
    * Ignore the entity, providing no opinion on what should be done with it.
    */
-  Ignore = 0xFF
+  Ignore = 0xFF,
 }
 
 export function checkFilter(a: FilterBehavior, s: boolean) {
   if (s) {
-    return a !== FilterBehavior.Allow;
+    return a === FilterBehavior.Allow;
   } else {
-    return a === FilterBehavior.Drop;
+    return a !== FilterBehavior.Drop;
   }
 }
 

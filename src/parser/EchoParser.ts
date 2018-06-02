@@ -26,10 +26,10 @@ export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
     return [Command.create({
       context: msg.context,
       data: {
-        [this.config.field]: [this.removeTags(msg.body)]
+        [this.config.field]: [this.removeTags(msg.body)],
       },
       name: this.config.name,
-      type: CommandType.None
+      type: CommandType.None,
     })];
   }
 }

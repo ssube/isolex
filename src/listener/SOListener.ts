@@ -47,7 +47,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
       roomId: event.room_id.toString(),
       threadId: event.message_id.toString(),
       userId: event.user_id.toString(),
-      userName: event.user_name
+      userName: event.user_name,
     });
   }
 
@@ -60,7 +60,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
     const clientOptions = {
       email: this.config.account.email,
       mainRoom: this.config.rooms[0],
-      password: this.config.account.password
+      password: this.config.account.password,
     };
     this.logger.info(clientOptions, 'creating SO client');
     this.client = new Client(clientOptions);
@@ -117,7 +117,7 @@ export class SOListener extends BaseListener<SOListenerConfig> implements Listen
       const msg = Message.create({
         body: event.content,
         context: this.getEventContext(event),
-        reactions: []
+        reactions: [],
       });
       return this.bot.receive(msg);
     }

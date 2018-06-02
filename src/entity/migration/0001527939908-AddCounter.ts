@@ -6,15 +6,15 @@ export class AddCounter0001527939908 implements MigrationInterface {
       columns: [{
         isPrimary: true,
         name: 'id',
-        type: 'varchar'
+        type: 'varchar',
       }, {
         name: 'name',
-        type: 'varchar'
+        type: 'varchar',
       }, {
         name: 'count',
-        type: 'int'
+        type: 'int',
       }],
-      name: 'counter'
+      name: 'counter',
     }));
   }
 

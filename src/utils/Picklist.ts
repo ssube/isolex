@@ -15,9 +15,9 @@ export class Picklist<T> implements PicklistOptions<T> {
       data: items.map((it) => {
         return {
           value: it,
-          weight: 1
+          weight: 1,
         };
-      })
+      }),
     });
   }
 

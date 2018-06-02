@@ -31,7 +31,7 @@ export class SedHandler extends BaseHandler<SedHandlerConfig> implements Handler
       messages = await this.bot.fetch({
         channel: cmd.context.roomId,
         listenerId: cmd.context.listenerId,
-        useFilters: true
+        useFilters: true,
       });
     } catch (error) {
       this.logger.error('Failed to fetch messages.');

@@ -17,7 +17,7 @@ export class TemplateCompiler {
   constructor(options: TemplateCompilerOptions) {
     this.compiler = Handlebars.create();
     this.logger = options.logger.child({
-      class: TemplateCompiler.name
+      class: TemplateCompiler.name,
     });
     this.options = {};
 
@@ -28,7 +28,7 @@ export class TemplateCompiler {
 
   public compile(body: string): Template {
     return new Template({
-      template: this.compiler.compile(body, this.options)
+      template: this.compiler.compile(body, this.options),
     });
   }
 

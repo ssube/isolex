@@ -5,6 +5,8 @@ import { defer } from 'src/utils';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 import { describeAsync, itAsync } from 'test/helpers/async';
 
+const COOLDOWN_STEPS = [10, 12, 16, 24];
+
 describeAsync('cooldown', async () => {
   itAsync('should change the rate by the growth', async () => {
     const ctr = Container.from();
@@ -14,19 +16,19 @@ describeAsync('cooldown', async () => {
       config: {
         base: 10,
         grow: 2,
-        name: 'test-cooldown'
+        name: 'test-cooldown',
       },
-      logger: ConsoleLogger.global
+      logger: ConsoleLogger.global,
     });
 
-    expect(cd.inc()).to.equal(12);
-    expect(cd.inc()).to.equal(16);
-    expect(cd.inc()).to.equal(24);
-    expect(cd.dec()).to.equal(16);
-    expect(cd.dec()).to.equal(12);
-    expect(cd.dec()).to.equal(10);
-    expect(cd.dec()).to.equal(10);
-    expect(cd.getRate()).to.equal(10);
+    expect(cd.inc()).to.equal(COOLDOWN_STEPS[1]);
+    expect(cd.inc()).to.equal(COOLDOWN_STEPS[2]);
+    expect(cd.inc()).to.equal(COOLDOWN_STEPS[3]);
+    expect(cd.dec()).to.equal(COOLDOWN_STEPS[2]);
+    expect(cd.dec()).to.equal(COOLDOWN_STEPS[1]);
+    expect(cd.dec()).to.equal(COOLDOWN_STEPS[0]);
+    expect(cd.dec()).to.equal(COOLDOWN_STEPS[0]);
+    expect(cd.getRate()).to.equal(COOLDOWN_STEPS[0]);
   });
 
   itAsync('should stop a pending timer', async () => {
@@ -37,9 +39,9 @@ describeAsync('cooldown', async () => {
       config: {
         base: 5000,
         grow: 0,
-        name: 'test-cooldown'
+        name: 'test-cooldown',
       },
-      logger: ConsoleLogger.global
+      logger: ConsoleLogger.global,
     });
 
     await cd.start();
@@ -54,9 +56,9 @@ describeAsync('cooldown', async () => {
       config: {
         base: 20,
         grow: 0,
-        name: 'test-cooldown'
+        name: 'test-cooldown',
       },
-      logger: ConsoleLogger.global
+      logger: ConsoleLogger.global,
     });
 
     await cd.start();

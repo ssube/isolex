@@ -7,7 +7,7 @@ import { describeAsync, itAsync } from 'test/helpers/async';
 describeAsync('command', async () => {
   itAsync('should copy data', async () => {
     const data = {
-      test: 1
+      test: 1,
     };
     const cmd = Command.create({
       context: Context.create({
@@ -15,11 +15,11 @@ describeAsync('command', async () => {
         roomId: '',
         threadId: '',
         userId: '',
-        userName: ''
+        userName: '',
       }),
       data,
       name: '',
-      type: CommandType.None
+      type: CommandType.None,
     });
 
     expect(cmd.get('test')).to.equal(1);

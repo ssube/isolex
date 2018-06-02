@@ -34,7 +34,7 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
     this.creds = new AWS.Credentials(options.config.account.accessKey, options.config.account.secretKey);
     this.lex = new AWS.LexRuntime({
       credentials: this.creds,
-      region: options.config.region
+      region: options.config.region,
     });
   }
 
@@ -44,7 +44,7 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
       botAlias: this.config.bot.alias,
       botName: this.config.bot.name,
       inputText: body,
-      userId: leftPad(msg.context.userId)
+      userId: leftPad(msg.context.userId),
     });
 
     const name = reply.intentName || 'none';
@@ -56,7 +56,7 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
       context: msg.context,
       data,
       name,
-      type: CommandType.None
+      type: CommandType.None,
     };
 
     this.logger.debug({ cmdOptions }, 'command options');

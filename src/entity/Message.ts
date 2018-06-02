@@ -22,7 +22,7 @@ export class Message implements MessageOptions {
     return Message.create({
       body,
       context,
-      reactions: []
+      reactions: [],
     });
   }
 
@@ -30,7 +30,7 @@ export class Message implements MessageOptions {
   public body: string;
 
   @OneToOne((type) => Context, (context) => context.id, {
-    cascade: true
+    cascade: true,
   })
   @JoinColumn()
   public context: Context;

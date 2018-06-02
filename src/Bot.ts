@@ -59,7 +59,7 @@ export class Bot {
     this.config = options.config;
     this.container = options.container;
     this.logger = options.logger.child({
-      class: Bot.name
+      class: Bot.name,
     });
     this.logger.info(options, 'starting bot');
 
@@ -94,7 +94,7 @@ export class Bot {
 
     this.logger.info('connecting to storage');
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
-      logger: this.logger
+      logger: this.logger,
     });
     const entities = await this.container.create<Array<Function>, any>('entities');
     const migrations = await this.container.create<Array<Function>, any>('migrations');
@@ -102,7 +102,7 @@ export class Bot {
       ...this.config.storage,
       entities,
       logger: storageLogger,
-      migrations
+      migrations,
     });
 
     if (this.config.migrate) {
@@ -298,8 +298,8 @@ export class Bot {
       bot: this,
       config,
       logger: this.logger.child({
-        class: type
-      })
+        class: type,
+      }),
     });
   }
 }

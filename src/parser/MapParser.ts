@@ -68,7 +68,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
         context: msg.context,
         data: this.mapFields(args, cmd.fields, cmd.rest),
         name: cmd.name,
-        type: CommandType.None
+        type: CommandType.None,
       }));
     }
 

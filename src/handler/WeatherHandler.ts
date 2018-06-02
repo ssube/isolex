@@ -42,7 +42,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
       const weather = await this.getWeather(location);
       const body = this.template.render({
         cmd,
-        weather
+        weather,
       });
       this.logger.debug({ body, weather }, 'rendering weather data');
 
@@ -61,7 +61,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
         json: true,
         method: 'GET',
         qs: query,
-        uri: `${this.config.api.root}/weather`
+        uri: `${this.config.api.root}/weather`,
       });
 
       return weather;
@@ -80,7 +80,7 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
 
   public getQuery(location: string) {
     const qs: Partial<WeatherQuery> = {
-      APPID: this.config.api.key
+      APPID: this.config.api.key,
     };
 
     if (/^[0-9]+$/.test(location)) {

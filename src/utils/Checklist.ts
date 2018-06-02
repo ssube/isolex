@@ -1,6 +1,6 @@
 export enum ChecklistMode {
   INCLUDE = 'include',
-  EXCLUDE = 'exclude'
+  EXCLUDE = 'exclude',
 }
 
 export interface ChecklistOptions<T> {

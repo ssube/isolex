@@ -8,12 +8,10 @@ import { promisify } from 'util';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 export const CONFIG_NAME = '.isolex.yml';
-export const CONFIG_SCHEMA = Schema.create([
-  DEFAULT_SAFE_SCHEMA
-], [
-    envType,
-    includeType
-  ]);
+export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
+  envType,
+  includeType,
+]);
 
 const readFileSync = promisify(readFile);
 const statFileSync = promisify(stat);
@@ -59,11 +57,11 @@ export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
 export async function readConfig(path: string): Promise<BotConfig | undefined> {
   try {
     const data = await readFileSync(path, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
 
     return safeLoad(data, {
-      schema: CONFIG_SCHEMA
+      schema: CONFIG_SCHEMA,
     }) as any;
   } catch (err) {
     if (err.code !== 'ENOENT') {

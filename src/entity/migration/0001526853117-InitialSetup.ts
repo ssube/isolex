@@ -9,19 +9,19 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         type: 'varchar',
       }, {
         name: 'listenerId',
-        type: 'varchar'
+        type: 'varchar',
       }, {
         name: 'roomId',
-        type: 'varchar'
+        type: 'varchar',
       }, {
         name: 'threadId',
-        type: 'varchar'
+        type: 'varchar',
       }, {
         name: 'userId',
-        type: 'varchar'
+        type: 'varchar',
       }, {
         name: 'userName',
-        type: 'varchar'
+        type: 'varchar',
       }],
       name: 'context',
     }));

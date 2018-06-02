@@ -11,8 +11,8 @@ export class BunyanLogger {
       serializers: {
         ...bunyan.stdSerializers,
         logger: prototypeName,
-        module: prototypeName
-      }
+        module: prototypeName,
+      },
     });
   }
 }

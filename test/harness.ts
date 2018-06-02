@@ -7,7 +7,7 @@ import * as sourceMapSupport from 'source-map-support';
 sourceMapSupport.install({
   environment: 'node',
   handleUncaughtExceptions: true,
-  hookRequire: true
+  hookRequire: true,
 });
 
 /**
@@ -25,7 +25,7 @@ chai.use(sinonChai);
 
 ineeda.intercept({
   then: null,
-  unsubscribe: null
+  unsubscribe: null,
 });
 
 const context = (require as any).context('.', true, /Test.*$/);

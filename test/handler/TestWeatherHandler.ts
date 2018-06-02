@@ -22,23 +22,23 @@ describeAsync('weather handler', async () => {
       bot: ineeda<Bot>({
         send: (msg: Message) => {
           sent.push(msg);
-        }
+        },
       }),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
-          render: () => 'test'
-        })
+          render: () => 'test',
+        }),
       }),
       config: {
         api: {
           key: '0',
-          root: 'https://api.openweathermap.org/data/2.5/'
+          root: 'https://api.openweathermap.org/data/2.5/',
         },
         name: 'test_weather',
-        template: '{{ weather.test }}'
+        template: '{{ weather.test }}',
       },
       container,
-      logger: ConsoleLogger.global
+      logger: ConsoleLogger.global,
     };
     const handler = await container.create(WeatherHandler, options);
     expect(handler).to.be.an.instanceOf(WeatherHandler);
@@ -48,19 +48,19 @@ describeAsync('weather handler', async () => {
       roomId: '',
       threadId: '',
       userId: '',
-      userName: ''
+      userName: '',
     });
 
     const cmd = Command.create({
       context,
       data: {
-        location: '94040'
+        location: '94040',
       },
       name: 'test_weather',
-      type: 0
+      type: 0,
     });
 
-    expect(await handler.check(cmd)).to.be.true;
+    expect(await handler.check(cmd)).to.equal(true);
     await handler.handle(cmd);
 
     expect(sent.length).to.equal(1);

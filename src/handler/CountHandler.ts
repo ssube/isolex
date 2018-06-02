@@ -60,7 +60,7 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
 
   public async findOrCreateCounter(name: string): Promise<Counter> {
     const counter = await this.counterRepository.findOne({
-      where: { name }
+      where: { name },
     });
 
     if (counter) {
@@ -69,7 +69,7 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
 
     return Counter.create({
       count: Number(this.config.default.count),
-      name
+      name,
     });
   }
 }

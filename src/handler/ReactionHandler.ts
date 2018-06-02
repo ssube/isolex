@@ -46,7 +46,7 @@ export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implemen
     await this.bot.send(Message.create({
       body: '',
       context: cmd.context,
-      reactions
+      reactions,
     }));
   }
 }

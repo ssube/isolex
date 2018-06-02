@@ -13,11 +13,11 @@ describeAsync('pick list', async () => {
     const list = new Picklist({
       data: [{
         value: 'x',
-        weight: 1
+        weight: 1,
       }, {
         value: 'y',
-        weight: 1
-      }]
+        weight: 1,
+      }],
     });
 
     for (let i = 0; i < PICK_REPS; ++i) {
@@ -29,11 +29,11 @@ describeAsync('pick list', async () => {
     const list = new Picklist({
       data: [{
         value: 'x',
-        weight: 1
+        weight: 1,
       }, {
         value: 'y',
-        weight: 0
-      }]
+        weight: 0,
+      }],
     });
 
     for (let i = 0; i < PICK_REPS; ++i) {
@@ -46,11 +46,11 @@ describeAsync('pick list', async () => {
     const list = new Picklist<keyof typeof counter>({
       data: [{
         value: 'x',
-        weight: 1
+        weight: 1,
       }, {
         value: 'y',
-        weight: 1
-      }]
+        weight: 1,
+      }],
     });
 
     for (let i = 0; i < PICK_REPS; ++i) {
@@ -62,11 +62,11 @@ describeAsync('pick list', async () => {
     const list = new Picklist({
       data: [{
         value: 'x',
-        weight: 1
+        weight: 1,
       }, {
         value: 'y',
-        weight: 0
-      }]
+        weight: 0,
+      }],
     });
 
     for (let i = 0; i < PICK_REPS; ++i) {

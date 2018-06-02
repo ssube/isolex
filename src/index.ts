@@ -29,13 +29,13 @@ const VERSION_INFO = {
     node: NODE_VERSION,
     runner: RUNNER_VERSION,
     webpack: WEBPACK_VERSION,
-  }
+  },
 };
 
 sourceMapSupport.install({
   environment: 'node',
   handleUncaughtExceptions: true,
-  hookRequire: true
+  hookRequire: true,
 });
 
 const SIGNAL_RELOAD: Array<NodeJS.Signals> = ['SIGHUP'];
