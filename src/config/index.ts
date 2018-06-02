@@ -1,4 +1,4 @@
-import { readFile } from 'fs';
+import { readFile, stat } from 'fs';
 import { DEFAULT_SAFE_SCHEMA, safeLoad, Schema } from 'js-yaml';
 import { join } from 'path';
 import { BotConfig } from 'src/Bot';
@@ -16,6 +16,7 @@ export const CONFIG_SCHEMA = Schema.create([
   ]);
 
 const readFileSync = promisify(readFile);
+const statFileSync = promisify(stat);
 
 // search env, pwd, home
 export function resolvePath(name: string, ...extras: Array<string>): Array<string> {
@@ -45,20 +46,30 @@ export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
   const paths = resolvePath(CONFIG_NAME, ...extras);
 
   for (const p of paths) {
-    try {
-      const data = await readFileSync(p, {
-        encoding: 'utf-8'
-      });
+    const data = await readConfig(p);
 
-      return safeLoad(data, {
-        schema: CONFIG_SCHEMA
-      }) as any;
-    } catch (err) {
-      if (err.code !== 'ENOENT') {
-        throw err;
-      }
+    if (data) {
+      return data;
     }
   }
 
   throw new Error('unable to load config');
+}
+
+export async function readConfig(path: string): Promise<BotConfig | undefined> {
+  try {
+    const data = await readFileSync(path, {
+      encoding: 'utf-8'
+    });
+
+    return safeLoad(data, {
+      schema: CONFIG_SCHEMA
+    }) as any;
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      throw err;
+    }
+
+    return;
+  }
 }

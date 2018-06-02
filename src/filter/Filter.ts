@@ -19,6 +19,14 @@ export enum FilterBehavior {
   Ignore = 0xFF
 }
 
+export function checkFilter(a: FilterBehavior, s: boolean) {
+  if (s) {
+    return a !== FilterBehavior.Allow;
+  } else {
+    return a === FilterBehavior.Drop;
+  }
+}
+
 export type FilterValue = Command | Message;
 
 /**

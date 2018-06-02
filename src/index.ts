@@ -16,6 +16,22 @@ declare const NODE_VERSION: string;
 declare const RUNNER_VERSION: string;
 declare const WEBPACK_VERSION: string;
 
+const VERSION_INFO = {
+  build: {
+    job: BUILD_JOB,
+    runner: BUILD_RUNNER,
+  },
+  git: {
+    branch: GIT_BRANCH,
+    commit: GIT_COMMIT,
+  },
+  version: {
+    node: NODE_VERSION,
+    runner: RUNNER_VERSION,
+    webpack: WEBPACK_VERSION,
+  }
+};
+
 sourceMapSupport.install({
   environment: 'node',
   handleUncaughtExceptions: true,
@@ -31,21 +47,7 @@ async function main(): Promise<number> {
   const config = await loadConfig();
   const logger = BunyanLogger.create(config.logger);
 
-  logger.info({
-    build: {
-      job: BUILD_JOB,
-      runner: BUILD_RUNNER,
-    },
-    git: {
-      branch: GIT_BRANCH,
-      commit: GIT_COMMIT,
-    },
-    version: {
-      node: NODE_VERSION,
-      runner: RUNNER_VERSION,
-      webpack: WEBPACK_VERSION,
-    }
-  }, 'version info');
+  logger.info(VERSION_INFO, 'version info');
 
   const botModule = new BotModule({ logger });
   const mod: Array<Module> = [botModule];

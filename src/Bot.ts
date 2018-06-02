@@ -4,7 +4,7 @@ import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
+import { checkFilter, Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Handler, HandlerConfig } from 'src/handler/Handler';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserConfig } from 'src/parser/Parser';
@@ -265,15 +265,11 @@ export class Bot {
   }
 
   protected async checkFilters(next: FilterValue): Promise<boolean> {
-    if (this.filters.length === 0) {
-      return true;
-    }
-
     for (const filter of this.filters) {
       const result = await filter.filter(next);
       this.logger.debug({ result }, 'checked filter');
 
-      if (result === FilterBehavior.Drop || (this.strict && result !== FilterBehavior.Allow)) {
+      if (!checkFilter(result, this.strict)) {
         return false;
       }
     }
