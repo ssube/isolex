@@ -3,8 +3,8 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseHandler } from 'src/handler/BaseHandler';
 import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
-import { Picklist } from '../utils/Picklist';
-import { Checklist, ChecklistOptions } from '../utils/Checklist';
+import { Picklist } from 'src/utils/Picklist';
+import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 import { Check } from 'typeorm';
 
 export interface PickHandlerConfig extends HandlerConfig {

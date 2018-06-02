@@ -3,11 +3,8 @@ import { Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 import * as request from 'request-promise';
 import { Bot } from 'src/Bot';
-import { Command } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { Trigger } from 'src/entity/Trigger';
 import { UserFilter } from 'src/filter/UserFilter';
+import { CountHandler } from 'src/handler/CountHandler';
 import { DiceHandler } from 'src/handler/DiceHandler';
 import { EchoHandler } from 'src/handler/EchoHandler';
 import { LearnHandler } from 'src/handler/LearnHandler';
@@ -53,6 +50,7 @@ export class BotModule extends Module {
     this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
 
     // handlers
+    this.bind(kebabCase(CountHandler.name)).toConstructor(CountHandler);
     this.bind(kebabCase(DiceHandler.name)).toConstructor(DiceHandler);
     this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
     this.bind(kebabCase(LearnHandler.name)).toConstructor(LearnHandler);
@@ -99,10 +97,5 @@ export class BotModule extends Module {
   @Provides('request')
   protected async createRequest(options: any): Promise<Request> {
     return request(options);
-  }
-
-  @Provides('entities')
-  protected async createEntities(): Promise<Array<Function>> {
-    return [Command, Context, Message, Trigger];
   }
 }
