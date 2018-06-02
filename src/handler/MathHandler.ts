@@ -21,7 +21,7 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
   constructor(options: MathHandlerOptions) {
     super(options);
 
-    this.math = (mathjs as any).create(options.config);
+    this.math = (mathjs as any).create(options.config.math);
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -44,9 +44,11 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
   protected eval(expr: string, scope: any): string {
     try {
       const body = this.math.eval(expr, scope);
+      this.logger.debug({ body, expr }, 'evaluated expression');
+
       return formatResult(body, scope, this.config.format);
     } catch (err) {
-      return `error evaluating math: ${err.message}`;
+      return `error evaluating math: ${err.message}\n${err.stack}`;
     }
   }
 }

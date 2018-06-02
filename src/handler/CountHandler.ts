@@ -16,6 +16,10 @@ export interface CountHandlerConfig extends HandlerConfig {
     count: string;
     name: string;
   };
+  range: {
+    min: number;
+    max: number;
+  }
 }
 
 export interface CountHandlerOptions extends HandlerOptions<CountHandlerConfig> {
@@ -36,7 +40,7 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
 
   public async handle(cmd: Command): Promise<void> {
     const count = cmd.getHeadOrDefault(this.config.field.count, this.config.default.count);
-    const name = cmd.getHeadOrDefault(this.config.field.name, this.config.default.name);
+    const name = cmd.getHeadOrDefault(this.config.field.name, cmd.context.threadId);
 
     this.logger.debug({ name }, 'finding counter');
     const counter = await this.findOrCreateCounter(name);
@@ -49,7 +53,7 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
         --counter.count;
         break;
       default:
-        counter.count += Number(count);
+        counter.count += Math.max(Math.min(Number(count), this.config.range.max), this.config.range.min);
     }
 
     this.logger.debug({ count, name }, 'updating counter');

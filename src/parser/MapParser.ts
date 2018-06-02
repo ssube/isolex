@@ -11,6 +11,10 @@ import { normalizeMap, setOrPush } from 'src/utils';
  */
 export interface MappedCommand {
   /**
+   * Extra arguments to append to the parsed arguments.
+   */
+  append: Array<string>;
+  /**
    * The fields into which arguments should be put.
    */
   fields: Array<string>;
@@ -76,7 +80,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   }
 
   public mapArgs(cmd: MappedCommand, pending: Array<string>, original: string, resolved: string) {
-    const result = Array.from(pending);
+    const result = Array.from(pending).concat(cmd.append);
 
     if (cmd.remove) {
       return result;

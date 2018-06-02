@@ -1,4 +1,4 @@
-import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, TextChannel } from 'discord.js';
+import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, MessageReaction, TextChannel, ReactionEmoji } from 'discord.js';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 import { Context } from 'src/entity/Context';
@@ -35,7 +35,13 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     });
 
     this.client.on('message', (msg) => {
-      this.receive(msg).catch((err) => this.logger.error(err, 'error receiving message'));
+      this.threads.set(msg.id, msg);
+
+      this.receive(this.convertMessage(msg)).catch((err) => this.logger.error(err, 'error receiving message'));
+    });
+
+    this.client.on('messageReactionAdd', (msgReaction) => {
+      this.receive(this.convertReaction(msgReaction)).catch((err) => this.logger.error(err, 'error receiving reaction'));
     });
 
     await this.client.login(this.config.token);
@@ -140,11 +146,8 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     return messages;
   }
 
-  public async receive(value: DiscordMessage) {
-    this.threads.set(value.id, value);
-
-    // turn it into an internal Message
-    await this.bot.receive(this.convertMessage(value));
+  public async receive(value: Message) {
+    return this.bot.receive(value);
   }
 
   protected convertMessage(msg: DiscordMessage): Message {
@@ -159,6 +162,16 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
       }),
       reactions: msg.reactions.map((r) => r.emoji.name),
     });
+  }
+
+  protected convertReaction(reaction: MessageReaction): Message {
+    const msg = this.convertMessage(reaction.message);
+    if (reaction.emoji instanceof ReactionEmoji) {
+      msg.body = emoji.find(reaction.emoji.toString()).key;
+    } else {
+      msg.body = reaction.emoji.name;
+    }
+    return msg;
   }
 
   protected convertQueryOptions(options: FetchOptions): ChannelLogsQueryOptions {

@@ -1,4 +1,5 @@
-import * as mathjs from 'mathjs';
+import { isNil } from 'lodash';
+import { format as formatMath, typeof as typeOfMath } from 'mathjs';
 
 export interface ResultFormatOptions {
   list: {
@@ -16,9 +17,12 @@ export interface ResultFormatOptions {
 }
 
 export function formatResult(body: any, scope: any, options: ResultFormatOptions): string {
-  switch (mathjs.typeof(body)) {
-    case 'null':
-      return 'null';
+  if (isNil(body)) {
+    return 'nil result';
+  }
+
+  const type = typeOfMath(body);
+  switch (type) {
     case 'boolean':
     case 'number':
     case 'string':
@@ -33,15 +37,13 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
       return JSON.stringify(body);
     case 'RegExp':
       return 'regexp';
-    case 'undefined':
-      return 'undefined';
     case 'BigNumber':
     case 'Complex':
     case 'Fraction':
     case 'Matrix':
     case 'Range':
     case 'Unit':
-      return mathjs.format(body, options.number);
+      return formatMath(body, options.number);
     case 'ResultSet':
       return formatResult(body.entries, scope, options);
     case 'AccessorNode':

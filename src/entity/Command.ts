@@ -90,7 +90,11 @@ export class Command implements CommandOptions {
   public getHeadOrDefault(key: string, defaultValue: string): string {
     if (this.has(key)) {
       const data = this.get(key);
-      return data[0];
+      if (data.length > 0) {
+        return data[0];
+      } else {
+        return defaultValue;
+      }
     } else {
       return defaultValue;
     }
