@@ -1,5 +1,5 @@
 {
-  "extends": "tslint:latest",
+  "extends": ["tslint:latest", "tslint-clean-code", "tslint-sonarts"],
   "rules": {
     "adjacent-overload-signatures": true,
     "array-type": [
@@ -44,6 +44,7 @@
     "no-bitwise": false,
     "no-conditional-assignment": true,
     "no-console": true,
+    "no-dead-store": false,
     "no-duplicate-super": true,
     "no-empty-interface": true,
     "no-floating-promises": true,

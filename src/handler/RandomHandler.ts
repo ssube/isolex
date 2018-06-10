@@ -71,16 +71,13 @@ export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements H
   }
 
   private getPrecision(...values: Array<number>) {
-    const precision = values.map((value) => {
+    return values.map((value) => {
       const parts = value.toString().split('.');
       return countList(parts[1]);
-    })
-      .reduce((previous, current) => {
-        this.logger.debug({ previous, current }, 'calculating precision');
-        return max(current, previous);
-      });
-
-    return precision;
+    }).reduce((previous, current) => {
+      this.logger.debug({ previous, current }, 'calculating precision');
+      return max(current, previous);
+    });
   }
 
   private round(value: number, precision: number): string {

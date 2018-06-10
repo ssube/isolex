@@ -57,14 +57,12 @@ export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements
     this.logger.debug({ location, query }, 'requesting weather data from API');
 
     try {
-      const weather = await this.container.create<WeatherReply, BaseOptions & CoreOptions & RequiredUriUrl>('request', {
+      return this.container.create<WeatherReply, BaseOptions & CoreOptions & RequiredUriUrl>('request', {
         json: true,
         method: 'GET',
         qs: query,
         uri: `${this.config.api.root}/weather`,
       });
-
-      return weather;
     } catch (err) {
       if (err.name === 'StatusCodeError') {
         const [code, body] = err.message.split(' - ');

@@ -19,7 +19,7 @@ export interface CountHandlerConfig extends HandlerConfig {
   range: {
     min: number;
     max: number;
-  }
+  };
 }
 
 export interface CountHandlerOptions extends HandlerOptions<CountHandlerConfig> {

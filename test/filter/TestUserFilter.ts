@@ -11,6 +11,8 @@ import { ChecklistMode } from 'src/utils/Checklist';
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
 
+const TEST_FILTER_NAME = 'test-filter';
+
 async function createUserFilter(options: UserFilterOptions) {
   const { container } = await createContainer();
   const filter = await container.create<UserFilter, any>(UserFilter, {
@@ -27,7 +29,7 @@ describeAsync('user filter', async () => {
       config: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,
-        name: 'test-filter',
+        name: TEST_FILTER_NAME,
       },
       container: ineeda<Container>(),
       logger: bunyan.createLogger({
@@ -43,7 +45,7 @@ describeAsync('user filter', async () => {
       config: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,
-        name: 'test-filter',
+        name: TEST_FILTER_NAME,
       },
       container: ineeda<Container>(),
       logger: ConsoleLogger.global,
@@ -71,7 +73,7 @@ describeAsync('user filter', async () => {
       config: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,
-        name: 'test-filter',
+        name: TEST_FILTER_NAME,
       },
       container: ineeda<Container>(),
       logger: ConsoleLogger.global,

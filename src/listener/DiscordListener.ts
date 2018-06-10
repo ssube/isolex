@@ -167,7 +167,12 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
   protected convertReaction(reaction: MessageReaction): Message {
     const msg = this.convertMessage(reaction.message);
     if (reaction.emoji instanceof ReactionEmoji) {
-      msg.body = emoji.find(reaction.emoji.toString()).key;
+      const result = emoji.find(reaction.emoji.toString());
+      if (result) {
+        msg.body = result.key;
+      } else {
+        msg.body = 'missing emoji';
+      }
     } else {
       msg.body = reaction.emoji.name;
     }
