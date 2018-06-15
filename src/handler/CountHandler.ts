@@ -42,10 +42,13 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
     const count = cmd.getHeadOrDefault(this.config.field.count, this.config.default.count);
     const name = cmd.getHeadOrDefault(this.config.field.name, cmd.context.threadId);
 
-    this.logger.debug({ name }, 'finding counter');
-    const counter = await this.findOrCreateCounter(name);
+    this.logger.debug({ count, counterName: name }, 'finding counter');
+    const counter = await this.findOrCreateCounter(name, cmd.context.roomId);
 
     switch (count) {
+      case 'ls':
+        const body = await this.listCounters(cmd.context.roomId);
+        return this.bot.send(Message.reply(body, cmd.context));
       case '++':
         ++counter.count;
         break;
@@ -58,13 +61,14 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
 
     this.logger.debug({ count, name }, 'updating counter');
     await this.counterRepository.save(counter);
-
-    return this.bot.send(Message.reply(`${name} is now ${counter.count}`, cmd.context));
   }
 
-  public async findOrCreateCounter(name: string): Promise<Counter> {
+  public async findOrCreateCounter(name: string, roomId: string): Promise<Counter> {
     const counter = await this.counterRepository.findOne({
-      where: { name },
+      where: {
+        name,
+        roomId,
+      },
     });
 
     if (counter) {
@@ -74,6 +78,21 @@ export class CountHandler extends BaseHandler<CountHandlerConfig> implements Han
     return Counter.create({
       count: Number(this.config.default.count),
       name,
+      roomId,
     });
+  }
+
+  public async listCounters(roomId: string): Promise<string> {
+    const counters = await this.counterRepository.find({
+      where: {
+        roomId,
+      },
+    });
+
+    if (counters.length) {
+      return counters.join('\n');
+    } else {
+      return 'no counters found';
+    }
   }
 }

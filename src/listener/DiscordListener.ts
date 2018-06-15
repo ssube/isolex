@@ -1,4 +1,4 @@
-import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, MessageReaction, TextChannel, ReactionEmoji } from 'discord.js';
+import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, MessageReaction, ReactionEmoji, TextChannel, User } from 'discord.js';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 import { Context } from 'src/entity/Context';
@@ -40,9 +40,13 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
       this.receive(this.convertMessage(msg)).catch((err) => this.logger.error(err, 'error receiving message'));
     });
 
-    this.client.on('messageReactionAdd', (msgReaction) => {
-      this.receive(this.convertReaction(msgReaction)).catch((err) => this.logger.error(err, 'error receiving reaction'));
+    this.client.on('messageReactionAdd', (msgReaction, user) => {
+      this.receive(this.convertReaction(msgReaction, user)).catch((err) => this.logger.error(err, 'error receiving reaction'));
     });
+
+    this.client.on('warn', (msg) => {
+      this.logger.warn({ msg }, 'warning from server');
+    })
 
     await this.client.login(this.config.token);
   }
@@ -164,18 +168,18 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     });
   }
 
-  protected convertReaction(reaction: MessageReaction): Message {
+  protected convertReaction(reaction: MessageReaction, user: User): Message {
     const msg = this.convertMessage(reaction.message);
     if (reaction.emoji instanceof ReactionEmoji) {
       const result = emoji.find(reaction.emoji.toString());
-      if (result) {
-        msg.body = result.key;
-      } else {
-        msg.body = 'missing emoji';
-      }
+      msg.body = result ? result.key : 'missing emoji';
     } else {
       msg.body = reaction.emoji.name;
     }
+
+    msg.context.userId = user.id;
+    msg.context.userName = user.username;
+
     return msg;
   }
 

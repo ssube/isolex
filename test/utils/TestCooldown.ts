@@ -5,6 +5,7 @@ import { defer } from 'src/utils';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 import { describeAsync, itAsync } from 'test/helpers/async';
 
+const COOLDOWN_NAME = 'test-cooldown';
 const COOLDOWN_STEPS = [10, 12, 16, 24];
 
 describeAsync('cooldown', async () => {
@@ -16,7 +17,7 @@ describeAsync('cooldown', async () => {
       config: {
         base: 10,
         grow: 2,
-        name: 'test-cooldown',
+        name: COOLDOWN_NAME,
       },
       logger: ConsoleLogger.global,
     });
@@ -39,7 +40,7 @@ describeAsync('cooldown', async () => {
       config: {
         base: 5000,
         grow: 0,
-        name: 'test-cooldown',
+        name: COOLDOWN_NAME,
       },
       logger: ConsoleLogger.global,
     });
@@ -56,7 +57,7 @@ describeAsync('cooldown', async () => {
       config: {
         base: 20,
         grow: 0,
-        name: 'test-cooldown',
+        name: COOLDOWN_NAME,
       },
       logger: ConsoleLogger.global,
     });

@@ -9,6 +9,7 @@ import { Trigger } from 'src/entity/Trigger';
 
 import { InitialSetup0001526853117 } from 'src/entity/migration/0001526853117-InitialSetup';
 import { AddCounter0001527939908 } from 'src/entity/migration/0001527939908-AddCounter';
+import { CounterRoom0001529018132 } from 'src/entity/migration/0001529018132-CounterRoom';
 
 export class MigrationModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
@@ -17,6 +18,7 @@ export class MigrationModule extends Module {
     this.bind('migrations').toInstance([
       InitialSetup0001526853117,
       AddCounter0001527939908,
+      CounterRoom0001529018132,
     ]);
   }
 
