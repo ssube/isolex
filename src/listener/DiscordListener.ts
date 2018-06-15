@@ -1,4 +1,4 @@
-import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, MessageReaction, ReactionEmoji, TextChannel, User } from 'discord.js';
+import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, MessageReaction, ReactionEmoji, TextChannel, User, PresenceData } from 'discord.js';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 import { Context } from 'src/entity/Context';
@@ -8,6 +8,7 @@ import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceConfig, ServiceOptions } from 'src/Service';
 
 export interface DiscordListenerConfig extends ServiceConfig {
+  presence?: PresenceData;
   token: string;
 }
 
@@ -49,6 +50,10 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
     })
 
     await this.client.login(this.config.token);
+
+    if (this.config.presence) {
+      this.client.user.setPresence(this.config.presence);
+    }
   }
 
   public async stop() {
