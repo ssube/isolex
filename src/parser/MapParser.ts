@@ -1,6 +1,9 @@
 import * as split from 'split-string';
-import { Command, CommandPropMap, CommandType } from 'src/entity/Command';
+
+import { Command, CommandPropMap, CommandVerb } from 'src/entity/Command';
+import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
@@ -65,14 +68,18 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     this.tags = [...this.alias.keys(), ...this.emit.keys()];
   }
 
+  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
+    throw new NotImplementedError();
+  }
+
   public async parse(msg: Message): Promise<Array<Command>> {
     const commands = [];
     for (const { args, cmd } of this.mapCommands(msg.body)) {
       commands.push(Command.create({
         context: msg.context,
         data: this.mapFields(args, cmd.fields, cmd.rest),
-        name: cmd.name,
-        type: CommandType.None,
+        noun: cmd.name,
+        verb: CommandVerb.None,
       }));
     }
 

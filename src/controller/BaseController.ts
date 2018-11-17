@@ -1,6 +1,6 @@
 import { BaseService } from 'src/BaseService';
-import { Command } from 'src/entity/Command';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Command } from 'src/entity/Command';
 
 export abstract class BaseController<TConfig extends ControllerConfig> extends BaseService<TConfig> implements Controller {
   public readonly name: string;
@@ -18,7 +18,7 @@ export abstract class BaseController<TConfig extends ControllerConfig> extends B
   }
 
   public async check(cmd: Command): Promise<boolean> {
-    return cmd.name === this.name;
+    return cmd.noun === this.name;
   }
 
   public abstract handle(cmd: Command): Promise<void>;

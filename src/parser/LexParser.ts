@@ -1,10 +1,13 @@
 import * as AWS from 'aws-sdk';
-import { Command, CommandOptions, CommandType } from 'src/entity/Command';
+
+import { Command, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { leftPad } from 'src/utils';
+import { leftPad, MapOrMapLike } from 'src/utils';
+import { Fragment } from 'src/entity/Fragment';
+import { NotImplementedError } from 'src/error/NotImplementedError';
 
 export interface LexParserConfig extends ParserConfig {
   account: {
@@ -38,29 +41,48 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
     });
   }
 
+  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
+    throw new NotImplementedError();
+  }
+
   public async parse(msg: Message): Promise<Array<Command>> {
     const body = this.removeTags(msg.body);
-    const reply = await this.postText({
+    const post = await this.postText({
       botAlias: this.config.bot.alias,
       botName: this.config.bot.name,
       inputText: body,
       userId: leftPad(msg.context.userId),
     });
 
-    const name = reply.intentName || 'none';
-    this.logger.debug({ msg, name, reply }, 'lex parsed message');
+    this.logger.debug({ body, msg, post }, 'lex parsed message');
+
+    const noun = post.intentName;
+    if (!noun) {
+      this.logger.warn({ msg }, 'lex parsed message without intent');
+      return [];
+    }
 
     // merge lex reply and slots
-    const data = { ...reply, ...reply.slots };
+    const data = this.getSlots(post.slots);
     const cmdOptions: CommandOptions = {
       context: msg.context,
       data,
-      name,
-      type: CommandType.None,
+      noun,
+      verb: CommandVerb.None,
     };
 
     this.logger.debug({ cmdOptions }, 'command options');
     return [Command.create(cmdOptions)];
+  }
+
+  protected getSlots(input: AWS.LexRuntime.StringMap | undefined): MapOrMapLike<Array<string>> {
+    const slots = new Map();
+    if (input) {
+      for (const [k, v] of Object.entries(input)) {
+        slots.set(k, v);
+      }
+    }
+    return slots;
   }
 
   protected postText(params: AWS.LexRuntime.PostTextRequest): Promise<AWS.LexRuntime.PostTextResponse> {

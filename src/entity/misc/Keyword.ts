@@ -1,20 +1,20 @@
 import { Command } from 'src/entity/Command';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
-export interface TriggerOptions {
+export interface KeywordOptions {
   command: Command;
   controller: string;
   name: string;
 }
 
 @Entity()
-export class Trigger implements TriggerOptions {
-  public static create(options: TriggerOptions) {
-    const trigger = new Trigger();
-    trigger.command = options.command;
-    trigger.controller = options.controller;
-    trigger.name = options.name;
-    return trigger;
+export class Keyword implements KeywordOptions {
+  public static create(options: KeywordOptions) {
+    const keyword = new Keyword();
+    keyword.command = options.command;
+    keyword.controller = options.controller;
+    keyword.name = options.name;
+    return keyword;
   }
 
   @OneToOne((type) => Command, (cmd) => cmd.id, {

@@ -1,8 +1,9 @@
-import { Command, CommandType } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
+import { Fragment } from 'src/entity/Fragment';
 
 export interface EchoParserConfig extends ParserConfig {
   field: string;
@@ -28,8 +29,18 @@ export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
       data: {
         [this.config.field]: [this.removeTags(msg.body)],
       },
-      name: this.config.name,
-      type: CommandType.None,
+      noun: this.config.name,
+      verb: CommandVerb.None,
+    })];
+  }
+
+  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
+    const { command } = frag;
+
+    return [command.extend({
+      data: {
+        [frag.key]: [value],
+      },
     })];
   }
 }

@@ -4,12 +4,13 @@ import { ConsoleLogger } from 'noicejs';
 import { match, spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
-import { Command } from 'src/entity/Command';
+import { EchoController, EchoControllerOptions } from 'src/controller/EchoController';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { EchoController, EchoControllerOptions } from 'src/controller/EchoController';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
 
@@ -64,8 +65,8 @@ describeAsync('echo controller', async () => {
         userName: '',
       }),
       data: {},
-      name: 'test_echo',
-      type: 0,
+      noun: 'test_echo',
+      verb: CommandVerb.None,
     });
 
     expect(await controller.check(cmd)).to.equal(true);

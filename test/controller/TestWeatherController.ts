@@ -3,19 +3,20 @@ import { ineeda } from 'ineeda';
 import { ConsoleLogger } from 'noicejs';
 
 import { Bot } from 'src/Bot';
-import { Command } from 'src/entity/Command';
+import { WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
     const { container, module } = await createContainer();
-    module.bind('request').toFactory(async () => ({test: 'test'}));
+    module.bind('request').toFactory(async () => ({ test: 'test' }));
 
     const sent: Array<Message> = [];
     const options: WeatherControllerOptions = {
@@ -54,10 +55,10 @@ describeAsync('weather controller', async () => {
     const cmd = Command.create({
       context,
       data: {
-        location: '94040',
+        location: ['94040'],
       },
-      name: 'test_weather',
-      type: 0,
+      noun: 'test_weather',
+      verb: CommandVerb.None,
     });
 
     expect(await controller.check(cmd)).to.equal(true);

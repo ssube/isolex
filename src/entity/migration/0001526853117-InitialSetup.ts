@@ -38,10 +38,10 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'data',
         type: 'varchar',
       }, {
-        name: 'name',
+        name: 'noun',
         type: 'varchar',
       }, {
-        name: 'type',
+        name: 'verb',
         type: 'varchar',
       }],
       name: 'command',
@@ -77,7 +77,7 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'controller',
         type: 'varchar',
       }],
-      name: 'trigger',
+      name: 'keyword',
     }));
   }
 
@@ -85,6 +85,6 @@ export class InitialSetup0001526853117 implements MigrationInterface {
     await query.dropTable('context');
     await query.dropTable('command');
     await query.dropTable('message');
-    await query.dropTable('trigger');
+    await query.dropTable('keyword');
   }
 }

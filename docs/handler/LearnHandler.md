@@ -21,17 +21,17 @@ mode is specific (any other string passed instead), execute will be assumed.
 
 ### Create
 
-To create a new command, pass the name of the trigger and any arguments:
+To create a new command, pass the name of the keyword and any arguments:
 
 > input: `add test "a b" c`
 >
 > reply: Command 'test' learned.
 
-The trigger `test` will create a command with the args `["a b", c]`.
+The keyword `test` will create a command with the args `["a b", c]`.
 
 ### Delete
 
-To delete an existing command, pass the trigger name:
+To delete an existing command, pass the keyword name:
 
 > input: `del test`
 >
@@ -39,7 +39,7 @@ To delete an existing command, pass the trigger name:
 
 ### Execute
 
-To execute an existing command, pass the trigger name, destination controller (command name), and any arguments:
+To execute an existing command, pass the keyword name, destination controller (command name), and any arguments:
 
 > input: `run test 1 2 3`
 >

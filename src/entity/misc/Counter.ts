@@ -28,7 +28,12 @@ export class Counter implements CounterOptions {
   @Column()
   public roomId: string;
 
-  public toString() {
-    return `${this.name}: ${this.count}`;
+  public toJSON() {
+    return {
+      id: this.id,
+      count: this.count,
+      name: this.name,
+      roomId: this.roomId,
+    };
   }
 }

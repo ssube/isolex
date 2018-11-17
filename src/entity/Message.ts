@@ -1,6 +1,7 @@
 import * as escape from 'escape-html';
-import { Context } from 'src/entity/Context';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Context } from 'src/entity/Context';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MessageOptions {
@@ -19,6 +20,10 @@ export class Message implements MessageOptions {
     msg.reactions = Array.from(options.reactions);
     msg.type = options.type;
     return msg;
+  }
+
+  public static isMessage(it: any): it is Message {
+    return it instanceof Message;
   }
 
   public static reply(body: string, context: Context) {

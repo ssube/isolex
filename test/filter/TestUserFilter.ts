@@ -2,12 +2,14 @@ import * as bunyan from 'bunyan';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { ConsoleLogger, Container } from 'noicejs';
+
 import { Bot } from 'src/Bot';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterOptions } from 'src/filter/UserFilter';
 import { ChecklistMode } from 'src/utils/Checklist';
+
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
 
@@ -60,8 +62,8 @@ describeAsync('user filter', async () => {
         userName: 'safe',
       }),
       data: {},
-      name: 'test',
-      type: 0,
+      noun: 'test',
+      verb: CommandVerb.None,
     });
     const behavior = await filter.filter(cmd);
     expect(behavior).to.equal(FilterBehavior.Allow);
@@ -88,8 +90,8 @@ describeAsync('user filter', async () => {
         userName: 'test',
       }),
       data: {},
-      name: 'test',
-      type: 0,
+      noun: 'test',
+      verb: CommandVerb.None,
     });
     const behavior = await filter.filter(cmd);
     expect(behavior).to.equal(FilterBehavior.Drop);

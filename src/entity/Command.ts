@@ -1,32 +1,52 @@
-import { Context } from 'src/entity/Context';
-import { mergeMap, normalizeMap } from 'src/utils';
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  AfterLoad,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-export enum CommandType {
-  None,
-  Admin,
-  Query,
+import { BaseEntity } from 'src/entity/BaseEntity';
+import { Context } from 'src/entity/Context';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { mergeMap, normalizeMap, MapOrMapLike } from 'src/utils';
+
+export enum CommandVerb {
+  None = '',
+  Create = 'create',
+  Delete = 'delete',
+  Get = 'get',
+  List = 'list',
+  Update = 'update',
+  Watch = 'watch',
 }
 
 export interface CommandOptions {
   context: Context;
-  data: any;
-  name: string;
-  type: CommandType;
+  data: MapOrMapLike<Array<string>>;
+  noun: string;
+  verb: CommandVerb;
 }
 
 export type CommandPropMap = Map<string, CommandPropValue>;
-export type CommandPropValue = string | Array<string>;
+export type CommandPropValue = Array<string>;
 
 @Entity()
-export class Command implements CommandOptions {
+export class Command extends BaseEntity implements CommandOptions {
   public static create(options: CommandOptions) {
     const cmd = new Command();
     cmd.context = Context.create(options.context);
     cmd.data = normalizeMap(options.data);
-    cmd.name = options.name;
-    cmd.type = options.type;
+    cmd.noun = options.noun;
+    cmd.verb = options.verb;
     return cmd;
+  }
+  
+  public static isCommand(it: any): it is Command {
+    return it instanceof Command;
   }
 
   @OneToOne((type) => Context, (context) => context.id, {
@@ -41,10 +61,10 @@ export class Command implements CommandOptions {
   public id: string;
 
   @Column()
-  public name: string;
+  public noun: string;
 
   @Column()
-  public type: CommandType;
+  public verb: CommandVerb;
 
   @Column({
     name: 'data',
@@ -52,22 +72,25 @@ export class Command implements CommandOptions {
   protected dataStr: string;
 
   constructor() {
+    super();
+
     this.data = new Map();
   }
 
   public extend(options: Partial<CommandOptions>) {
+    if (options.noun) {
+      throw new InvalidArgumentError('extended commands may not change noun');
+    }
+    if (options.verb) {
+      throw new InvalidArgumentError('extended commands may not change verb');
+    }
+
     const cmd = Command.create(this);
     if (options.context) {
       cmd.context = Context.create(options.context);
     }
     if (options.data) {
       cmd.data = mergeMap(cmd.data, normalizeMap(options.data));
-    }
-    if (options.name) {
-      cmd.name = options.name;
-    }
-    if (options.type) {
-      cmd.type = options.type;
     }
     return cmd;
   }
@@ -113,15 +136,11 @@ export class Command implements CommandOptions {
 
   public toJSON(): object {
     return {
-      context: this.context,
-      data: Array.from(this.data.entries()),
+      context: this.context.toJSON(),
+      data: Array.from(this.data),
       id: this.id,
-      name: this.name,
-      type: this.type,
+      noun: this.noun,
+      verb: this.verb,
     };
-  }
-
-  public toString(): string {
-    return JSON.stringify(this.toJSON());
   }
 }

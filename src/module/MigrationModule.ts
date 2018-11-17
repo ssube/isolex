@@ -9,7 +9,7 @@ import { AddCounter0001527939908 } from 'src/entity/migration/0001527939908-AddC
 import { CounterRoom0001529018132 } from 'src/entity/migration/0001529018132-CounterRoom';
 import { MessageType0001542414714 } from 'src/entity/migration/0001542414714-MessageType';
 import { Counter } from 'src/entity/misc/Counter';
-import { Trigger } from 'src/entity/misc/Trigger';
+import { Keyword } from 'src/entity/misc/Keyword';
 
 export class MigrationModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
@@ -25,6 +25,6 @@ export class MigrationModule extends Module {
 
   @Provides('entities')
   protected async createEntities(): Promise<Array<Function>> {
-    return [Command, Context, Counter, Message, Trigger];
+    return [Command, Context, Counter, Message, Keyword];
   }
 }

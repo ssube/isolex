@@ -84,9 +84,14 @@ interface MapLike<TVal> {
 }
 
 /**
+ * A `Map` or dictionary object with string keys and `TVal` values.
+ */
+export type MapOrMapLike<TVal> = Map<string, TVal> | MapLike<TVal>;
+
+/**
  * Clone a map or map-like object into a new map.
  */
-export function normalizeMap<TVal>(val: Map<string, TVal> | MapLike<TVal>): Map<string, TVal> {
+export function normalizeMap<TVal>(val: MapOrMapLike<TVal>): Map<string, TVal> {
   if (isMap(val)) {
     return new Map(val.entries());
   } else {

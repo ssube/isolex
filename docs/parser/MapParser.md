@@ -1,6 +1,6 @@
 # Map Parser
 
-The map parser can match many triggers and emit different messages based on which one matched.
+The map parser can match many keywords and emit different messages based on which one matched.
 
 ## Config
 

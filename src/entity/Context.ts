@@ -37,4 +37,15 @@ export class Context implements ContextOptions {
 
   @Column()
   public userName: string;
+
+  public toJSON(): any {
+    return {
+      id: this.id,
+      listenerId: this.listenerId,
+      roomId: this.roomId,
+      threadId: this.threadId,
+      userId: this.userId,
+      userName: this.userName,
+    };
+  }
 }

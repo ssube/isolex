@@ -1,6 +1,7 @@
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service, ServiceConfig } from 'src/Service';
+import { Fragment } from 'src/entity/Fragment';
 
 export interface ParserConfig extends ServiceConfig {
   tags: Array<string>;
@@ -20,4 +21,9 @@ export interface Parser extends Service {
    * Parse an event into commands.
    */
   parse(msg: Message): Promise<Array<Command>>;
+
+  /**
+   * Complete a command from an existing fragment and new value.
+   */
+  complete(frag: Fragment, value: string): Promise<Array<Command>>;
 }
