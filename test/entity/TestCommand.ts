@@ -19,8 +19,8 @@ describeAsync('command', async () => {
         userName: '',
       }),
       data,
-      noun: '',
-      verb: CommandVerb.None,
+      noun: 'test_cmd',
+      verb: CommandVerb.Get,
     });
 
     expect(cmd.data).not.to.equal(data);
@@ -43,8 +43,8 @@ describeAsync('command', async () => {
         userName: '',
       }),
       data,
-      noun: '',
-      verb: CommandVerb.None,
+      noun: 'test_cmd',
+      verb: CommandVerb.Get,
     });
 
     expect(cmd.get('test')).to.deep.equal(['1']);

@@ -13,7 +13,9 @@ export interface WeatherControllerConfig extends ControllerConfig {
     key: string;
     root: string;
   };
-  template: string;
+  template: {
+    body: string;
+  };
 }
 
 export interface WeatherControllerOptions extends ControllerOptions<WeatherControllerConfig> {
@@ -29,7 +31,7 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
     super(options);
 
     this.container = options.container;
-    this.template = options.compiler.compile(options.data.template);
+    this.template = options.compiler.compile(options.data.template.body);
   }
 
   public async handle(cmd: Command): Promise<void> {

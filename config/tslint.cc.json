@@ -1,5 +1,5 @@
 {
-  "extends": ["./tslint.cc.json", "tslint-clean-code", "tslint-sonarts"],
+  "extends": ["tslint:latest"],
   "rules": {
     "adjacent-overload-signatures": true,
     "array-type": [

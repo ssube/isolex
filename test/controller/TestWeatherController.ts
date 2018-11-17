@@ -35,7 +35,9 @@ describeAsync('weather controller', async () => {
           key: '0',
           root: 'https://api.openweathermap.org/data/2.5/',
         },
-        template: '{{ weather.test }}',
+        template: {
+          body: '{{ weather.test }}',
+        },
       },
       container,
       logger: ConsoleLogger.global,
@@ -61,7 +63,7 @@ describeAsync('weather controller', async () => {
         location: ['94040'],
       },
       noun: 'test_weather',
-      verb: CommandVerb.None,
+      verb: CommandVerb.Get,
     });
 
     expect(await controller.check(cmd)).to.equal(true);

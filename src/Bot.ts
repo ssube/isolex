@@ -56,6 +56,7 @@ export class Bot {
     this.container = options.container;
     this.data = options.data;
     this.logger = options.logger.child({
+      bot: options.metadata.name,
       class: Bot.name,
     });
     this.logger.info(options, 'starting bot');

@@ -72,7 +72,7 @@ describeAsync('echo controller', async () => {
       }),
       data: {},
       noun: 'test_echo',
-      verb: CommandVerb.None,
+      verb: CommandVerb.Get,
     });
 
     expect(await controller.check(cmd)).to.equal(true);

@@ -68,7 +68,7 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
       context: msg.context,
       data,
       noun,
-      verb: CommandVerb.None,
+      verb: this.data.emit.verb,
     };
 
     this.logger.debug({ cmdOptions }, 'command options');

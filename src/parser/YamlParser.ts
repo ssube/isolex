@@ -1,6 +1,6 @@
 import { safeLoad } from 'js-yaml';
 
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
@@ -8,10 +8,7 @@ import { ServiceOptions } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 
-export interface YamlParserConfig extends ParserConfig {
-  noun: string;
-}
-
+export type YamlParserConfig = ParserConfig;
 export type YamlParserOptions = ServiceOptions<YamlParserConfig>;
 
 export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
@@ -33,8 +30,8 @@ export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
     return [Command.create({
       context: msg.context,
       data,
-      noun: this.data.noun,
-      verb: CommandVerb.None,
+      noun: this.data.emit.noun,
+      verb: this.data.emit.verb,
     })];
   }
 }

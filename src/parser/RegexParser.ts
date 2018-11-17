@@ -6,16 +6,16 @@ import { ServiceOptions } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 
-export interface SplitParserConfig extends ParserConfig {
+export interface RegexParserConfig extends ParserConfig {
   regexp: string;
 }
 
-export type SplitParserOptions = ServiceOptions<SplitParserConfig>;
+export type RegexParserOptions = ServiceOptions<RegexParserConfig>;
 
-export class SplitParser extends BaseParser<SplitParserConfig> implements Parser {
+export class RegexParser extends BaseParser<RegexParserConfig> implements Parser {
   protected regexp: RegExp;
 
-  constructor(options: SplitParserOptions) {
+  constructor(options: RegexParserOptions) {
     super(options);
 
     this.regexp = new RegExp(options.data.regexp);
@@ -38,8 +38,8 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
     return [Command.create({
       context: msg.context,
       data: { args },
-      noun: this.name,
-      verb: CommandVerb.None,
+      noun: this.data.emit.noun,
+      verb: this.data.emit.verb,
     })];
   }
 }

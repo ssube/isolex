@@ -1,3 +1,4 @@
+import { isNil, pick, reject } from 'lodash';
 import * as split from 'split-string';
 
 import { Command, CommandPropMap, CommandVerb } from 'src/entity/Command';
@@ -7,36 +8,59 @@ import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { normalizeMap, setOrPush } from 'src/utils';
+import { setOrPush, filterNil } from 'src/utils';
 
 /**
  * Mapped commands are the stored form of a command to be produced by a mapping.
  */
 export interface MappedCommand {
   /**
-   * Extra arguments to append to the parsed arguments.
-   */
-  append: Array<string>;
-  /**
-   * The fields into which arguments should be put.
-   */
-  fields: Array<string>;
-  /**
-   * The name of the emitted command.
-   */
-  name: string;
-  /**
-   * Remove the matched tag (usually the first argument).
-   */
-  remove: boolean;
-  /**
-   * Resolve the matched tag, replacing any aliases.
-   */
-  resolve: boolean;
-  /**
-   * The field into which any remaining arguments should be put.
-   */
-  rest: string;
+    * The name of the emitted command.
+    */
+  noun: string;
+  verb: CommandVerb;
+  args: {
+    /**
+     * Extra arguments to append to the parsed arguments.
+     */
+    append: Array<string>;
+    /**
+     * The fields into which arguments should be put.
+     */
+    fields: Array<string>;
+    /**
+     * The field into which any remaining arguments should be put.
+     */
+    rest: string;
+  }
+  tags: {
+    /**
+     * Remove the matched tag (usually the first argument).
+     */
+    remove: boolean;
+    /**
+     * Resolve the matched tag, replacing any aliases.
+     */
+    resolve: boolean;
+  }
+}
+
+export interface MatchAlias {
+  match: MatchPattern;
+  cmd: string;
+}
+
+/**
+ * @TODO: support regular expressions
+ */
+export interface MatchCommand {
+  match: MatchPattern;
+  emit: MappedCommand;
+}
+
+export interface MatchPattern {
+  never: boolean;
+  str: string;
 }
 
 /**
@@ -48,24 +72,22 @@ export interface MappedMessage {
 }
 
 export interface MapParserConfig extends ParserConfig {
-  alias: Map<string, string>;
-  emit: Map<string, MappedCommand>;
+  aliases: Array<MatchCommand>;
+  matches: Array<MatchCommand>;
   split: SplitString.SplitOptions;
 }
 
 export type MapParserOptions = ServiceOptions<MapParserConfig>;
 
 export class MapParser extends BaseParser<MapParserConfig> implements Parser {
-  protected alias: Map<string, string>;
-  protected emit: Map<string, MappedCommand>;
+  protected aliases: Array<MatchCommand>;
+  protected matches: Array<MatchCommand>;
 
   constructor(options: MapParserOptions) {
     super(options);
 
-    this.alias = normalizeMap(options.data.alias);
-    this.emit = normalizeMap(options.data.emit);
-
-    this.tags = [...this.alias.keys(), ...this.emit.keys()];
+    this.matches = Array.from(options.data.matches);
+    this.tags = filterNil(this.matches.map((it) => it.match.str));
   }
 
   public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
@@ -77,9 +99,9 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     for (const { args, cmd } of this.mapCommands(msg.body)) {
       commands.push(Command.create({
         context: msg.context,
-        data: this.mapFields(args, cmd.fields, cmd.rest),
-        noun: cmd.name,
-        verb: CommandVerb.None,
+        data: this.mapFields(args, cmd.args.fields, cmd.args.rest),
+        noun: cmd.noun,
+        verb: cmd.verb,
       }));
     }
 
@@ -87,13 +109,13 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   }
 
   public mapArgs(cmd: MappedCommand, pending: Array<string>, original: string, resolved: string) {
-    const result = Array.from(pending).concat(cmd.append);
+    const result = Array.from(pending).concat(cmd.args.append);
 
-    if (cmd.remove) {
+    if (cmd.tags.remove) {
       return result;
     }
 
-    if (cmd.resolve) {
+    if (cmd.tags.resolve) {
       result.unshift(resolved);
     } else {
       result.unshift(original);
@@ -112,11 +134,11 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     const mapped = [];
     for (const part of parts) {
       const key = this.resolveAlias(part);
-      const cmd = this.emit.get(key);
+      const cmd = this.matches.find((it) => it.match.str === key);
 
       if (cmd) {
-        const args = this.mapArgs(cmd, pending, part, key);
-        mapped.push({ args, cmd });
+        const args = this.mapArgs(cmd.emit, pending, part, key);
+        mapped.push({ args, cmd: cmd.emit });
         pending.length = 0;
       } else {
         pending.unshift(part);
@@ -143,8 +165,8 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
 
   public resolveAlias(val: string) {
     let out = val;
-    for (const [alias, emit] of this.alias) {
-      out = out.replace(alias, emit);
+    for (const { match, emit } of this.aliases) {
+      out = out.replace(match.str, emit.noun);
     }
     return out;
   }

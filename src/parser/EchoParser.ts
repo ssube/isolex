@@ -6,9 +6,10 @@ import { ServiceOptions } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
 
 export interface EchoParserConfig extends ParserConfig {
-  field: string;
-  noun: string;
-  remove: boolean;
+  args: {
+    field: string;
+    remove: boolean;
+  }
 }
 
 export type EchoParserOptions = ServiceOptions<EchoParserConfig>;
@@ -27,10 +28,10 @@ export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
     return [Command.create({
       context: msg.context,
       data: {
-        [this.data.field]: [this.removeTags(msg.body)],
+        [this.data.args.field]: [this.removeTags(msg.body)],
       },
-      noun: this.data.noun,
-      verb: CommandVerb.None,
+      noun: this.data.emit.noun,
+      verb: this.data.emit.verb,
     })];
   }
 

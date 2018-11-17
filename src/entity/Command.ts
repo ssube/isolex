@@ -15,7 +15,6 @@ import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { mergeMap, normalizeMap, MapOrMapLike } from 'src/utils';
 
 export enum CommandVerb {
-  None = '',
   Create = 'create',
   Delete = 'delete',
   Get = 'get',
@@ -37,6 +36,14 @@ export type CommandPropValue = Array<string>;
 @Entity()
 export class Command extends BaseEntity implements CommandOptions {
   public static create(options: CommandOptions) {
+    if (!options.noun) {
+      throw new InvalidArgumentError('command must have noun');
+    }
+
+    if (!options.verb) {
+      throw new InvalidArgumentError('command must have verb');
+    }
+
     const cmd = new Command();
     cmd.context = Context.create(options.context);
     cmd.data = normalizeMap(options.data);

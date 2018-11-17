@@ -114,8 +114,8 @@ data:
         name: test_split
       data:
         template: |
-          name = {{ cmd.name }}
-          type = {{ cmd.type }}
+          noun = {{ cmd.noun }}
+          verb = {{ cmd.verb }}
           {{#entries cmd.data}}
           {{ key }} = {{ value }}
           {{/entries}}

@@ -34,6 +34,16 @@ export function countList(val: any): number {
 }
 
 /**
+ * Remove any null or undefined items from the list.
+ */
+export function filterNil<TItem>(list: ArrayLike<TItem | null | undefined>): Array<TItem> {
+  function nilGuard(val: TItem | null | undefined): val is TItem {
+    return !isNil(val);
+  }
+  return Array.from(list).filter(nilGuard);
+}
+
+/**
  * Merge arguments, which may or may not be arrays, into one return that is definitely an array.
  */
 export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Array<TVal>): Array<TItem> {

@@ -8,4 +8,4 @@ plugins:
     enabled: true
   tslint:
     enabled: true
-    config: config/tslint.json
+    config: config/tslint.cc.json

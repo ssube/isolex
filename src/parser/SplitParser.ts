@@ -1,7 +1,7 @@
 import { isEmpty, trim } from 'lodash';
 import * as split from 'split-string';
 
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
@@ -40,8 +40,8 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
     return [Command.create({
       context: msg.context,
       data: { args },
-      noun: this.name,
-      verb: CommandVerb.None,
+      noun: this.data.emit.noun,
+      verb: this.data.emit.verb,
     })];
   }
 
