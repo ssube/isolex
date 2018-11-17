@@ -6,19 +6,19 @@ import { Bot } from 'src/Bot';
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { WeatherHandler, WeatherHandlerOptions } from 'src/handler/WeatherHandler';
+import { WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
 
-describeAsync('weather handler', async () => {
+describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
     const { container, module } = await createContainer();
     module.bind('request').toFactory(async () => ({test: 'test'}));
 
     const sent: Array<Message> = [];
-    const options: WeatherHandlerOptions = {
+    const options: WeatherControllerOptions = {
       bot: ineeda<Bot>({
         send: (msg: Message) => {
           sent.push(msg);
@@ -40,8 +40,8 @@ describeAsync('weather handler', async () => {
       container,
       logger: ConsoleLogger.global,
     };
-    const handler = await container.create(WeatherHandler, options);
-    expect(handler).to.be.an.instanceOf(WeatherHandler);
+    const controller = await container.create(WeatherController, options);
+    expect(controller).to.be.an.instanceOf(WeatherController);
 
     const context = Context.create({
       listenerId: '',
@@ -60,8 +60,8 @@ describeAsync('weather handler', async () => {
       type: 0,
     });
 
-    expect(await handler.check(cmd)).to.equal(true);
-    await handler.handle(cmd);
+    expect(await controller.check(cmd)).to.equal(true);
+    await controller.handle(cmd);
 
     expect(sent.length).to.equal(1);
     expect(sent[0].body).to.equal('test');

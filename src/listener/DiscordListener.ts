@@ -6,6 +6,7 @@ import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface DiscordListenerConfig extends ServiceConfig {
   presence?: PresenceData;
@@ -170,6 +171,7 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
         userName: msg.author.username,
       }),
       reactions: msg.reactions.map((r) => r.emoji.name),
+      type: TYPE_TEXT,
     });
   }
 

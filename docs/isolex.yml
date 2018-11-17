@@ -11,11 +11,11 @@ filters:
       - Yuela
       - !env ISOLEX_BLOCK_USER
 
-handlers:
-  - type: dice-handler
+controllers:
+  - type: dice-controller
     name: dice_split
 
-  - type: learn-handler
+  - type: learn-controller
     name: test_learn
     emit:
       from: incoming
@@ -25,7 +25,7 @@ handlers:
       delete: del
       execute: run
 
-  - type: math-handler
+  - type: math-controller
     name: test_math
     join: ','
     math:
@@ -39,10 +39,10 @@ handlers:
       implicit: show
       parenthesis: keep
 
-  - type: random-handler
+  - type: random-controller
     name: rand_split
 
-  - type: reaction-handler
+  - type: reaction-controller
     name: test_reaction
     field: body
     reactions:
@@ -53,7 +53,7 @@ handlers:
         - chance: 0.25
           name: maple_leaf
 
-  - type: search-handler
+  - type: search-controller
     name: search_mdn
     count: 3
     field: args
@@ -67,15 +67,15 @@ handlers:
         {{/each}}
       url: https://developer.mozilla.org/en-US/search.json?q={{ data }}
 
-  - type: sed-handler
+  - type: sed-controller
     name: sed_echo
 
-  - type: time-handler
+  - type: time-controller
     name: test_time
     locale: en-US
     zone: UTC
 
-  - type: weather-handler
+  - type: weather-controller
     api:
       key: !env ISOLEX_WEATHER_TOKEN
       root: https://api.openweathermap.org/data/2.5/
@@ -84,7 +84,7 @@ handlers:
       {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
       and {{#each weather.weather}}{{this.description}}{{/each}}!
 
-  - type: echo-handler
+  - type: echo-controller
     name: test_split
     template: |
       name = {{ cmd.name }}
@@ -93,7 +93,7 @@ handlers:
       {{ key }} = {{ value }}
       {{/entries}}
 
-  - type: echo-handler
+  - type: echo-controller
     name: test_echo
     template: >-
       {{json cmd}}

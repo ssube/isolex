@@ -74,7 +74,7 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'commandId',
         type: 'varchar',
       }, {
-        name: 'handler',
+        name: 'controller',
         type: 'varchar',
       }],
       name: 'trigger',

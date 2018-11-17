@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { Trigger } from 'src/entity/Trigger';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { Trigger } from 'src/entity/misc/Trigger';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Connection, Repository } from 'typeorm';
 
-export interface LearnHandlerConfig extends HandlerConfig {
+export interface LearnControllerConfig extends ControllerConfig {
   emit: {
     field: string;
     source: string;
@@ -19,16 +19,16 @@ export interface LearnHandlerConfig extends HandlerConfig {
   };
 }
 
-export interface LearnHandlerOptions extends HandlerOptions<LearnHandlerConfig> {
+export interface LearnControllerOptions extends ControllerOptions<LearnControllerConfig> {
   storage: Connection;
 }
 
 @Inject('storage')
-export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Handler {
+export class LearnController extends BaseController<LearnControllerConfig> implements Controller {
   protected storage: Connection;
   protected triggerRepository: Repository<Trigger>;
 
-  constructor(options: LearnHandlerOptions) {
+  constructor(options: LearnControllerOptions) {
     super(options);
 
     this.storage = options.storage;
@@ -38,7 +38,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
   public async handle(cmd: Command): Promise<void> {
     const args: Array<string> = cmd.get('args');
     if (!args) {
-      throw new Error('missing args to learn handler');
+      throw new Error('missing args to learn controller');
     }
 
     const [mode, name, ...body] = args;
@@ -65,7 +65,7 @@ export class LearnHandler extends BaseHandler<LearnHandlerConfig> implements Han
         name: cmd.name,
         type: cmd.type,
       }),
-      handler: this.name,
+      controller: this.name,
       name,
     });
 

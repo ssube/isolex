@@ -1,13 +1,13 @@
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 
-export type SedHandlerConfig = HandlerConfig;
-export type SedHandlerOptions = HandlerOptions<SedHandlerConfig>;
+export type SedControllerConfig = ControllerConfig;
+export type SedControllerOptions = ControllerOptions<SedControllerConfig>;
 
-export class SedHandler extends BaseHandler<SedHandlerConfig> implements Handler {
-  constructor(options: SedHandlerOptions) {
+export class SedController extends BaseController<SedControllerConfig> implements Controller {
+  constructor(options: SedControllerOptions) {
     super(options);
   }
 

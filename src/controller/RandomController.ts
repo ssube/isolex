@@ -2,15 +2,15 @@ import { isNil } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { countList } from 'src/utils';
 
-export type RandomHandlerConfig = HandlerConfig;
-export type RandomHandlerOptions = HandlerOptions<RandomHandlerConfig>;
+export type RandomControllerConfig = ControllerConfig;
+export type RandomControllerOptions = ControllerOptions<RandomControllerConfig>;
 
-export class RandomHandler extends BaseHandler<RandomHandlerConfig> implements Handler {
-  constructor(options: RandomHandlerOptions) {
+export class RandomController extends BaseController<RandomControllerConfig> implements Controller {
+  constructor(options: RandomControllerOptions) {
     super(options);
   }
 

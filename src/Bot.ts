@@ -4,8 +4,8 @@ import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { checkFilter, Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
-import { Handler, HandlerConfig } from 'src/handler/Handler';
+import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
+import { Controller, ControllerConfig } from 'src/controller/Controller';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { Service, ServiceConfig } from 'src/Service';
@@ -14,7 +14,7 @@ import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 export interface BotConfig {
   filters: Array<BotService>;
-  handlers: Array<BotService & HandlerConfig>;
+  controllers: Array<BotService & ControllerConfig>;
   listeners: Array<BotService>;
   logger: {
     name: string;
@@ -46,7 +46,7 @@ export class Bot {
 
   // services
   protected filters: Array<Filter>;
-  protected handlers: Array<Handler>;
+  protected controllers: Array<Controller>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
 
@@ -65,7 +65,7 @@ export class Bot {
 
     // set up deps
     this.filters = [];
-    this.handlers = [];
+    this.controllers = [];
     this.listeners = [];
     this.parsers = [];
 
@@ -82,7 +82,7 @@ export class Bot {
   }
 
   /**
-   * Set up the async resources that cannot be created in the constructor: filters, handlers, parsers, etc
+   * Set up the async resources that cannot be created in the constructor: filters, controllers, parsers, etc
    */
   public async start() {
     this.logger.info('setting up streams');
@@ -122,9 +122,9 @@ export class Bot {
       this.filters.push(await this.createPart<Filter, ServiceConfig>(data));
     }
 
-    this.logger.info('setting up handlers');
-    for (const data of this.config.handlers) {
-      this.handlers.push(await this.createPart<Handler, HandlerConfig>(data));
+    this.logger.info('setting up controllers');
+    for (const data of this.config.controllers) {
+      this.controllers.push(await this.createPart<Controller, ControllerConfig>(data));
     }
 
     this.logger.info('setting up listeners');
@@ -210,7 +210,7 @@ export class Bot {
   }
 
   /**
-   * Handle a command using the appropriate handler.
+   * Handle a command using the appropriate controller.
    */
   public async handle(cmd: Command) {
     this.logger.debug({ cmd }, 'handling command');
@@ -222,7 +222,7 @@ export class Bot {
 
     await this.storage.getRepository(Command).save(cmd);
 
-    for (const h of this.handlers) {
+    for (const h of this.controllers) {
       if (await h.check(cmd)) {
         return h.handle(cmd);
       }

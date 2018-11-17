@@ -3,12 +3,12 @@ import { BaseOptions } from 'noicejs/Container';
 import { CoreOptions, RequiredUriUrl } from 'request';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface WeatherHandlerConfig extends HandlerConfig {
+export interface WeatherControllerConfig extends ControllerConfig {
   api: {
     key: string;
     root: string;
@@ -16,16 +16,16 @@ export interface WeatherHandlerConfig extends HandlerConfig {
   template: string;
 }
 
-export interface WeatherHandlerOptions extends HandlerOptions<WeatherHandlerConfig> {
+export interface WeatherControllerOptions extends ControllerOptions<WeatherControllerConfig> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class WeatherHandler extends BaseHandler<WeatherHandlerConfig> implements Handler {
+export class WeatherController extends BaseController<WeatherControllerConfig> implements Controller {
   protected container: Container;
   protected template: Template;
 
-  constructor(options: WeatherHandlerOptions) {
+  constructor(options: WeatherControllerOptions) {
     super(options);
 
     this.container = options.container;

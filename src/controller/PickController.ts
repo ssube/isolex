@@ -1,13 +1,11 @@
-import { Inject } from 'noicejs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 import { Picklist } from 'src/utils/Picklist';
-import { Check } from 'typeorm';
 
-export interface PickHandlerConfig extends HandlerConfig {
+export interface PickControllerConfig extends ControllerConfig {
   check: ChecklistOptions<string>;
   count: string;
   field: {
@@ -16,12 +14,12 @@ export interface PickHandlerConfig extends HandlerConfig {
   };
 }
 
-export type PickHandlerOptions = HandlerOptions<PickHandlerConfig>;
+export type PickControllerOptions = ControllerOptions<PickControllerConfig>;
 
-export class PickHandler extends BaseHandler<PickHandlerConfig> implements Handler {
+export class PickController extends BaseController<PickControllerConfig> implements Controller {
   protected list: Checklist<string>;
 
-  constructor(options: PickHandlerOptions) {
+  constructor(options: PickControllerOptions) {
     super(options);
 
     this.list = new Checklist(options.config.check);

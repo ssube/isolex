@@ -1,17 +1,17 @@
 import * as mathjs from 'mathjs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 
 const DICE_MINIMUM = 1;
 
-export type DiceHandlerConfig = HandlerConfig;
+export type DiceControllerConfig = ControllerConfig;
 
-export type DiceHandlerOptions = HandlerOptions<DiceHandlerConfig>;
+export type DiceControllerOptions = ControllerOptions<DiceControllerConfig>;
 
-export class DiceHandler extends BaseHandler<DiceHandlerConfig> implements Handler {
-  constructor(options: DiceHandlerOptions) {
+export class DiceController extends BaseController<DiceControllerConfig> implements Controller {
+  constructor(options: DiceControllerOptions) {
     super(options);
   }
 

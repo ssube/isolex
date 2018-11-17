@@ -35,9 +35,9 @@ The `type` field is *not* passed to the object being created. It already knows w
 
 A list of type-config objects for each [`Filter`](../src/filter/Filter.ts) created by the bot.
 
-### Handlers
+### Controllers
 
-A list of type-config objects for each [`Handler`](../src/handler/Handler.ts) created by the bot.
+A list of type-config objects for each [`Controller`](../src/controller/Handler.ts) created by the bot.
 
 ### Intervals
 

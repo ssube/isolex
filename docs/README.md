@@ -19,7 +19,7 @@ listener -> <message> -> filter -> parser -> <command> <-\
                                               filter     |
                                                  |       |
                                                  v       |
-listener <---------------------- <message> <- handler ---/
+listener <---------------------- <message> <- controller ---/
 ```
 
 *With `<class>` denoting an entity.*
@@ -33,9 +33,9 @@ passed).
 
 ### Execution
 
-The `filter -> handler` pair behaves similarly, filtering commands and performing some work based on them. For each
-`<command>`, the `handler`s are checked in order until one is found that can handle the `<command>`, which is then
-passed to the `handler` and consumed. Only a single handler will be run for each command.
+The `filter -> controller` pair behaves similarly, filtering commands and performing some work based on them. For each
+`<command>`, the `controller`s are checked in order until one is found that can handle the `<command>`, which is then
+passed to the `controller` and consumed. Only a single controller will be run for each command.
 
 ### Outgoing
 

@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 export interface TriggerOptions {
   command: Command;
-  handler: string;
+  controller: string;
   name: string;
 }
 
@@ -12,7 +12,7 @@ export class Trigger implements TriggerOptions {
   public static create(options: TriggerOptions) {
     const trigger = new Trigger();
     trigger.command = options.command;
-    trigger.handler = options.handler;
+    trigger.controller = options.controller;
     trigger.name = options.name;
     return trigger;
   }
@@ -24,7 +24,7 @@ export class Trigger implements TriggerOptions {
   public command: Command;
 
   @Column()
-  public handler: string;
+  public controller: string;
 
   @PrimaryColumn()
   public name: string;

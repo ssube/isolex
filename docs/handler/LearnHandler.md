@@ -1,6 +1,6 @@
-# Learn Handler
+# Learn Controller
 
-The learn handler handles learning new commands.
+The learn controller handles learning new commands.
 
 ## Config
 
@@ -16,7 +16,7 @@ The learn handler handles learning new commands.
 
 ## Usage
 
-The learn handler allows creating, deleting, and executing commands. The mode is passed as the first argument; if no
+The learn controller allows creating, deleting, and executing commands. The mode is passed as the first argument; if no
 mode is specific (any other string passed instead), execute will be assumed.
 
 ### Create
@@ -39,7 +39,7 @@ To delete an existing command, pass the trigger name:
 
 ### Execute
 
-To execute an existing command, pass the trigger name, destination handler (command name), and any arguments:
+To execute an existing command, pass the trigger name, destination controller (command name), and any arguments:
 
 > input: `run test 1 2 3`
 >

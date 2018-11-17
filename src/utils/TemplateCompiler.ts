@@ -32,6 +32,9 @@ export class TemplateCompiler {
     });
   }
 
+  /**
+   * @TODO: move this to each Listener
+   */
   public formatContext(context: Context): string {
     return `@${context.userName}`;
   }

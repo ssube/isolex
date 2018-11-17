@@ -1,11 +1,13 @@
 import * as escape from 'escape-html';
 import { Context } from 'src/entity/Context';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MessageOptions {
   body: string;
   context: Context;
   reactions: Array<string>;
+  type: string;
 }
 
 @Entity()
@@ -15,6 +17,7 @@ export class Message implements MessageOptions {
     msg.body = options.body;
     msg.context = Context.create(options.context);
     msg.reactions = Array.from(options.reactions);
+    msg.type = options.type;
     return msg;
   }
 
@@ -23,6 +26,7 @@ export class Message implements MessageOptions {
       body,
       context,
       reactions: [],
+      type: TYPE_TEXT,
     });
   }
 
@@ -41,6 +45,16 @@ export class Message implements MessageOptions {
   @Column('simple-array')
   public reactions: Array<string>;
 
+  /**
+   * MIME type of the message. Typically `text/plain`, but can be an `image/*` or `audio/*` type, depending on the
+   * listener.
+   */
+  @Column()
+  public type: string;
+
+  /**
+   * @TODO: move this to each listener
+   */
   get escaped(): string {
     return escape(this.body);
   }

@@ -1,29 +1,10 @@
-import { kebabCase } from 'lodash';
 import { Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 import * as request from 'request-promise';
-import { Bot } from 'src/Bot';
-import { UserFilter } from 'src/filter/UserFilter';
-import { CountHandler } from 'src/handler/CountHandler';
-import { DiceHandler } from 'src/handler/DiceHandler';
-import { EchoHandler } from 'src/handler/EchoHandler';
-import { LearnHandler } from 'src/handler/LearnHandler';
-import { MathHandler } from 'src/handler/MathHandler';
-import { PickHandler } from 'src/handler/PickHandler';
-import { RandomHandler } from 'src/handler/RandomHandler';
-import { ReactionHandler } from 'src/handler/ReactionHandler';
-import { SearchHandler } from 'src/handler/SearchHandler';
-import { SedHandler } from 'src/handler/SedHandler';
-import { TimeHandler } from 'src/handler/TimeHandler';
-import { WeatherHandler } from 'src/handler/WeatherHandler';
-import { DiscordListener } from 'src/listener/DiscordListener';
-import { EchoParser } from 'src/parser/EchoParser';
-import { LexParser } from 'src/parser/LexParser';
-import { MapParser } from 'src/parser/MapParser';
-import { SplitParser } from 'src/parser/SplitParser';
-import { YamlParser } from 'src/parser/YamlParser';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 import { Connection } from 'typeorm';
+
+import { Bot } from 'src/Bot';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
   logger: Logger;
@@ -44,33 +25,6 @@ export class BotModule extends Module {
 
     // utils
     this.bind('compiler').toConstructor(TemplateCompiler);
-
-    // filters
-    this.bind(kebabCase(UserFilter.name)).toConstructor(UserFilter);
-
-    // handlers
-    this.bind(kebabCase(CountHandler.name)).toConstructor(CountHandler);
-    this.bind(kebabCase(DiceHandler.name)).toConstructor(DiceHandler);
-    this.bind(kebabCase(EchoHandler.name)).toConstructor(EchoHandler);
-    this.bind(kebabCase(LearnHandler.name)).toConstructor(LearnHandler);
-    this.bind(kebabCase(MathHandler.name)).toConstructor(MathHandler);
-    this.bind(kebabCase(PickHandler.name)).toConstructor(PickHandler);
-    this.bind(kebabCase(RandomHandler.name)).toConstructor(RandomHandler);
-    this.bind(kebabCase(ReactionHandler.name)).toConstructor(ReactionHandler);
-    this.bind(kebabCase(SedHandler.name)).toConstructor(SedHandler);
-    this.bind(kebabCase(SearchHandler.name)).toConstructor(SearchHandler);
-    this.bind(kebabCase(TimeHandler.name)).toConstructor(TimeHandler);
-    this.bind(kebabCase(WeatherHandler.name)).toConstructor(WeatherHandler);
-
-    // listeners
-    this.bind(kebabCase(DiscordListener.name)).toConstructor(DiscordListener);
-
-    // parsers
-    this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);
-    this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
-    this.bind(kebabCase(MapParser.name)).toConstructor(MapParser);
-    this.bind(kebabCase(SplitParser.name)).toConstructor(SplitParser);
-    this.bind(kebabCase(YamlParser.name)).toConstructor(YamlParser);
   }
 
   public setBot(bot: Bot) {

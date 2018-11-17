@@ -1,20 +1,19 @@
-import { defaultTo } from 'lodash';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 
-export interface TimeHandlerConfig extends HandlerConfig {
+export interface TimeControllerConfig extends ControllerConfig {
   locale: string;
   zone: string;
 }
 
-export type TimeHandlerOptions = HandlerOptions<TimeHandlerConfig>;
+export type TimeControllerOptions = ControllerOptions<TimeControllerConfig>;
 
-export class TimeHandler extends BaseHandler<TimeHandlerConfig> implements Handler {
+export class TimeController extends BaseController<TimeControllerConfig> implements Controller {
   protected template: HandlebarsTemplateDelegate;
 
-  constructor(options: TimeHandlerOptions) {
+  constructor(options: TimeControllerOptions) {
     super(options);
   }
 

@@ -1,11 +1,11 @@
 import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 
-export abstract class BaseHandler<TConfig extends HandlerConfig> extends BaseService<TConfig> implements Handler {
+export abstract class BaseController<TConfig extends ControllerConfig> extends BaseService<TConfig> implements Controller {
   public readonly name: string;
 
-  constructor(options: HandlerOptions<TConfig>) {
+  constructor(options: ControllerOptions<TConfig>) {
     super(options);
   }
 

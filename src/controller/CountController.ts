@@ -1,13 +1,13 @@
 import { Inject } from 'noicejs';
-import { Command } from 'src/entity/Command';
-import { Counter } from 'src/entity/Counter';
-import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
-import { Picklist } from 'src/utils/Picklist';
 import { Connection, Repository } from 'typeorm';
 
-export interface CountHandlerConfig extends HandlerConfig {
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
+import { Counter } from 'src/entity/misc/Counter';
+
+export interface CountControllerConfig extends ControllerConfig {
   default: {
     count: string;
     name: string;
@@ -22,16 +22,16 @@ export interface CountHandlerConfig extends HandlerConfig {
   };
 }
 
-export interface CountHandlerOptions extends HandlerOptions<CountHandlerConfig> {
+export interface CountControllerOptions extends ControllerOptions<CountControllerConfig> {
   storage: Connection;
 }
 
 @Inject('storage')
-export class CountHandler extends BaseHandler<CountHandlerConfig> implements Handler {
+export class CountController extends BaseController<CountControllerConfig> implements Controller {
   protected storage: Connection;
   protected counterRepository: Repository<Counter>;
 
-  constructor(options: CountHandlerOptions) {
+  constructor(options: CountControllerOptions) {
     super(options);
 
     this.storage = options.storage;

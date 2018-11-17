@@ -1,10 +1,10 @@
-# Reaction Handler
+# Reaction Controller
 
 ## Config
 
 ```yaml
-handlers:
-  - type: reaction-handler
+controllers:
+  - type: reaction-controller
     name: reaction
     field: body
     reactions:
@@ -24,4 +24,4 @@ handlers:
 
 ## Usage
 
-When a command matches, the handler will reply to the thread with an empty body and any matching reactions.
+When a command matches, the controller will reply to the thread with an empty body and any matching reactions.

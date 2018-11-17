@@ -1,11 +1,11 @@
 import * as mathjs from 'mathjs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
 
-export interface MathHandlerConfig extends HandlerConfig {
+export interface MathControllerConfig extends ControllerConfig {
   format: ResultFormatOptions;
   math: {
     matrix: string;
@@ -13,12 +13,12 @@ export interface MathHandlerConfig extends HandlerConfig {
   };
 }
 
-export type MathHandlerOptions = HandlerOptions<MathHandlerConfig>;
+export type MathControllerOptions = ControllerOptions<MathControllerConfig>;
 
-export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handler {
+export class MathController extends BaseController<MathControllerConfig> implements Controller {
   protected math: mathjs.MathJsStatic;
 
-  constructor(options: MathHandlerOptions) {
+  constructor(options: MathControllerOptions) {
     super(options);
 
     this.math = (mathjs as any).create(options.config.math);
@@ -29,7 +29,7 @@ export class MathHandler extends BaseHandler<MathHandlerConfig> implements Handl
 
     const args = cmd.get('args');
     if (!args || !args.length) {
-      throw new Error('invalid arguments to math handler');
+      throw new Error('invalid arguments to math controller');
     }
 
     const expr = args.join(';\n');

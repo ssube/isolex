@@ -1,25 +1,26 @@
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface ReactionChance {
   chance: number;
   name: string;
 }
 
-export interface ReactionHandlerConfig extends HandlerConfig {
+export interface ReactionControllerConfig extends ControllerConfig {
   field: string;
   reactions: Map<string, Array<ReactionChance>>;
 }
 
-export type ReactionHandlerOptions = HandlerOptions<ReactionHandlerConfig>;
+export type ReactionControllerOptions = ControllerOptions<ReactionControllerConfig>;
 
-export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implements Handler {
+export class ReactionController extends BaseController<ReactionControllerConfig> implements Controller {
   protected tags: Array<string>;
   protected reactions: Map<string, Array<ReactionChance>>;
 
-  constructor(options: ReactionHandlerOptions) {
+  constructor(options: ReactionControllerOptions) {
     super(options);
 
     this.reactions = new Map(Object.entries(options.config.reactions));
@@ -47,6 +48,7 @@ export class ReactionHandler extends BaseHandler<ReactionHandlerConfig> implemen
       body: '',
       context: cmd.context,
       reactions,
+      type: TYPE_TEXT,
     }));
   }
 }

@@ -1,24 +1,24 @@
 import { Inject } from 'noicejs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface EchoHandlerConfig extends HandlerConfig {
+export interface EchoControllerConfig extends ControllerConfig {
   template: string;
 }
 
-export interface EchoHandlerOptions extends HandlerOptions<EchoHandlerConfig> {
+export interface EchoControllerOptions extends ControllerOptions<EchoControllerConfig> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class EchoHandler extends BaseHandler<EchoHandlerConfig> implements Handler {
+export class EchoController extends BaseController<EchoControllerConfig> implements Controller {
   protected template: Template;
 
-  constructor(options: EchoHandlerOptions) {
+  constructor(options: EchoControllerOptions) {
     super(options);
 
     this.template = options.compiler.compile(options.config.template);

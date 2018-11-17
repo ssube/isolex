@@ -1,14 +1,13 @@
 import * as jp from 'jsonpath';
-import * as mathjs from 'mathjs';
 import { Container, Inject } from 'noicejs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { BaseHandler } from 'src/handler/BaseHandler';
-import { Handler, HandlerConfig, HandlerOptions } from 'src/handler/Handler';
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface SearchHandlerConfig extends HandlerConfig {
+export interface SearchControllerConfig extends ControllerConfig {
   count: number;
   field: string;
   filter: string;
@@ -19,17 +18,17 @@ export interface SearchHandlerConfig extends HandlerConfig {
   };
 }
 
-export interface SearchHandlerOptions extends HandlerOptions<SearchHandlerConfig> {
+export interface SearchControllerOptions extends ControllerOptions<SearchControllerConfig> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class SearchHandler extends BaseHandler<SearchHandlerConfig> implements Handler {
+export class SearchController extends BaseController<SearchControllerConfig> implements Controller {
   protected body: Template;
   protected container: Container;
   protected url: Template;
 
-  constructor(options: SearchHandlerOptions) {
+  constructor(options: SearchControllerOptions) {
     super(options);
 
     this.body = options.compiler.compile(options.config.template.body);
