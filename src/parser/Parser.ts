@@ -1,9 +1,9 @@
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { Service, ServiceConfig } from 'src/Service';
+import { Service } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
 
-export interface ParserConfig extends ServiceConfig {
+export interface ParserConfig {
   tags: Array<string>;
 }
 

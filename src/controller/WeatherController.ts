@@ -29,7 +29,7 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
     super(options);
 
     this.container = options.container;
-    this.template = options.compiler.compile(options.config.template);
+    this.template = options.compiler.compile(options.data.template);
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -61,7 +61,7 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
         json: true,
         method: 'GET',
         qs: query,
-        uri: `${this.config.api.root}/weather`,
+        uri: `${this.data.api.root}/weather`,
       });
     } catch (err) {
       if (err.name === 'StatusCodeError') {
@@ -78,7 +78,7 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
 
   public getQuery(location: string) {
     const qs: Partial<WeatherQuery> = {
-      APPID: this.config.api.key,
+      APPID: this.data.api.key,
     };
 
     if (/^[0-9]+$/.test(location)) {

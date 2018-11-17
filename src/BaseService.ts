@@ -1,21 +1,24 @@
 import { Logger } from 'noicejs/logger/Logger';
-import { Bot } from 'src/Bot';
-import { Service, ServiceConfig, ServiceOptions } from 'src/Service';
 import * as uuid from 'uuid/v4';
 
-export abstract class BaseService<TConfig extends ServiceConfig> implements Service {
+import { Bot } from 'src/Bot';
+import { Service, ServiceOptions } from 'src/Service';
+
+export abstract class BaseService<TData> implements Service {
   public readonly id: string;
+  public readonly kind: string;
   public readonly name: string;
 
-  protected bot: Bot;
-  protected config: TConfig;
-  protected logger: Logger;
+  protected readonly bot: Bot;
+  protected readonly data: Readonly<TData>;
+  protected readonly logger: Logger;
 
-  constructor(options: ServiceOptions<TConfig>) {
+  constructor(options: ServiceOptions<TData>) {
     this.bot = options.bot;
-    this.config = options.config;
+    this.data = options.data;
     this.id = uuid();
-    this.name = options.config.name;
+    this.kind = options.metadata.kind;
+    this.name = options.metadata.name;
 
     // check this, because bunyan will throw if it is missing
     if (!this.name) {
@@ -24,7 +27,7 @@ export abstract class BaseService<TConfig extends ServiceConfig> implements Serv
 
     this.logger = options.logger.child({
       class: Reflect.getPrototypeOf(this).constructor.name,
-      service: options.config.name,
+      service: options.metadata.name,
     });
   }
 

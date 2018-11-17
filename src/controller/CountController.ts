@@ -6,6 +6,7 @@ import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Counter } from 'src/entity/misc/Counter';
+import { clamp } from 'src/utils/Math';
 
 export interface CountControllerConfig extends ControllerConfig {
   default: {
@@ -39,8 +40,8 @@ export class CountController extends BaseController<CountControllerConfig> imple
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const count = cmd.getHeadOrDefault(this.config.field.count, this.config.default.count);
-    const name = cmd.getHeadOrDefault(this.config.field.name, cmd.context.threadId);
+    const count = cmd.getHeadOrDefault(this.data.field.count, this.data.default.count);
+    const name = cmd.getHeadOrDefault(this.data.field.name, cmd.context.threadId);
 
     this.logger.debug({ count, counterName: name }, 'finding counter');
     const counter = await this.findOrCreateCounter(name, cmd.context.roomId);
@@ -56,7 +57,7 @@ export class CountController extends BaseController<CountControllerConfig> imple
         --counter.count;
         break;
       default:
-        counter.count += Math.max(Math.min(Number(count), this.config.range.max), this.config.range.min);
+        counter.count += clamp(Number(count), this.data.range.max, this.data.range.min);
     }
 
     this.logger.debug({ count, name }, 'updating counter');
@@ -76,7 +77,7 @@ export class CountController extends BaseController<CountControllerConfig> imple
     }
 
     return Counter.create({
-      count: Number(this.config.default.count),
+      count: Number(this.data.default.count),
       name,
       roomId,
     });

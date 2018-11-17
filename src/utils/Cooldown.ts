@@ -1,9 +1,9 @@
 import { Observable, Subject } from 'rxjs';
 import { BaseService } from 'src/BaseService';
-import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { ServiceOptions } from 'src/Service';
 
 export const GROWTH_FACTOR = 2;
-export interface CooldownConfig extends ServiceConfig {
+export interface CooldownConfig {
   base: number;
   grow: number;
 }
@@ -34,9 +34,9 @@ export class Cooldown extends BaseService<CooldownConfig> {
 
     this.active = false;
     this.boundNext = this.next.bind(this);
-    this.config = options.config;
-    this.grow = options.config.grow;
-    this.rate = options.config.base;
+    this.config = options.data;
+    this.grow = options.data.grow;
+    this.rate = options.data.base;
     this.stream = new Subject();
     this.ticks = 0;
     this.timer = 0;

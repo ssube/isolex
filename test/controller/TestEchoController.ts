@@ -23,12 +23,15 @@ describeAsync('echo controller', async () => {
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>(),
       }),
-      config: {
-        name: 'test_echo',
+      data: {
         template: '',
       },
       container,
       logger: ConsoleLogger.global,
+      metadata: {
+        kind: 'echo-controller',
+        name: 'test_echo',
+      },
     };
     const controller = await container.create(EchoController, options);
     expect(controller).to.be.an.instanceOf(EchoController);
@@ -47,13 +50,16 @@ describeAsync('echo controller', async () => {
           render: () => 'test_echo',
         }),
       }),
-      config: {
-        name: 'test_echo',
+      data: {
         template: '',
       },
       container,
       logger: ConsoleLogger.global,
-    };
+      metadata: {
+        kind: 'echo-controller',
+        name: 'test_echo',
+      },
+     };
     const controller = await container.create(EchoController, options);
 
     const cmd = Command.create({

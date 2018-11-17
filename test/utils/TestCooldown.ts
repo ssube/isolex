@@ -14,12 +14,15 @@ describeAsync('cooldown', async () => {
     await ctr.configure();
 
     const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
-      config: {
+      data: {
         base: 10,
         grow: 2,
-        name: COOLDOWN_NAME,
       },
       logger: ConsoleLogger.global,
+      metadata: {
+        kind: 'cooldown',
+        name: COOLDOWN_NAME,
+      },
     });
 
     expect(cd.inc()).to.equal(COOLDOWN_STEPS[1]);
@@ -37,12 +40,15 @@ describeAsync('cooldown', async () => {
     await ctr.configure();
 
     const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
-      config: {
+      data: {
         base: 5000,
         grow: 0,
-        name: COOLDOWN_NAME,
       },
       logger: ConsoleLogger.global,
+      metadata: {
+        kind: 'cooldown',
+        name: COOLDOWN_NAME,
+      },
     });
 
     await cd.start();
@@ -54,12 +60,15 @@ describeAsync('cooldown', async () => {
     await ctr.configure();
 
     const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
-      config: {
+      data: {
         base: 20,
         grow: 0,
-        name: COOLDOWN_NAME,
       },
       logger: ConsoleLogger.global,
+      metadata: {
+        kind: 'cooldown',
+        name: COOLDOWN_NAME,
+      },
     });
 
     await cd.start();

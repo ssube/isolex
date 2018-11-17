@@ -19,8 +19,8 @@ export class TimeController extends BaseController<TimeControllerConfig> impleme
 
   public async handle(cmd: Command): Promise<void> {
     const date = new Date();
-    const locale = cmd.getHeadOrDefault('locale', this.config.locale);
-    const zone = cmd.getHeadOrDefault('zone', this.config.zone);
+    const locale = cmd.getHeadOrDefault('locale', this.data.locale);
+    const zone = cmd.getHeadOrDefault('zone', this.data.zone);
 
     this.logger.debug({ date, locale, zone }, 'handling time');
     return this.bot.send(Message.reply(date.toLocaleString(locale, { timeZone: zone }), cmd.context));

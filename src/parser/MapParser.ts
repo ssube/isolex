@@ -62,8 +62,8 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   constructor(options: MapParserOptions) {
     super(options);
 
-    this.alias = normalizeMap(options.config.alias);
-    this.emit = normalizeMap(options.config.emit);
+    this.alias = normalizeMap(options.data.alias);
+    this.emit = normalizeMap(options.data.emit);
 
     this.tags = [...this.alias.keys(), ...this.emit.keys()];
   }
@@ -105,7 +105,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
    * Map a string into some commands, splitting on keywords.
    */
   public mapCommands(val: string): Array<MappedMessage> {
-    const parts = split(val, this.config.split).reverse();
+    const parts = split(val, this.data.split).reverse();
     this.logger.debug({ parts }, 'mapping resolved command');
 
     const pending = [];

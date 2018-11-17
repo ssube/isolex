@@ -1,46 +1,43 @@
 import { bindAll } from 'lodash';
 import { Container, Inject } from 'noicejs';
+import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
+import { Connection, ConnectionOptions, createConnection } from 'typeorm';
+
+import { Controller, ControllerConfig } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
-import { Controller, ControllerConfig } from 'src/controller/Controller';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserConfig } from 'src/parser/Parser';
-import { Service, ServiceConfig } from 'src/Service';
+import { Service, ServiceDefinition } from 'src/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
-import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
-export interface BotConfig {
-  filters: Array<BotService>;
-  controllers: Array<BotService & ControllerConfig>;
-  listeners: Array<BotService>;
+export interface BotData {
+  filters: Array<ServiceDefinition>;
+  controllers: Array<ServiceDefinition<ControllerConfig>>;
+  listeners: Array<ServiceDefinition>;
   logger: {
     name: string;
     [other: string]: string;
   };
   migrate: boolean;
-  parsers: Array<BotService & ParserConfig>;
+  parsers: Array<ServiceDefinition<ParserConfig>>;
   storage: ConnectionOptions;
 }
 
-export interface BotOptions {
-  config: BotConfig;
-  container: Container;
-  logger: Logger;
-}
+export type BotDefinition = ServiceDefinition<BotData>;
 
-export interface BotService extends ServiceConfig {
-  type: string;
-  [other: string]: string;
-}
+export type BotOptions = BaseOptions & BotDefinition & {
+  logger: Logger;
+};
 
 @Inject('logger')
 export class Bot {
-  protected config: BotConfig;
-  protected container: Container;
-  protected logger: Logger;
+  protected readonly container: Container;
+  protected readonly data: Readonly<BotData>;
+  protected readonly logger: Logger;
   protected storage: Connection;
   protected strict: boolean;
 
@@ -56,8 +53,8 @@ export class Bot {
   protected outgoing: Subject<Message>;
 
   constructor(options: BotOptions) {
-    this.config = options.config;
     this.container = options.container;
+    this.data = options.data;
     this.logger = options.logger.child({
       class: Bot.name,
     });
@@ -98,14 +95,15 @@ export class Bot {
     });
     const entities = await this.container.create<Array<Function>, any>('entities');
     const migrations = await this.container.create<Array<Function>, any>('migrations');
+
     this.storage = await createConnection({
-      ...this.config.storage,
+      ...this.data.storage,
       entities,
       logger: storageLogger,
       migrations,
     });
 
-    if (this.config.migrate) {
+    if (this.data.migrate) {
       this.logger.info('running pending database migrations');
       await this.storage.runMigrations();
       this.logger.info('database migrations complete');
@@ -118,22 +116,22 @@ export class Bot {
 
   public async startService() {
     this.logger.info('setting up filters');
-    for (const data of this.config.filters) {
-      this.filters.push(await this.createPart<Filter, ServiceConfig>(data));
+    for (const data of this.data.filters) {
+      this.filters.push(await this.createPart<Filter, {}>(data));
     }
 
     this.logger.info('setting up controllers');
-    for (const data of this.config.controllers) {
+    for (const data of this.data.controllers) {
       this.controllers.push(await this.createPart<Controller, ControllerConfig>(data));
     }
 
     this.logger.info('setting up listeners');
-    for (const data of this.config.listeners) {
-      this.listeners.push(await this.createPart<Listener, ServiceConfig>(data));
+    for (const data of this.data.listeners) {
+      this.listeners.push(await this.createPart<Listener, {}>(data));
     }
 
     this.logger.info('setting up parsers');
-    for (const data of this.config.parsers) {
+    for (const data of this.data.parsers) {
       this.parsers.push(await this.createPart<Parser, ParserConfig>(data));
     }
 
@@ -290,15 +288,17 @@ export class Bot {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  protected async createPart<TService extends Service, TConfig extends ServiceConfig>(data: TConfig & BotService): Promise<TService> {
-    const { type, ...config } = data as BotService; // narrow this back to the object half of the union (generic unions cannot be spread)
-    this.logger.debug({ data, type }, 'configuring service');
+  protected async createPart<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
+    this.logger.debug({ conf }, 'configuring service');
 
-    return this.container.create<TService, any>(type, {
+    const { metadata: { kind, name } } = conf;
+    this.logger.info({ kind, name }, 'configuring service');
+
+    return this.container.create<TService, any>(kind, {
+      ...conf,
       bot: this,
-      config,
       logger: this.logger.child({
-        class: type,
+        kind,
       }),
     });
   }

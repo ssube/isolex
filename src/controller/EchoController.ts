@@ -21,7 +21,7 @@ export class EchoController extends BaseController<EchoControllerConfig> impleme
   constructor(options: EchoControllerOptions) {
     super(options);
 
-    this.template = options.compiler.compile(options.config.template);
+    this.template = options.compiler.compile(options.data.template);
   }
 
   public async handle(cmd: Command): Promise<void> {

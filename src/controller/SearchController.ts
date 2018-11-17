@@ -31,13 +31,13 @@ export class SearchController extends BaseController<SearchControllerConfig> imp
   constructor(options: SearchControllerOptions) {
     super(options);
 
-    this.body = options.compiler.compile(options.config.template.body);
+    this.body = options.compiler.compile(options.data.template.body);
     this.container = options.container;
-    this.url = options.compiler.compile(options.config.template.url);
+    this.url = options.compiler.compile(options.data.template.url);
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const args = cmd.data.get(this.config.field);
+    const args = cmd.data.get(this.data.field);
     if (!args || !args.length) {
       throw new Error('no arguments were provided!');
     }
@@ -47,11 +47,11 @@ export class SearchController extends BaseController<SearchControllerConfig> imp
 
     const response = await this.container.create<any, any>('request', {
       json: true,
-      method: this.config.method,
+      method: this.data.method,
       uri: requestUrl,
     });
 
-    const data = jp.query(response, this.config.filter, this.config.count);
+    const data = jp.query(response, this.data.filter, this.data.count);
     this.logger.debug({ data }, 'rendering request data');
 
     if (!data.length) {

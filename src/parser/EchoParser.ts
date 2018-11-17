@@ -7,7 +7,7 @@ import { Fragment } from 'src/entity/Fragment';
 
 export interface EchoParserConfig extends ParserConfig {
   field: string;
-  name: string;
+  noun: string;
   remove: boolean;
 }
 
@@ -27,9 +27,9 @@ export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
     return [Command.create({
       context: msg.context,
       data: {
-        [this.config.field]: [this.removeTags(msg.body)],
+        [this.data.field]: [this.removeTags(msg.body)],
       },
-      noun: this.config.name,
+      noun: this.data.noun,
       verb: CommandVerb.None,
     })];
   }

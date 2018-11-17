@@ -1,14 +1,25 @@
-import { Channel, ChannelLogsQueryOptions, Client, Message as DiscordMessage, MessageReaction, ReactionEmoji, TextChannel, User, PresenceData } from 'discord.js';
+import {
+  Channel,
+  ChannelLogsQueryOptions,
+  Client,
+  Message as DiscordMessage,
+  MessageReaction,
+  PresenceData,
+  ReactionEmoji,
+  TextChannel,
+  User,
+} from 'discord.js';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
+
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
-import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { ServiceOptions } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface DiscordListenerConfig extends ServiceConfig {
+export interface DiscordListenerConfig {
   presence?: PresenceData;
   token: string;
 }
@@ -50,10 +61,10 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
       this.logger.warn({ msg }, 'warning from server');
     })
 
-    await this.client.login(this.config.token);
+    await this.client.login(this.data.token);
 
-    if (this.config.presence) {
-      this.client.user.setPresence(this.config.presence);
+    if (this.data.presence) {
+      this.client.user.setPresence(this.data.presence);
     }
   }
 

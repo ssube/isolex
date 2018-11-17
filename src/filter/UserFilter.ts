@@ -1,9 +1,9 @@
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
-import { ServiceConfig, ServiceOptions } from 'src/Service';
+import { ServiceOptions } from 'src/Service';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
-export type UserFilterConfig = ChecklistOptions<string> & ServiceConfig;
+export type UserFilterConfig = ChecklistOptions<string>;
 
 export type UserFilterOptions = ServiceOptions<UserFilterConfig>;
 
@@ -13,7 +13,7 @@ export class UserFilter extends BaseFilter<UserFilterConfig> implements Filter {
   constructor(options: UserFilterOptions) {
     super(options);
 
-    this.check = new Checklist(options.config);
+    this.check = new Checklist(options.data);
   }
 
   public async filter(value: FilterValue): Promise<FilterBehavior> {

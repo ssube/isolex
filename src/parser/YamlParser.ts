@@ -9,7 +9,7 @@ import { Fragment } from 'src/entity/Fragment';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 
 export interface YamlParserConfig extends ParserConfig {
-  emit: string;
+  noun: string;
 }
 
 export type YamlParserOptions = ServiceOptions<YamlParserConfig>;
@@ -33,7 +33,7 @@ export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
     return [Command.create({
       context: msg.context,
       data,
-      noun: this.config.emit,
+      noun: this.data.noun,
       verb: CommandVerb.None,
     })];
   }

@@ -47,7 +47,7 @@ const STATUS_ERROR = 1;
 
 async function main(): Promise<number> {
   const config = await loadConfig();
-  const logger = BunyanLogger.create(config.logger);
+  const logger = BunyanLogger.create(config.data.logger);
 
   logger.info(VERSION_INFO, 'version info');
 
@@ -60,14 +60,14 @@ async function main(): Promise<number> {
     new ControllerModule(),
   ];
 
-  if (config.migrate) {
+  if (config.data.migrate) {
     modules.push(new MigrationModule());
   }
 
   const ctr = Container.from(...modules);
   await ctr.configure({ logger });
 
-  const bot = await ctr.create<Bot, any>(Bot, { config });
+  const bot = await ctr.create<Bot, any>(Bot, config);
   botModule.setBot(bot);
 
   await bot.start();

@@ -1,183 +1,230 @@
 ---
 # {% raw %}
 
-filters:
-  - type: user-filter
-    name: ignore-bots
-    mode: exclude
-    data:
-      - isolex
-      - IsoFork
-      - Yuela
-      - !env ISOLEX_BLOCK_USER
-
-controllers:
-  - type: dice-controller
-    name: dice_split
-
-  - type: learn-controller
-    name: test_learn
-    emit:
-      from: incoming
-      field: args
-    mode:
-      create: add
-      delete: del
-      execute: run
-
-  - type: math-controller
-    name: test_math
-    join: ','
-    math:
-      matrix: Array
-      number: Number
-    format:
-      notation: auto
-      precision: 4
-      fraction: ratio
-    node:
-      implicit: show
-      parenthesis: keep
-
-  - type: random-controller
-    name: rand_split
-
-  - type: reaction-controller
-    name: test_reaction
-    field: body
-    reactions:
-      boo:
-        - chance: 0.1
-          name: ghost
-      maple:
-        - chance: 0.25
-          name: maple_leaf
-
-  - type: search-controller
-    name: search_mdn
-    count: 3
-    field: args
-    filter: '$..documents.*'
-    method: GET
-    template:
-      body: |
-        {{#each data}}
-          *{{ title }}*: <{{ url }}> ({{ score }})
-          {{ excerpt }}
-        {{/each}}
-      url: https://developer.mozilla.org/en-US/search.json?q={{ data }}
-
-  - type: sed-controller
-    name: sed_echo
-
-  - type: time-controller
-    name: test_time
-    locale: en-US
-    zone: UTC
-
-  - type: weather-controller
-    api:
-      key: !env ISOLEX_WEATHER_TOKEN
-      root: https://api.openweathermap.org/data/2.5/
-    name: test_weather
-    template: >-
-      {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
-      and {{#each weather.weather}}{{this.description}}{{/each}}!
-
-  - type: echo-controller
-    name: test_split
-    template: |
-      name = {{ cmd.name }}
-      type = {{ cmd.type }}
-      {{#entries cmd.data}}
-      {{ key }} = {{ value }}
-      {{/entries}}
-
-  - type: echo-controller
-    name: test_echo
-    template: >-
-      {{json cmd}}
-
-intervals:
-  - cron: '* * * * *'
-    data: {}
-
-listeners:
-  - type: discord-listener
-    name: discord-isolex
-    token: !env ISOLEX_DISCORD_TOKEN
-
-logger:
-  level: debug
+metadata:
+  kind: bot
   name: isolex
 
-parsers:
-  - type: lex-parser
-    account:
-      accessKey: !env ISOLEX_AWS_ACCESS
-      secretKey: !env ISOLEX_AWS_SECRET
-    bot:
-      name: isolex
-      alias: test
-    name: test_lex
-    region: us-east-1
-    tags:
-      - '@isolex'
-      - '@440714238286364672'
+data:
+  filters:
+    - metadata:
+        kind: user-filter
+        name: ignore-bots
+      data:
+        mode: exclude
+        data:
+          - isolex
+          - IsoFork
+          - Yuela
+          - !env ISOLEX_BLOCK_USER
 
-  - type: yaml-parser
-    name: test_yaml
-    tags:
-      - '!!json'
-      - '!!yaml'
+  controllers:
+    - metadata:
+        kind: dice-controller
+        name: dice_split
+      data: {}
 
-  - type: echo-parser
-    field: args
-    name: test_math
-    tags:
-      - '!!math'
+    - metadata:
+        kind: learn-controller
+        name: test_learn
+      data:
+        emit:
+          from: incoming
+          field: args
+        modes:
+          create: add
+          delete: del
+          execute: run
 
-  - type: split-parser
-    name: test_learn
-    separator: ' '
-    tags:
-      - '!!member'
+    - metadata:
+        kind: math-controller
+        name: test_math
+      data:
+        join: ','
+        math:
+          matrix: Array
+          number: Number
+        format:
+          notation: auto
+          precision: 4
+          fraction: ratio
+        node:
+          implicit: show
+          parenthesis: keep
 
-  - type: echo-parser
-    field: args
-    name: sed_echo
-    tags:
-      - '!!sed'
+    - metadata:
+        kind: random-controller
+        name: rand_split
+      data: {}
 
-  - type: map-parser
-    alias:
-      boo: react
-      canada: react
-      hockey: react
-      maple: react
-    emit:
-      "!!echo":
-        name: test_echo
-        fields: []
-        remove: true
-        rest: args
-      "!!mdn":
-        name: search_mdn
-        fields: []
-        remove: true
-        rest: args
-      react:
-        fields: [body]
+    - metadata:
+        kind: reaction-controller
         name: test_reaction
-        remove: false
-        rest: args
-    name: map_echo
-    split:
-      brackets: true
-      separator: " "
+      data:
+        field: body
+        reactions:
+          boo:
+            - chance: 0.1
+              name: ghost
+          maple:
+            - chance: 0.25
+              name: maple_leaf
 
-storage:
-  type: sqlite
-  database: "/data/isolex.db"
+    - metadata:
+        kind: search-controller
+        name: search_mdn
+      data:
+        count: 3
+        field: args
+        filter: '$..documents.*'
+        method: GET
+        template:
+          body: |
+            {{#each data}}
+              *{{ title }}*: <{{ url }}> ({{ score }})
+              {{ excerpt }}
+            {{/each}}
+          url: https://developer.mozilla.org/en-US/search.json?q={{ data }}
+
+    - metadata:
+        kind: sed-controller
+        name: sed_echo
+      data: {}
+
+    - metadata:
+        kind: time-controller
+        name: test_time
+      data:
+        locale: en-US
+        zone: UTC
+
+    - metadata:
+        kind: weather-controller
+        name: test_weather
+      data:
+        api:
+          key: !env ISOLEX_WEATHER_TOKEN
+          root: https://api.openweathermap.org/data/2.5/
+        template: >-
+          {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
+          and {{#each weather.weather}}{{this.description}}{{/each}}!
+
+    - metadata:
+        kind: echo-controller
+        name: test_split
+      data:
+        template: |
+          name = {{ cmd.name }}
+          type = {{ cmd.type }}
+          {{#entries cmd.data}}
+          {{ key }} = {{ value }}
+          {{/entries}}
+
+    - metadata:
+        kind: echo-controller
+        name: test_echo
+      data:
+        template: >-
+          {{json cmd}}
+
+  intervals:
+    - metadata:
+        kind: cron-interval
+        name: test_cron
+      data:
+        cron: '* * * * *'
+
+  listeners:
+    - metadata:
+        kind: discord-listener
+        name: discord-isolex
+      data:
+        token: !env ISOLEX_DISCORD_TOKEN
+
+  logger:
+    level: debug
+    name: isolex
+
+  parsers:
+    - metadata:
+        kind: lex-parser
+        name: test_lex
+      data:
+        account:
+          accessKey: !env ISOLEX_AWS_ACCESS
+          secretKey: !env ISOLEX_AWS_SECRET
+        bot:
+          name: isolex
+          alias: test
+        region: us-east-1
+        tags:
+          - '@isolex'
+          - '@440714238286364672'
+
+    - metadata:
+        kind: yaml-parser
+        name: test_yaml
+      data:
+        tags:
+          - '!!json'
+          - '!!yaml'
+
+    - metadata:
+        kind: echo-parser
+        name: test_echo
+      data:
+        field: args
+        noun: test_math
+        tags:
+          - '!!math'
+
+    - metadata:
+        kind: split-parser
+        name: test_learn
+      data:
+        separator: ' '
+        tags:
+          - '!!member'
+
+    - metadata:
+        kind: echo-parser
+        name: sed_echo
+      data:
+        field: args
+        tags:
+          - '!!sed'
+
+    - metadata:
+        kind: map-parser
+        name: map_echo
+      data:
+        alias:
+          boo: react
+          canada: react
+          hockey: react
+          maple: react
+        emit:
+          "!!echo":
+            name: test_echo
+            fields: []
+            remove: true
+            rest: args
+          "!!mdn":
+            name: search_mdn
+            fields: []
+            remove: true
+            rest: args
+          react:
+            fields: [body]
+            name: test_reaction
+            remove: false
+            rest: args
+        split:
+          brackets: true
+          separator: " "
+
+  storage:
+    type: sqlite
+    database: "/data/isolex.db"
 
 # {% endraw %}

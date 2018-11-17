@@ -1,7 +1,7 @@
 import { readFile, stat } from 'fs';
 import { DEFAULT_SAFE_SCHEMA, safeLoad, Schema } from 'js-yaml';
 import { join } from 'path';
-import { BotConfig } from 'src/Bot';
+import { BotDefinition } from 'src/Bot';
 import { envType } from 'src/config/EnvYamlType';
 import { includeType } from 'src/config/IncludeYamlType';
 import { promisify } from 'util';
@@ -40,7 +40,7 @@ export function resolvePath(name: string, ...extras: Array<string>): Array<strin
   return paths;
 }
 
-export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
+export async function loadConfig(...extras: Array<string>): Promise<BotDefinition> {
   const paths = resolvePath(CONFIG_NAME, ...extras);
 
   for (const p of paths) {
@@ -54,7 +54,7 @@ export async function loadConfig(...extras: Array<string>): Promise<BotConfig> {
   throw new Error('unable to load config');
 }
 
-export async function readConfig(path: string): Promise<BotConfig | undefined> {
+export async function readConfig(path: string): Promise<BotDefinition| undefined> {
   try {
     const data = await readFileSync(path, {
       encoding: 'utf-8',

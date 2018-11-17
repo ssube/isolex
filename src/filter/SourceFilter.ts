@@ -1,13 +1,13 @@
 import { BaseFilter } from './BaseFilter';
 import { Filter, FilterValue, FilterBehavior } from './Filter';
-import { ServiceConfig } from 'src/Service';
-import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 
-export type SourceFilterConfig = ServiceConfig;
+export interface SourceFilterData {
+  type?: string;
+}
 
-export class SourceFilter extends BaseFilter<ServiceConfig> implements Filter {
-  protected type?: string;
+export class SourceFilter extends BaseFilter<SourceFilterData> implements Filter, SourceFilterData {
+  public readonly type?: string;
 
   public async filter(value: FilterValue): Promise<FilterBehavior> {
     if (Message.isMessage(value)) {

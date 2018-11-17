@@ -23,13 +23,13 @@ export class ReactionController extends BaseController<ReactionControllerConfig>
   constructor(options: ReactionControllerOptions) {
     super(options);
 
-    this.reactions = new Map(Object.entries(options.config.reactions));
+    this.reactions = new Map(Object.entries(options.data.reactions));
     this.tags = Array.from(this.reactions.keys());
   }
 
   public async handle(cmd: Command): Promise<void> {
     const reactions = [];
-    const body = cmd.get(this.config.field);
+    const body = cmd.get(this.data.field);
     for (const [key, next] of this.reactions) {
       this.logger.debug({ body, key }, 'checking reaction');
       if (body.includes(key)) {

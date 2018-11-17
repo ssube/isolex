@@ -22,12 +22,12 @@ export class PickController extends BaseController<PickControllerConfig> impleme
   constructor(options: PickControllerOptions) {
     super(options);
 
-    this.list = new Checklist(options.config.check);
+    this.list = new Checklist(options.data.check);
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const count = Number(cmd.getHeadOrDefault(this.config.field.count, this.config.count));
-    const data = cmd.get(this.config.field.data).filter((it) => this.list.check(it));
+    const count = Number(cmd.getHeadOrDefault(this.data.field.count, this.data.count));
+    const data = cmd.get(this.data.field.data).filter((it) => this.list.check(it));
     const list = Picklist.create(...data);
     const puck = list.pick(count);
 

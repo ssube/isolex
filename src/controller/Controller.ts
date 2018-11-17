@@ -1,7 +1,7 @@
 import { Command } from 'src/entity/Command';
-import { Service, ServiceConfig, ServiceOptions } from 'src/Service';
+import { Service, ServiceOptions } from 'src/Service';
 
-export type ControllerConfig = ServiceConfig;
+export type ControllerConfig = {};
 export type ControllerOptions<T extends ControllerConfig> = ServiceOptions<T>;
 
 /**

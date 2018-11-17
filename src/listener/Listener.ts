@@ -1,4 +1,3 @@
-import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';

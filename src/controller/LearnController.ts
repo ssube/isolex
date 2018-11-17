@@ -13,7 +13,7 @@ export interface LearnControllerConfig extends ControllerConfig {
     source: string;
     value: string;
   };
-  mode: {
+  modes: {
     create: string;
     delete: string;
     execute: string;
@@ -46,13 +46,13 @@ export class LearnController extends BaseController<LearnControllerConfig> imple
 
     this.logger.debug({ body, keyword }, 'handling learned keyword');
 
+    const { modes } = this.data;
     switch (cmd.verb) {
-      case this.config.mode.create:
+      case modes.create:
         return this.createKeyword(keyword, body, cmd);
-      case this.config.mode.delete:
+      case modes.delete:
         return this.deleteKeyword(keyword, cmd);
-      case this.config.mode.execute:
-        return this.executeKeyword(keyword, body, cmd);
+      case modes.execute:
       default:
         return this.executeKeyword(keyword, body, cmd);
     }
@@ -109,7 +109,7 @@ export class LearnController extends BaseController<LearnControllerConfig> imple
     const emit = keyword.command.extend({
       context: cmd.context,
       data: {
-        [this.config.emit.field]: args,
+        [this.data.emit.field]: args,
       },
       noun,
     });

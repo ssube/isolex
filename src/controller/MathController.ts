@@ -21,7 +21,7 @@ export class MathController extends BaseController<MathControllerConfig> impleme
   constructor(options: MathControllerOptions) {
     super(options);
 
-    this.math = (mathjs as any).create(options.config.math);
+    this.math = (mathjs as any).create(options.data.math);
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -46,7 +46,7 @@ export class MathController extends BaseController<MathControllerConfig> impleme
       const body = this.math.eval(expr, scope);
       this.logger.debug({ body, expr }, 'evaluated expression');
 
-      return formatResult(body, scope, this.config.format);
+      return formatResult(body, scope, this.data.format);
     } catch (err) {
       return `error evaluating math: ${err.message}\n${err.stack}`;
     }

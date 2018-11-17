@@ -11,7 +11,7 @@ export abstract class BaseParser<TConfig extends ParserConfig> extends BaseServi
   constructor(options: ServiceOptions<TConfig>) {
     super(options);
 
-    this.tags = options.config.tags;
+    this.tags = options.data.tags;
   }
 
   public async start() {

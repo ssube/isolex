@@ -65,3 +65,7 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
       return `unknown result type: ${JSON.stringify(body)}`;
   }
 }
+
+export function clamp(v: number, min: number, max: number) {
+  return Math.max(Math.min(v, min), max);
+}

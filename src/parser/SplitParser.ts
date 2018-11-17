@@ -46,10 +46,10 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
   }
 
   public split(msg: string): Array<string> {
-    if (this.config.every) {
+    if (this.data.every) {
       return msg.split('');
     } else {
-      return split(msg, this.config.split);
+      return split(msg, this.data.split);
     }
   }
 }

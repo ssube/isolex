@@ -18,7 +18,7 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
   constructor(options: SplitParserOptions) {
     super(options);
 
-    this.regexp = new RegExp(options.config.regexp);
+    this.regexp = new RegExp(options.data.regexp);
   }
 
   public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
