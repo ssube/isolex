@@ -24,7 +24,13 @@ describeAsync('echo controller', async () => {
         compile: () => ineeda<Template>(),
       }),
       data: {
-        template: '',
+        transforms: [{
+          metadata: {
+            kind: 'template-transform',
+            name: 'test_template',
+          },
+          data: {},
+        }],
       },
       container,
       logger: ConsoleLogger.global,
@@ -51,7 +57,13 @@ describeAsync('echo controller', async () => {
         }),
       }),
       data: {
-        template: '',
+        transforms: [{
+          metadata: {
+            kind: 'template-transform',
+            name: 'test_template',
+          },
+          data: {},
+        }],
       },
       container,
       logger: ConsoleLogger.global,

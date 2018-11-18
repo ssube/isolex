@@ -30,21 +30,27 @@ describeAsync('weather controller', async () => {
           render: () => 'test',
         }),
       }),
+      container,
       data: {
         api: {
           key: '0',
           root: 'https://api.openweathermap.org/data/2.5/',
         },
-        template: {
-          body: '{{ weather.test }}',
-        },
+        transforms: [{
+          metadata: {
+            kind: 'template-transform',
+            name: 'test_weather',
+          },
+          data: {
+            body: '{{ weather.test }}',
+          },
+        }],
       },
-      container,
       logger: ConsoleLogger.global,
       metadata: {
         kind: 'weather-controller',
         name: 'test_weather',
-      }
+      },
     };
     const controller = await container.create(WeatherController, options);
     expect(controller).to.be.an.instanceOf(WeatherController);

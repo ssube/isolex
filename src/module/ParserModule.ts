@@ -5,9 +5,9 @@ import { ModuleOptions } from 'noicejs/Module';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser } from 'src/parser/LexParser';
 import { MapParser } from 'src/parser/MapParser';
+import { RegexParser } from 'src/parser/RegexParser';
 import { SplitParser } from 'src/parser/SplitParser';
 import { YamlParser } from 'src/parser/YamlParser';
-import { RegexParser } from 'src/parser/RegexParser';
 
 export class ParserModule extends Module {
   public async configure(options: ModuleOptions) {

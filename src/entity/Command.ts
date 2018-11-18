@@ -25,13 +25,15 @@ export enum CommandVerb {
 
 export interface CommandOptions {
   context: Context;
-  data: MapOrMapLike<Array<string>>;
+  data: MapOrMapLike<CommandArgsList>;
   noun: string;
   verb: CommandVerb;
 }
 
-export type CommandPropMap = Map<string, CommandPropValue>;
-export type CommandPropValue = Array<string>;
+// export type CommandPropTypes = CommandPropValue | CommandPropMap | CommandPropList;
+export type CommandArgsMap = Map<string, CommandArgsList>;
+export type CommandArgsItem = string;
+export type CommandArgsList = Array<CommandArgsItem>;
 
 @Entity()
 export class Command extends BaseEntity implements CommandOptions {
@@ -51,7 +53,7 @@ export class Command extends BaseEntity implements CommandOptions {
     cmd.verb = options.verb;
     return cmd;
   }
-  
+
   public static isCommand(it: any): it is Command {
     return it instanceof Command;
   }

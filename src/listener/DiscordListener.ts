@@ -59,12 +59,12 @@ export class DiscordListener extends BaseListener<DiscordListenerConfig> impleme
 
     this.client.on('warn', (msg) => {
       this.logger.warn({ msg }, 'warning from server');
-    })
+    });
 
     await this.client.login(this.data.token);
 
     if (this.data.presence) {
-      this.client.user.setPresence(this.data.presence);
+      await this.client.user.setPresence(this.data.presence);
     }
   }
 

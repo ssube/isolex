@@ -1,10 +1,10 @@
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command } from 'src/entity/Command';
+import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { Fragment } from 'src/entity/Fragment';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 
 export interface RegexParserConfig extends ParserConfig {
   regexp: string;

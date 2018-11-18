@@ -1,13 +1,16 @@
 import { Inject } from 'noicejs';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
-import { Template } from 'src/utils/Template';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
+import { Transform } from 'src/transform/Transform';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+import { ServiceDefinition } from 'src/Service';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface EchoControllerConfig extends ControllerConfig {
-  template: string;
+  transforms: Array<ServiceDefinition>;
 }
 
 export interface EchoControllerOptions extends ControllerOptions<EchoControllerConfig> {
@@ -16,16 +19,32 @@ export interface EchoControllerOptions extends ControllerOptions<EchoControllerC
 
 @Inject('compiler')
 export class EchoController extends BaseController<EchoControllerConfig> implements Controller {
-  protected template: Template;
+  protected readonly transforms: Array<Transform>;
 
   constructor(options: EchoControllerOptions) {
     super(options);
 
-    this.template = options.compiler.compile(options.data.template);
+    this.transforms = [];
+  }
+
+  public async start() {
+    for (const def of this.data.transforms) {
+      const transform = await this.bot.createService<Transform, any>(def);
+      this.transforms.push(transform);
+    }
   }
 
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'echoing command');
-    return this.bot.send(Message.reply(this.template.render({ cmd }), cmd.context));
+
+    let data = Message.reply(cmd.toString(), cmd.context);
+    for (const transform of this.transforms) {
+      const [head, ...rest] = await transform.transform(cmd, data);
+      data = head;
+      if (rest.length) {
+        this.logger.info({ rest }, 'echo transform discarding extra messages');
+      }
+    }
+    return this.bot.send(data);
   }
 }

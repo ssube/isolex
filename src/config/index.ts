@@ -54,7 +54,7 @@ export async function loadConfig(...extras: Array<string>): Promise<BotDefinitio
   throw new Error('unable to load config');
 }
 
-export async function readConfig(path: string): Promise<BotDefinition| undefined> {
+export async function readConfig(path: string): Promise<BotDefinition | undefined> {
   try {
     const data = await readFileSync(path, {
       encoding: 'utf-8',
@@ -62,7 +62,7 @@ export async function readConfig(path: string): Promise<BotDefinition| undefined
 
     return safeLoad(data, {
       schema: CONFIG_SCHEMA,
-    }) as any;
+    });
   } catch (err) {
     if (err.code !== 'ENOENT') {
       throw err;

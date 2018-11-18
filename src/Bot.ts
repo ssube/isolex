@@ -4,6 +4,7 @@ import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
+import * as uuid from 'uuid/v4';
 
 import { Controller, ControllerConfig } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
@@ -34,7 +35,11 @@ export type BotOptions = BaseOptions & BotDefinition & {
 };
 
 @Inject('logger')
-export class Bot {
+export class Bot implements Service {
+  public readonly id: string;
+  public readonly kind: string;
+  public readonly name: string;
+
   protected readonly container: Container;
   protected readonly data: Readonly<BotData>;
   protected readonly logger: Logger;
@@ -53,6 +58,10 @@ export class Bot {
   protected outgoing: Subject<Message>;
 
   constructor(options: BotOptions) {
+    this.id = uuid();
+    this.kind = options.metadata.kind;
+    this.name = options.metadata.name;
+
     this.container = options.container;
     this.data = options.data;
     this.logger = options.logger.child({
@@ -118,22 +127,22 @@ export class Bot {
   public async startService() {
     this.logger.info('setting up filters');
     for (const data of this.data.filters) {
-      this.filters.push(await this.createPart<Filter, {}>(data));
+      this.filters.push(await this.createService<Filter, {}>(data));
     }
 
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
-      this.controllers.push(await this.createPart<Controller, ControllerConfig>(data));
+      this.controllers.push(await this.createService<Controller, ControllerConfig>(data));
     }
 
     this.logger.info('setting up listeners');
     for (const data of this.data.listeners) {
-      this.listeners.push(await this.createPart<Listener, {}>(data));
+      this.listeners.push(await this.createService<Listener, {}>(data));
     }
 
     this.logger.info('setting up parsers');
     for (const data of this.data.parsers) {
-      this.parsers.push(await this.createPart<Parser, ParserConfig>(data));
+      this.parsers.push(await this.createService<Parser, ParserConfig>(data));
     }
 
     this.logger.info('starting listeners');
@@ -149,6 +158,9 @@ export class Bot {
     this.commands.complete();
     this.incoming.complete();
     this.outgoing.complete();
+
+    this.logger.debug('stopping services');
+
 
     this.logger.info('bot has stopped');
   }
@@ -289,18 +301,21 @@ export class Bot {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  protected async createPart<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
-    this.logger.debug({ conf }, 'configuring service');
+  public async createService<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
+    this.logger.debug({ conf }, 'creating service');
 
     const { metadata: { kind, name } } = conf;
     this.logger.info({ kind, name }, 'configuring service');
 
-    return this.container.create<TService, any>(kind, {
+    const svc = await this.container.create<TService, any>(kind, {
       ...conf,
       bot: this,
       logger: this.logger.child({
         kind,
       }),
     });
+    this.logger.debug({ id: svc.id, kind  }, 'service created and configured');
+    
+    return svc;
   }
 }

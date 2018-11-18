@@ -1,7 +1,7 @@
 import { isNil, pick, reject } from 'lodash';
 import * as split from 'split-string';
 
-import { Command, CommandPropMap, CommandVerb } from 'src/entity/Command';
+import { Command, CommandArgsMap, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { NotImplementedError } from 'src/error/NotImplementedError';
@@ -148,7 +148,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
     return mapped;
   }
 
-  public mapFields(args: Array<string>, fields: Array<string>, rest: string): CommandPropMap {
+  public mapFields(args: Array<string>, fields: Array<string>, rest: string): CommandArgsMap {
     const data = new Map();
 
     for (const f of fields) {

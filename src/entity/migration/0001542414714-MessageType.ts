@@ -13,5 +13,3 @@ export class MessageType0001542414714 implements MigrationInterface {
     await query.dropColumn('message', 'type');
   }
 }
-
-

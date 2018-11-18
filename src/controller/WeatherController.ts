@@ -1,20 +1,17 @@
 import { Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { CoreOptions, RequiredUriUrl } from 'request';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
-import { Template } from 'src/utils/Template';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerConfig extends ControllerConfig {
   api: {
     key: string;
     root: string;
-  };
-  template: {
-    body: string;
   };
 }
 
@@ -25,13 +22,11 @@ export interface WeatherControllerOptions extends ControllerOptions<WeatherContr
 @Inject('compiler')
 export class WeatherController extends BaseController<WeatherControllerConfig> implements Controller {
   protected container: Container;
-  protected template: Template;
 
   constructor(options: WeatherControllerOptions) {
     super(options);
 
     this.container = options.container;
-    this.template = options.compiler.compile(options.data.template.body);
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -42,13 +37,13 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
 
     try {
       const weather = await this.getWeather(location);
-      const body = this.template.render({
-        cmd,
-        weather,
-      });
-      this.logger.debug({ body, weather }, 'rendering weather data');
+      const messages = await this.transform(cmd, Message.reply(JSON.stringify(weather), cmd.context));
+      
+      this.logger.debug({ messages, weather }, 'rendering weather data');
 
-      return this.bot.send(Message.reply(body, cmd.context));
+      for (const msg of messages) {
+        await this.bot.send(msg);
+      }
     } catch (err) {
       this.logger.error(err, 'error getting weather');
     }

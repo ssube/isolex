@@ -13,4 +13,3 @@ export class CounterRoom0001529018132 implements MigrationInterface {
     await query.dropColumn('counter', 'roomId');
   }
 }
-

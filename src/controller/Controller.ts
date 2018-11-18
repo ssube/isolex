@@ -1,8 +1,12 @@
 import { Command } from 'src/entity/Command';
-import { Service, ServiceOptions } from 'src/Service';
+import { Service, ServiceOptions, ServiceDefinition } from 'src/Service';
+import { TransformConfig } from 'src/transform/Transform';
 
-export type ControllerConfig = {};
-export type ControllerOptions<T extends ControllerConfig> = ServiceOptions<T>;
+export interface ControllerConfig {
+  transforms: Array<ServiceDefinition<TransformConfig>>;
+}
+
+export type ControllerOptions<TData extends ControllerConfig> = ServiceOptions<TData>;
 
 /**
  * Controllers react to commands, consuming them before sending replies or performing background work.

@@ -1,9 +1,9 @@
 import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
+import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { Fragment } from 'src/entity/Fragment';
 
 export abstract class BaseParser<TConfig extends ParserConfig> extends BaseService<TConfig> implements Parser {
   protected tags: Array<string>;

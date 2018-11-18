@@ -1,8 +1,9 @@
 import * as mathjs from 'mathjs';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Command } from 'src/entity/Command';
+import { Message } from 'src/entity/Message';
 
 const DICE_MINIMUM = 1;
 
