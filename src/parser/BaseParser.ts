@@ -2,7 +2,7 @@ import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
 export abstract class BaseParser<TConfig extends ParserConfig> extends BaseService<TConfig> implements Parser {
@@ -29,6 +29,8 @@ export abstract class BaseParser<TConfig extends ParserConfig> extends BaseServi
   public abstract complete(frag: Fragment, value: string): Promise<Array<Command>>;
 
   public abstract parse(msg: Message): Promise<Array<Command>>;
+
+  public abstract parseBody(msg: Message, value: ParserValue): Promise<any>;
 
   protected includesTag(body: string): boolean {
     for (const t of this.tags) {

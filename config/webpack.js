@@ -109,6 +109,7 @@ module.exports = {
       /^pty.js/,
       /^react-native-sqlite-storage$/,
       /^redis$/,
+      /^sql.js$/,
       /^term.js$/
     ])
   ],

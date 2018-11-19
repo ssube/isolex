@@ -1,5 +1,17 @@
 import { isMap, isNil } from 'lodash';
 
+export interface Dict<TVal> {
+  [key: string]: TVal;
+}
+
+/**
+ * A `Map` or dictionary object with string keys and `TVal` values.
+ */
+export type MapOrMapLike<TVal> = Map<string, TVal> | Dict<TVal>;
+
+/**
+ * Resolve after a set amount of time.
+ */
 export function defer<T = undefined>(ms: number, val?: T): Promise<T> {
   return new Promise((res, rej) => {
     setTimeout(() => res(val), ms);
@@ -41,6 +53,13 @@ export function filterNil<TItem>(list: ArrayLike<TItem | null | undefined>): Arr
     return !isNil(val);
   }
   return Array.from(list).filter(nilGuard);
+}
+
+export function mapToDict<TVal>(map: Map<string, TVal>): Dict<TVal> {
+  function reducer(prev: Dict<TVal>, [key, val]: [string, TVal]): Dict<TVal> {
+    return {...prev, [key]: val};
+  }
+  return Array.from(map.entries()).reduce(reducer, {});
 }
 
 /**
@@ -88,15 +107,6 @@ export function mergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<TVal>
   }
   return out;
 }
-
-interface MapLike<TVal> {
-  [key: string]: TVal;
-}
-
-/**
- * A `Map` or dictionary object with string keys and `TVal` values.
- */
-export type MapOrMapLike<TVal> = Map<string, TVal> | MapLike<TVal>;
 
 /**
  * Clone a map or map-like object into a new map.

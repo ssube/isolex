@@ -30,8 +30,8 @@ export class Counter implements CounterOptions {
 
   public toJSON() {
     return {
-      id: this.id,
       count: this.count,
+      id: this.id,
       name: this.name,
       roomId: this.roomId,
     };

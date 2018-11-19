@@ -3,9 +3,10 @@ import * as AWS from 'aws-sdk';
 import { Command, CommandOptions } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { leftPad, MapOrMapLike } from 'src/utils';
 
@@ -47,6 +48,23 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const body = this.removeTags(msg.body);
+    const { data, noun } = await this.parseBody(msg, body);
+    const cmdOptions: CommandOptions = {
+      context: msg.context,
+      data,
+      noun,
+      verb: this.data.emit.verb,
+    };
+
+    this.logger.debug({ cmdOptions }, 'command options');
+    return [Command.create(cmdOptions)];
+  }
+
+  public async parseBody(msg: Message, body: ParserValue): Promise<any> {
+    if (Buffer.isBuffer(body)) {
+      throw new InvalidArgumentError('lex parser can not parse buffer data');
+    }
+
     const post = await this.postText({
       botAlias: this.data.bot.alias,
       botName: this.data.bot.name,
@@ -63,16 +81,10 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
     }
 
     // merge lex reply and slots
-    const data = this.getSlots(post.slots);
-    const cmdOptions: CommandOptions = {
-      context: msg.context,
-      data,
+    return {
+      data: this.getSlots(post.slots),
       noun,
-      verb: this.data.emit.verb,
     };
-
-    this.logger.debug({ cmdOptions }, 'command options');
-    return [Command.create(cmdOptions)];
   }
 
   protected getSlots(input: AWS.LexRuntime.StringMap | undefined): MapOrMapLike<Array<string>> {

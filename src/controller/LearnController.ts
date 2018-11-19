@@ -6,6 +6,7 @@ import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface LearnControllerConfig extends ControllerConfig {
   emit: {
@@ -73,24 +74,24 @@ export class LearnController extends BaseController<LearnControllerConfig> imple
     this.logger.debug({ args, cmd, name, keyword }, 'learning command');
 
     if (await this.keywordRepository.findOne(name)) {
-      return this.bot.send(Message.reply(`Command already exists: ${name}`, cmd.context));
+      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Command already exists: ${name}`));
     }
 
     await this.keywordRepository.save(keyword);
 
-    return this.bot.send(Message.reply(`Learned command ${name}.`, cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Learned command ${name}.`));
   }
 
   protected async deleteKeyword(name: string, cmd: Command) {
     const keyword = await this.keywordRepository.findOne(name);
 
     if (!keyword) {
-      return this.bot.send(Message.reply(`Command ${name} does not exist.`, cmd.context));
+      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Command ${name} does not exist.`));
     }
 
     await this.keywordRepository.delete(name);
 
-    return this.bot.send(Message.reply(`Deleted command ${name}.`, cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Deleted command ${name}.`));
   }
 
   protected async executeKeyword(name: string, body: Array<string>, cmd: Command) {

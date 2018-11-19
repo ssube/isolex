@@ -77,6 +77,9 @@ export class Tracker {
   }
 }
 
+/**
+ * Describe a suite of async tests. This wraps mocha's describe to track async resources and report leaks.
+ */
 export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.ISuite {
   return describe(description, function trackSuite() {
     const tracker = new Tracker();

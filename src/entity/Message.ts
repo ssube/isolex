@@ -2,7 +2,7 @@ import * as escape from 'escape-html';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context } from 'src/entity/Context';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
 
 export interface MessageOptions {
   body: string;
@@ -26,12 +26,14 @@ export class Message implements MessageOptions {
     return it instanceof Message;
   }
 
-  public static reply(body: string, context: Context) {
+  public static reply(context: Context, type: typeof TYPE_JSON | typeof TYPE_YAML, body: any): Message;
+  public static reply(context: Context, type: typeof TYPE_TEXT, body: string): Message;
+  public static reply(context: Context, type: string, body: any): Message {
     return Message.create({
       body,
       context,
       reactions: [],
-      type: TYPE_TEXT,
+      type,
     });
   }
 

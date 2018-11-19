@@ -7,6 +7,7 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface CountControllerConfig extends ControllerConfig {
   default: {
@@ -49,7 +50,7 @@ export class CountController extends BaseController<CountControllerConfig> imple
     switch (count) {
       case 'ls':
         const body = await this.listCounters(cmd.context.roomId);
-        return this.bot.send(Message.reply(body, cmd.context));
+        return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, body));
       case '++':
         ++counter.count;
         break;

@@ -1,22 +1,23 @@
-import { isNil, pick, reject } from 'lodash';
 import * as split from 'split-string';
+import { isString } from 'util';
 
 import { Command, CommandArgsMap, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { setOrPush, filterNil } from 'src/utils';
+import { filterNil, setOrPush } from 'src/utils';
 
 /**
  * Mapped commands are the stored form of a command to be produced by a mapping.
  */
 export interface MappedCommand {
   /**
-    * The name of the emitted command.
-    */
+   * The name of the emitted command.
+   */
   noun: string;
   verb: CommandVerb;
   args: {
@@ -32,7 +33,7 @@ export interface MappedCommand {
      * The field into which any remaining arguments should be put.
      */
     rest: string;
-  }
+  };
   tags: {
     /**
      * Remove the matched tag (usually the first argument).
@@ -42,7 +43,7 @@ export interface MappedCommand {
      * Resolve the matched tag, replacing any aliases.
      */
     resolve: boolean;
-  }
+  };
 }
 
 export interface MatchAlias {
@@ -95,8 +96,9 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    const mapped = await this.parseBody(msg, msg.body);
     const commands = [];
-    for (const { args, cmd } of this.mapCommands(msg.body)) {
+    for (const { args, cmd } of mapped) {
       commands.push(Command.create({
         context: msg.context,
         data: this.mapFields(args, cmd.args.fields, cmd.args.rest),
@@ -126,8 +128,12 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   /**
    * Map a string into some commands, splitting on keywords.
    */
-  public mapCommands(val: string): Array<MappedMessage> {
-    const parts = split(val, this.data.split).reverse();
+  public async parseBody(msg: Message, value: ParserValue): Promise<Array<MappedMessage>> {
+    if (!isString(value)) {
+      throw new InvalidArgumentError('value must be a string');
+    }
+
+    const parts = split(value, this.data.split).reverse();
     this.logger.debug({ parts }, 'mapping resolved command');
 
     const pending = [];

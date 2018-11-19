@@ -23,16 +23,16 @@ describeAsync('echo controller', async () => {
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>(),
       }),
+      container,
       data: {
         transforms: [{
+          data: {},
           metadata: {
             kind: 'template-transform',
             name: 'test_template',
           },
-          data: {},
         }],
       },
-      container,
       logger: ConsoleLogger.global,
       metadata: {
         kind: 'echo-controller',
@@ -56,16 +56,16 @@ describeAsync('echo controller', async () => {
           render: () => 'test_echo',
         }),
       }),
+      container,
       data: {
         transforms: [{
+          data: {},
           metadata: {
             kind: 'template-transform',
             name: 'test_template',
           },
-          data: {},
         }],
       },
-      container,
       logger: ConsoleLogger.global,
       metadata: {
         kind: 'echo-controller',

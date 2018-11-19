@@ -4,6 +4,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 const DICE_MINIMUM = 1;
 
@@ -31,6 +32,6 @@ export class DiceController extends BaseController<DiceControllerConfig> impleme
     this.logger.debug({ args }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b);
 
-    return this.bot.send(Message.reply(`The results of your rolls were: ${results}. The sum is ${sum}.`, cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `The results of your rolls were: ${results}. The sum is ${sum}.`));
   }
 }

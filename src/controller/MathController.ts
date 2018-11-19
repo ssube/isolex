@@ -5,6 +5,7 @@ import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MathControllerConfig extends ControllerConfig {
   format: ResultFormatOptions;
@@ -39,7 +40,7 @@ export class MathController extends BaseController<MathControllerConfig> impleme
     const body = '`' + this.eval(expr, { cmd }) + '`';
     this.logger.debug({ body, expr }, 'compiled expression');
 
-    return this.bot.send(Message.reply(body, cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, body));
   }
 
   protected eval(expr: string, scope: any): string {

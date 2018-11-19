@@ -12,7 +12,7 @@ import {
 import { BaseEntity } from 'src/entity/BaseEntity';
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { mergeMap, normalizeMap, MapOrMapLike } from 'src/utils';
+import { MapOrMapLike, mergeMap, normalizeMap } from 'src/utils';
 
 export enum CommandVerb {
   Create = 'create',
@@ -30,7 +30,6 @@ export interface CommandOptions {
   verb: CommandVerb;
 }
 
-// export type CommandPropTypes = CommandPropValue | CommandPropMap | CommandPropList;
 export type CommandArgsMap = Map<string, CommandArgsList>;
 export type CommandArgsItem = string;
 export type CommandArgsList = Array<CommandArgsItem>;

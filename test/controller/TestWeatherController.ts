@@ -37,12 +37,15 @@ describeAsync('weather controller', async () => {
           root: 'https://api.openweathermap.org/data/2.5/',
         },
         transforms: [{
+          data: {
+            parsers: [],
+            templates: {
+              body: '{{ weather.test }}',
+            },
+          } as any, // @TODO: this should use a type that allows additional properties
           metadata: {
             kind: 'template-transform',
             name: 'test_weather',
-          },
-          data: {
-            body: '{{ weather.test }}',
           },
         }],
       },

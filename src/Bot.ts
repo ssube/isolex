@@ -14,6 +14,7 @@ import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserConfig } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
+import { InvalidArgumentError } from './error/InvalidArgumentError';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
@@ -160,7 +161,7 @@ export class Bot implements Service {
     this.outgoing.complete();
 
     this.logger.debug('stopping services');
-
+    // TODO: stop any running services
 
     this.logger.info('bot has stopped');
   }
@@ -272,7 +273,31 @@ export class Bot implements Service {
    * Add a message to the send queue.
    */
   public async send(msg: Message): Promise<void> {
+    if (!Message.isMessage(msg)) {
+      throw new InvalidArgumentError('sent message must be an instance of message entity');
+    }
     this.outgoing.next(msg);
+  }
+
+  /**
+   * These are all created the same way, so they should probably have a common base...
+   */
+  public async createService<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
+    this.logger.debug({ conf }, 'creating service');
+
+    const { metadata: { kind, name } } = conf;
+    this.logger.info({ kind, name }, 'configuring service');
+
+    const svc = await this.container.create<TService, any>(kind, {
+      ...conf,
+      bot: this,
+      logger: this.logger.child({
+        kind,
+      }),
+    });
+    this.logger.debug({ id: svc.id, kind  }, 'service created and configured');
+
+    return svc;
   }
 
   protected async checkFilters(next: FilterValue): Promise<boolean> {
@@ -296,26 +321,5 @@ export class Bot implements Service {
    */
   protected async looseError(err: Error) {
     this.logger.error(err, 'bot stream did not handle error');
-  }
-
-  /**
-   * These are all created the same way, so they should probably have a common base...
-   */
-  public async createService<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
-    this.logger.debug({ conf }, 'creating service');
-
-    const { metadata: { kind, name } } = conf;
-    this.logger.info({ kind, name }, 'configuring service');
-
-    const svc = await this.container.create<TService, any>(kind, {
-      ...conf,
-      bot: this,
-      logger: this.logger.child({
-        kind,
-      }),
-    });
-    this.logger.debug({ id: svc.id, kind  }, 'service created and configured');
-    
-    return svc;
   }
 }

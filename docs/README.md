@@ -10,19 +10,43 @@ commands are then `handled`, with replies being sent back through the bot. Betwe
 The flow is:
 
 ```none
-                                   cron ----> interval
-                                                 |
-                                                 v
-listener -> <message> -> filter -> parser -> <command> <-\
-                                                 |       |
-                                                 v       |
-                                              filter     |
-                                                 |       |
-                                                 v       |
+                                   cron -----> interval
+                                                  |
+                                                  v
+listener -> <message> -> filter -> parser --> <command> <---\
+                                                  |         |
+                                                  v         |
+                                               filter       |
+                                                  |         |
+                                                  v         |
 listener <---------------------- <message> <- controller ---/
 ```
 
 *With `<class>` denoting an entity.*
+
+Within each parser:
+
+```none
+           |-         parser        -|
+
+<message> --> filters -> pre-transforms
+                               |
+<command> <---+----------------/
+              |
+<fragment> <--/
+```
+
+Within each controller:
+
+```none
+           |-               controller                  -|
+
+<command> --> filters -> pre-transforms -> side-effects
+                                                |
+                                                |
+                                                v
+<response> <-- post-transforms <------------ <data>
+```
 
 ### Incoming
 

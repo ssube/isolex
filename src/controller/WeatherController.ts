@@ -6,6 +6,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerConfig extends ControllerConfig {
@@ -32,13 +33,13 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
   public async handle(cmd: Command): Promise<void> {
     const [location] = cmd.get('location');
     if (!location) {
-      return this.bot.send(Message.reply('unknown or missing location', cmd.context));
+      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'unknown or missing location'));
     }
 
     try {
       const weather = await this.getWeather(location);
-      const messages = await this.transform(cmd, Message.reply(JSON.stringify(weather), cmd.context));
-      
+      const messages = await this.transform(cmd, weather);
+
       this.logger.debug({ messages, weather }, 'rendering weather data');
 
       for (const msg of messages) {

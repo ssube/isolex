@@ -1,12 +1,14 @@
 import { isEmpty, trim } from 'lodash';
 import * as split from 'split-string';
+import { isString } from 'util';
 
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
 export interface SplitParserConfig extends ParserConfig {
@@ -31,10 +33,10 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
   public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
     throw new NotImplementedError();
   }
-  
+
   public async parse(msg: Message): Promise<Array<Command>> {
     const body = this.removeTags(msg.body);
-    const args = this.split(body).map(trim).filter((it) => !isEmpty(it));
+    const args = await this.parseBody(msg, body);
     this.logger.debug({ args, body }, 'splitting string');
 
     return [Command.create({
@@ -43,6 +45,14 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
       noun: this.data.emit.noun,
       verb: this.data.emit.verb,
     })];
+  }
+
+  public async parseBody(msg: Message, value: ParserValue): Promise<any> {
+    if (!isString(value)) {
+      throw new InvalidArgumentError('value must be a string');
+    }
+
+    return this.split(value).map(trim).filter((it) => !isEmpty(it));
   }
 
   public split(msg: string): Array<string> {

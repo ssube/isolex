@@ -2,6 +2,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface TimeControllerConfig extends ControllerConfig {
   locale: string;
@@ -23,6 +24,6 @@ export class TimeController extends BaseController<TimeControllerConfig> impleme
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
 
     this.logger.debug({ date, locale, zone }, 'handling time');
-    return this.bot.send(Message.reply(date.toLocaleString(locale, { timeZone: zone }), cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, date.toLocaleString(locale, { timeZone: zone })));
   }
 }

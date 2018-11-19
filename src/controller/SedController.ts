@@ -2,6 +2,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export type SedControllerConfig = ControllerConfig;
 export type SedControllerOptions = ControllerOptions<SedControllerConfig>;
@@ -22,7 +23,7 @@ export class SedController extends BaseController<SedControllerConfig> implement
     if (!parts) {
       this.logger.debug({ args }, 'incorrect input.');
 
-      return this.bot.send(Message.reply('Incorrect input. Please use \`!!s/e/d/[flags]\`', cmd.context));
+      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'Incorrect input. Please use \`!!s/e/d/[flags]\`'));
     }
 
     this.logger.debug({ parts }, 'fetching messages');
@@ -44,7 +45,7 @@ export class SedController extends BaseController<SedControllerConfig> implement
     }
 
     // No matches
-    return this.bot.send(Message.reply('No messages were matched!', cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'No messages were matched!'));
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
@@ -57,7 +58,7 @@ export class SedController extends BaseController<SedControllerConfig> implement
     if (!!message.body.match(pattern)) {
       const body = message.body.replace(new RegExp(pattern, flags), replacement);
 
-      await this.bot.send(Message.reply(body, command.context));
+      await this.bot.send(Message.reply(command.context, TYPE_TEXT, body));
       return true;
     }
 

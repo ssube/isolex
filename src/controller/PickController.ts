@@ -3,6 +3,7 @@ import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
+import { TYPE_TEXT } from 'src/utils/Mime';
 import { Picklist } from 'src/utils/Picklist';
 
 export interface PickControllerConfig extends ControllerConfig {
@@ -32,6 +33,6 @@ export class PickController extends BaseController<PickControllerConfig> impleme
     const puck = list.pick(count);
 
     this.logger.debug({ count, data, list, puck }, 'picking item');
-    return this.bot.send(Message.reply(puck.join(','), cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, puck.join(',')));
   }
 }

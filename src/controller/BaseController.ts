@@ -1,8 +1,8 @@
 import { BaseService } from 'src/BaseService';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Transform } from 'src/transform/Transform';
 import { Message } from 'src/entity/Message';
+import { Transform } from 'src/transform/Transform';
 
 export abstract class BaseController<TConfig extends ControllerConfig> extends BaseService<TConfig> implements Controller {
   public readonly name: string;
@@ -11,10 +11,15 @@ export abstract class BaseController<TConfig extends ControllerConfig> extends B
 
   constructor(options: ControllerOptions<TConfig>) {
     super(options);
+
+    this.transforms = [];
   }
 
   public async start() {
-    /* noop */
+    for (const def of this.data.transforms) {
+      const transform = await this.bot.createService<Transform, any>(def);
+      this.transforms.push(transform);
+    }
   }
 
   public async stop() {
@@ -27,8 +32,8 @@ export abstract class BaseController<TConfig extends ControllerConfig> extends B
 
   public abstract handle(cmd: Command): Promise<void>;
 
-  protected async transform(cmd: Command, msg: Message): Promise<Array<Message>> {
-    let data = Message.reply(cmd.toString(), cmd.context);
+  protected async transform(cmd: Command, input: any): Promise<Array<Message>> {
+    let data = input;
     for (const transform of this.transforms) {
       const [head, ...rest] = await transform.transform(cmd, data);
       data = head;

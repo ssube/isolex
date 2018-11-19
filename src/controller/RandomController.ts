@@ -6,6 +6,7 @@ import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { countList } from 'src/utils';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export type RandomControllerConfig = ControllerConfig;
 export type RandomControllerOptions = ControllerOptions<RandomControllerConfig>;
@@ -44,7 +45,7 @@ export class RandomController extends BaseController<RandomControllerConfig> imp
 
     this.logger.debug({ args }, 'Returning random results');
 
-    return this.bot.send(Message.reply(`The result of your roll is: ${result}`, cmd.context));
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `The result of your roll is: ${result}`));
   }
 
   private getRandomDefault(): number {
