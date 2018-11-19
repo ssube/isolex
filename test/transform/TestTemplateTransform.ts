@@ -5,7 +5,9 @@ import { ConsoleLogger } from 'noicejs';
 import { Bot } from 'src/Bot';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { TemplateTransform, TemplateTransformOptions } from 'src/transform/TemplateTransform';
+import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -16,6 +18,9 @@ describeAsync('template transform', async () => {
   itAsync('should transform data', async () => {
     const { container } = await createContainer();
 
+    const data = {
+      test: 1,
+    };
     const templates = {
       body: 'test_body',
     };
@@ -43,9 +48,9 @@ describeAsync('template transform', async () => {
       data: {},
       noun: 'test',
       verb: CommandVerb.Get,
-    }), { test: 1 });
+    }), Message.reply(ineeda<Context>(), TYPE_JSON, JSON.stringify(data)));
 
     expect(output.length).to.equal(1);
-    expect(output[0].body).to.deep.equal(Array.from(Object.entries(templates)));
+    expect(output[0].body).to.deep.equal(templates);
   });
 });

@@ -1,6 +1,7 @@
 import { Command } from 'src/entity/Command';
 import { ParserConfig } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceOptions } from 'src/Service';
+import { Message } from 'src/entity/Message';
 
 export interface TransformConfig {
   parsers: Array<ServiceDefinition<ParserConfig>>;
@@ -16,5 +17,5 @@ export interface Transform extends Service {
    * 
    * The transform may emit multiple objects (if many events were sent at once or many views of the same event).
    */
-  transform(cmd: Command, data: any): Promise<Array<any>>;
+  transform(cmd: Command, msg: Message): Promise<Array<Message>>;
 }

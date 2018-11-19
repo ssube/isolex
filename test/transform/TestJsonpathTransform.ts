@@ -5,7 +5,9 @@ import { ConsoleLogger } from 'noicejs';
 import { Bot } from 'src/Bot';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
 import { JsonpathTransform, JsonpathTransformOptions } from 'src/transform/JsonpathTransform';
+import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
@@ -38,7 +40,7 @@ describeAsync('jsonpath transform', async () => {
       data: {},
       noun: 'test',
       verb: CommandVerb.Get,
-    }), data);
+    }), Message.reply(ineeda<Context>(), TYPE_JSON, JSON.stringify(data)));
 
     expect(output.length).to.equal(1);
     expect((output[0].body as any).test).to.deep.equal(data.test);

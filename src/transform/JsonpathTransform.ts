@@ -26,8 +26,8 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformConfig> im
     this.queries = normalizeMap(options.data.queries);
   }
 
-  public async transform(cmd: Command, data: any): Promise<Array<Message>> {
-    const scope = this.mergeScope(cmd, data);
+  public async transform(cmd: Command, msg: Message): Promise<Array<Message>> {
+    const scope = this.mergeScope(cmd, msg);
     const out = new Map();
     for (const [key, query] of this.queries) {
       this.logger.debug({ key, query, scope }, 'executing jsonpath query');

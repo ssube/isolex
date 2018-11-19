@@ -3,6 +3,7 @@ import { Inject } from 'noicejs';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { ServiceOptions } from 'src/Service';
+import { mapToDict } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -38,14 +39,14 @@ export class TemplateTransform extends BaseTransform<TemplateTransformConfig> im
     }
   }
 
-  public async transform(cmd: Command, data: any): Promise<Array<any>> {
-    const scope = this.mergeScope(cmd, data);
+  public async transform(cmd: Command, msg: Message): Promise<Array<Message>> {
+    const scope = this.mergeScope(cmd, msg);
     const out = new Map();
     for (const [key, template] of this.templates) {
       const result = template.render(scope);
       out.set(key, result);
     }
-    const body = Array.from(out.entries());
+    const body = mapToDict(out);
     return [Message.reply(cmd.context, TYPE_JSON, body)];
   }
 }

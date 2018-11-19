@@ -38,11 +38,11 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
 
     try {
       const weather = await this.getWeather(location);
+      this.logger.debug({ weather }, 'transforming weather data');
+
       const messages = await this.transform(cmd, weather);
-
-      this.logger.debug({ messages, weather }, 'rendering weather data');
-
       for (const msg of messages) {
+        this.logger.debug({ msg }, 'sending weather msg');
         await this.bot.send(msg);
       }
     } catch (err) {
