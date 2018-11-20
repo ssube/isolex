@@ -96,7 +96,7 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    const mapped = await this.parseBody(msg, msg.body);
+    const mapped = await this.decode(msg);
     const commands = [];
     for (const { args, cmd } of mapped) {
       commands.push(Command.create({
@@ -128,12 +128,12 @@ export class MapParser extends BaseParser<MapParserConfig> implements Parser {
   /**
    * Map a string into some commands, splitting on keywords.
    */
-  public async parseBody(msg: Message, value: ParserValue): Promise<Array<MappedMessage>> {
-    if (!isString(value)) {
+  public async decode(msg: Message): Promise<Array<MappedMessage>> {
+    if (!isString(msg.body)) {
       throw new InvalidArgumentError('value must be a string');
     }
 
-    const parts = split(value, this.data.split).reverse();
+    const parts = split(msg.body, this.data.split).reverse();
     this.logger.debug({ parts }, 'mapping resolved command');
 
     const pending = [];

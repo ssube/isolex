@@ -51,6 +51,7 @@ describeAsync('template transform', async () => {
     }), Message.reply(ineeda<Context>(), TYPE_JSON, JSON.stringify(data)));
 
     expect(output.length).to.equal(1);
-    expect(output[0].body).to.deep.equal(templates);
+    const parsed = JSON.parse(output[0].body);
+    expect(parsed).to.deep.equal(templates);
   });
 });

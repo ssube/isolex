@@ -1,10 +1,12 @@
+import { isString } from 'lodash';
+
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
+import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
-import { isString } from 'util';
 
 export interface EchoParserConfig extends ParserConfig {
   args: {
@@ -26,7 +28,7 @@ export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    const parsed = await this.parseBody(msg, msg.body);
+    const parsed = await this.decode(msg);
     return [Command.create({
       context: msg.context,
       data: {
@@ -37,12 +39,11 @@ export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
     })];
   }
 
-  public async parseBody(msg: Message, data: ParserValue): Promise<any> {
-    if (isString(data)) {
-      return this.removeTags(data);
-    } else {
-      return data;
+  public async decode(msg: Message): Promise<any> {
+    if (!isString(msg.body)) {
+      throw new InvalidArgumentError('message body must be a string');
     }
+    return this.removeTags(msg.body);
   }
 
   public async complete(frag: Fragment, value: string): Promise<Array<Command>> {

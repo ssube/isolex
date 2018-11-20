@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import { isString } from 'lodash';
 
 import { Command, CommandOptions } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
@@ -6,7 +7,7 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
+import { Parser, ParserConfig } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { leftPad, MapOrMapLike } from 'src/utils';
 
@@ -47,8 +48,7 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    const body = this.removeTags(msg.body);
-    const { data, noun } = await this.parseBody(msg, body);
+    const { data, noun } = await this.decode(msg);
     const cmdOptions: CommandOptions = {
       context: msg.context,
       data,
@@ -60,11 +60,12 @@ export class LexParser extends BaseParser<LexParserConfig> implements Parser {
     return [Command.create(cmdOptions)];
   }
 
-  public async parseBody(msg: Message, body: ParserValue): Promise<any> {
-    if (Buffer.isBuffer(body)) {
-      throw new InvalidArgumentError('lex parser can not parse buffer data');
+  public async decode(msg: Message): Promise<any> {
+    if (!isString(msg.body)) {
+      throw new InvalidArgumentError('message body must be a string');
     }
 
+    const body = this.removeTags(msg.body);
     const post = await this.postText({
       botAlias: this.data.bot.alias,
       botName: this.data.bot.name,

@@ -46,7 +46,7 @@ export class TemplateTransform extends BaseTransform<TemplateTransformConfig> im
       const result = template.render(scope);
       out.set(key, result);
     }
-    const body = mapToDict(out);
+    const body = JSON.stringify(mapToDict(out));
     return [Message.reply(cmd.context, TYPE_JSON, body)];
   }
 }

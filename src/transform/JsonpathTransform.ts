@@ -34,7 +34,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformConfig> im
       const result = jp.query(scope, query);
       out.set(key, result);
     }
-    const body = mapToDict(out);
+    const body = JSON.stringify(mapToDict(out));
     return [Message.reply(cmd.context, TYPE_JSON, body)];
   }
 }

@@ -6,7 +6,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerConfig extends ControllerConfig {
@@ -22,7 +22,7 @@ export interface WeatherControllerOptions extends ControllerOptions<WeatherContr
 
 @Inject('compiler')
 export class WeatherController extends BaseController<WeatherControllerConfig> implements Controller {
-  protected container: Container;
+  protected readonly container: Container;
 
   constructor(options: WeatherControllerOptions) {
     super(options);
@@ -38,9 +38,9 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
 
     try {
       const weather = await this.getWeather(location);
-      this.logger.debug({ weather }, 'transforming weather data');
 
-      const messages = await this.transform(cmd, weather);
+      this.logger.debug({ weather }, 'transforming weather data');
+      const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(weather)));
       for (const msg of messages) {
         this.logger.debug({ msg }, 'sending weather msg');
         await this.bot.send(msg);
@@ -52,7 +52,7 @@ export class WeatherController extends BaseController<WeatherControllerConfig> i
 
   public async getWeather(location: string): Promise<WeatherReply> {
     const query = this.getQuery(location);
-    this.logger.debug({ location, query }, 'requesting weather data from API');
+    this.logger.debug({ location, query, root: this.data.api.root }, 'requesting weather data from API');
 
     try {
       return this.container.create<WeatherReply, BaseOptions & CoreOptions & RequiredUriUrl>('request', {

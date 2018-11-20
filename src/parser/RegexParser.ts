@@ -29,8 +29,7 @@ export class RegexParser extends BaseParser<RegexParserConfig> implements Parser
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    const body = this.removeTags(msg.body);
-    const data = await this.parseBody(msg, body);
+    const data = await this.decode(msg);
 
     return [Command.create({
       context: msg.context,
@@ -40,12 +39,13 @@ export class RegexParser extends BaseParser<RegexParserConfig> implements Parser
     })];
   }
 
-  public async parseBody(msg: Message, value: ParserValue): Promise<any> {
-    if (!isString(value)) {
+  public async decode(msg: Message): Promise<any> {
+    if (!isString(msg.body)) {
       throw new InvalidArgumentError('value must be a string');
     }
 
-    const parts = value.match(this.regexp);
+    const body = this.removeTags(msg.body);
+    const parts = body.match(this.regexp);
 
     this.logger.debug({ parts }, 'splitting on regexp');
     if (!parts) {

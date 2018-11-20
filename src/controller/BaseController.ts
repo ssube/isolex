@@ -2,6 +2,7 @@ import { BaseService } from 'src/BaseService';
 import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { BaseError } from 'src/error/BaseError';
 import { Transform } from 'src/transform/Transform';
 
 export abstract class BaseController<TConfig extends ControllerConfig> extends BaseService<TConfig> implements Controller {
@@ -32,10 +33,16 @@ export abstract class BaseController<TConfig extends ControllerConfig> extends B
 
   public abstract handle(cmd: Command): Promise<void>;
 
-  protected async transform(cmd: Command, input: any): Promise<Array<Message>> {
+  protected async transform(cmd: Command, input: Message): Promise<Array<Message>> {
     let data = input;
     for (const transform of this.transforms) {
       const [head, ...rest] = await transform.transform(cmd, data);
+      if (Message.isMessage(head)) {
+        const err = new BaseError('misbehaving transform returned something other than a message');
+        this.logger.error(err, 'misbehaving transform');
+        throw err;
+      }
+
       data = head;
       if (rest.length) {
         this.logger.info({ rest }, 'echo transform discarding extra messages');

@@ -30,7 +30,7 @@ export abstract class BaseParser<TConfig extends ParserConfig> extends BaseServi
 
   public abstract parse(msg: Message): Promise<Array<Command>>;
 
-  public abstract parseBody(msg: Message, value: ParserValue): Promise<any>;
+  public abstract decode(msg: Message): Promise<any>;
 
   protected includesTag(body: string): boolean {
     for (const t of this.tags) {

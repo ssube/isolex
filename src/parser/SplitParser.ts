@@ -35,9 +35,8 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    const body = this.removeTags(msg.body);
-    const args = await this.parseBody(msg, body);
-    this.logger.debug({ args, body }, 'splitting string');
+    const args = await this.decode(msg);
+    this.logger.debug({ args }, 'splitting string');
 
     return [Command.create({
       context: msg.context,
@@ -47,12 +46,13 @@ export class SplitParser extends BaseParser<SplitParserConfig> implements Parser
     })];
   }
 
-  public async parseBody(msg: Message, value: ParserValue): Promise<any> {
-    if (!isString(value)) {
+  public async decode(msg: Message): Promise<any> {
+    if (!isString(msg.body)) {
       throw new InvalidArgumentError('value must be a string');
     }
 
-    return this.split(value).map(trim).filter((it) => !isEmpty(it));
+    const body = this.removeTags(msg.body);
+    return this.split(body).map(trim).filter((it) => !isEmpty(it));
   }
 
   public split(msg: string): Array<string> {

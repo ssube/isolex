@@ -36,7 +36,7 @@ export interface Parser extends Service {
    * 
    * This allows access to the parser's data for use by transforms.
    */
-  parseBody(msg: Message, data: ParserValue): Promise<any>;
+  decode(msg: Message): Promise<any>;
 
   /**
    * Complete a command from an existing fragment and new value.

@@ -15,8 +15,9 @@ import { createContainer } from 'test/helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
+    const data = { test: 'test' };
     const { container, module } = await createContainer();
-    module.bind('request').toFactory(async () => ({ test: 'test' }));
+    module.bind('request').toFactory(async () => data);
 
     const sent: Array<Message> = [];
     const options: WeatherControllerOptions = {
@@ -79,6 +80,9 @@ describeAsync('weather controller', async () => {
     await controller.handle(cmd);
 
     expect(sent.length).to.equal(1);
-    expect(sent[0].body).to.equal('test');
+    expect(sent[0]).to.be.an.instanceOf(Message);
+
+    const parsed = JSON.parse(sent[0].body);
+    expect(parsed).to.deep.equal(data);
   });
 });
