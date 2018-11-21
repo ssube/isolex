@@ -22,8 +22,13 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
     super(options);
   }
 
-  public async emit(): Promise<void> {
-    throw new NotImplementedError('slack listener cannot emit messages yet');
+  public async emit(msg: Message): Promise<void> {
+    if (msg.context.roomId) {
+      await this.client.sendMessage(msg.body, msg.context.roomId);
+    }
+
+    // fail
+    this.logger.error('could not find destination in message context');
   }
 
   public async fetch(): Promise<Array<Message>> {
