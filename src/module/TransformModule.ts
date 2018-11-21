@@ -1,9 +1,10 @@
 import { kebabCase } from 'lodash';
 import { Module } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
-import { TemplateTransform } from 'src/transform/TemplateTransform';
-import { JsonpathTransform } from 'src/transform/JsonpathTransform';
+
 import { FlattenTransform } from 'src/transform/FlattenTransform';
+import { JsonpathTransform } from 'src/transform/JsonpathTransform';
+import { TemplateTransform } from 'src/transform/TemplateTransform';
 
 export class TransformModule extends Module {
   public async configure(options: ModuleOptions) {

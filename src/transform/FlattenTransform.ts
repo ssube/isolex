@@ -1,4 +1,3 @@
-import { isNil } from 'lodash';
 import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';

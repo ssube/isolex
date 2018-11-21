@@ -1,15 +1,11 @@
 import { isNil } from 'lodash';
-import { format as formatMath, typeof as typeOfMath } from 'mathjs';
+import { format as formatMath, typeof as typeOfMath, FormatOptions } from 'mathjs';
 
 export interface ResultFormatOptions {
   list: {
     join: string;
   };
-  number: {
-    fraction: string;
-    notation: string;
-    precision: number;
-  };
+  number: FormatOptions;
   node: {
     implicit: string;
     parenthesis: string;

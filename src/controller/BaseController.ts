@@ -3,8 +3,8 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { BaseError } from 'src/error/BaseError';
-import { Transform, TransformData } from 'src/transform/Transform';
 import { ServiceDefinition } from 'src/Service';
+import { Transform, TransformData } from 'src/transform/Transform';
 
 export abstract class BaseController<TData extends ControllerData> extends BaseService<TData> implements Controller {
   public readonly name: string;

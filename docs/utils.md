@@ -4,6 +4,9 @@ For developers, this document explains what libraries and utilities are availabl
 
 ## Libraries
 
+When installing libraries, prefer a `~` version range and set the `major.minor` components (`~X.Y`) unless the
+library is still a `0.0` release, then specify the entire `^X.Y.Z` specifier.
+
 | task         | library      | location    | usage                               | notes            |
 |--------------|--------------|-------------|-------------------------------------|------------------|
 | AWS          | aws-sdk      | main bundle | `import {} from 'aws-sdk'`          |                  |
@@ -23,12 +26,6 @@ For developers, this document explains what libraries and utilities are availabl
 | test leaks   | test/utils   | test bundle | `import {} from 'test/utils/async'` | test wrappers    |
 | test mocks   | ineeda       | test bundle |                                     |                  |
 | yaml         | js-yaml      | main bundle |                                     | custom schema    |
-
-## Services
-
-| task    | service          | type     | notes |
-|---------|------------------|----------|-------|
-| discord | discord-listener | Listener |       |
 
 ## Utilities
 

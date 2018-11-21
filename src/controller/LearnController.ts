@@ -59,7 +59,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     }
   }
 
-  protected async createKeyword(name: string, args: Array<string>, cmd: Command): Promise<void> {
+  protected async createKeyword(key: string, args: Array<string>, cmd: Command): Promise<void> {
     const keyword = Keyword.create({
       command: Command.create({
         context: cmd.context,
@@ -68,10 +68,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
         verb: cmd.verb,
       }),
       controller: this.name,
-      name,
+      name: key,
     });
 
-    this.logger.debug({ args, cmd, name, keyword }, 'learning command');
+    this.logger.debug({ args, cmd, key, keyword }, 'learning command');
 
     if (await this.keywordRepository.findOne(name)) {
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Command already exists: ${name}`));

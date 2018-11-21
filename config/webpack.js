@@ -1,6 +1,5 @@
 const { resolve } = require('path');
 const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
