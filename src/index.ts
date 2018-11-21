@@ -1,5 +1,6 @@
 import { Container, Module } from 'noicejs';
 import * as sourceMapSupport from 'source-map-support';
+
 import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
@@ -10,6 +11,7 @@ import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
+
 import { TransformModule } from './module/TransformModule';
 
 // webpack environment defines

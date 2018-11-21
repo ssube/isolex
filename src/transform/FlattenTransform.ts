@@ -39,4 +39,3 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
     return [Message.reply(cmd.context, TYPE_TEXT, body)];
   }
 }
-

@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { format as formatMath, typeof as typeOfMath, FormatOptions } from 'mathjs';
+import { format as formatMath, FormatOptions, typeof as typeOfMath } from 'mathjs';
 
 export interface ResultFormatOptions {
   list: {

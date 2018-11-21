@@ -1,5 +1,5 @@
 import { bindAll } from 'lodash';
-import { Container, Inject, BaseError } from 'noicejs';
+import { BaseError, Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
@@ -14,6 +14,7 @@ import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
+
 import { InvalidArgumentError } from './error/InvalidArgumentError';
 import { mustGet } from './utils';
 
