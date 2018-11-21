@@ -1,0 +1,8 @@
+metadata:
+  kind: discord-listener
+  name: discord-isolex
+data:
+  token: !env ISOLEX_DISCORD_TOKEN
+  presence:
+    game:
+      name: Global Thermonuclear Warfare

@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@kubernetes/client-node": "^0.7.1",
+    "@slack/client": "^4.8.0",
     "@types/bluebird": "~3.5",
     "@types/bunyan": "~1.8",
     "@types/chai": "~4.1",

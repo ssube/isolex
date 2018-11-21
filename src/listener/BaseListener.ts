@@ -15,7 +15,9 @@ export abstract class BaseListener<TData> extends BaseService<TData> implements 
 
   public abstract fetch(options: FetchOptions): Promise<Array<Message>>;
 
-  public abstract receive(event: any): Promise<void>;
+  public async receive(value: Message) {
+    return this.bot.receive(value);
+  }
 
   public abstract start(): Promise<void>;
 

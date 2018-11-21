@@ -31,5 +31,5 @@ export interface Listener extends Service {
   /**
    * Receive an incoming event and pass it on to the bot.
    */
-  receive(event: any): Promise<void>;
+  receive(msg: Message): Promise<void>;
 }

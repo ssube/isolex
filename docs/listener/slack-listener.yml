@@ -1,0 +1,9 @@
+metadata:
+  kind: slack-listener
+  name: slack-isolex
+data:
+  token: !env ISOLEX_SLACK_TOKEN
+  presence:
+    game:
+      name: Global Thermonuclear Warfare
+

@@ -167,10 +167,6 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     return messages;
   }
 
-  public async receive(value: Message) {
-    return this.bot.receive(value);
-  }
-
   protected convertMessage(msg: DiscordMessage): Message {
     return Message.create({
       body: msg.content,
