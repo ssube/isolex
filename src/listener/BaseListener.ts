@@ -5,10 +5,12 @@ import { FetchOptions, Listener } from 'src/listener/Listener';
 
 export abstract class BaseListener<TData> extends BaseService<TData> implements Listener {
   /**
-   * @TODO implement this for real
+   * Check if this listener can receive messages from this context.
+   *
+   * Defaults to checking that the context came from this very same listener, by id.
    */
   public async check(context: Context): Promise<boolean> {
-    return true;
+    return context.listenerId === this.id;
   }
 
   public abstract emit(msg: Message): Promise<void>;

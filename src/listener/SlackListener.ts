@@ -8,6 +8,7 @@ import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseListener } from './BaseListener';
 import { Listener } from './Listener';
+import { BaseError } from 'noicejs';
 
 export interface SlackListenerData {
   token: string;
@@ -24,7 +25,13 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
 
   public async emit(msg: Message): Promise<void> {
     if (msg.context.roomId) {
-      await this.client.sendMessage(msg.body, msg.context.roomId);
+      const result = await this.client.sendMessage(msg.body, msg.context.roomId);
+      if (result.error) {
+        const err = new BaseError(result.error.msg);
+        this.logger.error(err, 'error sending slack message');
+        throw err;
+      }
+      return;
     }
 
     // fail

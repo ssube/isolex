@@ -1,11 +1,13 @@
 .nyc_output/
 config/
+deploy/
 node_modules/
 out/coverage/
 out/docs/
 out/*.html
 out/*.json
 out/test-*
+scripts/
 src/
 test/
 Makefile
