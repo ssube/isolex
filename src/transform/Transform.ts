@@ -1,13 +1,13 @@
 import { Command } from 'src/entity/Command';
-import { ParserConfig } from 'src/parser/Parser';
+import { ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceOptions } from 'src/Service';
 import { Message } from 'src/entity/Message';
 
-export interface TransformConfig {
-  parsers: Array<ServiceDefinition<ParserConfig>>;
+export interface TransformData {
+  parsers: Array<ServiceDefinition<ParserData>>;
 }
 
-export type TransformOptions<TData extends TransformConfig> = ServiceOptions<TData>;
+export type TransformOptions<TData extends TransformData> = ServiceOptions<TData>;
 
 export interface Transform extends Service {
   /**

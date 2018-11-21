@@ -2,14 +2,14 @@ import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface CountControllerConfig extends ControllerConfig {
+export interface CountControllerData extends ControllerData {
   default: {
     count: string;
     name: string;
@@ -24,12 +24,12 @@ export interface CountControllerConfig extends ControllerConfig {
   };
 }
 
-export interface CountControllerOptions extends ControllerOptions<CountControllerConfig> {
+export interface CountControllerOptions extends ControllerOptions<CountControllerData> {
   storage: Connection;
 }
 
 @Inject('storage')
-export class CountController extends BaseController<CountControllerConfig> implements Controller {
+export class CountController extends BaseController<CountControllerData> implements Controller {
   protected storage: Connection;
   protected counterRepository: Repository<Counter>;
 

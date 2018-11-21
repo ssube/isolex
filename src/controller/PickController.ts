@@ -1,12 +1,12 @@
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { Picklist } from 'src/utils/Picklist';
 
-export interface PickControllerConfig extends ControllerConfig {
+export interface PickControllerData extends ControllerData {
   check: ChecklistOptions<string>;
   count: string;
   field: {
@@ -15,9 +15,9 @@ export interface PickControllerConfig extends ControllerConfig {
   };
 }
 
-export type PickControllerOptions = ControllerOptions<PickControllerConfig>;
+export type PickControllerOptions = ControllerOptions<PickControllerData>;
 
-export class PickController extends BaseController<PickControllerConfig> implements Controller {
+export class PickController extends BaseController<PickControllerData> implements Controller {
   protected list: Checklist<string>;
 
   constructor(options: PickControllerOptions) {

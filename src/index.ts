@@ -10,6 +10,7 @@ import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
+import { TransformModule } from './module/TransformModule';
 
 // webpack environment defines
 declare const BUILD_JOB: string;
@@ -54,10 +55,11 @@ async function main(): Promise<number> {
   const botModule = new BotModule({ logger });
   const modules: Array<Module> = [
     botModule,
-    new FilterModule(),
-    new ParserModule(),
-    new ListenerModule(),
     new ControllerModule(),
+    new FilterModule(),
+    new ListenerModule(),
+    new ParserModule(),
+    new TransformModule(),
   ];
 
   if (config.data.migrate) {

@@ -3,11 +3,11 @@ import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { ServiceOptions } from 'src/Service';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
-export type UserFilterConfig = ChecklistOptions<string>;
+export type UserFilterData = ChecklistOptions<string>;
 
-export type UserFilterOptions = ServiceOptions<UserFilterConfig>;
+export type UserFilterOptions = ServiceOptions<UserFilterData>;
 
-export class UserFilter extends BaseFilter<UserFilterConfig> implements Filter {
+export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
   protected check: Checklist<string>;
 
   constructor(options: UserFilterOptions) {

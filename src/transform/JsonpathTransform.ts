@@ -7,17 +7,17 @@ import { mapToDict, normalizeMap } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseTransform } from './BaseTransform';
-import { Transform, TransformConfig } from './Transform';
+import { Transform, TransformData } from './Transform';
 
-export interface JsonpathTransformConfig extends TransformConfig {
+export interface JsonpathTransformData extends TransformData {
   queries: {
     [key: string]: string;
   };
 }
 
-export type JsonpathTransformOptions = ServiceOptions<JsonpathTransformConfig>;
+export type JsonpathTransformOptions = ServiceOptions<JsonpathTransformData>;
 
-export class JsonpathTransform extends BaseTransform<JsonpathTransformConfig> implements Transform {
+export class JsonpathTransform extends BaseTransform<JsonpathTransformData> implements Transform {
   protected queries: Map<string, string>;
 
   constructor(options: JsonpathTransformOptions) {

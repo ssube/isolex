@@ -1,0 +1,19 @@
+metadata:
+  kind: weather-controller
+  name: test_weather
+data:
+  api:
+    key: !env ISOLEX_WEATHER_API_KEY
+    root: https://api.openweathermap.org/data/2.5/
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: weather_body
+      data: 
+        templates:
+          body: >-
+            {{data.name}} is {{data.main.temp}} with {{data.wind.speed}} wind
+            and {{#each data.weather}}{{this.description}}{{/each}}!
+    - metadata:
+        kind: flatten-transform
+        name: flatten_body

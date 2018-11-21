@@ -9,15 +9,15 @@ import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
 
-export type YamlParserConfig = ParserConfig;
-export type YamlParserOptions = ServiceOptions<YamlParserConfig>;
+export type YamlParserData = ParserData;
+export type YamlParserOptions = ServiceOptions<YamlParserData>;
 export const YAML_TYPES = [TYPE_JSON, TYPE_YAML];
 
-export class YamlParser extends BaseParser<YamlParserConfig> implements Parser {
+export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   constructor(options: YamlParserOptions) {
     super(options);
   }

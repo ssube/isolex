@@ -6,16 +6,16 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
-export interface RegexParserConfig extends ParserConfig {
+export interface RegexParserData extends ParserData {
   regexp: string;
 }
 
-export type RegexParserOptions = ServiceOptions<RegexParserConfig>;
+export type RegexParserOptions = ServiceOptions<RegexParserData>;
 
-export class RegexParser extends BaseParser<RegexParserConfig> implements Parser {
+export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   protected regexp: RegExp;
 
   constructor(options: RegexParserOptions) {

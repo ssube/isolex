@@ -2,13 +2,13 @@ import { BaseService } from 'src/BaseService';
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
-export abstract class BaseParser<TConfig extends ParserConfig> extends BaseService<TConfig> implements Parser {
+export abstract class BaseParser<TData extends ParserData> extends BaseService<TData> implements Parser {
   protected tags: Array<string>;
 
-  constructor(options: ServiceOptions<TConfig>) {
+  constructor(options: ServiceOptions<TData>) {
     super(options);
 
     this.tags = options.data.tags;

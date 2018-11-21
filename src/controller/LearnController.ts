@@ -2,13 +2,13 @@ import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface LearnControllerConfig extends ControllerConfig {
+export interface LearnControllerData extends ControllerData {
   emit: {
     field: string;
     source: string;
@@ -21,12 +21,12 @@ export interface LearnControllerConfig extends ControllerConfig {
   };
 }
 
-export interface LearnControllerOptions extends ControllerOptions<LearnControllerConfig> {
+export interface LearnControllerOptions extends ControllerOptions<LearnControllerData> {
   storage: Connection;
 }
 
 @Inject('storage')
-export class LearnController extends BaseController<LearnControllerConfig> implements Controller {
+export class LearnController extends BaseController<LearnControllerData> implements Controller {
   protected storage: Connection;
   protected keywordRepository: Repository<Keyword>;
 

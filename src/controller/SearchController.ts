@@ -1,14 +1,14 @@
 import { Container, Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface SearchControllerConfig extends ControllerConfig {
+export interface SearchControllerData extends ControllerData {
   count: number;
   field: string;
   request: {
@@ -17,12 +17,12 @@ export interface SearchControllerConfig extends ControllerConfig {
   };
 }
 
-export interface SearchControllerOptions extends ControllerOptions<SearchControllerConfig> {
+export interface SearchControllerOptions extends ControllerOptions<SearchControllerData> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class SearchController extends BaseController<SearchControllerConfig> implements Controller {
+export class SearchController extends BaseController<SearchControllerData> implements Controller {
   protected container: Container;
   protected url: Template;
 
@@ -49,7 +49,8 @@ export class SearchController extends BaseController<SearchControllerConfig> imp
     });
 
     const body = JSON.stringify(response);
-    const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_TEXT, body));
+    const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, body));
+    this.logger.debug({ count: messages.length }, 'transformed search result into message');
     for (const msg of messages) {
       await this.bot.send(msg);
     }

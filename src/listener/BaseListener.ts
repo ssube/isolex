@@ -3,7 +3,7 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 
-export abstract class BaseListener<TConfig> extends BaseService<TConfig> implements Listener {
+export abstract class BaseListener<TData> extends BaseService<TData> implements Listener {
   /**
    * @TODO implement this for real
    */

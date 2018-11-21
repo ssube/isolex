@@ -7,11 +7,11 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { leftPad, MapOrMapLike } from 'src/utils';
 
-export interface LexParserConfig extends ParserConfig {
+export interface LexParserData extends ParserData {
   account: {
     accessKey: string;
     secretKey: string;
@@ -23,9 +23,9 @@ export interface LexParserConfig extends ParserConfig {
   region: string;
 }
 
-export type LexParserOptions = ServiceOptions<LexParserConfig>;
+export type LexParserOptions = ServiceOptions<LexParserData>;
 
-export class LexParser extends BaseParser<LexParserConfig> implements Parser {
+export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected alias: string;
   protected creds: AWS.Credentials;
   protected lex: AWS.LexRuntime;

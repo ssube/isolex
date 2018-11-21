@@ -1,13 +1,13 @@
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export type SedControllerConfig = ControllerConfig;
-export type SedControllerOptions = ControllerOptions<SedControllerConfig>;
+export type SedControllerData = ControllerData;
+export type SedControllerOptions = ControllerOptions<SedControllerData>;
 
-export class SedController extends BaseController<SedControllerConfig> implements Controller {
+export class SedController extends BaseController<SedControllerData> implements Controller {
   constructor(options: SedControllerOptions) {
     super(options);
   }

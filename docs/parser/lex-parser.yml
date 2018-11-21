@@ -1,0 +1,14 @@
+metadata:
+  kind: lex-parser
+  name: test_lex
+data:
+  account:
+    accessKey: !env ISOLEX_LEX_ACCOUNT_ACCESS_KEY
+    secretKey: !env ISOLEX_LEX_ACCOUNT_SECRET_KEY
+  bot:
+    name: isolex
+    alias: test
+  region: us-east-1
+  tags:
+    - '@isolex'
+    - !env ISOLEX_DISCORD_USER_ID

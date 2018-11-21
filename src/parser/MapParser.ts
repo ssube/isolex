@@ -7,7 +7,7 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
+import { Parser, ParserData, ParserValue } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { filterNil, setOrPush } from 'src/utils';
 
@@ -72,23 +72,27 @@ export interface MappedMessage {
   cmd: MappedCommand;
 }
 
-export interface MapParserConfig extends ParserConfig {
+export interface MapParserData extends ParserData {
   aliases: Array<MatchCommand>;
   matches: Array<MatchCommand>;
   split: SplitString.SplitOptions;
 }
 
-export type MapParserOptions = ServiceOptions<MapParserConfig>;
+export type MapParserOptions = ServiceOptions<MapParserData>;
 
-export class MapParser extends BaseParser<MapParserConfig> implements Parser {
+export class MapParser extends BaseParser<MapParserData> implements Parser {
   protected aliases: Array<MatchCommand>;
   protected matches: Array<MatchCommand>;
 
   constructor(options: MapParserOptions) {
     super(options);
 
+    this.aliases = Array.from(options.data.aliases);
     this.matches = Array.from(options.data.matches);
-    this.tags = filterNil(this.matches.map((it) => it.match.str));
+    this.tags = filterNil([
+      ...this.matches.map((it) => it.match.str),
+      ...this.aliases.map((it) => it.match.str),
+    ]);
   }
 
   public async complete(frag: Fragment, value: string): Promise<Array<Command>> {

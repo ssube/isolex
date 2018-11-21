@@ -3,25 +3,25 @@ import { BaseOptions } from 'noicejs/Container';
 import { CoreOptions, RequiredUriUrl } from 'request';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface WeatherControllerConfig extends ControllerConfig {
+export interface WeatherControllerData extends ControllerData {
   api: {
     key: string;
     root: string;
   };
 }
 
-export interface WeatherControllerOptions extends ControllerOptions<WeatherControllerConfig> {
+export interface WeatherControllerOptions extends ControllerOptions<WeatherControllerData> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class WeatherController extends BaseController<WeatherControllerConfig> implements Controller {
+export class WeatherController extends BaseController<WeatherControllerData> implements Controller {
   protected readonly container: Container;
 
   constructor(options: WeatherControllerOptions) {

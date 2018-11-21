@@ -6,13 +6,13 @@ import { User } from 'src/entity/auth/User';
 import { Command } from 'src/entity/Command';
 
 import { BaseController } from './BaseController';
-import { Controller, ControllerConfig } from './Controller';
+import { Controller, ControllerData } from './Controller';
 
-export interface AuthControllerConfig extends ControllerConfig {
+export interface AuthControllerData extends ControllerData {
 
 }
 
-export class AuthController extends BaseController<AuthControllerConfig> implements Controller {
+export class AuthController extends BaseController<AuthControllerData> implements Controller {
   protected storage: Connection;
   protected roleRepository: Repository<Role>;
   protected tokenRepository: Repository<Token>;

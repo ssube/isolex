@@ -4,7 +4,7 @@ import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 /**
  * Most filters are stateless, this implements methods for them.
  */
-export abstract class BaseFilter<TConfig> extends BaseService<TConfig> implements Filter {
+export abstract class BaseFilter<TData> extends BaseService<TData> implements Filter {
   public async start() {
     /* noop */
   }

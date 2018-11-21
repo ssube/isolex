@@ -2,16 +2,16 @@ import { isNil } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { countList } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export type RandomControllerConfig = ControllerConfig;
-export type RandomControllerOptions = ControllerOptions<RandomControllerConfig>;
+export type RandomControllerData = ControllerData;
+export type RandomControllerOptions = ControllerOptions<RandomControllerData>;
 
-export class RandomController extends BaseController<RandomControllerConfig> implements Controller {
+export class RandomController extends BaseController<RandomControllerData> implements Controller {
   constructor(options: RandomControllerOptions) {
     super(options);
   }

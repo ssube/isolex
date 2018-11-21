@@ -5,24 +5,24 @@ import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
-export interface EchoParserConfig extends ParserConfig {
+export interface EchoParserData extends ParserData {
   args: {
     field: string;
     remove: boolean;
   };
 }
 
-export type EchoParserOptions = ServiceOptions<EchoParserConfig>;
+export type EchoParserOptions = ServiceOptions<EchoParserData>;
 
 /**
  * Forwards the message body as a field. Does not split or otherwise parse, optionally removes the matched tag.
  *
  * @TODO: implement optional removal
  */
-export class EchoParser extends BaseParser<EchoParserConfig> implements Parser {
+export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   constructor(options: EchoParserOptions) {
     super(options);
   }

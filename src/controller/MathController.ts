@@ -1,13 +1,13 @@
 import * as mathjs from 'mathjs';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface MathControllerConfig extends ControllerConfig {
+export interface MathControllerData extends ControllerData {
   format: ResultFormatOptions;
   math: {
     matrix: string;
@@ -15,9 +15,9 @@ export interface MathControllerConfig extends ControllerConfig {
   };
 }
 
-export type MathControllerOptions = ControllerOptions<MathControllerConfig>;
+export type MathControllerOptions = ControllerOptions<MathControllerData>;
 
-export class MathController extends BaseController<MathControllerConfig> implements Controller {
+export class MathController extends BaseController<MathControllerData> implements Controller {
   protected math: mathjs.MathJsStatic;
 
   constructor(options: MathControllerOptions) {

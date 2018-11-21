@@ -1,17 +1,17 @@
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface TimeControllerConfig extends ControllerConfig {
+export interface TimeControllerData extends ControllerData {
   locale: string;
   zone: string;
 }
 
-export type TimeControllerOptions = ControllerOptions<TimeControllerConfig>;
+export type TimeControllerOptions = ControllerOptions<TimeControllerData>;
 
-export class TimeController extends BaseController<TimeControllerConfig> implements Controller {
+export class TimeController extends BaseController<TimeControllerData> implements Controller {
   protected template: HandlebarsTemplateDelegate;
 
   constructor(options: TimeControllerOptions) {

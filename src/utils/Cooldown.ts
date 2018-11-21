@@ -3,12 +3,12 @@ import { BaseService } from 'src/BaseService';
 import { ServiceOptions } from 'src/Service';
 
 export const GROWTH_FACTOR = 2;
-export interface CooldownConfig {
+export interface CooldownData {
   base: number;
   grow: number;
 }
 
-export type CooldownOptions = ServiceOptions<CooldownConfig>;
+export type CooldownOptions = ServiceOptions<CooldownData>;
 
 /**
  * Cooldown is a specialized counter for rate limiting, bans, and the like.
@@ -16,13 +16,13 @@ export type CooldownOptions = ServiceOptions<CooldownConfig>;
  * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
  * an exponential interval with an observable.
  */
-export class Cooldown extends BaseService<CooldownConfig> {
+export class Cooldown extends BaseService<CooldownData> {
   public readonly id: string;
   public readonly name: string;
 
   protected active: boolean;
   protected boundNext: Function;
-  protected config: CooldownConfig;
+  protected config: CooldownData;
   protected grow: number;
   protected rate: number;
   protected stream: Subject<number>;

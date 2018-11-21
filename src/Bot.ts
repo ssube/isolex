@@ -1,31 +1,32 @@
 import { bindAll } from 'lodash';
-import { Container, Inject } from 'noicejs';
+import { Container, Inject, BaseError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import * as uuid from 'uuid/v4';
 
-import { Controller, ControllerConfig } from 'src/controller/Controller';
+import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
-import { Parser, ParserConfig } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 import { InvalidArgumentError } from './error/InvalidArgumentError';
+import { mustGet } from './utils';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
-  controllers: Array<ServiceDefinition<ControllerConfig>>;
+  controllers: Array<ServiceDefinition<ControllerData>>;
   listeners: Array<ServiceDefinition>;
   logger: {
     name: string;
     [other: string]: string;
   };
   migrate: boolean;
-  parsers: Array<ServiceDefinition<ParserConfig>>;
+  parsers: Array<ServiceDefinition<ParserData>>;
   storage: ConnectionOptions;
 }
 
@@ -52,6 +53,7 @@ export class Bot implements Service {
   protected controllers: Array<Controller>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
+  protected services: Map<string, Service>;
 
   // observables
   protected commands: Subject<Command>;
@@ -66,7 +68,6 @@ export class Bot implements Service {
     this.container = options.container;
     this.data = options.data;
     this.logger = options.logger.child({
-      bot: options.metadata.name,
       class: Bot.name,
     });
     this.logger.info(options, 'starting bot');
@@ -120,12 +121,17 @@ export class Bot implements Service {
       this.logger.info('database migrations complete');
     }
 
-    await this.startService();
+    this.services = new Map();
+    await this.startServices();
 
     this.logger.info('bot started');
   }
 
-  public async startService() {
+  public async startServices() {
+    if (this.services.size) {
+      throw new BaseError('unable to start services with existing services');
+    }
+
     this.logger.info('setting up filters');
     for (const data of this.data.filters) {
       this.filters.push(await this.createService<Filter, {}>(data));
@@ -133,7 +139,7 @@ export class Bot implements Service {
 
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
-      this.controllers.push(await this.createService<Controller, ControllerConfig>(data));
+      this.controllers.push(await this.createService<Controller, ControllerData>(data));
     }
 
     this.logger.info('setting up listeners');
@@ -143,12 +149,12 @@ export class Bot implements Service {
 
     this.logger.info('setting up parsers');
     for (const data of this.data.parsers) {
-      this.parsers.push(await this.createService<Parser, ParserConfig>(data));
+      this.parsers.push(await this.createService<Parser, ParserData>(data));
     }
 
-    this.logger.info('starting listeners');
-    for (const listener of this.listeners) {
-      await listener.start();
+    this.logger.info('starting services');
+    for (const svc of this.services.values()) {
+      await svc.start();
     }
 
     this.logger.info('services started');
@@ -161,7 +167,10 @@ export class Bot implements Service {
     this.outgoing.complete();
 
     this.logger.debug('stopping services');
-    // TODO: stop any running services
+    for (const svc of this.services.values()) {
+      await svc.stop();
+    }
+    this.services.clear();
 
     this.logger.info('bot has stopped');
   }
@@ -283,11 +292,15 @@ export class Bot implements Service {
    * These are all created the same way, so they should probably have a common base...
    */
   public async createService<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
-    this.logger.debug({ conf }, 'creating service');
-
     const { metadata: { kind, name } } = conf;
-    this.logger.info({ kind, name }, 'configuring service');
+    const tag = `${kind}:${name}`;
 
+    if (this.services.has(tag)) {
+      this.logger.info({ kind, tag }, 'fetching existing service');
+      return mustGet(this.services, tag) as TService;
+    }
+
+    this.logger.info({ kind, tag }, 'creating unknown service');
     const svc = await this.container.create<TService, any>(kind, {
       ...conf,
       bot: this,
@@ -295,7 +308,9 @@ export class Bot implements Service {
         kind,
       }),
     });
-    this.logger.debug({ id: svc.id, kind  }, 'service created and configured');
+
+    this.logger.debug({ id: svc.id, kind, tag  }, 'service created');
+    this.services.set(tag, svc);
 
     return svc;
   }

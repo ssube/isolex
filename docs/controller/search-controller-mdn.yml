@@ -1,0 +1,32 @@
+metadata:
+  kind: search-controller
+  name: search_mdn
+data:
+  count: 3
+  field: args
+  request:
+    method: GET
+    url: https://developer.mozilla.org/en-US/search.json?q={{ data }}
+  transforms:
+    - metadata:
+        kind: jsonpath-transform
+        name: search_docs
+      data:
+        queries:
+          body: '$..documents.*'
+    - metadata:
+        kind: template-transform
+        name: search_body
+      data:
+        templates:
+          body: |
+            {{#each data.body}}
+              *{{ title }}*: <{{ url }}> ({{ score }})
+              {{ trim excerpt 25 }}
+            {{/each}}
+    - metadata:
+        kind: flatten-transform
+        name: flatten_body
+      data:
+        join: ""
+        keys: [$.data.body]

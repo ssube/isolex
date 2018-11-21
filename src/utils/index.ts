@@ -1,4 +1,5 @@
 import { isMap, isNil } from 'lodash';
+import { MissingValueError } from 'noicejs';
 
 export interface Dict<TVal> {
   [key: string]: TVal;
@@ -77,6 +78,17 @@ export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Ar
   }
 
   return out;
+}
+
+/**
+ * Get an element from a Map and guard against nil values.
+ */
+export function mustGet<TKey, TVal>(map: Map<TKey, TVal>, key: TKey): TVal {
+  const val = map.get(key);
+  if (isNil(val)) {
+    throw new MissingValueError();
+  }
+  return val;
 }
 
 /**

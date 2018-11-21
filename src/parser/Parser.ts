@@ -3,7 +3,7 @@ import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
 
-export interface ParserConfig {
+export interface ParserData {
   emit: {
     noun: string;
     verb: CommandVerb;

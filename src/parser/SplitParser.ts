@@ -8,10 +8,10 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserConfig, ParserValue } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 
-export interface SplitParserConfig extends ParserConfig {
+export interface SplitParserData extends ParserData {
   /**
    * Split every individual character.
    */
@@ -23,9 +23,9 @@ export interface SplitParserConfig extends ParserConfig {
   split: SplitString.SplitOptions;
 }
 
-export type SplitParserOptions = ServiceOptions<SplitParserConfig>;
+export type SplitParserOptions = ServiceOptions<SplitParserData>;
 
-export class SplitParser extends BaseParser<SplitParserConfig> implements Parser {
+export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   constructor(options: SplitParserOptions) {
     super(options);
   }

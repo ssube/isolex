@@ -1,5 +1,5 @@
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -9,14 +9,14 @@ export interface ReactionChance {
   name: string;
 }
 
-export interface ReactionControllerConfig extends ControllerConfig {
+export interface ReactionControllerData extends ControllerData {
   field: string;
   reactions: Map<string, Array<ReactionChance>>;
 }
 
-export type ReactionControllerOptions = ControllerOptions<ReactionControllerConfig>;
+export type ReactionControllerOptions = ControllerOptions<ReactionControllerData>;
 
-export class ReactionController extends BaseController<ReactionControllerConfig> implements Controller {
+export class ReactionController extends BaseController<ReactionControllerData> implements Controller {
   protected tags: Array<string>;
   protected reactions: Map<string, Array<ReactionChance>>;
 

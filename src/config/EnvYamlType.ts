@@ -1,4 +1,4 @@
-import { safeLoad, Type as YamlType } from 'js-yaml';
+import { Type as YamlType } from 'js-yaml';
 
 export const envType = new YamlType('!env', {
   kind: 'scalar',

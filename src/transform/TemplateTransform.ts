@@ -9,23 +9,23 @@ import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { BaseTransform } from './BaseTransform';
-import { Transform, TransformConfig } from './Transform';
+import { Transform, TransformData } from './Transform';
 
 /**
  * Dictionary of templates to be compiled.
  */
-export interface TemplateTransformConfig extends TransformConfig {
+export interface TemplateTransformData extends TransformData {
   templates: {
     [key: string]: string;
   };
 }
 
-export interface TemplateTransformOptions extends ServiceOptions<TemplateTransformConfig> {
+export interface TemplateTransformOptions extends ServiceOptions<TemplateTransformData> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class TemplateTransform extends BaseTransform<TemplateTransformConfig> implements Transform {
+export class TemplateTransform extends BaseTransform<TemplateTransformData> implements Transform {
   protected readonly templates: Map<string, Template>;
 
   constructor(options: TemplateTransformOptions) {
@@ -43,6 +43,7 @@ export class TemplateTransform extends BaseTransform<TemplateTransformConfig> im
     const scope = this.mergeScope(cmd, msg);
     const out = new Map();
     for (const [key, template] of this.templates) {
+      this.logger.debug({ key, scope }, 'rendering template with scope');
       const result = template.render(scope);
       out.set(key, result);
     }

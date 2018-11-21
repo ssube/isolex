@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerConfig, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { ServiceDefinition } from 'src/Service';
@@ -9,16 +9,16 @@ import { Transform } from 'src/transform/Transform';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
-export interface EchoControllerConfig extends ControllerConfig {
+export interface EchoControllerData extends ControllerData {
   transforms: Array<ServiceDefinition>;
 }
 
-export interface EchoControllerOptions extends ControllerOptions<EchoControllerConfig> {
+export interface EchoControllerOptions extends ControllerOptions<EchoControllerData> {
   compiler: TemplateCompiler;
 }
 
 @Inject('compiler')
-export class EchoController extends BaseController<EchoControllerConfig> implements Controller {
+export class EchoController extends BaseController<EchoControllerData> implements Controller {
   protected readonly transforms: Array<Transform>;
 
   constructor(options: EchoControllerOptions) {

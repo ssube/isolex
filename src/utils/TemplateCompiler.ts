@@ -21,6 +21,7 @@ export class TemplateCompiler {
     });
     this.options = {};
 
+    this.compiler.registerHelper('trim', this.formatTrim.bind(this));
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));
     this.compiler.registerHelper('json', this.formatJSON.bind(this));
     this.compiler.registerHelper('reply', this.formatContext.bind(this));
@@ -51,5 +52,17 @@ export class TemplateCompiler {
 
   public formatJSON(value: object): hbs.SafeString {
     return new Handlebars.SafeString(JSON.stringify(value));
+  }
+
+  /**
+   * @TODO: handle max < 3
+   */
+  public formatTrim(value: string, max: number = 10): string {
+    if (value.length <= max) {
+      return value;
+    }
+
+    const start = value.substr(0, max - 3);
+    return `${start}...`;
   }
 }

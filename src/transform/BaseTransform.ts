@@ -6,9 +6,9 @@ import { Message } from 'src/entity/Message';
 import { Parser } from 'src/parser/Parser';
 import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
 
-import { Transform, TransformConfig, TransformOptions } from './Transform';
+import { Transform, TransformData, TransformOptions } from './Transform';
 
-export abstract class BaseTransform<TData extends TransformConfig> extends BaseService<TData> implements Transform {
+export abstract class BaseTransform<TData extends TransformData> extends BaseService<TData> implements Transform {
   protected readonly parsers: Array<Parser>;
 
   constructor(options: TransformOptions<TData>) {
@@ -18,7 +18,8 @@ export abstract class BaseTransform<TData extends TransformConfig> extends BaseS
   }
 
   public async start() {
-    for (const def of this.data.parsers) {
+    const parsers = this.data.parsers || [];
+    for (const def of parsers) {
       const parser = await this.bot.createService<Parser, any>(def);
       this.parsers.push(parser);
     }
@@ -38,6 +39,7 @@ export abstract class BaseTransform<TData extends TransformConfig> extends BaseS
   }
 
   protected parseMessage(msg: Message): any {
+    this.logger.debug({ msg }, 'parsing message');
     switch (msg.type) {
       case TYPE_TEXT:
         return msg.body;

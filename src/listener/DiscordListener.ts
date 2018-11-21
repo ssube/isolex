@@ -19,14 +19,14 @@ import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceOptions } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface DiscordListenerConfig {
+export interface DiscordListenerData {
   presence?: PresenceData;
   token: string;
 }
 
-export type DiscordListenerOptions = ServiceOptions<DiscordListenerConfig>;
+export type DiscordListenerOptions = ServiceOptions<DiscordListenerData>;
 
-export class DiscordListener extends BaseListener<DiscordListenerConfig> implements Listener {
+export class DiscordListener extends BaseListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return !isNil(chan) && chan.type === 'text';
   }

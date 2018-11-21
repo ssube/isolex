@@ -1,0 +1,7 @@
+metadata:
+  kind: yaml-parser
+  name: default-yaml-parser
+data:
+  tags:
+    - '!!json'
+    - '!!yaml'
