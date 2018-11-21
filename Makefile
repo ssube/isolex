@@ -86,6 +86,10 @@ git-push: ## push to both gitlab and github (this assumes you have both remotes 
 	git push gitlab ${GIT_BRANCH}
 	git push github ${GIT_BRANCH}
 
+# from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
+git-stats: ## print git contributor line counts (approx, for fun)
+	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
+
 run-terminal: ## run the bot in a terminal
 	node $(TARGET_PATH)/main-bundle.js
 
