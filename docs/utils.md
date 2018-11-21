@@ -2,6 +2,10 @@
 
 For developers, this document explains what libraries and utilities are available in the code base.
 
+- [Utils](#utils)
+  - [Libraries](#libraries)
+  - [Utilities](#utilities)
+
 ## Libraries
 
 When installing libraries, prefer a `~` version range and set the `major.minor` components (`~X.Y`) unless the
@@ -16,9 +20,9 @@ library is still a `0.0` release, then specify the entire `^X.Y.Z` specifier.
 | DI           | noicejs      | main bundle | `constructor` options container     |                  |
 | DOM          | cheerio      | main bundle |                                     |                  |
 | emoji        | node-emoji   | main bundle |                                     | GFM `:emoji:`    |
-| json         | jsonpath     | main bundle | `import * as jp from 'jsonpath'`    |                  |
+| json         | jsonpath     | main bundle | `import * as jp from 'jsonpath'`    | TODO: add to DI  |
 | logging      | bunyan       | main bundle | `container.create('logger')`        | via DI           |
-| math         | mathjs       | main bundle | `import {} from 'mathjs`            |                  |
+| math         | mathjs       | main bundle | `import {} from 'mathjs`            | TODO: add to DI  |
 | request      | request      | main bundle | `container.create('request')`       |                  |
 | string       | split-string | main bundle |                                     | quotes, brackets |
 | template     | handlebars   | main bundle |                                     |                  |

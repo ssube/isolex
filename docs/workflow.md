@@ -1,6 +1,17 @@
 # Workflow
 
-This document describes the issue and merge workflow for isolex.
+This document describes the issue and merge workflow for the isolex project.
+
+- [Workflow](#workflow)
+  - [Issues](#issues)
+    - [Service](#service)
+    - [Status](#status)
+    - [Type](#type)
+      - [Bug](#bug)
+      - [Feature](#feature)
+      - [Update](#update)
+  - [Merges](#merges)
+  - [Updates](#updates)
 
 ## Issues
 
@@ -23,7 +34,8 @@ are in progress. Finally, issues should not be closed until the fix can be confi
 
 #### Bug
 
-Bugs are problems with existing features, missing features that should work, or anything else that seems out of place.
+Bugs are problems with documented behavior, missing features that should exist, or anything else that seems out of
+place.
 
 [Create a new bug](https://github.com/ssube/isolex/issues/new?template=type_bug.md).
 
@@ -37,16 +49,23 @@ Features are new feature requests, new options, and other suggestions to add thi
 
 Updates are routine updates of existing features and dependencies, with any associated work to update options or tests.
 
-TODO: some updates can be handled by Greenkeeper
-
 [Create a new update](https://github.com/ssube/isolex/issues/new?template=type_update.md).
 
 ## Merges
 
 The `master` branch is the stable, usable branch and is automatically deployed.
 
-Code should be merged into master after:
+Code should only be merged into master after:
 
-- pipeline has run and passed
+- a pipeline has run and passed
 - tests have been written and pass
-- lint issues have been resolved
+- coverage has not decreased
+- lint warnings have been resolved
+
+## Updates
+
+When updating dependencies, use the `~X.Y` (major-minor range) for anything with a `1.0` release and `^X.Y.Z` for
+anything without.
+
+Generally update dependencies one (or a related few) at a time and try not to update dev and prod dependencies at the
+same time.
