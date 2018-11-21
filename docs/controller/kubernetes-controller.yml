@@ -1,0 +1,24 @@
+metadata:
+  kind: kubernetes-controller
+  name: test_k8s
+data:
+  context:
+    default: true
+  default:
+    namespace: default
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: k8s_pod_names
+      data:
+        templates:
+          body: >-
+            {{#each data}}
+              {{this.metadata.name}}: {{this.status.phase}}
+            {{/each}}
+    - metadata:
+        kind: flatten-transform
+        name: k8s_body_flatten
+      data:
+        join: ""
+        keys: [$.data.body]

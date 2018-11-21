@@ -13,6 +13,7 @@ import { BaseEntity } from 'src/entity/BaseEntity';
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { MapOrMapLike, mergeMap, normalizeMap } from 'src/utils';
+import { isNil } from 'lodash';
 
 export enum CommandVerb {
   Create = 'create',
@@ -116,6 +117,19 @@ export class Command extends BaseEntity implements CommandOptions {
       throw new Error(`missing key: ${key}`);
     }
     return value;
+  }
+
+  public getOrDefault(key: string, defaultValue: Array<string>): Array<string> {
+    if (this.has(key)) {
+      const data = this.get(key);
+      if (isNil(data)) {
+        return defaultValue;
+      } else {
+        return data;
+      }
+    } else {
+      return defaultValue;
+    }
   }
 
   public getHeadOrDefault(key: string, defaultValue: string): string {

@@ -5,6 +5,7 @@ import { ModuleOptions } from 'noicejs/Module';
 import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
+import { KubernetesController } from 'src/controller/KubernetesController';
 import { LearnController } from 'src/controller/LearnController';
 import { MathController } from 'src/controller/MathController';
 import { PickController } from 'src/controller/PickController';
@@ -23,6 +24,7 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(CountController.name)).toConstructor(CountController);
     this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
     this.bind(kebabCase(EchoController.name)).toConstructor(EchoController);
+    this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
     this.bind(kebabCase(LearnController.name)).toConstructor(LearnController);
     this.bind(kebabCase(MathController.name)).toConstructor(MathController);
     this.bind(kebabCase(PickController.name)).toConstructor(PickController);

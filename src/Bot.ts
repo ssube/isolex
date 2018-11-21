@@ -282,11 +282,13 @@ export class Bot implements Service {
   /**
    * Add a message to the send queue.
    */
-  public async send(msg: Message): Promise<void> {
-    if (!Message.isMessage(msg)) {
-      throw new InvalidArgumentError('sent message must be an instance of message entity');
+  public async send(...messages: Array<Message>): Promise<void> {
+    for (const msg of messages) {
+      if (!Message.isMessage(msg)) {
+        throw new InvalidArgumentError('sent message must be an instance of message entity');
+      }
+      this.outgoing.next(msg);
     }
-    this.outgoing.next(msg);
   }
 
   /**
