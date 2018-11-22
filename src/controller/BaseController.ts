@@ -36,20 +36,15 @@ export abstract class BaseController<TData extends ControllerData> extends BaseS
   public abstract handle(cmd: Command): Promise<void>;
 
   protected async transform(cmd: Command, input: Message): Promise<Array<Message>> {
-    let data = input;
+    let batch = [input];
     for (const transform of this.transforms) {
-      const [head, ...rest] = await transform.transform(cmd, data);
-      if (!Message.isMessage(head)) {
-        const err = new BaseError('misbehaving transform returned something other than a message');
-        this.logger.error(err, 'misbehaving transform');
-        throw err;
+      const next = [];
+      for (const msg of batch) {
+        const result = await transform.transform(cmd, msg);
+        next.push(...result);
       }
-
-      data = head;
-      if (rest.length) {
-        this.logger.info({ rest }, 'echo transform discarding extra messages');
-      }
+      batch = next;
     }
-    return [data];
+    return batch;
   }
 }
