@@ -1,0 +1,17 @@
+metadata:
+  kind: args-parser
+  name: test_args
+data:
+  args:
+    alias:
+      foo:
+        - f
+        - foos
+    array: [foo]
+    boolean: [bar]
+    count: [v]
+  emit:
+    noun: test_echo
+    verb: get
+  tags:
+    - "!!args"

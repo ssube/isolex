@@ -37,6 +37,7 @@
     "@types/uuid": "~3.4",
     "@types/websocket": "^0.0.40",
     "@types/ws": "~6.0",
+    "@types/yargs-parser": "~11.0",
     "awesome-typescript-loader": "~5.2",
     "aws-sdk": "~2.360",
     "bufferutil": "~4.0",
@@ -80,6 +81,7 @@
     "webpack": "~4.26",
     "webpack-bundle-analyzer": "~3.0",
     "webpack-cli": "~3.1",
-    "ws": "~6.1"
+    "ws": "~6.1",
+    "yargs-parser": "~11.1"
   }
 }

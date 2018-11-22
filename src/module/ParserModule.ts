@@ -2,6 +2,7 @@ import { kebabCase } from 'lodash';
 import { Module } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 
+import { ArgsParser } from 'src/parser/ArgsParser';
 import { EchoParser } from 'src/parser/EchoParser';
 import { LexParser } from 'src/parser/LexParser';
 import { MapParser } from 'src/parser/MapParser';
@@ -14,6 +15,7 @@ export class ParserModule extends Module {
     await super.configure(options);
 
     // parsers
+    this.bind(kebabCase(ArgsParser.name)).toConstructor(ArgsParser);
     this.bind(kebabCase(EchoParser.name)).toConstructor(EchoParser);
     this.bind(kebabCase(LexParser.name)).toConstructor(LexParser);
     this.bind(kebabCase(MapParser.name)).toConstructor(MapParser);

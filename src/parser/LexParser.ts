@@ -10,6 +10,7 @@ import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { leftPad, MapOrMapLike } from 'src/utils';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -61,8 +62,8 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<any> {
-    if (!isString(msg.body)) {
-      throw new InvalidArgumentError('message body must be a string');
+    if (msg.type !== TYPE_TEXT) {
+      throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
     }
 
     const body = this.removeTags(msg.body);
