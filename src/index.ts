@@ -1,5 +1,6 @@
 import { Container, Module } from 'noicejs';
 import * as sourceMapSupport from 'source-map-support';
+import * as yargs from 'yargs-parser';
 
 import { Bot } from 'src/Bot';
 import { loadConfig } from 'src/config';
@@ -13,6 +14,13 @@ import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
 
 import { TransformModule } from './module/TransformModule';
+
+// main arguments
+const MAIN_ARGS = {
+  array: ['config-path'],
+  count: ['v'],
+  envPrefix: 'isolex',
+};
 
 // webpack environment defines
 declare const BUILD_JOB: string;
@@ -48,11 +56,13 @@ sourceMapSupport.install({
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
-async function main(): Promise<number> {
+async function main(argv: Array<string>): Promise<number> {
+  const args = yargs(argv, MAIN_ARGS);
   const config = await loadConfig();
   const logger = BunyanLogger.create(config.data.logger);
 
   logger.info(VERSION_INFO, 'version info');
+  logger.info({ args }, 'main arguments');
 
   const botModule = new BotModule({ logger });
   const modules: Array<Module> = [
@@ -81,7 +91,7 @@ async function main(): Promise<number> {
   return STATUS_SUCCESS;
 }
 
-main().then((status) => process.exit(status)).catch((err) => {
+main(process.argv).then((status) => process.exit(status)).catch((err) => {
   /* tslint:disable-next-line:no-console */
   console.error('uncaught error during main:', err);
   process.exit(STATUS_ERROR);

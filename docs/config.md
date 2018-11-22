@@ -7,7 +7,7 @@ custom types available.
 
 Config will be loaded from YAML document named `.isolex.yml` located in one of:
 
-1. the *directory* indicated by `${ISOLEX_HOME}` (if set)
+1. the *directory* indicated by `${ISOLEX__HOME}` (if set)
 1. the *directory* indicated by `${HOME}` (again, if set)
 1. the current working directory (`__dirname`)
 1. any extra paths passed

@@ -62,6 +62,10 @@ export class TemplateCompiler {
       return value;
     }
 
+    if (max < 3) {
+      return value.substr(0, max);
+    }
+
     const start = value.substr(0, max - 3);
     return `${start}...`;
   }

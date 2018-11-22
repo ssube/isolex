@@ -1,12 +1,13 @@
-import { readFile, stat } from 'fs';
+import { readFile } from 'fs';
 import { DEFAULT_SAFE_SCHEMA, safeLoad, Schema } from 'js-yaml';
 import { join } from 'path';
+import { promisify } from 'util';
+
 import { BotDefinition } from 'src/Bot';
 import { envType } from 'src/config/EnvYamlType';
 import { includeType } from 'src/config/IncludeYamlType';
-import { promisify } from 'util';
 
-export const CONFIG_ENV = 'ISOLEX_HOME';
+export const CONFIG_ENV = 'ISOLEX__HOME';
 export const CONFIG_NAME = '.isolex.yml';
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
   envType,
@@ -14,10 +15,14 @@ export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
 ]);
 
 const readFileSync = promisify(readFile);
-const statFileSync = promisify(stat);
 
-// search env, pwd, home
-export function resolvePath(name: string, ...extras: Array<string>): Array<string> {
+/**
+ * With the given name, generate all potential config paths in their complete, absolute form.
+ * 
+ * This will include the value of `ISOLEX__HOME`, `HOME`, the current working directory, and any extra paths
+ * passed as the final arguments.
+ */
+export function completePaths(name: string, ...extras: Array<string>): Array<string> {
   const paths = [];
 
   const env = process.env[CONFIG_ENV];
@@ -41,7 +46,7 @@ export function resolvePath(name: string, ...extras: Array<string>): Array<strin
 }
 
 export async function loadConfig(...extras: Array<string>): Promise<BotDefinition> {
-  const paths = resolvePath(CONFIG_NAME, ...extras);
+  const paths = completePaths(CONFIG_NAME, ...extras);
 
   for (const p of paths) {
     const data = await readConfig(p);

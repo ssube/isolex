@@ -1,7 +1,7 @@
 import { bindAll } from 'lodash';
 import { BaseError, Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
-import { Logger } from 'noicejs/logger/Logger';
+import { Logger, LogLevel } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import * as uuid from 'uuid/v4';
@@ -23,8 +23,8 @@ export interface BotData {
   controllers: Array<ServiceDefinition<ControllerData>>;
   listeners: Array<ServiceDefinition>;
   logger: {
+    level: LogLevel;
     name: string;
-    [other: string]: string;
   };
   migrate: boolean;
   parsers: Array<ServiceDefinition<ParserData>>;
