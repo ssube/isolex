@@ -28,9 +28,7 @@ data:
         kind: learn-controller
         name: test_learn
       data:
-        emit:
-          from: incoming
-          field: args
+        field: args
         modes:
           create: add
           delete: del
@@ -71,22 +69,6 @@ data:
               name: maple_leaf
 
     - metadata:
-        kind: search-controller
-        name: search_mdn
-      data:
-        count: 3
-        field: args
-        filter: '$..documents.*'
-        method: GET
-        template:
-          body: |
-            {{#each data}}
-              *{{ title }}*: <{{ url }}> ({{ score }})
-              {{ excerpt }}
-            {{/each}}
-          url: https://developer.mozilla.org/en-US/search.json?q={{ data }}
-
-    - metadata:
         kind: sed-controller
         name: sed_echo
       data: {}
@@ -97,17 +79,6 @@ data:
       data:
         locale: en-US
         zone: UTC
-
-    - metadata:
-        kind: weather-controller
-        name: test_weather
-      data:
-        api:
-          key: !env ISOLEX_WEATHER_TOKEN
-          root: https://api.openweathermap.org/data/2.5/
-        template: >-
-          {{weather.name}} is {{weather.main.temp}} with {{weather.wind.speed}} wind
-          and {{#each weather.weather}}{{this.description}}{{/each}}!
 
     - metadata:
         kind: echo-controller
