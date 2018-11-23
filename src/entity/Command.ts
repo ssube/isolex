@@ -24,11 +24,14 @@ export enum CommandVerb {
   Watch = 'watch',
 }
 
-export interface CommandOptions {
-  context: Context;
+export interface CommandData {
   data: MapOrMapLike<CommandArgsList>;
   noun: string;
   verb: CommandVerb;
+}
+
+export interface CommandOptions extends CommandData {
+  context: Context;
 }
 
 export type CommandArgsMap = Map<string, CommandArgsList>;

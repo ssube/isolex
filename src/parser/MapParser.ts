@@ -1,7 +1,7 @@
 import * as split from 'split-string';
 import { isString } from 'util';
 
-import { Command, CommandArgsMap, CommandVerb } from 'src/entity/Command';
+import { Command, CommandArgsMap, CommandVerb, CommandData } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
@@ -11,15 +11,15 @@ import { Parser, ParserData, ParserValue } from 'src/parser/Parser';
 import { ServiceOptions } from 'src/Service';
 import { filterNil, setOrPush } from 'src/utils';
 
+export interface MatchAlias {
+  match: MatchPattern;
+  cmd: string;
+}
+
 /**
- * Mapped commands are the stored form of a command to be produced by a mapping.
+ * @TODO: support regular expressions
  */
-export interface MappedCommand {
-  /**
-   * The name of the emitted command.
-   */
-  noun: string;
-  verb: CommandVerb;
+export interface MatchCommand {
   args: {
     /**
      * Extra arguments to append to the parsed arguments.
@@ -34,6 +34,8 @@ export interface MappedCommand {
      */
     rest: string;
   };
+  emit: CommandData;
+  match: MatchPattern;
   tags: {
     /**
      * Remove the matched tag (usually the first argument).
@@ -44,19 +46,7 @@ export interface MappedCommand {
      */
     resolve: boolean;
   };
-}
 
-export interface MatchAlias {
-  match: MatchPattern;
-  cmd: string;
-}
-
-/**
- * @TODO: support regular expressions
- */
-export interface MatchCommand {
-  match: MatchPattern;
-  emit: MappedCommand;
 }
 
 export interface MatchPattern {
@@ -69,7 +59,7 @@ export interface MatchPattern {
  */
 export interface MappedMessage {
   args: Array<string>;
-  cmd: MappedCommand;
+  cmd: MatchCommand;
 }
 
 export interface MapParserData extends ParserData {
@@ -106,15 +96,15 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
       commands.push(Command.create({
         context: msg.context,
         data: this.mapFields(args, cmd.args.fields, cmd.args.rest),
-        noun: cmd.noun,
-        verb: cmd.verb,
+        noun: cmd.emit.noun,
+        verb: cmd.emit.verb,
       }));
     }
 
     return commands;
   }
 
-  public mapArgs(cmd: MappedCommand, pending: Array<string>, original: string, resolved: string) {
+  public mapArgs(cmd: MatchCommand, pending: Array<string>, original: string, resolved: string) {
     const result = Array.from(pending).concat(cmd.args.append);
 
     if (cmd.tags.remove) {
@@ -129,6 +119,7 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
 
     return result;
   }
+
   /**
    * Map a string into some commands, splitting on keywords.
    */
@@ -147,8 +138,8 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
       const cmd = this.matches.find((it) => it.match.str === key);
 
       if (cmd) {
-        const args = this.mapArgs(cmd.emit, pending, part, key);
-        mapped.push({ args, cmd: cmd.emit });
+        const args = this.mapArgs(cmd, pending, part, key);
+        mapped.push({ args, cmd });
         pending.length = 0;
       } else {
         pending.unshift(part);

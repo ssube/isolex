@@ -385,7 +385,7 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/yargs-parser@^11.0.0":
+"@types/yargs-parser@~11.0":
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-11.0.0.tgz#514933c83ec38b8e06b8c9e5ffff637f20474f2e"
   dependencies:
@@ -741,9 +741,9 @@ awesome-typescript-loader@~5.2:
     source-map-support "^0.5.3"
     webpack-log "^1.2.0"
 
-aws-sdk@~2.360:
-  version "2.360.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.360.0.tgz#f640acbc7de07aa7a381a31b110fc3502fe90288"
+aws-sdk@~2.361.0:
+  version "2.361.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.361.0.tgz#f51619bde8d642c679428c09466b06814c491901"
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -3449,9 +3449,9 @@ node-pre-gyp@^0.12.0:
     semver "^5.3.0"
     tar "^4"
 
-noicejs@~2.2:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.2.1.tgz#d78edb06d38206419faf56e1a9743b42d1fd06f4"
+noicejs@~2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.3.1.tgz#31e910e5215604df792889b180f6d177c0ccc9e8"
 
 nomnom@1.5.2:
   version "1.5.2"
@@ -5342,7 +5342,7 @@ yargonaut@^1.1.2:
     figlet "^1.1.1"
     parent-require "^1.0.0"
 
-yargs-parser@^11.1.1:
+yargs-parser@^11.1.1, yargs-parser@~11.1:
   version "11.1.1"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-11.1.1.tgz#879a0865973bca9f6bab5cbdf3b1c67ec7d3bcf4"
   dependencies:

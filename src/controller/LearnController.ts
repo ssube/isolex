@@ -9,11 +9,7 @@ import { Keyword } from 'src/entity/misc/Keyword';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface LearnControllerData extends ControllerData {
-  emit: {
-    field: string;
-    source: string;
-    value: string;
-  };
+  field: string;
   modes: {
     create: string;
     delete: string;
@@ -50,16 +46,16 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const { modes } = this.data;
     switch (cmd.verb) {
       case modes.create:
-        return this.createKeyword(keyword, body, cmd);
+        return this.createKeyword(keyword, cmd, body);
       case modes.delete:
         return this.deleteKeyword(keyword, cmd);
       case modes.execute:
       default:
-        return this.executeKeyword(keyword, body, cmd);
+        return this.executeKeyword(keyword, cmd, body);
     }
   }
 
-  protected async createKeyword(key: string, args: Array<string>, cmd: Command): Promise<void> {
+  protected async createKeyword(key: string, cmd: Command, args: Array<string>): Promise<void> {
     const keyword = Keyword.create({
       command: Command.create({
         context: cmd.context,
@@ -94,7 +90,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Deleted command ${name}.`));
   }
 
-  protected async executeKeyword(name: string, body: Array<string>, cmd: Command) {
+  protected async executeKeyword(name: string, cmd: Command, body: Array<string>) {
     const keyword = await this.keywordRepository.findOne(name, {
       relations: ['command', 'command.context'],
     });
@@ -110,7 +106,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const emit = keyword.command.extend({
       context: cmd.context,
       data: {
-        [this.data.emit.field]: args,
+        [this.data.field]: args,
       },
       noun,
     });

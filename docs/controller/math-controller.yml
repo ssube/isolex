@@ -1,0 +1,18 @@
+metadata:
+  kind: math-controller
+  name: test_math
+data:
+  format:
+    list:
+      join: ','
+    node:
+      implicit: show
+      parenthesis: keep
+    number:
+      notation: auto
+      precision: 4
+      fraction: ratio
+  join: ','
+  math:
+    matrix: Array
+    number: number

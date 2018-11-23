@@ -1,13 +1,10 @@
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command, CommandData } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
 
 export interface ParserData {
-  emit: {
-    noun: string;
-    verb: CommandVerb;
-  }
+  emit: CommandData;
   tags: Array<string>;
 }
 
