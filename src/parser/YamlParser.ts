@@ -1,20 +1,17 @@
 import { safeLoad } from 'js-yaml';
 import { isNil } from 'lodash';
-import { isString } from 'util';
 
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
 
 export type YamlParserData = ParserData;
-export type YamlParserOptions = ServiceOptions<YamlParserData>;
+export type YamlParserOptions = ParserOptions<YamlParserData>;
 export const YAML_TYPES = [TYPE_JSON, TYPE_YAML];
 
 export class YamlParser extends BaseParser<YamlParserData> implements Parser {
@@ -40,11 +37,6 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   public async decode(msg: Message): Promise<any> {
     if (!YAML_TYPES.includes(msg.type)) {
       throw new MimeTypeError(`body type (${msg.type}) must be one of ${YAML_TYPES}`);
-    }
-
-    // @TODO: convert buffers to strings
-    if (!isString(msg.body)) {
-      throw new InvalidArgumentError('value must be a string');
     }
 
     const parsed = safeLoad(msg.body);

@@ -1,9 +1,9 @@
-import { BaseService } from 'src/BaseService';
+import { ChildService } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 
-export abstract class BaseListener<TData> extends BaseService<TData> implements Listener {
+export abstract class BaseListener<TData> extends ChildService<TData> implements Listener {
   /**
    * Check if this listener can receive messages from this context.
    *

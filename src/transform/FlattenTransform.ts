@@ -2,11 +2,10 @@ import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { ServiceOptions } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseTransform } from './BaseTransform';
-import { Transform, TransformData } from './Transform';
+import { Transform, TransformData, TransformOptions } from './Transform';
 
 /**
  * Dictionary of templates to be compiled.
@@ -17,7 +16,7 @@ export interface FlattenTransformData extends TransformData {
   keys: Array<string>;
 }
 
-export type FlattenTransformOptions = ServiceOptions<FlattenTransformData>;
+export type FlattenTransformOptions = TransformOptions<FlattenTransformData>;
 
 export class FlattenTransform extends BaseTransform<FlattenTransformData> implements Transform {
   protected readonly keys: Array<string>;

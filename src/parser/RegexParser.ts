@@ -1,19 +1,17 @@
-import { isString } from 'util';
-
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface RegexParserData extends ParserData {
   regexp: string;
 }
 
-export type RegexParserOptions = ServiceOptions<RegexParserData>;
+export type RegexParserOptions = ParserOptions<RegexParserData>;
 
 export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   protected regexp: RegExp;
@@ -40,8 +38,8 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<any> {
-    if (!isString(msg.body)) {
-      throw new InvalidArgumentError('value must be a string');
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
     }
 
     const body = this.removeTags(msg.body);

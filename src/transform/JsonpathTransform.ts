@@ -2,12 +2,11 @@ import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { ServiceOptions } from 'src/Service';
 import { mapToDict, normalizeMap } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseTransform } from './BaseTransform';
-import { Transform, TransformData } from './Transform';
+import { Transform, TransformData, TransformOptions } from './Transform';
 
 export interface JsonpathTransformData extends TransformData {
   queries: {
@@ -15,7 +14,7 @@ export interface JsonpathTransformData extends TransformData {
   };
 }
 
-export type JsonpathTransformOptions = ServiceOptions<JsonpathTransformData>;
+export type JsonpathTransformOptions = TransformOptions<JsonpathTransformData>;
 
 export class JsonpathTransform extends BaseTransform<JsonpathTransformData> implements Transform {
   protected queries: Map<string, string>;

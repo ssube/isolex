@@ -1,8 +1,6 @@
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 
-import { Bot } from 'src/Bot';
-
 export interface ServiceDefinition<TData = any> {
   metadata: ServiceMetadata;
   data: TData;
@@ -21,7 +19,6 @@ export interface ServiceMetadata {
 }
 
 export type ServiceOptions<TData> = BaseOptions & ServiceDefinition<TData> & {
-  bot: Bot;
   logger: Logger;
 };
 

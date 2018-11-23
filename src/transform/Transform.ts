@@ -1,13 +1,14 @@
+import { ChildServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
-import { ParserData } from 'src/parser/Parser';
-import { Service, ServiceDefinition, ServiceOptions } from 'src/Service';
 import { Message } from 'src/entity/Message';
+import { ParserData } from 'src/parser/Parser';
+import { Service, ServiceDefinition } from 'src/Service';
 
 export interface TransformData {
   parsers: Array<ServiceDefinition<ParserData>>;
 }
 
-export type TransformOptions<TData extends TransformData> = ServiceOptions<TData>;
+export type TransformOptions<TData extends TransformData> = ChildServiceOptions<TData>;
 
 export interface Transform extends Service {
   /**

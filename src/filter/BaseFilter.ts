@@ -1,10 +1,10 @@
-import { BaseService } from 'src/BaseService';
+import { ChildService } from 'src/ChildService';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 
 /**
  * Most filters are stateless, this implements methods for them.
  */
-export abstract class BaseFilter<TData> extends BaseService<TData> implements Filter {
+export abstract class BaseFilter<TData> extends ChildService<TData> implements Filter {
   public async start() {
     /* noop */
   }

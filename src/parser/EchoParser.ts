@@ -5,8 +5,7 @@ import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 
 export interface EchoParserData extends ParserData {
   args: {
@@ -15,7 +14,7 @@ export interface EchoParserData extends ParserData {
   };
 }
 
-export type EchoParserOptions = ServiceOptions<EchoParserData>;
+export type EchoParserOptions = ParserOptions<EchoParserData>;
 
 /**
  * Forwards the message body as a field. Does not split or otherwise parse, optionally removes the matched tag.

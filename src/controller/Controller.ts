@@ -1,12 +1,13 @@
+import { ChildServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
-import { Service, ServiceOptions, ServiceDefinition } from 'src/Service';
+import { Service, ServiceDefinition } from 'src/Service';
 import { TransformData } from 'src/transform/Transform';
 
 export interface ControllerData {
   transforms: Array<ServiceDefinition<TransformData>>;
 }
 
-export type ControllerOptions<TData extends ControllerData> = ServiceOptions<TData>;
+export type ControllerOptions<TData extends ControllerData> = ChildServiceOptions<TData>;
 
 /**
  * Controllers react to commands, consuming them before sending replies or performing background work.

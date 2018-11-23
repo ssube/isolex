@@ -1,15 +1,14 @@
 import * as split from 'split-string';
-import { isString } from 'util';
 
-import { Command, CommandArgsMap, CommandVerb, CommandData } from 'src/entity/Command';
+import { Command, CommandArgsMap, CommandData } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData, ParserValue } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { filterNil, setOrPush } from 'src/utils';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MatchAlias {
   match: MatchPattern;
@@ -68,7 +67,7 @@ export interface MapParserData extends ParserData {
   split: SplitString.SplitOptions;
 }
 
-export type MapParserOptions = ServiceOptions<MapParserData>;
+export type MapParserOptions = ParserOptions<MapParserData>;
 
 export class MapParser extends BaseParser<MapParserData> implements Parser {
   protected aliases: Array<MatchCommand>;
@@ -124,8 +123,8 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
    * Map a string into some commands, splitting on keywords.
    */
   public async decode(msg: Message): Promise<Array<MappedMessage>> {
-    if (!isString(msg.body)) {
-      throw new InvalidArgumentError('value must be a string');
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
     }
 
     const parts = split(msg.body, this.data.split).reverse();

@@ -17,6 +17,7 @@ import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 import { InvalidArgumentError } from './error/InvalidArgumentError';
 import { mustGet } from './utils';
+import { BaseService } from './BaseService';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
@@ -38,14 +39,9 @@ export type BotOptions = BaseOptions & BotDefinition & {
 };
 
 @Inject('logger')
-export class Bot implements Service {
-  public readonly id: string;
-  public readonly kind: string;
-  public readonly name: string;
-
+export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
-  protected readonly data: Readonly<BotData>;
-  protected readonly logger: Logger;
+
   protected storage: Connection;
   protected strict: boolean;
 
@@ -62,15 +58,9 @@ export class Bot implements Service {
   protected outgoing: Subject<Message>;
 
   constructor(options: BotOptions) {
-    this.id = uuid();
-    this.kind = options.metadata.kind;
-    this.name = options.metadata.name;
+    super(options);
 
     this.container = options.container;
-    this.data = options.data;
-    this.logger = options.logger.child({
-      class: Bot.name,
-    });
     this.logger.info(options, 'starting bot');
 
     // set up deps

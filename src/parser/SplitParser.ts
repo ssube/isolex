@@ -1,15 +1,14 @@
 import { isEmpty, trim } from 'lodash';
 import * as split from 'split-string';
-import { isString } from 'util';
 
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SplitParserData extends ParserData {
   /**
@@ -23,13 +22,9 @@ export interface SplitParserData extends ParserData {
   split: SplitString.SplitOptions;
 }
 
-export type SplitParserOptions = ServiceOptions<SplitParserData>;
+export type SplitParserOptions = ParserOptions<SplitParserData>;
 
 export class SplitParser extends BaseParser<SplitParserData> implements Parser {
-  constructor(options: SplitParserOptions) {
-    super(options);
-  }
-
   public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
     throw new NotImplementedError();
   }
@@ -47,8 +42,8 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<any> {
-    if (!isString(msg.body)) {
-      throw new InvalidArgumentError('value must be a string');
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
     }
 
     const body = this.removeTags(msg.body);

@@ -1,20 +1,20 @@
 import { RTMClient } from '@slack/client';
+import { BaseError } from 'noicejs';
 
+import { ChildServiceOptions } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotImplementedError } from 'src/error/NotImplementedError';
-import { ServiceOptions } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseListener } from './BaseListener';
 import { Listener } from './Listener';
-import { BaseError } from 'noicejs';
 
 export interface SlackListenerData {
   token: string;
 }
 
-export type SlackListenerOptions = ServiceOptions<SlackListenerData>;
+export type SlackListenerOptions = ChildServiceOptions<SlackListenerData>;
 
 export class SlackListener extends BaseListener<SlackListenerData> implements Listener {
   protected client: RTMClient;

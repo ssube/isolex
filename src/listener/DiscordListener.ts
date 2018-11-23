@@ -12,11 +12,11 @@ import {
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 
+import { ChildServiceOptions } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
-import { ServiceOptions } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface DiscordListenerData {
@@ -24,7 +24,7 @@ export interface DiscordListenerData {
   token: string;
 }
 
-export type DiscordListenerOptions = ServiceOptions<DiscordListenerData>;
+export type DiscordListenerOptions = ChildServiceOptions<DiscordListenerData>;
 
 export class DiscordListener extends BaseListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {

@@ -1,11 +1,12 @@
 import * as k8s from '@kubernetes/client-node';
-import { ServiceOptions } from 'src/Service';
-import { BaseController } from './BaseController';
-import { Controller, ControllerData } from './Controller';
+
 import { Command, CommandVerb } from 'src/entity/Command';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { TYPE_JSON } from 'src/utils/Mime';
+
+import { BaseController } from './BaseController';
+import { Controller, ControllerData, ControllerOptions } from './Controller';
 
 export interface KubernetesControllerData extends ControllerData {
   context: {
@@ -18,17 +19,13 @@ export interface KubernetesControllerData extends ControllerData {
   }
 }
 
-export type KubernetesControllerOptions = ServiceOptions<KubernetesControllerData>;
+export type KubernetesControllerOptions = ControllerOptions<KubernetesControllerData>;
 
 /**
  * @TODO: explore breaking this down into many controllers
  */
 export class KubernetesController extends BaseController<KubernetesControllerData> implements Controller {
   protected client: k8s.Core_v1Api;
-
-  constructor(options: KubernetesControllerOptions) {
-    super(options);
-  }
 
   public async start() {
     await super.start();

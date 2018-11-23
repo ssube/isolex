@@ -2,14 +2,13 @@ import { Inject } from 'noicejs';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { ServiceOptions } from 'src/Service';
 import { mapToDict } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { BaseTransform } from './BaseTransform';
-import { Transform, TransformData } from './Transform';
+import { Transform, TransformData, TransformOptions } from './Transform';
 
 /**
  * Dictionary of templates to be compiled.
@@ -20,7 +19,7 @@ export interface TemplateTransformData extends TransformData {
   };
 }
 
-export interface TemplateTransformOptions extends ServiceOptions<TemplateTransformData> {
+export interface TemplateTransformOptions extends TransformOptions<TemplateTransformData> {
   compiler: TemplateCompiler;
 }
 

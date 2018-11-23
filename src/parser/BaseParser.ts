@@ -1,14 +1,13 @@
-import { BaseService } from 'src/BaseService';
+import { ChildService, ChildServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
 
-export abstract class BaseParser<TData extends ParserData> extends BaseService<TData> implements Parser {
+export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
   protected tags: Array<string>;
 
-  constructor(options: ServiceOptions<TData>) {
+  constructor(options: ChildServiceOptions<TData>) {
     super(options);
 
     this.tags = options.data.tags;

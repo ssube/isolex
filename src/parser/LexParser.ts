@@ -1,5 +1,4 @@
 import * as AWS from 'aws-sdk';
-import { isString } from 'lodash';
 
 import { Command, CommandOptions } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
@@ -7,8 +6,7 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData } from 'src/parser/Parser';
-import { ServiceOptions } from 'src/Service';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { leftPad, MapOrMapLike } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -24,7 +22,7 @@ export interface LexParserData extends ParserData {
   region: string;
 }
 
-export type LexParserOptions = ServiceOptions<LexParserData>;
+export type LexParserOptions = ParserOptions<LexParserData>;
 
 export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected alias: string;

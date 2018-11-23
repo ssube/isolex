@@ -3,16 +3,15 @@ import * as yargs from 'yargs-parser';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { NotImplementedError } from 'src/error/NotImplementedError';
-import { ServiceOptions } from 'src/Service';
 
 import { BaseParser } from './BaseParser';
-import { Parser, ParserData } from './Parser';
+import { Parser, ParserData, ParserOptions } from './Parser';
 
 export interface ArgsParserData extends ParserData {
   args: any;
 }
 
-export type ArgsParserOptions = ServiceOptions<ArgsParserData>;
+export type ArgsParserOptions = ParserOptions<ArgsParserData>;
 
 export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   constructor(options: ArgsParserOptions) {

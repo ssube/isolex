@@ -2,11 +2,14 @@ import { Command, CommandData } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { Fragment } from 'src/entity/Fragment';
+import { ChildServiceOptions } from 'src/ChildService';
 
 export interface ParserData {
   emit: CommandData;
   tags: Array<string>;
 }
+
+export type ParserOptions<TData extends ParserData> = ChildServiceOptions<TData>;
 
 export type ParserValue = Buffer | string;
 
