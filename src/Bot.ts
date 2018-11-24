@@ -16,7 +16,7 @@ import { Service, ServiceDefinition } from 'src/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 import { InvalidArgumentError } from './error/InvalidArgumentError';
-import { mustGet } from './utils';
+import { mustGet, mustFind } from './utils';
 import { BaseService } from './BaseService';
 
 export interface BotData {
@@ -201,11 +201,7 @@ export class Bot extends BaseService<BotData> implements Service {
    * Fetches messages using a specified listener.
    */
   public async fetch(options: ContextFetchOptions) {
-    const listener = this.listeners.find((it) => it.id === options.listenerId);
-    if (!listener) {
-      throw new Error('Could not find listener with given id.');
-    }
-
+    const listener = mustFind(this.listeners, (it) => it.id === options.listenerId);
     const messages = await listener.fetch(options);
     if (!options.useFilters) {
       return messages;

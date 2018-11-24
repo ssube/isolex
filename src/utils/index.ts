@@ -1,5 +1,6 @@
 import { isMap, isNil } from 'lodash';
 import { MissingValueError } from 'noicejs';
+import { NotFoundError } from 'src/error/NotFoundError';
 
 export interface Dict<TVal> {
   [key: string]: TVal;
@@ -80,13 +81,21 @@ export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Ar
   return out;
 }
 
+export function mustFind<TVal>(list: Array<TVal>, predicate: (val: TVal, idx: number, list: Array<TVal>) => boolean): TVal {
+  const val = list.find(predicate);
+  if (isNil(val)) {
+    throw new NotFoundError();
+  }
+  return val;
+}
+
 /**
  * Get an element from a Map and guard against nil values.
  */
 export function mustGet<TKey, TVal>(map: Map<TKey, TVal>, key: TKey): TVal {
   const val = map.get(key);
   if (isNil(val)) {
-    throw new MissingValueError();
+    throw new NotFoundError();
   }
   return val;
 }
