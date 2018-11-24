@@ -7,7 +7,7 @@ import { BotDefinition } from 'src/Bot';
 import { envType } from 'src/config/EnvYamlType';
 import { includeType } from 'src/config/IncludeYamlType';
 
-export const CONFIG_ENV = 'ISOLEX__HOME';
+export const CONFIG_ENV = 'ISOLEX_HOME';
 export const CONFIG_NAME = '.isolex.yml';
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
   envType,
@@ -19,7 +19,7 @@ const readFileSync = promisify(readFile);
 /**
  * With the given name, generate all potential config paths in their complete, absolute form.
  * 
- * This will include the value of `ISOLEX__HOME`, `HOME`, the current working directory, and any extra paths
+ * This will include the value of `ISOLEX_HOME`, `HOME`, the current working directory, and any extra paths
  * passed as the final arguments.
  */
 export function completePaths(name: string, ...extras: Array<string>): Array<string> {
