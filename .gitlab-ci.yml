@@ -2,7 +2,6 @@ stages:
   - build
   - image
   - image-tag
-  - deploy
 
 # template jobs
 
@@ -92,19 +91,3 @@ tag-version:
     <<: *vars-docker
     IMAGE_SRC: ssube/isolex:latest
     IMAGE_DST: ssube/isolex:${CI_COMMIT_TAG}
-
-# deploy master
-deploy-bot:
-  <<: [*branch-deploy]
-  stage: deploy
-  image: apextoaster/kube:1.9
-  tags:
-    - runner:k8s
-    - cloud:ovh
-
-  dependencies: []
-  variables:
-    KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-isolex
-  script:
-    - kubectl describe deployment isolex --namespace=isolex
-    - kubectl delete pod $(kubectl get pods --namespace=isolex | tail -n 1 | awk '{ print $1; }') --namespace=isolex
