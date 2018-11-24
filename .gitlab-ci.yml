@@ -17,12 +17,17 @@ stages:
   tags:
     - platform:k8s
     - runner:shared
+  allow_failure: false
 
   before_script:
     # prep secrets
-    - mkdir /root/.docker
-    - echo -n "${DOCKER_SECRET}" | base64 -d > /root/.docker/config.json
+    - mkdir ${HOME}/.docker
+    - echo "${DOCKER_SECRET}" | base64 -d > ${HOME}/.docker/config.json
     - docker info
+
+  after_script:
+    - rm -rfv ${HOME}/.docker
+
   variables: &vars-docker
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
