@@ -11,17 +11,17 @@ stages:
     - master
 
 .build-docker: &build-docker
-  image: docker
+  image: docker:stable
   services:
-    - docker:dind
+    - docker:dind-stable
   tags:
-    - runner:k8s
-    - cloud:aws
+    - platform:k8s
+    - runner:shared
 
   before_script:
     # prep secrets
     - mkdir /root/.docker
-    - ln -s /secrets/docker /root/.docker/config.json
+    - echo -n "${DOCKER_SECRET}" | base64 -d > /root/.docker/config.json
     - docker info
   variables: &vars-docker
     DOCKER_DRIVER: overlay2
@@ -37,10 +37,11 @@ stages:
 
 # build jobs
 build-node:
-  image: apextoaster/node:master
+  image: apextoaster/node:10.1
   stage: build
   tags:
-    - runner:k8s
+    - platform:k8s
+    - runner:shared
 
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
