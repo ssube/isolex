@@ -13,7 +13,7 @@ stages:
 .build-docker: &build-docker
   image: docker:stable
   services:
-    - docker:dind-stable
+    - docker:stable-dind
   tags:
     - platform:k8s
     - runner:shared
