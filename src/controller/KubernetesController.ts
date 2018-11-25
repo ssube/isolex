@@ -41,6 +41,10 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
       case 'pod':
       case 'pods':
         return this.handlePods(cmd);
+      case 'svc':
+      case 'service':
+      case 'services':
+        return this.handleSvcs(cmd);
       default:
         throw new InvalidArgumentError(`unknown kind: ${kind}`);
     }
@@ -75,4 +79,21 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
         throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
     }
   }
+
+  protected async handleSvcs(cmd: Command): Promise<void> {
+    const verb = cmd.getHeadOrDefault('verb', CommandVerb.Get);
+    const namespace = cmd.getHeadOrDefault('args', this.data.default.namespace);
+    this.logger.debug({ cmd, namespace, verb }, 'doing something with k8s svcs');
+
+    switch (verb) {
+      case CommandVerb.Get:
+        const response = await this.client.listNamespacedService(namespace);
+        this.logger.debug({ pods: response.body }, 'found pods');
+        const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
+        return this.bot.send(...messages);
+      default:
+        throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
+    }
+  }
+
 }
