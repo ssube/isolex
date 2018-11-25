@@ -61,10 +61,11 @@ export class Tracker {
   public dump() {
     console.error(`tracking ${this.resources.size} async resources`);
     this.resources.forEach((res, id) => {
-      console.error(`id: ${id}`);
-      console.error(`type: ${res.type}`);
-      console.error(res.source);
-      console.error('\n');
+      console.error(`${id}: ${res.type}`);
+      if (Reflect.has(process.env, 'DEBUG')) {
+        console.error(res.source);
+        console.error('\n');
+      }
     });
   }
 
