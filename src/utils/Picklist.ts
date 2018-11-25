@@ -1,5 +1,7 @@
 import { random } from 'mathjs';
 
+import { NotFoundError } from 'src/error/NotFoundError';
+
 export interface PickItem<T> {
   value: T;
   weight: number;
@@ -22,9 +24,11 @@ export class Picklist<T> implements PicklistOptions<T> {
   }
 
   public readonly data: Array<PickItem<T>>;
+  public readonly sum: number;
 
   constructor(options: PicklistOptions<T>) {
     this.data = Array.from(options.data);
+    this.sum = this.data.reduce((p, d) => p + d.weight, 0);
   }
 
   public pick(n: number): Array<T> {
@@ -32,8 +36,7 @@ export class Picklist<T> implements PicklistOptions<T> {
   }
 
   public pickOne(): T {
-    const sum = this.data.reduce((p, d) => p + d.weight, 0);
-    let target = random(0, sum);
+    let target = random(0, this.sum);
 
     for (const d of this.data) {
       target -= d.weight;
@@ -43,6 +46,6 @@ export class Picklist<T> implements PicklistOptions<T> {
       }
     }
 
-    throw new Error('no item found');
+    throw new NotFoundError('no item found');
   }
 }
