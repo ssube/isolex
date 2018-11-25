@@ -2,8 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export interface TokenOptions {
   audience: Array<string>;
-  created_at: number;
-  expires_at: number;
+  createdAt: number;
+  expiresAt: number;
   issuer: string;
   subject: string;
 }
@@ -28,14 +28,14 @@ export class Token implements TokenOptions {
    * https://tools.ietf.org/html/rfc7519#section-4.1.5
    */
   @Column()
-  public created_at: number;
+  public createdAt: number;
 
   /**
    * `exp` (Expiration Time) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.4
    */
   @Column()
-  public expires_at: number;
+  public expiresAt: number;
 
   /**
    * `jti` (JWT ID) claim

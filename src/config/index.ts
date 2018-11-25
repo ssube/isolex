@@ -18,7 +18,7 @@ const readFileSync = promisify(readFile);
 
 /**
  * With the given name, generate all potential config paths in their complete, absolute form.
- * 
+ *
  * This will include the value of `ISOLEX_HOME`, `HOME`, the current working directory, and any extra paths
  * passed as the final arguments.
  */

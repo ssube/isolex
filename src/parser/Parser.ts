@@ -1,8 +1,8 @@
+import { ChildServiceOptions } from 'src/ChildService';
 import { Command, CommandData } from 'src/entity/Command';
+import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
-import { Fragment } from 'src/entity/Fragment';
-import { ChildServiceOptions } from 'src/ChildService';
 
 export interface ParserData {
   emit: CommandData;
@@ -31,9 +31,9 @@ export interface Parser extends Service {
   /**
    * Parse the body of an event into structured data. Binary data should be passed as a buffer or base64-encoded
    * string, text data should be passed as a string.
-   * 
+   *
    * If the MIME type is not one this parser can handle, it should throw.
-   * 
+   *
    * This allows access to the parser's data for use by transforms.
    */
   decode(msg: Message): Promise<any>;

@@ -5,4 +5,3 @@ export class NotFoundError extends BaseError {
     super(msg, ...nested);
   }
 }
-

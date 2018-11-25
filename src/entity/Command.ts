@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import {
   AfterLoad,
   BeforeInsert,
@@ -13,7 +14,6 @@ import { BaseEntity } from 'src/entity/BaseEntity';
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { MapOrMapLike, mergeMap, normalizeMap } from 'src/utils';
-import { isNil } from 'lodash';
 
 export enum CommandVerb {
   Create = 'create',

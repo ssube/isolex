@@ -1,13 +1,14 @@
-import { CommandOptions, Command } from './Command';
-import { BaseEntity } from './BaseEntity';
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
+
+import { BaseEntity } from './BaseEntity';
+import { Command, CommandOptions } from './Command';
 
 export interface FragmentOptions {
   command: CommandOptions;
 
   /**
    * The next key to be filled.
-   * 
+   *
    * For the Lex parser, this is a slot within the intent (noun).
    */
   key: string;
@@ -23,10 +24,10 @@ export class Fragment extends BaseEntity implements FragmentOptions {
   @Column()
   public key: string;
 
-  toJSON() {
+  public toJSON() {
     return {
-      id: this.id,
       command: this.command.toJSON(),
+      id: this.id,
       key: this.key,
     };
   }

@@ -61,7 +61,7 @@ export function mapToDict<TVal>(map: Map<string, TVal>): Dict<TVal> {
   function reducer(prev: Dict<TVal>, [key, val]: [string, TVal]): Dict<TVal> {
     return {...prev, [key]: val};
   }
-  return Array.from(map.entries()).reduce(reducer, {});
+  return Array.from(map.entries()).reduce<Dict<TVal>>(reducer, {});
 }
 
 /**

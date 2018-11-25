@@ -16,7 +16,7 @@ export interface KubernetesControllerData extends ControllerData {
   };
   default: {
     namespace: string;
-  }
+  };
 }
 
 export type KubernetesControllerOptions = ControllerOptions<KubernetesControllerData>;
@@ -67,7 +67,7 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
 
     switch (verb) {
       case CommandVerb.Get:
-        const response = await this.client.listNamespacedPod(namespace)
+        const response = await this.client.listNamespacedPod(namespace);
         this.logger.debug({ pods: response.body }, 'found pods');
         const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
         return this.bot.send(...messages);

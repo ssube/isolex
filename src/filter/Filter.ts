@@ -1,7 +1,6 @@
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
-import { ChildServiceOptions } from 'src/ChildService';
 
 export enum FilterBehavior {
   /**

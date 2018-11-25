@@ -4,7 +4,6 @@ import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
-import * as uuid from 'uuid/v4';
 
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
@@ -15,9 +14,9 @@ import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
-import { InvalidArgumentError } from './error/InvalidArgumentError';
-import { mustGet, mustFind } from './utils';
 import { BaseService } from './BaseService';
+import { InvalidArgumentError } from './error/InvalidArgumentError';
+import { mustFind, mustGet } from './utils';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;

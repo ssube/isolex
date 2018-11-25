@@ -1,7 +1,7 @@
+import { ChildServiceOptions } from 'src/ChildService';
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
-import { ChildServiceOptions } from 'src/ChildService';
 
 export type UserFilterData = ChecklistOptions<string>;
 
