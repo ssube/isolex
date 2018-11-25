@@ -4,14 +4,16 @@ import { join } from 'path';
 import { promisify } from 'util';
 
 import { BotDefinition } from 'src/Bot';
-import { envType } from 'src/config/EnvYamlType';
-import { includeType } from 'src/config/IncludeYamlType';
+import { envType } from 'src/config/type/Env';
+import { includeType } from 'src/config/type/Include';
+import { regexpType } from './type/Regexp';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 export const CONFIG_NAME = '.isolex.yml';
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
   envType,
   includeType,
+  regexpType,
 ]);
 
 const readFileSync = promisify(readFile);
