@@ -9,6 +9,8 @@ import { Transform } from 'src/transform/Transform';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
+export const NOUN_ECHO = 'echo';
+
 export interface EchoControllerData extends ControllerData {
   transforms: Array<ServiceDefinition>;
 }
@@ -22,7 +24,10 @@ export class EchoController extends BaseController<EchoControllerData> implement
   protected readonly transforms: Array<Transform>;
 
   constructor(options: EchoControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_ECHO],
+    });
 
     this.transforms = [];
   }

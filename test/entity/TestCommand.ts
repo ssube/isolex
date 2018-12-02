@@ -19,6 +19,7 @@ describeAsync('command', async () => {
         userName: '',
       }),
       data,
+      labels: {},
       noun: 'test_cmd',
       verb: CommandVerb.Get,
     });
@@ -43,6 +44,7 @@ describeAsync('command', async () => {
         userName: '',
       }),
       data,
+      labels: {},
       noun: 'test_cmd',
       verb: CommandVerb.Get,
     });

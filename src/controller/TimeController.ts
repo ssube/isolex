@@ -15,7 +15,10 @@ export class TimeController extends BaseController<TimeControllerData> implement
   protected template: HandlebarsTemplateDelegate;
 
   constructor(options: TimeControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [],
+    });
   }
 
   public async handle(cmd: Command): Promise<void> {

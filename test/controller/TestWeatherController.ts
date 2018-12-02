@@ -3,7 +3,7 @@ import { ineeda } from 'ineeda';
 import { ConsoleLogger } from 'noicejs';
 
 import { Bot } from 'src/Bot';
-import { WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
+import { WeatherController, WeatherControllerOptions, NOUN_REPORT } from 'src/controller/WeatherController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -37,6 +37,7 @@ describeAsync('weather controller', async () => {
           key: '0',
           root: 'https://api.openweathermap.org/data/2.5/',
         },
+        filters: [],
         transforms: [{
           data: {
             parsers: [],
@@ -72,7 +73,8 @@ describeAsync('weather controller', async () => {
       data: {
         location: ['94040'],
       },
-      noun: 'test_weather',
+      labels: {},
+      noun: NOUN_REPORT,
       verb: CommandVerb.Get,
     });
 

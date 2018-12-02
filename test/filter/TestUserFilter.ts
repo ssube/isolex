@@ -69,6 +69,7 @@ describeAsync('user filter', async () => {
         userName: 'safe',
       }),
       data: {},
+      labels: {},
       noun: 'test',
       verb: CommandVerb.Get,
     });
@@ -100,6 +101,7 @@ describeAsync('user filter', async () => {
         userName: 'test',
       }),
       data: {},
+      labels: {},
       noun: 'test',
       verb: CommandVerb.Get,
     });

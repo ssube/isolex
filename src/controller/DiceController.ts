@@ -8,13 +8,18 @@ import { TYPE_TEXT } from 'src/utils/Mime';
 
 const DICE_MINIMUM = 1;
 
+export const NOUN_ROLL = 'roll';
+
 export type DiceControllerData = ControllerData;
 
 export type DiceControllerOptions = ControllerOptions<DiceControllerData>;
 
 export class DiceController extends BaseController<DiceControllerData> implements Controller {
   constructor(options: DiceControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_ROLL],
+    });
   }
 
   public async handle(cmd: Command): Promise<void> {

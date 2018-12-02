@@ -23,6 +23,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     return [Command.create({
       context: msg.context,
       data,
+      labels: this.data.emit.labels,
       noun: this.data.emit.noun,
       verb: this.data.emit.verb,
     })];

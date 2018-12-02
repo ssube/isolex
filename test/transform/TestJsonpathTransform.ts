@@ -38,6 +38,7 @@ describeAsync('jsonpath transform', async () => {
     const output = await transform.transform(Command.create({
       context: ineeda<Context>(),
       data: {},
+      labels: {},
       noun: 'test',
       verb: CommandVerb.Get,
     }), Message.reply(ineeda<Context>(), TYPE_JSON, JSON.stringify(data)));

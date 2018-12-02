@@ -15,9 +15,10 @@ describeAsync('match utility', async () => {
         }],
       });
 
-      expect(match.match({
+      const results = match.match({
         foo: 'bar',
-      })).to.equal(true);
+      });
+      expect(results.matched).to.equal(true);
     });
 
     itAsync('should never match a single string to many', async () => {
@@ -29,9 +30,10 @@ describeAsync('match utility', async () => {
         }],
       });
 
-      expect(match.match({
+      const results = match.match({
         foo: 'bar',
-      })).to.equal(false);
+      });
+      expect(results.matched).to.equal(false);
     });
   });
 
@@ -45,9 +47,10 @@ describeAsync('match utility', async () => {
         }],
       });
 
-      expect(match.match({
+      const results = match.match({
         foo: 'bar',
-      })).to.equal(true);
+      });
+      expect(results.matched).to.equal(true);
     });
 
     itAsync('should match a single string to many', async () => {
@@ -59,9 +62,10 @@ describeAsync('match utility', async () => {
         }],
       });
 
-      expect(match.match({
+      const results = match.match({
         foo: 'bar',
-      })).to.equal(true);
+      });
+      expect(results.matched).to.equal(true);
     });
   });
 });

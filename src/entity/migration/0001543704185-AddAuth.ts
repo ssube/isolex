@@ -29,7 +29,7 @@ export class AddAuth0001543704185 implements MigrationInterface {
         name: 'listenerId',
         type: 'varchar',
       }, {
-        name: 'user',
+        name: 'userId',
         type: 'varchar',
       }],
       name: 'session',

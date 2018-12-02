@@ -2,7 +2,7 @@ import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { mapToDict, normalizeMap } from 'src/utils';
+import { mapToDict, dictToMap } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseTransform } from './BaseTransform';
@@ -22,7 +22,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
   constructor(options: JsonpathTransformOptions) {
     super(options);
 
-    this.queries = normalizeMap(options.data.queries);
+    this.queries = dictToMap(options.data.queries);
   }
 
   public async transform(cmd: Command, msg: Message): Promise<Array<Message>> {

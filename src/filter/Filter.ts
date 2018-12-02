@@ -1,6 +1,7 @@
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
+import { ChildServiceOptions } from 'src/ChildService';
 
 export enum FilterBehavior {
   /**
@@ -19,13 +20,9 @@ export enum FilterBehavior {
   Ignore = 0xFF,
 }
 
-export function checkFilter(a: FilterBehavior, s: boolean) {
-  if (s) {
-    return a === FilterBehavior.Allow;
-  } else {
-    return a !== FilterBehavior.Drop;
-  }
-}
+export type FilterData = any;
+
+export type FilterOptions<TData> = ChildServiceOptions<TData>;
 
 export type FilterValue = Command | Message;
 
@@ -35,4 +32,19 @@ export type FilterValue = Command | Message;
  */
 export interface Filter extends Service {
   filter(val: FilterValue): Promise<FilterBehavior>;
+}
+
+/**
+ * Check a filter behavior.
+ *
+ * - In strict mode, only `Allow` is allowed.
+ * - In loose mode, only `Drop` is dropped.
+ * - Ignore varies: it is dropped in strict mode and allowed otherwise.
+ */
+export function checkFilter(behavior: FilterBehavior, strict: boolean) {
+  if (strict) {
+    return behavior === FilterBehavior.Allow;
+  } else {
+    return behavior !== FilterBehavior.Drop;
+  }
 }

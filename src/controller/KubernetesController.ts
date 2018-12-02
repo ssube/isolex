@@ -8,6 +8,9 @@ import { TYPE_JSON } from 'src/utils/Mime';
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
 
+export const NOUN_POD = 'pod';
+export const NOUN_SERVICE = 'service';
+
 export interface KubernetesControllerData extends ControllerData {
   context: {
     cluster: boolean;
@@ -27,6 +30,13 @@ export type KubernetesControllerOptions = ControllerOptions<KubernetesController
 export class KubernetesController extends BaseController<KubernetesControllerData> implements Controller {
   protected client: k8s.Core_v1Api;
 
+  constructor(options: KubernetesControllerOptions) {
+    super({
+      ...options,
+      nouns: [NOUN_POD, NOUN_SERVICE],
+    });
+  }
+
   public async start() {
     await super.start();
 
@@ -35,18 +45,13 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const [kind] = cmd.get('kind');
-    switch (kind) {
-      case 'po':
-      case 'pod':
-      case 'pods':
+    switch (cmd.noun) {
+      case NOUN_POD:
         return this.handlePods(cmd);
-      case 'svc':
-      case 'service':
-      case 'services':
+      case NOUN_SERVICE:
         return this.handleSvcs(cmd);
       default:
-        throw new InvalidArgumentError(`unknown kind: ${kind}`);
+        throw new InvalidArgumentError(`unknown kind: ${cmd.noun}`);
     }
   }
 

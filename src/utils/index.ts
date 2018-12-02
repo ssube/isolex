@@ -1,5 +1,5 @@
 import { isMap, isNil } from 'lodash';
-import { MissingValueError } from 'noicejs';
+
 import { NotFoundError } from 'src/error/NotFoundError';
 
 export interface Dict<TVal> {
@@ -57,13 +57,6 @@ export function filterNil<TItem>(list: ArrayLike<TItem | null | undefined>): Arr
   return Array.from(list).filter(nilGuard);
 }
 
-export function mapToDict<TVal>(map: Map<string, TVal>): Dict<TVal> {
-  function reducer(prev: Dict<TVal>, [key, val]: [string, TVal]): Dict<TVal> {
-    return {...prev, [key]: val};
-  }
-  return Array.from(map.entries()).reduce<Dict<TVal>>(reducer, {});
-}
-
 /**
  * Merge arguments, which may or may not be arrays, into one return that is definitely an array.
  */
@@ -100,6 +93,33 @@ export function mustGet<TKey, TVal>(map: Map<TKey, TVal>, key: TKey): TVal {
   return val;
 }
 
+export function getOrDefault<TKey, TVal>(map: Map<TKey, TVal>, key: TKey, defaultValue: TVal): TVal {
+  if (map.has(key)) {
+    const data = map.get(key);
+    if (isNil(data)) {
+      return defaultValue;
+    } else {
+      return data;
+    }
+  } else {
+    return defaultValue;
+  }
+}
+
+export function getHeadOrDefault<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey, defaultValue: TVal): TVal {
+  if (map.has(key)) {
+    const data = map.get(key);
+    if (isNil(data)) {
+      return defaultValue;
+    } else {
+      const [head = defaultValue] = data;
+      return head;
+    }
+  } else {
+    return defaultValue;
+  }
+}
+
 /**
  * Set a map key to a new array or push to the existing value.
  * @param map The destination map and source of existing values.
@@ -132,14 +152,47 @@ export function mergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<TVal>
 /**
  * Clone a map or map-like object into a new map.
  */
-export function normalizeMap<TVal>(val: MapOrMapLike<TVal>): Map<string, TVal> {
+export function dictToMap<TVal>(val: MapOrMapLike<TVal> | null | undefined): Map<string, TVal> {
+  // nil: empty map
+  if (isNil(val)) {
+    return new Map();
+  }
+
+  // already a map: make a copy
   if (isMap(val)) {
     return new Map(val.entries());
-  } else {
-    return new Map(Object.entries(val));
   }
+
+  // otherwise: dict
+  return new Map(Object.entries(val));
+}
+
+/**
+ * Turns a map or dict into a dict
+ */
+export function mapToDict<TVal>(map: MapOrMapLike<TVal> | null | undefined): Dict<TVal> {
+  if (isNil(map)) {
+    return {};
+  }
+
+  const result: Dict<TVal> = {};
+  if (isMap(map)) {
+    for (const [key, val] of map) {
+      result[key] = val;
+    }
+  } else {
+    for (const [key, val] of Object.entries(map)) {
+      result[key] = val;
+    }
+  }
+
+  return result;
+}
+
+export function getConstructor(val: any) {
+  return val.constructor;
 }
 
 export function prototypeName(val: any) {
-  return Reflect.getPrototypeOf(val).constructor.name;
+  return getConstructor(Reflect.getPrototypeOf(val)).name;
 }

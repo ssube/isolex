@@ -15,13 +15,18 @@ export interface PickControllerData extends ControllerData {
   };
 }
 
+export const NOUN_PICK = 'pick';
+
 export type PickControllerOptions = ControllerOptions<PickControllerData>;
 
 export class PickController extends BaseController<PickControllerData> implements Controller {
   protected list: Checklist<string>;
 
   constructor(options: PickControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_PICK],
+    });
 
     this.list = new Checklist(options.data.check);
   }

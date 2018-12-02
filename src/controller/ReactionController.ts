@@ -16,12 +16,17 @@ export interface ReactionControllerData extends ControllerData {
 
 export type ReactionControllerOptions = ControllerOptions<ReactionControllerData>;
 
+export const NOUN_REACTION = 'reaction';
+
 export class ReactionController extends BaseController<ReactionControllerData> implements Controller {
   protected tags: Array<string>;
   protected reactions: Map<string, Array<ReactionChance>>;
 
   constructor(options: ReactionControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_REACTION],
+    });
 
     this.reactions = new Map(Object.entries(options.data.reactions));
     this.tags = Array.from(this.reactions.keys());

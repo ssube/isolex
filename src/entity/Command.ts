@@ -13,7 +13,7 @@ import {
 import { BaseEntity } from 'src/entity/BaseEntity';
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { MapOrMapLike, mergeMap, normalizeMap } from 'src/utils';
+import { MapOrMapLike, mergeMap, dictToMap, getOrDefault, getHeadOrDefault } from 'src/utils';
 
 export enum CommandVerb {
   Create = 'create',
@@ -26,6 +26,7 @@ export enum CommandVerb {
 
 export interface CommandData {
   data: MapOrMapLike<CommandArgsList>;
+  labels: MapOrMapLike<string>;
   noun: string;
   verb: CommandVerb;
 }
@@ -51,10 +52,24 @@ export class Command extends BaseEntity implements CommandOptions {
 
     const cmd = new Command();
     cmd.context = Context.create(options.context);
-    cmd.data = normalizeMap(options.data);
+    cmd.data = dictToMap(options.data);
+    cmd.labels = dictToMap(options.labels);
     cmd.noun = options.noun;
     cmd.verb = options.verb;
     return cmd;
+  }
+
+  /**
+   * @TODO: merge emit data and passed data
+   */
+  public static emit(emit: CommandData, context: Context, data: MapOrMapLike<CommandArgsList>) {
+    return Command.create({
+      context,
+      data,
+      labels: emit.labels,
+      noun: emit.noun,
+      verb: emit.verb,
+    });
   }
 
   public static isCommand(it: any): it is Command {
@@ -75,6 +90,8 @@ export class Command extends BaseEntity implements CommandOptions {
   @Column()
   public noun: string;
 
+  public labels: Map<string, string>;
+
   @Column()
   public verb: CommandVerb;
 
@@ -82,6 +99,11 @@ export class Command extends BaseEntity implements CommandOptions {
     name: 'data',
   })
   protected dataStr: string;
+
+  @Column({
+    name: 'labels',
+  })
+  protected labelStr: string;
 
   constructor() {
     super();
@@ -102,7 +124,7 @@ export class Command extends BaseEntity implements CommandOptions {
       cmd.context = Context.create(options.context);
     }
     if (options.data) {
-      cmd.data = mergeMap(cmd.data, normalizeMap(options.data));
+      cmd.data = mergeMap(cmd.data, dictToMap(options.data));
     }
     return cmd;
   }
@@ -123,40 +145,24 @@ export class Command extends BaseEntity implements CommandOptions {
   }
 
   public getOrDefault(key: string, defaultValue: Array<string>): Array<string> {
-    if (this.has(key)) {
-      const data = this.get(key);
-      if (isNil(data)) {
-        return defaultValue;
-      } else {
-        return data;
-      }
-    } else {
-      return defaultValue;
-    }
+    return getOrDefault(this.data, key, defaultValue);
   }
-
+  
   public getHeadOrDefault(key: string, defaultValue: string): string {
-    if (this.has(key)) {
-      const data = this.get(key);
-      if (data.length > 0) {
-        return data[0];
-      } else {
-        return defaultValue;
-      }
-    } else {
-      return defaultValue;
-    }
+    return getHeadOrDefault(this.data, key, defaultValue);
   }
 
   @AfterLoad()
   public syncMap() {
     this.data = new Map(JSON.parse(this.dataStr));
+    this.labels = new Map(JSON.parse(this.labelStr));
   }
 
   @BeforeInsert()
   @BeforeUpdate()
   public syncStr() {
     this.dataStr = JSON.stringify(Array.from(this.data));
+    this.labelStr = JSON.stringify(Array.from(this.labels));
   }
 
   public toJSON(): object {

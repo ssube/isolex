@@ -2,10 +2,12 @@ import { Logger } from 'noicejs/logger/Logger';
 import * as uuid from 'uuid/v4';
 
 import { Service, ServiceOptions } from 'src/Service';
+import { dictToMap } from './utils';
 
 export abstract class BaseService<TData> implements Service {
   public readonly id: string;
   public readonly kind: string;
+  public readonly labels: Map<string, string>;
   public readonly name: string;
 
   protected readonly data: Readonly<TData>;
@@ -14,6 +16,7 @@ export abstract class BaseService<TData> implements Service {
   constructor(options: ServiceOptions<TData>) {
     this.id = uuid();
     this.kind = options.metadata.kind;
+    this.labels = dictToMap(options.metadata.labels);
     this.name = options.metadata.name;
 
     this.data = options.data;

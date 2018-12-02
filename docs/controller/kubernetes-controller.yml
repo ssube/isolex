@@ -6,6 +6,22 @@ data:
     default: true
   default:
     namespace: default
+  filters:
+    - metadata:
+        kind: command-filter
+        name: k8s_test_filter
+      data:
+        match:
+          rules:
+            - key: noun
+              operator: any
+              values:
+                - pod
+                - service
+            - key: labels.test_k8s
+              operator: any
+              values:
+                - test
   transforms:
     - metadata:
         kind: template-transform

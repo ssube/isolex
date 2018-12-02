@@ -8,6 +8,8 @@ import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
+export const NOUN_KEYWORD = 'keyword';
+
 export interface LearnControllerData extends ControllerData {
   field: string;
   modes: {
@@ -27,7 +29,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   protected keywordRepository: Repository<Keyword>;
 
   constructor(options: LearnControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_KEYWORD],
+    });
 
     this.storage = options.storage;
     this.keywordRepository = this.storage.getRepository(Keyword);
@@ -60,6 +65,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       command: Command.create({
         context: cmd.context,
         data: { args },
+        labels: {},
         noun: cmd.noun,
         verb: cmd.verb,
       }),

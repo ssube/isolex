@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 
 import { Context } from 'src/entity/Context';
 import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
+import { BaseEntity } from './BaseEntity';
 
 export interface MessageOptions {
   body: string;
@@ -12,7 +13,7 @@ export interface MessageOptions {
 }
 
 @Entity()
-export class Message implements MessageOptions {
+export class Message extends BaseEntity implements MessageOptions {
   public static create(options: MessageOptions): Message {
     const msg = new Message();
     msg.body = options.body;
@@ -65,5 +66,15 @@ export class Message implements MessageOptions {
    */
   get escaped(): string {
     return escape(this.body);
+  }
+
+  public toJSON(): object {
+    return {
+      body: this.body,
+      context: this.context.toJSON(),
+      id: this.id,
+      reactions: Array.from(this.reactions),
+      type: this.type,
+    };
   }
 }

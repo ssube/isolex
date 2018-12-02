@@ -9,6 +9,8 @@ import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
+export const NOUN_COUNTER = 'counter';
+
 export interface CountControllerData extends ControllerData {
   default: {
     count: string;
@@ -34,7 +36,10 @@ export class CountController extends BaseController<CountControllerData> impleme
   protected counterRepository: Repository<Counter>;
 
   constructor(options: CountControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_COUNTER],
+    });
 
     this.storage = options.storage;
     this.counterRepository = this.storage.getRepository(Counter);

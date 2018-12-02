@@ -1,4 +1,6 @@
-import { MapOrMapLike, mustGet, normalizeMap } from 'src/utils';
+import { get, has, isString } from 'lodash';
+
+import { MapOrMapLike, mapToDict } from 'src/utils';
 
 export interface MatchData {
   rules: Array<RuleData>;
@@ -21,6 +23,11 @@ export interface RuleValue {
   regexp?: RegExp;
 }
 
+export interface MatchResults {
+  matched: boolean;
+  errors: Array<string>;
+}
+
 export class Match {
   protected rules: Array<RuleData>;
 
@@ -28,21 +35,31 @@ export class Match {
     this.rules = Array.from(options.rules);
   }
 
-  public match(rawData: MapOrMapLike<string>): boolean {
-    const data = normalizeMap(rawData);
+  public match(val: any): MatchResults {
+    const data = mapToDict<any>(val);
+    const results: MatchResults = {
+      errors: [],
+      matched: true,
+    };
+
+    console.warn('===match', JSON.stringify(this), JSON.stringify(val));
 
     for (const rule of this.rules) {
-      if (!data.has(rule.key)) {
-        return false;
+      if (!has(data, rule.key)) {
+        results.errors.push(rule.key);
+        results.matched = false;
+        continue;
       }
 
-      const value = mustGet(data, rule.key);
+      const value = get(data, rule.key);
       if (!this.matchRule(rule, value)) {
-        return false;
+        results.errors.push(rule.key);
+        results.matched = false;
+        continue;
       }
     }
 
-    return true;
+    return results;
   }
 
   public matchRule(rule: RuleData, value: string): boolean {
@@ -59,10 +76,16 @@ export class Match {
         } else {
           return rule.values.every((it) => this.matchValue(it, value));
         }
+      default:
+        return false;
     }
   }
 
   public matchValue(ruleValue: RuleValue, value: string): boolean {
+    if (isString(ruleValue)) {
+      return ruleValue === value;
+    }
+
     if (ruleValue.string) {
       return ruleValue.string === value;
     }

@@ -4,7 +4,7 @@ import { ConsoleLogger } from 'noicejs';
 import { match, spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
-import { EchoController, EchoControllerOptions } from 'src/controller/EchoController';
+import { NOUN_ECHO, EchoController, EchoControllerOptions } from 'src/controller/EchoController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -25,6 +25,7 @@ describeAsync('echo controller', async () => {
       }),
       container,
       data: {
+        filters: [],
         transforms: [{
           data: {},
           metadata: {
@@ -58,6 +59,7 @@ describeAsync('echo controller', async () => {
       }),
       container,
       data: {
+        filters: [],
         transforms: [{
           data: {},
           metadata: {
@@ -83,7 +85,8 @@ describeAsync('echo controller', async () => {
         userName: '',
       }),
       data: {},
-      noun: 'test_echo',
+      labels: {},
+      noun: NOUN_ECHO,
       verb: CommandVerb.Get,
     });
 

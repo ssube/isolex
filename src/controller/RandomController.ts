@@ -11,9 +11,14 @@ import { TYPE_TEXT } from 'src/utils/Mime';
 export type RandomControllerData = ControllerData;
 export type RandomControllerOptions = ControllerOptions<RandomControllerData>;
 
+export const NOUN_RANDOM = 'random';
+
 export class RandomController extends BaseController<RandomControllerData> implements Controller {
   constructor(options: RandomControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_RANDOM],
+    });
   }
 
   public async handle(cmd: Command): Promise<void> {

@@ -9,7 +9,10 @@ export type SedControllerOptions = ControllerOptions<SedControllerData>;
 
 export class SedController extends BaseController<SedControllerData> implements Controller {
   constructor(options: SedControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [],
+    });
   }
 
   public async handle(cmd: Command): Promise<void> {

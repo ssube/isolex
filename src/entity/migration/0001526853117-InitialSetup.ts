@@ -15,7 +15,7 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         type: 'varchar',
       }, {
         isNullable: true,
-        name: 'session',
+        name: 'sessionId',
         type: 'varchar',
       }, {
         name: 'threadId',
@@ -42,6 +42,10 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'data',
         type: 'varchar',
       }, {
+        isNullable: true,
+        name: 'labels',
+        type: 'varchar',
+      }, {
         name: 'noun',
         type: 'varchar',
       }, {
@@ -61,6 +65,10 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         type: 'varchar',
       }, {
         name: 'contextId',
+        type: 'varchar',
+      }, {
+        isNullable: true,
+        name: 'labels',
         type: 'varchar',
       }, {
         name: 'reactions',

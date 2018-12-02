@@ -1,13 +1,13 @@
 import * as split from 'split-string';
 
-import { Command, CommandArgsMap, CommandData } from 'src/entity/Command';
+import { Command, CommandArgsMap, CommandData, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
-import { filterNil, setOrPush } from 'src/utils';
+import { filterNil, setOrPush, getHeadOrDefault } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MatchAlias {
@@ -92,11 +92,16 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
     const mapped = await this.decode(msg);
     const commands = [];
     for (const { args, cmd } of mapped) {
+      const data = this.mapFields(args, cmd.args.fields, cmd.args.rest);
+      const noun = getHeadOrDefault(data, 'noun', cmd.emit.noun);
+      const verb = getHeadOrDefault(data, 'verb', cmd.emit.verb) as CommandVerb;
+
       commands.push(Command.create({
         context: msg.context,
-        data: this.mapFields(args, cmd.args.fields, cmd.args.rest),
-        noun: cmd.emit.noun,
-        verb: cmd.emit.verb,
+        data,
+        labels: cmd.emit.labels,
+        noun,
+        verb,
       }));
     }
 

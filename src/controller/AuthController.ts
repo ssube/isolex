@@ -1,18 +1,20 @@
+import { isNil } from 'lodash';
+import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Role } from 'src/entity/auth/Role';
-import { Token } from 'src/entity/auth/Token';
+import { Session } from 'src/entity/auth/Session';
 import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { Message } from 'src/entity/Message';
+import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
-import { Inject } from 'noicejs';
-import { Message } from 'src/entity/Message';
-import { TYPE_TEXT, TYPE_JSON } from 'src/utils/Mime';
-import { isNil } from 'lodash';
-import { Context } from 'src/entity/Context';
-import { Session } from 'src/entity/auth/Session';
+
+export const NOUN_SESSION = 'session';
+export const NOUN_USER = 'user';
 
 export interface AuthControllerData extends ControllerData {
 
@@ -31,7 +33,10 @@ export class AuthController extends BaseController<AuthControllerData> implement
   protected userRepository: Repository<User>;
 
   constructor(options: AuthControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_SESSION, NOUN_USER],
+    });
 
     this.sessions = new Map();
     this.storage = options.storage;

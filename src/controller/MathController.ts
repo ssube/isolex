@@ -7,6 +7,8 @@ import { Message } from 'src/entity/Message';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
+export const NOUN_MATH = 'math';
+
 export interface MathControllerData extends ControllerData {
   format: ResultFormatOptions;
   math: {
@@ -21,7 +23,10 @@ export class MathController extends BaseController<MathControllerData> implement
   protected math: mathjs.MathJsStatic;
 
   constructor(options: MathControllerOptions) {
-    super(options);
+    super({
+      ...options,
+      nouns: [NOUN_MATH],
+    });
 
     this.math = (mathjs as any).create(options.data.math);
   }

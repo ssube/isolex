@@ -20,13 +20,17 @@ export interface WeatherControllerOptions extends ControllerOptions<WeatherContr
   compiler: TemplateCompiler;
 }
 
+export const NOUN_REPORT = 'report';
+
 @Inject('compiler')
 export class WeatherController extends BaseController<WeatherControllerData> implements Controller {
   protected readonly container: Container;
 
   constructor(options: WeatherControllerOptions) {
-    super(options);
-
+    super({
+      ...options,
+      nouns: [NOUN_REPORT],
+    });
     this.container = options.container;
   }
 

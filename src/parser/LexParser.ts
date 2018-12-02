@@ -46,11 +46,15 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     throw new NotImplementedError();
   }
 
+  /**
+   * @TODO: split the Lex intent into noun and verb
+   */
   public async parse(msg: Message): Promise<Array<Command>> {
     const { data, noun } = await this.decode(msg);
     const cmdOptions: CommandOptions = {
       context: msg.context,
       data,
+      labels: this.data.emit.labels,
       noun,
       verb: this.data.emit.verb,
     };

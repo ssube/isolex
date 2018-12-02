@@ -29,6 +29,7 @@ export interface BotData {
   migrate: boolean;
   parsers: Array<ServiceDefinition<ParserData>>;
   storage: ConnectionOptions;
+  strict: boolean;
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
@@ -39,10 +40,10 @@ export type BotOptions = BaseOptions & BotDefinition & {
 
 @Inject('logger')
 export class Bot extends BaseService<BotData> implements Service {
-  protected readonly container: Container;
+  public readonly strict: boolean;
 
+  protected readonly container: Container;
   protected storage: Connection;
-  protected strict: boolean;
 
   // services
   protected filters: Array<Filter>;
@@ -61,6 +62,8 @@ export class Bot extends BaseService<BotData> implements Service {
 
     this.container = options.container;
     this.logger.info(options, 'starting bot');
+
+    this.strict = options.data.strict;
 
     // set up deps
     this.filters = [];
