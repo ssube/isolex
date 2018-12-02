@@ -14,12 +14,13 @@ This document covers permissions used by the bot and auth controller.
 
 ### Command Entity
 
-Commands permissions are used by controllers to filter incoming commands. They use the form `scope:noun:verb`.
+Commands permissions are used by controllers to filter incoming commands. They use the form `scope:name:noun:verb`,
+with the controller's `scope` and `name`.
 
 ### Message Entity
 
 Message permissions are used by listeners and parsers to filter incoming messages and by listeners to filter outgoing
-messages. They use the form `scope:kind:name:type`, with the listener or parser's `kind` and `name`.
+messages. They use the form `scope:name:type`, with the listener or parser's `kind` and `name` and message's `type`.
 
 ## Syntax
 

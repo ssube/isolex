@@ -1,0 +1,4 @@
+metadata:
+  kind: auth-controller
+  name: default-auth
+data: {}

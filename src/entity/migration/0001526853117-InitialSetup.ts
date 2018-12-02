@@ -14,6 +14,10 @@ export class InitialSetup0001526853117 implements MigrationInterface {
         name: 'roomId',
         type: 'varchar',
       }, {
+        isNullable: true,
+        name: 'session',
+        type: 'varchar',
+      }, {
         name: 'threadId',
         type: 'varchar',
       }, {

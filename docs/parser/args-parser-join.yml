@@ -1,0 +1,10 @@
+metadata:
+  kind: args-parser
+  name: auth_login
+data:
+  args: {}
+  emit:
+    noun: user
+    verb: create
+  tags:
+    - "!!join"

@@ -15,12 +15,14 @@ import { SearchController } from 'src/controller/SearchController';
 import { SedController } from 'src/controller/SedController';
 import { TimeController } from 'src/controller/TimeController';
 import { WeatherController } from 'src/controller/WeatherController';
+import { AuthController } from 'src/controller/AuthController';
 
 export class ControllerModule extends Module {
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
     // controllers
+    this.bind(kebabCase(AuthController.name)).toConstructor(AuthController);
     this.bind(kebabCase(CountController.name)).toConstructor(CountController);
     this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
     this.bind(kebabCase(EchoController.name)).toConstructor(EchoController);

@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from '../BaseEntity';
 
 export interface UserOptions {
   name: string;
@@ -6,7 +7,7 @@ export interface UserOptions {
 }
 
 @Entity()
-export class User implements UserOptions {
+export class User extends BaseEntity implements UserOptions {
   public static create(options: UserOptions) {
     const ctx = new User();
     ctx.name = options.name;
@@ -22,4 +23,12 @@ export class User implements UserOptions {
 
   @Column('simple-array')
   public roles: Array<string>;
+
+  public toJSON(): object {
+    return {
+      id: this.id,
+      name: this.name,
+      roles: Array.from(this.roles),
+    };
+  }
 }

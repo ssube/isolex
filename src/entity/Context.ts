@@ -1,11 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-export interface ContextOptions {
+import { Session } from './auth/Session';
+
+export interface ContextData {
   listenerId: string;
   roomId: string;
   threadId: string;
   userId: string;
   userName: string;
+}
+
+export interface ContextOptions extends ContextData {
+  session?: Session;
 }
 
 @Entity()
@@ -20,6 +26,14 @@ export class Context implements ContextOptions {
     return ctx;
   }
 
+  public extend(options: Partial<ContextOptions>): Context {
+    const ctx = Context.create(this);
+    if (options.session) {
+      ctx.session = Session.create(options.session);
+    }
+    return ctx;
+  }
+
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -29,6 +43,12 @@ export class Context implements ContextOptions {
   @Column()
   public roomId: string;
 
+  @ManyToOne((type) => Session, (session) => session.id, {
+    cascade: true,
+    nullable: true,
+  })
+  public session?: Session;
+
   @Column()
   public threadId: string;
 
@@ -37,6 +57,7 @@ export class Context implements ContextOptions {
 
   @Column()
   public userName: string;
+
 
   public toJSON(): any {
     return {

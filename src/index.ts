@@ -14,6 +14,7 @@ import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
 
 import { TransformModule } from './module/TransformModule';
+import { EntityModule } from './module/EntityModule';
 
 // main arguments
 const MAIN_ARGS = {
@@ -68,6 +69,7 @@ async function main(argv: Array<string>): Promise<number> {
   const modules: Array<Module> = [
     botModule,
     new ControllerModule(),
+    new EntityModule(),
     new FilterModule(),
     new ListenerModule(),
     new ParserModule(),
