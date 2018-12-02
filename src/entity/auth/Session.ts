@@ -5,11 +5,8 @@ import { User } from './User';
 
 export interface SessionData {
   listenerId: string;
-  userName: string;
-}
-
-export interface SessionOptions extends SessionData {
   user: User;
+  userId: string;
 }
 
 @Entity()
@@ -17,7 +14,8 @@ export class Session extends BaseEntity {
   public static create(options: SessionData) {
     const session = new Session();
     session.listenerId = options.listenerId;
-    session.userName = options.userName;
+    session.user = options.user;
+    session.userId = options.userId;
     return session;
   }
 
@@ -27,11 +25,11 @@ export class Session extends BaseEntity {
     this.data = new Map();
   }
 
-  @Column({
-    type: 'simple-json',
-  })
   public data: Map<string, Array<string>>;
 
+  @Column({
+    name: 'data',
+  })
   protected dataStr: string;
 
   @PrimaryGeneratedColumn('uuid')
@@ -51,12 +49,12 @@ export class Session extends BaseEntity {
   public user: User;
   
   /**
-   * The user name (typically from context) which the listener name uses to associate sessions.
+   * The user ID (typically from context) which the listener name uses to associate sessions.
    *
    * This is a listener-defined value and may be meaningless.
    */
   @Column()
-  public userName: string;
+  public userId: string;
 
   @AfterLoad()
   public syncMap() {
@@ -73,8 +71,8 @@ export class Session extends BaseEntity {
     return {
       id: this.id,
       listenerId: this.listenerId,
-      user: this.user.toJSON(),
-      userName: this.userName,
+      // user: this.user.toJSON(),
+      userId: this.userId,
     };
   }
 }

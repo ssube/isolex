@@ -31,6 +31,9 @@ export class AddAuth0001543704185 implements MigrationInterface {
       }, {
         name: 'userId',
         type: 'varchar',
+      }, {
+        name: 'userName',
+        type: 'varchar',
       }],
       name: 'session',
     }));

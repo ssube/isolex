@@ -1,8 +1,12 @@
 metadata:
   kind: args-parser
-  name: auth_login
+  name: auth_join
 data:
-  args: {}
+  args:
+    array:
+      - roles
+    required:
+      - name
   emit:
     noun: user
     verb: create

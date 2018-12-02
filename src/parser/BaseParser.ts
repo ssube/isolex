@@ -34,10 +34,12 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
   protected includesTag(body: string): boolean {
     for (const t of this.tags) {
       if (body.includes(t)) {
+        this.logger.debug({ tag: t }, 'message includes tag');
         return true;
       }
     }
 
+    this.logger.debug('message does not include any tags');
     return false;
   }
 

@@ -42,8 +42,6 @@ export class Match {
       matched: true,
     };
 
-    console.warn('===match', JSON.stringify(this), JSON.stringify(val));
-
     for (const rule of this.rules) {
       if (!has(data, rule.key)) {
         results.errors.push(rule.key);

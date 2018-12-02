@@ -13,14 +13,16 @@ import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 
 import { ChildServiceOptions } from 'src/ChildService';
-import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { SessionProvider } from 'src/utils/SessionProvider';
+import { ServiceDefinition } from 'src/Service';
 
 export interface DiscordListenerData {
   presence?: PresenceData;
+  sessionProvider: ServiceDefinition<any>;
   token: string;
 }
 
@@ -32,6 +34,7 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   }
 
   protected client: Client;
+  protected sessionProvider: SessionProvider;
   // @TODO: this should be a WeakMap but lodash has a bad typedef
   protected threads: Map<string, DiscordMessage>;
 
@@ -43,6 +46,8 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   }
 
   public async start() {
+    this.sessionProvider = await this.bot.createService<SessionProvider, any>(this.data.sessionProvider);
+
     this.client.on('ready', () => {
       this.logger.debug('discord listener ready');
     });
@@ -50,11 +55,15 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     this.client.on('message', (msg) => {
       this.threads.set(msg.id, msg);
 
-      this.receive(this.convertMessage(msg)).catch((err) => this.logger.error(err, 'error receiving message'));
+      this.convertMessage(msg).then((msg) => this.receive(msg)).catch((err) => {
+        this.logger.error(err, 'error receiving message');
+      });
     });
 
     this.client.on('messageReactionAdd', (msgReaction, user) => {
-      this.receive(this.convertReaction(msgReaction, user)).catch((err) => this.logger.error(err, 'error receiving reaction'));
+      this.convertReaction(msgReaction, user).then((msg) => this.receive(msg)).catch((err) => {
+        this.logger.error(err, 'error receiving reaction');
+      });
     });
 
     this.client.on('warn', (msg) => {
@@ -160,26 +169,27 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
       messages.push(this.convertMessage(msg));
     }
 
-    return messages;
+    return Promise.all(messages);
   }
 
-  protected convertMessage(msg: DiscordMessage): Message {
+  protected async convertMessage(msg: DiscordMessage): Promise<Message> {
+    const context = await this.sessionProvider.createSessionContext({
+      listenerId: this.id,
+      roomId: msg.channel.id,
+      threadId: msg.id,
+      userId: msg.author.id,
+      userName: msg.author.username,
+    });
     return Message.create({
       body: msg.content,
-      context: Context.create({
-        listenerId: this.id,
-        roomId: msg.channel.id,
-        threadId: msg.id,
-        userId: msg.author.id,
-        userName: msg.author.username,
-      }),
+      context,
       reactions: msg.reactions.map((r) => r.emoji.name),
       type: TYPE_TEXT,
     });
   }
 
-  protected convertReaction(reaction: MessageReaction, user: User): Message {
-    const msg = this.convertMessage(reaction.message);
+  protected async convertReaction(reaction: MessageReaction, user: User): Promise<Message> {
+    const msg = await this.convertMessage(reaction.message);
     if (reaction.emoji instanceof ReactionEmoji) {
       const result = emoji.find(reaction.emoji.toString());
       msg.body = result ? result.key : 'missing emoji';

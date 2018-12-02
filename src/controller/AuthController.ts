@@ -6,12 +6,13 @@ import { Role } from 'src/entity/auth/Role';
 import { Session } from 'src/entity/auth/Session';
 import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
+import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
+import { SessionProvider } from 'src/utils/SessionProvider';
 
 export const NOUN_SESSION = 'session';
 export const NOUN_USER = 'user';
@@ -25,8 +26,7 @@ export interface AuthControllerOptions extends ControllerOptions<AuthControllerD
 }
 
 @Inject('storage')
-export class AuthController extends BaseController<AuthControllerData> implements Controller {
-  protected sessions: Map<string, Session>;
+export class AuthController extends BaseController<AuthControllerData> implements Controller, SessionProvider {
   protected storage: Connection;
   protected roleRepository: Repository<Role>;
   protected sessionRepository: Repository<Session>;
@@ -38,7 +38,6 @@ export class AuthController extends BaseController<AuthControllerData> implement
       nouns: [NOUN_SESSION, NOUN_USER],
     });
 
-    this.sessions = new Map();
     this.storage = options.storage;
     this.roleRepository = this.storage.getRepository(Role);
     this.sessionRepository = this.storage.getRepository(Session);
@@ -51,6 +50,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
         return this.handleSession(cmd);
       case 'user':
         return this.handleUser(cmd);
+      default:
+        return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `unknown entity: ${cmd.noun}`));
     }
   }
 
@@ -79,11 +80,12 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     const name = cmd.getHeadOrDefault('name', cmd.context.userName);
     const roles = cmd.get('roles');
-    const user = await this.userRepository.create({
+    const user = await this.userRepository.save(User.create({
       name,
       roles,
-    });
+    }));
 
+    this.logger.debug({ user }, 'created user');
     return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
   }
 
@@ -93,7 +95,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }
 
     const sessionKey = AuthController.getSessionKey(cmd.context);
-    if (this.sessions.has(sessionKey)) {
+    const existingSession = await this.sessionRepository.findOne(sessionKey);
+    if (existingSession) {
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'session already exists'));
     }
 
@@ -103,18 +106,18 @@ export class AuthController extends BaseController<AuthControllerData> implement
     });
     
     if (isNil(user)) {
-      this.logger.warn({ name, sessionKey }, 'user not found for new session');
+      this.logger.warn({ sessionKey, userName }, 'user not found for new session');
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'user not found'));
     }
 
-    const session = await this.sessionRepository.create({
-      listenerId: cmd.context.listenerId,
-      user,
-      userName,
-    })
+    this.logger.debug({ user }, 'logging in user');
 
-    this.logger.debug({ id: session.id, key: sessionKey, user, userName }, 'creating session');
-    this.sessions.set(sessionKey, session);
+    const session = await this.sessionRepository.save(Session.create({
+      ...AuthController.getSessionKey(cmd.context),
+      user,
+    }));
+
+    this.logger.debug({ session, user, userName }, 'created session');
   }
 
   public async getUser(cmd: Command): Promise<void> {
@@ -122,12 +125,14 @@ export class AuthController extends BaseController<AuthControllerData> implement
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'cannot get users unless logged in'));
     }
 
-    const user = this.sessions.get(cmd.context.session.id);
-    if (isNil(user)) {
+    const session = await this.sessionRepository.findOne({
+      id: cmd.context.session.id,
+    });
+    if (isNil(session)) {
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
     }
 
-    return this.bot.send(Message.reply(cmd.context, TYPE_JSON, JSON.stringify(user)));
+    return this.bot.send(Message.reply(cmd.context, TYPE_JSON, session.user.toString()));
   }
 
   public async getSession(cmd: Command): Promise<void> {
@@ -135,12 +140,14 @@ export class AuthController extends BaseController<AuthControllerData> implement
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'cannot get sessions unless logged in'));
     }
 
-    const user = this.sessions.get(cmd.context.session.id);
-    if (isNil(user)) {
+    const session = await this.sessionRepository.findOne({
+      id: cmd.context.session.id,
+    });
+    if (isNil(session)) {
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
     }
 
-    return this.bot.send(Message.reply(cmd.context, TYPE_JSON, JSON.stringify(user)));
+    return this.bot.send(Message.reply(cmd.context, TYPE_JSON, session.toString()));
   }
 
   /**
@@ -153,19 +160,30 @@ export class AuthController extends BaseController<AuthControllerData> implement
   /**
    * Attach session information to the provided context.
    */
-  public async createSessionContext(ctx: Context): Promise<Context> {
-    const sessionKey = AuthController.getSessionKey(ctx);
-    const session = this.sessions.get(sessionKey);
+  public async createSessionContext(data: ContextData): Promise<Context> {
+    this.logger.debug({ data }, 'decorating context with session');
+
+    const sessionKey = AuthController.getSessionKey(data);
+    const session = await this.sessionRepository.findOne(sessionKey);
+
     if (isNil(session)) {
-      return ctx;
+      this.logger.debug({ data }, 'no session for context');
+      return Context.create(data);
     }
 
-    return ctx.extend({
+    const context = Context.create({
+      ...data,
       session,
     });
+    this.logger.debug({ context, session }, 'found session for context');
+
+    return context;
   }
 
-  protected static getSessionKey(ctx: Context): string {
-    return `${ctx.listenerId}:${ctx.userId}`;
+  protected static getSessionKey(ctx: ContextData) {
+    return {
+      listenerId: ctx.listenerId,
+      userId: ctx.userId,
+    };
   }
 }

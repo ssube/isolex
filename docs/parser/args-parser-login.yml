@@ -2,7 +2,9 @@ metadata:
   kind: args-parser
   name: auth_login
 data:
-  args: {}
+  args:
+    required:
+      - name
   emit:
     noun: session
     verb: create

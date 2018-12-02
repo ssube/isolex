@@ -5,28 +5,28 @@ import { Session } from './auth/Session';
 export interface ContextData {
   listenerId: string;
   roomId: string;
+  session?: Session;
   threadId: string;
   userId: string;
   userName: string;
 }
 
-export interface ContextOptions extends ContextData {
-  session?: Session;
-}
-
 @Entity()
-export class Context implements ContextOptions {
-  public static create(options: ContextOptions) {
+export class Context implements ContextData {
+  public static create(options: ContextData) {
     const ctx = new Context();
     ctx.listenerId = options.listenerId;
     ctx.roomId = options.roomId;
+    if (options.session) {
+      ctx.session = options.session;
+    }
     ctx.threadId = options.threadId;
     ctx.userId = options.userId;
     ctx.userName = options.userName;
     return ctx;
   }
 
-  public extend(options: Partial<ContextOptions>): Context {
+  public extend(options: Partial<ContextData>): Context {
     const ctx = Context.create(this);
     if (options.session) {
       ctx.session = Session.create(options.session);
@@ -60,10 +60,12 @@ export class Context implements ContextOptions {
 
 
   public toJSON(): any {
+    const session = this.session ? this.session.toJSON() : {};
     return {
       id: this.id,
       listenerId: this.listenerId,
       roomId: this.roomId,
+      session,
       threadId: this.threadId,
       userId: this.userId,
       userName: this.userName,

@@ -189,6 +189,18 @@ export function mapToDict<TVal>(map: MapOrMapLike<TVal> | null | undefined): Dic
   return result;
 }
 
+export function dictValuesToArrays<TVal>(map: MapOrMapLike<TVal>): Dict<Array<TVal>> {
+  const data: Dict<Array<TVal>> = {};
+  for (const [key, value] of dictToMap(map)) {
+    if (Array.isArray(value)) {
+      data[key] = value;
+    } else {
+      data[key] = [value];
+    }
+  }
+  return data;
+}
+
 export function getConstructor(val: any) {
   return val.constructor;
 }
