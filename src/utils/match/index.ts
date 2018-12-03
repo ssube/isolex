@@ -1,12 +1,12 @@
 import { get, has, isString } from 'lodash';
 
-import { MapOrMapLike, mapToDict } from 'src/utils';
+import { mapToDict } from 'src/utils';
 
 export interface MatchData {
-  rules: Array<RuleData>;
+  rules: Array<MatchRule>;
 }
 
-export interface RuleData {
+export interface MatchRule {
   key: string;
   negate?: boolean;
   operator: RuleOperator;
@@ -29,7 +29,7 @@ export interface MatchResults {
 }
 
 export class Match {
-  protected rules: Array<RuleData>;
+  protected rules: Array<MatchRule>;
 
   constructor(options: MatchData) {
     this.rules = Array.from(options.rules);
@@ -60,7 +60,7 @@ export class Match {
     return results;
   }
 
-  public matchRule(rule: RuleData, value: string): boolean {
+  public matchRule(rule: MatchRule, value: string): boolean {
     switch (rule.operator) {
       case RuleOperator.Any:
         if (rule.negate) {

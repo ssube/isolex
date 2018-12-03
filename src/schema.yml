@@ -1,0 +1,43 @@
+$schema: "http://json-schema.org/schema#" # yes, this is a json schema written in yaml
+$id: "https://github.com/ssube/isolex/schema.yml"
+definitions:
+  emit-command:
+    properties:
+      noun:
+        type: string
+      verb:
+        type: string
+  match-rule:
+    properties:
+      key:
+        type: string
+      negate:
+        type: boolean
+      operator:
+        type:
+          enum: [any, every]
+      values:
+        type: array
+        items:
+          type: object
+          anyOf:
+            - properties:
+                string:
+                  type: string
+            - properties:
+                regexp:
+                  type: string
+  match-data:
+    properties:
+      rules:
+        type: array
+        items:
+          $ref: "#/definitions/match-rule"
+  match-results:
+    properties:
+      matched:
+        type: boolean
+    errors:
+      type: array
+      items:
+        type: string
