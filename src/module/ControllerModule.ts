@@ -2,6 +2,8 @@ import { kebabCase } from 'lodash';
 import { Module } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 
+import { AuthController } from 'src/controller/AuthController';
+import { CompletionController } from 'src/controller/CompletionController';
 import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
@@ -15,7 +17,6 @@ import { SearchController } from 'src/controller/SearchController';
 import { SedController } from 'src/controller/SedController';
 import { TimeController } from 'src/controller/TimeController';
 import { WeatherController } from 'src/controller/WeatherController';
-import { AuthController } from 'src/controller/AuthController';
 
 export class ControllerModule extends Module {
   public async configure(options: ModuleOptions) {
@@ -23,6 +24,7 @@ export class ControllerModule extends Module {
 
     // controllers
     this.bind(kebabCase(AuthController.name)).toConstructor(AuthController);
+    this.bind(kebabCase(CompletionController.name)).toConstructor(CompletionController);
     this.bind(kebabCase(CountController.name)).toConstructor(CountController);
     this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
     this.bind(kebabCase(EchoController.name)).toConstructor(EchoController);

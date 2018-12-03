@@ -1,7 +1,6 @@
 import { isString } from 'lodash';
 
 import { Command } from 'src/entity/Command';
-import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
@@ -44,15 +43,5 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
       throw new InvalidArgumentError('message body must be a string');
     }
     return this.removeTags(msg.body);
-  }
-
-  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
-    const { command } = frag;
-
-    return [command.extend({
-      data: {
-        [frag.key]: [value],
-      },
-    })];
   }
 }

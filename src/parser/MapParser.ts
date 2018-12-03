@@ -1,13 +1,11 @@
 import * as split from 'split-string';
 
-import { Command, CommandArgsMap, CommandData, CommandVerb } from 'src/entity/Command';
-import { Fragment } from 'src/entity/Fragment';
+import { Command, CommandData, CommandDataType, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
-import { filterNil, setOrPush, getHeadOrDefault } from 'src/utils';
+import { filterNil, getHeadOrDefault, setOrPush } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MatchAlias {
@@ -84,10 +82,6 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
     ]);
   }
 
-  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
-    throw new NotImplementedError();
-  }
-
   public async parse(msg: Message): Promise<Array<Command>> {
     const mapped = await this.decode(msg);
     const commands = [];
@@ -153,7 +147,7 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
     return mapped;
   }
 
-  public mapFields(args: Array<string>, fields: Array<string>, rest: string): CommandArgsMap {
+  public mapFields(args: Array<string>, fields: Array<string>, rest: string): CommandDataType {
     const data = new Map();
 
     for (const f of fields) {

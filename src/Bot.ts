@@ -1,4 +1,4 @@
-import { bindAll } from 'lodash';
+import { bindAll, isNil } from 'lodash';
 import { BaseError, Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
@@ -17,6 +17,7 @@ import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 import { BaseService } from './BaseService';
 import { InvalidArgumentError } from './error/InvalidArgumentError';
 import { mustFind, mustGet } from './utils';
+import { NotFoundError } from './error/NotFoundError';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
@@ -273,9 +274,18 @@ export class Bot extends BaseService<BotData> implements Service {
   public async send(...messages: Array<Message>): Promise<void> {
     for (const msg of messages) {
       if (!Message.isMessage(msg)) {
-        throw new InvalidArgumentError('sent message must be an instance of message entity');
+        throw new InvalidArgumentError('sent message must be an instance of the message entity');
       }
       this.outgoing.next(msg);
+    }
+  }
+
+  public async execute(...commands: Array<Command>): Promise<void> {
+    for (const cmd of commands) {
+      if (!Command.isCommand(cmd)) {
+        throw new InvalidArgumentError('executed command must be an instance of the command entity');
+      }
+      this.commands.next(cmd);
     }
   }
 
@@ -304,6 +314,16 @@ export class Bot extends BaseService<BotData> implements Service {
     this.services.set(tag, svc);
 
     return svc;
+  }
+
+  public getService<TService extends Service>(id: string): TService {
+    for (const svc of this.services.values()) {
+      if (svc.id === id) {
+        return svc as TService;
+      }
+    }
+
+    throw new NotFoundError(`service ${id} not found`);
   }
 
   protected async checkFilters(next: FilterValue): Promise<boolean> {

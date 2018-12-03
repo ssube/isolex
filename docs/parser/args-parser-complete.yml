@@ -1,0 +1,13 @@
+metadata:
+  kind: args-parser
+  name: default-complete
+data:
+  args:
+    required:
+      - id
+      - next
+  emit:
+    noun: fragment
+    verb: update
+  tags:
+    - "!!c"

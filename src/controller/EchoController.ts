@@ -1,5 +1,3 @@
-import { Inject } from 'noicejs';
-
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
@@ -19,7 +17,6 @@ export interface EchoControllerOptions extends ControllerOptions<EchoControllerD
   compiler: TemplateCompiler;
 }
 
-@Inject('compiler')
 export class EchoController extends BaseController<EchoControllerData> implements Controller {
   protected readonly transforms: Array<Transform>;
 
@@ -28,21 +25,13 @@ export class EchoController extends BaseController<EchoControllerData> implement
       ...options,
       nouns: [NOUN_ECHO],
     });
-
-    this.transforms = [];
   }
 
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'echoing command');
 
     let data = Message.reply(cmd.context, TYPE_TEXT, cmd.toString());
-    for (const transform of this.transforms) {
-      const [head, ...rest] = await transform.transform(cmd, data);
-      data = head;
-      if (rest.length) {
-        this.logger.info({ rest }, 'echo transform discarding extra messages');
-      }
-    }
-    return this.bot.send(data);
+    const msgs = await this.transform(cmd, data);
+    return this.bot.send(...msgs);
   }
 }

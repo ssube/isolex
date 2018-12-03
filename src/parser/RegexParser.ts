@@ -1,8 +1,6 @@
 import { Command } from 'src/entity/Command';
-import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -20,10 +18,6 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
     super(options);
 
     this.regexp = new RegExp(options.data.regexp);
-  }
-
-  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
-    throw new NotImplementedError();
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {

@@ -2,10 +2,8 @@ import { safeLoad } from 'js-yaml';
 import { isNil } from 'lodash';
 
 import { Command } from 'src/entity/Command';
-import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
@@ -19,12 +17,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
     super(options);
   }
 
-  public async complete(frag: Fragment, value: string): Promise<Array<Command>> {
-    throw new NotImplementedError();
-  }
-
   public async parse(msg: Message): Promise<Array<Command>> {
-    const body = this.removeTags(msg.body);
     const data = await this.decode(msg);
     return [Command.emit(this.data.emit, msg.context, data)];
   }
@@ -34,7 +27,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
       throw new MimeTypeError(`body type (${msg.type}) must be one of ${YAML_TYPES}`);
     }
 
-    const parsed = safeLoad(msg.body);
+    const parsed = safeLoad(this.removeTags(msg.body));
     if (isNil(parsed)) {
       throw new Error('invalid parse value');
     }

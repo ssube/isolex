@@ -1,13 +1,12 @@
 import * as yargs from 'yargs-parser';
 
-import { Command } from 'src/entity/Command';
+import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { NotImplementedError } from 'src/error/NotImplementedError';
+import { dictValuesToArrays } from 'src/utils';
 
 import { BaseParser } from './BaseParser';
 import { Parser, ParserData, ParserOptions } from './Parser';
-import { TYPE_TEXT } from 'src/utils/Mime';
-import { dictValuesToArrays } from 'src/utils';
 
 export interface ArgsParserData extends ParserData {
   args: {
@@ -41,8 +40,21 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     }
 
     if (missing.length) {
-      // @TODO: return a completion
-      await this.bot.send(Message.reply(msg.context, TYPE_TEXT, `missing required arguments: ${missing.join(', ')}`));
+      // @TODO: should completion allow many arguments?
+      await this.bot.execute(Command.create({
+        context: msg.context,
+        data: {
+          ...data,
+          key: missing,
+          msg: `missing required arguments: ${missing.join(', ')}`,
+          noun: [this.data.emit.noun],
+          parser: [this.id],
+          verb: [this.data.emit.verb],
+        },
+        labels: {},
+        noun: NOUN_FRAGMENT,
+        verb: CommandVerb.Create,
+      }));
       return [];
     }
 
@@ -57,9 +69,5 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
   public async decode(msg: Message): Promise<any> {
     return dictValuesToArrays(yargs(this.removeTags(msg.body), this.data.args));
-  }
-
-  public async complete(): Promise<Array<Command>> {
-    throw new NotImplementedError('args parser does not implement completion');
   }
 }

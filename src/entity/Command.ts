@@ -25,7 +25,7 @@ export enum CommandVerb {
 }
 
 export interface CommandData {
-  data: MapOrMapLike<CommandArgsList>;
+  data: MapOrMapLike<CommandDataValue>;
   labels: MapOrMapLike<string>;
   noun: string;
   verb: CommandVerb;
@@ -35,9 +35,8 @@ export interface CommandOptions extends CommandData {
   context: Context;
 }
 
-export type CommandArgsMap = Map<string, CommandArgsList>;
-export type CommandArgsItem = string;
-export type CommandArgsList = Array<CommandArgsItem>;
+export type CommandDataType = Map<string, CommandDataValue>;
+export type CommandDataValue = Array<string>;
 
 @Entity()
 export class Command extends BaseEntity implements CommandOptions {
@@ -62,7 +61,7 @@ export class Command extends BaseEntity implements CommandOptions {
   /**
    * @TODO: merge emit data and passed data
    */
-  public static emit(emit: CommandData, context: Context, data: MapOrMapLike<CommandArgsList>) {
+  public static emit(emit: CommandData, context: Context, data: MapOrMapLike<CommandDataValue>) {
     return Command.create({
       context,
       data,
@@ -142,6 +141,11 @@ export class Command extends BaseEntity implements CommandOptions {
       throw new Error(`missing key: ${key}`);
     }
     return value;
+  }
+
+  public getHead(key: string): string {
+    const value = this.get(key);
+    return value[0];
   }
 
   public getOrDefault(key: string, defaultValue: Array<string>): Array<string> {
