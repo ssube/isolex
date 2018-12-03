@@ -38,6 +38,7 @@
     "@types/websocket": "^0.0.40",
     "@types/ws": "~6.0",
     "@types/yargs-parser": "~11.0",
+    "ajv": "^6.6.1",
     "awesome-typescript-loader": "~5.2",
     "aws-sdk": "~2.361.0",
     "bufferutil": "~4.0",

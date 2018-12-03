@@ -1,0 +1,66 @@
+$schema: "http://json-schema.org/schema#" # yes, this is a json schema written in yaml
+$id: "https://github.com/ssube/isolex/args-parser.yml"
+type: object
+allOf:
+  - $ref: "#/definitions/base-parser"
+  - properties:
+      args:
+        type: object
+        properties:
+          array:
+            type: array
+            items:
+              type: string
+          boolean:
+            type: array
+            items:
+              type: string
+          configuration:
+            type: object
+            properties:
+              'boolean-negation':
+                type: boolean
+              'camel-case-expansion':
+                type: boolean
+              'combine-arrays':
+                type: boolean
+              'dot-notation':
+                type: boolean
+              'duplicate-arguments-array':
+                type: boolean
+              'flatten-duplicate-arrays':
+                type: boolean
+              'negation-prefix':
+                type: string
+              'parse-numbers':
+                type: boolean
+              'populate--':
+                type: boolean
+              'set-placeholder-key':
+                type: boolean
+              'short-option-groups':
+                type: boolean
+          count:
+            type: array
+            items:
+              type: string
+          default:
+            type: array
+            items:
+              type: string
+          number:
+            type: array
+            items:
+              type: string
+          required:
+            type: array
+            items:
+              type: string
+          string:
+            type: array
+            items:
+              type: string
+          "--":
+            type: array
+            items:
+              type: string
