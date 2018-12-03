@@ -6,7 +6,7 @@ import { User } from './User';
 export interface SessionData {
   listenerId: string;
   user: User;
-  userId: string;
+  userName: string;
 }
 
 @Entity()
@@ -15,7 +15,7 @@ export class Session extends BaseEntity {
     const session = new Session();
     session.listenerId = options.listenerId;
     session.user = options.user;
-    session.userId = options.userId;
+    session.userName = options.userName;
     return session;
   }
 
@@ -54,7 +54,7 @@ export class Session extends BaseEntity {
    * This is a listener-defined value and may be meaningless.
    */
   @Column()
-  public userId: string;
+  public userName: string;
 
   @AfterLoad()
   public syncMap() {
@@ -72,7 +72,7 @@ export class Session extends BaseEntity {
       id: this.id,
       listenerId: this.listenerId,
       // user: this.user.toJSON(),
-      userId: this.userId,
+      userName: this.userName,
     };
   }
 }

@@ -8,6 +8,7 @@ import { Message } from 'src/entity/Message';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { isNil } from 'lodash';
 import { Parser } from 'src/parser/Parser';
+import { mapToDict } from 'src/utils';
 
 export const NOUN_FRAGMENT = 'fragment';
 
@@ -69,7 +70,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       verb,
     }));
 
-    this.logger.debug({ fragment }, 'creating fragment for later completion');
+    this.logger.debug({ data: mapToDict(cmd.data), fragment }, 'creating fragment for later completion');
 
     // @TODO: send this message elsewhere (not a direct reply)
     return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `${fragment.id} (${key}): ${msg}`));

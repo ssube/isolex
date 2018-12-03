@@ -32,7 +32,7 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
 
   /**
    * Very simple, stateless completion. Merges data and sends a single command without attempting to parse or decode
-   * the value.
+   * the value. This does not support multiple arguments.
    */
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     const data = new Map(fragment.data).set(fragment.key, value);

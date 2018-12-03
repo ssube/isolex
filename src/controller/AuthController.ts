@@ -118,6 +118,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }));
 
     this.logger.debug({ session, user, userName }, 'created session');
+    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'created session'));
   }
 
   public async getUser(cmd: Command): Promise<void> {
@@ -183,7 +184,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
   protected static getSessionKey(ctx: ContextData) {
     return {
       listenerId: ctx.listenerId,
-      userId: ctx.userId,
+      userName: ctx.userId,
     };
   }
 }
