@@ -1,5 +1,6 @@
 import { RTMClient } from '@slack/client';
-import { BaseError } from 'noicejs';
+import { isNil } from 'lodash';
+import { BaseError, logWithLevel } from 'noicejs';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
@@ -43,7 +44,9 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
   }
 
   public async start() {
-    this.client = new RTMClient(this.data.token);
+    this.client = new RTMClient(this.data.token, {
+      logger: (level, msg) => logWithLevel(this.logger, level, { msg }, 'slack client logged message'),
+    });
 
     this.client.on('message', (msg) => {
       this.receive(this.convertMessage(msg)).catch((err) => this.logger.error(err, 'error receiving message'));
@@ -69,8 +72,16 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
     return Message.create({
       body: text,
       context,
-      reactions: [],
+      reactions: this.convertReactions(msg.reactions),
       type: TYPE_TEXT,
     });
+  }
+
+  protected convertReactions(reactions: Array<any> | undefined): Array<string> {
+    if (isNil(reactions)) {
+      return [];
+    }
+
+    return reactions.map((it) => it.name);
   }
 }
