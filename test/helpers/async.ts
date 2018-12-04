@@ -32,12 +32,7 @@ export class Tracker {
       },
       init: (id: number, type: string, triggerAsyncId: number) => {
         const source = filterStack((new Error()).stack || 'unknown');
-
-        // exclude async hooks, including this one
-        // if (source.includes('AsyncHook.init')) {
-        // return;
-        // }
-
+        // @TODO: exclude async hooks, including this one
         this.resources.set(id, {
           source,
           triggerAsyncId,
@@ -59,6 +54,7 @@ export class Tracker {
   }
 
   public dump() {
+    /* tslint:disable:no-console */
     console.error(`tracking ${this.resources.size} async resources`);
     this.resources.forEach((res, id) => {
       console.error(`${id}: ${res.type}`);
@@ -67,6 +63,7 @@ export class Tracker {
         console.error('\n');
       }
     });
+    /* tslint:enable:no-console */
   }
 
   public enable() {
@@ -100,6 +97,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
         if (process.env.DEBUG) {
           throw new Error(msg);
         } else {
+          // tslint:ignore-next-line:no-console
           console.warn(msg);
         }
       }
@@ -109,6 +107,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
 
     const suite: PromiseLike<void> | undefined = cb.call(this);
     if (!suite || !suite.then) {
+      // tslint:ignore-next-line:no-console
       console.error(`test suite '${description}' did not return a promise`);
     }
 
@@ -124,7 +123,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
 export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.ITest {
   if (cb) {
     return it(expectation, function trackTest(this: any) {
-      return new Promise((res, rej) => {
+      return new Promise<any>((res, rej) => {
         cb.call(this).then((value: any) => {
           res(value);
         }, (err: Error) => {

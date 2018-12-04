@@ -21,10 +21,6 @@ export class Session extends BaseEntity {
 
   public data: Map<string, Array<string>>;
 
-  @Column({
-    name: 'data',
-  })
-  protected dataStr: string;
 
   @PrimaryGeneratedColumn('uuid')
   public id: string;
@@ -32,16 +28,11 @@ export class Session extends BaseEntity {
   @Column()
   public listenerId: string;
 
-  /*@Column({
-    type: 'simple-json',
-  })
-  public scopes: Array<string>;*/
-
   @ManyToOne((type) => User, (user) => user.id, {
     cascade: true,
   })
   public user: User;
-  
+
   /**
    * The user ID (typically from context) which the listener name uses to associate sessions.
    *
@@ -49,6 +40,11 @@ export class Session extends BaseEntity {
    */
   @Column()
   public userName: string;
+
+  @Column({
+    name: 'data',
+  })
+  protected dataStr: string;
 
   constructor() {
     super();
