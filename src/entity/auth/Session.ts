@@ -1,6 +1,7 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseEntity } from '../BaseEntity';
+import { BaseEntity } from 'src/entity/base/BaseEntity';
+
 import { User } from './User';
 
 export interface SessionData {

@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 
 import { Context } from 'src/entity/Context';
 import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from './base/BaseEntity';
 
 export interface MessageOptions {
   body: string;

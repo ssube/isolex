@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from '../BaseEntity';
+
+import { BaseEntity } from 'src/entity/base/BaseEntity';
 
 export interface UserOptions {
   name: string;

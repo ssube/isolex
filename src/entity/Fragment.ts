@@ -1,9 +1,9 @@
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { dictToMap } from 'src/utils';
 
-import { BaseEntity } from './BaseEntity';
-import { CommandData, CommandDataType, CommandVerb } from './Command';
+import { BaseCommand } from './base/BaseCommand';
+import { CommandData } from './Command';
 
 export interface FragmentOptions extends CommandData {
   /**
@@ -17,7 +17,7 @@ export interface FragmentOptions extends CommandData {
 }
 
 @Entity()
-export class Fragment extends BaseEntity implements FragmentOptions {
+export class Fragment extends BaseCommand implements FragmentOptions {
   public static create(options: FragmentOptions) {
     const fragment = new Fragment();
     fragment.data = dictToMap(options.data);
@@ -29,47 +29,14 @@ export class Fragment extends BaseEntity implements FragmentOptions {
     return fragment;
   }
 
-  public data: CommandDataType;
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
   @Column()
   public key: string;
 
-  public labels: Map<string, string>;
-
-  @Column()
-  public noun: string;
-
   @Column()
   public parserId: string;
-
-  @Column()
-  public verb: CommandVerb;
-
-  @Column({
-    name: 'data',
-  })
-  protected dataStr: string;
-
-  @Column({
-    name: 'labels',
-  })
-  protected labelStr: string;
-
-  @AfterLoad()
-  public syncMap() {
-    this.data = new Map(JSON.parse(this.dataStr));
-    this.labels = new Map(JSON.parse(this.labelStr));
-  }
-
-  @BeforeInsert()
-  @BeforeUpdate()
-  public syncStr() {
-    this.dataStr = JSON.stringify(Array.from(this.data));
-    this.labelStr = JSON.stringify(Array.from(this.labels));
-  }
 
   public toJSON() {
     return {
