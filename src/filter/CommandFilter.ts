@@ -1,7 +1,8 @@
-import { RuleFilter } from './RuleFilter';
-import { FilterValue, FilterBehavior } from './Filter';
 import { Command } from 'src/entity/Command';
 import { mapToDict } from 'src/utils';
+
+import { FilterBehavior, FilterValue } from './Filter';
+import { RuleFilter } from './RuleFilter';
 
 /**
  * Simple filter for commands.

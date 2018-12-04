@@ -2,9 +2,9 @@ import { ChildService } from 'src/ChildService';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { ServiceDefinition, getLogInfo } from 'src/Service';
+import { checkFilter, Filter } from 'src/filter/Filter';
+import { getLogInfo, ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
-import { Filter, checkFilter } from 'src/filter/Filter';
 
 export interface BaseControllerOptions<TData extends ControllerData> extends ControllerOptions<TData> {
   nouns: Array<string>;
@@ -61,7 +61,7 @@ export abstract class BaseController<TData extends ControllerData> extends Child
         return false;
       }
     }
-    
+
     this.logger.debug({ cmd }, 'controller can handle command');
     return true;
   }

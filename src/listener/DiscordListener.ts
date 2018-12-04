@@ -16,9 +16,9 @@ import { ChildServiceOptions } from 'src/ChildService';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
+import { ServiceDefinition } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { SessionProvider } from 'src/utils/SessionProvider';
-import { ServiceDefinition } from 'src/Service';
 
 export interface DiscordListenerData {
   presence?: PresenceData;
@@ -55,7 +55,7 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     this.client.on('message', (msg) => {
       this.threads.set(msg.id, msg);
 
-      this.convertMessage(msg).then((msg) => this.receive(msg)).catch((err) => {
+      this.convertMessage(msg).then((it) => this.receive(it)).catch((err) => {
         this.logger.error(err, 'error receiving message');
       });
     });

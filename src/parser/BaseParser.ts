@@ -1,9 +1,9 @@
 import { ChildService, ChildServiceOptions } from 'src/ChildService';
 import { Command, CommandDataValue } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { Context } from 'src/entity/Context';
 
 export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
   protected tags: Array<string>;
@@ -36,13 +36,7 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
    */
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     const data = new Map(fragment.data).set(fragment.key, value);
-    return [Command.create({
-      context,
-      data,
-      labels: fragment.labels,
-      noun: fragment.noun,
-      verb: fragment.verb,
-    })];
+    return [Command.emit(fragment, context, data)];
   }
 
   protected includesTag(body: string): boolean {

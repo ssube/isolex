@@ -1,14 +1,14 @@
 import * as yargs from 'yargs-parser';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { Command, CommandVerb, CommandDataValue } from 'src/entity/Command';
+import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { dictValuesToArrays, Dict, mergeMap, dictToMap, mapToDict } from 'src/utils';
+import { Dict, dictToMap, dictValuesToArrays, mergeMap } from 'src/utils';
 
 import { BaseParser } from './BaseParser';
 import { Parser, ParserData, ParserOptions } from './Parser';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
 
 export interface ArgsParserData extends ParserData {
   args: {
@@ -43,13 +43,13 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     return this.decodeBody(this.removeTags(msg.body));
   }
 
-  protected async decodeBody(body: string): Promise<Dict<Array<string>>> {
-    return dictValuesToArrays<string>(yargs(body, this.data.args));
-  }
-
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
     return this.emit(msg.context, dictToMap(data));
+  }
+
+  protected async decodeBody(body: string): Promise<Dict<Array<string>>> {
+    return dictValuesToArrays<string>(yargs(body, this.data.args));
   }
 
   protected emit(context: Context, data: Map<string, Array<string>>): Promise<Array<Command>> {

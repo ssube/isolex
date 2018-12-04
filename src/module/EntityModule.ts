@@ -31,7 +31,7 @@ export class EntityModule extends Module {
       User,
       /* misc */
       Counter,
-      Keyword
+      Keyword,
     ];
   }
 }

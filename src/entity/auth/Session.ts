@@ -19,12 +19,6 @@ export class Session extends BaseEntity {
     return session;
   }
 
-  constructor() {
-    super();
-
-    this.data = new Map();
-  }
-
   public data: Map<string, Array<string>>;
 
   @Column({
@@ -55,6 +49,12 @@ export class Session extends BaseEntity {
    */
   @Column()
   public userName: string;
+
+  constructor() {
+    super();
+
+    this.data = new Map();
+  }
 
   @AfterLoad()
   public syncMap() {

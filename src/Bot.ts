@@ -1,4 +1,4 @@
-import { bindAll, isNil } from 'lodash';
+import { bindAll } from 'lodash';
 import { BaseError, Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
@@ -16,8 +16,8 @@ import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 import { BaseService } from './BaseService';
 import { InvalidArgumentError } from './error/InvalidArgumentError';
-import { mustFind, mustGet } from './utils';
 import { NotFoundError } from './error/NotFoundError';
+import { mustFind, mustGet } from './utils';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;

@@ -15,6 +15,6 @@ export const regexpType = new YamlType('!regexp', {
       throw new BaseError('invalid regexp');
     }
     const [_, expr, flags] = Array.from(match);
-    return new RegExp(expr, flags)
-  }
+    return new RegExp(expr, flags);
+  },
 });

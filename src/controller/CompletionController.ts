@@ -1,14 +1,16 @@
-import { BaseController } from './BaseController';
-import { Controller, ControllerOptions } from './Controller';
-import { Command, CommandVerb } from 'src/entity/Command';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
+
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { TYPE_TEXT } from 'src/utils/Mime';
-import { isNil } from 'lodash';
 import { Parser } from 'src/parser/Parser';
 import { mapToDict } from 'src/utils';
+import { TYPE_TEXT } from 'src/utils/Mime';
+
+import { BaseController } from './BaseController';
+import { Controller, ControllerOptions } from './Controller';
 
 export const NOUN_FRAGMENT = 'fragment';
 
@@ -35,23 +37,20 @@ export class CompletionController extends BaseController<CompletionControllerDat
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'completing command');
 
-    switch (cmd.noun) {
-      case NOUN_FRAGMENT:
-        return this.handleFragment(cmd);
-      default:
-        return this.bot.send();
+    if (cmd.noun === NOUN_FRAGMENT) {
+      return this.handleFragment(cmd);
     }
+    return this.bot.send();
   }
 
   public async handleFragment(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createFragment(cmd);
-      case CommandVerb.Update:
-        return this.updateFragment(cmd);
-      default:
-        return this.bot.send();
+    if (cmd.verb === CommandVerb.Create) {
+      return this.createFragment(cmd);
     }
+    if (cmd.verb === CommandVerb.Update) {
+      return this.updateFragment(cmd);
+    }
+    return this.bot.send();
   }
 
   public async createFragment(cmd: Command): Promise<void> {
@@ -92,7 +91,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     try {
       this.logger.debug({ parserId: fragment.parserId }, 'getting parser for fragment');
-      const parser = await this.bot.getService<Parser>(fragment.parserId);
+      const parser = this.bot.getService<Parser>(fragment.parserId);
       const value = cmd.get('next');
       const commands = await parser.complete(cmd.context, fragment, value);
       return this.bot.execute(...commands);

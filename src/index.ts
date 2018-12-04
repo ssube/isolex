@@ -2,7 +2,7 @@ import { Container, Module } from 'noicejs';
 import * as sourceMapSupport from 'source-map-support';
 import * as yargs from 'yargs-parser';
 
-import { Bot } from 'src/Bot';
+import { Bot, BotOptions } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
@@ -13,8 +13,8 @@ import { ParserModule } from 'src/module/ParserModule';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
 
-import { TransformModule } from './module/TransformModule';
 import { EntityModule } from './module/EntityModule';
+import { TransformModule } from './module/TransformModule';
 
 // main arguments
 const MAIN_ARGS = {
@@ -83,7 +83,7 @@ async function main(argv: Array<string>): Promise<number> {
   const ctr = Container.from(...modules);
   await ctr.configure({ logger });
 
-  const bot = await ctr.create<Bot, any>(Bot, config);
+  const bot = await ctr.create<Bot, BotOptions>(Bot, config);
   botModule.setBot(bot);
 
   await bot.start();

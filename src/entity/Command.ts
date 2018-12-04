@@ -1,4 +1,3 @@
-import { isNil } from 'lodash';
 import {
   AfterLoad,
   BeforeInsert,
@@ -13,7 +12,7 @@ import {
 import { BaseEntity } from 'src/entity/BaseEntity';
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { MapOrMapLike, mergeMap, dictToMap, getOrDefault, getHeadOrDefault } from 'src/utils';
+import { dictToMap, getHeadOrDefault, getOrDefault, MapOrMapLike, mergeMap } from 'src/utils';
 
 export enum CommandVerb {
   Create = 'create',
@@ -151,7 +150,7 @@ export class Command extends BaseEntity implements CommandOptions {
   public getOrDefault(key: string, defaultValue: Array<string>): Array<string> {
     return getOrDefault(this.data, key, defaultValue);
   }
-  
+
   public getHeadOrDefault(key: string, defaultValue: string): string {
     return getHeadOrDefault(this.data, key, defaultValue);
   }

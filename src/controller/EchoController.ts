@@ -30,7 +30,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'echoing command');
 
-    let data = Message.reply(cmd.context, TYPE_TEXT, cmd.toString());
+    const data = Message.reply(cmd.context, TYPE_TEXT, cmd.toString());
     const msgs = await this.transform(cmd, data);
     return this.bot.send(...msgs);
   }

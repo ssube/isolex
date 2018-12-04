@@ -1,6 +1,7 @@
 import * as AWS from 'aws-sdk';
 
-import { Command, CommandOptions, CommandDataValue } from 'src/entity/Command';
+import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
@@ -9,7 +10,6 @@ import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { leftPad, MapOrMapLike } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
-import { Context } from 'src/entity/Context';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -50,7 +50,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
    * to Lex to be decoded, in order to update state and otherwise behave correctly. This should probably synthesize a
    * message that will use the same Lex session-state and re-parse that.
    */
-  public async complete(_context: Context, _fragment: Fragment, _value: CommandDataValue): Promise<Array<Command>> {
+  public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     throw new NotImplementedError();
   }
 

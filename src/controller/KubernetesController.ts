@@ -45,14 +45,13 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
   }
 
   public async handle(cmd: Command): Promise<void> {
-    switch (cmd.noun) {
-      case NOUN_POD:
-        return this.handlePods(cmd);
-      case NOUN_SERVICE:
-        return this.handleSvcs(cmd);
-      default:
-        throw new InvalidArgumentError(`unknown kind: ${cmd.noun}`);
+    if (cmd.noun === NOUN_POD) {
+      return this.handlePods(cmd);
     }
+    if (cmd.noun === NOUN_SERVICE) {
+      return this.handleSvcs(cmd);
+    }
+    throw new InvalidArgumentError(`unknown kind: ${cmd.noun}`);
   }
 
   protected async loadConfig() {
@@ -74,15 +73,13 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
     const namespace = cmd.getHeadOrDefault('args', this.data.default.namespace);
     this.logger.debug({ cmd, namespace, verb }, 'doing something with k8s pods');
 
-    switch (verb) {
-      case CommandVerb.Get:
-        const response = await this.client.listNamespacedPod(namespace);
-        this.logger.debug({ pods: response.body }, 'found pods');
-        const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
-        return this.bot.send(...messages);
-      default:
-        throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
+    if (cmd.verb === CommandVerb.Get) {
+      const response = await this.client.listNamespacedPod(namespace);
+      this.logger.debug({ pods: response.body }, 'found pods');
+      const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
+      return this.bot.send(...messages);
     }
+    throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
   }
 
   protected async handleSvcs(cmd: Command): Promise<void> {
@@ -90,15 +87,12 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
     const namespace = cmd.getHeadOrDefault('args', this.data.default.namespace);
     this.logger.debug({ cmd, namespace, verb }, 'doing something with k8s svcs');
 
-    switch (verb) {
-      case CommandVerb.Get:
-        const response = await this.client.listNamespacedService(namespace);
-        this.logger.debug({ pods: response.body }, 'found pods');
-        const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
-        return this.bot.send(...messages);
-      default:
-        throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
+    if (cmd.verb === CommandVerb.Get) {
+      const response = await this.client.listNamespacedService(namespace);
+      this.logger.debug({ pods: response.body }, 'found pods');
+      const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
+      return this.bot.send(...messages);
     }
+    throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
   }
-
 }

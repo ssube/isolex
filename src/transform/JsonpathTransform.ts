@@ -2,7 +2,7 @@ import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { mapToDict, dictToMap } from 'src/utils';
+import { dictToMap, mapToDict } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseTransform } from './BaseTransform';

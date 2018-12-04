@@ -12,6 +12,11 @@ export interface TokenOptions {
 export class Token implements TokenOptions {
   public static create(options: TokenOptions) {
     const ctx = new Token();
+    ctx.audience = options.audience;
+    ctx.createdAt = options.createdAt;
+    ctx.expiresAt = options.expiresAt;
+    ctx.issuer = options.issuer;
+    ctx.subject = options.subject;
     return ctx;
   }
 

@@ -26,14 +26,6 @@ export class Context implements ContextData {
     return ctx;
   }
 
-  public extend(options: Partial<ContextData>): Context {
-    const ctx = Context.create(this);
-    if (options.session) {
-      ctx.session = Session.create(options.session);
-    }
-    return ctx;
-  }
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -58,6 +50,13 @@ export class Context implements ContextData {
   @Column()
   public userName: string;
 
+  public extend(options: Partial<ContextData>): Context {
+    const ctx = Context.create(this);
+    if (options.session) {
+      ctx.session = Session.create(options.session);
+    }
+    return ctx;
+  }
 
   public toJSON(): any {
     const session = this.session ? this.session.toJSON() : {};

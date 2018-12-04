@@ -4,7 +4,7 @@ import { ConsoleLogger } from 'noicejs';
 import { match, spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
-import { NOUN_ECHO, EchoController, EchoControllerOptions } from 'src/controller/EchoController';
+import { EchoController, EchoControllerOptions, NOUN_ECHO } from 'src/controller/EchoController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';

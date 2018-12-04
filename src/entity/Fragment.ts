@@ -1,4 +1,4 @@
-import { Column, PrimaryGeneratedColumn, AfterLoad, BeforeInsert, BeforeUpdate, Entity } from 'typeorm';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { dictToMap } from 'src/utils';
 

@@ -9,18 +9,15 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
+import { SessionProvider } from 'src/utils/SessionProvider';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
-import { SessionProvider } from 'src/utils/SessionProvider';
 
 export const NOUN_SESSION = 'session';
 export const NOUN_USER = 'user';
 
-export interface AuthControllerData extends ControllerData {
-
-}
-
+export type AuthControllerData = ControllerData;
 export interface AuthControllerOptions extends ControllerOptions<AuthControllerData> {
   storage: Connection;
 }
@@ -104,7 +101,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
     const user = await this.userRepository.findOne({
       name: userName,
     });
-    
+
     if (isNil(user)) {
       this.logger.warn({ sessionKey, userName }, 'user not found for new session');
       return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'user not found'));

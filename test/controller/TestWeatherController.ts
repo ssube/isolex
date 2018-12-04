@@ -3,7 +3,7 @@ import { ineeda } from 'ineeda';
 import { ConsoleLogger } from 'noicejs';
 
 import { Bot } from 'src/Bot';
-import { WeatherController, WeatherControllerOptions, NOUN_REPORT } from 'src/controller/WeatherController';
+import { NOUN_REPORT, WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
