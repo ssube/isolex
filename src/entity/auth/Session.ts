@@ -21,7 +21,6 @@ export class Session extends BaseEntity {
 
   public data: Map<string, Array<string>>;
 
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 

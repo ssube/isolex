@@ -97,7 +97,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
         if (process.env.DEBUG) {
           throw new Error(msg);
         } else {
-          // tslint:ignore-next-line:no-console
+          // tslint:disable-next-line:no-console
           console.warn(msg);
         }
       }
@@ -107,7 +107,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
 
     const suite: PromiseLike<void> | undefined = cb.call(this);
     if (!suite || !suite.then) {
-      // tslint:ignore-next-line:no-console
+      // tslint:disable-next-line:no-console
       console.error(`test suite '${description}' did not return a promise`);
     }
 

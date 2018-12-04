@@ -16,7 +16,7 @@ sourceMapSupport.install({
  * To ensure only a single test breaks, make sure to wrap each test with the `handleRejection` helper.
  */
 process.on('unhandledRejection', (reason, promise) => {
-  // tslint:ignore-next-line:no-console
+  // tslint:disable-next-line:no-console
   console.error('unhandled error during tests', reason);
   process.exit(1);
 });
