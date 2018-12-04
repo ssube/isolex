@@ -1,8 +1,8 @@
 import { ChildServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
+import { FilterData } from 'src/filter/Filter';
 import { Service, ServiceDefinition } from 'src/Service';
 import { TransformData } from 'src/transform/Transform';
-import { FilterData } from 'src/filter/Filter';
 
 export interface ControllerData {
   filters: Array<ServiceDefinition<FilterData>>;

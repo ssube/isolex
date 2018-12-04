@@ -1,9 +1,9 @@
 import { ChildServiceOptions } from 'src/ChildService';
 import { Command, CommandData, CommandDataValue } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
-import { Context } from 'src/entity/Context';
 
 export interface ParserData {
   emit: CommandData;
