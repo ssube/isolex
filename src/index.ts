@@ -1,6 +1,6 @@
 import { Container, Module } from 'noicejs';
-import * as sourceMapSupport from 'source-map-support';
-import * as yargs from 'yargs-parser';
+import sourceMapSupport from 'source-map-support';
+import yargs from 'yargs-parser';
 
 import { Bot, BotOptions } from 'src/Bot';
 import { loadConfig } from 'src/config';

@@ -129,7 +129,7 @@ module.exports = {
       alias: path.vendor,
       onlyModule: false
     }],
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.json'],
     plugins: [
       new TsConfigPathsPlugin({ tsconfig, compiler: 'typescript' })
     ]

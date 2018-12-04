@@ -1,6 +1,6 @@
 import { Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
-import * as request from 'request-promise';
+import request from 'request-promise';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';

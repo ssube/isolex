@@ -1,4 +1,4 @@
-import * as escape from 'escape-html';
+import escape from 'escape-html';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context } from 'src/entity/Context';

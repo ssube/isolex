@@ -1,4 +1,4 @@
-import * as split from 'split-string';
+import split from 'split-string';
 
 import { Command, CommandData, CommandDataType, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';

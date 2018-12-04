@@ -1,5 +1,5 @@
 import { isEmpty, trim } from 'lodash';
-import * as split from 'split-string';
+import split from 'split-string';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';

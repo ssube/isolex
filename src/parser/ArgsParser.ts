@@ -1,4 +1,4 @@
-import * as yargs from 'yargs-parser';
+import yargs from 'yargs-parser';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';

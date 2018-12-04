@@ -1,5 +1,5 @@
 import { Logger } from 'noicejs/logger/Logger';
-import * as uuid from 'uuid/v4';
+import uuid from 'uuid/v4';
 
 import { Service, ServiceOptions } from 'src/Service';
 import { dictToMap } from './utils';

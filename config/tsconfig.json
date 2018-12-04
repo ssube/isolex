@@ -5,6 +5,7 @@
     "allowSyntheticDefaultImports": false,
     "baseUrl": "../",
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "jsx": "react",

@@ -1,8 +1,8 @@
-import * as chai from 'chai';
-import * as chaiAsPromised from 'chai-as-promised';
-import {ineeda} from 'ineeda';
-import * as sinonChai from 'sinon-chai';
-import * as sourceMapSupport from 'source-map-support';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import { ineeda } from 'ineeda';
+import sinonChai from 'sinon-chai';
+import sourceMapSupport from 'source-map-support';
 
 sourceMapSupport.install({
   environment: 'node',

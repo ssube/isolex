@@ -1,0 +1,4 @@
+metadata:
+  kind: apollo-listener
+  name: test-apollo
+data: {}
