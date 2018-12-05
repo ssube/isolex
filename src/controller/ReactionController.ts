@@ -49,7 +49,7 @@ export class ReactionController extends BaseController<ReactionControllerData> i
     }
 
     this.logger.debug({ cmd, reactions }, 'reacting to command');
-    await this.bot.sendMessage(Message.create({
+    await this.bot.sendMessage(new Message({
       body: '',
       context: cmd.context,
       reactions,

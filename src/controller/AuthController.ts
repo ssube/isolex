@@ -88,10 +88,10 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     const name = cmd.getHeadOrDefault('name', cmd.context.userName);
     const roles = cmd.get('roles');
-    const user = await this.userRepository.save(User.create({
+    const user = await this.userRepository.create({
       name,
       roles,
-    }));
+    });
 
     this.logger.debug({ user }, 'created user');
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
@@ -124,7 +124,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     this.logger.debug({ user }, 'logging in user');
 
-    const session = await this.sessionRepository.save(Session.create({
+    const session = await this.sessionRepository.save(new Session({
       ...AuthController.getSessionKey(cmd.context),
       user,
     }));
@@ -187,10 +187,10 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     if (isNil(session)) {
       this.logger.debug({ data }, 'no session for context');
-      return Context.create(data);
+      return new Context(data);
     }
 
-    const context = Context.create({
+    const context = new Context({
       ...data,
       session,
     });

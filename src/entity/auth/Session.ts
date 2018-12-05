@@ -12,14 +12,6 @@ export interface SessionData {
 
 @Entity()
 export class Session extends BaseEntity {
-  public static create(options: SessionData) {
-    const session = new Session();
-    session.listenerId = options.listenerId;
-    session.user = options.user;
-    session.userName = options.userName;
-    return session;
-  }
-
   public data: Map<string, Array<string>>;
 
   @PrimaryGeneratedColumn('uuid')
@@ -46,10 +38,16 @@ export class Session extends BaseEntity {
   })
   protected dataStr: string;
 
-  constructor() {
+  constructor(options?: SessionData) {
     super();
 
     this.data = new Map();
+
+    if (options) {
+      this.listenerId = options.listenerId;
+      this.user = options.user;
+      this.userName = options.userName;
+    }
   }
 
   @AfterLoad()

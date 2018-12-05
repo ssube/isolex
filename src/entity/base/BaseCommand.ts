@@ -1,8 +1,13 @@
 import { Column } from 'typeorm';
 
-import { DataEntity } from 'src/entity/base/DataEntity';
+import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { CommandVerb } from 'src/entity/Command';
 import { getHeadOrDefault } from 'src/utils/Map';
+
+export interface BaseCommandOptions extends DataEntityOptions<Array<string>> {
+  noun: string;
+  verb: CommandVerb;
+}
 
 export abstract class BaseCommand extends DataEntity<Array<string>> {
   @Column()
@@ -10,6 +15,15 @@ export abstract class BaseCommand extends DataEntity<Array<string>> {
 
   @Column()
   public verb: CommandVerb;
+
+  constructor(options?: BaseCommandOptions) {
+    super(options);
+
+    if (options) {
+      this.noun = options.noun;
+      this.verb = options.verb;
+    }
+  }
 
   public getHead(key: string): string {
     const value = this.get(key);

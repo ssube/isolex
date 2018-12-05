@@ -11,7 +11,7 @@ describeAsync('command', async () => {
     const data = {
       test: ['1'],
     };
-    const cmd = Command.create({
+    const cmd = new Command({
       context: ineeda<Context>(),
       data,
       labels: {},
@@ -30,7 +30,7 @@ describeAsync('command', async () => {
     const data = {
       test: ['1'],
     };
-    const cmd = Command.create({
+    const cmd = new Command({
       context: ineeda<Context>(),
       data,
       labels: {},

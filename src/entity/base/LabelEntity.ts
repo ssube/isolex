@@ -1,6 +1,11 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { BaseEntity } from './BaseEntity';
+import { Dict, dictToMap, MapLike } from 'src/utils/Map';
+
+export interface LabelEntityOptions {
+  labels: MapLike<string>;
+}
 
 export abstract class LabelEntity extends BaseEntity {
   public labels: Map<string, string>;
@@ -10,9 +15,14 @@ export abstract class LabelEntity extends BaseEntity {
   })
   protected labelStr: string;
 
-  constructor() {
+  constructor(options?: LabelEntityOptions) {
     super();
-    this.labels = new Map();
+
+    if (options) {
+      this.labels = dictToMap(options.labels);
+    } else {
+      this.labels = new Map();
+    }
   }
 
   @AfterLoad()

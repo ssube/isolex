@@ -35,7 +35,7 @@ describeAsync('jsonpath transform', async () => {
       },
     };
     const transform = await container.create(JsonpathTransform, options);
-    const output = await transform.transform(Command.create({
+    const output = await transform.transform(new Command({
       context: ineeda<Context>(),
       data: {},
       labels: {},

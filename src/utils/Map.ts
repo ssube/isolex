@@ -11,7 +11,7 @@ export interface Dict<TVal> {
 /**
  * A `Map` or dictionary object with string keys and `TVal` values.
  */
-export type MapOrMapLike<TVal> = Map<string, TVal> | Dict<TVal>;
+export type MapLike<TVal> = Map<string, TVal> | Dict<TVal>;
 
 /**
  * Get an element from a Map and guard against nil values.
@@ -83,7 +83,7 @@ export function mergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<TVal>
 /**
  * Clone a map or map-like object into a new map.
  */
-export function dictToMap<TVal>(val: MapOrMapLike<TVal> | null | undefined): Map<string, TVal> {
+export function dictToMap<TVal>(val: MapLike<TVal> | null | undefined): Map<string, TVal> {
   // nil: empty map
   if (isNil(val)) {
     return new Map();
@@ -101,7 +101,7 @@ export function dictToMap<TVal>(val: MapOrMapLike<TVal> | null | undefined): Map
 /**
  * Turns a map or dict into a dict
  */
-export function mapToDict<TVal>(map: MapOrMapLike<TVal> | null | undefined): Dict<TVal> {
+export function mapToDict<TVal>(map: MapLike<TVal> | null | undefined): Dict<TVal> {
   if (isNil(map)) {
     return {};
   }
@@ -133,7 +133,7 @@ export function pairsToDict<TVal>(pairs: Array<NameValuePair<TVal>>): Map<string
   return map;
 }
 
-export function dictValuesToArrays<TVal>(map: MapOrMapLike<TVal>): Dict<Array<TVal>> {
+export function dictValuesToArrays<TVal>(map: MapLike<TVal>): Dict<Array<TVal>> {
   const data: Dict<Array<TVal>> = {};
   for (const [key, value] of dictToMap(map)) {
     if (Array.isArray(value)) {

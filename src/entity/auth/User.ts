@@ -9,13 +9,6 @@ export interface UserOptions {
 
 @Entity()
 export class User extends BaseEntity implements UserOptions {
-  public static create(options: UserOptions) {
-    const ctx = new User();
-    ctx.name = options.name;
-    ctx.roles = Array.from(options.roles);
-    return ctx;
-  }
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -24,6 +17,15 @@ export class User extends BaseEntity implements UserOptions {
 
   @Column('simple-array')
   public roles: Array<string>;
+
+  constructor(options?: UserOptions) {
+    super();
+
+    if (options) {
+      this.name = options.name;
+      this.roles = Array.from(options.roles);
+    }
+  }
 
   public toJSON(): object {
     return {

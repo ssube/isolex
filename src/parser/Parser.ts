@@ -1,12 +1,12 @@
 import { ChildServiceOptions } from 'src/ChildService';
-import { Command, CommandData, CommandDataValue } from 'src/entity/Command';
+import { Command, CommandOptions, CommandDataValue } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 
 export interface ParserData {
-  emit: CommandData;
+  emit: CommandOptions;
   tags: Array<string>;
 }
 

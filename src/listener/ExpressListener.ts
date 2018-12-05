@@ -37,6 +37,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   protected readonly storage: Connection;
 
   protected metricsCounter: Counter;
+  protected requestCounter: Counter;
 
   protected app: express.Express;
   protected server?: http.Server;
@@ -52,6 +53,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     this.storage = options.storage;
 
     this.app = express();
+    this.app.use((req, res, next) => this.traceRequest(req, res, next));
     this.app.use('/graph', expressGraphQl({
       graphiql: this.data.graph.repl,
       rootValue: {
@@ -83,6 +85,12 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
       name: 'express_metrics',
       registers: [this.metrics],
     });
+    this.requestCounter = new Counter({
+      help: 'all requests through this express listener',
+      labelNames: ['service_id', 'service_kind', 'service_name', 'request_path'],
+      name: 'express_requests',
+      registers: [this.metrics],
+    });
   }
 
   public async stop() {
@@ -103,7 +111,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     this.logger.debug({ args }, 'emit command');
     const commands = args.commands.map((data: any) => {
       const { context = {}, labels: rawLabels, noun, verb } = data;
-      return Command.create({
+      return new Command({
         context: this.createContext(context),
         data: args,
         labels: pairsToDict(rawLabels),
@@ -118,7 +126,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     this.logger.debug({ args }, 'send message');
     const messages = args.messages.map((data: any) => {
       const { body, context = {}, type } = data;
-      return Message.create({
+      return new Message({
         body,
         context: this.createContext(context),
         reactions: [],
@@ -164,8 +172,14 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     res.end(this.metrics.metrics());
   }
 
+  public traceRequest(req: express.Request, res: express.Response, next: Function) {
+    this.logger.debug({ req, res }, 'handling request');
+    this.requestCounter.labels(this.id, this.kind, this.name, req.path).inc();
+    next();
+  }
+
   protected createContext(args: any): Context {
-    return Context.create({
+    return new Context({
       listenerId: this.id,
       roomId: args.roomId || '',
       threadId: args.threadId || '',

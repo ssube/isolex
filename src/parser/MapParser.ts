@@ -1,6 +1,6 @@
 import * as split from 'split-string';
 
-import { Command, CommandData, CommandDataType, CommandVerb } from 'src/entity/Command';
+import { Command, CommandVerb, CommandOptions, CommandDataValue } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
@@ -32,7 +32,7 @@ export interface MatchCommand {
      */
     rest: string;
   };
-  emit: CommandData;
+  emit: CommandOptions;
   match: MatchPattern;
   tags: {
     /**
@@ -91,7 +91,7 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
       const noun = getHeadOrDefault(data, 'noun', cmd.emit.noun);
       const verb = getHeadOrDefault(data, 'verb', cmd.emit.verb) as CommandVerb;
 
-      commands.push(Command.create({
+      commands.push(new Command({
         context: msg.context,
         data,
         labels: cmd.emit.labels,
@@ -148,7 +148,7 @@ export class MapParser extends BaseParser<MapParserData> implements Parser {
     return mapped;
   }
 
-  public mapFields(args: Array<string>, fields: Array<string>, rest: string): CommandDataType {
+  public mapFields(args: Array<string>, fields: Array<string>, rest: string): Map<string, CommandDataValue> {
     const data = new Map();
 
     for (const f of fields) {

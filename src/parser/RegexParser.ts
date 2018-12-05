@@ -23,9 +23,9 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
 
-    return [Command.create({
+    return [new Command({
       context: msg.context,
-      data: { data },
+      data: { data }, // @TODO: double data doesn't seem right
       labels: this.data.emit.labels,
       noun: this.data.emit.noun,
       verb: this.data.emit.verb,

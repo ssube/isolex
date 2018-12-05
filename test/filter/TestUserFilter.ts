@@ -60,14 +60,8 @@ describeAsync('user filter', async () => {
       },
     });
 
-    const cmd = Command.create({
-      context: Context.create({
-        listenerId: '',
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: 'safe',
-      }),
+    const cmd = new Command({
+      context: ineeda<Context>(),
       data: {},
       labels: {},
       noun: 'test',
@@ -90,14 +84,10 @@ describeAsync('user filter', async () => {
         kind: TEST_FILTER_KIND,
         name: TEST_FILTER_NAME,
       },
-     });
+    });
 
-    const cmd = Command.create({
-      context: Context.create({
-        listenerId: '',
-        roomId: '',
-        threadId: '',
-        userId: '',
+    const cmd = new Command({
+      context: ineeda<Context>({
         userName: 'test',
       }),
       data: {},

@@ -1,6 +1,6 @@
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
-import { MapOrMapLike } from './utils/Map';
+import { MapLike } from './utils/Map';
 
 export interface ServiceDefinition<TData = any> {
   metadata: ServiceMetadata;
@@ -16,7 +16,7 @@ export interface ServiceMetadata {
   /**
    * The service labels.
    */
-  readonly labels?: MapOrMapLike<string>;
+  readonly labels?: MapLike<string>;
 
   /**
    * The service instance name (friendly name for humans, not unlike the AWS `Name` tag).

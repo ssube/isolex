@@ -13,19 +13,6 @@ export interface ContextData {
 
 @Entity()
 export class Context implements ContextData {
-  public static create(options: ContextData) {
-    const ctx = new Context();
-    ctx.listenerId = options.listenerId;
-    ctx.roomId = options.roomId;
-    if (options.session) {
-      ctx.session = options.session;
-    }
-    ctx.threadId = options.threadId;
-    ctx.userId = options.userId;
-    ctx.userName = options.userName;
-    return ctx;
-  }
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -50,10 +37,21 @@ export class Context implements ContextData {
   @Column()
   public userName: string;
 
+  constructor(options?: ContextData) {
+    if (options) {
+      this.listenerId = options.listenerId;
+      this.roomId = options.roomId;
+      this.session = options.session;
+      this.threadId = options.threadId;
+      this.userId = options.userId;
+      this.userName = options.userName;
+    }
+  }
+
   public extend(options: Partial<ContextData>): Context {
-    const ctx = Context.create(this);
+    const ctx = new Context(this);
     if (options.session) {
-      ctx.session = Session.create(options.session);
+      ctx.session = new Session(options.session);
     }
     return ctx;
   }

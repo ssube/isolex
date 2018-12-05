@@ -43,7 +43,7 @@ describeAsync('template transform', async () => {
       },
     };
     const transform = await container.create(TemplateTransform, options);
-    const output = await transform.transform(Command.create({
+    const output = await transform.transform(new Command({
       context: ineeda<Context>(),
       data: {},
       labels: {},

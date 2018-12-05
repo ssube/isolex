@@ -63,14 +63,14 @@ export class CompletionController extends BaseController<CompletionControllerDat
     const parserId = cmd.getHead('parser');
     const verb = cmd.getHead('verb') as CommandVerb;
 
-    const fragment = await this.fragmentRepository.save(Fragment.create({
+    const fragment = await this.fragmentRepository.create({
       data: cmd.data,
       key,
       labels: cmd.labels,
       noun,
       parserId,
       verb,
-    }));
+    });
 
     this.logger.debug({ data: mapToDict(cmd.data), fragment }, 'creating fragment for later completion');
 

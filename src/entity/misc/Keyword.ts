@@ -9,14 +9,6 @@ export interface KeywordOptions {
 
 @Entity()
 export class Keyword implements KeywordOptions {
-  public static create(options: KeywordOptions) {
-    const keyword = new Keyword();
-    keyword.command = options.command;
-    keyword.controller = options.controller;
-    keyword.name = options.name;
-    return keyword;
-  }
-
   @OneToOne((type) => Command, (cmd) => cmd.id, {
     cascade: true,
   })
@@ -28,4 +20,12 @@ export class Keyword implements KeywordOptions {
 
   @PrimaryColumn()
   public name: string;
+
+  constructor(options?: KeywordOptions) {
+    if (options) {
+      this.command = options.command;
+      this.controller = options.controller;
+      this.name = options.name;
+    }
+  }
 }

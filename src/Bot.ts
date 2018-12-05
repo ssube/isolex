@@ -335,7 +335,7 @@ export class Bot extends BaseService<BotData> implements Service {
     for (const h of this.controllers) {
       if (await h.check(cmd)) {
         await h.handle(cmd);
-        break;
+        return;
       }
     }
 

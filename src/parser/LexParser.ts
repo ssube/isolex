@@ -68,7 +68,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     };
 
     this.logger.debug({ cmdOptions }, 'command options');
-    return [Command.create(cmdOptions)];
+    return [new Command(cmdOptions)];
   }
 
   public async decode(msg: Message): Promise<any> {

@@ -86,14 +86,14 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
   protected async convertMessage(msg: any): Promise<Message> {
     const {type, channel, user, text, ts} = msg;
     this.logger.debug({ channel, text, ts, type, user }, 'converting slack message');
-    const context = Context.create({
+    const context = new Context({
       listenerId: this.id,
       roomId: channel,
       threadId: '',
       userId: user,
       userName: user,
     });
-    return Message.create({
+    return new Message({
       body: text,
       context,
       reactions: this.reactionNames(msg.reactions),

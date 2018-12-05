@@ -36,7 +36,10 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
    */
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     const data = new Map(fragment.data).set(fragment.key, value);
-    return [Command.emit(fragment, context, data)];
+    return [Command.emit({
+      ...fragment,
+      context,
+     }, context, data)];
   }
 
   protected includesTag(body: string): boolean {

@@ -1,8 +1,12 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { getOrDefault } from 'src/utils/Map';
+import { getOrDefault, dictToMap, MapLike } from 'src/utils/Map';
 
-import { LabelEntity } from './LabelEntity';
+import { LabelEntity, LabelEntityOptions } from './LabelEntity';
+
+export interface DataEntityOptions<TVal> extends LabelEntityOptions {
+  data: MapLike<TVal>;
+}
 
 export abstract class DataEntity<TVal> extends LabelEntity {
   public data: Map<string, TVal>;
@@ -12,9 +16,14 @@ export abstract class DataEntity<TVal> extends LabelEntity {
   })
   protected dataStr: string;
 
-  constructor() {
-    super();
-    this.data = new Map();
+  constructor(options?: DataEntityOptions<TVal>) {
+    super(options);
+
+    if (options) {
+      this.data = dictToMap(options.data);
+    } else {
+      this.data = new Map();
+    }
   }
 
   @AfterLoad()

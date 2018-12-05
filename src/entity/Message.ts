@@ -15,15 +15,6 @@ export interface MessageOptions {
 
 @Entity()
 export class Message extends LabelEntity implements MessageOptions {
-  public static create(options: MessageOptions): Message {
-    const msg = new Message();
-    msg.body = options.body;
-    msg.context = Context.create(options.context);
-    msg.reactions = Array.from(options.reactions);
-    msg.type = options.type;
-    return msg;
-  }
-
   public static isMessage(it: any): it is Message {
     return it instanceof Message;
   }
@@ -32,7 +23,7 @@ export class Message extends LabelEntity implements MessageOptions {
   public static reply(context: Context, type: typeof TYPE_TEXT, body: string): Message;
   public static reply(context: Context, type: typeof TYPE_YAML, body: string): Message;
   public static reply(context: Context, type: string, body: string): Message {
-    return Message.create({
+    return new Message({
       body,
       context,
       reactions: [],
@@ -61,6 +52,17 @@ export class Message extends LabelEntity implements MessageOptions {
    */
   @Column()
   public type: string;
+
+  constructor(options?: MessageOptions) {
+    super();
+
+    if (options) {
+      this.body = options.body;
+      this.context = options.context;
+      this.reactions = Array.from(options.reactions);
+      this.type = options.type;
+    }
+  }
 
   /**
    * @TODO: move this to each listener

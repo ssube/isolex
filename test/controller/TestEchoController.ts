@@ -76,14 +76,8 @@ describeAsync('echo controller', async () => {
      };
     const controller = await container.create(EchoController, options);
 
-    const cmd = Command.create({
-      context: Context.create({
-        listenerId: '',
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: '',
-      }),
+    const cmd = new Command({
+      context: ineeda<Context>(),
       data: {},
       labels: {},
       noun: NOUN_ECHO,

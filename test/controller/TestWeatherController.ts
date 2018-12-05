@@ -60,16 +60,8 @@ describeAsync('weather controller', async () => {
     const controller = await container.create(WeatherController, options);
     expect(controller).to.be.an.instanceOf(WeatherController);
 
-    const context = Context.create({
-      listenerId: '',
-      roomId: '',
-      threadId: '',
-      userId: '',
-      userName: '',
-    });
-
-    const cmd = Command.create({
-      context,
+    const cmd = new Command({
+      context: ineeda<Context>(),
       data: {
         location: ['94040'],
       },

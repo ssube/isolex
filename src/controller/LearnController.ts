@@ -64,8 +64,8 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async createKeyword(key: string, cmd: Command, args: Array<string>): Promise<void> {
-    const keyword = Keyword.create({
-      command: Command.create({
+    const keyword = new Keyword({
+      command: new Command({
         context: cmd.context,
         data: { args },
         labels: {},

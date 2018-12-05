@@ -180,7 +180,7 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
       userId: msg.author.id,
       userName: msg.author.username,
     });
-    return Message.create({
+    return new Message({
       body: msg.content,
       context,
       reactions: msg.reactions.map((r) => r.emoji.name),
