@@ -8,14 +8,6 @@ export interface CounterOptions {
 
 @Entity()
 export class Counter implements CounterOptions {
-  public static create(options: CounterOptions) {
-    const ctx = new Counter();
-    ctx.count = options.count;
-    ctx.name = options.name;
-    ctx.roomId = options.roomId;
-    return ctx;
-  }
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -28,6 +20,13 @@ export class Counter implements CounterOptions {
   @Column()
   public roomId: string;
 
+  constructor(options?: CounterOptions) {
+    if (options) {
+      this.count = options.count;
+      this.name = options.name;
+      this.roomId = options.roomId;
+    }
+  }
   public toJSON() {
     return {
       count: this.count,

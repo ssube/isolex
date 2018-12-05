@@ -10,16 +10,6 @@ export interface TokenOptions {
 
 @Entity()
 export class Token implements TokenOptions {
-  public static create(options: TokenOptions) {
-    const ctx = new Token();
-    ctx.audience = options.audience;
-    ctx.createdAt = options.createdAt;
-    ctx.expiresAt = options.expiresAt;
-    ctx.issuer = options.issuer;
-    ctx.subject = options.subject;
-    return ctx;
-  }
-
   /**
    * `aud` (Audience) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.3
@@ -62,4 +52,14 @@ export class Token implements TokenOptions {
    */
   @Column()
   public subject: string;
+
+  constructor(options?: TokenOptions) {
+    if (options) {
+      this.audience = options.audience;
+      this.createdAt = options.createdAt;
+      this.expiresAt = options.expiresAt;
+      this.issuer = options.issuer;
+      this.subject = options.subject;
+    }
+  }
 }

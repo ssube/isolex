@@ -86,7 +86,7 @@ export class CountController extends BaseController<CountControllerData> impleme
       return counter;
     }
 
-    return Counter.create({
+    return new Counter({
       count: Number(this.data.default.count),
       name,
       roomId,

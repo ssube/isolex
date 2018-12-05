@@ -7,13 +7,6 @@ export interface RoleOptions {
 
 @Entity()
 export class Role implements RoleOptions {
-  public static create(options: RoleOptions) {
-    const ctx = new Role();
-    ctx.grants = Array.from(options.grants);
-    ctx.name = options.name;
-    return ctx;
-  }
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -22,4 +15,11 @@ export class Role implements RoleOptions {
 
   @Column('simple-array')
   public grants: Array<string>;
+
+  constructor(options?: RoleOptions) {
+    if (options) {
+      this.grants = Array.from(options.grants);
+      this.name = options.name;
+    }
+  }
 }

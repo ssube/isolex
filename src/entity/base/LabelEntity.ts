@@ -1,7 +1,8 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
+import { dictToMap, MapLike } from 'src/utils/Map';
+
 import { BaseEntity } from './BaseEntity';
-import { Dict, dictToMap, MapLike } from 'src/utils/Map';
 
 export interface LabelEntityOptions {
   labels: MapLike<string>;
