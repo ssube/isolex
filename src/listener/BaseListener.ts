@@ -13,7 +13,7 @@ export abstract class BaseListener<TData> extends ChildService<TData> implements
     return context.listenerId === this.id;
   }
 
-  public abstract emit(msg: Message): Promise<void>;
+  public abstract send(msg: Message): Promise<void>;
 
   public abstract fetch(options: FetchOptions): Promise<Array<Message>>;
 

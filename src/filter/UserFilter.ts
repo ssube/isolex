@@ -8,23 +8,23 @@ export type UserFilterData = ChecklistOptions<string>;
 export type UserFilterOptions = ChildServiceOptions<UserFilterData>;
 
 export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
-  protected check: Checklist<string>;
+  protected list: Checklist<string>;
 
   constructor(options: UserFilterOptions) {
     super(options);
 
-    this.check = new Checklist(options.data);
+    this.list = new Checklist(options.data);
   }
 
-  public async filter(value: FilterValue): Promise<FilterBehavior> {
+  public async check(value: FilterValue): Promise<FilterBehavior> {
     const context = value.context;
 
-    if (!this.check.check(context.userId)) {
+    if (!this.list.check(context.userId)) {
       this.logger.debug({ context }, 'filter ignoring user id');
       return FilterBehavior.Drop;
     }
 
-    if (!this.check.check(context.userName)) {
+    if (!this.list.check(context.userName)) {
       this.logger.debug({ context }, 'filter ignoring user name');
       return FilterBehavior.Drop;
     }

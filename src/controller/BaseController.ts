@@ -55,7 +55,7 @@ export abstract class BaseController<TData extends ControllerData> extends Child
     }
 
     for (const filter of this.filters) {
-      const behavior = await filter.filter(cmd);
+      const behavior = await filter.check(cmd);
       if (!checkFilter(behavior, this.bot.strict)) {
         this.logger.debug({ filter: getLogInfo(filter) }, 'command failed filter');
         return false;

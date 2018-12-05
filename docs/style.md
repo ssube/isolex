@@ -6,6 +6,9 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Documentation](#documentation)
     - [Headers](#headers)
     - [Table of Contents](#table-of-contents)
+  - [Naming](#naming)
+    - [Commands](#commands)
+    - [Messages](#messages)
   - [Paths](#paths)
   - [Typescript](#typescript)
     - [Destructuring](#destructuring)
@@ -32,6 +35,16 @@ Create a table of contents for any document with more than three headers.
 
 Always keep the table of contents up to date.
 
+## Naming
+
+### Commands
+
+Commands are emitted or executed. (TODO: decide)
+
+### Messages
+
+Messages are sent.
+
 ## Paths
 
 | Path          | What Is                                                       |
@@ -54,6 +67,8 @@ Destructuring is great, use it! Groups should be `{ spaced, out }` like imports 
 fix it).
 
 Never nest destructuring. Defaults are ok.
+
+Prefer destructuring with default over `||`. For example, `const { foo = 3 } = bar;` over `const foo = bar.foo || 3;`.
 
 ### Exports
 

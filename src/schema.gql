@@ -20,7 +20,15 @@ input NameMultiValuePairInput {
   values: [String!]!
 }
 
+input ContextInput {
+  roomId: String
+  threadId: String
+  userId: String
+  userName: String
+}
+
 input CommandInput {
+  context: ContextInput
   data: [NameMultiValuePairInput!]!
   labels: [NameValuePairInput!]!
   noun: String!
@@ -29,6 +37,7 @@ input CommandInput {
 
 input MessageInput {
   body: String
+  context: ContextInput
   labels: [NameValuePairInput!]!
   type: String!
 }

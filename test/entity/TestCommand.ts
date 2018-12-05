@@ -4,6 +4,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
+import { ineeda } from 'ineeda';
 
 describeAsync('command', async () => {
   itAsync('should copy data', async () => {
@@ -11,13 +12,7 @@ describeAsync('command', async () => {
       test: ['1'],
     };
     const cmd = Command.create({
-      context: Context.create({
-        listenerId: '',
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: '',
-      }),
+      context: ineeda<Context>(),
       data,
       labels: {},
       noun: 'test_cmd',
@@ -36,13 +31,7 @@ describeAsync('command', async () => {
       test: ['1'],
     };
     const cmd = Command.create({
-      context: Context.create({
-        listenerId: '',
-        roomId: '',
-        threadId: '',
-        userId: '',
-        userName: '',
-      }),
+      context: ineeda<Context>(),
       data,
       labels: {},
       noun: 'test_cmd',

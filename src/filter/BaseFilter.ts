@@ -13,5 +13,5 @@ export abstract class BaseFilter<TData> extends ChildService<TData> implements F
     /* noop */
   }
 
-  public abstract filter(val: FilterValue): Promise<FilterBehavior>;
+  public abstract check(val: FilterValue): Promise<FilterBehavior>;
 }

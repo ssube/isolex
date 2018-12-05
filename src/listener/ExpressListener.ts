@@ -2,13 +2,16 @@ import * as express from 'express';
 import * as expressGraphQl from 'express-graphql';
 import { buildSchema } from 'graphql';
 import * as http from 'http';
-import { Inject } from 'noicejs';
+import { isNil } from 'lodash';
+import { BaseError, Inject } from 'noicejs';
+import { Registry, Counter } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { NotImplementedError } from 'src/error/NotImplementedError';
 import { pairsToDict } from 'src/utils/Map';
 
 import { BaseListener } from './BaseListener';
@@ -26,19 +29,26 @@ export interface ExpressListenerData {
   };
 }
 
-export interface ExpressListenerOptions extends ChildServiceOptions<ExpressListenerData> {
-  storage: Connection;
-}
+export type ExpressListenerOptions = ChildServiceOptions<ExpressListenerData>;
 
-@Inject('storage')
+@Inject('metrics', 'storage')
 export class ExpressListener extends BaseListener<ExpressListenerData> implements Listener {
+  protected readonly metrics: Registry;
+  protected readonly storage: Connection;
+
+  protected metricsCounter: Counter;
+
   protected app: express.Express;
   protected server?: http.Server;
-  protected storage: Connection;
 
   constructor(options: ExpressListenerOptions) {
     super(options);
 
+    if (isNil(options.metrics) || isNil(options.storage)) {
+      throw new BaseError('missing dependencies');
+    }
+
+    this.metrics = options.metrics;
     this.storage = options.storage;
 
     this.app = express();
@@ -56,6 +66,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
       },
       schema,
     }));
+    this.app.get('/metrics', (req, res) => this.getMetrics(req, res));
   }
 
   public async start() {
@@ -65,6 +76,13 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
         res(server);
       });
     });
+
+    this.metricsCounter = new Counter({
+      help: 'get metrics requests through the express listener',
+      labelNames: ['service_id', 'service_kind', 'service_name'],
+      name: 'express_metrics',
+      registers: [this.metrics],
+    });
   }
 
   public async stop() {
@@ -73,36 +91,36 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     }
   }
 
-  public async emit() {
-
+  public async send() {
+    this.logger.warn('express listener is not able to emit messages');
   }
 
-  public async fetch() {
-    return [];
+  public async fetch(): Promise<Array<Message>> {
+    throw new NotImplementedError();
   }
 
   public emitCommands(args: any) {
     this.logger.debug({ args }, 'emit command');
     const commands = args.commands.map((data: any) => {
-      const { labels: rawLabels, noun, verb } = data;
+      const { context = {}, labels: rawLabels, noun, verb } = data;
       return Command.create({
-        context: this.createContext(),
+        context: this.createContext(context),
         data: args,
         labels: pairsToDict(rawLabels),
         noun,
         verb,
       });
-    })
+    });
     return this.bot.emitCommand(...commands);
   }
 
   public sendMessages(args: any) {
     this.logger.debug({ args }, 'send message');
     const messages = args.messages.map((data: any) => {
-      const { body, type } = data;
+      const { body, context = {}, type } = data;
       return Message.create({
         body,
-        context: this.createContext(),
+        context: this.createContext(context),
         reactions: [],
         type,
       });
@@ -140,13 +158,19 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     }
   }
 
-  protected createContext(): Context {
+  public getMetrics(req: express.Request, res: express.Response) {
+    this.metricsCounter.labels(this.id, this.kind, this.name).inc();
+    res.set('Content-Type', this.metrics.contentType);
+    res.end(this.metrics.metrics());
+  }
+
+  protected createContext(args: any): Context {
     return Context.create({
       listenerId: this.id,
-      roomId: '',
-      threadId: '',
-      userId: '',
-      userName: '',
+      roomId: args.roomId || '',
+      threadId: args.threadId || '',
+      userId: args.userId || '',
+      userName: args.userName || '',
     });
   }
 }

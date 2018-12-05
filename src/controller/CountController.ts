@@ -1,4 +1,4 @@
-import { Inject } from 'noicejs';
+import { Inject, BaseError } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
@@ -8,6 +8,7 @@ import { Message } from 'src/entity/Message';
 import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { isNil } from 'lodash';
 
 export const NOUN_COUNTER = 'counter';
 
@@ -26,9 +27,7 @@ export interface CountControllerData extends ControllerData {
   };
 }
 
-export interface CountControllerOptions extends ControllerOptions<CountControllerData> {
-  storage: Connection;
-}
+export type CountControllerOptions = ControllerOptions<CountControllerData>;
 
 @Inject('storage')
 export class CountController extends BaseController<CountControllerData> implements Controller {
@@ -40,6 +39,10 @@ export class CountController extends BaseController<CountControllerData> impleme
       ...options,
       nouns: [NOUN_COUNTER],
     });
+
+    if (isNil(options.storage)) {
+      throw new BaseError('missing dependencies');
+    }
 
     this.storage = options.storage;
     this.counterRepository = this.storage.getRepository(Counter);

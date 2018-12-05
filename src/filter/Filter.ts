@@ -31,7 +31,7 @@ export type FilterValue = Command | Message;
  * be discarded.
  */
 export interface Filter extends Service {
-  filter(val: FilterValue): Promise<FilterBehavior>;
+  check(val: FilterValue): Promise<FilterBehavior>;
 }
 
 /**

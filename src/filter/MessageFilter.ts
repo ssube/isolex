@@ -10,7 +10,7 @@ import { RuleFilter } from './RuleFilter';
  * - type
  */
 export class MessageFilter extends RuleFilter {
-  public async filter(value: FilterValue): Promise<FilterBehavior> {
+  public async check(value: FilterValue): Promise<FilterBehavior> {
     if (Message.isMessage(value)) {
       const result = this.matcher.match({
         type: value.type,

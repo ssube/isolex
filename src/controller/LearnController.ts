@@ -1,4 +1,4 @@
-import { Inject } from 'noicejs';
+import { Inject, BaseError } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
@@ -7,6 +7,7 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { isNil } from 'lodash';
 
 export const NOUN_KEYWORD = 'keyword';
 
@@ -19,9 +20,7 @@ export interface LearnControllerData extends ControllerData {
   };
 }
 
-export interface LearnControllerOptions extends ControllerOptions<LearnControllerData> {
-  storage: Connection;
-}
+export type LearnControllerOptions = ControllerOptions<LearnControllerData>;
 
 @Inject('storage')
 export class LearnController extends BaseController<LearnControllerData> implements Controller {
@@ -33,6 +32,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       ...options,
       nouns: [NOUN_KEYWORD],
     });
+
+    if (isNil(options.storage)) {
+      throw new BaseError('missing dependencies');
+    }
 
     this.storage = options.storage;
     this.keywordRepository = this.storage.getRepository(Keyword);

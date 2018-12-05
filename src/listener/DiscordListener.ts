@@ -82,7 +82,7 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     this.client.removeAllListeners('ready');
   }
 
-  public async emit(msg: Message): Promise<void> {
+  public async send(msg: Message): Promise<void> {
     // direct reply to message
     if (msg.context.threadId) {
       return this.replyToThread(msg);

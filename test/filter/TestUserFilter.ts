@@ -73,7 +73,7 @@ describeAsync('user filter', async () => {
       noun: 'test',
       verb: CommandVerb.Get,
     });
-    const behavior = await filter.filter(cmd);
+    const behavior = await filter.check(cmd);
     expect(behavior).to.equal(FilterBehavior.Allow);
   });
 
@@ -105,7 +105,7 @@ describeAsync('user filter', async () => {
       noun: 'test',
       verb: CommandVerb.Get,
     });
-    const behavior = await filter.filter(cmd);
+    const behavior = await filter.check(cmd);
     expect(behavior).to.equal(FilterBehavior.Drop);
   });
 });

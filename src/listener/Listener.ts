@@ -21,7 +21,7 @@ export interface Listener extends Service {
   /**
    * Emit a message.
    */
-  emit(msg: Message): Promise<void>;
+  send(msg: Message): Promise<void>;
 
   /**
    * Fetch some messages.

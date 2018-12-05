@@ -10,7 +10,7 @@ export interface SourceFilterData {
 export class SourceFilter extends BaseFilter<SourceFilterData> implements Filter, SourceFilterData {
   public readonly type?: string;
 
-  public async filter(value: FilterValue): Promise<FilterBehavior> {
+  public async check(value: FilterValue): Promise<FilterBehavior> {
     if (Message.isMessage(value)) {
       return this.filterMessage(value);
     }

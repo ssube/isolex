@@ -2,6 +2,7 @@ import { bindAll } from 'lodash';
 import { BaseError, Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
+import { collectDefaultMetrics, Registry, Counter } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
@@ -44,7 +45,13 @@ export class Bot extends BaseService<BotData> implements Service {
   public readonly strict: boolean;
 
   protected readonly container: Container;
+  protected collector: number;
+  protected metrics: Registry;
   protected storage: Connection;
+
+  // counters
+  protected cmdCounter: Counter;
+  protected msgCounter: Counter;
 
   // services
   protected filters: Array<Filter>;
@@ -94,6 +101,27 @@ export class Bot extends BaseService<BotData> implements Service {
     this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(this.looseError));
     /* tslint:enable */
+
+    this.logger.info('setting up metrics');
+    this.metrics = new Registry();
+    this.collector = collectDefaultMetrics({
+      register: this.metrics,
+      timeout: 5000,
+    });
+
+    this.cmdCounter = new Counter({
+      help: 'commands received by the bot',
+      labelNames: ['service_id', 'service_kind', 'service_name'],
+      name: 'bot_command',
+      registers: [this.metrics],
+    });
+
+    this.msgCounter = new Counter({
+      help: 'messages received by the bot',
+      labelNames: ['service_id', 'service_kind', 'service_name'],
+      name: 'bot_message',
+      registers: [this.metrics],
+    });
 
     this.logger.info('connecting to storage');
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
@@ -165,6 +193,9 @@ export class Bot extends BaseService<BotData> implements Service {
       await svc.stop();
     }
     this.services.clear();
+
+    this.logger.debug('stopping metrics');
+    clearInterval(this.collector);
 
     this.logger.info('bot has stopped');
   }
@@ -270,6 +301,10 @@ export class Bot extends BaseService<BotData> implements Service {
     return svc;
   }
 
+  public getMetrics(): Registry {
+    return this.metrics;
+  }
+
   public getService<TService extends Service>(id: string): TService {
     for (const svc of this.services.values()) {
       if (svc.id === id) {
@@ -290,6 +325,7 @@ export class Bot extends BaseService<BotData> implements Service {
    */
   protected async receiveCommand(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'handling command');
+    this.cmdCounter.labels(this.id, this.kind, this.name).inc();
 
     if (!await this.checkFilters(cmd)) {
       this.logger.warn({ cmd }, 'dropped command due to filters');
@@ -311,6 +347,7 @@ export class Bot extends BaseService<BotData> implements Service {
    */
   protected async receiveMessage(msg: Message): Promise<void> {
     this.logger.debug({ msg }, 'dispatching outgoing message');
+    this.msgCounter.labels(this.id, this.kind, this.name).inc();
 
     if (!await this.checkFilters(msg)) {
       this.logger.warn({ msg }, 'dropped outgoing message due to filters');
@@ -320,7 +357,7 @@ export class Bot extends BaseService<BotData> implements Service {
     let emitted = false;
     for (const listener of this.listeners) {
       if (await listener.check(msg.context)) {
-        await listener.emit(msg);
+        await listener.send(msg);
         emitted = true;
       }
     }
@@ -332,7 +369,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async checkFilters(next: FilterValue): Promise<boolean> {
     for (const filter of this.filters) {
-      const result = await filter.filter(next);
+      const result = await filter.check(next);
       this.logger.debug({ result }, 'checked filter');
 
       if (!checkFilter(result, this.strict)) {

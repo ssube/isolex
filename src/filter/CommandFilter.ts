@@ -12,7 +12,7 @@ import { RuleFilter } from './RuleFilter';
  * - verb
  */
 export class CommandFilter extends RuleFilter {
-  public async filter(value: FilterValue): Promise<FilterBehavior> {
+  public async check(value: FilterValue): Promise<FilterBehavior> {
     if (Command.isCommand(value)) {
       const result = this.matcher.match({
         labels: mapToDict(value.labels),

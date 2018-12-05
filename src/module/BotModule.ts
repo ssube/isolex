@@ -1,5 +1,6 @@
 import { Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
+import { Registry } from 'prom-client';
 import * as request from 'request-promise';
 import { Connection } from 'typeorm';
 
@@ -32,22 +33,27 @@ export class BotModule extends Module {
   }
 
   @Provides('bot')
-  protected async createBot(options: any): Promise<Bot> {
+  public async getBot(options: any): Promise<Bot> {
     return this.bot;
   }
 
   @Provides('logger')
-  protected async createLogger(options: any): Promise<Logger> {
+  public async getLogger(options: any): Promise<Logger> {
     return this.logger;
   }
 
+  @Provides('metrics')
+  public async getMetrics(options: any): Promise<Registry> {
+    return this.bot.getMetrics();
+  }
+
   @Provides('storage')
-  protected async createStorage(options: any): Promise<Connection> {
+  public async getStorage(options: any): Promise<Connection> {
     return this.bot.getStorage();
   }
 
   @Provides('request')
-  protected async createRequest(options: any): Promise<Request> {
+  public async createRequest(options: any): Promise<Request> {
     return request(options);
   }
 }

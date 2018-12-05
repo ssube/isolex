@@ -25,7 +25,7 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
     super(options);
   }
 
-  public async emit(msg: Message): Promise<void> {
+  public async send(msg: Message): Promise<void> {
     if (msg.context.roomId) {
       const result = await this.client.sendMessage(msg.body, msg.context.roomId);
       if (result.error) {

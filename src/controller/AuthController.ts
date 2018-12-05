@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { Inject } from 'noicejs';
+import { Inject, BaseError } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Role } from 'src/entity/auth/Role';
@@ -18,9 +18,7 @@ export const NOUN_SESSION = 'session';
 export const NOUN_USER = 'user';
 
 export type AuthControllerData = ControllerData;
-export interface AuthControllerOptions extends ControllerOptions<AuthControllerData> {
-  storage: Connection;
-}
+export type AuthControllerOptions = ControllerOptions<AuthControllerData>;
 
 @Inject('storage')
 export class AuthController extends BaseController<AuthControllerData> implements Controller, SessionProvider {
@@ -35,6 +33,10 @@ export class AuthController extends BaseController<AuthControllerData> implement
       nouns: [NOUN_SESSION, NOUN_USER],
     });
 
+    if (isNil(options.storage)) {
+      throw new BaseError('missing dependencies');
+    }
+
     this.storage = options.storage;
     this.roleRepository = this.storage.getRepository(Role);
     this.sessionRepository = this.storage.getRepository(Session);
@@ -42,32 +44,40 @@ export class AuthController extends BaseController<AuthControllerData> implement
   }
 
   public async handle(cmd: Command): Promise<void> {
-    switch (cmd.noun) {
-      case 'session':
-        return this.handleSession(cmd);
-      case 'user':
-        return this.handleUser(cmd);
-      default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unknown entity: ${cmd.noun}`));
+    if (cmd.noun === NOUN_SESSION) {
+      return this.handleSession(cmd);
     }
+
+    if (cmd.noun === NOUN_USER) {
+      return this.handleUser(cmd);
+    }
+
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported noun: ${cmd.noun}`));
   }
 
   public async handleUser(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createUser(cmd);
-      case CommandVerb.Get:
-        return this.getUser(cmd);
+    if (cmd.verb === CommandVerb.Create) {
+      return this.createUser(cmd);
     }
+
+    if (cmd.verb === CommandVerb.Get) {
+      return this.getUser(cmd);
+    }
+
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
   }
 
   public async handleSession(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createSession(cmd);
-      case CommandVerb.Get:
+    if (cmd.verb === CommandVerb.Create) {
+      return this.createSession(cmd);
+    }
+
+    if (cmd.verb === CommandVerb.Get) {
         return this.getSession(cmd);
     }
+
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+
   }
 
   public async createUser(cmd: Command): Promise<void> {

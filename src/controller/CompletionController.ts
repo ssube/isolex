@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { Inject } from 'noicejs';
+import { Inject, BaseError } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -15,9 +15,7 @@ import { Controller, ControllerOptions } from './Controller';
 export const NOUN_FRAGMENT = 'fragment';
 
 export type CompletionControllerData = any;
-export interface CompletionControllerOptions extends ControllerOptions<CompletionControllerData> {
-  storage: Connection;
-}
+export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
 
 @Inject('storage')
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
@@ -30,6 +28,9 @@ export class CompletionController extends BaseController<CompletionControllerDat
       nouns: [NOUN_FRAGMENT],
     });
 
+    if (isNil(options.storage)) {
+      throw new BaseError('missing dependencies');
+    }
     this.storage = options.storage;
     this.fragmentRepository = this.storage.getRepository(Fragment);
   }

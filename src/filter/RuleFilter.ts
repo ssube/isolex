@@ -16,5 +16,5 @@ export abstract class RuleFilter extends BaseFilter<RuleFilterData> implements F
     this.matcher = new Match(options.data.match);
   }
 
-  public abstract async filter(value: FilterValue): Promise<FilterBehavior>;
+  public abstract async check(value: FilterValue): Promise<FilterBehavior>;
 }
