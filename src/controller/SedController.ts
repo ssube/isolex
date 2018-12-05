@@ -25,8 +25,8 @@ export class SedController extends BaseController<SedControllerData> implements 
     const parts = args[0].match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
     if (!parts) {
       this.logger.debug({ args }, 'incorrect input.');
-
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'Incorrect input. Please use \`!!s/e/d/[flags]\`'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'Incorrect input. Please use \`!!s/e/d/[flags]\`'));
+      return;
     }
 
     this.logger.debug({ parts }, 'fetching messages');
@@ -48,7 +48,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     }
 
     // No matches
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'No messages were matched!'));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'No messages were matched!'));
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
@@ -61,7 +61,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     if (!!message.body.match(pattern)) {
       const body = message.body.replace(new RegExp(pattern, flags), replacement);
 
-      await this.bot.send(Message.reply(command.context, TYPE_TEXT, body));
+      await this.bot.sendMessage(Message.reply(command.context, TYPE_TEXT, body));
       return true;
     }
 

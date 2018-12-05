@@ -37,6 +37,6 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.logger.debug({ args }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b);
 
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `The results of your rolls were: ${results}. The sum is ${sum}.`));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `The results of your rolls were: ${results}. The sum is ${sum}.`));
   }
 }

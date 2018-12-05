@@ -27,6 +27,6 @@ export class TimeController extends BaseController<TimeControllerData> implement
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
 
     this.logger.debug({ date, locale, zone }, 'handling time');
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, date.toLocaleString(locale, { timeZone: zone })));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, date.toLocaleString(locale, { timeZone: zone })));
   }
 }

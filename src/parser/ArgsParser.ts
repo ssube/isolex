@@ -74,7 +74,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   }
 
   protected async emitCompletion(context: Context, data: Map<string, Array<string>>, missing: Array<string>): Promise<Array<Command>> {
-    await this.bot.execute(Command.create({
+    await this.bot.emitCommand(Command.create({
       context,
       data: mergeMap(data, dictToMap({
         key: missing,

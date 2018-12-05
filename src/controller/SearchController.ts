@@ -55,7 +55,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
     const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, body));
     this.logger.debug({ count: messages.length }, 'transformed search result into message');
     for (const msg of messages) {
-      await this.bot.send(msg);
+      await this.bot.sendMessage(msg);
     }
   }
 }

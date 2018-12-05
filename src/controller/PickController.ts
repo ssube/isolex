@@ -38,6 +38,6 @@ export class PickController extends BaseController<PickControllerData> implement
     const puck = list.pick(count);
 
     this.logger.debug({ count, data, list, puck }, 'picking item');
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, puck.join(',')));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, puck.join(',')));
   }
 }

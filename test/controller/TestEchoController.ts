@@ -47,10 +47,10 @@ describeAsync('echo controller', async () => {
   itAsync('should handle commands', async () => {
     const { container } = await createContainer();
 
-    const send = spy();
+    const sendMessage = spy();
     const options: EchoControllerOptions = {
       bot: ineeda<Bot>({
-        send,
+        sendMessage,
       }),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
@@ -92,6 +92,6 @@ describeAsync('echo controller', async () => {
 
     expect(await controller.check(cmd)).to.equal(true);
     await controller.handle(cmd);
-    expect(send).to.have.been.calledWithMatch(match.instanceOf(Message));
+    expect(sendMessage).to.have.been.calledWithMatch(match.instanceOf(Message));
   });
 });

@@ -1,6 +1,6 @@
 type Mutation {
-  emitCommand(command: CommandInput): Command
-  sendMessage(message: MessageInput): Message
+  emitCommands(commands: [CommandInput]): [Command]
+  sendMessages(messages: [MessageInput]): [Message]
 }
 
 type Query {

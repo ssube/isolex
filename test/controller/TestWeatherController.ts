@@ -22,7 +22,7 @@ describeAsync('weather controller', async () => {
     const sent: Array<Message> = [];
     const options: WeatherControllerOptions = {
       bot: ineeda<Bot>({
-        send: (msg: Message) => {
+        sendMessage: (msg: Message) => {
           sent.push(msg);
         },
       }),

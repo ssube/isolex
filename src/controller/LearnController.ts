@@ -76,24 +76,24 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     this.logger.debug({ args, cmd, key, keyword }, 'learning command');
 
     if (await this.keywordRepository.findOne(name)) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Command already exists: ${name}`));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Command already exists: ${name}`));
+      return;
     }
 
     await this.keywordRepository.save(keyword);
-
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Learned command ${name}.`));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Learned command ${name}.`));
   }
 
-  protected async deleteKeyword(name: string, cmd: Command) {
+  protected async deleteKeyword(name: string, cmd: Command): Promise<void> {
     const keyword = await this.keywordRepository.findOne(name);
 
     if (!keyword) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Command ${name} does not exist.`));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Command ${name} does not exist.`));
+      return;
     }
 
     await this.keywordRepository.delete(name);
-
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `Deleted command ${name}.`));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Deleted command ${name}.`));
   }
 
   protected async executeKeyword(name: string, cmd: Command, body: Array<string>) {
@@ -119,7 +119,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
 
     this.logger.debug({ emit, keyword }, 'keywording command');
 
-    await this.bot.handle(emit);
+    await this.bot.emitCommand(emit);
     return;
   }
 }

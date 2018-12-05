@@ -48,7 +48,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case 'user':
         return this.handleUser(cmd);
       default:
-        return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `unknown entity: ${cmd.noun}`));
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unknown entity: ${cmd.noun}`));
     }
   }
 
@@ -72,7 +72,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
   public async createUser(cmd: Command): Promise<void> {
     if (cmd.context.session) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'cannot create users while logged in'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'cannot create users while logged in'));
+      return;
     }
 
     const name = cmd.getHeadOrDefault('name', cmd.context.userName);
@@ -83,18 +84,21 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }));
 
     this.logger.debug({ user }, 'created user');
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
+    return;
   }
 
   public async createSession(cmd: Command): Promise<void> {
     if (cmd.context.session) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'cannot create sessions while logged in'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'cannot create sessions while logged in'));
+      return;
     }
 
     const sessionKey = AuthController.getSessionKey(cmd.context);
     const existingSession = await this.sessionRepository.findOne(sessionKey);
     if (existingSession) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'session already exists'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'session already exists'));
+      return;
     }
 
     const userName = cmd.getHeadOrDefault('name', cmd.context.userName);
@@ -104,7 +108,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     if (isNil(user)) {
       this.logger.warn({ sessionKey, userName }, 'user not found for new session');
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'user not found'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'user not found'));
+      return;
     }
 
     this.logger.debug({ user }, 'logging in user');
@@ -115,37 +120,43 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }));
 
     this.logger.debug({ session, user, userName }, 'created session');
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'created session'));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'created session'));
+    return;
   }
 
   public async getUser(cmd: Command): Promise<void> {
     if (!cmd.context.session) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'cannot get users unless logged in'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'cannot get users unless logged in'));
+      return;
     }
 
     const session = await this.sessionRepository.findOne({
       id: cmd.context.session.id,
     });
     if (isNil(session)) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
+      return;
     }
 
-    return this.bot.send(Message.reply(cmd.context, TYPE_JSON, session.user.toString()));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, session.user.toString()));
+    return;
   }
 
   public async getSession(cmd: Command): Promise<void> {
     if (!cmd.context.session) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'cannot get sessions unless logged in'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'cannot get sessions unless logged in'));
+      return;
     }
 
     const session = await this.sessionRepository.findOne({
       id: cmd.context.session.id,
     });
     if (isNil(session)) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
+      return;
     }
 
-    return this.bot.send(Message.reply(cmd.context, TYPE_JSON, session.toString()));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, session.toString()));
   }
 
   /**

@@ -77,8 +77,10 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
       const response = await this.client.listNamespacedPod(namespace);
       this.logger.debug({ pods: response.body }, 'found pods');
       const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
-      return this.bot.send(...messages);
+      await this.bot.sendMessage(...messages);
+      return;
     }
+
     throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
   }
 
@@ -91,8 +93,10 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
       const response = await this.client.listNamespacedService(namespace);
       this.logger.debug({ pods: response.body }, 'found pods');
       const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
-      return this.bot.send(...messages);
+      await this.bot.sendMessage(...messages);
+      return;
     }
+
     throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
   }
 }

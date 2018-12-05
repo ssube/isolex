@@ -32,6 +32,6 @@ export class EchoController extends BaseController<EchoControllerData> implement
 
     const data = Message.reply(cmd.context, TYPE_TEXT, cmd.toString());
     const msgs = await this.transform(cmd, data);
-    return this.bot.send(...msgs);
+    await this.bot.sendMessage(...msgs);
   }
 }

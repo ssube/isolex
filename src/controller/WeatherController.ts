@@ -37,7 +37,8 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   public async handle(cmd: Command): Promise<void> {
     const [location] = cmd.get('location');
     if (!location) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'unknown or missing location'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'unknown or missing location'));
+      return;
     }
 
     try {
@@ -47,7 +48,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
       const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(weather)));
       for (const msg of messages) {
         this.logger.debug({ msg }, 'sending weather msg');
-        await this.bot.send(msg);
+        await this.bot.sendMessage(msg);
       }
     } catch (err) {
       this.logger.error(err, 'error getting weather');

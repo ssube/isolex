@@ -40,7 +40,8 @@ export class CompletionController extends BaseController<CompletionControllerDat
     if (cmd.noun === NOUN_FRAGMENT) {
       return this.handleFragment(cmd);
     }
-    return this.bot.send();
+
+    await this.bot.sendMessage();
   }
 
   public async handleFragment(cmd: Command): Promise<void> {
@@ -50,7 +51,8 @@ export class CompletionController extends BaseController<CompletionControllerDat
     if (cmd.verb === CommandVerb.Update) {
       return this.updateFragment(cmd);
     }
-    return this.bot.send();
+
+    await this.bot.sendMessage();
   }
 
   public async createFragment(cmd: Command): Promise<void> {
@@ -72,7 +74,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     this.logger.debug({ data: mapToDict(cmd.data), fragment }, 'creating fragment for later completion');
 
     // @TODO: send this message elsewhere (not a direct reply)
-    return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, `${fragment.id} (${key}): ${msg}`));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `${fragment.id} (${key}): ${msg}`));
   }
 
   public async updateFragment(cmd: Command): Promise<void> {
@@ -84,7 +86,8 @@ export class CompletionController extends BaseController<CompletionControllerDat
     });
 
     if (isNil(fragment)) {
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'fragment not found'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'fragment not found'));
+      return;
     }
 
     this.logger.debug({ fragment }, 'attempting to complete fragment');
@@ -94,10 +97,10 @@ export class CompletionController extends BaseController<CompletionControllerDat
       const parser = this.bot.getService<Parser>(fragment.parserId);
       const value = cmd.get('next');
       const commands = await parser.complete(cmd.context, fragment, value);
-      return this.bot.execute(...commands);
+      await this.bot.emitCommand(...commands);
     } catch (err) {
       this.logger.error(err, 'error completing fragment');
-      return this.bot.send(Message.reply(cmd.context, TYPE_TEXT, 'error completing fragment'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'error completing fragment'));
     }
   }
 }

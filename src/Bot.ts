@@ -8,13 +8,12 @@ import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
-import { mustFind } from 'src/utils';
+import { filterNil, mustFind } from 'src/utils';
 import { mustGet } from 'src/utils/Map';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
@@ -91,9 +90,9 @@ export class Bot extends BaseService<BotData> implements Service {
   public async start() {
     this.logger.info('setting up streams');
     /* tslint:disable:no-unbound-method */
-    this.commands.subscribe((next) => this.handle(next).catch(this.looseError));
+    this.commands.subscribe((next) => this.receiveCommand(next).catch(this.looseError));
     this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
-    this.outgoing.subscribe((next) => this.dispatch(next).catch(this.looseError));
+    this.outgoing.subscribe((next) => this.receiveMessage(next).catch(this.looseError));
     /* tslint:enable */
 
     this.logger.info('connecting to storage');
@@ -222,76 +221,26 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   /**
-   * Handle a command using the appropriate controller.
-   */
-  public async handle(cmd: Command): Promise<Command | undefined> {
-    this.logger.debug({ cmd }, 'handling command');
-
-    if (!await this.checkFilters(cmd)) {
-      this.logger.warn({ cmd }, 'dropped command due to filters');
-      return;
-    }
-
-    const result = await this.storage.getRepository(Command).save(cmd);
-
-    for (const h of this.controllers) {
-      if (await h.check(result)) {
-        await h.handle(result);
-        break;
-      }
-    }
-
-    this.logger.warn({ cmd: result }, 'unhandled command');
-    return result;
-  }
-
-  /**
-   * Dispatch a message to the appropriate listeners (based on the context).
-   */
-  public async dispatch(msg: Message): Promise<Message | undefined> {
-    this.logger.debug({ msg }, 'dispatching outgoing message');
-
-    if (!await this.checkFilters(msg)) {
-      this.logger.warn({ msg }, 'dropped outgoing message due to filters');
-      return;
-    }
-
-    const result = await this.storage.getRepository(Message).save(msg);
-
-    let emitted = false;
-    for (const listener of this.listeners) {
-      if (await listener.check(msg.context)) {
-        await listener.emit(msg);
-        emitted = true;
-      }
-    }
-
-    if (!emitted) {
-      this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
-    }
-
-    return result;
-  }
-
-  /**
    * Add a message to the send queue.
    */
-  public async send(...messages: Array<Message>): Promise<void> {
-    for (const msg of messages) {
-      if (!Message.isMessage(msg)) {
-        throw new InvalidArgumentError('sent message must be an instance of the message entity');
-      }
+  public async sendMessage(...messages: Array<Message>): Promise<Array<Message>> {
+    const results = [];
+    for (const data of messages) {
+      const msg = await this.storage.getRepository(Message).save(data);
       this.outgoing.next(msg);
+      results.push(msg);
     }
+    return filterNil(results);
   }
 
-  public async execute(...commands: Array<Command>): Promise<void> {
-    for (const cmd of commands) {
-      if (!Command.isCommand(cmd)) {
-        throw new InvalidArgumentError('executed command must be an instance of the command entity');
-      }
+  public async emitCommand(...commands: Array<Command>): Promise<Array<Command>> {
+    const results = [];
+    for (const data of commands) {
+      const cmd = await this.storage.getRepository(Command).save(data);
       this.commands.next(cmd);
+      results.push(cmd);
     }
+    return filterNil(results);
   }
 
   /**
@@ -334,6 +283,51 @@ export class Bot extends BaseService<BotData> implements Service {
   public listServices() {
     this.logger.debug('listing services');
     return this.services;
+  }
+
+  /**
+   * Handle a command using the appropriate controller.
+   */
+  protected async receiveCommand(cmd: Command): Promise<void> {
+    this.logger.debug({ cmd }, 'handling command');
+
+    if (!await this.checkFilters(cmd)) {
+      this.logger.warn({ cmd }, 'dropped command due to filters');
+      return;
+    }
+
+    for (const h of this.controllers) {
+      if (await h.check(cmd)) {
+        await h.handle(cmd);
+        break;
+      }
+    }
+
+    this.logger.warn({ cmd }, 'unhandled command');
+  }
+
+  /**
+   * Dispatch a message to the appropriate listeners (based on the context).
+   */
+  protected async receiveMessage(msg: Message): Promise<void> {
+    this.logger.debug({ msg }, 'dispatching outgoing message');
+
+    if (!await this.checkFilters(msg)) {
+      this.logger.warn({ msg }, 'dropped outgoing message due to filters');
+      return;
+    }
+
+    let emitted = false;
+    for (const listener of this.listeners) {
+      if (await listener.check(msg.context)) {
+        await listener.emit(msg);
+        emitted = true;
+      }
+    }
+
+    if (!emitted) {
+      this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
+    }
   }
 
   protected async checkFilters(next: FilterValue): Promise<boolean> {

@@ -46,8 +46,8 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
       graphiql: this.data.graph.repl,
       rootValue: {
         // mutation
-        emitCommand: (args: any) => this.emitCommand(args),
-        sendMessage: (args: any) => this.sendMessage(args),
+        emitCommands: (args: any) => this.emitCommands(args),
+        sendMessages: (args: any) => this.sendMessages(args),
         // query
         command: (args: any) => this.getCommand(args),
         message: (args: any) => this.getCommand(args),
@@ -81,29 +81,33 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     return [];
   }
 
-  public emitCommand(args: any) {
-    const { command } = args;
-    const { labels: rawLabels, noun, verb } = command;
-    this.logger.debug({ noun, verb }, 'emit command');
-    return this.bot.handle(Command.create({
-      context: this.createContext(),
-      data: args,
-      labels: pairsToDict(rawLabels),
-      noun,
-      verb,
-    }));
+  public emitCommands(args: any) {
+    this.logger.debug({ args }, 'emit command');
+    const commands = args.commands.map((data: any) => {
+      const { labels: rawLabels, noun, verb } = data;
+      return Command.create({
+        context: this.createContext(),
+        data: args,
+        labels: pairsToDict(rawLabels),
+        noun,
+        verb,
+      });
+    })
+    return this.bot.emitCommand(...commands);
   }
 
-  public sendMessage(args: any) {
-    const { message } = args;
-    const { body, type } = message;
-    this.logger.debug({ body, type }, 'send message');
-    return this.bot.dispatch(Message.create({
-      body,
-      context: this.createContext(),
-      reactions: [],
-      type,
-    }));
+  public sendMessages(args: any) {
+    this.logger.debug({ args }, 'send message');
+    const messages = args.messages.map((data: any) => {
+      const { body, type } = data;
+      return Message.create({
+        body,
+        context: this.createContext(),
+        reactions: [],
+        type,
+      });
+    });
+    return this.bot.sendMessage(...messages);
   }
 
   public getCommand(args: any) {
@@ -121,8 +125,8 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   }
 
   public getService(args: any) {
+    this.logger.debug({ args }, 'getting service');
     const { id } = args;
-    this.logger.debug({ id }, 'getting service');
     return this.bot.getService(id);
   }
 
