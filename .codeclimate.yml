@@ -1,6 +1,9 @@
 version: "2"
+
 exclude_patterns:
-  - "src/migration/"
+  - src/migration/
+  - vendor/
+
 plugins:
   duplication:
     enabled: true

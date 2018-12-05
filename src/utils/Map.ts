@@ -144,4 +144,3 @@ export function dictValuesToArrays<TVal>(map: MapOrMapLike<TVal>): Dict<Array<TV
   }
   return data;
 }
-

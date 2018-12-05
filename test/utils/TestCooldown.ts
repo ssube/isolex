@@ -7,7 +7,7 @@ import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 import { describeAsync, itAsync } from 'test/helpers/async';
 
 const COOLDOWN_NAME = 'test-cooldown';
-const COOLDOWN_STEPS = [10, 12, 16, 24];
+const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
 
 describeAsync('utils', async () => {
   describeAsync('cooldown', async () => {
