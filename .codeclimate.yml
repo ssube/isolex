@@ -1,14 +1,12 @@
 version: "2"
 
-engines:
+plugins:
   duplication:
     enabled: true
     config:
       languages:
         typescript:
           mass_threshold: 60
-
-plugins:
   fixme:
     enabled: true
   markdownlint:
