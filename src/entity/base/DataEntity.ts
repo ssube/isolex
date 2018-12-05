@@ -1,6 +1,6 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { getOrDefault } from 'src/utils';
+import { getOrDefault } from 'src/utils/Map';
 
 import { LabelEntity } from './LabelEntity';
 

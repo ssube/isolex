@@ -5,7 +5,7 @@ import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Dict, dictToMap, dictValuesToArrays, mergeMap } from 'src/utils';
+import { Dict, dictToMap, dictValuesToArrays, mergeMap } from 'src/utils/Map';
 
 import { BaseParser } from './BaseParser';
 import { Parser, ParserData, ParserOptions } from './Parser';

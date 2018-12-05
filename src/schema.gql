@@ -1,0 +1,109 @@
+type Mutation {
+  emitCommand(command: CommandInput): Command
+  sendMessage(message: MessageInput): Message
+}
+
+type Query {
+  command(id: String!): Command
+  message(id: String!): Message
+  service(id: String!): Service
+  services: [Service!]!
+}
+
+input NameValuePairInput {
+  name: String!
+  value: String!
+}
+
+input NameMultiValuePairInput {
+  name: String!
+  values: [String!]!
+}
+
+input CommandInput {
+  data: [NameMultiValuePairInput!]!
+  labels: [NameValuePairInput!]!
+  noun: String!
+  verb: String!
+}
+
+input MessageInput {
+  body: String
+  labels: [NameValuePairInput!]!
+  type: String!
+}
+
+interface Labeled {
+  id: String!
+  labels: [NameValuePair!]!
+}
+
+type NameValuePair {
+  name: String!
+  value: String!
+}
+
+type NameMultiValuePair {
+  name: String!
+  values: [String!]!
+}
+
+type Group {
+  id: String!
+  name: String!
+}
+
+type User {
+  id: String!
+  name: String!
+  groups: [Group!]
+}
+
+type Session {
+  id: String!
+  listenerId: String!
+  user: User
+  userName: String!
+}
+
+type Context {
+  id: String!
+  listenerId: String!
+  roomId: String!
+  session: Session
+  threadId: String!
+  userId: String!
+  userName: String!
+}
+
+type Fragment implements Labeled {
+  data: [NameMultiValuePair!]!
+  id: String!
+  key: String!
+  labels: [NameValuePair!]!
+  parserId: String!
+}
+
+type Command implements Labeled {
+  data: [NameMultiValuePair!]!
+  id: String!
+  labels: [NameValuePair!]!
+  noun: String!
+  verb: String!
+}
+
+type Message implements Labeled {
+  body: String
+  context: Context
+  id: String!
+  labels: [NameValuePair!]!
+  reactions: [String!]!
+  type: String!
+}
+
+type Service implements Labeled {
+  id: String!
+  kind: String!
+  labels: [NameValuePair!]!
+  name: String!
+}

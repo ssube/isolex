@@ -3,7 +3,8 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 
 import { Context } from 'src/entity/Context';
 import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
-import { BaseEntity } from './base/BaseEntity';
+
+import { LabelEntity } from './base/LabelEntity';
 
 export interface MessageOptions {
   body: string;
@@ -13,7 +14,7 @@ export interface MessageOptions {
 }
 
 @Entity()
-export class Message extends BaseEntity implements MessageOptions {
+export class Message extends LabelEntity implements MessageOptions {
   public static create(options: MessageOptions): Message {
     const msg = new Message();
     msg.body = options.body;

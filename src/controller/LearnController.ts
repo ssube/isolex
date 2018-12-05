@@ -119,6 +119,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
 
     this.logger.debug({ emit, keyword }, 'keywording command');
 
-    return this.bot.handle(emit);
+    await this.bot.handle(emit);
+    return;
   }
 }

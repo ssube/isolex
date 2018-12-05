@@ -1,6 +1,6 @@
 import { get, has, isString } from 'lodash';
 
-import { mapToDict } from 'src/utils';
+import { mapToDict } from 'src/utils/Map';
 
 export interface MatchData {
   rules: Array<MatchRule>;

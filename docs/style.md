@@ -8,6 +8,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Table of Contents](#table-of-contents)
   - [Paths](#paths)
   - [Typescript](#typescript)
+    - [Destructuring](#destructuring)
     - [Exports](#exports)
     - [Imports](#imports)
       - [Order](#order)
@@ -46,6 +47,13 @@ Always keep the table of contents up to date.
 | vendor/       | vendored (inlined, submoduled, etc) dependencies and typedefs |
 
 ## Typescript
+
+### Destructuring
+
+Destructuring is great, use it! Groups should be `{ spaced, out }` like imports (lint will warn about this, code can
+fix it).
+
+Never nest destructuring. Defaults are ok.
 
 ### Exports
 

@@ -2,7 +2,7 @@ import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { dictToMap, MapOrMapLike, mergeMap } from 'src/utils';
+import { dictToMap, MapOrMapLike, mergeMap } from 'src/utils/Map';
 
 import { BaseCommand } from './base/BaseCommand';
 

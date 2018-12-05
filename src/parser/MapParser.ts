@@ -5,7 +5,8 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
-import { filterNil, getHeadOrDefault, setOrPush } from 'src/utils';
+import { filterNil } from 'src/utils';
+import { getHeadOrDefault, setOrPush } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MatchAlias {

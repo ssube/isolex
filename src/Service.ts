@@ -1,6 +1,6 @@
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
-import { MapOrMapLike } from './utils';
+import { MapOrMapLike } from './utils/Map';
 
 export interface ServiceDefinition<TData = any> {
   metadata: ServiceMetadata;

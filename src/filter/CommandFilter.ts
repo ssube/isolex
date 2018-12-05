@@ -1,5 +1,5 @@
 import { Command } from 'src/entity/Command';
-import { mapToDict } from 'src/utils';
+import { mapToDict } from 'src/utils/Map';
 
 import { FilterBehavior, FilterValue } from './Filter';
 import { RuleFilter } from './RuleFilter';

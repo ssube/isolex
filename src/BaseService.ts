@@ -2,7 +2,7 @@ import { Logger } from 'noicejs/logger/Logger';
 import * as uuid from 'uuid/v4';
 
 import { Service, ServiceOptions } from 'src/Service';
-import { dictToMap } from './utils';
+import { dictToMap } from './utils/Map';
 
 export abstract class BaseService<TData> implements Service {
   public readonly id: string;

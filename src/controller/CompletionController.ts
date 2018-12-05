@@ -6,7 +6,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser } from 'src/parser/Parser';
-import { mapToDict } from 'src/utils';
+import { mapToDict } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';

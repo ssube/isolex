@@ -1,3 +1,4 @@
+.awcache/
 .nyc_output/
 node_modules/
 out/

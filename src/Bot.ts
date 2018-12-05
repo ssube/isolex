@@ -8,16 +8,17 @@ import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { NotFoundError } from 'src/error/NotFoundError';
 import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
+import { mustFind } from 'src/utils';
+import { mustGet } from 'src/utils/Map';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 import { BaseService } from './BaseService';
-import { InvalidArgumentError } from './error/InvalidArgumentError';
-import { NotFoundError } from './error/NotFoundError';
-import { mustFind, mustGet } from './utils';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
@@ -223,7 +224,7 @@ export class Bot extends BaseService<BotData> implements Service {
   /**
    * Handle a command using the appropriate controller.
    */
-  public async handle(cmd: Command) {
+  public async handle(cmd: Command): Promise<Command | undefined> {
     this.logger.debug({ cmd }, 'handling command');
 
     if (!await this.checkFilters(cmd)) {
@@ -231,21 +232,23 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    await this.storage.getRepository(Command).save(cmd);
+    const result = await this.storage.getRepository(Command).save(cmd);
 
     for (const h of this.controllers) {
-      if (await h.check(cmd)) {
-        return h.handle(cmd);
+      if (await h.check(result)) {
+        await h.handle(result);
+        break;
       }
     }
 
-    this.logger.warn({ cmd }, 'unhandled command');
+    this.logger.warn({ cmd: result }, 'unhandled command');
+    return result;
   }
 
   /**
    * Dispatch a message to the appropriate listeners (based on the context).
    */
-  public async dispatch(msg: Message) {
+  public async dispatch(msg: Message): Promise<Message | undefined> {
     this.logger.debug({ msg }, 'dispatching outgoing message');
 
     if (!await this.checkFilters(msg)) {
@@ -253,7 +256,7 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    await this.storage.getRepository(Message).save(msg);
+    const result = await this.storage.getRepository(Message).save(msg);
 
     let emitted = false;
     for (const listener of this.listeners) {
@@ -266,6 +269,8 @@ export class Bot extends BaseService<BotData> implements Service {
     if (!emitted) {
       this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
     }
+
+    return result;
   }
 
   /**
@@ -310,7 +315,7 @@ export class Bot extends BaseService<BotData> implements Service {
       }),
     });
 
-    this.logger.debug({ id: svc.id, kind, tag  }, 'service created');
+    this.logger.debug({ id: svc.id, kind, tag }, 'service created');
     this.services.set(tag, svc);
 
     return svc;
@@ -324,6 +329,11 @@ export class Bot extends BaseService<BotData> implements Service {
     }
 
     throw new NotFoundError(`service ${id} not found`);
+  }
+
+  public listServices() {
+    this.logger.debug('listing services');
+    return this.services;
   }
 
   protected async checkFilters(next: FilterValue): Promise<boolean> {

@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { dictToMap } from 'src/utils';
+import { dictToMap } from 'src/utils/Map';
 
 import { BaseCommand } from './base/BaseCommand';
 import { CommandData } from './Command';

@@ -2,7 +2,7 @@ import { Column } from 'typeorm';
 
 import { DataEntity } from 'src/entity/base/DataEntity';
 import { CommandVerb } from 'src/entity/Command';
-import { getHeadOrDefault } from 'src/utils';
+import { getHeadOrDefault } from 'src/utils/Map';
 
 export abstract class BaseCommand extends DataEntity<Array<string>> {
   @Column()

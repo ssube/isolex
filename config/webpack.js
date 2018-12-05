@@ -27,7 +27,7 @@ function ignoreModules(names) {
 }
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   entry: {
     main: modulePath.index,
     test: [modulePath.harness, 'sinon', 'chai']
@@ -43,6 +43,13 @@ module.exports = {
       /dtrace-provider/
     ],
     rules: [{
+      test: /\.gql$/,
+      rules: [{
+        use: [{
+          loader: 'raw-loader',
+        }]
+      }]
+    }, {
       test: /\.tsx?$/,
       rules: [{
         enforce: 'pre',
@@ -58,8 +65,8 @@ module.exports = {
           loader: 'awesome-typescript-loader',
           options: {
             configFileName: 'config/tsconfig.json',
-            inlineSourceMap: false,
-            sourceMap: true
+            sourceMap: true,
+            useCache: true,
           }
         }]
       }]
@@ -129,7 +136,7 @@ module.exports = {
       alias: path.vendor,
       onlyModule: false
     }],
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.json', '.gql'],
     plugins: [
       new TsConfigPathsPlugin({ tsconfig, compiler: 'typescript' })
     ]

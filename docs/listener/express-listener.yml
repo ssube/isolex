@@ -1,0 +1,9 @@
+metadata:
+  kind: express-listener
+  name: test-express
+data:
+  graph:
+    repl: true
+  listen:
+    port: 4000
+    address: "0.0.0.0"
