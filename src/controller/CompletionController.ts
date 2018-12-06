@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { Inject, BaseError } from 'noicejs';
+import { BaseError, Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -63,7 +63,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     const parserId = cmd.getHead('parser');
     const verb = cmd.getHead('verb') as CommandVerb;
 
-    const fragment = await this.fragmentRepository.create({
+    const fragment = this.fragmentRepository.create({
       data: cmd.data,
       key,
       labels: cmd.labels,
@@ -71,6 +71,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       parserId,
       verb,
     });
+    await this.fragmentRepository.save(fragment);
 
     this.logger.debug({ data: mapToDict(cmd.data), fragment }, 'creating fragment for later completion');
 

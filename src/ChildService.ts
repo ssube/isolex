@@ -1,8 +1,9 @@
+import { Registry } from 'prom-client';
+import { Connection } from 'typeorm';
+
 import { BaseService } from './BaseService';
 import { Bot } from './Bot';
 import { Service, ServiceOptions } from './Service';
-import { Connection } from 'typeorm';
-import { Registry } from 'prom-client';
 
 interface ChildServiceDependencies {
   bot: Bot;

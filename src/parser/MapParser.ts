@@ -1,6 +1,6 @@
 import * as split from 'split-string';
 
-import { Command, CommandVerb, CommandOptions, CommandDataValue } from 'src/entity/Command';
+import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';

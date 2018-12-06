@@ -2,7 +2,7 @@ import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { dictToMap, MapLike, mergeMap, Dict } from 'src/utils/Map';
+import { dictToMap, MapLike, mergeMap } from 'src/utils/Map';
 
 import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
 
@@ -50,10 +50,8 @@ export class Command extends BaseCommand implements CommandOptions {
   constructor(options?: CommandOptions) {
     super(options);
 
-    if (options) {
-      if (options.context) {
-        this.context = options.context;
-      }
+    if (options && options.context) {
+      this.context = options.context;
     }
   }
 

@@ -1,6 +1,6 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { getOrDefault, dictToMap, MapLike } from 'src/utils/Map';
+import { dictToMap, getOrDefault, MapLike } from 'src/utils/Map';
 
 import { LabelEntity, LabelEntityOptions } from './LabelEntity';
 

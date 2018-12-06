@@ -4,7 +4,7 @@ import { buildSchema } from 'graphql';
 import * as http from 'http';
 import { isNil } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
-import { Registry, Counter } from 'prom-client';
+import { Counter, Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { ChildServiceOptions } from 'src/ChildService';

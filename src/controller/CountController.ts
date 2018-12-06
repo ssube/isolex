@@ -1,4 +1,5 @@
-import { Inject, BaseError } from 'noicejs';
+import { isNil } from 'lodash';
+import { BaseError, Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
@@ -8,7 +9,6 @@ import { Message } from 'src/entity/Message';
 import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
 import { TYPE_TEXT } from 'src/utils/Mime';
-import { isNil } from 'lodash';
 
 export const NOUN_COUNTER = 'counter';
 

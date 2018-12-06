@@ -1,4 +1,5 @@
-import { Inject, BaseError } from 'noicejs';
+import { isNil } from 'lodash';
+import { BaseError, Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
@@ -7,7 +8,6 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { TYPE_TEXT } from 'src/utils/Mime';
-import { isNil } from 'lodash';
 
 export const NOUN_KEYWORD = 'keyword';
 

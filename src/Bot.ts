@@ -2,7 +2,7 @@ import { bindAll } from 'lodash';
 import { BaseError, Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
-import { collectDefaultMetrics, Registry, Counter } from 'prom-client';
+import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
