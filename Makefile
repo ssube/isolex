@@ -90,6 +90,9 @@ git-push: ## push to both gitlab and github (this assumes you have both remotes 
 git-stats: ## print git contributor line counts (approx, for fun)
 	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
 
+release: ## create a release
+	$(NODE_BIN)/standard-version
+
 run-terminal: ## run the bot in a terminal
 	node $(TARGET_PATH)/main-bundle.js
 

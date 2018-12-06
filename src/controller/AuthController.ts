@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { Inject, BaseError } from 'noicejs';
+import { BaseError, Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Role } from 'src/entity/auth/Role';

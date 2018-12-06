@@ -3,6 +3,7 @@
 This document describes the issue and merge workflow for the isolex project.
 
 - [Workflow](#workflow)
+  - [Branches](#branches)
   - [Issues](#issues)
     - [Service](#service)
     - [Status](#status)
@@ -12,6 +13,12 @@ This document describes the issue and merge workflow for the isolex project.
       - [Update](#update)
   - [Merges](#merges)
   - [Updates](#updates)
+
+## Branches
+
+Branch early, commit often.
+
+Rebase on the target branch before creating a PR to ensure minimal differences.
 
 ## Issues
 
@@ -61,6 +68,17 @@ Code should only be merged into master after:
 - tests have been written and pass
 - coverage has not decreased
 - lint warnings have been resolved
+
+Branches should be squashed before merging and the merge commit must follow
+[conventional commit](https://www.conventionalcommits.org/en/v1.0.0-beta.2/) syntax. Valid prefixes are:
+
+- `build`
+- `deps` (type/update)
+- `docs`
+- `feat` (type/feature)
+- `fix` (type/bug)
+- `lint` (type/lint)
+- `test`
 
 ## Updates
 

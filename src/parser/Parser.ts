@@ -1,5 +1,5 @@
 import { ChildServiceOptions } from 'src/ChildService';
-import { Command, CommandOptions, CommandDataValue } from 'src/entity/Command';
+import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
