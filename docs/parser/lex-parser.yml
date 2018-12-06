@@ -9,6 +9,10 @@ data:
     name: isolex
     alias: test
   region: us-east-1
-  tags:
-    - '@isolex'
-    - !env ISOLEX_DISCORD_USER_ID
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - '@isolex'
+          - !env ISOLEX_DISCORD_USER_ID

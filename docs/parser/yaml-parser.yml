@@ -2,6 +2,10 @@ metadata:
   kind: yaml-parser
   name: default-yaml-parser
 data:
-  tags:
-    - '!!json'
-    - '!!yaml'
+  match:
+    rules:
+      - key: body
+        operator: any
+        values:
+          - '!!json'
+          - '!!yaml'

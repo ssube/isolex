@@ -4,10 +4,11 @@ import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
+import { MatchData } from 'src/utils/match';
 
 export interface ParserData {
   emit: CommandOptions;
-  tags: Array<string>;
+  match: MatchData;
 }
 
 export type ParserOptions<TData extends ParserData> = ChildServiceOptions<TData>;

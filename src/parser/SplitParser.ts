@@ -34,8 +34,7 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
       throw new MimeTypeError();
     }
 
-    const body = this.removeTags(msg.body);
-    return this.split(body).map(trim).filter((it) => !isEmpty(it));
+    return this.split(msg.body).map(trim).filter((it) => !isEmpty(it));
   }
 
   public split(msg: string): Array<string> {

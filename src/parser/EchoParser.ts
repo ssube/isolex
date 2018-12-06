@@ -42,6 +42,6 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
     if (!isString(msg.body)) {
       throw new InvalidArgumentError('message body must be a string');
     }
-    return this.removeTags(msg.body);
+    return msg.body;
   }
 }

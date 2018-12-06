@@ -37,8 +37,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
       throw new MimeTypeError();
     }
 
-    const body = this.removeTags(msg.body);
-    const parts = body.match(this.regexp);
+    const parts = msg.body.match(this.regexp);
 
     this.logger.debug({ parts }, 'splitting on regexp');
     if (!parts) {

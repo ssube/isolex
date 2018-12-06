@@ -13,5 +13,9 @@ data:
   emit:
     noun: test_echo
     verb: get
-  tags:
-    - "!!args"
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - "!!args"

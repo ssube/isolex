@@ -40,7 +40,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<Dict<Array<string>>> {
-    return this.decodeBody(this.removeTags(msg.body));
+    return this.decodeBody(msg.body);
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {

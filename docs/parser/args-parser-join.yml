@@ -10,5 +10,9 @@ data:
   emit:
     noun: user
     verb: create
-  tags:
-    - "!!join"
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - "!!join"

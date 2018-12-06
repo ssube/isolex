@@ -27,7 +27,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
       throw new MimeTypeError(`body type (${msg.type}) must be one of ${YAML_TYPES}`);
     }
 
-    const parsed = safeLoad(this.removeTags(msg.body));
+    const parsed = safeLoad(msg.body);
     if (isNil(parsed)) {
       throw new Error('invalid parse value');
     }

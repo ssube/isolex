@@ -9,5 +9,9 @@ data:
   emit:
     noun: fragment
     verb: update
-  tags:
-    - "!!c"
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - "!!c"

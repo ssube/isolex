@@ -4,14 +4,15 @@ import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserData } from 'src/parser/Parser';
+import { Match } from 'src/utils/match';
 
 export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
-  protected tags: Array<string>;
+  protected matcher: Match;
 
   constructor(options: ChildServiceOptions<TData>) {
     super(options);
 
-    this.tags = options.data.tags;
+    this.matcher = new Match(options.data.match);
   }
 
   public async start() {
@@ -23,7 +24,8 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
   }
 
   public async match(msg: Message): Promise<boolean> {
-    return this.includesTag(msg.body);
+    const results = this.matcher.match(msg);
+    return results.matched;
   }
 
   public abstract parse(msg: Message): Promise<Array<Command>>;
@@ -40,25 +42,5 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
       ...fragment,
       context,
      }, context, data)];
-  }
-
-  protected includesTag(body: string): boolean {
-    for (const t of this.tags) {
-      if (body.includes(t)) {
-        this.logger.debug({ tag: t }, 'message includes tag');
-        return true;
-      }
-    }
-
-    this.logger.debug('message does not include any tags');
-    return false;
-  }
-
-  protected removeTags(body: string): string {
-    let result = body;
-    for (const t of this.tags) {
-      result = result.replace(t, '');
-    }
-    return result;
   }
 }

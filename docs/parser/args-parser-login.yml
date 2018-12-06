@@ -8,5 +8,9 @@ data:
   emit:
     noun: session
     verb: create
-  tags:
-    - "!!login"
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - "!!login"

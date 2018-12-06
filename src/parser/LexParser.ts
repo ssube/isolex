@@ -76,15 +76,14 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
     }
 
-    const body = this.removeTags(msg.body);
     const post = await this.postText({
       botAlias: this.data.bot.alias,
       botName: this.data.bot.name,
-      inputText: body,
+      inputText: msg.body,
       userId: leftPad(msg.context.userId),
     });
 
-    this.logger.debug({ body, msg, post }, 'lex parsed message');
+    this.logger.debug({ msg, post }, 'lex parsed message');
 
     const noun = post.intentName;
     if (!noun) {
