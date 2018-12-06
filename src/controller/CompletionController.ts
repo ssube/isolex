@@ -96,7 +96,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     try {
       this.logger.debug({ parserId: fragment.parserId }, 'getting parser for fragment');
-      const parser = this.bot.getService<Parser>(fragment.parserId);
+      const parser = this.bot.getService<Parser>({ id: fragment.parserId });
       const value = cmd.get('next');
       const commands = await parser.complete(cmd.context, fragment, value);
       await this.bot.emitCommand(...commands);

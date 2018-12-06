@@ -13,7 +13,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { Service, ServiceDefinition } from 'src/Service';
+import { Service, ServiceDefinition, ServiceMetadata } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
 import { mustGet } from 'src/utils/Map';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
@@ -305,14 +305,15 @@ export class Bot extends BaseService<BotData> implements Service {
     return this.metrics;
   }
 
-  public getService<TService extends Service>(id: string): TService {
+  public getService<TService extends Service>(metadata: Partial<ServiceMetadata>): TService {
     for (const svc of this.services.values()) {
-      if (svc.id === id) {
+      if (svc.id === metadata.id || (svc.kind === metadata.kind && svc.name === metadata.name)) {
         return svc as TService;
       }
     }
 
-    throw new NotFoundError(`service ${id} not found`);
+    this.logger.error({ metadata }, 'service not found');
+    throw new NotFoundError(`service not found`);
   }
 
   public listServices() {

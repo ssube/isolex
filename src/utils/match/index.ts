@@ -14,8 +14,9 @@ export interface MatchRule {
 }
 
 export enum RuleOperator {
-  Every = 'every',
   Any = 'any',
+  Every = 'every',
+  Never = 'never',
 }
 
 export interface RuleValue {

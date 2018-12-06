@@ -9,6 +9,11 @@ export interface ServiceDefinition<TData = any> {
 
 export interface ServiceMetadata {
   /**
+   * The service's unique id.
+   */
+  readonly id?: string;
+
+  /**
    * The service class name, typically kebab-cased.
    */
   readonly kind: string;
