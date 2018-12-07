@@ -13,6 +13,9 @@ import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
+import { Registry } from 'prom-client';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { Connection } from 'typeorm';
 
 describeAsync('echo controller', async () => {
   itAsync('should exist', async () => {
@@ -39,6 +42,9 @@ describeAsync('echo controller', async () => {
         kind: 'echo-controller',
         name: 'test_echo',
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     };
     const controller = await container.create(EchoController, options);
     expect(controller).to.be.an.instanceOf(EchoController);
@@ -73,6 +79,9 @@ describeAsync('echo controller', async () => {
         kind: 'echo-controller',
         name: 'test_echo',
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
      };
     const controller = await container.create(EchoController, options);
 

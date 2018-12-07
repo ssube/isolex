@@ -12,6 +12,9 @@ import { ChecklistMode } from 'src/utils/Checklist';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
+import { Registry } from 'prom-client';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { Connection } from 'typeorm';
 
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';
@@ -41,6 +44,9 @@ describeAsync('user filter', async () => {
         kind: TEST_FILTER_KIND,
         name: TEST_FILTER_NAME,
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     });
     expect(filter).to.be.an.instanceof(UserFilter);
   });
@@ -58,6 +64,9 @@ describeAsync('user filter', async () => {
         kind: TEST_FILTER_KIND,
         name: TEST_FILTER_NAME,
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     });
 
     const cmd = new Command({
@@ -84,6 +93,9 @@ describeAsync('user filter', async () => {
         kind: TEST_FILTER_KIND,
         name: TEST_FILTER_NAME,
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     });
 
     const cmd = new Command({

@@ -4,11 +4,13 @@ import { Connection } from 'typeorm';
 import { BaseService } from './BaseService';
 import { Bot } from './Bot';
 import { Service, ServiceOptions } from './Service';
+import { ServiceModule } from './module/ServiceModule';
 
 interface ChildServiceDependencies {
   bot: Bot;
-  metrics?: Registry;
-  storage?: Connection;
+  metrics: Registry;
+  services: ServiceModule;
+  storage: Connection;
 }
 
 /**

@@ -2,8 +2,7 @@ import * as express from 'express';
 import * as expressGraphQl from 'express-graphql';
 import { buildSchema } from 'graphql';
 import * as http from 'http';
-import { isNil } from 'lodash';
-import { BaseError, Inject } from 'noicejs';
+import { Inject } from 'noicejs';
 import { Counter, Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
@@ -12,6 +11,7 @@ import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotImplementedError } from 'src/error/NotImplementedError';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { pairsToDict } from 'src/utils/Map';
 
 import { BaseListener } from './BaseListener';
@@ -31,9 +31,10 @@ export interface ExpressListenerData {
 
 export type ExpressListenerOptions = ChildServiceOptions<ExpressListenerData>;
 
-@Inject('metrics', 'storage')
+@Inject('bot', 'metrics', 'services', 'storage')
 export class ExpressListener extends BaseListener<ExpressListenerData> implements Listener {
   protected readonly metrics: Registry;
+  protected readonly services: ServiceModule;
   protected readonly storage: Connection;
 
   protected metricsCounter: Counter;
@@ -45,11 +46,8 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   constructor(options: ExpressListenerOptions) {
     super(options);
 
-    if (isNil(options.metrics) || isNil(options.storage)) {
-      throw new BaseError('missing dependencies');
-    }
-
     this.metrics = options.metrics;
+    this.services = options.services;
     this.storage = options.storage;
 
     this.app = express();
@@ -153,13 +151,13 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   public getService(args: any) {
     this.logger.debug({ args }, 'getting service');
     const { id } = args;
-    return this.bot.getService(id);
+    return this.services.getService(id);
   }
 
   public getServices() {
     this.logger.debug('getting services');
     try {
-      return this.bot.listServices();
+      return this.services.listServices();
     } catch (err) {
       this.logger.error(err, 'error getting services');
       return [];

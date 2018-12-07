@@ -6,11 +6,14 @@ import { Bot } from 'src/Bot';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { JsonpathTransform, JsonpathTransformOptions } from 'src/transform/JsonpathTransform';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
+import { Registry } from 'prom-client';
+import { Connection } from 'typeorm';
 
 describeAsync('jsonpath transform', async () => {
   itAsync('should transform data', async () => {
@@ -33,6 +36,9 @@ describeAsync('jsonpath transform', async () => {
         kind: 'jsonpath-transform',
         name: 'test_transform',
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     };
     const transform = await container.create(JsonpathTransform, options);
     const output = await transform.transform(new Command({

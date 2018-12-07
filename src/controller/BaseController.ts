@@ -3,6 +3,7 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { checkFilter, Filter } from 'src/filter/Filter';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { getLogInfo, ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
 
@@ -17,6 +18,7 @@ export abstract class BaseController<TData extends ControllerData> extends Child
 
   // services
   protected readonly filters: Array<Filter>;
+  protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
   constructor(options: BaseControllerOptions<TData>) {
@@ -25,19 +27,20 @@ export abstract class BaseController<TData extends ControllerData> extends Child
     this.nouns = new Set(options.nouns);
 
     this.filters = [];
+    this.services = options.services;
     this.transforms = [];
   }
 
   public async start() {
     const filters = this.data.filters || [];
     for (const def of filters) {
-      const filter = await this.bot.createService<Filter, any>(def);
+      const filter = await this.services.createService<Filter, any>(def);
       this.filters.push(filter);
     }
 
     const transforms: Array<ServiceDefinition<TransformData>> = this.data.transforms || [];
     for (const def of transforms) {
-      const transform = await this.bot.createService<Transform, any>(def);
+      const transform = await this.services.createService<Transform, any>(def);
       this.transforms.push(transform);
     }
   }

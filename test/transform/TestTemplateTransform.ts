@@ -13,6 +13,9 @@ import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { Registry } from 'prom-client';
+import { Connection } from 'typeorm';
 
 describeAsync('template transform', async () => {
   itAsync('should transform data', async () => {
@@ -41,6 +44,9 @@ describeAsync('template transform', async () => {
         kind: 'template-transform',
         name: 'test_transform',
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     };
     const transform = await container.create(TemplateTransform, options);
     const output = await transform.transform(new Command({

@@ -1,5 +1,5 @@
 import { bindAll } from 'lodash';
-import { BaseError, Container, Inject } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
 import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
@@ -9,16 +9,15 @@ import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { NotFoundError } from 'src/error/NotFoundError';
 import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener } from 'src/listener/Listener';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { Service, ServiceDefinition, ServiceMetadata } from 'src/Service';
+import { Service, ServiceDefinition } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
-import { mustGet } from 'src/utils/Map';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 import { BaseService } from './BaseService';
+import { ServiceModule } from './module/ServiceModule';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
@@ -38,9 +37,10 @@ export type BotDefinition = ServiceDefinition<BotData>;
 
 export type BotOptions = BaseOptions & BotDefinition & {
   logger: Logger;
+  services: ServiceModule;
 };
 
-@Inject('logger')
+@Inject('logger', 'services')
 export class Bot extends BaseService<BotData> implements Service {
   public readonly strict: boolean;
 
@@ -58,7 +58,7 @@ export class Bot extends BaseService<BotData> implements Service {
   protected controllers: Array<Controller>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
-  protected services: Map<string, Service>;
+  protected services: ServiceModule;
 
   // observables
   protected commands: Subject<Command>;
@@ -68,9 +68,10 @@ export class Bot extends BaseService<BotData> implements Service {
   constructor(options: BotOptions) {
     super(options);
 
-    this.container = options.container;
-    this.logger.info(options, 'starting bot');
+    this.logger.info(options, 'creating bot');
 
+    this.container = options.container;
+    this.services = options.services;
     this.strict = options.data.strict;
 
     // set up deps
@@ -95,6 +96,8 @@ export class Bot extends BaseService<BotData> implements Service {
    * Set up the async resources that cannot be created in the constructor: filters, controllers, parsers, etc
    */
   public async start() {
+    this.logger.info('starting bot');
+
     this.logger.info('setting up streams');
     /* tslint:disable:no-unbound-method */
     this.commands.subscribe((next) => this.receiveCommand(next).catch(this.looseError));
@@ -143,41 +146,34 @@ export class Bot extends BaseService<BotData> implements Service {
       this.logger.info('database migrations complete');
     }
 
-    this.services = new Map();
     await this.startServices();
 
     this.logger.info('bot started');
   }
 
   public async startServices() {
-    if (this.services.size) {
-      throw new BaseError('unable to start services with existing services');
-    }
-
     this.logger.info('setting up filters');
     for (const data of this.data.filters) {
-      this.filters.push(await this.createService<Filter, {}>(data));
+      this.filters.push(await this.services.createService<Filter, {}>(data));
     }
 
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
-      this.controllers.push(await this.createService<Controller, ControllerData>(data));
+      this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
     }
 
     this.logger.info('setting up listeners');
     for (const data of this.data.listeners) {
-      this.listeners.push(await this.createService<Listener, {}>(data));
+      this.listeners.push(await this.services.createService<Listener, {}>(data));
     }
 
     this.logger.info('setting up parsers');
     for (const data of this.data.parsers) {
-      this.parsers.push(await this.createService<Parser, ParserData>(data));
+      this.parsers.push(await this.services.createService<Parser, ParserData>(data));
     }
 
     this.logger.info('starting services');
-    for (const svc of this.services.values()) {
-      await svc.start();
-    }
+    await this.services.start();
 
     this.logger.info('services started');
   }
@@ -189,10 +185,7 @@ export class Bot extends BaseService<BotData> implements Service {
     this.outgoing.complete();
 
     this.logger.debug('stopping services');
-    for (const svc of this.services.values()) {
-      await svc.stop();
-    }
-    this.services.clear();
+    await this.services.stop();
 
     this.logger.debug('stopping metrics');
     clearInterval(this.collector);
@@ -274,51 +267,8 @@ export class Bot extends BaseService<BotData> implements Service {
     return filterNil(results);
   }
 
-  /**
-   * These are all created the same way, so they should probably have a common base...
-   */
-  public async createService<TService extends Service, TData>(conf: ServiceDefinition<TData>): Promise<TService> {
-    const { metadata: { kind, name } } = conf;
-    const tag = `${kind}:${name}`;
-
-    if (this.services.has(tag)) {
-      this.logger.info({ kind, tag }, 'fetching existing service');
-      return mustGet(this.services, tag) as TService;
-    }
-
-    this.logger.info({ kind, tag }, 'creating unknown service');
-    const svc = await this.container.create<TService, any>(kind, {
-      ...conf,
-      bot: this,
-      logger: this.logger.child({
-        kind,
-      }),
-    });
-
-    this.logger.debug({ id: svc.id, kind, tag }, 'service created');
-    this.services.set(tag, svc);
-
-    return svc;
-  }
-
   public getMetrics(): Registry {
     return this.metrics;
-  }
-
-  public getService<TService extends Service>(metadata: Partial<ServiceMetadata>): TService {
-    for (const svc of this.services.values()) {
-      if (svc.id === metadata.id || (svc.kind === metadata.kind && svc.name === metadata.name)) {
-        return svc as TService;
-      }
-    }
-
-    this.logger.error({ metadata }, 'service not found');
-    throw new NotFoundError(`service not found`);
-  }
-
-  public listServices() {
-    this.logger.debug('listing services');
-    return this.services;
   }
 
   /**

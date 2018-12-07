@@ -12,6 +12,9 @@ import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
+import { Registry } from 'prom-client';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { Connection } from 'typeorm';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
@@ -56,6 +59,9 @@ describeAsync('weather controller', async () => {
         kind: 'weather-controller',
         name: 'test_weather',
       },
+      metrics: new Registry(),
+      services: ineeda<ServiceModule>(),
+      storage: ineeda<Connection>(),
     };
     const controller = await container.create(WeatherController, options);
     expect(controller).to.be.an.instanceOf(WeatherController);

@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BaseError, Inject } from 'noicejs';
+import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -28,9 +28,6 @@ export class CompletionController extends BaseController<CompletionControllerDat
       nouns: [NOUN_FRAGMENT],
     });
 
-    if (isNil(options.storage)) {
-      throw new BaseError('missing dependencies');
-    }
     this.storage = options.storage;
     this.fragmentRepository = this.storage.getRepository(Fragment);
   }
@@ -96,7 +93,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     try {
       this.logger.debug({ parserId: fragment.parserId }, 'getting parser for fragment');
-      const parser = this.bot.getService<Parser>({ id: fragment.parserId });
+      const parser = this.services.getService<Parser>({ id: fragment.parserId });
       const value = cmd.get('next');
       const commands = await parser.complete(cmd.context, fragment, value);
       await this.bot.emitCommand(...commands);

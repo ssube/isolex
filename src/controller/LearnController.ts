@@ -1,5 +1,4 @@
-import { isNil } from 'lodash';
-import { BaseError, Inject } from 'noicejs';
+import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
@@ -32,10 +31,6 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       ...options,
       nouns: [NOUN_KEYWORD],
     });
-
-    if (isNil(options.storage)) {
-      throw new BaseError('missing dependencies');
-    }
 
     this.storage = options.storage;
     this.keywordRepository = this.storage.getRepository(Keyword);

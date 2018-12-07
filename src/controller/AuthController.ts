@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BaseError, Inject } from 'noicejs';
+import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { Role } from 'src/entity/auth/Role';
@@ -32,10 +32,6 @@ export class AuthController extends BaseController<AuthControllerData> implement
       ...options,
       nouns: [NOUN_SESSION, NOUN_USER],
     });
-
-    if (isNil(options.storage)) {
-      throw new BaseError('missing dependencies');
-    }
 
     this.storage = options.storage;
     this.roleRepository = this.storage.getRepository(Role);

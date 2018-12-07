@@ -11,11 +11,13 @@ import {
 } from 'discord.js';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
+import { Inject } from 'noicejs';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Message } from 'src/entity/Message';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { SessionProvider } from 'src/utils/SessionProvider';
@@ -28,25 +30,28 @@ export interface DiscordListenerData {
 
 export type DiscordListenerOptions = ChildServiceOptions<DiscordListenerData>;
 
+@Inject('bot', 'services')
 export class DiscordListener extends BaseListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return !isNil(chan) && chan.type === 'text';
   }
 
-  protected client: Client;
+  protected readonly client: Client;
+  protected readonly services: ServiceModule;
+  protected readonly threads: Map<string, DiscordMessage>;
+
   protected sessionProvider: SessionProvider;
-  // @TODO: this should be a WeakMap but lodash has a bad typedef
-  protected threads: Map<string, DiscordMessage>;
 
   constructor(options: DiscordListenerOptions) {
     super(options);
 
     this.client = new Client();
+    this.services = options.services;
     this.threads = new Map();
   }
 
   public async start() {
-    this.sessionProvider = await this.bot.createService<SessionProvider, any>(this.data.sessionProvider);
+    this.sessionProvider = await this.services.createService<SessionProvider, any>(this.data.sessionProvider);
 
     this.client.on('ready', () => {
       this.logger.debug('discord listener ready');

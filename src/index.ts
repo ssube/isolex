@@ -15,6 +15,7 @@ import { signal, SIGNAL_STOP } from 'src/utils/Signal';
 
 import { EntityModule } from './module/EntityModule';
 import { TransformModule } from './module/TransformModule';
+import { ServiceModule } from './module/ServiceModule';
 
 // main arguments
 const MAIN_ARGS = {
@@ -73,6 +74,7 @@ async function main(argv: Array<string>): Promise<number> {
     new FilterModule(),
     new ListenerModule(),
     new ParserModule(),
+    new ServiceModule(),
     new TransformModule(),
   ];
 
@@ -81,11 +83,13 @@ async function main(argv: Array<string>): Promise<number> {
   }
 
   const ctr = Container.from(...modules);
+  logger.info('configuring container');
   await ctr.configure({ logger });
 
   const bot = await ctr.create<Bot, BotOptions>(Bot, config);
   botModule.setBot(bot);
 
+  logger.info('starting bot');
   await bot.start();
   await signal(SIGNAL_STOP);
   await bot.stop();

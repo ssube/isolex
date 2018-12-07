@@ -7,6 +7,7 @@ import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
+import { Inject } from 'noicejs';
 
 export const NOUN_POD = 'pod';
 export const NOUN_SERVICE = 'service';
@@ -27,6 +28,7 @@ export type KubernetesControllerOptions = ControllerOptions<KubernetesController
 /**
  * @TODO: explore breaking this down into many controllers
  */
+@Inject('bot')
 export class KubernetesController extends BaseController<KubernetesControllerData> implements Controller {
   protected client: k8s.Core_v1Api;
 
