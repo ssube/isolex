@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { ConsoleLogger } from 'noicejs';
+import { Registry } from 'prom-client';
+import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -12,8 +14,6 @@ import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
-import { Registry } from 'prom-client';
-import { Connection } from 'typeorm';
 
 describeAsync('jsonpath transform', async () => {
   itAsync('should transform data', async () => {

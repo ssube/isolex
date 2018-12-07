@@ -2,19 +2,19 @@ import * as bunyan from 'bunyan';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { ConsoleLogger, Container } from 'noicejs';
+import { Registry } from 'prom-client';
+import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { FilterBehavior } from 'src/filter/Filter';
 import { UserFilter, UserFilterOptions } from 'src/filter/UserFilter';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { ChecklistMode } from 'src/utils/Checklist';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
-import { Registry } from 'prom-client';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Connection } from 'typeorm';
 
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';

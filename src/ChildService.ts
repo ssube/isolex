@@ -3,8 +3,8 @@ import { Connection } from 'typeorm';
 
 import { BaseService } from './BaseService';
 import { Bot } from './Bot';
-import { Service, ServiceOptions } from './Service';
 import { ServiceModule } from './module/ServiceModule';
+import { Service, ServiceOptions } from './Service';
 
 interface ChildServiceDependencies {
   bot: Bot;

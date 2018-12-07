@@ -105,77 +105,11 @@ export class Bot extends BaseService<BotData> implements Service {
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(this.looseError));
     /* tslint:enable */
 
-    this.logger.info('setting up metrics');
-    this.metrics = new Registry();
-    this.collector = collectDefaultMetrics({
-      register: this.metrics,
-      timeout: 5000,
-    });
-
-    this.cmdCounter = new Counter({
-      help: 'commands received by the bot',
-      labelNames: ['service_id', 'service_kind', 'service_name'],
-      name: 'bot_command',
-      registers: [this.metrics],
-    });
-
-    this.msgCounter = new Counter({
-      help: 'messages received by the bot',
-      labelNames: ['service_id', 'service_kind', 'service_name'],
-      name: 'bot_message',
-      registers: [this.metrics],
-    });
-
-    this.logger.info('connecting to storage');
-    const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
-      logger: this.logger,
-    });
-    const entities = await this.container.create<Array<Function>, any>('entities');
-    const migrations = await this.container.create<Array<Function>, any>('migrations');
-
-    this.storage = await createConnection({
-      ...this.data.storage,
-      entities,
-      logger: storageLogger,
-      migrations,
-    });
-
-    if (this.data.migrate) {
-      this.logger.info('running pending database migrations');
-      await this.storage.runMigrations();
-      this.logger.info('database migrations complete');
-    }
-
+    await this.startMetrics();
+    await this.startStorage();
     await this.startServices();
 
     this.logger.info('bot started');
-  }
-
-  public async startServices() {
-    this.logger.info('setting up filters');
-    for (const data of this.data.filters) {
-      this.filters.push(await this.services.createService<Filter, {}>(data));
-    }
-
-    this.logger.info('setting up controllers');
-    for (const data of this.data.controllers) {
-      this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
-    }
-
-    this.logger.info('setting up listeners');
-    for (const data of this.data.listeners) {
-      this.listeners.push(await this.services.createService<Listener, {}>(data));
-    }
-
-    this.logger.info('setting up parsers');
-    for (const data of this.data.parsers) {
-      this.parsers.push(await this.services.createService<Parser, ParserData>(data));
-    }
-
-    this.logger.info('starting services');
-    await this.services.start();
-
-    this.logger.info('services started');
   }
 
   public async stop() {
@@ -315,6 +249,78 @@ export class Bot extends BaseService<BotData> implements Service {
 
     if (!emitted) {
       this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
+    }
+  }
+
+  protected async startMetrics() {
+    this.logger.info('setting up metrics');
+    this.metrics = new Registry();
+    this.collector = collectDefaultMetrics({
+      register: this.metrics,
+      timeout: 5000,
+    });
+
+    this.cmdCounter = new Counter({
+      help: 'commands received by the bot',
+      labelNames: ['service_id', 'service_kind', 'service_name'],
+      name: 'bot_command',
+      registers: [this.metrics],
+    });
+
+    this.msgCounter = new Counter({
+      help: 'messages received by the bot',
+      labelNames: ['service_id', 'service_kind', 'service_name'],
+      name: 'bot_message',
+      registers: [this.metrics],
+    });
+  }
+
+  protected async startServices() {
+    this.logger.info('setting up filters');
+    for (const data of this.data.filters) {
+      this.filters.push(await this.services.createService<Filter, {}>(data));
+    }
+
+    this.logger.info('setting up controllers');
+    for (const data of this.data.controllers) {
+      this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
+    }
+
+    this.logger.info('setting up listeners');
+    for (const data of this.data.listeners) {
+      this.listeners.push(await this.services.createService<Listener, {}>(data));
+    }
+
+    this.logger.info('setting up parsers');
+    for (const data of this.data.parsers) {
+      this.parsers.push(await this.services.createService<Parser, ParserData>(data));
+    }
+
+    this.logger.info('starting services');
+    await this.services.start();
+
+    this.logger.info('services started');
+  }
+
+  protected async startStorage() {
+    this.logger.info('connecting to storage');
+    const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
+      logger: this.logger,
+    });
+    const entities = await this.container.create<Array<Function>, any>('entities');
+    const migrations = await this.container.create<Array<Function>, any>('migrations');
+
+    this.storage = await createConnection({
+      ...this.data.storage,
+      entities,
+      logger: storageLogger,
+      migrations,
+    });
+
+    if (this.data.migrate) {
+      this.logger.info('running pending database migrations');
+      await this.storage.runMigrations();
+      this.logger.info('database migrations complete');
     }
   }
 

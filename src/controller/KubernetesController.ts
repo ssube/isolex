@@ -1,4 +1,5 @@
 import * as k8s from '@kubernetes/client-node';
+import { Inject } from 'noicejs';
 
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
@@ -7,7 +8,6 @@ import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
-import { Inject } from 'noicejs';
 
 export const NOUN_POD = 'pod';
 export const NOUN_SERVICE = 'service';

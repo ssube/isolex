@@ -1,9 +1,7 @@
 import { isNil, isString } from 'lodash';
-import { Module, Provides } from 'noicejs';
+import { Module, ModuleOptions, Provides, Provider, ProviderType } from 'noicejs';
 import { Container, Contract } from 'noicejs/Container';
-import { ModuleOptions, Provider } from 'noicejs/Module';
 
-import { Bot } from 'src/Bot';
 import { ChildServiceOptions } from 'src/ChildService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceMetadata } from 'src/Service';
@@ -14,12 +12,12 @@ import { mustGet } from 'src/utils/Map';
  */
 
 export class ServiceModule extends Module implements Service {
-  protected container: Container;
-  protected services: Map<string, Service>;
-
   public readonly id: string;
   public readonly kind: string;
   public readonly name: string;
+
+  protected container: Container;
+  protected services: Map<string, Service>;
 
   constructor() {
     super();
@@ -56,18 +54,18 @@ export class ServiceModule extends Module implements Service {
       const value = this.services.get(contract);
       if (isNil(value)) {
         return {
-          type: 0, //ProviderType.None,
+          type: ProviderType.None,
           value: undefined,
         };
       } else {
         return {
-          type: 3, //ProviderType.Instance,
+          type: ProviderType.Instance,
           value,
         };
       }
     } else {
       return {
-        type: 0, //ProviderType.None,
+        type: ProviderType.None,
         value: undefined,
       };
     }
