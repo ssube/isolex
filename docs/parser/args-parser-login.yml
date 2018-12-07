@@ -13,4 +13,4 @@ data:
       - key: body
         operator: every
         values:
-          - "!!login"
+          - regexp: !regexp /!!login/

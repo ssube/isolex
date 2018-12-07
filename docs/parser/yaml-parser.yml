@@ -7,5 +7,5 @@ data:
       - key: body
         operator: any
         values:
-          - '!!json'
-          - '!!yaml'
+          - regexp: !regexp /!!json/
+          - regexp: !regexp /!!yaml/

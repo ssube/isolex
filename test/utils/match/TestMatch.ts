@@ -10,11 +10,10 @@ describeAsync('match utility', async () => {
       const match = new Match({
         rules: [{
           key: 'foo',
-          operator: RuleOperator.Every,
+          operator: RuleOperator.Any,
           values: [{ string: 'bar' }],
         }],
       });
-
       const results = match.match({
         foo: 'bar',
       });
@@ -29,7 +28,6 @@ describeAsync('match utility', async () => {
           values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
         }],
       });
-
       const results = match.match({
         foo: 'bar',
       });
@@ -46,7 +44,6 @@ describeAsync('match utility', async () => {
           values: [{ string: 'bar' }],
         }],
       });
-
       const results = match.match({
         foo: 'bar',
       });
@@ -61,11 +58,62 @@ describeAsync('match utility', async () => {
           values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
         }],
       });
-
       const results = match.match({
         foo: 'bar',
       });
       expect(results.matched).to.equal(true);
     });
+  });
+
+  describeAsync('match removal', async () => {
+    itAsync('should remove string matches', async () => {
+      const match = new Match({
+        rules: [{
+          key: 'foo',
+          operator: RuleOperator.Any,
+          values: [{ string: 'bar' }],
+        }],
+      });
+
+      const removed = match.removeMatches('foo bar bin');
+      expect(removed).to.equal('foo  bin');
+    });
+
+    itAsync('should remove multiple string matches', async () => {
+      const match = new Match({
+        rules: [{
+          key: 'foo',
+          operator: RuleOperator.Any,
+          values: [{
+            string: 'bar',
+          }, {
+            string: 'bin',
+          }],
+        }, {
+          key: 'foo',
+          operator: RuleOperator.Any,
+          values: [{
+            string: 'baz',
+          }],
+        }],
+      });
+
+      const removed = match.removeMatches('foo bar bin');
+      expect(removed).to.equal('foo  ');
+    });
+
+    itAsync('should remove regexp matches', async () => {
+      const match = new Match({
+        rules: [{
+          key: 'foo',
+          operator: RuleOperator.Any,
+          values: [{ regexp: /\b\d{2,4}\b/g }],
+        }],
+      });
+
+      const removed = match.removeMatches('1 12 123 1234 12345');
+      expect(removed).to.equal('1    12345');
+    });
+
   });
 });

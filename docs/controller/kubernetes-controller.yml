@@ -16,12 +16,12 @@ data:
             - key: noun
               operator: any
               values:
-                - pod
-                - service
+                - string: pod
+                - string: service
             - key: labels.test_k8s
               operator: any
               values:
-                - test
+                - string: test
   transforms:
     - metadata:
         kind: template-transform

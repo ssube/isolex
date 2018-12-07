@@ -1,4 +1,4 @@
-import { get, has, isString } from 'lodash';
+import { get, has } from 'lodash';
 
 import { mapToDict } from 'src/utils/Map';
 
@@ -81,10 +81,6 @@ export class Match {
   }
 
   public matchValue(ruleValue: RuleValue, value: string): boolean {
-    if (isString(ruleValue)) {
-      return ruleValue === value;
-    }
-
     if (ruleValue.string) {
       return ruleValue.string === value;
     }
@@ -94,5 +90,21 @@ export class Match {
     }
 
     return false;
+  }
+
+  public removeMatches(original: string): string {
+    return this.rules.reduce((prev, rule) => {
+      return rule.values.reduce((innerPrev, value) => {
+        if (value.regexp) {
+          return innerPrev.replace(value.regexp, '');
+        }
+
+        if (value.string) {
+          return innerPrev.replace(value.string, '');
+        }
+
+        return innerPrev;
+      }, prev);
+    }, original);
   }
 }

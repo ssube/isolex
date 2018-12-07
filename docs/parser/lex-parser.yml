@@ -14,5 +14,5 @@ data:
       - key: body
         operator: every
         values:
-          - '@isolex'
-          - !env ISOLEX_DISCORD_USER_ID
+          - regexp: !regexp /@isolex/
+          - regexp: !env ISOLEX_DISCORD_USER_ID

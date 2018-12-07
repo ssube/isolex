@@ -15,4 +15,4 @@ data:
       - key: body
         operator: every
         values:
-          - "!!join"
+          - regexp: !regexp /!!join/
