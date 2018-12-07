@@ -19,9 +19,6 @@ export class Message extends LabelEntity implements MessageOptions {
     return it instanceof Message;
   }
 
-  public static reply(context: Context, type: typeof TYPE_JSON, body: string): Message;
-  public static reply(context: Context, type: typeof TYPE_TEXT, body: string): Message;
-  public static reply(context: Context, type: typeof TYPE_YAML, body: string): Message;
   public static reply(context: Context, type: string, body: string): Message {
     return new Message({
       body,
