@@ -35,22 +35,23 @@ export class CompletionController extends BaseController<CompletionControllerDat
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'completing command');
 
-    if (cmd.noun === NOUN_FRAGMENT) {
-      return this.handleFragment(cmd);
+    switch (cmd.noun) {
+      case NOUN_FRAGMENT:
+        return this.handleFragment(cmd);
+      default:
+        await this.bot.sendMessage();
     }
-
-    await this.bot.sendMessage();
   }
 
   public async handleFragment(cmd: Command): Promise<void> {
-    if (cmd.verb === CommandVerb.Create) {
-      return this.createFragment(cmd);
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createFragment(cmd);
+      case CommandVerb.Update:
+        return this.updateFragment(cmd);
+      default:
+        await this.bot.sendMessage();
     }
-    if (cmd.verb === CommandVerb.Update) {
-      return this.updateFragment(cmd);
-    }
-
-    await this.bot.sendMessage();
   }
 
   public async createFragment(cmd: Command): Promise<void> {

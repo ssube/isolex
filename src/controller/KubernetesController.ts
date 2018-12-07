@@ -47,13 +47,14 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
   }
 
   public async handle(cmd: Command): Promise<void> {
-    if (cmd.noun === NOUN_POD) {
-      return this.handlePods(cmd);
+    switch (cmd.noun) {
+      case NOUN_POD:
+        return this.handlePods(cmd);
+      case NOUN_SERVICE:
+        return this.handleSvcs(cmd);
+      default:
+        throw new InvalidArgumentError(`unknown kind: ${cmd.noun}`);
     }
-    if (cmd.noun === NOUN_SERVICE) {
-      return this.handleSvcs(cmd);
-    }
-    throw new InvalidArgumentError(`unknown kind: ${cmd.noun}`);
   }
 
   protected async loadConfig() {
@@ -78,9 +79,7 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
     if (cmd.verb === CommandVerb.Get) {
       const response = await this.client.listNamespacedPod(namespace);
       this.logger.debug({ pods: response.body }, 'found pods');
-      const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
-      await this.bot.sendMessage(...messages);
-      return;
+      return this.transformItems(cmd, response.body.items);
     }
 
     throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
@@ -94,11 +93,15 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
     if (cmd.verb === CommandVerb.Get) {
       const response = await this.client.listNamespacedService(namespace);
       this.logger.debug({ pods: response.body }, 'found pods');
-      const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(response.body.items)));
-      await this.bot.sendMessage(...messages);
-      return;
+      return this.transformItems(cmd, response.body.items);
     }
 
     throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
+  }
+
+  protected async transformItems(cmd: Command, items: Array<any>): Promise<void> {
+    const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(items)));
+    await this.bot.sendMessage(...messages);
+    return;
   }
 }

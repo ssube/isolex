@@ -40,40 +40,36 @@ export class AuthController extends BaseController<AuthControllerData> implement
   }
 
   public async handle(cmd: Command): Promise<void> {
-    if (cmd.noun === NOUN_SESSION) {
-      return this.handleSession(cmd);
+    switch (cmd.noun) {
+      case NOUN_SESSION:
+        return this.handleSession(cmd);
+      case NOUN_USER:
+        return this.handleUser(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported noun: ${cmd.noun}`));
     }
-
-    if (cmd.noun === NOUN_USER) {
-      return this.handleUser(cmd);
-    }
-
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported noun: ${cmd.noun}`));
   }
 
   public async handleUser(cmd: Command): Promise<void> {
-    if (cmd.verb === CommandVerb.Create) {
-      return this.createUser(cmd);
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createUser(cmd);
+      case CommandVerb.Get:
+        return this.getUser(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
     }
-
-    if (cmd.verb === CommandVerb.Get) {
-      return this.getUser(cmd);
-    }
-
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
   }
 
   public async handleSession(cmd: Command): Promise<void> {
-    if (cmd.verb === CommandVerb.Create) {
-      return this.createSession(cmd);
-    }
-
-    if (cmd.verb === CommandVerb.Get) {
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createSession(cmd);
+      case CommandVerb.Get:
         return this.getSession(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
     }
-
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
-
   }
 
   public async createUser(cmd: Command): Promise<void> {

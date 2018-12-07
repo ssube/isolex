@@ -1,4 +1,6 @@
 {
   "extends": ["./tslint.cc.json", "tslint-clean-code", "tslint-sonarts"],
-  "rules": {}
+  "rules": {
+    "no-small-switch": false
+  }
 }
