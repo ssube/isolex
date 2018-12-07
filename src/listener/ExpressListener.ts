@@ -20,9 +20,11 @@ import { Listener } from './Listener';
 const schema = buildSchema(require('../schema.gql'));
 
 export interface ExpressListenerData {
-  graph: {
-    repl: boolean;
-  };
+  expose: {
+    graph: boolean;
+    graphiql: boolean;
+    metrics: boolean;
+  }
   listen: {
     address: string;
     port: number;
@@ -50,22 +52,28 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     this.storage = options.storage;
 
     this.app = express();
-    this.app.use((req, res, next) => this.traceRequest(req, res, next));
-    this.app.use('/graph', expressGraphQl({
-      graphiql: this.data.graph.repl,
-      rootValue: {
-        // mutation
-        emitCommands: (args: any) => this.emitCommands(args),
-        sendMessages: (args: any) => this.sendMessages(args),
-        // query
-        command: (args: any) => this.getCommand(args),
-        message: (args: any) => this.getCommand(args),
-        service: (args: any) => this.getService(args),
-        services: () => this.getServices(),
-      },
-      schema,
-    }));
-    this.app.get('/metrics', (req, res) => this.getMetrics(req, res));
+
+    if (this.data.expose.metrics) {
+      this.app.use((req, res, next) => this.traceRequest(req, res, next));
+      this.app.get('/metrics', (req, res) => this.getMetrics(req, res));
+    }
+
+    if (this.data.expose.graph) {
+      this.app.use('/graph', expressGraphQl({
+        graphiql: this.data.expose.graphiql,
+        rootValue: {
+          // mutation
+          emitCommands: (args: any) => this.emitCommands(args),
+          sendMessages: (args: any) => this.sendMessages(args),
+          // query
+          command: (args: any) => this.getCommand(args),
+          message: (args: any) => this.getCommand(args),
+          service: (args: any) => this.getService(args),
+          services: () => this.getServices(),
+        },
+        schema,
+      }));
+    }
   }
 
   public async start() {
@@ -78,7 +86,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
 
     this.requestCounter = new Counter({
       help: 'all requests through this express listener',
-      labelNames: ['service_id', 'service_kind', 'service_name', 'request_path'],
+      labelNames: ['serviceId', 'serviceKind', 'serviceName', 'requestClient', 'requestHost', 'requestPath'],
       name: 'express_requests',
       registers: [this.metrics],
     });
@@ -95,7 +103,8 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   }
 
   public async fetch(): Promise<Array<Message>> {
-    throw new NotImplementedError();
+    this.logger.warn('express listener is not able to fetch messages');
+    return [];
   }
 
   public emitCommands(args: any) {
@@ -164,7 +173,14 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
 
   public traceRequest(req: express.Request, res: express.Response, next: Function) {
     this.logger.debug({ req, res }, 'handling request');
-    this.requestCounter.labels(this.id, this.kind, this.name, req.path).inc();
+    this.requestCounter.inc({
+      requestClient: req.ip,
+      requestHost: req.hostname,
+      requestPath: req.path,
+      serviceId: this.id,
+      serviceKind: this.kind,
+      serviceName: this.name,
+    });
     next();
   }
 
