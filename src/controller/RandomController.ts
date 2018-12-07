@@ -61,7 +61,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
     if (isNaN(minVal)) {
       throw new Error(`Provided value: ${minVal} is not a number!`);
     }
-    if (isNil(maxVal) || isNaN(maxVal)) {
+    if (!isNil(maxVal) && isNaN(maxVal)) {
       throw new Error(`Provided value: ${maxVal} is not a number!`);
     }
 
