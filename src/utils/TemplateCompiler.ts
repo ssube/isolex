@@ -55,7 +55,7 @@ export class TemplateCompiler {
   }
 
   /**
-   * @TODO: handle max < 3
+   * Trim the value and add ellipsis it if possible.
    */
   public formatTrim(value: string, max: number = 10): string {
     if (value.length <= max) {

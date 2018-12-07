@@ -1,4 +1,4 @@
-import { Logger } from 'noicejs';
+import { Logger, logWithLevel } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
@@ -14,8 +14,7 @@ export class StorageLogger implements OrmLogger {
   }
 
   public log(level: string, message: any) {
-    // @TODO make this log at the appropriate level
-    this.logger.debug({ level }, message);
+    logWithLevel(this.logger, level as any, {}, message);
   }
 
   public logMigration(migration: string) {

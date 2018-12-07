@@ -14,8 +14,8 @@ import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
 
 import { EntityModule } from './module/EntityModule';
-import { TransformModule } from './module/TransformModule';
 import { ServiceModule } from './module/ServiceModule';
+import { TransformModule } from './module/TransformModule';
 
 // main arguments
 const MAIN_ARGS = {
@@ -23,6 +23,16 @@ const MAIN_ARGS = {
   count: ['v'],
   envPrefix: 'isolex',
 };
+
+const MAIN_MODULES = [
+  ControllerModule,
+  EntityModule,
+  FilterModule,
+  ListenerModule,
+  ParserModule,
+  ServiceModule,
+  TransformModule,
+];
 
 // webpack environment defines
 declare const BUILD_JOB: string;
@@ -69,14 +79,11 @@ async function main(argv: Array<string>): Promise<number> {
   const botModule = new BotModule({ logger });
   const modules: Array<Module> = [
     botModule,
-    new ControllerModule(),
-    new EntityModule(),
-    new FilterModule(),
-    new ListenerModule(),
-    new ParserModule(),
-    new ServiceModule(),
-    new TransformModule(),
   ];
+
+  for (const m of MAIN_MODULES) {
+    modules.push(new m());
+  }
 
   if (config.data.migrate) {
     modules.push(new MigrationModule());

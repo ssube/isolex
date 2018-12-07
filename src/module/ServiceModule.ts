@@ -1,5 +1,5 @@
 import { isNil, isString } from 'lodash';
-import { Module, ModuleOptions, Provides, Provider, ProviderType } from 'noicejs';
+import { Module, ModuleOptions, Provider, ProviderType, Provides } from 'noicejs';
 import { Container, Contract } from 'noicejs/Container';
 
 import { ChildServiceOptions } from 'src/ChildService';

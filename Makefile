@@ -91,7 +91,7 @@ git-stats: ## print git contributor line counts (approx, for fun)
 	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
 
 release: ## create a release
-	$(NODE_BIN)/standard-version
+	$(NODE_BIN)/standard-version --sign
 
 run-terminal: ## run the bot in a terminal
 	node $(TARGET_PATH)/main-bundle.js
@@ -121,6 +121,11 @@ todo:
 	@echo "Pending tests:"
 	@echo ""
 	@grep "[[:space:]]xit" -r test/ || true
+	@echo "Casts to any:"
+	@echo ""
+	@grep "as any" -r src/ || true
+	@grep "as any" -r test/ || true
+	@echo ""
 
 yarn-update: ## check yarn for outdated packages
 	yarn -L -C -P '.*'
