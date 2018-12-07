@@ -1,20 +1,20 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { ConsoleLogger } from 'noicejs';
+import { Registry } from 'prom-client';
+import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
 import { NOUN_REPORT, WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
-import { Registry } from 'prom-client';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Connection } from 'typeorm';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {

@@ -37,7 +37,6 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   protected readonly services: ServiceModule;
   protected readonly storage: Connection;
 
-  protected metricsCounter: Counter;
   protected requestCounter: Counter;
 
   protected app: express.Express;
@@ -77,12 +76,6 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
       });
     });
 
-    this.metricsCounter = new Counter({
-      help: 'get metrics requests through the express listener',
-      labelNames: ['service_id', 'service_kind', 'service_name'],
-      name: 'express_metrics',
-      registers: [this.metrics],
-    });
     this.requestCounter = new Counter({
       help: 'all requests through this express listener',
       labelNames: ['service_id', 'service_kind', 'service_name', 'request_path'],
@@ -165,7 +158,6 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
   }
 
   public getMetrics(req: express.Request, res: express.Response) {
-    this.metricsCounter.labels(this.id, this.kind, this.name).inc();
     res.set('Content-Type', this.metrics.contentType);
     res.end(this.metrics.metrics());
   }

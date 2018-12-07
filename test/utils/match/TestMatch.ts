@@ -1,18 +1,26 @@
 import { expect } from 'chai';
 
-import { Match, RuleOperator } from 'src/utils/match';
+import { Match, MatchRule, RuleOperator } from 'src/utils/match';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
+
+function createMatch(rule: Partial<MatchRule>): Match {
+  return new Match({
+    rules: [{
+      key: 'foo',
+      operator: RuleOperator.Never,
+      values: [],
+      ...rule,
+    }],
+  });
+}
 
 describeAsync('match utility', async () => {
   describeAsync('every operator', async () => {
     itAsync('should match a single string to itself', async () => {
-      const match = new Match({
-        rules: [{
-          key: 'foo',
-          operator: RuleOperator.Any,
-          values: [{ string: 'bar' }],
-        }],
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }],
       });
       const results = match.match({
         foo: 'bar',
@@ -21,12 +29,9 @@ describeAsync('match utility', async () => {
     });
 
     itAsync('should never match a single string to many', async () => {
-      const match = new Match({
-        rules: [{
-          key: 'foo',
-          operator: RuleOperator.Every,
-          values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
-        }],
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
       });
       const results = match.match({
         foo: 'bar',
@@ -37,12 +42,9 @@ describeAsync('match utility', async () => {
 
   describeAsync('any operator', async () => {
     itAsync('should match a single string to itself', async () => {
-      const match = new Match({
-        rules: [{
-          key: 'foo',
-          operator: RuleOperator.Any,
-          values: [{ string: 'bar' }],
-        }],
+      const match = createMatch({
+        operator: RuleOperator.Any,
+        values: [{ string: 'bar' }],
       });
       const results = match.match({
         foo: 'bar',
@@ -51,12 +53,9 @@ describeAsync('match utility', async () => {
     });
 
     itAsync('should match a single string to many', async () => {
-      const match = new Match({
-        rules: [{
-          key: 'foo',
-          operator: RuleOperator.Any,
-          values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
-        }],
+      const match = createMatch({
+        operator: RuleOperator.Any,
+        values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
       });
       const results = match.match({
         foo: 'bar',
@@ -67,12 +66,9 @@ describeAsync('match utility', async () => {
 
   describeAsync('match removal', async () => {
     itAsync('should remove string matches', async () => {
-      const match = new Match({
-        rules: [{
-          key: 'foo',
-          operator: RuleOperator.Any,
-          values: [{ string: 'bar' }],
-        }],
+      const match = createMatch({
+        operator: RuleOperator.Any,
+        values: [{ string: 'bar' }],
       });
 
       const removed = match.removeMatches('foo bar bin');
@@ -103,12 +99,9 @@ describeAsync('match utility', async () => {
     });
 
     itAsync('should remove regexp matches', async () => {
-      const match = new Match({
-        rules: [{
-          key: 'foo',
-          operator: RuleOperator.Any,
-          values: [{ regexp: /\b\d{2,4}\b/g }],
-        }],
+      const match = createMatch({
+        operator: RuleOperator.Any,
+        values: [{ regexp: /\b\d{2,4}\b/g }],
       });
 
       const removed = match.removeMatches('1 12 123 1234 12345');
