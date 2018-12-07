@@ -37,10 +37,11 @@ export type BotDefinition = ServiceDefinition<BotData>;
 
 export type BotOptions = BaseOptions & BotDefinition & {
   logger: Logger;
+  metrics: Registry;
   services: ServiceModule;
 };
 
-@Inject('logger', 'services')
+@Inject('logger', 'metrics', 'services')
 export class Bot extends BaseService<BotData> implements Service {
   public readonly strict: boolean;
 
@@ -71,6 +72,7 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info(options, 'creating bot');
 
     this.container = options.container;
+    this.metrics = options.metrics;
     this.services = options.services;
     this.strict = options.data.strict;
 
@@ -201,10 +203,6 @@ export class Bot extends BaseService<BotData> implements Service {
     return filterNil(results);
   }
 
-  public getMetrics(): Registry {
-    return this.metrics;
-  }
-
   /**
    * Handle a command using the appropriate controller.
    */
@@ -254,7 +252,6 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async startMetrics() {
     this.logger.info('setting up metrics');
-    this.metrics = new Registry();
     this.collector = collectDefaultMetrics({
       register: this.metrics,
       timeout: 5000,

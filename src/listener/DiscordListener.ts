@@ -12,6 +12,7 @@ import {
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 import { Inject } from 'noicejs';
+import { Counter } from 'prom-client';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Message } from 'src/entity/Message';
@@ -30,7 +31,7 @@ export interface DiscordListenerData {
 
 export type DiscordListenerOptions = ChildServiceOptions<DiscordListenerData>;
 
-@Inject('bot', 'services')
+@Inject('bot', 'metrics', 'services')
 export class DiscordListener extends BaseListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return !isNil(chan) && chan.type === 'text';
@@ -40,6 +41,8 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   protected readonly services: ServiceModule;
   protected readonly threads: Map<string, DiscordMessage>;
 
+  protected readonly onCounter: Counter;
+
   protected sessionProvider: SessionProvider;
 
   constructor(options: DiscordListenerOptions) {
@@ -48,16 +51,35 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     this.client = new Client();
     this.services = options.services;
     this.threads = new Map();
+
+    this.onCounter = new Counter({
+      help: 'events received from discord client',
+      labelNames: ['serviceId', 'serviceKind', 'serviceName', 'eventKind'],
+      name: 'discord_events',
+      registers: [options.metrics],
+    });
   }
 
   public async start() {
     this.sessionProvider = await this.services.createService<SessionProvider, any>(this.data.sessionProvider);
 
     this.client.on('ready', () => {
+      this.onCounter.inc({
+        eventKind: 'ready',
+        serviceId: this.id,
+        serviceKind: this.kind,
+        serviceName: this.name,
+      });
       this.logger.debug('discord listener ready');
     });
 
     this.client.on('message', (msg) => {
+      this.onCounter.inc({
+        eventKind: 'message',
+        serviceId: this.id,
+        serviceKind: this.kind,
+        serviceName: this.name,
+      });
       this.threads.set(msg.id, msg);
 
       this.convertMessage(msg).then((it) => this.receive(it)).catch((err) => {
@@ -66,13 +88,45 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     });
 
     this.client.on('messageReactionAdd', (msgReaction, user) => {
+      this.onCounter.inc({
+        eventKind: 'messageReactionAdd',
+        serviceId: this.id,
+        serviceKind: this.kind,
+        serviceName: this.name,
+      });
       this.convertReaction(msgReaction, user).then((msg) => this.receive(msg)).catch((err) => {
         this.logger.error(err, 'error receiving reaction');
       });
     });
 
+    this.client.on('debug', (msg) => {
+      this.onCounter.inc({
+        eventKind: 'debug',
+        serviceId: this.id,
+        serviceKind: this.kind,
+        serviceName: this.name,
+      });
+      this.logger.debug({ upstream: msg }, 'debug from server');
+    });
+
+    this.client.on('error', (err) => {
+      this.onCounter.inc({
+        eventKind: 'error',
+        serviceId: this.id,
+        serviceKind: this.kind,
+        serviceName: this.name,
+      });
+      this.logger.error(err, 'error from server');
+    });
+
     this.client.on('warn', (msg) => {
-      this.logger.warn({ msg }, 'warning from server');
+      this.onCounter.inc({
+        eventKind: 'warn',
+        serviceId: this.id,
+        serviceKind: this.kind,
+        serviceName: this.name,
+      });
+      this.logger.warn({ upstream: msg }, 'warn from server');
     });
 
     await this.client.login(this.data.token);

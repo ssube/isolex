@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
@@ -14,6 +15,7 @@ export interface BotModuleOptions {
 export class BotModule extends Module {
   protected bot: Bot;
   protected logger: Logger;
+  protected metrics: Registry;
 
   constructor(options: BotModuleOptions) {
     super();
@@ -44,7 +46,10 @@ export class BotModule extends Module {
 
   @Provides('metrics')
   public async getMetrics(options: any): Promise<Registry> {
-    return this.bot.getMetrics();
+    if (isNil(this.metrics)) {
+      this.metrics = new Registry();
+    }
+    return this.metrics;
   }
 
   @Provides('storage')

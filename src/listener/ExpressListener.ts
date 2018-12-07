@@ -24,7 +24,7 @@ export interface ExpressListenerData {
     graph: boolean;
     graphiql: boolean;
     metrics: boolean;
-  }
+  };
   listen: {
     address: string;
     port: number;
