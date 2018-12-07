@@ -20,7 +20,7 @@ export const NOUN_USER = 'user';
 export type AuthControllerData = ControllerData;
 export type AuthControllerOptions = ControllerOptions<AuthControllerData>;
 
-@Inject('storage')
+@Inject('bot', 'storage')
 export class AuthController extends BaseController<AuthControllerData> implements Controller, SessionProvider {
   protected storage: Connection;
   protected roleRepository: Repository<Role>;
@@ -84,10 +84,10 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     const name = cmd.getHeadOrDefault('name', cmd.context.userName);
     const roles = cmd.get('roles');
-    const user = await this.userRepository.create({
+    const user = await this.userRepository.save(this.userRepository.create({
       name,
       roles,
-    });
+    }));
 
     this.logger.debug({ user }, 'created user');
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
@@ -120,7 +120,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     this.logger.debug({ user }, 'logging in user');
 
-    const session = await this.sessionRepository.save(new Session({
+    const session = await this.sessionRepository.save(this.sessionRepository.create({
       ...AuthController.getSessionKey(cmd.context),
       user,
     }));
