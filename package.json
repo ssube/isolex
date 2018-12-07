@@ -8,10 +8,8 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "grpc": "~1.16.1",
     "jsonpath": "~1.0",
-    "sqlite3": "~4.0",
-    "uws": "~9.148"
+    "sqlite3": "~4.0"
   },
   "devDependencies": {
     "@kubernetes/client-node": "^0.7.2",
@@ -43,7 +41,7 @@
     "@types/yargs-parser": "~11.0",
     "ajv": "^6.6.1",
     "awesome-typescript-loader": "~5.2",
-    "aws-sdk": "~2.361.0",
+    "aws-sdk": "~2.372.0",
     "bufferutil": "~4.0",
     "bunyan": "~1.8",
     "chai": "~4.2",
@@ -87,9 +85,9 @@
     "tslint-sonarts": "~1.8",
     "typedoc": "^0.13.0",
     "typeorm": "^0.2.0",
-    "typescript": "~3.1",
+    "typescript": "~3.2.2",
     "utf-8-validate": "~5.0",
-    "webpack": "~4.26",
+    "webpack": "~4.27.1",
     "webpack-bundle-analyzer": "~3.0",
     "webpack-cli": "~3.1",
     "ws": "~6.1",
