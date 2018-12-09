@@ -42,5 +42,5 @@ export interface Listener extends Service {
   /**
    * Callback from the auth controller to get a session from a uid.
    */
-  getSession(uid: string): Promise<Session | undefined>
+  getSession(uid: string): Promise<Session | undefined>;
 }

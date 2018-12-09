@@ -18,6 +18,7 @@ import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 import { BaseService } from './BaseService';
 import { ServiceModule } from './module/ServiceModule';
+import { incrementServiceCounter } from './utils/metrics/Service';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;
@@ -144,14 +145,14 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
+    let commands: Array<Command> = [];
     let matched = false;
     for (const parser of this.parsers) {
       try {
         if (await parser.match(msg)) {
           matched = true;
           this.logger.debug({ msg, parser: parser.name }, 'parsing message');
-          const commands = await parser.parse(msg);
-          this.emitCommand(...commands);
+          commands.push(...await parser.parse(msg));
         }
       } catch (err) {
         this.logger.error(err, 'error running parser');
@@ -161,6 +162,12 @@ export class Bot extends BaseService<BotData> implements Service {
     if (!matched) {
       this.logger.debug({ msg }, 'incoming message was not matched by any parsers');
     }
+
+    if (!commands.length) {
+      this.logger.debug({ msg }, 'incoming message did not produce any commands');
+    }
+
+    return this.emitCommand(...commands);
   }
 
   /**
@@ -211,8 +218,11 @@ export class Bot extends BaseService<BotData> implements Service {
    * Handle a command using the appropriate controller.
    */
   protected async receiveCommand(cmd: Command): Promise<void> {
-    this.logger.debug({ cmd }, 'handling command');
-    this.cmdCounter.labels(this.id, this.kind, this.name).inc();
+    this.logger.debug({ cmd }, 'receiving command');
+    incrementServiceCounter(this, this.cmdCounter, {
+      commandNoun: cmd.noun,
+      commandVerb: cmd.verb,
+    });
 
     if (!await this.checkFilters(cmd)) {
       this.logger.warn({ cmd }, 'dropped command due to filters');
@@ -233,8 +243,10 @@ export class Bot extends BaseService<BotData> implements Service {
    * Dispatch a message to the appropriate listeners (based on the context).
    */
   protected async receiveMessage(msg: Message): Promise<void> {
-    this.logger.debug({ msg }, 'dispatching outgoing message');
-    this.msgCounter.labels(this.id, this.kind, this.name).inc();
+    this.logger.debug({ msg }, 'receiving outgoing message');
+    incrementServiceCounter(this, this.msgCounter, {
+      messageType: msg.type,
+    });
 
     if (!await this.checkFilters(msg)) {
       this.logger.warn({ msg }, 'dropped outgoing message due to filters');
@@ -263,14 +275,14 @@ export class Bot extends BaseService<BotData> implements Service {
 
     this.cmdCounter = new Counter({
       help: 'commands received by the bot',
-      labelNames: ['service_id', 'service_kind', 'service_name'],
+      labelNames: ['commandNoun', 'commandVerb', 'serviceId', 'serviceKind', 'serviceName'],
       name: 'bot_command',
       registers: [this.metrics],
     });
 
     this.msgCounter = new Counter({
       help: 'messages received by the bot',
-      labelNames: ['service_id', 'service_kind', 'service_name'],
+      labelNames: ['messageType', 'serviceId', 'serviceKind', 'serviceName'],
       name: 'bot_message',
       registers: [this.metrics],
     });

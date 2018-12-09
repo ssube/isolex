@@ -13,20 +13,26 @@ kubectl create ns isolex
 Prepare your config file and create a secret in the cluster with the contents:
 
 ```shell
-kubectl create secret generic isolex-config --from-file=.isolex.yml --namespace=isolex
-kubectl describe secret isolex-config --namespace=isolex -o yaml
+kubectl create configmap isolex-config --from-file=.isolex.yml --namespace=isolex
+kubectl describe configmap isolex-config --namespace=isolex -o yaml
 ```
 
 should print:
 
 ```yaml
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: isolex-config
 data:
   ".isolex.yml": "base64encoded==="
 ```
+
+### Secrets
+
+**Secrets should never be put in a ConfigMap**.
+
+Secrets needed by the bot can be referenced from the container's environment using `!env`.
 
 ## Application
 

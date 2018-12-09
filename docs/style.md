@@ -11,9 +11,11 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Messages](#messages)
   - [Paths](#paths)
   - [Typescript](#typescript)
+    - [Arrays](#arrays)
     - [Destructuring](#destructuring)
     - [Entities](#entities)
     - [Exports](#exports)
+    - [Generics](#generics)
     - [Imports](#imports)
       - [Order](#order)
     - [Properties](#properties)
@@ -65,6 +67,12 @@ Messages are sent.
 
 Dictionary objects (`{...}`) must always be treated as immutable.
 
+### Arrays
+
+Always use generic array types (`Array<Foo>`).
+
+Declare empty arrays with `[]`.
+
 ### Destructuring
 
 Destructuring is great, use it! Groups should be `{ spaced, out }` like imports (lint will warn about this, code can
@@ -83,6 +91,13 @@ Always provide the table name as an exported constant and use it in `@Entity(TAB
 Never use default exports.
 
 Do not ever `export default` anything ever.
+
+### Generics
+
+Always use generic arrays (see [arrays](#arrays)).
+
+Generic type names should start with `T` and have some meaningful name, like any other variable. For example: `TData`,
+`TConfig`, `TKey` and `TValue`.
 
 ### Imports
 
