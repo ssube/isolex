@@ -27,10 +27,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
   protected url: Template;
 
   constructor(options: SearchControllerOptions) {
-    super({
-      ...options,
-      nouns: [],
-    });
+    super(options);
 
     this.container = options.container;
     this.url = options.compiler.compile(options.data.request.url);

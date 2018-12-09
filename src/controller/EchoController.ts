@@ -21,10 +21,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   protected readonly transforms: Array<Transform>;
 
   constructor(options: EchoControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_ECHO],
-    });
+    super(options, [NOUN_ECHO]);
   }
 
   public async handle(cmd: Command): Promise<void> {

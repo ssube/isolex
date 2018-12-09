@@ -1,10 +1,19 @@
 import { kebabCase } from 'lodash';
+import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
+import { Registry } from 'prom-client';
 import * as uuid from 'uuid/v4';
 
-import { Service, ServiceOptions } from 'src/Service';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { Service, ServiceDefinition } from 'src/Service';
+import { dictToMap } from 'src/utils/Map';
 
-import { dictToMap } from './utils/Map';
+export interface InjectedServiceOptions {
+  logger: Logger;
+  metrics: Registry;
+  services: ServiceModule;
+}
+export type BaseServiceOptions<TData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
 export abstract class BaseService<TData> implements Service {
   public readonly id: string;
@@ -15,7 +24,7 @@ export abstract class BaseService<TData> implements Service {
   protected readonly data: Readonly<TData>;
   protected readonly logger: Logger;
 
-  constructor(options: ServiceOptions<TData>) {
+  constructor(options: BaseServiceOptions<TData>) {
     this.id = uuid();
     this.kind = options.metadata.kind;
     this.labels = dictToMap(options.metadata.labels);

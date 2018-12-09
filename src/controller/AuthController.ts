@@ -27,10 +27,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
   protected userRepository: Repository<User>;
 
   constructor(options: AuthControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_SESSION, NOUN_USER],
-    });
+    super(options, [NOUN_SESSION, NOUN_USER]);
 
     this.storage = options.storage;
     this.roleRepository = this.storage.getRepository(Role);

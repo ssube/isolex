@@ -23,10 +23,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
   protected fragmentRepository: Repository<Fragment>;
 
   constructor(options: CompletionControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_FRAGMENT],
-    });
+    super(options, [NOUN_FRAGMENT]);
 
     this.storage = options.storage;
     this.fragmentRepository = this.storage.getRepository(Fragment);

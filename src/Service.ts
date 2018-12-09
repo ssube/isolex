@@ -1,5 +1,3 @@
-import { BaseOptions } from 'noicejs/Container';
-import { Logger } from 'noicejs/logger/Logger';
 import { MapLike } from './utils/Map';
 
 export interface ServiceDefinition<TData = any> {
@@ -28,10 +26,6 @@ export interface ServiceMetadata {
    */
   readonly name: string;
 }
-
-export type ServiceOptions<TData> = BaseOptions & ServiceDefinition<TData> & {
-  logger: Logger;
-};
 
 export interface Service extends ServiceMetadata {
   readonly id: string;

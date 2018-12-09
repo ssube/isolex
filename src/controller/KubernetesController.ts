@@ -33,10 +33,7 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
   protected client: k8s.Core_v1Api;
 
   constructor(options: KubernetesControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_POD, NOUN_SERVICE],
-    });
+    super(options, [NOUN_POD, NOUN_SERVICE]);
   }
 
   public async start() {

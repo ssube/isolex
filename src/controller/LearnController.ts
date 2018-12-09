@@ -27,10 +27,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   protected keywordRepository: Repository<Keyword>;
 
   constructor(options: LearnControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_KEYWORD],
-    });
+    super(options, [NOUN_KEYWORD]);
 
     this.storage = options.storage;
     this.keywordRepository = this.storage.getRepository(Keyword);

@@ -7,9 +7,7 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { getLogInfo, ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
 
-export interface BaseControllerOptions<TData extends ControllerData> extends ControllerOptions<TData> {
-  nouns: Array<string>;
-}
+export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
 export abstract class BaseController<TData extends ControllerData> extends ChildService<TData> implements Controller {
   public readonly name: string;
@@ -21,11 +19,10 @@ export abstract class BaseController<TData extends ControllerData> extends Child
   protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
-  constructor(options: BaseControllerOptions<TData>) {
+  constructor(options: BaseControllerOptions<TData>, nouns: Array<string> = []) {
     super(options);
 
-    this.nouns = new Set(options.nouns);
-
+    this.nouns = new Set(nouns);
     this.filters = [];
     this.services = options.services;
     this.transforms = [];

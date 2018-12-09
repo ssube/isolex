@@ -15,10 +15,7 @@ export const NOUN_RANDOM = 'random';
 
 export class RandomController extends BaseController<RandomControllerData> implements Controller {
   constructor(options: RandomControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_RANDOM],
-    });
+    super(options, [NOUN_RANDOM]);
   }
 
   public async handle(cmd: Command): Promise<void> {

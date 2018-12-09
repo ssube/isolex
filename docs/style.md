@@ -12,6 +12,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Paths](#paths)
   - [Typescript](#typescript)
     - [Arrays](#arrays)
+    - [Constructors](#constructors)
     - [Destructuring](#destructuring)
     - [Entities](#entities)
     - [Errors](#errors)
@@ -74,6 +75,14 @@ Dictionary objects (`{...}`) must always be treated as immutable.
 Always use generic array types (`Array<Foo>`).
 
 Declare empty arrays with `[]`.
+
+### Constructors
+
+Classes should have a constructor if it contains more than a `super(options)` call.
+
+Service constructors must always take `options: FooOptions` as the first argument, where
+`FooOptions extends ChildServiceOptions` (or `BaseServiceOptions` for services that live outside the bot).
+This ensures that injected dependencies from the bot and service module will be available and typed correctly.
 
 ### Destructuring
 

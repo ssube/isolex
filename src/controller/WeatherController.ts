@@ -27,10 +27,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   protected readonly container: Container;
 
   constructor(options: WeatherControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_REPORT],
-    });
+    super(options, [NOUN_REPORT]);
     this.container = options.container;
   }
 

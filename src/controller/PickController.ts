@@ -23,10 +23,7 @@ export class PickController extends BaseController<PickControllerData> implement
   protected list: Checklist<string>;
 
   constructor(options: PickControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_PICK],
-    });
+    super(options, [NOUN_PICK]);
 
     this.list = new Checklist(options.data.check);
   }

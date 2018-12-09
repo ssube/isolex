@@ -23,10 +23,7 @@ export class MathController extends BaseController<MathControllerData> implement
   protected math: mathjs.MathJsStatic;
 
   constructor(options: MathControllerOptions) {
-    super({
-      ...options,
-      nouns: [NOUN_MATH],
-    });
+    super(options, [NOUN_MATH]);
 
     this.math = (mathjs as any).create(options.data.math);
   }

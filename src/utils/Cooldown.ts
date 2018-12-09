@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs';
-import { BaseService } from 'src/BaseService';
-import { ServiceOptions } from 'src/Service';
+
+import { BaseService, BaseServiceOptions } from 'src/BaseService';
 
 export const GROWTH_FACTOR = 2;
 export interface CooldownData {
@@ -8,7 +8,7 @@ export interface CooldownData {
   grow: number;
 }
 
-export type CooldownOptions = ServiceOptions<CooldownData>;
+export type CooldownOptions = BaseServiceOptions<CooldownData>;
 
 /**
  * Cooldown is a specialized counter for rate limiting, bans, and the like.

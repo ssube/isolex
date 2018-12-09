@@ -1,7 +1,6 @@
 import { bindAll } from 'lodash';
-import { Container, Inject, MissingValueError } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
-import { Logger, LogLevel } from 'noicejs/logger/Logger';
+import { Container, Inject } from 'noicejs';
+import { LogLevel } from 'noicejs/logger/Logger';
 import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
@@ -16,7 +15,7 @@ import { Service, ServiceDefinition } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
-import { BaseService } from './BaseService';
+import { BaseService, BaseServiceOptions } from './BaseService';
 import { ServiceModule } from './module/ServiceModule';
 import { incrementServiceCounter } from './utils/metrics/Service';
 
@@ -35,12 +34,7 @@ export interface BotData {
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
-
-export type BotOptions = BaseOptions & BotDefinition & {
-  logger: Logger;
-  metrics: Registry;
-  services: ServiceModule;
-};
+export type BotOptions = BaseServiceOptions<BotData>;
 
 @Inject('logger', 'metrics', 'services')
 export class Bot extends BaseService<BotData> implements Service {

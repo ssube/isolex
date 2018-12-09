@@ -1,22 +1,16 @@
-import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
-import { BaseService } from './BaseService';
+import { BaseService, BaseServiceOptions } from './BaseService';
 import { Bot } from './Bot';
-import { ServiceModule } from './module/ServiceModule';
-import { Service, ServiceOptions } from './Service';
-
-interface ChildServiceDependencies {
-  bot: Bot;
-  metrics: Registry;
-  services: ServiceModule;
-  storage: Connection;
-}
+import { Service } from './Service';
 
 /**
  * Exposed injected services available to child services.
  */
-export type ChildServiceOptions<TData> = ServiceOptions<TData> & ChildServiceDependencies;
+export interface ChildServiceOptions<TData> extends BaseServiceOptions<TData> {
+  bot: Bot;
+  storage: Connection;
+}
 
 export abstract class ChildService<TData> extends BaseService<TData> implements Service {
   public readonly bot: Bot;
