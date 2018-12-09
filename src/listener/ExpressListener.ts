@@ -70,39 +70,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
 
     this.tokenRepository = this.storage.getRepository(Token);
-
     this.authenticator = new passport.Passport();
-    this.authenticator.use(new JwtStrategy({
-      audience: this.data.token.audience,
-      issuer: this.data.token.issuer,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
-      secretOrKey: this.data.token.secret,
-     }, (req: express.Request, payload: any, done: VerifiedCallback) => this.createTokenSession(req, payload, done)));
-
     this.app = express();
-    this.app.use(this.authenticator.initialize());
-
-    if (this.data.expose.metrics) {
-      this.app.use((req, res, next) => this.traceRequest(req, res, next));
-      this.app.get('/metrics', (req, res) => this.getMetrics(req, res));
-    }
-
-    if (this.data.expose.graph) {
-      this.app.use('/graph', expressGraphQl({
-        graphiql: this.data.expose.graphiql,
-        rootValue: {
-          // mutation
-          emitCommands: (args: any, req: express.Request) => this.emitCommands(args, req),
-          sendMessages: (args: any, req: express.Request) => this.sendMessages(args, req),
-          // query
-          command: (args: any) => this.getCommand(args),
-          message: (args: any) => this.getCommand(args),
-          service: (args: any) => this.getService(args),
-          services: () => this.getServices(),
-        },
-        schema,
-      }));
-    }
+    this.setupApp();
   }
 
   public async start() {
@@ -239,5 +209,38 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
         source: this,
         user,
     });
+  }
+
+  protected setupApp() {
+    this.authenticator.use(new JwtStrategy({
+      audience: this.data.token.audience,
+      issuer: this.data.token.issuer,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
+      secretOrKey: this.data.token.secret,
+    }, (req: express.Request, payload: any, done: VerifiedCallback) => this.createTokenSession(req, payload, done)));
+
+    this.app.use(this.authenticator.initialize());
+
+    if (this.data.expose.metrics) {
+      this.app.use((req, res, next) => this.traceRequest(req, res, next));
+      this.app.get('/metrics', (req, res) => this.getMetrics(req, res));
+    }
+
+    if (this.data.expose.graph) {
+      this.app.use('/graph', expressGraphQl({
+        graphiql: this.data.expose.graphiql,
+        rootValue: {
+          // mutation
+          emitCommands: (args: any, req: express.Request) => this.emitCommands(args, req),
+          sendMessages: (args: any, req: express.Request) => this.sendMessages(args, req),
+          // query
+          command: (args: any) => this.getCommand(args),
+          message: (args: any) => this.getCommand(args),
+          service: (args: any) => this.getService(args),
+          services: () => this.getServices(),
+        },
+        schema,
+      }));
+    }
   }
 }

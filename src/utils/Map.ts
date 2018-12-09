@@ -106,18 +106,15 @@ export function mapToDict<TVal>(map: MapLike<TVal> | null | undefined): Dict<TVa
     return {};
   }
 
-  const result: Dict<TVal> = {};
   if (isMap(map)) {
+    const result: Dict<TVal> = {};
     for (const [key, val] of map) {
       result[key] = val;
     }
-  } else {
-    for (const [key, val] of Object.entries(map)) {
-      result[key] = val;
-    }
+    return result;
   }
 
-  return result;
+  return map;
 }
 
 export interface NameValuePair<TVal> {
@@ -130,6 +127,7 @@ export function pairsToDict<TVal>(pairs: Array<NameValuePair<TVal>>): Map<string
   for (const p of pairs) {
     map.set(p.name, p.value);
   }
+
   return map;
 }
 
@@ -142,5 +140,6 @@ export function dictValuesToArrays<TVal>(map: MapLike<TVal>): Dict<Array<TVal>> 
       data[key] = [value];
     }
   }
+
   return data;
 }

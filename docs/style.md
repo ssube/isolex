@@ -14,11 +14,13 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Arrays](#arrays)
     - [Destructuring](#destructuring)
     - [Entities](#entities)
+    - [Errors](#errors)
     - [Exports](#exports)
     - [Generics](#generics)
     - [Imports](#imports)
       - [Order](#order)
     - [Properties](#properties)
+    - [Return Types](#return-types)
     - [Tests](#tests)
       - [Async](#async)
       - [Assertions](#assertions)
@@ -86,6 +88,10 @@ Prefer destructuring with default over `||`. For example, `const { foo = 3 } = b
 
 Always provide the table name as an exported constant and use it in `@Entity(TABLE_FOO)` and the migrations.
 
+### Errors
+
+Throw must always throw a `new BaseError` or something which inherits from `BaseError`.
+
 ### Exports
 
 Never use default exports.
@@ -119,6 +125,12 @@ because it is extremely tedious to do by hand.
 
 Object properties should not be nullable or optional unless absolutely needed. Prefer sensible defaults.
 
+### Return Types
+
+Be consistent with return types.
+
+Prefer `Array<Foo>` over `Foo | undefined`. If you can return 0 of them, you can probably return 2.
+
 ### Tests
 
 Typescript tests (small, unit tests) are run using Mocha and Chai.
@@ -132,7 +144,8 @@ Wrap any tests using async resources (promises, observables, the bot, services, 
 
 Always use `expect`-style assertions.
 
-Use `.to.equal(true)` instead of `.to.be.true`, since the call helps the assertion happens and appeases lint.
+Use `.to.equal(true)` instead of `.to.be.true`, since the call helps the assertion happens and appeases lint. Same with
+false.
 
 ## YAML
 

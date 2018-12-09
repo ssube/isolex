@@ -60,26 +60,9 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   public async start() {
-    this.client.on('ready', () => {
-      this.countEvent('ready');
-      this.logger.debug('discord listener ready');
-    });
-
-    this.client.on('message', (msg) => {
-      this.countEvent('message');
-      this.threads.set(msg.id, msg);
-
-      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
-        this.logger.error(err, 'error receiving message');
-      });
-    });
-
-    this.client.on('messageReactionAdd', (msgReaction, user) => {
-      this.countEvent('messageReactionAdd');
-      this.convertReaction(msgReaction, user).then((msg) => this.bot.receive(msg)).catch((err) => {
-        this.logger.error(err, 'error receiving reaction');
-      });
-    });
+    this.client.on('ready', () => this.onReady());
+    this.client.on('message', (msg) => this.onMessage(msg));
+    this.client.on('messageReactionAdd', (msgReaction, user) => this.onReaction(msgReaction, user));
 
     this.client.on('debug', (msg) => {
       this.countEvent('debug');
@@ -196,6 +179,26 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     }
 
     return Promise.all(messages);
+  }
+
+  public onMessage(msg: DiscordMessage) {
+    this.countEvent('message');
+    this.threads.set(msg.id, msg);
+    this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
+      this.logger.error(err, 'error receiving message');
+    });
+  }
+
+  public onReaction(msgReaction: MessageReaction, user: User) {
+    this.countEvent('messageReactionAdd');
+    this.convertReaction(msgReaction, user).then((msg) => this.bot.receive(msg)).catch((err) => {
+      this.logger.error(err, 'error receiving reaction');
+    });
+  }
+
+  public onReady() {
+    this.countEvent('ready');
+    this.logger.debug('discord listener ready');
   }
 
   protected countEvent(eventKind: string) {

@@ -133,43 +133,21 @@ export class Bot extends BaseService<BotData> implements Service {
   /**
    * Receive an incoming message and turn it into commands.
    */
-  public async receive(msg: Message) {
+  public async receive(msg: Message): Promise<Array<Command>> {
     this.logger.debug({ msg }, 'received incoming message');
-
-    if (!msg.context.name || !msg.context.uid) {
-      throw new MissingValueError('msg context name and uid required');
-    }
 
     if (!await this.checkFilters(msg)) {
       this.logger.warn({ msg }, 'dropped incoming message due to filters');
-      return;
+      return [];
     }
 
-    let commands: Array<Command> = [];
-    let matched = false;
-    for (const parser of this.parsers) {
-      try {
-        if (await parser.match(msg)) {
-          matched = true;
-          this.logger.debug({ msg, parser: parser.name }, 'parsing message');
-          commands.push(...await parser.parse(msg));
-        }
-      } catch (err) {
-        this.logger.error(err, 'error running parser');
-      }
-    }
-
-    if (!matched) {
-      this.logger.debug({ msg }, 'incoming message was not matched by any parsers');
-    }
-
+    const commands = await this.parseMessage(msg);
     if (!commands.length) {
       this.logger.debug({ msg }, 'incoming message did not produce any commands');
     }
 
     return this.emitCommand(...commands);
   }
-
   /**
    * Fetches messages using a specified listener.
    */
@@ -264,6 +242,28 @@ export class Bot extends BaseService<BotData> implements Service {
     if (!emitted) {
       this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
     }
+  }
+
+  protected async parseMessage(msg: Message) {
+    const commands: Array<Command> = [];
+    let matched = false;
+    for (const parser of this.parsers) {
+      try {
+        if (await parser.match(msg)) {
+          matched = true;
+          this.logger.debug({ msg, parser: parser.name }, 'parsing message');
+          commands.push(...await parser.parse(msg));
+        }
+      } catch (err) {
+        this.logger.error(err, 'error running parser');
+      }
+    }
+
+    if (!matched) {
+      this.logger.debug({ msg }, 'incoming message was not matched by any parsers');
+    }
+
+    return commands;
   }
 
   protected async startMetrics() {

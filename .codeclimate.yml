@@ -10,7 +10,7 @@ plugins:
     config:
       languages:
         typescript:
-          mass_threshold: 60
+          mass_threshold: 120
   fixme:
     enabled: true
   markdownlint:
