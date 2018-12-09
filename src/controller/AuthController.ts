@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, Repository } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
@@ -70,9 +70,16 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
   public async createUser(cmd: Command): Promise<void> {
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
+    const roleNames = cmd.getOrDefault('roles', []);
+    this.logger.debug({ name, roles: roleNames }, 'creating user');
+    const roles = await this.roleRepository.find({
+      where: {
+        name: In(roleNames),
+      },
+    });
     const user = await this.userRepository.save(this.userRepository.create({
       name,
-      roles: [],
+      roles,
     }));
 
     this.logger.debug({ user }, 'created user');

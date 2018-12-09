@@ -1,4 +1,6 @@
+import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
+import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Listener } from 'src/listener/Listener';
@@ -87,6 +89,37 @@ export class Context implements ContextData {
       ctx.user = options.user;
     }
     return ctx;
+  }
+
+  /**
+   * Check if a set of Shiro-style permissions have been granted to this context. This will check both the
+   * token and user, if available, and permissions must appear in both (so that the grants on a token restrict the
+   * grants on a user). If neither is present, permissions are simply denied.
+   */
+  public permit(permissions: Array<string>): boolean {
+    if (this.token && !this.token.permit(permissions)) {
+      return false;
+    }
+
+    const userPermissions = this.getPermissions();
+    if (!userPermissions.length) {
+      return false;
+    }
+
+    const trie = newTrie();
+    trie.add(...userPermissions);
+    return permissions.every((p) => {
+      const result = trie.check(p);
+      return result;
+    });
+  }
+
+  public getPermissions(): Array<string> {
+    if (this.user) {
+      return flatten(this.user.roles.map((r) => r.grants));
+    } else {
+      return [];
+    }
   }
 
   /**

@@ -1,3 +1,4 @@
+import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Session } from 'src/listener/SessionListener';
@@ -36,6 +37,9 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    */
   @Column()
   public expiresAt: number;
+
+  @Column('simple-array')
+  public grants: Array<string>;
 
   /**
    * `jti` (JWT ID) claim
@@ -80,6 +84,16 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
       this.issuer = options.issuer;
       this.subject = options.subject;
     }
+  }
+
+  /**
+   * Check if a set of Shiro-style permissions have been granted to this token. This does not check the token's user,
+   * only the token's grants.
+   */
+  public permit(permissions: Array<string>): boolean {
+    const trie = newTrie();
+    trie.add(...this.grants);
+    return permissions.every((p) => trie.check(p));
   }
 
   public toJSON(): object {
