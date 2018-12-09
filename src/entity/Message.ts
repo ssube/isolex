@@ -12,7 +12,9 @@ export interface MessageOptions {
   type: string;
 }
 
-@Entity()
+export const TABLE_MESSAGE = 'message';
+
+@Entity(TABLE_MESSAGE)
 export class Message extends LabelEntity implements MessageOptions {
   public static isMessage(it: any): it is Message {
     return it instanceof Message;

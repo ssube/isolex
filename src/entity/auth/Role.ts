@@ -10,7 +10,9 @@ export class Role implements RoleOptions {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   public name: string;
 
   @Column('simple-array')

@@ -15,24 +15,25 @@ import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
 import { ChildServiceOptions } from 'src/ChildService';
+import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { ServiceDefinition } from 'src/Service';
+import { ServiceMetadata } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
-import { SessionProvider } from 'src/utils/SessionProvider';
+
+import { SessionListener } from './SessionListener';
 
 export interface DiscordListenerData {
   presence?: PresenceData;
-  sessionProvider: ServiceDefinition<any>;
+  sessionProvider: ServiceMetadata;
   token: string;
 }
 
 export type DiscordListenerOptions = ChildServiceOptions<DiscordListenerData>;
 
 @Inject('bot', 'metrics', 'services')
-export class DiscordListener extends BaseListener<DiscordListenerData> implements Listener {
+export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return !isNil(chan) && chan.type === 'text';
   }
@@ -42,8 +43,6 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   protected readonly threads: Map<string, DiscordMessage>;
 
   protected readonly onCounter: Counter;
-
-  protected sessionProvider: SessionProvider;
 
   constructor(options: DiscordListenerOptions) {
     super(options);
@@ -61,71 +60,39 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   }
 
   public async start() {
-    this.sessionProvider = await this.services.createService<SessionProvider, any>(this.data.sessionProvider);
-
     this.client.on('ready', () => {
-      this.onCounter.inc({
-        eventKind: 'ready',
-        serviceId: this.id,
-        serviceKind: this.kind,
-        serviceName: this.name,
-      });
+      this.countEvent('ready');
       this.logger.debug('discord listener ready');
     });
 
     this.client.on('message', (msg) => {
-      this.onCounter.inc({
-        eventKind: 'message',
-        serviceId: this.id,
-        serviceKind: this.kind,
-        serviceName: this.name,
-      });
+      this.countEvent('message');
       this.threads.set(msg.id, msg);
 
-      this.convertMessage(msg).then((it) => this.receive(it)).catch((err) => {
+      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
         this.logger.error(err, 'error receiving message');
       });
     });
 
     this.client.on('messageReactionAdd', (msgReaction, user) => {
-      this.onCounter.inc({
-        eventKind: 'messageReactionAdd',
-        serviceId: this.id,
-        serviceKind: this.kind,
-        serviceName: this.name,
-      });
-      this.convertReaction(msgReaction, user).then((msg) => this.receive(msg)).catch((err) => {
+      this.countEvent('messageReactionAdd');
+      this.convertReaction(msgReaction, user).then((msg) => this.bot.receive(msg)).catch((err) => {
         this.logger.error(err, 'error receiving reaction');
       });
     });
 
     this.client.on('debug', (msg) => {
-      this.onCounter.inc({
-        eventKind: 'debug',
-        serviceId: this.id,
-        serviceKind: this.kind,
-        serviceName: this.name,
-      });
+      this.countEvent('debug');
       this.logger.debug({ upstream: msg }, 'debug from server');
     });
 
     this.client.on('error', (err) => {
-      this.onCounter.inc({
-        eventKind: 'error',
-        serviceId: this.id,
-        serviceKind: this.kind,
-        serviceName: this.name,
-      });
+      this.countEvent('error');
       this.logger.error(err, 'error from server');
     });
 
     this.client.on('warn', (msg) => {
-      this.onCounter.inc({
-        eventKind: 'warn',
-        serviceId: this.id,
-        serviceKind: this.kind,
-        serviceName: this.name,
-      });
+      this.countEvent('warn');
       this.logger.warn({ upstream: msg }, 'warn from server');
     });
 
@@ -143,12 +110,12 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
 
   public async send(msg: Message): Promise<void> {
     // direct reply to message
-    if (msg.context.threadId) {
+    if (msg.context.channel.thread) {
       return this.replyToThread(msg);
     }
 
     // broad reply to channel
-    if (msg.context.roomId) {
+    if (msg.context.channel.id) {
       return this.replyToChannel(msg);
     }
 
@@ -157,7 +124,7 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   }
 
   public async replyToThread(msg: Message) {
-    const thread = this.threads.get(msg.context.threadId);
+    const thread = this.threads.get(msg.context.channel.thread);
     if (!thread) {
       this.logger.warn({ msg }, 'message thread is missing');
       return;
@@ -177,7 +144,7 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
   }
 
   public async replyToChannel(msg: Message) {
-    const channel = this.client.channels.get(msg.context.roomId);
+    const channel = this.client.channels.get(msg.context.channel.id);
     if (!channel) {
       this.logger.warn({ msg }, 'message channel is missing');
       return;
@@ -231,13 +198,35 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
     return Promise.all(messages);
   }
 
+  protected countEvent(eventKind: string) {
+    this.onCounter.inc({
+      eventKind,
+      serviceId: this.id,
+      serviceKind: this.kind,
+      serviceName: this.name,
+    });
+  }
+
   protected async convertMessage(msg: DiscordMessage): Promise<Message> {
-    const context = await this.sessionProvider.createSessionContext({
-      listenerId: this.id,
-      roomId: msg.channel.id,
-      threadId: msg.id,
-      userId: msg.author.id,
-      userName: msg.author.username,
+    this.logger.debug('converting discord message');
+    const contextData: ContextData = {
+      channel: {
+        id: msg.channel.id,
+        thread: msg.id,
+      },
+      name: msg.author.username,
+      source: this,
+      uid: msg.author.id,
+    };
+
+    const session = await this.getSession(msg.author.id);
+    if (session) {
+      contextData.user = session.user;
+    }
+
+    const context = new Context({
+      ...contextData,
+      source: this,
     });
     return new Message({
       body: msg.content,
@@ -256,8 +245,8 @@ export class DiscordListener extends BaseListener<DiscordListenerData> implement
       msg.body = reaction.emoji.name;
     }
 
-    msg.context.userId = user.id;
-    msg.context.userName = user.username;
+    msg.context.uid = user.id;
+    msg.context.name = user.username;
 
     return msg;
   }

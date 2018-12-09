@@ -6,7 +6,6 @@ data:
     game:
       name: Global Thermonuclear Warfare
   sessionProvider:
-    metadata:
-      kind: auth-controller
-      name: default-auth
+    kind: auth-controller
+    name: default-auth
   token: !env ISOLEX_DISCORD_TOKEN

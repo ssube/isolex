@@ -1,71 +1,100 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { MissingValueError } from 'noicejs';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Session } from './auth/Session';
+import { Listener } from 'src/listener/Listener';
+import { Parser } from 'src/parser/Parser';
 
-export interface ContextData {
-  listenerId: string;
-  roomId: string;
-  session?: Session;
-  threadId: string;
-  userId: string;
-  userName: string;
+import { Token } from './auth/Token';
+import { User } from './auth/User';
+
+export interface ChannelData {
+  id: string;
+  thread: string;
 }
 
-@Entity()
+export interface ContextData {
+  channel: ChannelData;
+
+  /**
+   * User's display name.
+   */
+  name: string;
+
+  source: Listener;
+
+  token?: Token;
+
+  /**
+   * User authenticated with this context.
+   */
+  user?: User;
+
+  /**
+   * Unique ID for this user, only meaningful to/within the listener.
+   */
+  uid: string;
+}
+
+export const TABLE_CONTEXT = 'context';
+
+@Entity(TABLE_CONTEXT)
 export class Context implements ContextData {
+  @Column('simple-json')
+  public channel: ChannelData;
+
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
   @Column()
-  public listenerId: string;
+  public name: string;
+
+  public parser?: Parser;
+
+  public source: Listener;
+
+  public target?: Listener;
+
+  public token?: Token;
 
   @Column()
-  public roomId: string;
+  public uid: string;
 
-  @ManyToOne((type) => Session, (session) => session.id, {
-    cascade: true,
-    nullable: true,
-  })
-  public session?: Session;
-
-  @Column()
-  public threadId: string;
-
-  @Column()
-  public userId: string;
-
-  @Column()
-  public userName: string;
+  public user?: User;
 
   constructor(options?: ContextData) {
     if (options) {
-      this.listenerId = options.listenerId;
-      this.roomId = options.roomId;
-      this.session = options.session;
-      this.threadId = options.threadId;
-      this.userId = options.userId;
-      this.userName = options.userName;
+      if (!options.name || !options.uid) {
+        throw new MissingValueError('name and uid must be specified in context options');
+      }
+      this.channel = {
+        id: options.channel.id,
+        thread: options.channel.thread,
+      };
+      this.name = options.name;
+      this.source = options.source;
+      this.token = options.token;
+      this.uid = options.uid;
+      this.user = options.user;
     }
   }
 
   public extend(options: Partial<ContextData>): Context {
     const ctx = new Context(this);
-    if (options.session) {
-      ctx.session = new Session(options.session);
+    if (options.token) {
+      ctx.token = options.token;
+    }
+    if (options.user) {
+      ctx.user = options.user;
     }
     return ctx;
   }
 
+  /**
+   * @TODO: meaningful return value
+   */
   public toJSON(): any {
-    const session = this.session ? this.session.toJSON() : {};
     return {
       id: this.id,
-      listenerId: this.listenerId,
-      roomId: this.roomId,
-      session,
-      threadId: this.threadId,
-      userId: this.userId,
-      userName: this.userName,
     };
   }
 }

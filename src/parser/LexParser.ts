@@ -80,7 +80,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       botAlias: this.data.bot.alias,
       botName: this.data.bot.name,
       inputText: msg.body,
-      userId: leftPad(msg.context.userId),
+      userId: leftPad(msg.context.uid),
     });
 
     this.logger.debug({ msg, post }, 'lex parsed message');

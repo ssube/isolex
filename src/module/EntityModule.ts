@@ -2,7 +2,6 @@ import { Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 
 import { Role } from 'src/entity/auth/Role';
-import { Session } from 'src/entity/auth/Session';
 import { Token } from 'src/entity/auth/Token';
 import { User } from 'src/entity/auth/User';
 import { Command } from 'src/entity/Command';
@@ -26,7 +25,6 @@ export class EntityModule extends Module {
       Message,
       /* auth */
       Role,
-      Session,
       Token,
       User,
       /* misc */

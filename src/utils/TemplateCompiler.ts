@@ -37,7 +37,7 @@ export class TemplateCompiler {
    * @TODO: move this to each Listener
    */
   public formatContext(context: Context): string {
-    return `@${context.userName}`;
+    return `@${context.name}`;
   }
 
   public formatEntries(map: Map<string, string>, block: any): string {

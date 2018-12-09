@@ -45,14 +45,14 @@ export class CountController extends BaseController<CountControllerData> impleme
 
   public async handle(cmd: Command): Promise<void> {
     const count = cmd.getHeadOrDefault(this.data.field.count, this.data.default.count);
-    const name = cmd.getHeadOrDefault(this.data.field.name, cmd.context.threadId);
+    const name = cmd.getHeadOrDefault(this.data.field.name, cmd.context.channel.thread);
 
     this.logger.debug({ count, counterName: name }, 'finding counter');
-    const counter = await this.findOrCreateCounter(name, cmd.context.roomId);
+    const counter = await this.findOrCreateCounter(name, cmd.context.channel.id);
 
     switch (count) {
       case 'ls':
-        const body = await this.listCounters(cmd.context.roomId);
+        const body = await this.listCounters(cmd.context.channel.id);
         await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, body));
         break;
       case '++':

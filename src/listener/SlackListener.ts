@@ -10,6 +10,7 @@ import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseListener } from './BaseListener';
 import { Listener } from './Listener';
+import { SessionListener } from './SessionListener';
 
 export interface SlackListenerData {
   token: string;
@@ -17,7 +18,7 @@ export interface SlackListenerData {
 
 export type SlackListenerOptions = ChildServiceOptions<SlackListenerData>;
 
-export class SlackListener extends BaseListener<SlackListenerData> implements Listener {
+export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected client: RTMClient;
   protected webClient: WebClient;
 
@@ -26,8 +27,8 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
   }
 
   public async send(msg: Message): Promise<void> {
-    if (msg.context.roomId) {
-      const result = await this.client.sendMessage(msg.body, msg.context.roomId);
+    if (msg.context.channel.id) {
+      const result = await this.client.sendMessage(msg.body, msg.context.channel.id);
       if (result.error) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
@@ -50,11 +51,11 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
     });
 
     this.client.on('message', (msg) => {
-      this.convertMessage(msg).then((it) => this.receive(it)).catch((err) => this.logger.error(err, 'error receiving message'));
+      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => this.logger.error(err, 'error receiving message'));
     });
 
     this.client.on('reaction_added', (reaction) => {
-      this.convertReaction(reaction).then((msg) => this.receive(msg)).catch((err) => this.logger.error(err, 'error adding reaction'));
+      this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => this.logger.error(err, 'error adding reaction'));
     });
 
     await this.client.start();
@@ -87,11 +88,13 @@ export class SlackListener extends BaseListener<SlackListenerData> implements Li
     const {type, channel, user, text, ts} = msg;
     this.logger.debug({ channel, text, ts, type, user }, 'converting slack message');
     const context = new Context({
-      listenerId: this.id,
-      roomId: channel,
-      threadId: '',
-      userId: user,
-      userName: user,
+      channel: {
+        id: channel,
+        thread: '',
+      },
+      name: user,
+      source: this,
+      uid: user,
     });
     return new Message({
       body: text,

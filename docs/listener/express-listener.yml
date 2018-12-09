@@ -9,3 +9,8 @@ data:
   listen:
     port: 4000
     address: "0.0.0.0"
+  token:
+    audience: test
+    issuer: test
+    scheme: isolex
+    secret: test-secret-foo

@@ -71,7 +71,7 @@ describeAsync('user filter', async () => {
 
     const cmd = new Command({
       context: ineeda<Context>({
-        userName: 'test',
+        name: 'test',
       }),
       data: {},
       labels: {},

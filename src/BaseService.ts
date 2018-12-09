@@ -1,7 +1,9 @@
+import { kebabCase } from 'lodash';
 import { Logger } from 'noicejs/logger/Logger';
 import * as uuid from 'uuid/v4';
 
 import { Service, ServiceOptions } from 'src/Service';
+
 import { dictToMap } from './utils/Map';
 
 export abstract class BaseService<TData> implements Service {
@@ -27,7 +29,7 @@ export abstract class BaseService<TData> implements Service {
     }
 
     this.logger = options.logger.child({
-      class: Reflect.getPrototypeOf(this).constructor.name,
+      kind: kebabCase(Reflect.getPrototypeOf(this).constructor.name),
       service: options.metadata.name,
     });
   }

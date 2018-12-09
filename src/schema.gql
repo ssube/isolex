@@ -20,11 +20,15 @@ input NameMultiValuePairInput {
   values: [String!]!
 }
 
+input ChannelInput {
+  id: String!
+  thread: String
+}
+
 input ContextInput {
-  roomId: String
-  threadId: String
-  userId: String
-  userName: String
+  channel: ChannelInput!
+  name: String!
+  uid: String!
 }
 
 input CommandInput {
@@ -57,7 +61,8 @@ type NameMultiValuePair {
   values: [String!]!
 }
 
-type Group {
+type Role {
+  grants: [String!]!
   id: String!
   name: String!
 }
@@ -65,24 +70,20 @@ type Group {
 type User {
   id: String!
   name: String!
-  groups: [Group!]
+  roles: [Role!]
 }
 
-type Session {
+type Channel {
   id: String!
-  listenerId: String!
-  user: User
-  userName: String!
+  thread: String
 }
 
 type Context {
+  channel: Channel!
   id: String!
-  listenerId: String!
-  roomId: String!
-  session: Session
-  threadId: String!
-  userId: String!
-  userName: String!
+  name: String!
+  uid: String!
+  user: User
 }
 
 type Fragment implements Labeled {

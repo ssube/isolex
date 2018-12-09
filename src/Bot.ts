@@ -1,5 +1,5 @@
 import { bindAll } from 'lodash';
-import { Container, Inject } from 'noicejs';
+import { Container, Inject, MissingValueError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger, LogLevel } from 'noicejs/logger/Logger';
 import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
@@ -135,6 +135,10 @@ export class Bot extends BaseService<BotData> implements Service {
   public async receive(msg: Message) {
     this.logger.debug({ msg }, 'received incoming message');
 
+    if (!msg.context.name || !msg.context.uid) {
+      throw new MissingValueError('msg context name and uid required');
+    }
+
     if (!await this.checkFilters(msg)) {
       this.logger.warn({ msg }, 'dropped incoming message due to filters');
       return;
@@ -145,10 +149,9 @@ export class Bot extends BaseService<BotData> implements Service {
       try {
         if (await parser.match(msg)) {
           matched = true;
+          this.logger.debug({ msg, parser: parser.name }, 'parsing message');
           const commands = await parser.parse(msg);
-          for (const cmd of commands) {
-            this.commands.next(cmd);
-          }
+          this.emitCommand(...commands);
         }
       } catch (err) {
         this.logger.error(err, 'error running parser');
@@ -187,6 +190,7 @@ export class Bot extends BaseService<BotData> implements Service {
     const results = [];
     for (const data of messages) {
       const msg = await this.storage.getRepository(Message).save(data);
+      this.logger.debug({ msg }, 'message saved');
       this.outgoing.next(msg);
       results.push(msg);
     }

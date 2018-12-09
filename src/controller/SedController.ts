@@ -33,8 +33,8 @@ export class SedController extends BaseController<SedControllerData> implements 
     let messages: Array<Message> = [];
     try {
       messages = await this.bot.fetch({
-        channel: cmd.context.roomId,
-        listenerId: cmd.context.listenerId,
+        channel: cmd.context.channel.id,
+        listenerId: cmd.context.source.id,
         useFilters: true,
       });
     } catch (error) {
@@ -52,7 +52,7 @@ export class SedController extends BaseController<SedControllerData> implements 
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
-    if (message.context.threadId === command.context.threadId) {
+    if (message.context.channel.thread === command.context.channel.thread) {
       return false;
     }
 

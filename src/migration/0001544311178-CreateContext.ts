@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class AddFragment0001543794891 implements MigrationInterface {
+import { TABLE_CONTEXT } from 'src/entity/Context';
+
+export class CreateContext0001544311178 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<any> {
     await query.createTable(new Table({
       columns: [{
@@ -8,29 +10,20 @@ export class AddFragment0001543794891 implements MigrationInterface {
         name: 'id',
         type: 'varchar',
       }, {
-        name: 'data',
+        name: 'channel',
         type: 'varchar',
       }, {
-        name: 'key',
+        name: 'name',
         type: 'varchar',
       }, {
-        name: 'labels',
-        type: 'varchar',
-      }, {
-        name: 'noun',
-        type: 'varchar',
-      }, {
-        name: 'parserId',
-        type: 'varchar',
-      }, {
-        name: 'verb',
+        name: 'uid',
         type: 'varchar',
       }],
-      name: 'fragment',
+      name: TABLE_CONTEXT,
     }));
   }
 
   public async down(query: QueryRunner): Promise<any> {
-    await query.dropTable('fragment');
+    await query.dropTable(TABLE_CONTEXT);
   }
 }

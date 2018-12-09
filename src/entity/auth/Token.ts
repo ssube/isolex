@@ -1,6 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-export interface TokenOptions {
+import { Session } from 'src/listener/SessionListener';
+
+import { DataEntity, DataEntityOptions } from '../base/DataEntity';
+import { User } from './User';
+
+export interface TokenOptions extends Session, DataEntityOptions<Array<string>> {
   audience: Array<string>;
   createdAt: number;
   expiresAt: number;
@@ -9,7 +14,7 @@ export interface TokenOptions {
 }
 
 @Entity()
-export class Token implements TokenOptions {
+export class Token extends DataEntity<Array<string>> implements TokenOptions {
   /**
    * `aud` (Audience) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.3
@@ -42,6 +47,8 @@ export class Token implements TokenOptions {
   /**
    * `iss` (Issuer) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.1
+   *
+   * listener identifier
    */
   @Column()
   public issuer: string;
@@ -49,11 +56,23 @@ export class Token implements TokenOptions {
   /**
    * `sub` (Subject) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.2
+   *
+   * userName
    */
   @Column()
   public subject: string;
 
+  @ManyToOne((type) => User, (user) => user.id, {
+    cascade: true,
+  })
+  @JoinColumn({
+    name: 'subject',
+  })
+  public user: User;
+
   constructor(options?: TokenOptions) {
+    super(options);
+
     if (options) {
       this.audience = options.audience;
       this.createdAt = options.createdAt;
@@ -61,5 +80,11 @@ export class Token implements TokenOptions {
       this.issuer = options.issuer;
       this.subject = options.subject;
     }
+  }
+
+  public toJSON(): object {
+    return {
+      id: this.id,
+    };
   }
 }

@@ -2,20 +2,24 @@ import * as express from 'express';
 import * as expressGraphQl from 'express-graphql';
 import { buildSchema } from 'graphql';
 import * as http from 'http';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
+import * as passport from 'passport';
+import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 import { Counter, Registry } from 'prom-client';
-import { Connection } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 
 import { ChildServiceOptions } from 'src/ChildService';
+import { Token } from 'src/entity/auth/Token';
+import { User } from 'src/entity/auth/User';
 import { Command } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
+import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { pairsToDict } from 'src/utils/Map';
 
-import { BaseListener } from './BaseListener';
 import { Listener } from './Listener';
+import { Session, SessionListener } from './SessionListener';
 
 const schema = buildSchema(require('../schema.gql'));
 
@@ -29,19 +33,26 @@ export interface ExpressListenerData {
     address: string;
     port: number;
   };
+  token: {
+    audience: string;
+    issuer: string;
+    scheme: string;
+    secret: string;
+  };
 }
 
 export type ExpressListenerOptions = ChildServiceOptions<ExpressListenerData>;
 
 @Inject('bot', 'metrics', 'services', 'storage')
-export class ExpressListener extends BaseListener<ExpressListenerData> implements Listener {
+export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
+  protected readonly app: express.Express;
+  protected readonly authenticator: passport.Authenticator;
   protected readonly metrics: Registry;
+  protected readonly requestCounter: Counter;
   protected readonly services: ServiceModule;
   protected readonly storage: Connection;
+  protected readonly tokenRepository: Repository<Token>;
 
-  protected requestCounter: Counter;
-
-  protected app: express.Express;
   protected server?: http.Server;
 
   constructor(options: ExpressListenerOptions) {
@@ -51,7 +62,25 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     this.services = options.services;
     this.storage = options.storage;
 
+    this.requestCounter = new Counter({
+      help: 'all requests through this express listener',
+      labelNames: ['serviceId', 'serviceKind', 'serviceName', 'requestClient', 'requestHost', 'requestPath'],
+      name: 'express_requests',
+      registers: [this.metrics],
+    });
+
+    this.tokenRepository = this.storage.getRepository(Token);
+
+    this.authenticator = new passport.Passport();
+    this.authenticator.use(new JwtStrategy({
+      audience: this.data.token.audience,
+      issuer: this.data.token.issuer,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
+      secretOrKey: this.data.token.secret,
+     }, (req: express.Request, payload: any, done: VerifiedCallback) => this.createTokenSession(req, payload, done)));
+
     this.app = express();
+    this.app.use(this.authenticator.initialize());
 
     if (this.data.expose.metrics) {
       this.app.use((req, res, next) => this.traceRequest(req, res, next));
@@ -63,8 +92,8 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
         graphiql: this.data.expose.graphiql,
         rootValue: {
           // mutation
-          emitCommands: (args: any) => this.emitCommands(args),
-          sendMessages: (args: any) => this.sendMessages(args),
+          emitCommands: (args: any, req: express.Request) => this.emitCommands(args, req),
+          sendMessages: (args: any, req: express.Request) => this.sendMessages(args, req),
           // query
           command: (args: any) => this.getCommand(args),
           message: (args: any) => this.getCommand(args),
@@ -83,13 +112,6 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
         res(server);
       });
     });
-
-    this.requestCounter = new Counter({
-      help: 'all requests through this express listener',
-      labelNames: ['serviceId', 'serviceKind', 'serviceName', 'requestClient', 'requestHost', 'requestPath'],
-      name: 'express_requests',
-      registers: [this.metrics],
-    });
   }
 
   public async stop() {
@@ -107,32 +129,36 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     return [];
   }
 
-  public emitCommands(args: any) {
+  public async emitCommands(args: any, req: express.Request) {
     this.logger.debug({ args }, 'emit command');
-    const commands = args.commands.map((data: any) => {
-      const { context = {}, labels: rawLabels, noun, verb } = data;
-      return new Command({
-        context: this.createContext(context),
+    const commands = [];
+    for (const data of args.commands) {
+      const { context: contextData = {}, labels: rawLabels, noun, verb } = data;
+      const context = await this.createContext(req, contextData);
+      commands.push(new Command({
+        context,
         data: args,
         labels: pairsToDict(rawLabels),
         noun,
         verb,
-      });
-    });
+      }));
+    }
     return this.bot.emitCommand(...commands);
   }
 
-  public sendMessages(args: any) {
+  public async sendMessages(args: any, req: express.Request) {
     this.logger.debug({ args }, 'send message');
-    const messages = args.messages.map((data: any) => {
-      const { body, context = {}, type } = data;
-      return new Message({
+    const messages = [];
+    for (const data of args.messages) {
+      const { body, context: contextData = {}, type } = data;
+      const context = await this.createContext(req, contextData);
+      messages.push(new Message({
         body,
-        context: this.createContext(context),
+        context,
         reactions: [],
         type,
-      });
-    });
+      }));
+    }
     return this.bot.sendMessage(...messages);
   }
 
@@ -171,7 +197,7 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     res.end(this.metrics.metrics());
   }
 
-  public traceRequest(req: express.Request, res: express.Response, next: Function) {
+  public async traceRequest(req: express.Request, res: express.Response, next: Function) {
     this.logger.debug({ req, res }, 'handling request');
     this.requestCounter.inc({
       requestClient: req.ip,
@@ -184,13 +210,34 @@ export class ExpressListener extends BaseListener<ExpressListenerData> implement
     next();
   }
 
-  protected createContext(args: any): Context {
+  protected async createTokenSession(req: express.Request, data: any, done: VerifiedCallback) {
+    const token = await this.tokenRepository.findOne(data);
+    if (isNil(token)) {
+      return done(undefined, false);
+    }
+
+    const session = await this.getOrCreateSession(token.user);
+    done(undefined, session);
+  }
+
+  protected async getOrCreateSession(user: User): Promise<Session> {
+    const session = await this.getSession(user.id);
+    if (isNil(session)) {
+      return this.createSession(user.id, user);
+    } else {
+      return session;
+    }
+  }
+
+  protected async createContext(req: express.Request, data: ContextData): Promise<Context> {
+    const session = req.user as Session | undefined;
+    const user = session ? session.user : undefined;
+
+    this.logger.debug({ data, req, session }, 'creating context for request');
     return new Context({
-      listenerId: this.id,
-      roomId: args.roomId || '',
-      threadId: args.threadId || '',
-      userId: args.userId || '',
-      userName: args.userName || '',
+        ...data,
+        source: this,
+        user,
     });
   }
 }

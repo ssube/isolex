@@ -12,9 +12,11 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Paths](#paths)
   - [Typescript](#typescript)
     - [Destructuring](#destructuring)
+    - [Entities](#entities)
     - [Exports](#exports)
     - [Imports](#imports)
       - [Order](#order)
+    - [Properties](#properties)
     - [Tests](#tests)
       - [Async](#async)
       - [Assertions](#assertions)
@@ -61,6 +63,8 @@ Messages are sent.
 
 ## Typescript
 
+Dictionary objects (`{...}`) must always be treated as immutable.
+
 ### Destructuring
 
 Destructuring is great, use it! Groups should be `{ spaced, out }` like imports (lint will warn about this, code can
@@ -69,6 +73,10 @@ fix it).
 Never nest destructuring. Defaults are ok.
 
 Prefer destructuring with default over `||`. For example, `const { foo = 3 } = bar;` over `const foo = bar.foo || 3;`.
+
+### Entities
+
+Always provide the table name as an exported constant and use it in `@Entity(TABLE_FOO)` and the migrations.
 
 ### Exports
 
@@ -91,6 +99,10 @@ Always `import { by, name }`, unless using a broken old library that required `i
 
 Ensure imports are sorted alphabetically, even within a single line. Your editor should be able to do this for you,
 because it is extremely tedious to do by hand.
+
+### Properties
+
+Object properties should not be nullable or optional unless absolutely needed. Prefer sensible defaults.
 
 ### Tests
 

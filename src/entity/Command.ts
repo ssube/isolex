@@ -20,8 +20,9 @@ export interface CommandOptions extends BaseCommandOptions {
 }
 
 export type CommandDataValue = Array<string>;
+export const TABLE_COMMAND = 'command';
 
-@Entity()
+@Entity(TABLE_COMMAND)
 export class Command extends BaseCommand implements CommandOptions {
   /**
    * @TODO: merge emit data and passed data
@@ -65,7 +66,7 @@ export class Command extends BaseCommand implements CommandOptions {
 
     const cmd = new Command(this);
     if (options.context) {
-      cmd.context = new Context(options.context);
+      cmd.context = options.context;
     }
     if (options.data) {
       cmd.data = mergeMap(cmd.data, dictToMap(options.data));
