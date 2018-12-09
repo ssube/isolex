@@ -37,7 +37,7 @@ describeAsync('context entity', async () => {
   });
 
   itAsync('should deny missing permissions', async () => {
-    const grants = ['foo:bar', 'if:else,elif:end'];
+    const grants = ['foo:bin', 'if:else,elif:end'];
     const context = new Context({
       channel: {
         id: '',
@@ -57,9 +57,9 @@ describeAsync('context entity', async () => {
 
     expect(context.permit([
       'foo:bar',
-    ])).to.equal(false);
+    ]), 'foo:bar grant').to.equal(false);
     expect(context.permit([
       'if:if:end',
-    ])).to.equal(false);
+    ]), 'if:if:end grant').to.equal(false);
   });
 });
