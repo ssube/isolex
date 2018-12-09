@@ -1,0 +1,19 @@
+metadata:
+  kind: args-parser
+  name: k8s_args
+data:
+  args:
+    required:
+      - noun
+      - verb
+  emit:
+    noun: pod
+    verb: get
+    labels:
+      test_k8s: test
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - regexp: !regexp /!!k8s/

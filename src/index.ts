@@ -40,22 +40,18 @@ declare const BUILD_RUNNER: string;
 declare const GIT_BRANCH: string;
 declare const GIT_COMMIT: string;
 declare const NODE_VERSION: string;
-declare const RUNNER_VERSION: string;
 declare const WEBPACK_VERSION: string;
 
 const VERSION_INFO = {
   build: {
     job: BUILD_JOB,
+    node: NODE_VERSION,
     runner: BUILD_RUNNER,
+    webpack: WEBPACK_VERSION,
   },
   git: {
     branch: GIT_BRANCH,
     commit: GIT_COMMIT,
-  },
-  version: {
-    node: NODE_VERSION,
-    runner: RUNNER_VERSION,
-    webpack: WEBPACK_VERSION,
   },
 };
 

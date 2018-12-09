@@ -8,8 +8,8 @@ import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { checkFilter, Filter, FilterValue } from 'src/filter/Filter';
-import { ContextFetchOptions, Listener } from 'src/listener/Listener';
+import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
+import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
@@ -285,7 +285,7 @@ export class Bot extends BaseService<BotData> implements Service {
   protected async startServices() {
     this.logger.info('setting up filters');
     for (const data of this.data.filters) {
-      this.filters.push(await this.services.createService<Filter, {}>(data));
+      this.filters.push(await this.services.createService<Filter, FilterData>(data));
     }
 
     this.logger.info('setting up controllers');
@@ -295,7 +295,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     this.logger.info('setting up listeners');
     for (const data of this.data.listeners) {
-      this.listeners.push(await this.services.createService<Listener, {}>(data));
+      this.listeners.push(await this.services.createService<Listener, ListenerData>(data));
     }
 
     this.logger.info('setting up parsers');

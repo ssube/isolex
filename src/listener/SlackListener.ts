@@ -1,6 +1,6 @@
 import { RTMClient, WebClient } from '@slack/client';
 import { isNil } from 'lodash';
-import { BaseError, logWithLevel } from 'noicejs';
+import { BaseError, Inject, logWithLevel } from 'noicejs';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
@@ -8,7 +8,6 @@ import { Message } from 'src/entity/Message';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-import { BaseListener } from './BaseListener';
 import { Listener } from './Listener';
 import { SessionListener } from './SessionListener';
 
@@ -18,6 +17,7 @@ export interface SlackListenerData {
 
 export type SlackListenerOptions = ChildServiceOptions<SlackListenerData>;
 
+@Inject('bot')
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected client: RTMClient;
   protected webClient: WebClient;

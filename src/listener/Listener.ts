@@ -14,7 +14,8 @@ export interface FetchOptions {
   id?: string;
 }
 
-export type ListenerOptions<TData> = ChildServiceOptions<TData>;
+export type ListenerData = any;
+export type ListenerOptions<TData extends ListenerData> = ChildServiceOptions<TData>;
 
 export interface ContextFetchOptions extends FetchOptions {
   listenerId: string;

@@ -1,3 +1,4 @@
+import { Inject } from 'noicejs';
 import * as yargs from 'yargs-parser';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
@@ -26,6 +27,7 @@ export interface ArgsParserData extends ParserData {
 
 export type ArgsParserOptions = ParserOptions<ArgsParserData>;
 
+@Inject('bot')
 export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   constructor(options: ArgsParserOptions) {
     super(options);

@@ -1,6 +1,6 @@
-import { isNil, isString } from 'lodash';
-import { Module, ModuleOptions, Provider, ProviderType, Provides } from 'noicejs';
-import { Container, Contract } from 'noicejs/Container';
+import { isNil } from 'lodash';
+import { Module, ModuleOptions, Provides } from 'noicejs';
+import { Container } from 'noicejs/Container';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { NotFoundError } from 'src/error/NotFoundError';
@@ -42,37 +42,6 @@ export class ServiceModule extends Module implements Service {
     await super.configure(options);
     this.container = options.container;
     this.logger.debug({ options }, 'configuring service module');
-  }
-
-  public get(contract: Contract<any>): Provider<any> {
-    // defer to normal module for decorator-provided
-    if (super.has(contract)) {
-      return super.get(contract);
-    }
-
-    if (isString(contract) && this.services.has(contract)) {
-      const value = this.services.get(contract);
-      if (isNil(value)) {
-        return {
-          type: ProviderType.None,
-          value: undefined,
-        };
-      } else {
-        return {
-          type: ProviderType.Instance,
-          value,
-        };
-      }
-    } else {
-      return {
-        type: ProviderType.None,
-        value: undefined,
-      };
-    }
-  }
-
-  public has(contract: Contract<any>): boolean {
-    return super.has(contract) || (isString(contract) && this.services.has(contract));
   }
 
   @Provides('services')
