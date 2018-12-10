@@ -8,4 +8,6 @@ data:
   sessionProvider:
     kind: auth-controller
     name: default-auth
-  token: !env ISOLEX_SLACK_TOKEN
+  token:
+    bot: !env ISOLEX_SLACK_TOKEN_BOT
+    web: !env ISOLEX_SLACK_TOKEN_WEB

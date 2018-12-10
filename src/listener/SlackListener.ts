@@ -5,6 +5,7 @@ import { BaseError, Inject, logWithLevel } from 'noicejs';
 import { ChildServiceOptions } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -12,7 +13,10 @@ import { Listener } from './Listener';
 import { SessionListener } from './SessionListener';
 
 export interface SlackListenerData {
-  token: string;
+  token: {
+    bot: string;
+    web: string;
+  };
 }
 
 export type SlackListenerOptions = ChildServiceOptions<SlackListenerData>;
@@ -46,9 +50,10 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async start() {
-    this.client = new RTMClient(this.data.token, {
+    this.client = new RTMClient(this.data.token.bot, {
       logger: (level, msg) => logWithLevel(this.logger, level, { msg }, 'slack client logged message'),
     });
+    this.webClient = new WebClient(this.data.token.web);
 
     this.client.on('message', (msg) => {
       this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => this.logger.error(err, 'error receiving message'));
@@ -65,22 +70,23 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     await this.client.disconnect();
   }
 
-  protected async convertReaction(msg: any): Promise<Message> {
+  protected async convertReaction(reaction: any): Promise<Message> {
+    this.logger.debug({ reaction }, 'converting slack reaction');
     const search = await this.webClient.channels.history({
-      channel: msg.item.channel,
+      channel: reaction.item.channel,
       inclusive: true,
-      latest: msg.item.ts,
-      oldest: msg.item.ts,
+      latest: reaction.item.ts,
+      oldest: reaction.item.ts,
     });
 
     if (!search.ok) {
-      // handle that
+      throw new NotFoundError('message not found for reaction');
     }
 
     const [head] = (search as any).messages;
     return this.convertMessage({
       ...head,
-      channel: msg.item.channel,
+      channel: reaction.item.channel,
     });
   }
 
