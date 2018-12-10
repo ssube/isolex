@@ -85,17 +85,21 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   protected async convertMessage(msg: any): Promise<Message> {
-    const {type, channel, user, text, ts} = msg;
-    this.logger.debug({ channel, text, ts, type, user }, 'converting slack message');
+    const {type, channel, user: uid, text, ts} = msg;
+    this.logger.debug({ channel, text, ts, type, uid }, 'converting slack message');
     const context = new Context({
       channel: {
         id: channel,
         thread: '',
       },
-      name: user,
+      name: uid,
       source: this,
-      uid: user,
+      uid,
     });
+    const session = await this.getSession(uid);
+    if (session) {
+      context.user = session.user;
+    }
     return new Message({
       body: text,
       context,

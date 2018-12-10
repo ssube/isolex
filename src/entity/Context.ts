@@ -140,8 +140,14 @@ export class Context implements ContextData {
    * @TODO: meaningful return value
    */
   public toJSON(): any {
+    const user = this.user ? this.user.toJSON() : {};
     return {
+      channel: this.channel,
       id: this.id,
+      name: this.name,
+      source: this.source.id,
+      uid: this.uid,
+      user,
     };
   }
 }
