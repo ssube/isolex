@@ -56,6 +56,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
     switch (cmd.verb) {
       case CommandVerb.Get:
         return this.getPermission(cmd);
+      case CommandVerb.List:
+        return this.listPermissions(cmd);
       default:
         await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
     }
@@ -102,6 +104,14 @@ export class AuthController extends BaseController<AuthControllerData> implement
     const permissions = cmd.get('permissions');
     const results = permissions.map((p) => {
       return `${p}: ${cmd.context.permit([p])}`;
+    }).join('\n');
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
+  }
+
+  public async listPermissions(cmd: Command): Promise<void> {
+    const permissions = cmd.get('permissions');
+    const results = permissions.map((p) => {
+      return `${p}: ${cmd.context.listPermissions([p])}`;
     }).join('\n');
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
   }

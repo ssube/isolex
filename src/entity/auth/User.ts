@@ -41,6 +41,7 @@ export class User extends BaseEntity implements UserOptions {
     return {
       id: this.id,
       name: this.name,
+      roles: this.roleNames,
     };
   }
 

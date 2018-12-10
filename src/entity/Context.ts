@@ -114,6 +114,20 @@ export class Context implements ContextData {
     });
   }
 
+  public listPermissions(permissions: Array<string>): Array<string> {
+    const userPermissions = this.getPermissions();
+    if (!userPermissions.length) {
+      return [];
+    }
+
+    const trie = newTrie();
+    trie.add(...userPermissions);
+    return flatten(permissions.map((p) => {
+      const result = trie.permissions(p);
+      return result;
+    }));
+  }
+
   public getPermissions(): Array<string> {
     if (this.user) {
       return flatten(this.user.roles.map((r) => r.grants));
