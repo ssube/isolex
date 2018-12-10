@@ -16,6 +16,7 @@ import { Controller, ControllerData, ControllerOptions } from './Controller';
 export const NOUN_PERMISSION = 'permission';
 export const NOUN_ROLE = 'role';
 export const NOUN_SESSION = 'session';
+export const NOUN_TOKEN = 'token';
 export const NOUN_USER = 'user';
 
 export type AuthControllerData = ControllerData;
@@ -29,7 +30,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
   protected userRepository: UserRepository;
 
   constructor(options: AuthControllerOptions) {
-    super(options, [NOUN_PERMISSION, NOUN_ROLE, NOUN_SESSION, NOUN_USER]);
+    super(options, [NOUN_PERMISSION, NOUN_ROLE, NOUN_SESSION, NOUN_TOKEN, NOUN_USER]);
 
     this.storage = options.storage;
     this.roleRepository = this.storage.getRepository(Role);
@@ -45,6 +46,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
         return this.handleRole(cmd);
       case NOUN_SESSION:
         return this.handleSession(cmd);
+      case NOUN_TOKEN:
+        return this.handleToken(cmd);
       case NOUN_USER:
         return this.handleUser(cmd);
       default:
@@ -76,6 +79,30 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }
   }
 
+  public async handleSession(cmd: Command): Promise<void> {
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createSession(cmd);
+      case CommandVerb.Get:
+        return this.getSession(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+    }
+  }
+
+  public async handleToken(cmd: Command): Promise<void> {
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createToken(cmd);
+      case CommandVerb.Get:
+        return this.getToken(cmd);
+      case CommandVerb.List:
+        return this.listTokens(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+    }
+  }
+
   public async handleUser(cmd: Command): Promise<void> {
     switch (cmd.verb) {
       case CommandVerb.Create:
@@ -84,17 +111,6 @@ export class AuthController extends BaseController<AuthControllerData> implement
         return this.getUser(cmd);
       case CommandVerb.Update:
         return this.updateUser(cmd);
-      default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
-    }
-  }
-
-  public async handleSession(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createSession(cmd);
-      case CommandVerb.Get:
-        return this.getSession(cmd);
       default:
         await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
     }
@@ -139,6 +155,54 @@ export class AuthController extends BaseController<AuthControllerData> implement
   public async listRoles(cmd: Command): Promise<void> {
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(roles)));
+  }
+
+  public async createToken(cmd: Command): Promise<void> {
+    if (!cmd.context.user) {
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must be logged in'));
+      return;
+    }
+
+    const grants = cmd.getOrDefault('grants', []);
+    const token = await this.tokenRepository.save(new Token({
+      audience: [],
+      createdAt: Date.now(),
+      data: {},
+      expiresAt: Date.now() + 6000,
+      grants,
+      issuer: this.id,
+      labels: {},
+      subject: cmd.context.uid,
+      user: cmd.context.user,
+    }));
+    const jwt = token.sign('test');
+
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(token)));
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, jwt));
+  }
+
+  public async getToken(cmd: Command): Promise<void> {
+    if (!cmd.context.token) {
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must provide token'));
+      return;
+    }
+
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(cmd.context.token)));
+  }
+
+  public async listTokens(cmd: Command): Promise<void> {
+    if (!cmd.context.user) {
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must be logged in'));
+      return;
+    }
+
+    const tokens = this.tokenRepository.find({
+      where: {
+        user: cmd.context.user,
+      },
+    });
+
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(tokens)));
   }
 
   public async createUser(cmd: Command): Promise<void> {

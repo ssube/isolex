@@ -1,3 +1,4 @@
+import { sign } from 'jsonwebtoken';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -10,6 +11,7 @@ export interface TokenOptions extends Session, DataEntityOptions<Array<string>> 
   audience: Array<string>;
   createdAt: number;
   expiresAt: number;
+  grants: Array<string>;
   issuer: string;
   subject: string;
 }
@@ -82,6 +84,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
       this.createdAt = options.createdAt;
       this.expiresAt = options.expiresAt;
       this.issuer = options.issuer;
+      this.grants = Array.from(options.grants);
       this.subject = options.subject;
     }
   }
@@ -94,6 +97,20 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
     const trie = newTrie();
     trie.add(...this.grants);
     return permissions.every((p) => trie.check(p));
+  }
+
+  /**
+   * Produce a JWT from this token.
+   */
+  public sign(secret: string) {
+    return sign(this.toJSON(), secret, {
+      audience: this.audience,
+      expiresIn: this.expiresAt - this.createdAt,
+      issuer: this.issuer,
+      jwtid: this.id,
+      notBefore: this.createdAt,
+      subject: this.subject,
+    });
   }
 
   public toJSON(): object {

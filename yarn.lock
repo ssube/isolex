@@ -298,7 +298,7 @@
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@types/jsonpath/-/jsonpath-0.2.0.tgz#13c62db22a34d9c411364fac79fd374d63445aa1"
 
-"@types/jsonwebtoken@*":
+"@types/jsonwebtoken@*", "@types/jsonwebtoken@^8.3.0":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.0.tgz#1fe79489df97b49273401ac3c8019cbf1dae4578"
   dependencies:
@@ -3333,7 +3333,7 @@ jsonpath@^1.0.0, jsonpath@~1.0:
     static-eval "2.0.0"
     underscore "1.7.0"
 
-jsonwebtoken@^8.2.0:
+jsonwebtoken@^8.2.0, jsonwebtoken@^8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.4.0.tgz#8757f7b4cb7440d86d5e2f3becefa70536c8e46a"
   dependencies:

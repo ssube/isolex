@@ -20,6 +20,9 @@ export class CreateToken0001544317462 implements MigrationInterface {
         name: 'expiresAt',
         type: 'int',
       }, {
+        name: 'grants',
+        type: 'varchar',
+      }, {
         name: 'issuer',
         type: 'varchar',
       }, {
