@@ -61,23 +61,33 @@ type NameMultiValuePair {
   values: [String!]!
 }
 
+"RBAC role"
 type Role {
+  "Shiro-style role grants"
   grants: [String!]!
+  "Universally-unique role ID"
   id: String!
+  "Unique role name"
   name: String!
 }
 
+"RBAC user"
 type User {
+  "Universally-unique user ID"
   id: String!
+  "Unique user name"
   name: String!
+  "Role IDs"
   roles: [Role!]
 }
 
+"Context channel and thread data"
 type Channel {
   id: String!
   thread: String
 }
 
+"Context data for a passing event"
 type Context {
   channel: Channel!
   id: String!
@@ -86,6 +96,7 @@ type Context {
   user: User
 }
 
+"Command fragment for later completion"
 type Fragment implements Labeled {
   data: [NameMultiValuePair!]!
   id: String!
@@ -94,6 +105,7 @@ type Fragment implements Labeled {
   parserId: String!
 }
 
+"Command for execution by the bot"
 type Command implements Labeled {
   data: [NameMultiValuePair!]!
   id: String!
@@ -102,6 +114,7 @@ type Command implements Labeled {
   verb: String!
 }
 
+"Message to be parsed or sent by the bot"
 type Message implements Labeled {
   body: String
   context: Context
@@ -111,6 +124,7 @@ type Message implements Labeled {
   type: String!
 }
 
+"Service within the bot"
 type Service implements Labeled {
   id: String!
   kind: String!

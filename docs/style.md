@@ -12,6 +12,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Paths](#paths)
   - [Typescript](#typescript)
     - [Arrays](#arrays)
+    - [Arrow Functions ("lambdas")](#arrow-functions-%22lambdas%22)
     - [Constructors](#constructors)
     - [Destructuring](#destructuring)
     - [Entities](#entities)
@@ -34,13 +35,15 @@ Write it!
 ### Headers
 
 Make sure headers are unique. Duplicate headers will not link correctly and are not helpful. When in doubt, include
-the previous header: `### Documentation Headers`
+the previous header:
+
+`### Documentation Headers`
 
 ### Table of Contents
 
 Create a table of contents for any document with more than three headers.
 
-Always keep the table of contents up to date.
+Always keep the table of contents up to date. The VS Code markdown plugin can handle this.
 
 ## Naming
 
@@ -75,6 +78,14 @@ Dictionary objects (`{...}`) must always be treated as immutable.
 Always use generic array types (`Array<Foo>`).
 
 Declare empty arrays with `[]`.
+
+### Arrow Functions ("lambdas")
+
+Always use parentheses around arrow function parameters, even when there is only one, and *especially* when there are
+none.
+
+If the body is a single statement or fits well on a single line, braces can usually be omitted. If the body returns
+an object literal or needs more than one line (excluding nested object literals), braces and return should be used.
 
 ### Constructors
 

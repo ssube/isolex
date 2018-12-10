@@ -10,6 +10,7 @@ data:
     array: [foo]
     boolean: [bar]
     count: [v]
+    required: []
   emit:
     noun: test_echo
     verb: get
