@@ -186,17 +186,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       return done(undefined, false);
     }
 
-    const session = await this.getOrCreateSession(token.user);
-    done(undefined, session);
-  }
-
-  protected async getOrCreateSession(user: User): Promise<Session> {
-    const session = await this.getSession(user.id);
-    if (isNil(session)) {
-      return this.createSession(user.id, user);
-    } else {
-      return session;
-    }
+    const session = await this.createSession(token.user.id, token.user);
+    done(null, session);
   }
 
   protected async createContext(req: express.Request, data: ContextData): Promise<Context> {

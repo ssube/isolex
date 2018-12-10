@@ -19,7 +19,14 @@ export const NOUN_SESSION = 'session';
 export const NOUN_TOKEN = 'token';
 export const NOUN_USER = 'user';
 
-export type AuthControllerData = ControllerData;
+export interface AuthControllerData extends ControllerData {
+  token: {
+    audience: Array<string>;
+    issuer: string;
+    secret: string;
+  };
+}
+
 export type AuthControllerOptions = ControllerOptions<AuthControllerData>;
 
 @Inject('bot', 'storage')
@@ -165,17 +172,17 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     const grants = cmd.getOrDefault('grants', []);
     const token = await this.tokenRepository.save(new Token({
-      audience: [],
+      audience: this.data.token.audience,
       createdAt: Date.now(),
       data: {},
       expiresAt: Date.now() + 6000,
       grants,
-      issuer: this.id,
+      issuer: this.data.token.issuer,
       labels: {},
       subject: cmd.context.uid,
       user: cmd.context.user,
     }));
-    const jwt = token.sign('test');
+    const jwt = token.sign(this.data.token.secret);
 
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(token)));
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, jwt));

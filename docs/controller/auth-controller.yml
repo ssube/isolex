@@ -1,4 +1,8 @@
 metadata:
   kind: auth-controller
   name: default-auth
-data: {}
+data:
+  token:
+    audience: [test]
+    issuer: test
+    secret: test-secret-foo
