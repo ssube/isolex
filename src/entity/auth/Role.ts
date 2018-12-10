@@ -15,7 +15,7 @@ export class Role implements RoleOptions {
   })
   public name: string;
 
-  @Column('simple-array')
+  @Column('simple-json')
   public grants: Array<string>;
 
   constructor(options?: RoleOptions) {

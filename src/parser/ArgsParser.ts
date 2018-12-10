@@ -6,7 +6,7 @@ import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Dict, dictToMap, dictValuesToArrays, mergeMap } from 'src/utils/Map';
+import { Dict, dictToMap, dictValuesToArrays, getHeadOrDefault, mergeMap } from 'src/utils/Map';
 
 import { BaseParser } from './BaseParser';
 import { Parser, ParserData, ParserOptions } from './Parser';
@@ -93,12 +93,15 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   }
 
   protected async emitCommand(context: Context, data: Map<string, Array<string>>): Promise<Array<Command>> {
+    const noun = getHeadOrDefault(data, 'noun', this.data.emit.noun);
+    const verb = getHeadOrDefault(data, 'verb', this.data.emit.verb) as CommandVerb;
+
     return [new Command({
       context,
       data,
       labels: this.data.emit.labels,
-      noun: this.data.emit.noun,
-      verb: this.data.emit.verb,
+      noun,
+      verb,
     })];
   }
 }

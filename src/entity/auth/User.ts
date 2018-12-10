@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity } from 'src/entity/base/BaseEntity';
+
 import { Role } from './Role';
 
 export interface UserOptions {
@@ -18,7 +19,12 @@ export class User extends BaseEntity implements UserOptions {
   })
   public name: string;
 
-  @Column('simple-array')
+  @Column({
+    name: 'roles',
+    type: 'simple-json',
+  })
+  public roleNames: Array<string>;
+
   public roles: Array<Role>;
 
   constructor(options?: UserOptions) {
@@ -27,6 +33,7 @@ export class User extends BaseEntity implements UserOptions {
     if (options) {
       this.name = options.name;
       this.roles = Array.from(options.roles);
+      this.syncRoles();
     }
   }
 
@@ -34,7 +41,12 @@ export class User extends BaseEntity implements UserOptions {
     return {
       id: this.id,
       name: this.name,
-      roles: Array.from(this.roles),
     };
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  protected syncRoles() {
+    this.roleNames = this.roles.map((it) => it.name);
   }
 }

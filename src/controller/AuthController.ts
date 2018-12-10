@@ -5,14 +5,16 @@ import { Connection, In, Repository } from 'typeorm';
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
 import { User } from 'src/entity/auth/User';
+import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
 
+export const NOUN_PERMISSION = 'permission';
+export const NOUN_ROLE = 'role';
 export const NOUN_SESSION = 'session';
 export const NOUN_USER = 'user';
 
@@ -24,19 +26,23 @@ export class AuthController extends BaseController<AuthControllerData> implement
   protected storage: Connection;
   protected roleRepository: Repository<Role>;
   protected tokenRepository: Repository<Token>;
-  protected userRepository: Repository<User>;
+  protected userRepository: UserRepository;
 
   constructor(options: AuthControllerOptions) {
-    super(options, [NOUN_SESSION, NOUN_USER]);
+    super(options, [NOUN_PERMISSION, NOUN_ROLE, NOUN_SESSION, NOUN_USER]);
 
     this.storage = options.storage;
     this.roleRepository = this.storage.getRepository(Role);
     this.tokenRepository = this.storage.getRepository(Token);
-    this.userRepository = this.storage.getRepository(User);
+    this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
   public async handle(cmd: Command): Promise<void> {
     switch (cmd.noun) {
+      case NOUN_PERMISSION:
+        return this.handlePermission(cmd);
+      case NOUN_ROLE:
+        return this.handleRole(cmd);
       case NOUN_SESSION:
         return this.handleSession(cmd);
       case NOUN_USER:
@@ -46,12 +52,36 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }
   }
 
+  public async handlePermission(cmd: Command): Promise<void> {
+    switch (cmd.verb) {
+      case CommandVerb.Get:
+        return this.getPermission(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+    }
+  }
+
+  public async handleRole(cmd: Command): Promise<void> {
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createRole(cmd);
+      case CommandVerb.Get:
+        return this.getRole(cmd);
+      case CommandVerb.List:
+        return this.listRoles(cmd);
+      default:
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+    }
+  }
+
   public async handleUser(cmd: Command): Promise<void> {
     switch (cmd.verb) {
       case CommandVerb.Create:
         return this.createUser(cmd);
       case CommandVerb.Get:
         return this.getUser(cmd);
+      case CommandVerb.Update:
+        return this.updateUser(cmd);
       default:
         await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
     }
@@ -68,54 +98,101 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }
   }
 
+  public async getPermission(cmd: Command): Promise<void> {
+    const permissions = cmd.get('permissions');
+    const results = permissions.map((p) => {
+      return `${p}: ${cmd.context.permit([p])}`;
+    }).join('\n');
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
+  }
+
+  public async createRole(cmd: Command): Promise<void> {
+    const name = cmd.getHead('name');
+    const grants = cmd.get('grants');
+    const role = await this.roleRepository.insert({
+      grants,
+      name,
+    });
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(role)));
+  }
+
+  public async getRole(cmd: Command): Promise<void> {
+    const name = cmd.get('name');
+    const role = await this.roleRepository.findOne({
+      where: {
+        name,
+      },
+    });
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(role)));
+  }
+
+  public async listRoles(cmd: Command): Promise<void> {
+    const roles = await this.roleRepository.createQueryBuilder('role').getMany();
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(roles)));
+  }
+
   public async createUser(cmd: Command): Promise<void> {
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'creating user');
+
     const roles = await this.roleRepository.find({
       where: {
         name: In(roleNames),
       },
     });
-    const user = await this.userRepository.save(this.userRepository.create({
+    this.logger.debug({ roles }, 'found roles');
+
+    const user = await this.userRepository.save(new User({
       name,
       roles,
     }));
-
     this.logger.debug({ user }, 'created user');
+
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
-    return;
-  }
-
-  public async createSession(cmd: Command): Promise<void> {
-    const userName = cmd.getHeadOrDefault('name', cmd.context.name);
-    const user = await this.userRepository.findOne({
-      name: userName,
-    });
-
-    if (isNil(user)) {
-      this.logger.warn({ userName }, 'user not found for new session');
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'user not found'));
-      return;
-    }
-
-    this.logger.debug({ user }, 'logging in user');
-    const session = await cmd.context.source.createSession(cmd.context.uid, user);
-
-    this.logger.debug({ session, user, userName }, 'created session');
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'created session'));
-    return;
   }
 
   public async getUser(cmd: Command): Promise<void> {
-    const { token } = cmd.context;
-    if (isNil(token)) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'session does not exist'));
-      return;
-    }
+    const name = cmd.getHead('name');
+    const user = await this.userRepository.findOneOrFail({
+      where: {
+        name,
+      },
+    });
+    await this.userRepository.loadRoles(user);
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, JSON.stringify(user)));
+  }
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, token.user.name));
-    return;
+  public async updateUser(cmd: Command): Promise<void> {
+    const name = cmd.getHeadOrDefault('name', cmd.context.name);
+    const roleNames = cmd.getOrDefault('roles', []);
+    this.logger.debug({ name, roles: roleNames }, 'updating user');
+    const user = await this.userRepository.findOneOrFail({
+      where: {
+        name,
+      },
+    });
+    const roles = await this.roleRepository.find({
+      where: {
+        name: In(roleNames),
+      },
+    });
+    user.roles = roles;
+    const updatedUser = await this.userRepository.save(user);
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(updatedUser)));
+  }
+
+  public async createSession(cmd: Command): Promise<void> {
+    const name = cmd.getHeadOrDefault('name', cmd.context.name);
+    const user = await this.userRepository.findOneOrFail({
+      name,
+    });
+    await this.userRepository.loadRoles(user);
+    this.logger.debug({ user }, 'logging in user');
+
+    const session = await cmd.context.source.createSession(cmd.context.uid, user);
+    this.logger.debug({ session, user, userName: name }, 'created session');
+    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'created session'));
   }
 
   public async getSession(cmd: Command): Promise<void> {
@@ -126,12 +203,5 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }
 
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, session.toString()));
-  }
-
-  /**
-   * Check a set of shiro-style permissions
-   */
-  public async checkPermissions(ctx: Context, perms: Array<string>): Promise<boolean> {
-    return false;
   }
 }

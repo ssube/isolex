@@ -25,6 +25,10 @@ export class ServiceModule extends Module implements Service {
     this.services = new Map();
   }
 
+  public get size(): number {
+    return this.services.size;
+  }
+
   public async start() {
     for (const svc of this.services.values()) {
       await svc.start();

@@ -20,7 +20,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * `aud` (Audience) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.3
    */
-  @Column('simple-array')
+  @Column('simple-json')
   public audience: Array<string>;
 
   /**
@@ -38,7 +38,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   @Column()
   public expiresAt: number;
 
-  @Column('simple-array')
+  @Column('simple-json')
   public grants: Array<string>;
 
   /**

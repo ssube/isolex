@@ -41,7 +41,7 @@ export class Message extends LabelEntity implements MessageOptions {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @Column('simple-array')
+  @Column('simple-json')
   public reactions: Array<string>;
 
   /**

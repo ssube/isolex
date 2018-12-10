@@ -205,9 +205,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
     this.logger.debug({ data, req, session }, 'creating context for request');
     return new Context({
-        ...data,
-        source: this,
-        user,
+      ...data,
+      source: this,
+      user,
     });
   }
 
@@ -227,17 +227,23 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }
 
     if (this.data.expose.graph) {
+      const mutations = {
+        // mutation
+        emitCommands: (args: any, req: express.Request) => this.emitCommands(args, req),
+        sendMessages: (args: any, req: express.Request) => this.sendMessages(args, req),
+      };
+      const queries = {
+        // query
+        command: (args: any) => this.getCommand(args),
+        message: (args: any) => this.getCommand(args),
+        service: (args: any) => this.getService(args),
+        services: () => this.getServices(),
+      };
       this.app.use('/graph', expressGraphQl({
         graphiql: this.data.expose.graphiql,
         rootValue: {
-          // mutation
-          emitCommands: (args: any, req: express.Request) => this.emitCommands(args, req),
-          sendMessages: (args: any, req: express.Request) => this.sendMessages(args, req),
-          // query
-          command: (args: any) => this.getCommand(args),
-          message: (args: any) => this.getCommand(args),
-          service: (args: any) => this.getService(args),
-          services: () => this.getServices(),
+          ...mutations,
+          ...queries,
         },
         schema,
       }));
