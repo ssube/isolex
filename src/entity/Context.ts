@@ -93,42 +93,36 @@ export class Context implements ContextData {
 
   /**
    * Check if a set of Shiro-style permissions have been granted to this context. This will check both the
-   * token and user, if available, and permissions must appear in both (so that the grants on a token restrict the
-   * grants on a user). If neither is present, permissions are simply denied.
+   * token and user, if available, and grants must appear in both (so that the grants on a token restrict the
+   * grants on a user).
    */
-  public permit(permissions: Array<string>): boolean {
-    if (this.token && !this.token.permit(permissions)) {
+  public checkGrants(checks: Array<string>): boolean {
+    if (this.token && !this.token.permit(checks)) {
       return false;
     }
 
-    const userPermissions = this.getPermissions();
-    if (!userPermissions.length) {
+    const grants = this.getGrants();
+    if (!grants.length) {
       return false;
     }
 
     const trie = newTrie();
-    trie.add(...userPermissions);
-    return permissions.every((p) => {
-      const result = trie.check(p);
-      return result;
-    });
+    trie.add(...grants);
+    return checks.every((p) => trie.check(p));
   }
 
-  public listPermissions(permissions: Array<string>): Array<string> {
-    const userPermissions = this.getPermissions();
-    if (!userPermissions.length) {
+  public listGrants(checks: Array<string>): Array<string> {
+    const grants = this.getGrants();
+    if (!grants.length) {
       return [];
     }
 
     const trie = newTrie();
-    trie.add(...userPermissions);
-    return flatten(permissions.map((p) => {
-      const result = trie.permissions(p);
-      return result;
-    }));
+    trie.add(...grants);
+    return flatten(checks.map((p) => trie.permissions(p)));
   }
 
-  public getPermissions(): Array<string> {
+  public getGrants(): Array<string> {
     if (this.user) {
       return flatten(this.user.roles.map((r) => r.grants));
     } else {

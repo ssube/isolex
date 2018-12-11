@@ -126,7 +126,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
   public async getPermission(cmd: Command): Promise<void> {
     const permissions = cmd.get('permissions');
     const results = permissions.map((p) => {
-      return `${p}: \`${cmd.context.permit([p])}\``;
+      return `${p}: \`${cmd.context.checkGrants([p])}\``;
     }).join('\n');
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
   }
@@ -134,7 +134,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
   public async listPermissions(cmd: Command): Promise<void> {
     const permissions = cmd.get('permissions');
     const results = permissions.map((p) => {
-      return `${p}: \`${cmd.context.listPermissions([p])}\``;
+      return `${p}: \`${cmd.context.listGrants([p])}\``;
     }).join('\n');
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
   }

@@ -181,12 +181,15 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   protected async createTokenSession(req: express.Request, data: any, done: VerifiedCallback) {
+    this.logger.debug({ data, req }, 'finding token for request payload');
     const token = await this.tokenRepository.findOne(data);
     if (isNil(token)) {
+      this.logger.warn('token not found');
       return done(undefined, false);
     }
 
     const session = await this.createSession(token.user.id, token.user);
+    this.logger.debug({ session }, 'created session for token');
     done(null, session);
   }
 

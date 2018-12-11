@@ -28,8 +28,8 @@ describeAsync('context entity', async () => {
       }),
     });
 
-    expect(context.getPermissions()).to.deep.equal(grants);
-    expect(context.permit([
+    expect(context.getGrants()).to.deep.equal(grants);
+    expect(context.checkGrants([
       'foo:bar',
       'if:else:end',
       'if:elif:end',
@@ -55,10 +55,10 @@ describeAsync('context entity', async () => {
       }),
     });
 
-    expect(context.permit([
+    expect(context.checkGrants([
       'foo:bar',
     ]), 'foo:bar grant').to.equal(false);
-    expect(context.permit([
+    expect(context.checkGrants([
       'if:if:end',
     ]), 'if:if:end grant').to.equal(false);
   });

@@ -28,7 +28,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
     this.logger.debug({ cmd }, 'echoing command');
 
     const data = Message.reply(cmd.context, TYPE_TEXT, cmd.toString());
-    const msgs = await this.transform(cmd, data);
-    await this.bot.sendMessage(...msgs);
+    const messages = await this.transform(cmd, data);
+    await this.bot.sendMessage(...messages);
   }
 }
