@@ -7,6 +7,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Headers](#headers)
     - [Table of Contents](#table-of-contents)
   - [Naming](#naming)
+    - [Abbreviations](#abbreviations)
     - [Commands](#commands)
     - [Messages](#messages)
   - [Paths](#paths)
@@ -21,8 +22,10 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Generics](#generics)
     - [Imports](#imports)
       - [Order](#order)
+    - [Null](#null)
     - [Properties](#properties)
     - [Return Types](#return-types)
+    - [Ternaries](#ternaries)
     - [Tests](#tests)
       - [Async](#async)
       - [Assertions](#assertions)
@@ -47,13 +50,29 @@ Always keep the table of contents up to date. The VS Code markdown plugin can ha
 
 ## Naming
 
+### Abbreviations
+
+There are a few long class names and commonly-abbreviated terms in use. In order to keep variable names and issues
+consistent, the following should be used:
+
+| long       | short | plural      | avoid |
+|------------|-------|-------------|-------|
+| message    | msg   | messages    | msgs  |
+| command    | cmd   | commands    | cmds  |
+| context    | ctx   | contexts    |       |
+| controller | ctrl  | controllers |       |
+| listener   | lstn  | listeners   |       |
+| transform  | xfmr  | transforms  |       |
+
+If a class or entity does not appear here (such as user, role, and token), please do not shorten it unnecessarily.
+
 ### Commands
 
-Commands are emitted or executed. (TODO: decide)
+Commands are executed and received.
 
 ### Messages
 
-Messages are sent.
+Messages are sent and received.
 
 ## Paths
 
@@ -71,21 +90,26 @@ Messages are sent.
 
 ## Typescript
 
-Dictionary objects (`{...}`) must always be treated as immutable.
+Dictionary objects (`{...}`) SHOULD always be treated as immutable and MUST never have properties added after being
+declared. If the properties may be undefined, they SHOULD be declared with `?: types`.
+
+If the shape of the object is unknown or variable, it MUST be declared with the `Dict` type and treated as an index-
+only object (no `.property` access). These SHOULD be converted into `Map`s, `Set`s, or another proper collection as
+soon as possible.
 
 ### Arrays
 
-Always use generic array types (`Array<Foo>`).
+Arrays MUST use generic types (`Array<Foo>`). The `Foo[]` types do not always nest correctly.
 
-Declare empty arrays with `[]`.
+Empty arrays MUST be declared with `[]`.
 
 ### Arrow Functions ("lambdas")
 
-Always use parentheses around arrow function parameters, even when there is only one, and *especially* when there are
-none.
+Arrow function parameters MUST use parentheses, even when there is only one, and *especially* when there are none.
 
-If the body is a single statement or fits well on a single line, braces can usually be omitted. If the body returns
-an object literal or needs more than one line (excluding nested object literals), braces and return should be used.
+If the body is a single statement, a function call, or otherwise fits well on a single line, braces SHOULD be omitted.
+If the body returns an object literal or needs more than one line (excluding nested object literals), braces
+MUST be used.
 
 ### Constructors
 
@@ -97,12 +121,12 @@ This ensures that injected dependencies from the bot and service module will be 
 
 ### Destructuring
 
-Destructuring is great, use it! Groups should be `{ spaced, out }` like imports (lint will warn about this, code can
+Destructuring is great and SHOULD be used. Braces MUST be `{ spaced, out }` (lint will warn about this, VS Code can
 fix it).
 
-Never nest destructuring. Defaults are ok.
+Destructuring MUST NOT be nested.
 
-Prefer destructuring with default over `||`. For example, `const { foo = 3 } = bar;` over `const foo = bar.foo || 3;`.
+Default values SHOULD be used instead `||`. For example, `const { foo = 3 } = bar;` over `const foo = bar.foo || 3;`.
 
 ### Entities
 
@@ -110,26 +134,30 @@ Always provide the table name as an exported constant and use it in `@Entity(TAB
 
 ### Errors
 
-Throw must always throw a `new BaseError` or something which inherits from `BaseError`.
+Throw must always throw a new instance of `BaseError` or something which inherits from `BaseError`.
+
+Error messages must be literals and should not use template strings (although they may if the values are limited, like
+HTTP error codes). Errors may pass nested errors from other libraries, the stack trace should show everything.
 
 ### Exports
 
-Never use default exports.
-
-Do not ever `export default` anything ever.
+Modules MUST NOT use default exports (`export default`) or export a single symbol (`export =`).
 
 ### Generics
 
-Always use generic arrays (see [arrays](#arrays)).
+Array types MUST use generic arrays (see [arrays](#arrays)).
 
-Generic type names should start with `T` and have some meaningful name, like any other variable. For example: `TData`,
-`TConfig`, `TKey` and `TValue`.
+Generic type names MUST start with `T` and SHOULD have a somewhat meaningful name. For example: `TData`, `TConfig`,
+`TKey` and `TValue`.
 
 ### Imports
 
-Never use `../` imports. Use `src/` or `test/` instead. Local `./` imports _are_ allowed.
+Imports MUST NOT start with `../`. Use `src/` or `test/` instead. Imports MAY start with `./`.
 
-Always `import { by, name }`, unless using a broken old library that required `import * as foo`.
+Imports MUST use destructuring (`import { by, name }`) and MAY rename imports. When using a broken old library, it may
+be necessary to `import * as foo`, but destructuring should still be used if possible.
+
+Long imports MUST be broken across lines as if they were object literals.
 
 #### Order
 
@@ -138,18 +166,33 @@ Always `import { by, name }`, unless using a broken old library that required `i
 1. `test/`
 1. `./`
 
-Ensure imports are sorted alphabetically, even within a single line. Your editor should be able to do this for you,
+Imports MUST be sorted alphabetically, even within a single line. Your editor should be able to do this for you,
 because it is extremely tedious to do by hand.
+
+### Null
+
+Null MUST NOT be used.
+
+Null SHOULD NOT exist.
 
 ### Properties
 
-Object properties should not be nullable or optional unless absolutely needed. Prefer sensible defaults.
+Object properties SHOULD NOT be optional (`?: type` or `| undefined`) unless necessary. Prefer sensible defaults. This
+sort of doesn't apply to entities, though.
+
+Properties MUST NOT be nullable (`| null` or set to `null`).
 
 ### Return Types
 
-Be consistent with return types.
+Be consistent with return types. If one method returns a promise, there's a good chance they all do.
 
 Prefer `Array<Foo>` over `Foo | undefined`. If you can return 0 of them, you can probably return 2.
+
+### Ternaries
+
+Ternaries SHOULD NOT be used, but MAY be used with `return` or assignments.
+
+Ternaries MUST NOT be nested.
 
 ### Tests
 
