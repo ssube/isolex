@@ -11,8 +11,8 @@ import { Message } from 'src/entity/Message';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
-import { Controller, ControllerData, ControllerOptions } from './Controller';
 import { NOUN_FRAGMENT } from './CompletionController';
+import { Controller, ControllerData, ControllerOptions } from './Controller';
 
 const MSG_SESSION_REQUIRED = 'must be logged in';
 
@@ -236,7 +236,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       }
     } else {
       if (!cmd.context.token) {
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must provide token'));
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'session must be provided by a token'));
         return;
       }
 
@@ -250,9 +250,9 @@ export class AuthController extends BaseController<AuthControllerData> implement
       return;
     }
 
-    const tokens = this.tokenRepository.find({
+    const tokens = await this.tokenRepository.find({
       where: {
-        user: cmd.context.user,
+        subject: Equal(cmd.context.user.id),
       },
     });
 
