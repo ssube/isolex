@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, In, Repository } from 'typeorm';
+import { Connection, Equal, In, Repository } from 'typeorm';
 
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
@@ -12,6 +12,9 @@ import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
+import { NOUN_FRAGMENT } from './CompletionController';
+
+const MSG_SESSION_REQUIRED = 'must be logged in';
 
 export const NOUN_PERMISSION = 'permission';
 export const NOUN_ROLE = 'role';
@@ -102,6 +105,8 @@ export class AuthController extends BaseController<AuthControllerData> implement
     switch (cmd.verb) {
       case CommandVerb.Create:
         return this.createToken(cmd);
+      case CommandVerb.Delete:
+        return this.deleteTokens(cmd);
       case CommandVerb.Get:
         return this.getToken(cmd);
       case CommandVerb.List:
@@ -167,7 +172,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
   public async createToken(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must be logged in'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, MSG_SESSION_REQUIRED));
       return;
     }
 
@@ -188,6 +193,34 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(token)));
     await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, jwt));
+  }
+
+  public async deleteTokens(cmd: Command): Promise<void> {
+    if (!cmd.context.user) {
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, MSG_SESSION_REQUIRED));
+      return;
+    }
+
+    if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
+      await this.bot.emitCommand(new Command({
+        context: cmd.context,
+        data: {},
+        labels: {},
+        noun: NOUN_FRAGMENT,
+        verb: CommandVerb.Create,
+      }));
+      return;
+    }
+
+    const results = await this.tokenRepository.delete({
+      user: Equal(cmd.context.user),
+    });
+
+    if (results.affected) {
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `deleted ${results.affected} tokens`));
+    } else {
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `no tokens deleted`));
+    }
   }
 
   public async getToken(cmd: Command): Promise<void> {
@@ -213,7 +246,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
   public async listTokens(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must be logged in'));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, MSG_SESSION_REQUIRED));
       return;
     }
 
