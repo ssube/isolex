@@ -186,7 +186,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       grants,
       issuer: this.data.token.issuer,
       labels: {},
-      subject: cmd.context.uid,
+      subject: cmd.context.user.id,
       user: cmd.context.user,
     }));
     const jwt = token.sign(this.data.token.secret);
