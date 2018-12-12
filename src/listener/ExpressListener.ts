@@ -11,7 +11,6 @@ import { Connection, Repository } from 'typeorm';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Token } from 'src/entity/auth/Token';
-import { User } from 'src/entity/auth/User';
 import { Command } from 'src/entity/Command';
 import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -188,16 +187,18 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       return done(undefined, false);
     }
 
-    const session = await this.createSession(token.user.id, token.user);
+    const session = token.session();
+    this.sessions.set(token.id, session);
     this.logger.debug({ session }, 'created session for token');
+
     done(null, session);
   }
 
   protected async createContext(req: express.Request, data: ContextData): Promise<Context> {
     const session = req.user as Session | undefined;
     const user = session ? session.user : undefined;
-
     this.logger.debug({ data, req, session }, 'creating context for request');
+
     return new Context({
       ...data,
       source: this,

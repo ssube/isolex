@@ -22,6 +22,7 @@ export const NOUN_USER = 'user';
 export interface AuthControllerData extends ControllerData {
   token: {
     audience: Array<string>;
+    duration: number;
     issuer: string;
     secret: string;
   };
@@ -171,11 +172,12 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }
 
     const grants = cmd.getOrDefault('grants', []);
+    const now = Math.floor(Date.now() / 1000);
     const token = await this.tokenRepository.save(new Token({
       audience: this.data.token.audience,
-      createdAt: Date.now(),
+      createdAt: now,
       data: {},
-      expiresAt: Date.now() + 6000,
+      expiresAt: now + this.data.token.duration,
       grants,
       issuer: this.data.token.issuer,
       labels: {},
@@ -189,12 +191,24 @@ export class AuthController extends BaseController<AuthControllerData> implement
   }
 
   public async getToken(cmd: Command): Promise<void> {
-    if (!cmd.context.token) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must provide token'));
-      return;
-    }
+    if (cmd.has('token')) {
+      try {
+        const data = Token.verify(cmd.getHead('token'), this.data.token.secret, {
+          audience: this.data.token.audience,
+          issuer: this.data.token.issuer,
+        });
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(data)));
+      } catch (err) {
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `error verifying token: ${err.message}`));
+      }
+    } else {
+      if (!cmd.context.token) {
+        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'must provide token'));
+        return;
+      }
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(cmd.context.token)));
+      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(cmd.context.token)));
+    }
   }
 
   public async listTokens(cmd: Command): Promise<void> {

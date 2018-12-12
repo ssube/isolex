@@ -2,7 +2,9 @@ metadata:
   kind: auth-controller
   name: default-auth
 data:
+  # nothing about these token settings is secure and they should not be used in production
   token:
-    audience: [test]
-    issuer: test
-    secret: test-secret-foo
+    audience: [test-audience]
+    duration: 86400
+    issuer: test-issuer
+    secret: test-secret

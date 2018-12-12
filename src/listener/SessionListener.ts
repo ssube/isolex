@@ -32,9 +32,10 @@ export abstract class SessionListener<TData> extends BaseListener<TData> {
   public abstract stop(): Promise<void>;
 
   public async createSession(uid: string, user: User): Promise<Session> {
+    const now = Math.floor(Date.now() / 1000);
     const session = {
-      createdAt: Date.now(),
-      expiresAt: Date.now(),
+      createdAt: now,
+      expiresAt: now,
       user,
     };
     this.sessions.set(uid, session);

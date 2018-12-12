@@ -1,23 +1,35 @@
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Session } from 'src/listener/SessionListener';
+import { mapToDict } from 'src/utils/Map';
 
 import { DataEntity, DataEntityOptions } from '../base/DataEntity';
 import { User } from './User';
 
-export interface TokenOptions extends Session, DataEntityOptions<Array<string>> {
+export interface VerifiableTokenOptions {
   audience: Array<string>;
-  createdAt: number;
-  expiresAt: number;
-  grants: Array<string>;
   issuer: string;
   subject: string;
 }
 
+export interface TokenOptions extends Session, DataEntityOptions<Array<string>>, VerifiableTokenOptions {
+  createdAt: number;
+  expiresAt: number;
+  grants: Array<string>;
+}
+
 @Entity()
 export class Token extends DataEntity<Array<string>> implements TokenOptions {
+  public static verify(token: string, secret: string, expected: Partial<VerifiableTokenOptions>): any {
+    return verify(token, secret, {
+      audience: expected.audience,
+      issuer: expected.issuer,
+      subject: expected.subject,
+    });
+  }
+
   /**
    * `aud` (Audience) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.3
@@ -100,22 +112,47 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   }
 
   /**
+   * Turn this token into an equivalent session.
+   */
+  public session(): Session {
+    return {
+      createdAt: this.createdAt,
+      expiresAt: this.expiresAt,
+      user: this.user,
+    };
+  }
+
+  /**
    * Produce a JWT from this token.
    */
-  public sign(secret: string) {
-    return sign(this.toJSON(), secret, {
-      audience: this.audience,
-      expiresIn: this.expiresAt - this.createdAt,
-      issuer: this.issuer,
-      jwtid: this.id,
-      notBefore: this.createdAt,
-      subject: this.subject,
+  public sign(secret: string, algorithm = 'HS256') {
+    return sign(this.toTokenJSON(), secret, {
+      algorithm,
     });
   }
 
   public toJSON(): object {
     return {
+      audience: this.audience,
+      createdAt: this.createdAt,
+      expiresAt: this.expiresAt,
+      grants: this.grants,
       id: this.id,
+      issuer: this.issuer,
+      subject: this.subject,
+    };
+  }
+
+  public toTokenJSON() {
+    return {
+      aud: this.audience,
+      data: mapToDict(this.data),
+      exp: this.expiresAt,
+      iat: this.createdAt,
+      iss: this.issuer,
+      jti: this.id,
+      nbf: this.createdAt,
+      sub: this.subject,
     };
   }
 }
