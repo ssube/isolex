@@ -1,7 +1,6 @@
 import { Type as YamlType } from 'js-yaml';
 import { BaseError } from 'noicejs';
 
-export const REGEXP_DELIMITER = '/';
 export const REGEXP_REGEXP = /\/(.*)\/([gimuy]*)/;
 
 export const regexpType = new YamlType('!regexp', {
