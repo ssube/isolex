@@ -1,4 +1,7 @@
+.awcache/
+.github/
 .nyc_output/
+
 config/
 deploy/
 node_modules/
@@ -10,6 +13,14 @@ out/test-*
 scripts/
 src/
 test/
+vendor/
+
+.codeclimate.yml
+.gitlab-ci.yml
+.gitmodules
+.mdlrc
+
+Dockerfile
 Makefile
 tsconfig.json
-yarn.lock
+yarn-*

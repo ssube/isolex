@@ -1,7 +1,7 @@
 stages:
   - build
   - image
-  - image-tag
+  - publish
 
 # template jobs
 
@@ -32,6 +32,16 @@ stages:
     DOCKER_HOST: tcp://localhost:2375
     IMAGE_TAG: ssube/isolex:$CI_COMMIT_REF_SLUG
 
+.build-node: &build-node
+  image: apextoaster/node:10.1
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
+  before_script:
+    - echo "${NPM_SECRET}" | base64 -d > ${HOME}/.npmrc
+
 .build-retag: &build-retag
   stage: image-tag
   script:
@@ -41,11 +51,8 @@ stages:
 
 # build jobs
 build-node:
-  image: apextoaster/node:10.1
+  <<: [*build-node]
   stage: build
-  tags:
-    - platform:k8s
-    - runner:shared
 
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
@@ -71,23 +78,26 @@ build-image:
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
 
-# tag releases
-tag-latest:
-  <<: [*branch-deploy, *build-docker, *build-retag]
-
-  dependencies: []
-  variables:
-    <<: *vars-docker
-    IMAGE_SRC: ssube/isolex:$CI_COMMIT_REF_SLUG
-    IMAGE_DST: ssube/isolex:latest
-
-tag-version:
+# publish jobs
+publish-image:
   <<: [*build-docker, *build-retag]
+  stage: publish
   only:
     - tags
 
   dependencies: []
   variables:
     <<: *vars-docker
-    IMAGE_SRC: ssube/isolex:latest
+    IMAGE_SRC: ${IMAGE_TAG}
     IMAGE_DST: ssube/isolex:${CI_COMMIT_TAG}
+
+publish-npm:
+  <<: [*build-node]
+  stage: publish
+  only:
+    - tags
+
+  dependencies:
+    - build-node
+  script:
+    - npm publish
