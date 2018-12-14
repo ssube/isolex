@@ -97,7 +97,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     });
     const noun = getHeadOrDefault(data, 'noun', this.data.emit.noun);
     const verb = getHeadOrDefault(data, 'verb', this.data.emit.verb) as CommandVerb;
-    this.logger.debug({ ctx, noun, verb }, 'emit command');
+    this.logger.debug({ ctx, data: Array.from(data.keys()), noun, verb }, 'emit command');
 
     return [new Command({
       context: ctx,

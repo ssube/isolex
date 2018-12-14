@@ -58,7 +58,7 @@ build-node:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - yarn
-    - make strict
+    - make build-strict
 
   artifacts:
     expire_in: 1 week
