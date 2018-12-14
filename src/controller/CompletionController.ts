@@ -83,8 +83,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     });
 
     if (isNil(fragment)) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'fragment not found'));
-      return;
+      return this.reply(cmd.context, 'fragment not found');
     }
 
     this.logger.debug({ fragment }, 'attempting to complete fragment');

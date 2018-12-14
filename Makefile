@@ -47,11 +47,13 @@ export NODE_VERSION		:= $(shell node -v)
 export RUNNER_VERSION  := $(CI_RUNNER_VERSION)
 export WEBPACK_VERSION := $(shell $(NODE_BIN)/webpack -v)
 
-all: configure bundle test ## builds, bundles, and tests the application
-	@echo Success! make run-terminal to launch
+all: build run-terminal
 
-strict: configure bundle-check test-check ## builds, bundles, and tests the application with type checks and extra warnings (slow)
-	@echo Success! make run-terminal to launch
+build: ## builds, bundles, and tests the application
+build: configure bundle test
+
+build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
+build-strict: configure bundle-check test-check
 
 clean: ## clean up the target directory
 	rm -rf $(TARGET_PATH)
