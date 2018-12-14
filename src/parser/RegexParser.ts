@@ -24,7 +24,9 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
     const data = await this.decode(msg);
 
     return [new Command({
-      context: msg.context,
+      context: msg.context.extend({
+        parser: this,
+      }),
       data: { data }, // @TODO: double data doesn't seem right
       labels: this.data.emit.labels,
       noun: this.data.emit.noun,

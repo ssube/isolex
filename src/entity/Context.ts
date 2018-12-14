@@ -22,7 +22,11 @@ export interface ContextData {
    */
   name: string;
 
+  parser?: Parser;
+
   source: Listener;
+
+  target?: Listener;
 
   token?: Token;
 
@@ -73,7 +77,9 @@ export class Context implements ContextData {
         thread: options.channel.thread,
       };
       this.name = options.name;
+      this.parser = options.parser;
       this.source = options.source;
+      this.target = options.target;
       this.token = options.token;
       this.uid = options.uid;
       this.user = options.user;
@@ -82,6 +88,12 @@ export class Context implements ContextData {
 
   public extend(options: Partial<ContextData>): Context {
     const ctx = new Context(this);
+    if (options.parser) {
+      ctx.parser = options.parser;
+    }
+    if (options.target) {
+      ctx.target = options.target;
+    }
     if (options.token) {
       ctx.token = options.token;
     }

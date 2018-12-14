@@ -37,6 +37,14 @@ export function getOrDefault<TKey, TVal>(map: Map<TKey, TVal>, key: TKey, defaul
   }
 }
 
+export function getHead<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey): TVal {
+  const value = map.get(key);
+  if (isNil(value) || !value.length) {
+    throw new NotFoundError();
+  }
+  return value[0];
+}
+
 export function getHeadOrDefault<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey, defaultValue: TVal): TVal {
   if (map.has(key)) {
     const data = map.get(key);

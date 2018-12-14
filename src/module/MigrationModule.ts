@@ -6,6 +6,7 @@ import { CreateCommand0001544311565 } from 'src/migration/0001544311565-CreateCo
 import { CreateMessage0001544311687 } from 'src/migration/0001544311687-CreateMessage';
 import { CreateKeyword0001544311784 } from 'src/migration/0001544311784-CreateKeyword';
 import { CreateCounter0001544311799 } from 'src/migration/0001544311799-CreateCounter';
+import { CreateFragment0001544311954 } from 'src/migration/0001544311954-CreateFragment';
 import { CreateRole0001544312069 } from 'src/migration/0001544312069-CreateRole';
 import { CreateUser0001544312112 } from 'src/migration/0001544312112-CreateUser';
 import { CreateToken0001544317462 } from 'src/migration/0001544317462-CreateToken';
@@ -20,6 +21,7 @@ export class MigrationModule extends Module {
       CreateMessage0001544311687,
       CreateKeyword0001544311784,
       CreateCounter0001544311799,
+      CreateFragment0001544311954,
       CreateRole0001544312069,
       CreateUser0001544312112,
       CreateToken0001544317462,

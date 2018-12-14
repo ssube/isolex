@@ -60,7 +60,9 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const { data, noun } = await this.decode(msg);
     const cmdOptions: CommandOptions = {
-      context: msg.context,
+      context: msg.context.extend({
+        parser: this,
+      }),
       data,
       labels: this.data.emit.labels,
       noun,

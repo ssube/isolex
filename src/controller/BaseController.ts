@@ -1,11 +1,14 @@
 import { ChildService } from 'src/ChildService';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { checkFilter, Filter } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { getLogInfo, ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
@@ -79,5 +82,9 @@ export abstract class BaseController<TData extends ControllerData> extends Child
       batch = next;
     }
     return batch;
+  }
+
+  protected async reply(ctx: Context, body: string): Promise<void> {
+    await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, body));
   }
 }

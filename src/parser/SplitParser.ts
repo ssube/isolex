@@ -26,7 +26,9 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const args = await this.decode(msg);
     this.logger.debug({ args }, 'splitting string');
-    return [Command.emit(this.data.emit, msg.context, { args })];
+    return [Command.emit(this.data.emit, msg.context.extend({
+      parser: this,
+    }), { args })];
   }
 
   public async decode(msg: Message): Promise<any> {

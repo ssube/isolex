@@ -14,6 +14,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Typescript](#typescript)
     - [Arrays](#arrays)
     - [Arrow Functions ("lambdas")](#arrow-functions-%22lambdas%22)
+    - [Async](#async)
     - [Constructors](#constructors)
     - [Destructuring](#destructuring)
     - [Entities](#entities)
@@ -27,7 +28,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Return Types](#return-types)
     - [Ternaries](#ternaries)
     - [Tests](#tests)
-      - [Async](#async)
+      - [Async Tests](#async-tests)
       - [Assertions](#assertions)
   - [YAML](#yaml)
 
@@ -110,6 +111,13 @@ Arrow function parameters MUST use parentheses, even when there is only one, and
 If the body is a single statement, a function call, or otherwise fits well on a single line, braces SHOULD be omitted.
 If the body returns an object literal or needs more than one line (excluding nested object literals), braces
 MUST be used.
+
+### Async
+
+Async code MUST use promises. Callbacks MUST be wrapped to create and resolve (or reject) a promise.
+
+Functions returning a promise SHOULD be `async` and `await` MAY be used inside them, but MAY also return plain promises
+when no `await` is needed.
 
 ### Constructors
 
@@ -198,7 +206,7 @@ Ternaries MUST NOT be nested.
 
 Typescript tests (small, unit tests) are run using Mocha and Chai.
 
-#### Async
+#### Async Tests
 
 Wrap any tests using async resources (promises, observables, the bot, services, pretty much anything) in the
 `describeAsync` and `itAsync` helpers. These will track and report leaking async resources.

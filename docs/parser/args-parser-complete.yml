@@ -14,4 +14,4 @@ data:
       - key: body
         operator: every
         values:
-          - string: "!!c"
+          - regexp: !regexp /!!c/

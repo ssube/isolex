@@ -7,8 +7,7 @@ import { Token } from 'src/entity/auth/Token';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 
 import { BaseController } from './BaseController';
 import { NOUN_FRAGMENT } from './CompletionController';
@@ -62,7 +61,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case NOUN_USER:
         return this.handleUser(cmd);
       default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported noun: ${cmd.noun}`));
+        return this.reply(cmd.context, `unsupported noun: ${cmd.noun}`);
     }
   }
 
@@ -73,7 +72,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case CommandVerb.List:
         return this.listPermissions(cmd);
       default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
   }
 
@@ -86,7 +85,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case CommandVerb.List:
         return this.listRoles(cmd);
       default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
   }
 
@@ -97,7 +96,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case CommandVerb.Get:
         return this.getSession(cmd);
       default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
   }
 
@@ -112,7 +111,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case CommandVerb.List:
         return this.listTokens(cmd);
       default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
   }
 
@@ -125,7 +124,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       case CommandVerb.Update:
         return this.updateUser(cmd);
       default:
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `unsupported verb: ${cmd.verb}`));
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
   }
 
@@ -134,7 +133,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
     const results = permissions.map((p) => {
       return `${p}: \`${cmd.context.checkGrants([p])}\``;
     }).join('\n');
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
+    return this.reply(cmd.context, results);
   }
 
   public async listPermissions(cmd: Command): Promise<void> {
@@ -142,7 +141,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
     const results = permissions.map((p) => {
       return `${p}: \`${cmd.context.listGrants([p])}\``;
     }).join('\n');
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, results));
+    return this.reply(cmd.context, results);
   }
 
   public async createRole(cmd: Command): Promise<void> {
@@ -152,7 +151,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       grants,
       name,
     });
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(role)));
+    return this.reply(cmd.context, role.toString());
   }
 
   public async getRole(cmd: Command): Promise<void> {
@@ -162,18 +161,22 @@ export class AuthController extends BaseController<AuthControllerData> implement
         name,
       },
     });
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(role)));
+    if (role) {
+      return this.reply(cmd.context, role.toString());
+    } else {
+      return this.reply(cmd.context, 'role not found');
+    }
   }
 
   public async listRoles(cmd: Command): Promise<void> {
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(roles)));
+    const roleText = roles.map((r) => r.toString()).join('\n');
+    return this.reply(cmd.context, roleText);
   }
 
   public async createToken(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, MSG_SESSION_REQUIRED));
-      return;
+      return this.reply(cmd.context, MSG_SESSION_REQUIRED);
     }
 
     const grants = cmd.getOrDefault('grants', []);
@@ -191,25 +194,17 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }));
     const jwt = token.sign(this.data.token.secret);
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(token)));
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, jwt));
+    await this.reply(cmd.context, token.toString());
+    return this.reply(cmd.context, jwt);
   }
 
   public async deleteTokens(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, MSG_SESSION_REQUIRED));
-      return;
+      return this.reply(cmd.context, MSG_SESSION_REQUIRED);
     }
 
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      await this.bot.emitCommand(new Command({
-        context: cmd.context,
-        data: {},
-        labels: {},
-        noun: NOUN_FRAGMENT,
-        verb: CommandVerb.Create,
-      }));
-      return;
+      return this.requestCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${cmd.context.user.id}`);
     }
 
     const results = await this.tokenRepository.delete({
@@ -217,9 +212,9 @@ export class AuthController extends BaseController<AuthControllerData> implement
     });
 
     if (results.affected) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `deleted ${results.affected} tokens`));
+      return this.reply(cmd.context, `deleted ${results.affected} tokens`);
     } else {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `no tokens deleted`));
+      return this.reply(cmd.context, `no tokens deleted`);
     }
   }
 
@@ -230,24 +225,22 @@ export class AuthController extends BaseController<AuthControllerData> implement
           audience: this.data.token.audience,
           issuer: this.data.token.issuer,
         });
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(data)));
+        return this.reply(cmd.context, JSON.stringify(data));
       } catch (err) {
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `error verifying token: ${err.message}`));
+        return this.reply(cmd.context, `error verifying token: ${err.message}`);
       }
     } else {
       if (!cmd.context.token) {
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'session must be provided by a token'));
-        return;
+        return this.reply(cmd.context, 'session must be provided by a token');
+      } else {
+        return this.reply(cmd.context, cmd.context.token.toString());
       }
-
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(cmd.context.token)));
     }
   }
 
   public async listTokens(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, MSG_SESSION_REQUIRED));
-      return;
+      return this.reply(cmd.context, MSG_SESSION_REQUIRED);
     }
 
     const tokens = await this.tokenRepository.find({
@@ -256,7 +249,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       },
     });
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(tokens)));
+    return this.reply(cmd.context, JSON.stringify(tokens));
   }
 
   public async createUser(cmd: Command): Promise<void> {
@@ -277,7 +270,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
     }));
     this.logger.debug({ user }, 'created user');
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `created user: ${user.id}`));
+    return this.reply(cmd.context, user.toString());
   }
 
   public async getUser(cmd: Command): Promise<void> {
@@ -288,7 +281,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
       },
     });
     await this.userRepository.loadRoles(user);
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, JSON.stringify(user)));
+    return this.reply(cmd.context, user.toString());
   }
 
   public async updateUser(cmd: Command): Promise<void> {
@@ -307,7 +300,7 @@ export class AuthController extends BaseController<AuthControllerData> implement
     });
     user.roles = roles;
     const updatedUser = await this.userRepository.save(user);
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, JSON.stringify(updatedUser)));
+    return this.reply(cmd.context, updatedUser.toString());
   }
 
   public async createSession(cmd: Command): Promise<void> {
@@ -320,16 +313,35 @@ export class AuthController extends BaseController<AuthControllerData> implement
 
     const session = await cmd.context.source.createSession(cmd.context.uid, user);
     this.logger.debug({ session, user, userName: name }, 'created session');
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'created session'));
+    return this.reply(cmd.context, 'created session');
   }
 
   public async getSession(cmd: Command): Promise<void> {
     const session = cmd.context.source.getSession(cmd.context.uid);
     if (isNil(session)) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'cannot get sessions unless logged in'));
-      return;
+      return this.reply(cmd.context, 'cannot get sessions unless logged in');
     }
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_JSON, session.toString()));
+    return this.reply(cmd.context, session.toString());
+  }
+
+  protected async requestCompletion(cmd: Command, key: string, msg: string): Promise<void> {
+    if (!cmd.context.parser) {
+      throw new InvalidArgumentError('command has no parser to prompt for completion');
+    }
+
+    await this.bot.emitCommand(new Command({
+      context: cmd.context,
+      data: {
+        key: [key],
+        msg: [msg],
+        noun: [cmd.noun],
+        parser: [cmd.context.parser.id],
+        verb: [cmd.verb],
+      },
+      labels: {},
+      noun: NOUN_FRAGMENT,
+      verb: CommandVerb.Create,
+    }));
   }
 }

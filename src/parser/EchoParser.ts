@@ -28,7 +28,9 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const parsed = await this.decode(msg);
     return [new Command({
-      context: msg.context,
+      context: msg.context.extend({
+        parser: this,
+      }),
       data: {
         [this.data.args.field]: [parsed],
       },

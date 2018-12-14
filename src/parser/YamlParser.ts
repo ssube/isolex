@@ -19,7 +19,9 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
-    return [Command.emit(this.data.emit, msg.context, data)];
+    return [Command.emit(this.data.emit, msg.context.extend({
+      parser: this,
+    }), data)];
   }
 
   public async decode(msg: Message): Promise<any> {
