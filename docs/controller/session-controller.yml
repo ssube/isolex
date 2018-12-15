@@ -1,0 +1,4 @@
+metadata:
+  kind: session-controller
+  name: default-session
+data: {}

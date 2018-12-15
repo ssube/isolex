@@ -1,6 +1,6 @@
 metadata:
-  kind: auth-controller
-  name: default-auth
+  kind: token-controller
+  name: default-token
 data:
   # nothing about these token settings is secure and they should not be used in production
   token:
