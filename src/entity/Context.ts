@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
 import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
@@ -8,7 +8,7 @@ import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 
 import { Token } from './auth/Token';
-import { User } from './auth/User';
+import { GRAPH_OUTPUT_USER, User } from './auth/User';
 
 export interface ChannelData {
   id: string;
@@ -159,8 +159,50 @@ export class Context implements ContextData {
   }
 }
 
-const GRAPH_OUTPUT_CONTEXT = new GraphQLObjectType({
+export const GRAPH_INPUT_CHANNEL = new GraphQLInputObjectType({
   fields: {
+    id: {
+      type: GraphQLString,
+    },
+    thread: {
+      type: GraphQLString,
+    },
+  },
+  name: 'ChannelInput',
+});
+
+export const GRAPH_INPUT_CONTEXT = new GraphQLInputObjectType({
+  fields: {
+    channel: {
+      type: GRAPH_INPUT_CHANNEL,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    uid: {
+      type: GraphQLString,
+    }
+  },
+  name: 'ContextInput',
+});
+
+export const GRAPH_OUTPUT_CHANNEL = new GraphQLObjectType({
+  fields: {
+    id: {
+      type: GraphQLString,
+    },
+    thread: {
+      type: GraphQLString,
+    },
+  },
+  name: 'Channel',
+});
+
+export const GRAPH_OUTPUT_CONTEXT = new GraphQLObjectType({
+  fields: {
+    channel: {
+      type: GRAPH_OUTPUT_CHANNEL,
+    },
     id: {
       type: GraphQLString,
     },
@@ -169,6 +211,9 @@ const GRAPH_OUTPUT_CONTEXT = new GraphQLObjectType({
     },
     uid: {
       type: GraphQLString,
+    },
+    user: {
+      type: GRAPH_OUTPUT_USER,
     },
   },
   name: 'Context',

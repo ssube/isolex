@@ -1,5 +1,7 @@
+import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
 import { dictToMap } from 'src/utils/Map';
 
 import { BaseCommand } from './base/BaseCommand';
@@ -51,3 +53,25 @@ export class Fragment extends BaseCommand implements FragmentOptions {
     };
   }
 }
+
+export const GRAPH_OUTPUT_FRAGMENT = new GraphQLObjectType({
+  description: 'a command fragment for later completion',
+  fields: {
+    data: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR),
+    },
+    id: {
+      type: GraphQLID,
+    },
+    key: {
+      type: GraphQLString,
+    },
+    labels: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_VALUE_PAIR),
+    },
+    parserId: {
+      type: GraphQLString,
+    },
+  },
+  name: 'Fragment',
+});

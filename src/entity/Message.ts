@@ -1,8 +1,10 @@
 import * as escape from 'escape-html';
-import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Context } from 'src/entity/Context';
+import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
+import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/graph/input/Pairs';
+import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
 
 import { LabelEntity } from './base/LabelEntity';
 
@@ -82,12 +84,25 @@ export class Message extends LabelEntity implements MessageOptions {
 }
 
 export const GRAPH_OUTPUT_MESSAGE = new GraphQLObjectType({
+  description: 'a message sent from the bot',
   fields: {
     body: {
       type: GraphQLString,
     },
+    context: {
+      type: GRAPH_OUTPUT_CONTEXT,
+    },
+    data: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR),
+    },
     id: {
       type: GraphQLString,
+    },
+    labels: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_VALUE_PAIR),
+    },
+    reactions: {
+      type: new GraphQLList(GraphQLString),
     },
     type: {
       type: GraphQLString,
@@ -97,9 +112,16 @@ export const GRAPH_OUTPUT_MESSAGE = new GraphQLObjectType({
 });
 
 export const GRAPH_INPUT_MESSAGE = new GraphQLInputObjectType({
+  description: 'a message sent to the bot',
   fields: {
     body: {
       type: GraphQLString,
+    },
+    data: {
+      type: new GraphQLList(GRAPH_INPUT_NAME_MULTI_VALUE_PAIR),
+    },
+    labels: {
+      type: new GraphQLList(GRAPH_INPUT_NAME_VALUE_PAIR),
     },
     type: {
       type: GraphQLString,

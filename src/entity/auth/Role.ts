@@ -1,3 +1,4 @@
+import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export interface RoleOptions {
@@ -25,3 +26,18 @@ export class Role implements RoleOptions {
     }
   }
 }
+
+export const GRAPH_OUTPUT_ROLE = new GraphQLObjectType({
+  fields: {
+    grants: {
+      type: new GraphQLList(GraphQLString),
+    },
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+  },
+  name: 'Role',
+});

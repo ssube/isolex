@@ -1,8 +1,10 @@
-import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Context } from 'src/entity/Context';
+import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/graph/input/Pairs';
+import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
 import { dictToMap, MapLike, mergeMap } from 'src/utils/Map';
 
 import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
@@ -86,10 +88,38 @@ export class Command extends BaseCommand implements CommandOptions {
   }
 }
 
+export const GRAPH_INPUT_COMMAND = new GraphQLInputObjectType({
+  description: 'a command to be executed',
+  fields: {
+    data: {
+      type: new GraphQLList(GRAPH_INPUT_NAME_MULTI_VALUE_PAIR),
+    },
+    labels: {
+      type: new GraphQLList(GRAPH_INPUT_NAME_VALUE_PAIR),
+    },
+    noun: {
+      type: GraphQLString,
+    },
+    verb: {
+      type: GraphQLString,
+    },
+  },
+  name: 'CommandInput',
+});
+
 export const GRAPH_OUTPUT_COMMAND = new GraphQLObjectType({
   fields: {
+    context: {
+      type: GRAPH_OUTPUT_CONTEXT,
+    },
+    data: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR),
+    },
     id: {
-      type: GraphQLString,
+      type: GraphQLID,
+    },
+    labels: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_VALUE_PAIR),
     },
     noun: {
       type: GraphQLString,
@@ -99,16 +129,4 @@ export const GRAPH_OUTPUT_COMMAND = new GraphQLObjectType({
     },
   },
   name: 'Command',
-});
-
-export const GRAPH_INPUT_COMMAND = new GraphQLInputObjectType({
-  fields: {
-    noun: {
-      type: GraphQLString,
-    },
-    verb: {
-      type: GraphQLString,
-    },
-  },
-  name: 'CommandInput',
 });

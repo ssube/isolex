@@ -2,9 +2,8 @@ import { ChildService } from 'src/ChildService';
 import { User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { Session } from 'src/entity/Session';
 import { FetchOptions, Listener } from 'src/listener/Listener';
-
-import { Session } from './SessionListener';
 
 export abstract class BaseListener<TData> extends ChildService<TData> implements Listener {
   /**

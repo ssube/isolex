@@ -1,8 +1,9 @@
+import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity } from 'src/entity/base/BaseEntity';
 
-import { Role } from './Role';
+import { GRAPH_OUTPUT_ROLE, Role } from './Role';
 
 export interface UserOptions {
   name: string;
@@ -51,3 +52,19 @@ export class User extends BaseEntity implements UserOptions {
     this.roleNames = this.roles.map((it) => it.name);
   }
 }
+
+export const GRAPH_OUTPUT_USER = new GraphQLObjectType({
+  fields: {
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    roles: {
+      type: new GraphQLList(GRAPH_OUTPUT_ROLE),
+    },
+  },
+  name: 'User',
+});
+

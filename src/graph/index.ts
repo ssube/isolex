@@ -5,7 +5,7 @@ import { Connection } from 'typeorm';
 
 import { ChildService, ChildServiceOptions } from 'src/ChildService';
 import { Command, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
+import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
@@ -42,6 +42,9 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
               commands: {
                 type: GRAPH_INPUT_COMMAND_LIST,
               },
+              context: {
+                type: GRAPH_INPUT_CONTEXT,
+              },
             },
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.emitCommands(args, req);
@@ -50,6 +53,9 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
           },
           sendMessages: {
             args: {
+              context: {
+                type: GRAPH_INPUT_CONTEXT,
+              },
               messages: {
                 type: GRAPH_INPUT_MESSAGE_LIST,
               },

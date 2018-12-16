@@ -4,12 +4,7 @@ import { Message } from 'src/entity/Message';
 
 import { BaseListener } from './BaseListener';
 import { FetchOptions, Listener } from './Listener';
-
-export interface Session {
-  createdAt: number;
-  expiresAt: number;
-  user: User;
-}
+import { Session } from 'src/entity/Session';
 
 /**
  * A listener that tracks sessions.

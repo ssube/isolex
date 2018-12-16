@@ -1,6 +1,7 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 
 import { MapLike } from 'src/utils/Map';
+import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from './graph/output/Pairs';
 
 export interface ServiceDefinition<TData = any> {
   metadata: ServiceMetadata;
@@ -45,6 +46,7 @@ export function getLogInfo(svc: Service) {
 }
 
 export const GRAPH_OUTPUT_SERVICE = new GraphQLObjectType({
+  description: 'a service within the bot',
   fields: {
     id: {
       type: GraphQLString,
@@ -52,9 +54,12 @@ export const GRAPH_OUTPUT_SERVICE = new GraphQLObjectType({
     kind: {
       type: GraphQLString,
     },
+    labels: {
+      type: new GraphQLList(GRAPH_OUTPUT_NAME_VALUE_PAIR),
+    },
     name: {
       type: GraphQLString,
     },
   },
-  name: 'service',
+  name: 'Service',
 });
