@@ -6,6 +6,7 @@ modify entities or call some external API, but may also trigger a completion or 
 - [Controllers](#controllers)
   - [Config](#config)
   - [Developing](#developing)
+  - [Nouns](#nouns)
 
 ## Config
 
@@ -54,3 +55,25 @@ public async getFoo(cmd: Command) {
 ```
 
 @TODO: add a helper for permission denied message
+
+## Nouns
+
+| Noun     | Controller |
+|----------|------------|
+| counter  | Count      |
+| echo     | Echo       |
+| fragment | Completion |
+| grant    | Session    |
+| keyword  | Learn      |
+| math     | Math       |
+| pick     | Pick       |
+| pod      | Kubernetes |
+| random   | Random     |
+| reaction | Reaction   |
+| role     | User       |
+| roll     | Dice       |
+| service  | Kubernetes |
+| session  | Session    |
+| token    | Token      |
+| user     | User       |
+| weather  | Weather    |

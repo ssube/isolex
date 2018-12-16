@@ -5,7 +5,7 @@ import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
-import { NOUN_REPORT, WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
+import { NOUN_WEATHER, WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -72,7 +72,7 @@ describeAsync('weather controller', async () => {
         location: ['94040'],
       },
       labels: {},
-      noun: NOUN_REPORT,
+      noun: NOUN_WEATHER,
       verb: CommandVerb.Get,
     });
 

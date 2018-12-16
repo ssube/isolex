@@ -3,6 +3,9 @@
 This document covers Typescript and YAML style, explains some lint rules, and major conventions.
 
 - [Style](#style)
+  - [Code Climate](#code-climate)
+    - [Close Reasons](#close-reasons)
+      - [Noun/Verb Switch Complexity](#nounverb-switch-complexity)
   - [Documentation](#documentation)
     - [Headers](#headers)
     - [Table of Contents](#table-of-contents)
@@ -31,6 +34,19 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
       - [Async Tests](#async-tests)
       - [Assertions](#assertions)
   - [YAML](#yaml)
+
+## Code Climate
+
+Code Climate runs lint and style checks against the project, on pull requests and the master branch.
+
+### Close Reasons
+
+Only the warnings shown here can be closed. Others must be fixed.
+
+#### Noun/Verb Switch Complexity
+
+Any complexity, duplication, or length warnings related to a controller's noun or verb switches should be marked as
+`WONTFIX`.
 
 ## Documentation
 

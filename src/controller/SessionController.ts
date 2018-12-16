@@ -8,7 +8,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
 
-export const NOUN_PERMISSION = 'permission';
+export const NOUN_GRANT = 'grant';
 export const NOUN_SESSION = 'session';
 
 export interface SessionControllerData extends ControllerData {
@@ -28,7 +28,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
   protected userRepository: UserRepository;
 
   constructor(options: SessionControllerOptions) {
-    super(options, [NOUN_PERMISSION, NOUN_SESSION]);
+    super(options, [NOUN_GRANT, NOUN_SESSION]);
 
     this.storage = options.storage;
     this.userRepository = this.storage.getCustomRepository(UserRepository);
@@ -36,8 +36,8 @@ export class SessionController extends BaseController<SessionControllerData> imp
 
   public async handle(cmd: Command): Promise<void> {
     switch (cmd.noun) {
-      case NOUN_PERMISSION:
-        return this.handlePermission(cmd);
+      case NOUN_GRANT:
+        return this.handleGrant(cmd);
       case NOUN_SESSION:
         return this.handleSession(cmd);
       default:
@@ -45,12 +45,12 @@ export class SessionController extends BaseController<SessionControllerData> imp
     }
   }
 
-  public async handlePermission(cmd: Command): Promise<void> {
+  public async handleGrant(cmd: Command): Promise<void> {
     switch (cmd.verb) {
       case CommandVerb.Get:
-        return this.getPermission(cmd);
+        return this.getGrant(cmd);
       case CommandVerb.List:
-        return this.listPermissions(cmd);
+        return this.listGrants(cmd);
       default:
         return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
@@ -67,7 +67,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     }
   }
 
-  public async getPermission(cmd: Command): Promise<void> {
+  public async getGrant(cmd: Command): Promise<void> {
     const permissions = cmd.get('permissions');
     const results = permissions.map((p) => {
       return `${p}: \`${cmd.context.checkGrants([p])}\``;
@@ -75,7 +75,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     return this.reply(cmd.context, results);
   }
 
-  public async listPermissions(cmd: Command): Promise<void> {
+  public async listGrants(cmd: Command): Promise<void> {
     const permissions = cmd.get('permissions');
     const results = permissions.map((p) => {
       return `${p}: \`${cmd.context.listGrants([p])}\``;
