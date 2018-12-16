@@ -6,6 +6,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Code Climate](#code-climate)
     - [Close Reasons](#close-reasons)
       - [Noun/Verb Switch Complexity](#nounverb-switch-complexity)
+      - [Test Data & Fixtures](#test-data--fixtures)
   - [Documentation](#documentation)
     - [Headers](#headers)
     - [Table of Contents](#table-of-contents)
@@ -47,6 +48,11 @@ Only the warnings shown here can be closed. Others must be fixed.
 
 Any complexity, duplication, or length warnings related to a controller's noun or verb switches should be marked as
 `WONTFIX`.
+
+#### Test Data & Fixtures
+
+Any duplication or length warnings related to test data, especially object literals in constructors, and other fixtures
+should be marked as `WONTFIX`.
 
 ## Documentation
 

@@ -1,13 +1,3 @@
-input NameValuePairInput {
-  name: String!
-  value: String!
-}
-
-input NameMultiValuePairInput {
-  name: String!
-  values: [String!]!
-}
-
 input ChannelInput {
   id: String!
   thread: String

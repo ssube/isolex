@@ -44,7 +44,7 @@ export interface ExpressListenerOptions extends ChildServiceOptions<ExpressListe
 
 @Inject('bot', 'metrics', 'services', 'storage')
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
-  protected readonly authenticator: passport.Authenticator;
+  protected readonly passport: passport.Authenticator;
   protected readonly container: Container;
   protected readonly metrics: Registry;
   protected readonly requestCounter: Counter;
@@ -59,9 +59,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   constructor(options: ExpressListenerOptions) {
     super(options);
 
-    this.authenticator = new passport.Passport();
     this.container = options.container;
     this.metrics = options.metrics;
+    this.passport = new passport.Passport();
     this.services = options.services;
     this.storage = options.storage;
 
@@ -110,7 +110,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public async traceRequest(req: express.Request, res: express.Response, next: Function) {
-    this.logger.debug({ req, res }, 'handling request');
+    const ctx = req.user as Context | undefined;
+    this.logger.debug({ ctx, req, res }, 'handling request');
     this.requestCounter.inc({
       requestClient: req.ip,
       requestHost: req.hostname,
@@ -122,37 +123,53 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     next();
   }
 
-  protected async createTokenSession(req: express.Request, data: any, done: VerifiedCallback) {
-    this.logger.debug({ data, req }, 'finding token for request payload');
-    const token = await this.tokenRepository.findOne(data);
+  protected async createTokenSession(data: any, done: VerifiedCallback) {
+    this.logger.debug({ data }, 'finding token for request payload');
+    const token = await this.tokenRepository.findOne(data, {
+      relations: ['user'],
+    });
     if (isNil(token)) {
       this.logger.warn('token not found');
       return done(undefined, false);
     }
 
+    this.logger.debug({ token, user: token.user }, 'found token, creating context');
     const ctx = new Context({
-      ...data,
+      channel: {
+        id: '',
+        thread: '',
+      },
+      name: token.user.name,
       source: this,
+      token,
+      uid: token.user.id,
       user: token.user,
     });
 
     const session = token.session(this);
-    this.sessions.set(token.id, session);
+    this.sessions.set(token.user.id, session);
     this.logger.debug({ session }, 'created session for token');
 
+    // tslint:disable-next-line:no-null-keyword
     done(null, ctx);
   }
 
   protected async setupApp(): Promise<express.Express> {
-    this.authenticator.use(new JwtStrategy({
+    this.passport.use(new JwtStrategy({
       audience: this.data.token.audience,
       issuer: this.data.token.issuer,
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
-    }, (req: express.Request, payload: any, done: VerifiedCallback) => this.createTokenSession(req, payload, done)));
+    }, (payload: any, done: VerifiedCallback) => this.createTokenSession(payload, done)));
+    this.passport.serializeUser((user: Context, done) => {
+      done(null, user.uid);
+    });
+    this.passport.deserializeUser((user: Context, done) => {
+      done(null, this.sessions.get(user.uid));
+    });
 
     const app = express();
-    app.use(this.authenticator.initialize());
+    app.use(this.passport.initialize());
 
     if (this.data.expose.metrics) {
       app.use((req, res, next) => this.traceRequest(req, res, next));
@@ -163,7 +180,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
       await this.graph.start();
 
-      app.use('/graph', expressGraphQl({
+      app.use('/graph', this.passport.authenticate('jwt'), expressGraphQl({
         graphiql: this.data.expose.graphiql,
         schema: this.graph.schema,
       }));

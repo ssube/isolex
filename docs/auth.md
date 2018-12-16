@@ -80,7 +80,11 @@ To create a new user and role with the reference config, please run:
 
 ### Login
 
-TODO: how to log in
+To log in with the reference config, please run:
+
+```none
+!!login --name test_user
+```
 
 ### Session
 
