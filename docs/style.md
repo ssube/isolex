@@ -92,7 +92,7 @@ If a class or entity does not appear here (such as user, role, and token), pleas
 
 ### Commands
 
-Commands are executed and received.
+Commands SHOULD be executed and received. Commands MUST NOT be emitted.
 
 ### Messages
 

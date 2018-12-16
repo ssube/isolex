@@ -1,9 +1,10 @@
 import { ChildService, ChildServiceOptions } from 'src/ChildService';
-import { Command, CommandDataValue } from 'src/entity/Command';
+import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserData } from 'src/parser/Parser';
+import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
 
 export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
@@ -42,5 +43,22 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
       ...fragment,
       context,
      }, context, data)];
+  }
+
+  protected async createCommand(baseContext: Context, data: Map<string, Array<string>>, emit = this.data.emit): Promise<Command> {
+    const context = baseContext.extend({
+      parser: this,
+    });
+    const noun = getHeadOrDefault(data, 'noun', emit.noun);
+    const verb = getHeadOrDefault(data, 'verb', emit.verb) as CommandVerb;
+    this.logger.debug({ context, noun, verb }, 'emit command');
+
+    return new Command({
+      context,
+      data,
+      labels: this.data.emit.labels,
+      noun,
+      verb,
+    });
   }
 }

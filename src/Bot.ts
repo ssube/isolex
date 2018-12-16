@@ -140,7 +140,7 @@ export class Bot extends BaseService<BotData> implements Service {
       this.logger.debug({ msg }, 'incoming message did not produce any commands');
     }
 
-    return this.emitCommand(...commands);
+    return this.executeCommand(...commands);
   }
   /**
    * Fetches messages using a specified listener.
@@ -176,7 +176,7 @@ export class Bot extends BaseService<BotData> implements Service {
     return filterNil(results);
   }
 
-  public async emitCommand(...commands: Array<Command>): Promise<Array<Command>> {
+  public async executeCommand(...commands: Array<Command>): Promise<Array<Command>> {
     const results = [];
     for (const data of commands) {
       const cmd = await this.storage.getRepository(Command).save(data);
@@ -225,15 +225,15 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    let emitted = false;
+    let sent = false;
     for (const listener of this.listeners) {
       if (await listener.check(msg.context)) {
         await listener.send(msg);
-        emitted = true;
+        sent = true;
       }
     }
 
-    if (!emitted) {
+    if (!sent) {
       this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
     }
   }

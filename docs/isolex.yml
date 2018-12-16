@@ -165,34 +165,6 @@ data:
         tags:
           - '!!sed'
 
-    - metadata:
-        kind: map-parser
-        name: map_echo
-      data:
-        alias:
-          boo: react
-          canada: react
-          hockey: react
-          maple: react
-        emit:
-          "!!echo":
-            name: test_echo
-            fields: []
-            remove: true
-            rest: args
-          "!!mdn":
-            name: search_mdn
-            fields: []
-            remove: true
-            rest: args
-          react:
-            fields: [body]
-            name: test_reaction
-            remove: false
-            rest: args
-        split:
-          brackets: true
-          separator: " "
 
   storage:
     type: sqlite

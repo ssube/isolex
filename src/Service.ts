@@ -1,6 +1,7 @@
-import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
 import { MapLike } from 'src/utils/Map';
+
 import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from './graph/output/Pairs';
 
 export interface ServiceDefinition<TData = any> {

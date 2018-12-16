@@ -181,7 +181,7 @@ export const GRAPH_INPUT_CONTEXT = new GraphQLInputObjectType({
     },
     uid: {
       type: GraphQLString,
-    }
+    },
   },
   name: 'ContextInput',
 });

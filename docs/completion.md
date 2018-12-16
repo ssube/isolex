@@ -18,17 +18,17 @@ to indicate that a slot (argument) still needs to be filled.
 ### Lex
 
 1. User pings `Bot`
-1. `Listener` emits `Message`
+1. `Listener` sends `Message`
 1. Lex `Parser` handles `Message`
     1. `Parser` sends message to Lex runtime
         1. Response has `slotToElicit` set
-    1. `Parser` emits a completion `Command` (`completion:create`)
+    1. `Parser` creates a completion `Command` (`completion:create`)
 1. Completion `Controller` handles `Command`
     1. `Controller` creates and saves `Fragment`
-    1. `Controller` emits a `Message` prompting user for argument
+    1. `Controller` sends a `Message` prompting user for argument
 1. `Listener` responds to user with completion code
 1. User responds with value
-1. `Listener` emits `Message`
+1. `Listener` sends `Message`
 1. Completion `Parser` handles `Message`
     1. `Parser` extracts next `value`
     1. `Parser` loads `Fragment`
@@ -36,4 +36,4 @@ to indicate that a slot (argument) still needs to be filled.
 1. Lex Parser completes `Fragment`
     1. `Parser` sends next `value` to Lex runtime
     1. `Parser` merges (next) response slots with (prev) fragment arguments
-    1. `Parser` emits complete `Command`
+    1. `Parser` executes complete `Command`

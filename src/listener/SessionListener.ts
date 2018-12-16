@@ -1,10 +1,10 @@
 import { ChildServiceOptions } from 'src/ChildService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
+import { Session } from 'src/entity/Session';
 
 import { BaseListener } from './BaseListener';
-import { FetchOptions, Listener } from './Listener';
-import { Session } from 'src/entity/Session';
+import { FetchOptions } from './Listener';
 
 /**
  * A listener that tracks sessions.

@@ -7,7 +7,7 @@ export const GRAPH_OUTPUT_NAME_VALUE_PAIR = new GraphQLObjectType({
     },
     value: {
       type: GraphQLString,
-    }
+    },
   },
   name: 'NameValuePair',
 });
@@ -19,7 +19,7 @@ export const GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR = new GraphQLObjectType({
     },
     values: {
       type: new GraphQLList(GraphQLString),
-    }
+    },
   },
   name: 'NameMultiValuePair',
 });

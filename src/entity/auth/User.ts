@@ -67,4 +67,3 @@ export const GRAPH_OUTPUT_USER = new GraphQLObjectType({
   },
   name: 'User',
 });
-

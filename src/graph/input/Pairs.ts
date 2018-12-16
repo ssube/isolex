@@ -7,7 +7,7 @@ export const GRAPH_INPUT_NAME_VALUE_PAIR = new GraphQLInputObjectType({
     },
     value: {
       type: GraphQLString,
-    }
+    },
   },
   name: 'NameValuePairInput',
 });
@@ -19,7 +19,7 @@ export const GRAPH_INPUT_NAME_MULTI_VALUE_PAIR = new GraphQLInputObjectType({
     },
     values: {
       type: new GraphQLList(GraphQLString),
-    }
+    },
   },
   name: 'NameMultiValuePairInput',
 });

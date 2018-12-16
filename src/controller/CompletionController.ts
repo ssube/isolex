@@ -92,7 +92,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       const parser = this.services.getService<Parser>({ id: fragment.parserId });
       const value = cmd.get('next');
       const commands = await parser.complete(cmd.context, fragment, value);
-      await this.bot.emitCommand(...commands);
+      await this.bot.executeCommand(...commands);
     } catch (err) {
       this.logger.error(err, 'error completing fragment');
       await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'error completing fragment'));

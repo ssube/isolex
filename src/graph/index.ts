@@ -37,7 +37,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
     this.schema = new GraphQLSchema({
       mutation: new GraphQLObjectType({
         fields: {
-          emitCommands: {
+          executeCommands: {
             args: {
               commands: {
                 type: GRAPH_INPUT_COMMAND_LIST,
@@ -47,7 +47,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
               },
             },
             resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.emitCommands(args, req);
+              return this.executeCommands(args, req);
             },
             type: GRAPH_OUTPUT_COMMAND_LIST,
           },
@@ -123,7 +123,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
     /* noop */
   }
 
-  public async emitCommands(args: any, req: express.Request) {
+  public async executeCommands(args: any, req: express.Request) {
     const context = req.user as Context | undefined;
     this.logger.debug({ args, context }, 'send message');
 
@@ -142,7 +142,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
         verb,
       }));
     }
-    return this.bot.emitCommand(...commands);
+    return this.bot.executeCommand(...commands);
   }
 
   public async sendMessages(args: any, req: express.Request) {

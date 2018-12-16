@@ -1,7 +1,7 @@
 $schema: "http://json-schema.org/schema#" # yes, this is a json schema written in yaml
 $id: "https://github.com/ssube/isolex/schema.yml"
 definitions:
-  emit-command:
+  command:
     properties:
       noun:
         type: string

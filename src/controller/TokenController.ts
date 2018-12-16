@@ -142,7 +142,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       throw new InvalidArgumentError('command has no parser to prompt for completion');
     }
 
-    await this.bot.emitCommand(new Command({
+    await this.bot.executeCommand(new Command({
       context: cmd.context,
       data: {
         key: [key],

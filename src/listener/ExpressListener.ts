@@ -96,7 +96,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public async send() {
-    this.logger.warn('express listener is not able to emit messages');
+    this.logger.warn('express listener is not able to send messages');
   }
 
   public async fetch(): Promise<Array<Message>> {

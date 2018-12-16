@@ -25,7 +25,7 @@ export interface Listener extends Service {
   check(context: Context): Promise<boolean>;
 
   /**
-   * Emit a message.
+   * Sends a message.
    */
   send(msg: Message): Promise<void>;
 

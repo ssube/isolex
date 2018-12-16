@@ -4,6 +4,7 @@ import { Connection, Repository } from 'typeorm';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -48,10 +49,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       case modes.create:
         return this.createKeyword(keyword, cmd, body);
       case modes.delete:
-        return this.deleteKeyword(keyword, cmd);
+        return this.deleteKeyword(keyword, cmd.context);
       case modes.execute:
       default:
-        return this.executeKeyword(keyword, cmd, body);
+        return this.executeKeyword(keyword, cmd.context, body);
     }
   }
 
@@ -71,27 +72,25 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     this.logger.debug({ args, cmd, key, keyword }, 'learning command');
 
     if (await this.keywordRepository.findOne(name)) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Command already exists: ${name}`));
-      return;
+      return this.reply(cmd.context, `Command already exists: ${name}`);
     }
 
     await this.keywordRepository.save(keyword);
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Learned command ${name}.`));
+    return this.reply(cmd.context, `Learned command ${name}.`);
   }
 
-  protected async deleteKeyword(name: string, cmd: Command): Promise<void> {
+  protected async deleteKeyword(name: string, context: Context): Promise<void> {
     const keyword = await this.keywordRepository.findOne(name);
 
     if (!keyword) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Command ${name} does not exist.`));
-      return;
+      return this.reply(context, `Command ${name} does not exist.`);
     }
 
     await this.keywordRepository.delete(name);
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `Deleted command ${name}.`));
+    return this.reply(context, `Deleted command ${name}.`);
   }
 
-  protected async executeKeyword(name: string, cmd: Command, body: Array<string>) {
+  protected async executeKeyword(name: string, context: Context, body: Array<string>) {
     const keyword = await this.keywordRepository.findOne(name, {
       relations: ['command', 'command.context'],
     });
@@ -104,17 +103,17 @@ export class LearnController extends BaseController<LearnControllerData> impleme
 
     this.logger.debug({ args, noun }, 'building command');
 
-    const emit = keyword.command.extend({
-      context: cmd.context,
+    const cmd = keyword.command.extend({
+      context,
       data: {
         [this.data.field]: args,
       },
       noun,
     });
 
-    this.logger.debug({ emit, keyword }, 'keywording command');
+    this.logger.debug({ cmd, keyword }, 'keywording command');
 
-    await this.bot.emitCommand(emit);
+    await this.bot.executeCommand(cmd);
     return;
   }
 }
