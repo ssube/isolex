@@ -1,15 +1,19 @@
+import { Inject } from 'noicejs';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { TYPE_TEXT } from 'src/utils/Mime';
 
 export type SedControllerData = ControllerData;
 export type SedControllerOptions = ControllerOptions<SedControllerData>;
 
+export const NOUN_SED = 'sed';
+
+@Inject('bot', 'services')
 export class SedController extends BaseController<SedControllerData> implements Controller {
   constructor(options: SedControllerOptions) {
-    super(options);
+    super(options, [NOUN_SED]);
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -22,30 +26,27 @@ export class SedController extends BaseController<SedControllerData> implements 
     const parts = args[0].match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
     if (!parts) {
       this.logger.debug({ args }, 'incorrect input.');
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'Incorrect input. Please use \`!!s/e/d/[flags]\`'));
-      return;
+      return this.reply(cmd.context, 'Incorrect input. Please use \`!!s/e/d/[flags]\`');
     }
 
     this.logger.debug({ parts }, 'fetching messages');
-    let messages: Array<Message> = [];
     try {
-      messages = await this.bot.fetch({
+      const messages = await this.bot.fetch({
         channel: cmd.context.channel.id,
         listenerId: cmd.context.source.id,
         useFilters: true,
       });
+
+      for (const message of messages) {
+        if (await this.processMessage(message, cmd, parts)) {
+          return;
+        }
+      }
+
+      return this.reply(cmd.context, 'No messages were matched!');
     } catch (error) {
       this.logger.error('Failed to fetch messages.');
     }
-
-    for (const message of messages) {
-      if (await this.processMessage(message, cmd, parts)) {
-        return;
-      }
-    }
-
-    // No matches
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'No messages were matched!'));
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
@@ -54,11 +55,10 @@ export class SedController extends BaseController<SedControllerData> implements 
     }
 
     const [_, pattern, replacement, flags] = parts;
-
-    if (!!message.body.match(pattern)) {
-      const body = message.body.replace(new RegExp(pattern, flags), replacement);
-
-      await this.bot.sendMessage(Message.reply(command.context, TYPE_TEXT, body));
+    const expr = new RegExp(pattern, flags);
+    if (expr.test(message.body)) {
+      const body = message.body.replace(expr, replacement);
+      await this.reply(command.context, body);
       return true;
     }
 

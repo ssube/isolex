@@ -1,0 +1,4 @@
+metadata:
+  kind: sed-controller
+  name: test-sed
+data: {}

@@ -72,6 +72,7 @@ public async getFoo(cmd: Command) {
 | reaction | Reaction   |
 | role     | User       |
 | roll     | Dice       |
+| sed      | Sed        |
 | service  | Kubernetes |
 | session  | Session    |
 | token    | Token      |
