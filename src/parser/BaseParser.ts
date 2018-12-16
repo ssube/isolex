@@ -47,7 +47,7 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
       parser: this,
     });
     const { noun, verb } = this.switchNounVerb(data, this.data.defaultCommand);
-    this.logger.debug({ context, noun, verb }, 'emit command');
+    this.logger.debug({ context, noun, verb }, 'create command');
 
     return new Command({
       context,
@@ -58,20 +58,17 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
     });
   }
 
-  protected switchNounVerb(data: Map<string, Array<string>>, emit: CommandOptions = this.data.defaultCommand): {
+  protected switchNounVerb(data: Map<string, Array<string>>, cmd: CommandOptions = this.data.defaultCommand): {
     noun: string;
     verb: CommandVerb;
   } {
     if (this.data.preferData) {
       return {
-        noun: getHeadOrDefault(data, 'noun', emit.noun),
-        verb: getHeadOrDefault(data, 'verb', emit.verb) as CommandVerb,
+        noun: getHeadOrDefault(data, 'noun', cmd.noun),
+        verb: getHeadOrDefault(data, 'verb', cmd.verb) as CommandVerb,
       };
     } else {
-      return {
-        noun: emit.noun,
-        verb: emit.verb,
-      };
+      return cmd;
     }
   }
 }

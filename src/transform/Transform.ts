@@ -16,7 +16,9 @@ export interface Transform extends Service {
    *
    * Multiple transforms stack to form a `reduce(msg, cmd)`
    *
-   * The transform may emit multiple objects (if many events were sent at once or many views of the same event).
+   * The transform may send multiple messages (if many events were sent at once or many views of the same event).
+   *
+   * @TODO check the signature on this
    */
   transform(cmd: Command, msg: Message): Promise<Array<Message>>;
 }

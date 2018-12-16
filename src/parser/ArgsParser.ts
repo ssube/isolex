@@ -39,7 +39,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
     this.logger.debug({ args, fragment, value }, 'completing command fragment');
     return Promise.all([
-      this.emit(context, data),
+      this.createReply(context, data),
     ]);
   }
 
@@ -50,7 +50,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
     return Promise.all([
-      this.emit(msg.context, dictToMap(data)),
+      this.createReply(msg.context, dictToMap(data)),
     ]);
   }
 
@@ -58,10 +58,10 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     return dictValuesToArrays<string>(yargs(body, this.data.args));
   }
 
-  protected emit(context: Context, data: Map<string, Array<string>>): Promise<Command> {
+  protected createReply(context: Context, data: Map<string, Array<string>>): Promise<Command> {
     const missing = this.validate(data);
     if (missing.length) {
-      this.logger.debug({ missing }, 'missing required arguments, emitting completion');
+      this.logger.debug({ missing }, 'missing required arguments, creating completion');
       return this.createCompletion(context, data, missing);
     } else {
       return this.createCommand(context, data);
@@ -90,7 +90,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
       context: context.extend({
         parser: this,
       }),
-      data,
+      data: new Map([...data, ...fragment]),
       labels: this.data.defaultCommand.labels,
       noun: NOUN_FRAGMENT,
       verb: CommandVerb.Create,
