@@ -6,6 +6,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Code Climate](#code-climate)
     - [Close Reasons](#close-reasons)
       - [Noun/Verb Switch Complexity](#nounverb-switch-complexity)
+      - [Super Call Complexity](#super-call-complexity)
       - [Test Data & Fixtures](#test-data--fixtures)
   - [Documentation](#documentation)
     - [Headers](#headers)
@@ -41,14 +42,31 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
 
 Code Climate runs lint and style checks against the project, on pull requests and the master branch.
 
+[Project maintainability](https://codeclimate.com/github/ssube/isolex) MUST be an A. Technical debt MUST remain
+under 2% and SHOULD NOT increase with any PR.
+
 ### Close Reasons
 
-Only the warnings shown here can be closed. Others must be fixed.
+Warnings shown here can be closed. Others MUST be fixed.
 
 #### Noun/Verb Switch Complexity
 
 Any complexity, duplication, or length warnings related to a controller's noun or verb switches should be marked as
 `WONTFIX`.
+
+#### Super Call Complexity
+
+Calling an async super method can trigger a complexity warning:
+
+```typescript
+export class ListenerModule extends Module {
+  public async configure(options: ModuleOptions) {
+    await super.configure(options);
+ 
+    // listeners
+```
+
+This should be marked as `INVALID`.
 
 #### Test Data & Fixtures
 
