@@ -34,9 +34,9 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
       data: {
         [this.data.args.field]: [parsed],
       },
-      labels: this.data.emit.labels,
-      noun: this.data.emit.noun,
-      verb: this.data.emit.verb,
+      labels: this.data.defaultCommand.labels,
+      noun: this.data.defaultCommand.noun,
+      verb: this.data.defaultCommand.verb,
     })];
   }
 

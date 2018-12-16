@@ -6,7 +6,7 @@ data:
     required:
       - id
       - next
-  emit:
+  defaultCommand:
     noun: fragment
     verb: update
   match:

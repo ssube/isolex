@@ -3,9 +3,10 @@ import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Parser, ParserData } from 'src/parser/Parser';
-import { getHeadOrDefault } from 'src/utils/Map';
+import { Parser, ParserData, ParserOutputData } from 'src/parser/Parser';
+import { dictToMap, getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
+import { BaseError } from 'noicejs';
 
 export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
   protected matcher: Match;
@@ -39,26 +40,49 @@ export abstract class BaseParser<TData extends ParserData> extends ChildService<
    */
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     const data = new Map(fragment.data).set(fragment.key, value);
-    return [Command.emit({
-      ...fragment,
-      context,
-     }, context, data)];
+    return [await this.createCommand(context, data, fragment)];
   }
 
-  protected async createCommand(baseContext: Context, data: Map<string, Array<string>>, emit = this.data.emit): Promise<Command> {
+  protected async createCommand(baseContext: Context, data: Map<string, Array<string>>, emit: Partial<ParserOutputData> = {}): Promise<Command> {
+    if (emit === this.data.defaultCommand) {
+      throw new BaseError('parser must not provide default command twice');
+    }
+
     const context = baseContext.extend({
       parser: this,
     });
-    const noun = getHeadOrDefault(data, 'noun', emit.noun);
-    const verb = getHeadOrDefault(data, 'verb', emit.verb) as CommandVerb;
+    const labels = new Map<string, string>([
+      ...dictToMap(this.data.defaultCommand.labels),
+      ...dictToMap(emit.labels),
+    ]);
+    const { noun, verb } = this.switchNounVerb(data, emit);
     this.logger.debug({ context, noun, verb }, 'emit command');
 
     return new Command({
       context,
       data,
-      labels: this.data.emit.labels,
+      labels,
       noun,
       verb,
     });
+  }
+
+  protected switchNounVerb(data: Map<string, Array<string>>, emit: Partial<ParserOutputData>): {
+    noun: string;
+    verb: CommandVerb;
+  } {
+    const noun = emit.noun || this.data.defaultCommand.noun;
+    const verb = emit.verb || this.data.defaultCommand.verb;
+    if (this.data.preferData) {
+      return {
+        noun: getHeadOrDefault(data, 'noun', noun),
+        verb: getHeadOrDefault(data, 'verb', verb) as CommandVerb,
+      };
+    } else {
+      return {
+        noun,
+        verb,
+      };
+    }
   }
 }

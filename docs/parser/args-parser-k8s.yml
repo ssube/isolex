@@ -6,7 +6,7 @@ data:
     required:
       - noun
       - verb
-  emit:
+  defaultCommand:
     noun: pod
     verb: get
     labels:
@@ -17,3 +17,4 @@ data:
         operator: every
         values:
           - regexp: !regexp /!!k8s/
+  preferData: true

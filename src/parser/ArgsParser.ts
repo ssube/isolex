@@ -6,7 +6,7 @@ import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Dict, dictToMap, dictValuesToArrays, mergeMap } from 'src/utils/Map';
+import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map';
 
 import { BaseParser } from './BaseParser';
 import { Parser, ParserData, ParserOptions } from './Parser';
@@ -35,7 +35,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     const args = await this.decodeBody(value.join(' '));
-    const data = mergeMap(fragment.data, dictToMap(args));
+    const data = pushMergeMap(fragment.data, dictToMap(args));
 
     this.logger.debug({ args, fragment, value }, 'completing command fragment');
     return Promise.all([
@@ -64,7 +64,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
       this.logger.debug({ missing }, 'missing required arguments, emitting completion');
       return this.createCompletion(context, data, missing);
     } else {
-      return this.createCommand(context, data);
+      return this.createCommand(context, data, {});
     }
   }
 
@@ -82,13 +82,12 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     const fragment = dictToMap({
       key: missing,
       msg: [`missing required arguments: ${missing.join(', ')}`],
-      noun: [this.data.emit.noun],
+      noun: [this.data.defaultCommand.noun],
       parser: [this.id],
-      verb: [this.data.emit.verb],
+      verb: [this.data.defaultCommand.verb],
     });
     return this.createCommand(context, fragment, {
       data,
-      labels: {},
       noun: NOUN_FRAGMENT,
       verb: CommandVerb.Create,
     });

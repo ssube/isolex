@@ -6,8 +6,21 @@ import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { MatchData } from 'src/utils/match';
 
+export interface ParserOutputData extends CommandOptions {
+}
+
 export interface ParserData {
-  emit: CommandOptions;
+  /**
+   * Default command options.
+   */
+  defaultCommand: CommandOptions;
+  /**
+   * Prefer fields from data over those in the default command.
+   */
+  preferData: boolean;
+  /**
+   * Match only certain messages.
+   */
   match: MatchData;
 }
 

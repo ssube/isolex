@@ -6,6 +6,7 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SplitParserData extends ParserData {
@@ -26,9 +27,7 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const args = await this.decode(msg);
     this.logger.debug({ args }, 'splitting string');
-    return [Command.emit(this.data.emit, msg.context.extend({
-      parser: this,
-    }), { args })];
+    return [await this.createCommand(msg.context, dictToMap({ args }))];
   }
 
   public async decode(msg: Message): Promise<any> {

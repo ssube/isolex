@@ -11,7 +11,7 @@ data:
     boolean: [bar]
     count: [v]
     required: []
-  emit:
+  defaultCommand:
     noun: test_echo
     verb: get
   match:
@@ -20,3 +20,4 @@ data:
         operator: every
         values:
           - regexp: !regexp /!!args/
+  preferData: true

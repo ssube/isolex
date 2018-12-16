@@ -64,9 +64,9 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
         parser: this,
       }),
       data,
-      labels: this.data.emit.labels,
+      labels: this.data.defaultCommand.labels,
       noun,
-      verb: this.data.emit.verb,
+      verb: this.data.defaultCommand.verb,
     };
 
     this.logger.debug({ cmdOptions }, 'command options');

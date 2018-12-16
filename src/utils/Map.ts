@@ -78,7 +78,7 @@ export function setOrPush<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey, va
   }
 }
 
-export function mergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<TVal>>>): Map<TKey, Array<TVal>> {
+export function pushMergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<TVal>>>): Map<TKey, Array<TVal>> {
   const out = new Map();
   for (const arg of args) {
     for (const [key, val] of arg) {

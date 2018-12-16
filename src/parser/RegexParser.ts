@@ -28,9 +28,9 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
         parser: this,
       }),
       data: { data }, // @TODO: double data doesn't seem right
-      labels: this.data.emit.labels,
-      noun: this.data.emit.noun,
-      verb: this.data.emit.verb,
+      labels: this.data.defaultCommand.labels,
+      noun: this.data.defaultCommand.noun,
+      verb: this.data.defaultCommand.verb,
     })];
   }
 

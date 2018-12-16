@@ -75,8 +75,9 @@ bundle-check: ## bundle the application with full type checking (stricter)
 bundle-cover: ## bundle the application without type checking (faster)
 	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS)
 
-bundle-stats: ## bundle the application and emit statistics
-	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --json --profile > "$(TARGET_PATH)/webpack.json"
+bundle-stats: ## bundle the application and print statistics
+	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --json --profile |\
+		tee "$(TARGET_PATH)/webpack.json"
 
 bundle-watch: ## bundle the application and watch for changes
 	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --watch
@@ -90,7 +91,8 @@ git-push: ## push to both gitlab and github (this assumes you have both remotes 
 
 # from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
 git-stats: ## print git contributor line counts (approx, for fun)
-	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" | grep -I '^author '; done | sort -f | uniq -ic | sort -n
+	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" |\
+		grep -I '^author '; done | sort -f | uniq -ic | sort -n
 
 release: ## create a release
 	$(NODE_BIN)/standard-version --sign

@@ -2,9 +2,5 @@ $schema: "http://json-schema.org/schema#" # yes, this is a json schema written i
 $id: "https://github.com/ssube/isolex/echo-parser.yml"
 type: object
 properties:
-  emit:
-    $ref: "#/definitions/emit-command"
-  tags:
-    type: array
-    items:
-      type: string
+  defaultCommand:
+    $ref: "#/definitions/command"

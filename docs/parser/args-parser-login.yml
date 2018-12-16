@@ -5,7 +5,7 @@ data:
   args:
     required:
       - name
-  emit:
+  defaultCommand:
     noun: session
     verb: create
   match:

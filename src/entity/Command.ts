@@ -5,7 +5,7 @@ import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
-import { dictToMap, MapLike, mergeMap } from 'src/utils/Map';
+import { dictToMap, MapLike, pushMergeMap } from 'src/utils/Map';
 
 import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
 
@@ -27,17 +27,6 @@ export const TABLE_COMMAND = 'command';
 
 @Entity(TABLE_COMMAND)
 export class Command extends BaseCommand implements CommandOptions {
-  /**
-   * @TODO: merge emit data and passed data
-   */
-  public static emit(emit: CommandOptions, context: Context, data: MapLike<CommandDataValue>) {
-    return new Command({
-      ...emit,
-      context,
-      data,
-    });
-  }
-
   public static isCommand(it: any): it is Command {
     return it instanceof Command;
   }
@@ -72,7 +61,7 @@ export class Command extends BaseCommand implements CommandOptions {
       cmd.context = options.context;
     }
     if (options.data) {
-      cmd.data = mergeMap(cmd.data, dictToMap(options.data));
+      cmd.data = pushMergeMap(cmd.data, dictToMap(options.data));
     }
     return cmd;
   }
