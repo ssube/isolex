@@ -67,7 +67,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.requestCounter = new Counter({
       help: 'all requests through this express listener',
       labelNames: ['serviceId', 'serviceKind', 'serviceName', 'requestClient', 'requestHost', 'requestPath'],
-      name: 'express_requests',
+      name: 'express_request',
       registers: [this.metrics],
     });
 

@@ -15,6 +15,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Abbreviations](#abbreviations)
     - [Commands](#commands)
     - [Messages](#messages)
+    - [Metrics](#metrics)
   - [Paths](#paths)
   - [Typescript](#typescript)
     - [Arrays](#arrays)
@@ -115,7 +116,14 @@ Commands SHOULD be executed and received. Commands MUST NOT be emitted.
 
 ### Messages
 
-Messages are sent and received.
+Messages SHOULD be sent and received.
+
+Message types MUST be MIME types.
+
+### Metrics
+
+Metrics MUST be singular: `express_request`, `discord_event`. The Prometheus format is `type{labels} count`, so
+`express_request{status=200} 3` reads correctly.
 
 ## Paths
 

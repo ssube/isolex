@@ -54,7 +54,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     this.onCounter = new Counter({
       help: 'events received from discord client',
       labelNames: ['serviceId', 'serviceKind', 'serviceName', 'eventKind'],
-      name: 'discord_events',
+      name: 'discord_event',
       registers: [options.metrics],
     });
   }
