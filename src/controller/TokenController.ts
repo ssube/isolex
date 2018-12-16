@@ -99,7 +99,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     if (results.affected) {
       return this.reply(cmd.context, `deleted ${results.affected} tokens`);
     } else {
-      return this.reply(cmd.context, `no tokens deleted`);
+      return this.reply(cmd.context, `tokens deleted`);
     }
   }
 

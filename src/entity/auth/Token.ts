@@ -7,6 +7,7 @@ import { mapToDict } from 'src/utils/Map';
 
 import { DataEntity, DataEntityOptions } from '../base/DataEntity';
 import { User } from './User';
+import { Listener } from 'src/listener/Listener';
 
 export interface VerifiableTokenOptions {
   audience: Array<string>;
@@ -23,11 +24,7 @@ export interface TokenOptions extends Session, DataEntityOptions<Array<string>>,
 @Entity()
 export class Token extends DataEntity<Array<string>> implements TokenOptions {
   public static verify(token: string, secret: string, expected: Partial<VerifiableTokenOptions>): any {
-    return verify(token, secret, {
-      audience: expected.audience,
-      issuer: expected.issuer,
-      subject: expected.subject,
-    });
+    return verify(token, secret, expected);
   }
 
   /**
@@ -114,7 +111,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   /**
    * Turn this token into an equivalent session.
    */
-  public session(): Session {
+  public session(listener: Listener): Session {
     return {
       createdAt: this.createdAt,
       expiresAt: this.expiresAt,

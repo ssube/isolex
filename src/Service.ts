@@ -1,4 +1,6 @@
-import { MapLike } from './utils/Map';
+import { GraphQLObjectType, GraphQLString } from 'graphql';
+
+import { MapLike } from 'src/utils/Map';
 
 export interface ServiceDefinition<TData = any> {
   metadata: ServiceMetadata;
@@ -41,3 +43,18 @@ export function getLogInfo(svc: Service) {
     name: svc.name,
   };
 }
+
+export const ServiceGraph = new GraphQLObjectType({
+  fields: {
+    id: {
+      type: GraphQLString,
+    },
+    kind: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+  },
+  name: 'service',
+});

@@ -1,15 +1,3 @@
-type Mutation {
-  emitCommands(commands: [CommandInput]): [Command]
-  sendMessages(messages: [MessageInput]): [Message]
-}
-
-type Query {
-  command(id: String!): Command
-  message(id: String!): Message
-  service(id: String!): Service
-  services: [Service!]!
-}
-
 input NameValuePairInput {
   name: String!
   value: String!
@@ -35,15 +23,11 @@ input CommandInput {
   context: ContextInput
   data: [NameMultiValuePairInput!]!
   labels: [NameValuePairInput!]!
-  noun: String!
-  verb: String!
 }
 
 input MessageInput {
-  body: String
   context: ContextInput
   labels: [NameValuePairInput!]!
-  type: String!
 }
 
 interface Labeled {
@@ -108,26 +92,17 @@ type Fragment implements Labeled {
 "Command for execution by the bot"
 type Command implements Labeled {
   data: [NameMultiValuePair!]!
-  id: String!
   labels: [NameValuePair!]!
-  noun: String!
-  verb: String!
 }
 
 "Message to be parsed or sent by the bot"
 type Message implements Labeled {
-  body: String
   context: Context
-  id: String!
   labels: [NameValuePair!]!
   reactions: [String!]!
-  type: String!
 }
 
 "Service within the bot"
 type Service implements Labeled {
-  id: String!
-  kind: String!
   labels: [NameValuePair!]!
-  name: String!
 }

@@ -1,3 +1,4 @@
+import { GraphQLObjectType, GraphQLString } from 'graphql';
 import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
@@ -157,3 +158,18 @@ export class Context implements ContextData {
     };
   }
 }
+
+const ContextGraph = new GraphQLObjectType({
+  fields: {
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    uid: {
+      type: GraphQLString,
+    },
+  },
+  name: 'Context',
+});

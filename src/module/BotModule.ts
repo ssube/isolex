@@ -1,11 +1,12 @@
-import { isNil } from 'lodash';
-import { Logger, Module, Provides } from 'noicejs';
+import { kebabCase } from 'lodash';
+import { Container, Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
 import * as request from 'request-promise';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
+import { GraphSchema } from 'src/graph';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
@@ -14,6 +15,7 @@ export interface BotModuleOptions {
 
 export class BotModule extends Module {
   protected bot: Bot;
+  protected container: Container;
   protected logger: Logger;
   protected metrics: Registry;
 
@@ -21,13 +23,17 @@ export class BotModule extends Module {
     super();
 
     this.logger = options.logger;
+    this.metrics = new Registry();
   }
 
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
+    this.container = options.container;
+
     // utils
     this.bind('compiler').toConstructor(TemplateCompiler);
+    this.bind(kebabCase(GraphSchema.name)).toConstructor(GraphSchema);
   }
 
   public setBot(bot: Bot) {
@@ -46,9 +52,6 @@ export class BotModule extends Module {
 
   @Provides('metrics')
   public async getMetrics(options: any): Promise<Registry> {
-    if (isNil(this.metrics)) {
-      this.metrics = new Registry();
-    }
     return this.metrics;
   }
 

@@ -1,9 +1,8 @@
 import * as express from 'express';
 import * as expressGraphQl from 'express-graphql';
-import { buildSchema } from 'graphql';
 import * as http from 'http';
 import { isNil } from 'lodash';
-import { Inject } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 import * as passport from 'passport';
 import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 import { Counter, Registry } from 'prom-client';
@@ -11,16 +10,13 @@ import { Connection, Repository } from 'typeorm';
 
 import { ChildServiceOptions } from 'src/ChildService';
 import { Token } from 'src/entity/auth/Token';
-import { Command } from 'src/entity/Command';
-import { Context, ContextData } from 'src/entity/Context';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { GraphSchema, GraphSchemaData } from 'src/graph';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { pairsToDict } from 'src/utils/Map';
 
 import { Listener } from './Listener';
-import { Session, SessionListener } from './SessionListener';
-
-const schema = buildSchema(require('../schema.gql'));
+import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData {
   expose: {
@@ -40,23 +36,29 @@ export interface ExpressListenerData {
   };
 }
 
-export type ExpressListenerOptions = ChildServiceOptions<ExpressListenerData>;
+export interface ExpressListenerOptions extends ChildServiceOptions<ExpressListenerData> {
+  graph: GraphSchema;
+}
 
 @Inject('bot', 'metrics', 'services', 'storage')
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
-  protected readonly app: express.Express;
   protected readonly authenticator: passport.Authenticator;
+  protected readonly container: Container;
   protected readonly metrics: Registry;
   protected readonly requestCounter: Counter;
   protected readonly services: ServiceModule;
   protected readonly storage: Connection;
   protected readonly tokenRepository: Repository<Token>;
 
+  protected app: express.Express;
+  protected graph?: GraphSchema;
   protected server?: http.Server;
 
   constructor(options: ExpressListenerOptions) {
     super(options);
 
+    this.authenticator = new passport.Passport();
+    this.container = options.container;
     this.metrics = options.metrics;
     this.services = options.services;
     this.storage = options.storage;
@@ -69,12 +71,10 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
 
     this.tokenRepository = this.storage.getRepository(Token);
-    this.authenticator = new passport.Passport();
-    this.app = express();
-    this.setupApp();
   }
 
   public async start() {
+    this.app = await this.setupApp();
     this.server = await new Promise<http.Server>((res, rej) => {
       let server: http.Server;
       server = this.app.listen(this.data.listen.port, this.data.listen.address, () => {
@@ -87,6 +87,10 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     if (this.server) {
       this.server.close();
     }
+
+    if (this.graph) {
+      await this.graph.stop();
+    }
   }
 
   public async send() {
@@ -96,69 +100,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   public async fetch(): Promise<Array<Message>> {
     this.logger.warn('express listener is not able to fetch messages');
     return [];
-  }
-
-  public async emitCommands(args: any, req: express.Request) {
-    this.logger.debug({ args }, 'emit command');
-    const commands = [];
-    for (const data of args.commands) {
-      const { context: contextData = {}, labels: rawLabels, noun, verb } = data;
-      const context = await this.createContext(req, contextData);
-      commands.push(new Command({
-        context,
-        data: args,
-        labels: pairsToDict(rawLabels),
-        noun,
-        verb,
-      }));
-    }
-    return this.bot.emitCommand(...commands);
-  }
-
-  public async sendMessages(args: any, req: express.Request) {
-    this.logger.debug({ args }, 'send message');
-    const messages = [];
-    for (const data of args.messages) {
-      const { body, context: contextData = {}, type } = data;
-      const context = await this.createContext(req, contextData);
-      messages.push(new Message({
-        body,
-        context,
-        reactions: [],
-        type,
-      }));
-    }
-    return this.bot.sendMessage(...messages);
-  }
-
-  public getCommand(args: any) {
-    this.logger.debug({ args }, 'get command');
-    const repository = this.storage.getRepository(Command);
-    const { id } = args;
-    return repository.findOne(id);
-  }
-
-  public getMessage(args: any) {
-    this.logger.debug({ args }, 'get message');
-    const repository = this.storage.getRepository(Message);
-    const { id } = args;
-    return repository.findOne(id);
-  }
-
-  public getService(args: any) {
-    this.logger.debug({ args }, 'getting service');
-    const { id } = args;
-    return this.services.getService(id);
-  }
-
-  public getServices() {
-    this.logger.debug('getting services');
-    try {
-      return this.services.listServices();
-    } catch (err) {
-      this.logger.error(err, 'error getting services');
-      return [];
-    }
   }
 
   public getMetrics(req: express.Request, res: express.Response) {
@@ -187,26 +128,20 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       return done(undefined, false);
     }
 
-    const session = token.session();
+    const ctx = new Context({
+      ...data,
+      source: this,
+      user: token.user,
+    });
+
+    const session = token.session(this);
     this.sessions.set(token.id, session);
     this.logger.debug({ session }, 'created session for token');
 
-    done(null, session);
+    done(null, ctx);
   }
 
-  protected async createContext(req: express.Request, data: ContextData): Promise<Context> {
-    const session = req.user as Session | undefined;
-    const user = session ? session.user : undefined;
-    this.logger.debug({ data, req, session }, 'creating context for request');
-
-    return new Context({
-      ...data,
-      source: this,
-      user,
-    });
-  }
-
-  protected setupApp() {
+  protected async setupApp(): Promise<express.Express> {
     this.authenticator.use(new JwtStrategy({
       audience: this.data.token.audience,
       issuer: this.data.token.issuer,
@@ -214,34 +149,30 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       secretOrKey: this.data.token.secret,
     }, (req: express.Request, payload: any, done: VerifiedCallback) => this.createTokenSession(req, payload, done)));
 
-    this.app.use(this.authenticator.initialize());
+    const app = express();
+    app.use(this.authenticator.initialize());
 
     if (this.data.expose.metrics) {
-      this.app.use((req, res, next) => this.traceRequest(req, res, next));
-      this.app.get('/metrics', (req, res) => this.getMetrics(req, res));
+      app.use((req, res, next) => this.traceRequest(req, res, next));
+      app.get('/metrics', (req, res) => this.getMetrics(req, res));
     }
 
     if (this.data.expose.graph) {
-      const mutations = {
-        // mutation
-        emitCommands: (args: any, req: express.Request) => this.emitCommands(args, req),
-        sendMessages: (args: any, req: express.Request) => this.sendMessages(args, req),
-      };
-      const queries = {
-        // query
-        command: (args: any) => this.getCommand(args),
-        message: (args: any) => this.getCommand(args),
-        service: (args: any) => this.getService(args),
-        services: () => this.getServices(),
-      };
-      this.app.use('/graph', expressGraphQl({
-        graphiql: this.data.expose.graphiql,
-        rootValue: {
-          ...mutations,
-          ...queries,
+      this.graph = await this.services.createService<GraphSchema, GraphSchemaData>({
+        data: {},
+        metadata: {
+          kind: 'graph-schema',
+          name: 'express-graph',
         },
-        schema,
+      });
+      await this.graph.start();
+
+      app.use('/graph', expressGraphQl({
+        graphiql: this.data.expose.graphiql,
+        schema: this.graph.schema,
       }));
     }
+
+    return app;
   }
 }

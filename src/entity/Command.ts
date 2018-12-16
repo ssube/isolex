@@ -1,3 +1,4 @@
+import { GraphQLObjectType, GraphQLString, GraphQLInputObjectType } from 'graphql';
 import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context } from 'src/entity/Context';
@@ -84,3 +85,30 @@ export class Command extends BaseCommand implements CommandOptions {
     };
   }
 }
+
+export const CommandGraph = new GraphQLObjectType({
+  fields: {
+    id: {
+      type: GraphQLString,
+    },
+    noun: {
+      type: GraphQLString,
+    },
+    verb: {
+      type: GraphQLString,
+    },
+  },
+  name: 'Command',
+});
+
+export const CommandInputGraph = new GraphQLInputObjectType({
+  fields: {
+    noun: {
+      type: GraphQLString,
+    },
+    verb: {
+      type: GraphQLString,
+    },
+  },
+  name: 'CommandInput',
+});

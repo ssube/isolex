@@ -3,7 +3,7 @@ import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
 
 import { BaseListener } from './BaseListener';
-import { FetchOptions } from './Listener';
+import { FetchOptions, Listener } from './Listener';
 
 export interface Session {
   createdAt: number;
