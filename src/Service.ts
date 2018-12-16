@@ -44,7 +44,7 @@ export function getLogInfo(svc: Service) {
   };
 }
 
-export const ServiceGraph = new GraphQLObjectType({
+export const GRAPH_OUTPUT_SERVICE = new GraphQLObjectType({
   fields: {
     id: {
       type: GraphQLString,

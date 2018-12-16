@@ -2,12 +2,12 @@ import { sign, verify } from 'jsonwebtoken';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Listener } from 'src/listener/Listener';
 import { Session } from 'src/listener/SessionListener';
 import { mapToDict } from 'src/utils/Map';
 
 import { DataEntity, DataEntityOptions } from '../base/DataEntity';
 import { User } from './User';
-import { Listener } from 'src/listener/Listener';
 
 export interface VerifiableTokenOptions {
   audience: Array<string>;

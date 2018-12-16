@@ -1,5 +1,5 @@
 import * as escape from 'escape-html';
-import { GraphQLObjectType, GraphQLString, GraphQLInputObjectType } from 'graphql';
+import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context } from 'src/entity/Context';
@@ -81,7 +81,7 @@ export class Message extends LabelEntity implements MessageOptions {
   }
 }
 
-export const MessageGraph = new GraphQLObjectType({
+export const GRAPH_OUTPUT_MESSAGE = new GraphQLObjectType({
   fields: {
     body: {
       type: GraphQLString,
@@ -96,7 +96,7 @@ export const MessageGraph = new GraphQLObjectType({
   name: 'Message',
 });
 
-export const MessageInputGraph = new GraphQLInputObjectType({
+export const GRAPH_INPUT_MESSAGE = new GraphQLInputObjectType({
   fields: {
     body: {
       type: GraphQLString,

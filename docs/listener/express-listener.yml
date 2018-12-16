@@ -6,6 +6,11 @@ data:
     graph: true
     graphiql: true
     metrics: true
+  graph:
+    metadata:
+      kind: graph-schema
+      name: test-express-graph
+    data: {}
   listen:
     port: 4000
     address: "0.0.0.0"

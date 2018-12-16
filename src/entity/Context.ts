@@ -159,7 +159,7 @@ export class Context implements ContextData {
   }
 }
 
-const ContextGraph = new GraphQLObjectType({
+const GRAPH_OUTPUT_CONTEXT = new GraphQLObjectType({
   fields: {
     id: {
       type: GraphQLString,

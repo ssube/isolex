@@ -14,6 +14,7 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { GraphSchema, GraphSchemaData } from 'src/graph';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { ServiceDefinition } from 'src/Service';
 
 import { Listener } from './Listener';
 import { SessionListener } from './SessionListener';
@@ -24,6 +25,7 @@ export interface ExpressListenerData {
     graphiql: boolean;
     metrics: boolean;
   };
+  graph: ServiceDefinition;
   listen: {
     address: string;
     port: number;
@@ -158,13 +160,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }
 
     if (this.data.expose.graph) {
-      this.graph = await this.services.createService<GraphSchema, GraphSchemaData>({
-        data: {},
-        metadata: {
-          kind: 'graph-schema',
-          name: 'express-graph',
-        },
-      });
+      this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
       await this.graph.start();
 
       app.use('/graph', expressGraphQl({

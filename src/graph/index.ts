@@ -4,17 +4,19 @@ import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
 import { ChildService, ChildServiceOptions } from 'src/ChildService';
-import { Command, CommandGraph, CommandInputGraph } from 'src/entity/Command';
+import { Command, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
-import { Message, MessageGraph, MessageInputGraph } from 'src/entity/Message';
+import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { ServiceGraph } from 'src/Service';
+import { GRAPH_OUTPUT_SERVICE } from 'src/Service';
 import { Dict, pairsToDict } from 'src/utils/Map';
 
-const ServiceGraphList = new GraphQLList(ServiceGraph);
-const CommandInputGraphList = new GraphQLList(CommandInputGraph);
-const MessageInputGraphList = new GraphQLList(MessageInputGraph);
+const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
+const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
+const GRAPH_OUTPUT_COMMAND_LIST = new GraphQLList(GRAPH_OUTPUT_COMMAND);
+const GRAPH_OUTPUT_MESSAGE_LIST = new GraphQLList(GRAPH_OUTPUT_MESSAGE);
+const GRAPH_OUTPUT_SERVICE_LIST = new GraphQLList(GRAPH_OUTPUT_SERVICE);
 
 export type GraphSchemaData = any;
 export type GraphSchemaOptions = ChildServiceOptions<GraphSchemaData>;
@@ -38,24 +40,24 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
           emitCommands: {
             args: {
               commands: {
-                type: CommandInputGraphList,
+                type: GRAPH_INPUT_COMMAND_LIST,
               },
             },
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.emitCommands(args, req);
             },
-            type: CommandGraph,
+            type: GRAPH_OUTPUT_COMMAND_LIST,
           },
           sendMessages: {
             args: {
               messages: {
-                type: MessageInputGraphList,
+                type: GRAPH_INPUT_MESSAGE_LIST,
               },
             },
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.sendMessages(args, req);
             },
-            type: MessageGraph,
+            type: GRAPH_OUTPUT_MESSAGE_LIST,
           },
         },
         name: 'mutation',
@@ -71,7 +73,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.getCommand(args, req);
             },
-            type: CommandGraph,
+            type: GRAPH_OUTPUT_COMMAND,
           },
           message: {
             fields: {
@@ -82,7 +84,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.getMessage(args, req);
             },
-            type: MessageGraph,
+            type: GRAPH_OUTPUT_MESSAGE,
           },
           service: {
             fields: {
@@ -93,13 +95,13 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.getService(args, req);
             },
-            type: ServiceGraph,
+            type: GRAPH_OUTPUT_SERVICE,
           },
           services: {
             resolve: (_, args: Dict<any>, req: express.Request) => {
               return this.getServices(args, req);
             },
-            type: ServiceGraphList,
+            type: GRAPH_OUTPUT_SERVICE_LIST,
           },
         },
         name: 'query',
@@ -108,11 +110,11 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
   }
 
   public async start() {
-
+    /* noop */
   }
 
   public async stop() {
-
+    /* noop */
   }
 
   public async emitCommands(args: any, req: express.Request) {

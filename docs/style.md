@@ -58,12 +58,13 @@ consistent, the following should be used:
 
 | long       | short | plural      | avoid |
 |------------|-------|-------------|-------|
-| message    | msg   | messages    | msgs  |
 | command    | cmd   | commands    | cmds  |
+| config     | cfg   | configs     | conf  |
 | context    | ctx   | contexts    |       |
 | controller | ctrl  | controllers |       |
 | listener   | lstn  | listeners   |       |
-| transform  | xfmr  | transforms  |       |
+| message    | msg   | messages    | msgs  |
+| transform  | xfrm  | transforms  |       |
 
 If a class or entity does not appear here (such as user, role, and token), please do not shorten it unnecessarily.
 
