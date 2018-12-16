@@ -27,6 +27,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Generics](#generics)
     - [Imports](#imports)
       - [Order](#order)
+    - [Logging](#logging)
     - [Null](#null)
     - [Properties](#properties)
     - [Return Types](#return-types)
@@ -199,6 +200,18 @@ Long imports MUST be broken across lines as if they were object literals.
 
 Imports MUST be sorted alphabetically, even within a single line. Your editor should be able to do this for you,
 because it is extremely tedious to do by hand.
+
+### Logging
+
+Log early, log often. You can't attach a debugger to production, so the debug logs need to have everything you will
+need to reproduce a bug.
+
+Log messages MUST be string literals, UNLESS they are template strings using a single enum (error types, HTTP status
+codes, verbs, etc).
+
+Log messages and options MUST NOT call functions, cause side effects, or do anything that could slow down logging.
+
+Remember: log calls that do not meet the log level are discarded. Work performed for that call is wasted.
 
 ### Null
 

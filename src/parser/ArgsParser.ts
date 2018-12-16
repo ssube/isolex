@@ -64,7 +64,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
       this.logger.debug({ missing }, 'missing required arguments, emitting completion');
       return this.createCompletion(context, data, missing);
     } else {
-      return this.createCommand(context, data, {});
+      return this.createCommand(context, data);
     }
   }
 
@@ -86,8 +86,12 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
       parser: [this.id],
       verb: [this.data.defaultCommand.verb],
     });
-    return this.createCommand(context, fragment, {
+    return new Command({
+      context: context.extend({
+        parser: this,
+      }),
       data,
+      labels: this.data.defaultCommand.labels,
       noun: NOUN_FRAGMENT,
       verb: CommandVerb.Create,
     });

@@ -6,9 +6,6 @@ import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { MatchData } from 'src/utils/match';
 
-export interface ParserOutputData extends CommandOptions {
-}
-
 export interface ParserData {
   /**
    * Default command options.

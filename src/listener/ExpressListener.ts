@@ -44,7 +44,6 @@ export interface ExpressListenerOptions extends ChildServiceOptions<ExpressListe
 
 @Inject('bot', 'metrics', 'services', 'storage')
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
-  protected readonly passport: passport.Authenticator;
   protected readonly container: Container;
   protected readonly metrics: Registry;
   protected readonly requestCounter: Counter;
@@ -52,8 +51,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected readonly storage: Connection;
   protected readonly tokenRepository: Repository<Token>;
 
-  protected app: express.Express;
+  protected express: express.Express;
   protected graph?: GraphSchema;
+  protected passport?: passport.Authenticator;
   protected server?: http.Server;
 
   constructor(options: ExpressListenerOptions) {
@@ -61,7 +61,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
     this.container = options.container;
     this.metrics = options.metrics;
-    this.passport = new passport.Passport();
     this.services = options.services;
     this.storage = options.storage;
 
@@ -76,10 +75,11 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public async start() {
-    this.app = await this.setupApp();
+    this.passport = await this.setupPassport();
+    this.express = await this.setupExpress();
     this.server = await new Promise<http.Server>((res, rej) => {
       let server: http.Server;
-      server = this.app.listen(this.data.listen.port, this.data.listen.address, () => {
+      server = this.express.listen(this.data.listen.port, this.data.listen.address, () => {
         res(server);
       });
     });
@@ -154,22 +154,13 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     done(null, ctx);
   }
 
-  protected async setupApp(): Promise<express.Express> {
-    this.passport.use(new JwtStrategy({
-      audience: this.data.token.audience,
-      issuer: this.data.token.issuer,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
-      secretOrKey: this.data.token.secret,
-    }, (payload: any, done: VerifiedCallback) => this.createTokenSession(payload, done)));
-    this.passport.serializeUser((user: Context, done) => {
-      done(null, user.uid);
-    });
-    this.passport.deserializeUser((user: Context, done) => {
-      done(null, this.sessions.get(user.uid));
-    });
-
+  protected async setupExpress(): Promise<express.Express> {
     const app = express();
-    app.use(this.passport.initialize());
+
+    if (this.passport) {
+      app.use(this.passport.initialize());
+      app.use(this.passport.authenticate('jwt'));
+    }
 
     if (this.data.expose.metrics) {
       app.use((req, res, next) => this.traceRequest(req, res, next));
@@ -180,12 +171,36 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
       await this.graph.start();
 
-      app.use('/graph', this.passport.authenticate('jwt'), expressGraphQl({
+      app.use('/graph', expressGraphQl({
         graphiql: this.data.expose.graphiql,
         schema: this.graph.schema,
       }));
     }
 
     return app;
+  }
+
+  protected async setupPassport(): Promise<passport.Authenticator> {
+    const auth = new passport.Passport();
+    auth.use(new JwtStrategy({
+      audience: this.data.token.audience,
+      issuer: this.data.token.issuer,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
+      secretOrKey: this.data.token.secret,
+    }, (payload: any, done: VerifiedCallback) => this.createTokenSession(payload, done)));
+
+    // sessions are saved when created and keyed by uid, so pass that
+    auth.serializeUser((user: Context, done) => {
+     // tslint:disable-next-line:no-null-keyword
+     done(null, user.uid);
+    });
+
+    // grab existing sessionj
+    auth.deserializeUser((user: Context, done) => {
+      // tslint:disable-next-line:no-null-keyword
+    done(null, this.sessions.get(user.uid));
+    });
+
+    return auth;
   }
 }
