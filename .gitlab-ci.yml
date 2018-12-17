@@ -10,6 +10,12 @@ stages:
   only:
     - master
 
+.build-curl: &build-curl
+  image: busybox
+  tags:
+    - platform:k8s
+    - runner:shared
+
 .build-docker: &build-docker
   image: docker:stable
   services:
@@ -86,6 +92,7 @@ publish-npm:
 
 # commit status
 status-github:
+  <<: [*build-curl]
   stage: status
   script:
     - |
