@@ -88,7 +88,7 @@ publish-image:
   dependencies: []
   variables:
     <<: *vars-docker
-    IMAGE_DST: ssube/isolex:${CI_COMMIT_TAG}
+    IMAGE_DST: ssube/isolex:${CI_COMMIT_REF_SLUG}
 
 publish-npm:
   <<: [*build-node]
