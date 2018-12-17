@@ -1,17 +1,16 @@
 import * as AWS from 'aws-sdk';
 
+import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { leftPad } from 'src/utils';
-import { TYPE_TEXT } from 'src/utils/Mime';
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { dictToMap } from 'src/utils/Map';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -133,7 +132,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     ]));
   }
 
-  protected async createReply(context: Context, noun: string, verb: CommandVerb, data: any) : Promise<Array<Command>>{
+  protected async createReply(context: Context, noun: string, verb: CommandVerb, data: any): Promise<Array<Command>> {
     const cmdOptions: CommandOptions = {
       context: context.extend({
         parser: this,

@@ -61,7 +61,7 @@
     "istanbul-instrumenter-loader": "~3.0",
     "js-yaml": "~3.12",
     "jsonwebtoken": "^8.4.0",
-    "lodash": "~4.17",
+    "lodash": "4.17.11",
     "mathjs": "~5.4.0",
     "mocha": "~5.2",
     "node-emoji": "~1.8",
@@ -101,6 +101,6 @@
   },
   "resolutions": {
     "**/lodash": "4.17.11",
-   "**/typescript": "3.2.2"
+    "**/typescript": "3.2.2"
   }
 }

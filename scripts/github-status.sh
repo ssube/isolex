@@ -1,8 +1,8 @@
 #! /bin/bash
 
 curl -d @- \
-  -H "Authorization: token $(echo ${GITHUB_SECRET} | base64 -d)" \
-  https://api.github.com/repos/ssube/isolex/statuses/${CI_COMMIT_SHA} \
+  -H "Authorization: token $(echo -n "${GITHUB_SECRET}" | base64 -d)" \
+  "https://api.github.com/repos/ssube/isolex/statuses/${CI_COMMIT_SHA}" \
   <<EOF
 {
     "state": "success",
