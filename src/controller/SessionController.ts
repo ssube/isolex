@@ -77,6 +77,8 @@ export class SessionController extends BaseController<SessionControllerData> imp
     switch (cmd.verb) {
       case CommandVerb.Create:
         return this.createJoin(cmd);
+      case CommandVerb.Delete:
+        return this.deleteJoin(cmd);
       default:
         return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
@@ -130,21 +132,22 @@ export class SessionController extends BaseController<SessionControllerData> imp
       name,
       roles,
     }));
-    const now = this.clock.getSeconds();
-    const token = await this.tokenRepository.save(new Token({
-      audience: this.data.token.audience,
-      createdAt: now,
-      data: {},
-      expiresAt: now + this.data.token.duration,
-      grants: this.data.join.grants,
-      issuer: this.data.token.issuer,
-      labels: {},
-      subject: user.id,
-      user,
-    }));
-    const jwt = token.sign(this.data.token.secret);
 
+    const jwt = await this.createToken(user);
     return this.reply(cmd.context, `user ${name} joined, signin token: ${jwt}`);
+  }
+
+  public async deleteJoin(cmd: Command): Promise<void> {
+    if (!cmd.context.user) {
+      return this.reply(cmd.context, 'must be logged in');
+    }
+
+    await this.tokenRepository.delete({
+      subject: cmd.context.user.id,
+    });
+
+    const jwt = await this.createToken(cmd.context.user);
+    return this.reply(cmd.context, `revoked tokens for ${cmd.context.user.name}, new signin token: ${jwt}`);
   }
 
   public async createSession(cmd: Command): Promise<void> {
@@ -173,5 +176,21 @@ export class SessionController extends BaseController<SessionControllerData> imp
     }
 
     return this.reply(cmd.context, session.toString());
+  }
+
+  protected async createToken(user: User): Promise<string> {
+    const now = this.clock.getSeconds();
+    const token = await this.tokenRepository.save(new Token({
+      audience: this.data.token.audience,
+      createdAt: now,
+      data: {},
+      expiresAt: now + this.data.token.duration,
+      grants: this.data.join.grants,
+      issuer: this.data.token.issuer,
+      labels: {},
+      subject: user.id,
+      user,
+    }));
+    return token.sign(this.data.token.secret);
   }
 }
