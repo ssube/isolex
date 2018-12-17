@@ -30,7 +30,7 @@ describeAsync('template transform', async () => {
     };
     const options: TemplateTransformOptions = {
       bot: ineeda<Bot>(),
-      clock: new Clock(),
+      clock: ineeda<Clock>(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => templates.body,

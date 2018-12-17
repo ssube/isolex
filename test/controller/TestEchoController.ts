@@ -24,7 +24,7 @@ describeAsync('echo controller', async () => {
 
     const options: EchoControllerOptions = {
       bot: ineeda<Bot>(),
-      clock: new Clock(),
+      clock: ineeda<Clock>(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>(),
       }),
@@ -60,7 +60,7 @@ describeAsync('echo controller', async () => {
       bot: ineeda<Bot>({
         sendMessage,
       }),
-      clock: new Clock(),
+      clock: ineeda<Clock>(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test_echo',

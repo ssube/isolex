@@ -27,7 +27,7 @@ describeAsync('jsonpath transform', async () => {
 
     const options: JsonpathTransformOptions = {
       bot: ineeda<Bot>(),
-      clock: new Clock(),
+      clock: ineeda<Clock>(),
       container,
       data: {
         parsers: [],

@@ -30,7 +30,7 @@ describeAsync('weather controller', async () => {
           sent.push(msg);
         },
       }),
-      clock: new Clock(),
+      clock: ineeda<Clock>(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test',
