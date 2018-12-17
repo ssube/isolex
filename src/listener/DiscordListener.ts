@@ -32,7 +32,7 @@ export interface DiscordListenerData {
 
 export type DiscordListenerOptions = ChildServiceOptions<DiscordListenerData>;
 
-@Inject('bot', 'metrics', 'services')
+@Inject('bot', 'clock', 'metrics', 'services')
 export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return !isNil(chan) && chan.type === 'text';

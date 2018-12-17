@@ -21,7 +21,7 @@ export interface SlackListenerData {
 
 export type SlackListenerOptions = ChildServiceOptions<SlackListenerData>;
 
-@Inject('bot')
+@Inject('bot', 'clock')
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected client: RTMClient;
   protected webClient: WebClient;

@@ -42,7 +42,7 @@ export interface ExpressListenerOptions extends ChildServiceOptions<ExpressListe
   graph: GraphSchema;
 }
 
-@Inject('bot', 'metrics', 'services', 'storage')
+@Inject('bot', 'clock', 'metrics', 'services', 'storage')
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
   protected readonly container: Container;
   protected readonly metrics: Registry;

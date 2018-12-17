@@ -162,7 +162,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     this.logger.debug({ user }, 'logging in user');
 
     const session = await cmd.context.source.createSession(cmd.context.uid, user);
-    this.logger.debug({ session, user, userName: name }, 'created session');
+    this.logger.debug({ session, user }, 'created session');
     return this.reply(cmd.context, 'created session');
   }
 
