@@ -43,13 +43,6 @@ module.exports = {
       /dtrace-provider/
     ],
     rules: [{
-      test: /\.gql$/,
-      rules: [{
-        use: [{
-          loader: 'raw-loader',
-        }]
-      }]
-    }, {
       test: /\.tsx?$/,
       rules: [{
         enforce: 'pre',
