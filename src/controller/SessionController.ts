@@ -94,16 +94,16 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   public async getGrant(cmd: Command): Promise<void> {
-    const permissions = cmd.get('permissions');
-    const results = permissions.map((p) => {
+    const grants = cmd.get('grants');
+    const results = grants.map((p) => {
       return `${p}: \`${cmd.context.checkGrants([p])}\``;
     }).join('\n');
     return this.reply(cmd.context, results);
   }
 
   public async listGrants(cmd: Command): Promise<void> {
-    const permissions = cmd.get('permissions');
-    const results = permissions.map((p) => {
+    const grants = cmd.get('grants');
+    const results = grants.map((p) => {
       return `${p}: \`${cmd.context.listGrants([p])}\``;
     }).join('\n');
     return this.reply(cmd.context, results);

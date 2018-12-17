@@ -8,7 +8,7 @@ data:
     required:
       - name
   defaultCommand:
-    noun: user
+    noun: join
     verb: create
   match:
     rules:
