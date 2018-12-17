@@ -19,17 +19,19 @@ import { createContainer } from 'test/helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
+    const bot = ineeda<Bot>({
+      sendMessage: (msg: Message) => {
+        sent.push(msg);
+      },
+    });
     const data = { test: 'test' };
     const { container, module } = await createContainer();
     module.bind('request').toFactory(async () => data);
+    module.bind('bot').toInstance(bot);
 
     const sent: Array<Message> = [];
     const options: WeatherControllerOptions = {
-      bot: ineeda<Bot>({
-        sendMessage: (msg: Message) => {
-          sent.push(msg);
-        },
-      }),
+      bot,
       clock: ineeda<Clock>(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({

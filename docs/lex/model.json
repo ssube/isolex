@@ -1,0 +1,1810 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "importType": "LEX",
+    "importFormat": "JSON"
+  },
+  "resource": {
+    "name": "isolex",
+    "version": "7",
+    "intents": [
+      {
+        "description": "get the current time",
+        "name": "time_get",
+        "version": "6",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [
+          "what time is it",
+          "what time is it in {zone}",
+          "what is the time",
+          "what is the time in {zone}"
+        ],
+        "slots": [
+          {
+            "name": "zone",
+            "description": "slot description",
+            "slotConstraint": "Required",
+            "slotType": "timezones",
+            "slotTypeVersion": "3",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "What timezone?"
+                }
+              ],
+              "maxAttempts": 3
+            },
+            "priority": 1,
+            "sampleUtterances": []
+          }
+        ]
+      },
+      {
+        "description": "get the current weather",
+        "name": "weather_get",
+        "version": "7",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [
+          "what is the weather in {location}",
+          "how is the weather in {location}",
+          "what is the weather like in {location}",
+          "what does the weather look like in {location}"
+        ],
+        "slots": [
+          {
+            "name": "location",
+            "description": "location for the weather",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.US_CITY",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "Where at?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 1,
+            "sampleUtterances": []
+          }
+        ]
+      }
+    ],
+    "slotTypes": [
+      {
+        "name": "timezones",
+        "version": "3",
+        "enumerationValues": [
+          {
+            "value": "Asia/Aden",
+            "synonyms": []
+          },
+          {
+            "value": "America/Cuiaba",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Nairobi",
+            "synonyms": []
+          },
+          {
+            "value": "America/Marigot",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Aqtau",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Kwajalein",
+            "synonyms": []
+          },
+          {
+            "value": "America/El_Salvador",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Pontianak",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Cairo",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Pago_Pago",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Mbabane",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kuching",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Honolulu",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Rarotonga",
+            "synonyms": []
+          },
+          {
+            "value": "America/Guatemala",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Hobart",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/London",
+            "synonyms": []
+          },
+          {
+            "value": "America/Belize",
+            "synonyms": []
+          },
+          {
+            "value": "America/Panama",
+            "synonyms": []
+          },
+          {
+            "value": "America/Managua",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Petersburg",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Yerevan",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Brussels",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Warsaw",
+            "synonyms": []
+          },
+          {
+            "value": "America/Chicago",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Jersey",
+            "synonyms": []
+          },
+          {
+            "value": "America/Tegucigalpa",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Istanbul",
+            "synonyms": []
+          },
+          {
+            "value": "America/Eirunepe",
+            "synonyms": []
+          },
+          {
+            "value": "America/Miquelon",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Luxembourg",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Catamarca",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Zaporozhye",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/St_Helena",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Guernsey",
+            "synonyms": []
+          },
+          {
+            "value": "America/Grand_Turk",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Samarkand",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Cordoba",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Phnom_Penh",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Kigali",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Almaty",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Dubai",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Isle_of_Man",
+            "synonyms": []
+          },
+          {
+            "value": "America/Araguaina",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Novosibirsk",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Salta",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Tunis",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Fakaofo",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Tripoli",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Banjul",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Comoro",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Port_Moresby",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Syowa",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Reunion",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Palau",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Kaliningrad",
+            "synonyms": []
+          },
+          {
+            "value": "America/Montevideo",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Windhoek",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Karachi",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Mogadishu",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Perth",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Chita",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Easter",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Davis",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/McMurdo",
+            "synonyms": []
+          },
+          {
+            "value": "America/Manaus",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Freetown",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Bucharest",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Tomsk",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Mendoza",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Macau",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Malta",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Tahiti",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Busingen",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Rio_Gallegos",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Malabo",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Skopje",
+            "synonyms": []
+          },
+          {
+            "value": "America/Godthab",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Sarajevo",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Lagos",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Rome",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Mauritius",
+            "synonyms": []
+          },
+          {
+            "value": "America/Regina",
+            "synonyms": []
+          },
+          {
+            "value": "America/Dawson_Creek",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Algiers",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Mariehamn",
+            "synonyms": []
+          },
+          {
+            "value": "America/St_Johns",
+            "synonyms": []
+          },
+          {
+            "value": "America/St_Thomas",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Zurich",
+            "synonyms": []
+          },
+          {
+            "value": "America/Anguilla",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Dili",
+            "synonyms": []
+          },
+          {
+            "value": "America/Denver",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Bamako",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Saratov",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Wallis",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Gibraltar",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Conakry",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Lubumbashi",
+            "synonyms": []
+          },
+          {
+            "value": "America/Havana",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Choibalsan",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Omsk",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Vaduz",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Dhaka",
+            "synonyms": []
+          },
+          {
+            "value": "America/Barbados",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Cape_Verde",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Yekaterinburg",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Chatham",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Ljubljana",
+            "synonyms": []
+          },
+          {
+            "value": "America/Sao_Paulo",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Jayapura",
+            "synonyms": []
+          },
+          {
+            "value": "America/Curacao",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Dushanbe",
+            "synonyms": []
+          },
+          {
+            "value": "America/Guyana",
+            "synonyms": []
+          },
+          {
+            "value": "America/Guayaquil",
+            "synonyms": []
+          },
+          {
+            "value": "America/Martinique",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Berlin",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Moscow",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Chisinau",
+            "synonyms": []
+          },
+          {
+            "value": "America/Puerto_Rico",
+            "synonyms": []
+          },
+          {
+            "value": "America/Rankin_Inlet",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Stockholm",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Budapest",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Jujuy",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Eucla",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Shanghai",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Zagreb",
+            "synonyms": []
+          },
+          {
+            "value": "America/Port_of_Spain",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Helsinki",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Beirut",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Bougainville",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Sao_Tome",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Chagos",
+            "synonyms": []
+          },
+          {
+            "value": "America/Cayenne",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Yakutsk",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Galapagos",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Paris",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Ndjamena",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Fiji",
+            "synonyms": []
+          },
+          {
+            "value": "America/Rainy_River",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Maldives",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Oral",
+            "synonyms": []
+          },
+          {
+            "value": "America/Yellowknife",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Enderbury",
+            "synonyms": []
+          },
+          {
+            "value": "America/Juneau",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Vevay",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Tashkent",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Jakarta",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Ceuta",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Barnaul",
+            "synonyms": []
+          },
+          {
+            "value": "America/Recife",
+            "synonyms": []
+          },
+          {
+            "value": "America/Noronha",
+            "synonyms": []
+          },
+          {
+            "value": "America/Swift_Current",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Adelaide",
+            "synonyms": []
+          },
+          {
+            "value": "America/Metlakatla",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Djibouti",
+            "synonyms": []
+          },
+          {
+            "value": "America/Paramaribo",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Simferopol",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Sofia",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Nouakchott",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Prague",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Vincennes",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Mawson",
+            "synonyms": []
+          },
+          {
+            "value": "America/Kralendijk",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Troll",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Samara",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Christmas",
+            "synonyms": []
+          },
+          {
+            "value": "America/Antigua",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Gambier",
+            "synonyms": []
+          },
+          {
+            "value": "America/Inuvik",
+            "synonyms": []
+          },
+          {
+            "value": "America/Iqaluit",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Funafuti",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Macquarie",
+            "synonyms": []
+          },
+          {
+            "value": "America/Moncton",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Gaborone",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Chuuk",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Pyongyang",
+            "synonyms": []
+          },
+          {
+            "value": "America/St_Vincent",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Gaza",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Qyzylorda",
+            "synonyms": []
+          },
+          {
+            "value": "America/Kentucky/Louisville",
+            "synonyms": []
+          },
+          {
+            "value": "America/Yakutat",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Ho_Chi_Minh",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Casey",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Copenhagen",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Asmara",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Azores",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Vienna",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Pitcairn",
+            "synonyms": []
+          },
+          {
+            "value": "America/Mazatlan",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Nauru",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Tirane",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kolkata",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Broken_Hill",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Riga",
+            "synonyms": []
+          },
+          {
+            "value": "America/Dominica",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Abidjan",
+            "synonyms": []
+          },
+          {
+            "value": "America/Santarem",
+            "synonyms": []
+          },
+          {
+            "value": "America/Asuncion",
+            "synonyms": []
+          },
+          {
+            "value": "America/Boise",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Currie",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Guam",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Wake",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Bermuda",
+            "synonyms": []
+          },
+          {
+            "value": "America/Costa_Rica",
+            "synonyms": []
+          },
+          {
+            "value": "America/Dawson",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Amsterdam",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Knox",
+            "synonyms": []
+          },
+          {
+            "value": "America/North_Dakota/Beulah",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Accra",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Faroe",
+            "synonyms": []
+          },
+          {
+            "value": "America/Maceio",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Apia",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Niue",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Lord_Howe",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Dublin",
+            "synonyms": []
+          },
+          {
+            "value": "America/Monterrey",
+            "synonyms": []
+          },
+          {
+            "value": "America/Nassau",
+            "synonyms": []
+          },
+          {
+            "value": "America/Jamaica",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Bishkek",
+            "synonyms": []
+          },
+          {
+            "value": "America/Atikokan",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Stanley",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Mahe",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Aqtobe",
+            "synonyms": []
+          },
+          {
+            "value": "America/Sitka",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Vladivostok",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Libreville",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Maputo",
+            "synonyms": []
+          },
+          {
+            "value": "America/Kentucky/Monticello",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/El_Aaiun",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Ouagadougou",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Marquesas",
+            "synonyms": []
+          },
+          {
+            "value": "America/Aruba",
+            "synonyms": []
+          },
+          {
+            "value": "America/North_Dakota/Center",
+            "synonyms": []
+          },
+          {
+            "value": "America/Cayman",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Ulaanbaatar",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Baghdad",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/San_Marino",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Tell_City",
+            "synonyms": []
+          },
+          {
+            "value": "America/Tijuana",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Saipan",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Douala",
+            "synonyms": []
+          },
+          {
+            "value": "America/Chihuahua",
+            "synonyms": []
+          },
+          {
+            "value": "America/Ojinaga",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Hovd",
+            "synonyms": []
+          },
+          {
+            "value": "America/Anchorage",
+            "synonyms": []
+          },
+          {
+            "value": "America/Halifax",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Rothera",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Indianapolis",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Damascus",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/San_Luis",
+            "synonyms": []
+          },
+          {
+            "value": "America/Santiago",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Baku",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Ushuaia",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Reykjavik",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Brazzaville",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Porto-Novo",
+            "synonyms": []
+          },
+          {
+            "value": "America/La_Paz",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/DumontDUrville",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Taipei",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Manila",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Bangkok",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Dar_es_Salaam",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Madeira",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Palmer",
+            "synonyms": []
+          },
+          {
+            "value": "America/Thunder_Bay",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Addis_Ababa",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Yangon",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Uzhgorod",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Marengo",
+            "synonyms": []
+          },
+          {
+            "value": "America/Creston",
+            "synonyms": []
+          },
+          {
+            "value": "America/Punta_Arenas",
+            "synonyms": []
+          },
+          {
+            "value": "America/Mexico_City",
+            "synonyms": []
+          },
+          {
+            "value": "Antarctica/Vostok",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Jerusalem",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Andorra",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Vientiane",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Kiritimati",
+            "synonyms": []
+          },
+          {
+            "value": "America/Matamoros",
+            "synonyms": []
+          },
+          {
+            "value": "America/Blanc-Sablon",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Riyadh",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Pohnpei",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/South_Georgia",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Lisbon",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Oslo",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Novokuznetsk",
+            "synonyms": []
+          },
+          {
+            "value": "Atlantic/Canary",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kuwait",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Efate",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Lome",
+            "synonyms": []
+          },
+          {
+            "value": "America/Bogota",
+            "synonyms": []
+          },
+          {
+            "value": "America/Menominee",
+            "synonyms": []
+          },
+          {
+            "value": "America/Adak",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Norfolk",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Kirov",
+            "synonyms": []
+          },
+          {
+            "value": "America/Resolute",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Tarawa",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Kampala",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Krasnoyarsk",
+            "synonyms": []
+          },
+          {
+            "value": "America/Edmonton",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Podgorica",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Bujumbura",
+            "synonyms": []
+          },
+          {
+            "value": "America/Santo_Domingo",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Minsk",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Auckland",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Casablanca",
+            "synonyms": []
+          },
+          {
+            "value": "America/Glace_Bay",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Qatar",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Kiev",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Magadan",
+            "synonyms": []
+          },
+          {
+            "value": "America/Port-au-Prince",
+            "synonyms": []
+          },
+          {
+            "value": "America/St_Barthelemy",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Ashgabat",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Luanda",
+            "synonyms": []
+          },
+          {
+            "value": "America/Nipigon",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Muscat",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Bahrain",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Vilnius",
+            "synonyms": []
+          },
+          {
+            "value": "America/Fortaleza",
+            "synonyms": []
+          },
+          {
+            "value": "America/Hermosillo",
+            "synonyms": []
+          },
+          {
+            "value": "America/Cancun",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Maseru",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Kosrae",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Kinshasa",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kathmandu",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Seoul",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Sydney",
+            "synonyms": []
+          },
+          {
+            "value": "America/Lima",
+            "synonyms": []
+          },
+          {
+            "value": "America/St_Lucia",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Madrid",
+            "synonyms": []
+          },
+          {
+            "value": "America/Bahia_Banderas",
+            "synonyms": []
+          },
+          {
+            "value": "America/Montserrat",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Brunei",
+            "synonyms": []
+          },
+          {
+            "value": "America/Cambridge_Bay",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Colombo",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Antananarivo",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Brisbane",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Mayotte",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Urumqi",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Volgograd",
+            "synonyms": []
+          },
+          {
+            "value": "America/Lower_Princes",
+            "synonyms": []
+          },
+          {
+            "value": "America/Vancouver",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Blantyre",
+            "synonyms": []
+          },
+          {
+            "value": "America/Rio_Branco",
+            "synonyms": []
+          },
+          {
+            "value": "America/Danmarkshavn",
+            "synonyms": []
+          },
+          {
+            "value": "America/Detroit",
+            "synonyms": []
+          },
+          {
+            "value": "America/Thule",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Lusaka",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Hong_Kong",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/La_Rioja",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Dakar",
+            "synonyms": []
+          },
+          {
+            "value": "America/Tortola",
+            "synonyms": []
+          },
+          {
+            "value": "America/Porto_Velho",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Sakhalin",
+            "synonyms": []
+          },
+          {
+            "value": "America/Scoresbysund",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kamchatka",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Harare",
+            "synonyms": []
+          },
+          {
+            "value": "America/Nome",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Tallinn",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Khartoum",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Johannesburg",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Bangui",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Belgrade",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Bissau",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Tehran",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Astrakhan",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Juba",
+            "synonyms": []
+          },
+          {
+            "value": "America/Campo_Grande",
+            "synonyms": []
+          },
+          {
+            "value": "America/Belem",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Midway",
+            "synonyms": []
+          },
+          {
+            "value": "America/Bahia",
+            "synonyms": []
+          },
+          {
+            "value": "America/Goose_Bay",
+            "synonyms": []
+          },
+          {
+            "value": "America/Pangnirtung",
+            "synonyms": []
+          },
+          {
+            "value": "America/Phoenix",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Niamey",
+            "synonyms": []
+          },
+          {
+            "value": "America/Whitehorse",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Noumea",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Tbilisi",
+            "synonyms": []
+          },
+          {
+            "value": "None",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Makassar",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/San_Juan",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Nicosia",
+            "synonyms": []
+          },
+          {
+            "value": "America/Indiana/Winamac",
+            "synonyms": []
+          },
+          {
+            "value": "America/Boa_Vista",
+            "synonyms": []
+          },
+          {
+            "value": "America/Grenada",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Atyrau",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Darwin",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Khandyga",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kuala_Lumpur",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Famagusta",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Thimphu",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Bratislava",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Tucuman",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Kabul",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Cocos",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Tongatapu",
+            "synonyms": []
+          },
+          {
+            "value": "America/New_York",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Ulyanovsk",
+            "synonyms": []
+          },
+          {
+            "value": "America/Merida",
+            "synonyms": []
+          },
+          {
+            "value": "America/St_Kitts",
+            "synonyms": []
+          },
+          {
+            "value": "Arctic/Longyearbyen",
+            "synonyms": []
+          },
+          {
+            "value": "America/Fort_Nelson",
+            "synonyms": []
+          },
+          {
+            "value": "America/Caracas",
+            "synonyms": []
+          },
+          {
+            "value": "America/Guadeloupe",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Hebron",
+            "synonyms": []
+          },
+          {
+            "value": "Indian/Kerguelen",
+            "synonyms": []
+          },
+          {
+            "value": "Africa/Monrovia",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Ust-Nera",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Srednekolymsk",
+            "synonyms": []
+          },
+          {
+            "value": "America/North_Dakota/New_Salem",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Anadyr",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Melbourne",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Irkutsk",
+            "synonyms": []
+          },
+          {
+            "value": "America/Winnipeg",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Vatican",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Amman",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Tokyo",
+            "synonyms": []
+          },
+          {
+            "value": "America/Toronto",
+            "synonyms": []
+          },
+          {
+            "value": "Asia/Singapore",
+            "synonyms": []
+          },
+          {
+            "value": "Australia/Lindeman",
+            "synonyms": []
+          },
+          {
+            "value": "America/Los_Angeles",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Majuro",
+            "synonyms": []
+          },
+          {
+            "value": "America/Argentina/Buenos_Aires",
+            "synonyms": []
+          },
+          {
+            "value": "Pacific/Guadalcanal",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Athens",
+            "synonyms": []
+          },
+          {
+            "value": "Europe/Monaco",
+            "synonyms": []
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      }
+    ],
+    "voiceId": "0",
+    "childDirected": false,
+    "locale": "en-US",
+    "idleSessionTTLInSeconds": 300,
+    "clarificationPrompt": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, can you please repeat that?"
+        }
+      ],
+      "maxAttempts": 5
+    },
+    "abortStatement": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, I could not understand. Goodbye."
+        }
+      ]
+    }
+  }
+}

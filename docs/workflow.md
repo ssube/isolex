@@ -32,7 +32,7 @@ Every bug fix must add tests to prevent regression.
 
 ### Source
 
-The directory which the issue applies to.
+The directory to which the issue applies.
 
 ### Status
 

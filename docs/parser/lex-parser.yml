@@ -8,11 +8,12 @@ data:
   bot:
     name: isolex
     alias: test
-  region: us-east-1
+    region: us-east-1
+  defaultCommand:
+    labels: {}
   match:
     rules:
       - key: body
-        operator: every
+        operator: any
         values:
-          - regexp: !regexp /@isolex/
-          - regexp: !env ISOLEX_DISCORD_USER_ID
+          - regexp: !regexp /isolex/

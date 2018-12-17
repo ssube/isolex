@@ -19,15 +19,15 @@ export interface LexParserData extends ParserData {
   bot: {
     alias: string;
     name: string;
+    region: string;
   };
-  region: string;
 }
 
 export type LexParserOptions = ParserOptions<LexParserData>;
 
 export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected alias: string;
-  protected creds: AWS.Credentials;
+  protected credentials: AWS.Credentials;
   protected lex: AWS.LexRuntime;
 
   constructor(options: LexParserOptions) {
@@ -36,10 +36,10 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     this.alias = options.data.bot.alias;
 
     // aws
-    this.creds = new AWS.Credentials(options.data.account.accessKey, options.data.account.secretKey);
+    this.credentials = new AWS.Credentials(options.data.account.accessKey, options.data.account.secretKey);
     this.lex = new AWS.LexRuntime({
-      credentials: this.creds,
-      region: options.data.region,
+      credentials: this.credentials,
+      region: options.data.bot.region,
     });
   }
 
@@ -58,7 +58,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
    * @TODO: split the Lex intent into noun and verb
    */
   public async parse(msg: Message): Promise<Array<Command>> {
-    const { data, noun } = await this.decode(msg);
+    const { data, noun, verb } = await this.decode(msg);
     const cmdOptions: CommandOptions = {
       context: msg.context.extend({
         parser: this,
@@ -66,7 +66,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       data,
       labels: this.data.defaultCommand.labels,
       noun,
-      verb: this.data.defaultCommand.verb,
+      verb,
     };
 
     this.logger.debug({ cmdOptions }, 'command options');
@@ -87,16 +87,21 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
     this.logger.debug({ msg, post }, 'lex parsed message');
 
-    const noun = post.intentName;
-    if (!noun) {
+    const intent = post.intentName;
+    if (!intent) {
       this.logger.warn({ msg }, 'lex parsed message without intent');
       return [];
     }
 
+    const [noun, verb] = intent.split('_');
+    const data = this.getSlots(post.slots);
+    this.logger.debug({ data, noun, verb }, 'decoded message');
+
     // merge lex reply and slots
     return {
-      data: this.getSlots(post.slots),
+      data,
       noun,
+      verb,
     };
   }
 
@@ -104,7 +109,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     const slots = new Map();
     if (input) {
       for (const [k, v] of Object.entries(input)) {
-        slots.set(k, v);
+        slots.set(k, [v]);
       }
     }
     return slots;
