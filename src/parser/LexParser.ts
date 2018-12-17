@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk';
 
-import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
+import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
@@ -10,6 +10,8 @@ import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { leftPad } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
+import { dictToMap } from 'src/utils/Map';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -51,16 +53,89 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
    * message that will use the same Lex session-state and re-parse that.
    */
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
-    throw new NotImplementedError();
+    return this.decodeBody(context, value.join(' '));
   }
 
   /**
    * @TODO: split the Lex intent into noun and verb
    */
   public async parse(msg: Message): Promise<Array<Command>> {
-    const { data, noun, verb } = await this.decode(msg);
+    return this.decodeBody(msg.context, msg.body);
+ }
+
+  public async decode(msg: Message): Promise<any> {
+    if (msg.type !== TYPE_TEXT) {
+      throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
+    }
+
+    return this.decodeBody(msg.context, msg.body);
+  }
+
+  public async decodeBody(context: Context, body: string): Promise<Array<Command>> {
+    const post = await this.postText({
+      botAlias: this.data.bot.alias,
+      botName: this.data.bot.name,
+      inputText: body,
+      userId: leftPad(context.getUserId()),
+    });
+
+    this.logger.debug({ body, context, post }, 'lex parsed message');
+
+    if (!post.dialogState) {
+      this.logger.warn({ body, context }, 'lex parsed message without state');
+      return [];
+    }
+
+    if (!post.intentName) {
+      this.logger.warn({ body, context }, 'lex parsed message without intent');
+      return [];
+    }
+
+    const [noun, verb] = post.intentName.split('_');
+    const data = this.getSlots(post.slots);
+
+    this.logger.debug({ data, noun, verb }, 'decoded message');
+    switch (post.dialogState) {
+      // completions
+      case 'ConfirmIntent':
+        return [];
+      case 'ElicitIntent':
+        return [];
+      case 'ElicitSlot':
+        if (!post.slotToElicit) {
+          this.logger.warn({ body }, 'lex parsed message without slot to elicit');
+          return [];
+        }
+        return this.createCompletion(context, noun, verb as CommandVerb, data, post.slotToElicit);
+      // command
+      case 'ReadyForFulfillment':
+        return this.createReply(context, noun, verb as CommandVerb, data);
+      // message
+      case 'Failed':
+      case 'Fulfilled':
+      default:
+        // error
+        return [];
+    }
+  }
+
+  protected async createCompletion(context: Context, noun: string, verb: CommandVerb, data: any, key: string) {
+    const fragment = dictToMap({
+      key: [key],
+      msg: [`missing slot: ${key}`],
+      noun: [noun],
+      parser: [this.id],
+      verb: [verb],
+    });
+    return this.createReply(context, NOUN_FRAGMENT, CommandVerb.Create, new Map([
+      ...data,
+      ...fragment,
+    ]));
+  }
+
+  protected async createReply(context: Context, noun: string, verb: CommandVerb, data: any) : Promise<Array<Command>>{
     const cmdOptions: CommandOptions = {
-      context: msg.context.extend({
+      context: context.extend({
         parser: this,
       }),
       data,
@@ -71,38 +146,6 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
     this.logger.debug({ cmdOptions }, 'command options');
     return [new Command(cmdOptions)];
-  }
-
-  public async decode(msg: Message): Promise<any> {
-    if (msg.type !== TYPE_TEXT) {
-      throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
-    }
-
-    const post = await this.postText({
-      botAlias: this.data.bot.alias,
-      botName: this.data.bot.name,
-      inputText: msg.body,
-      userId: leftPad(msg.context.uid),
-    });
-
-    this.logger.debug({ msg, post }, 'lex parsed message');
-
-    const intent = post.intentName;
-    if (!intent) {
-      this.logger.warn({ msg }, 'lex parsed message without intent');
-      return [];
-    }
-
-    const [noun, verb] = intent.split('_');
-    const data = this.getSlots(post.slots);
-    this.logger.debug({ data, noun, verb }, 'decoded message');
-
-    // merge lex reply and slots
-    return {
-      data,
-      noun,
-      verb,
-    };
   }
 
   protected getSlots(input: AWS.LexRuntime.StringMap | undefined): Map<string, Array<string>> {

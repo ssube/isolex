@@ -144,6 +144,19 @@ export class Context implements ContextData {
   }
 
   /**
+   * Get a unique and hopefully persistent user ID.
+   *
+   * If this context does not have a logged in user, default to the listener-provided UID.
+   */
+  public getUserId(): string {
+    if (this.user) {
+      return this.user.id;
+    } else {
+      return this.uid;
+    }
+  }
+
+  /**
    * @TODO: meaningful return value
    */
   public toJSON(): any {
