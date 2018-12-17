@@ -1,9 +1,16 @@
+import { BaseOptions } from 'noicejs/Container';
+
 const NOW_TO_SECONDS = 1000;
 
-export class Clock {
-  protected date: DateConstructor;
+export interface ClockOptions extends BaseOptions {
+  date?: DateConstructor;
+}
 
-  constructor(date = Date) {
+export class Clock {
+  public readonly date: DateConstructor;
+
+  constructor(options: ClockOptions) {
+    const { date = Date } = options;
     this.date = date;
   }
 
