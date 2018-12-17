@@ -5,8 +5,20 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 't
 import { User } from 'src/entity/auth/User';
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { Session } from 'src/entity/Session';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Listener } from 'src/listener/Listener';
-import { mapToDict } from 'src/utils/Map';
+import { Dict, mapToDict } from 'src/utils/Map';
+
+export interface JwtFields {
+  aud: Array<string>;
+  data: Dict<Array<string>>;
+  exp: number;
+  iat: number;
+  iss: string;
+  jti: string;
+  nbf: number;
+  sub: string;
+}
 
 export interface VerifiableTokenOptions {
   audience: Array<string>;
@@ -22,8 +34,13 @@ export interface TokenOptions extends Session, DataEntityOptions<Array<string>>,
 
 @Entity()
 export class Token extends DataEntity<Array<string>> implements TokenOptions {
-  public static verify(token: string, secret: string, expected: Partial<VerifiableTokenOptions>): any {
-    return verify(token, secret, expected);
+  public static verify(token: string, secret: string, expected: Partial<VerifiableTokenOptions>): JwtFields {
+    const data = verify(token, secret, expected);
+    if (typeof data === 'object') {
+      return data as JwtFields;
+    } else {
+      throw new InvalidArgumentError(`invalid token: ${data}`);
+    }
   }
 
   /**
@@ -139,7 +156,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
     };
   }
 
-  public toTokenJSON() {
+  public toTokenJSON(): JwtFields {
     return {
       aud: this.audience,
       data: mapToDict(this.data),
