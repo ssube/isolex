@@ -11,7 +11,7 @@ stages:
     - master
 
 .build-curl: &build-curl
-  image: busybox
+  image: apextoaster/base:1.2
   tags:
     - platform:k8s
     - runner:shared
