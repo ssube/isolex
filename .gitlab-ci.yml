@@ -96,7 +96,7 @@ status-github:
   stage: status
   script:
     - |
-      echo <<<EOF
+      echo <<EOF
       {
           "state": "success",
           "target_url": "${CI_PIPELINE_URL}",
