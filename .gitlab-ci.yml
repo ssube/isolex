@@ -45,6 +45,7 @@ stages:
 .build-retag: &build-retag
   stage: image-tag
   script:
+    - echo "Tagging '${IMAGE_TAG}' as '${IMAGE_DST}'..."
     - docker pull ${IMAGE_TAG}
     - docker tag ${IMAGE_TAG} ${IMAGE_DST}
     - docker push ${IMAGE_DST}

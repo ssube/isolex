@@ -97,6 +97,9 @@ git-stats: ## print git contributor line counts (approx, for fun)
 release: ## create a release
 	$(NODE_BIN)/standard-version --sign
 
+release-dry: ## test creating a release
+	$(NODE_BIN)/standard-version --sign --dry-run
+
 run-terminal: ## run the bot in a terminal
 	node $(TARGET_PATH)/main-bundle.js
 
