@@ -1,4 +1,16 @@
 metadata:
   kind: session-controller
   name: default-session
-data: {}
+data:
+  join:
+    grants:
+      - grant:*
+      - join:create
+      - session:create
+    roles:
+      - user
+  token:
+    audience: [test-audience]
+    duration: 86400
+    issuer: test-issuer
+    secret: test-secret

@@ -4,7 +4,7 @@ metadata:
 data:
   args:
     required:
-      - name
+      - token
   defaultCommand:
     noun: session
     verb: create

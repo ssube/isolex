@@ -1,17 +1,26 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 
+import { Role } from 'src/entity/auth/Role';
+import { Token } from 'src/entity/auth/Token';
+import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Clock } from 'src/utils/Clock';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerData, ControllerOptions } from './Controller';
 
 export const NOUN_GRANT = 'grant';
+export const NOUN_JOIN = 'join';
 export const NOUN_SESSION = 'session';
 
 export interface SessionControllerData extends ControllerData {
+  join: {
+    grants: Array<string>;
+    roles: Array<string>;
+  };
   token: {
     audience: Array<string>;
     duration: number;
@@ -22,15 +31,21 @@ export interface SessionControllerData extends ControllerData {
 
 export type SessionControllerOptions = ControllerOptions<SessionControllerData>;
 
-@Inject('bot', 'storage')
+@Inject('bot', 'clock', 'storage')
 export class SessionController extends BaseController<SessionControllerData> implements Controller {
+  protected clock: Clock;
   protected storage: Connection;
+  protected roleRepository: Repository<Role>;
+  protected tokenRepository: Repository<Token>;
   protected userRepository: UserRepository;
 
   constructor(options: SessionControllerOptions) {
-    super(options, [NOUN_GRANT, NOUN_SESSION]);
+    super(options, [NOUN_GRANT, NOUN_JOIN, NOUN_SESSION]);
 
+    this.clock = options.clock;
     this.storage = options.storage;
+    this.roleRepository = this.storage.getRepository(Role);
+    this.tokenRepository = this.storage.getRepository(Token);
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
@@ -38,6 +53,8 @@ export class SessionController extends BaseController<SessionControllerData> imp
     switch (cmd.noun) {
       case NOUN_GRANT:
         return this.handleGrant(cmd);
+      case NOUN_JOIN:
+        return this.handleJoin(cmd);
       case NOUN_SESSION:
         return this.handleSession(cmd);
       default:
@@ -51,6 +68,15 @@ export class SessionController extends BaseController<SessionControllerData> imp
         return this.getGrant(cmd);
       case CommandVerb.List:
         return this.listGrants(cmd);
+      default:
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
+    }
+  }
+
+  public async handleJoin(cmd: Command): Promise<void> {
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createJoin(cmd);
       default:
         return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
@@ -83,10 +109,54 @@ export class SessionController extends BaseController<SessionControllerData> imp
     return this.reply(cmd.context, results);
   }
 
-  public async createSession(cmd: Command): Promise<void> {
+  /**
+   * join is a slightly unusual noun that creates a user with a default role, then creates a token for that user
+   */
+  public async createJoin(cmd: Command): Promise<void> {
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
-    const user = await this.userRepository.findOneOrFail({
+
+    if (await this.userRepository.count({
       name,
+    })) {
+      return this.reply(cmd.context, `user ${name} already exists`);
+    }
+
+    const roles = await this.roleRepository.find({
+      where: {
+        name: In(this.data.join.roles),
+      },
+    });
+    const user = await this.userRepository.save(new User({
+      name,
+      roles,
+    }));
+    const now = this.clock.getSeconds();
+    const token = await this.tokenRepository.save(new Token({
+      audience: this.data.token.audience,
+      createdAt: now,
+      data: {},
+      expiresAt: now + this.data.token.duration,
+      grants: this.data.join.grants,
+      issuer: this.data.token.issuer,
+      labels: {},
+      subject: user.id,
+      user,
+    }));
+    const jwt = token.sign(this.data.token.secret);
+
+    return this.reply(cmd.context, `user ${name} joined, signin token: ${jwt}`);
+  }
+
+  public async createSession(cmd: Command): Promise<void> {
+    const jwt = cmd.getHead('token');
+    const token = Token.verify(jwt, this.data.token.secret, {
+      audience: this.data.token.audience,
+      issuer: this.data.token.issuer,
+    });
+    this.logger.debug({ token }, 'creating session from token');
+
+    const user = await this.userRepository.findOneOrFail({
+      id: token.sub,
     });
     await this.userRepository.loadRoles(user);
     this.logger.debug({ user }, 'logging in user');
