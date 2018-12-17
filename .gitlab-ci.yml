@@ -42,14 +42,6 @@ stages:
   before_script:
     - echo "${NPM_SECRET}" | base64 -d > ${HOME}/.npmrc
 
-.build-retag: &build-retag
-  stage: image-tag
-  script:
-    - echo "Tagging '${IMAGE_TAG}' as '${IMAGE_DST}'..."
-    - docker pull ${IMAGE_TAG}
-    - docker tag ${IMAGE_TAG} ${IMAGE_DST}
-    - docker push ${IMAGE_DST}
-
 # build jobs
 build-node:
   <<: [*build-node]
@@ -80,17 +72,6 @@ build-image:
     - docker push $IMAGE_TAG
 
 # publish jobs
-publish-image:
-  <<: [*build-docker, *build-retag]
-  stage: publish
-  #only:
-  # - tags
-
-  dependencies: []
-  variables:
-    <<: *vars-docker
-    IMAGE_DST: ssube/isolex:${CI_COMMIT_REF_SLUG}
-
 publish-npm:
   <<: [*build-node]
   stage: publish
