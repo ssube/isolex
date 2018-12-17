@@ -7,6 +7,7 @@ import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
 import { GraphSchema } from 'src/graph';
+import { Clock } from 'src/utils/Clock';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
@@ -33,6 +34,7 @@ export class BotModule extends Module {
 
     // utils
     this.bind('compiler').toConstructor(TemplateCompiler);
+    this.bind(kebabCase(Clock.name)).toConstructor(Clock);
     this.bind(kebabCase(GraphSchema.name)).toConstructor(GraphSchema);
   }
 

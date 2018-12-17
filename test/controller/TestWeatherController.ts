@@ -10,6 +10,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { Clock } from 'src/utils/Clock';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -29,6 +30,7 @@ describeAsync('weather controller', async () => {
           sent.push(msg);
         },
       }),
+      clock: new Clock(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test',

@@ -10,6 +10,7 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { JsonpathTransform, JsonpathTransformOptions } from 'src/transform/JsonpathTransform';
+import { Clock } from 'src/utils/Clock';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
@@ -26,6 +27,7 @@ describeAsync('jsonpath transform', async () => {
 
     const options: JsonpathTransformOptions = {
       bot: ineeda<Bot>(),
+      clock: new Clock(),
       container,
       data: {
         parsers: [],

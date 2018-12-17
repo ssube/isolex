@@ -8,7 +8,10 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { Service, ServiceDefinition } from 'src/Service';
 import { dictToMap } from 'src/utils/Map';
 
+import { Clock } from './utils/Clock';
+
 export interface InjectedServiceOptions {
+  clock: Clock;
   logger: Logger;
   metrics: Registry;
   services: ServiceModule;

@@ -5,16 +5,20 @@ import { Session } from 'src/entity/Session';
 
 import { BaseListener } from './BaseListener';
 import { FetchOptions } from './Listener';
+import { Clock } from 'src/utils/Clock';
 
 /**
  * A listener that tracks sessions.
  */
 
 export abstract class SessionListener<TData> extends BaseListener<TData> {
-  protected sessions: Map<string, Session>;
+  protected readonly clock: Clock;
+  protected readonly sessions: Map<string, Session>;
 
   constructor(options: ChildServiceOptions<TData>) {
     super(options);
+
+    this.clock = options.clock;
     this.sessions = new Map();
   }
 
@@ -27,7 +31,7 @@ export abstract class SessionListener<TData> extends BaseListener<TData> {
   public abstract stop(): Promise<void>;
 
   public async createSession(uid: string, user: User): Promise<Session> {
-    const now = Math.floor(Date.now() / 1000);
+    const now = this.clock.getSeconds();
     const session = {
       createdAt: now,
       expiresAt: now,

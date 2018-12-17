@@ -11,6 +11,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { Clock } from 'src/utils/Clock';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -23,6 +24,7 @@ describeAsync('echo controller', async () => {
 
     const options: EchoControllerOptions = {
       bot: ineeda<Bot>(),
+      clock: new Clock(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>(),
       }),
@@ -58,6 +60,7 @@ describeAsync('echo controller', async () => {
       bot: ineeda<Bot>({
         sendMessage,
       }),
+      clock: new Clock(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test_echo',

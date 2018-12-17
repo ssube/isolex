@@ -4,6 +4,7 @@ import { Connection, Equal, Repository } from 'typeorm';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { Clock } from 'src/utils/Clock';
 
 import { BaseController } from './BaseController';
 import { NOUN_FRAGMENT } from './CompletionController';
@@ -23,14 +24,16 @@ export interface TokenControllerData extends ControllerData {
 
 export type TokenControllerOptions = ControllerOptions<TokenControllerData>;
 
-@Inject('bot', 'storage')
+@Inject('bot', 'clock', 'storage')
 export class TokenController extends BaseController<TokenControllerData> implements Controller {
+  protected readonly clock: Clock;
   protected readonly storage: Connection;
   protected readonly tokenRepository: Repository<Token>;
 
   constructor(options: TokenControllerOptions) {
     super(options, [NOUN_TOKEN]);
 
+    this.clock = options.clock;
     this.storage = options.storage;
     this.tokenRepository = this.storage.getRepository(Token);
   }
@@ -65,7 +68,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     }
 
     const grants = cmd.getOrDefault('grants', []);
-    const now = Math.floor(Date.now() / 1000);
+    const now = this.clock.getSeconds();
     const token = await this.tokenRepository.save(new Token({
       audience: this.data.token.audience,
       createdAt: now,

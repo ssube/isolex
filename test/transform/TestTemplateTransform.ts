@@ -10,6 +10,7 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TemplateTransform, TemplateTransformOptions } from 'src/transform/TemplateTransform';
+import { Clock } from 'src/utils/Clock';
 import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -29,6 +30,7 @@ describeAsync('template transform', async () => {
     };
     const options: TemplateTransformOptions = {
       bot: ineeda<Bot>(),
+      clock: new Clock(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => templates.body,
