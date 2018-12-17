@@ -2,10 +2,10 @@ import { ChildServiceOptions } from 'src/ChildService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
+import { Clock } from 'src/utils/Clock';
 
 import { BaseListener } from './BaseListener';
 import { FetchOptions } from './Listener';
-import { Clock } from 'src/utils/Clock';
 
 /**
  * A listener that tracks sessions.
