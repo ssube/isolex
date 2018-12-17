@@ -13,6 +13,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Table of Contents](#table-of-contents)
   - [Naming](#naming)
     - [Abbreviations](#abbreviations)
+    - [Capitalization](#capitalization)
     - [Commands](#commands)
     - [Messages](#messages)
     - [Metrics](#metrics)
@@ -96,7 +97,7 @@ Always keep the table of contents up to date. The VS Code markdown plugin can ha
 ### Abbreviations
 
 There are a few long class names and commonly-abbreviated terms in use. In order to keep variable names and issues
-consistent, the following should be used:
+consistent, the following MUST be used:
 
 | long       | short | plural      | avoid |
 |------------|-------|-------------|-------|
@@ -109,6 +110,20 @@ consistent, the following should be used:
 | transform  | xfrm  | transforms  |       |
 
 If a class or entity does not appear here (such as user, role, and token), please do not shorten it unnecessarily.
+
+### Capitalization
+
+The following abbreviations MUST be capitalized except when they appear as a variable or property name:
+
+- API
+- DB
+- DNS
+- HTTPS
+- ID
+- JSON
+- UID
+- UUID
+- YAML
 
 ### Commands
 
@@ -220,9 +235,9 @@ Long imports MUST be broken across lines as if they were object literals.
 #### Order
 
 1. Libraries
-1. `src/`
-1. `test/`
-1. `./`
+2. `src/`
+3. `test/`
+4. `./`
 
 Imports MUST be sorted alphabetically, even within a single line. Your editor should be able to do this for you,
 because it is extremely tedious to do by hand.

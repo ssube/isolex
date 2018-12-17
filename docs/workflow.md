@@ -5,7 +5,7 @@ This document describes the issue and merge workflow for the isolex project.
 - [Workflow](#workflow)
   - [Branches](#branches)
   - [Issues](#issues)
-    - [Service](#service)
+    - [Source](#source)
     - [Status](#status)
     - [Type](#type)
       - [Bug](#bug)
@@ -28,7 +28,11 @@ Issues are broken down by the `service` they impact (with `service/other` as a c
 - [Create a new feature](https://github.com/ssube/isolex/issues/new?template=type_feature.md).
 - [Create a new update](https://github.com/ssube/isolex/issues/new?template=type_update.md).
 
-### Service
+Every bug fix must add tests to prevent regression.
+
+### Source
+
+The directory which the issue applies to.
 
 ### Status
 

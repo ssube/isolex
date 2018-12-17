@@ -21,5 +21,12 @@ describeAsync('utils', async () => {
       const clock = await container.create(Clock);
       expect(clock.date).to.equal(Date);
     });
+
+    itAsync('should return whole seconds', async () => {
+      const { container } = await createContainer();
+      const clock = await container.create(Clock);
+      const now = clock.getSeconds();
+      expect(now).to.equal(Math.floor(now));
+    });
   });
 });

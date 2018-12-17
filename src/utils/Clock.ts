@@ -15,6 +15,6 @@ export class Clock {
   }
 
   public getSeconds(): number {
-    return this.date.now() / NOW_TO_SECONDS;
+    return Math.floor(this.date.now() / NOW_TO_SECONDS);
   }
 }
