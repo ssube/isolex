@@ -16,7 +16,7 @@ Unified chat bot with [AWS Lex](https://aws.amazon.com/lex/) integration, observ
 
 [![Github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
 [![NPM release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
-[![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master)
+[![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master) [![Greenkeeper badge](https://badges.greenkeeper.io/ssube/isolex.svg)](https://greenkeeper.io/)
 
 ## Build
 
