@@ -8,4 +8,4 @@ echo "Reporting status for ${CI_COMMIT_SHA}...\n${STATUS_BODY}"
 
 echo "${STATUS_BODY}" | curl -d @- \
   -H "Authorization: token $(echo -n "${GITHUB_SECRET}" | base64 -d)" \
-  -v "https://api.github.com/repos/ssube/isolex/statuses/${CI_COMMIT_SHA}" \
+  -v "https://api.github.com/repos/ssube/isolex/statuses/${CI_COMMIT_SHA}"
