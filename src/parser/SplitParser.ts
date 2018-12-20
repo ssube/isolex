@@ -6,10 +6,11 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
-import { dictToMap } from 'src/utils/Map';
+import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SplitParserData extends ParserData {
+  dataMapper: ArrayMapperOptions;
   /**
    * Split every individual character.
    */
@@ -24,10 +25,12 @@ export interface SplitParserData extends ParserData {
 export type SplitParserOptions = ParserOptions<SplitParserData>;
 
 export class SplitParser extends BaseParser<SplitParserData> implements Parser {
+  protected mapper: ArrayMapper;
+
   public async parse(msg: Message): Promise<Array<Command>> {
-    const args = await this.decode(msg);
-    this.logger.debug({ args }, 'splitting string');
-    return [await this.createCommand(msg.context, dictToMap({ args }))];
+    const data = await this.decode(msg);
+    this.logger.debug({ data }, 'splitting string');
+    return [await this.createCommand(msg.context, this.mapper.map(data))];
   }
 
   public async decode(msg: Message): Promise<any> {

@@ -3,20 +3,24 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface RegexParserData extends ParserData {
+  dataMapper: ArrayMapperOptions;
   regexp: string;
 }
 
 export type RegexParserOptions = ParserOptions<RegexParserData>;
 
 export class RegexParser extends BaseParser<RegexParserData> implements Parser {
+  protected mapper: ArrayMapper;
   protected regexp: RegExp;
 
   constructor(options: RegexParserOptions) {
     super(options);
 
+    this.mapper = new ArrayMapper(options.data.dataMapper);
     this.regexp = new RegExp(options.data.regexp);
   }
 
@@ -27,7 +31,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
       context: msg.context.extend({
         parser: this,
       }),
-      data: { data }, // @TODO: double data doesn't seem right
+      data: this.mapper.map(data),
       labels: this.data.defaultCommand.labels,
       noun: this.data.defaultCommand.noun,
       verb: this.data.defaultCommand.verb,

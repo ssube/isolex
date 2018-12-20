@@ -126,7 +126,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       parser: [this.id],
       verb: [verb],
     });
-    return this.createReply(context, NOUN_FRAGMENT, CommandVerb.Create, new Map([
+    return this.createReply(context, NOUN_FRAGMENT, CommandVerb.Create, new Map<string, CommandDataValue>([
       ...data,
       ...fragment,
     ]));

@@ -22,6 +22,7 @@ export interface CommandOptions extends BaseCommandOptions {
   context?: Context;
 }
 
+export type CommandData = Map<string, CommandDataValue>;
 export type CommandDataValue = Array<string>;
 export const TABLE_COMMAND = 'command';
 

@@ -5,12 +5,10 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 
 export interface EchoParserData extends ParserData {
-  args: {
-    field: string;
-    remove: boolean;
-  };
+  dataMapper: ArrayMapperOptions;
 }
 
 export type EchoParserOptions = ParserOptions<EchoParserData>;
@@ -21,19 +19,21 @@ export type EchoParserOptions = ParserOptions<EchoParserData>;
  * @TODO: implement optional removal
  */
 export class EchoParser extends BaseParser<EchoParserData> implements Parser {
+  protected mapper: ArrayMapper;
+
   constructor(options: EchoParserOptions) {
     super(options);
+
+    this.mapper = new ArrayMapper(this.data.dataMapper);
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    const parsed = await this.decode(msg);
+    const data = await this.decode(msg);
     return [new Command({
       context: msg.context.extend({
         parser: this,
       }),
-      data: {
-        [this.data.args.field]: [parsed],
-      },
+      data: this.mapper.map(data),
       labels: this.data.defaultCommand.labels,
       noun: this.data.defaultCommand.noun,
       verb: this.data.defaultCommand.verb,
