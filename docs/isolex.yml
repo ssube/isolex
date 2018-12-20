@@ -1,10 +1,8 @@
 ---
-# {% raw %}
 
 metadata:
   kind: bot
   name: isolex
-
 data:
   filters:
     - metadata:
@@ -14,160 +12,33 @@ data:
         mode: exclude
         data:
           - isolex
-          - IsoFork
-          - Yuela
-          - !env ISOLEX_BLOCK_USER
-
+          - isolex-test
   controllers:
-    - metadata:
-        kind: dice-controller
-        name: dice_split
-      data: {}
-
-    - metadata:
-        kind: learn-controller
-        name: test_learn
-      data:
-        field: args
-        modes:
-          create: add
-          delete: del
-          execute: run
-
-    - metadata:
-        kind: math-controller
-        name: test_math
-      data:
-        join: ','
-        math:
-          matrix: Array
-          number: Number
-        format:
-          notation: auto
-          precision: 4
-          fraction: ratio
-        node:
-          implicit: show
-          parenthesis: keep
-
-    - metadata:
-        kind: random-controller
-        name: rand_split
-      data: {}
-
-    - metadata:
-        kind: reaction-controller
-        name: test_reaction
-      data:
-        field: body
-        reactions:
-          boo:
-            - chance: 0.1
-              name: ghost
-          maple:
-            - chance: 0.25
-              name: maple_leaf
-
-    - metadata:
-        kind: sed-controller
-        name: sed_echo
-      data: {}
-
-    - metadata:
-        kind: time-controller
-        name: test_time
-      data:
-        locale: en-US
-        zone: UTC
-
-    - metadata:
-        kind: echo-controller
-        name: test_split
-      data:
-        template: |
-          noun = {{ cmd.noun }}
-          verb = {{ cmd.verb }}
-          {{#entries cmd.data}}
-          {{ key }} = {{ value }}
-          {{/entries}}
-
-    - metadata:
-        kind: echo-controller
-        name: test_echo
-      data:
-        template: >-
-          {{json cmd}}
-
-  intervals:
-    - metadata:
-        kind: cron-interval
-        name: test_cron
-      data:
-        cron: '* * * * *'
-
+    - !include ./docs/controller/completion-controller.yml
+    - !include ./docs/controller/kubernetes-controller.yml
+    - !include ./docs/controller/math-controller.yml
+    - !include ./docs/controller/search-controller-mdn.yml
+    - !include ./docs/controller/sed-controller.yml
+    - !include ./docs/controller/session-controller.yml
+    - !include ./docs/controller/token-controller.yml
+    - !include ./docs/controller/user-controller.yml
+    - !include ./docs/controller/weather-controller-owm.yml
   listeners:
-    - metadata:
-        kind: discord-listener
-        name: discord-isolex
-      data:
-        token: !env ISOLEX_DISCORD_TOKEN
-
+    - !include ./docs/listener/discord-listener.yml
+    - !include ./docs/listener/express-listener.yml
+    - !include ./docs/listener/slack-listener.yml
   logger:
     level: debug
     name: isolex
-
+  migrate: true
   parsers:
-    - metadata:
-        kind: lex-parser
-        name: test_lex
-      data:
-        account:
-          accessKey: !env ISOLEX_AWS_ACCESS
-          secretKey: !env ISOLEX_AWS_SECRET
-        bot:
-          name: isolex
-          alias: test
-        region: us-east-1
-        tags:
-          - '@isolex'
-          - '@440714238286364672'
-
-    - metadata:
-        kind: yaml-parser
-        name: test_yaml
-      data:
-        tags:
-          - '!!json'
-          - '!!yaml'
-
-    - metadata:
-        kind: echo-parser
-        name: test_echo
-      data:
-        field: args
-        noun: test_math
-        tags:
-          - '!!math'
-
-    - metadata:
-        kind: split-parser
-        name: test_learn
-      data:
-        separator: ' '
-        tags:
-          - '!!member'
-
-    - metadata:
-        kind: echo-parser
-        name: sed_echo
-      data:
-        field: args
-        tags:
-          - '!!sed'
-
-
+    - !include ./docs/parser/args-parser.yml
+    - !include ./docs/parser/args-parser-complete.yml
+    - !include ./docs/parser/args-parser-join.yml
+    - !include ./docs/parser/args-parser-login.yml
+    - !include ./docs/parser/args-parser-k8s.yml
+    - !include ./docs/parser/lex-parser.yml
+    - !include ./docs/parser/yaml-parser.yml
   storage:
     type: sqlite
-    database: "/data/isolex.db"
-
-# {% endraw %}
+    database: "./out/isolex.db"

@@ -76,18 +76,31 @@ Code should only be merged into master after:
 Branches should be squashed before merging and the merge commit must follow
 [conventional commit](https://www.conventionalcommits.org/en/v1.0.0-beta.2/) syntax. Valid prefixes are:
 
-- `build`
+- `build` (type/build)
+  - build script and pipeline changes
+  - no source changes or functional impact
 - `deps` (type/update)
-- `docs`
+  - dependency updates with corresponding source changes
+- `docs` (type/docs)
+  - documentation changes
+  - no source changes or functional impact
 - `feat` (type/feature)
+  - new features with corresponding feature tests
 - `fix` (type/bug)
+  - bug fixes with corresponding regression tests
 - `lint` (type/lint)
-- `test`
+  - small changes for tslint, code climate, etc checks
+  - no functional impact
+- `test` (type/test)
+  - new tests or fixes with no source changes
 
 ## Updates
 
-When updating dependencies, use the `~X.Y` (major-minor range) for anything with a `1.0` release and `^X.Y.Z` for
-anything without.
+Greenkeeper is set up to handle most updates. Some libraries are difficult test, especially clients, but this
+will create PRs to be tested.
 
-Generally update dependencies one (or a related few) at a time and try not to update dev and prod dependencies at the
-same time.
+Dependencies with security issues MUST be updated as soon as possible.
+
+Generally update dependencies one (or a related few) at a time. Try not to update dev and prod dependencies at the
+same time. Be careful updating native dependencies, although the container build will ensure the correct binaries are
+available.
