@@ -22,11 +22,12 @@ interface AjvSchema {
   errors: Array<any>;
 }
 
+/* tslint:disable-next-line:no-var-requires */
 const SCHEMA: AjvSchema = require('./schema.yml');
 
 // main arguments
 const MAIN_ARGS = {
-  array: ['config-path'],
+  array: ['config'],
   count: ['v'],
   envPrefix: 'isolex',
 };

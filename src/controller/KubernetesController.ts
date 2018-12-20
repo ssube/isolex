@@ -25,9 +25,6 @@ export interface KubernetesControllerData extends ControllerData {
 
 export type KubernetesControllerOptions = ControllerOptions<KubernetesControllerData>;
 
-/**
- * @TODO: explore breaking this down into many controllers
- */
 @Inject('bot')
 export class KubernetesController extends BaseController<KubernetesControllerData> implements Controller {
   protected client: k8s.Core_v1Api;
