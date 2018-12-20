@@ -1,8 +1,9 @@
 stages:
+  - status-pre
   - build
   - image
   - publish
-  - status
+  - status-post
 
 # template jobs
 
@@ -91,8 +92,20 @@ publish-npm:
     - npm publish
 
 # commit status
-status-github:
+github-failure:
   <<: [*build-curl]
-  stage: status
+  stage: status-post
   script:
-    - ./scripts/github-status.sh
+    - ./scripts/github-status.sh failure
+
+github-pending:
+  <<: [*build-curl]
+  stage: status-pre
+  script:
+    - ./scripts/github-status.sh pending
+
+github-success:
+  <<: [*build-curl]
+  stage: status-post
+  script:
+    - ./scripts/github-status.sh success
