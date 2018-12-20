@@ -17,6 +17,13 @@ import { EntityModule } from './module/EntityModule';
 import { ServiceModule } from './module/ServiceModule';
 import { TransformModule } from './module/TransformModule';
 
+interface AjvSchema {
+  (data: any): boolean;
+  errors: Array<any>;
+}
+
+const SCHEMA: AjvSchema = require('./schema.yml');
+
 // main arguments
 const MAIN_ARGS = {
   array: ['config-path'],
@@ -71,6 +78,14 @@ async function main(argv: Array<string>): Promise<number> {
 
   logger.info(VERSION_INFO, 'version info');
   logger.info({ args }, 'main arguments');
+
+  const valid = SCHEMA(config);
+  if (!valid) {
+    logger.error({ errors: SCHEMA.errors }, 'config failed to validate');
+    return STATUS_ERROR;
+  } else {
+    logger.info('config is valid');
+  }
 
   const botModule = new BotModule({ logger });
   const modules: Array<Module> = [

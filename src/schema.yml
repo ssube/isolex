@@ -1,21 +1,33 @@
 $schema: "http://json-schema.org/schema#" # yes, this is a json schema written in yaml
 $id: "https://github.com/ssube/isolex/schema.yml"
 definitions:
-  command:
+  entity-command:
+    type: object
     properties:
       noun:
         type: string
       verb:
         type: string
+
+  entity-context:
+    type: object
+    properties:
+      channel:
+        $ref: "#/definitions/entity-context-channel"
+      name:
+        type: string
+      uid:
+        type: string
+
   match-rule:
+    type: object
     properties:
       key:
         type: string
       negate:
         type: boolean
       operator:
-        type:
-          enum: [any, every]
+        enum: [any, every]
       values:
         type: array
         items:
@@ -28,12 +40,15 @@ definitions:
                 regexp:
                   type: string
   match-data:
+    type: object
     properties:
       rules:
         type: array
         items:
           $ref: "#/definitions/match-rule"
+
   match-results:
+    type: object
     properties:
       matched:
         type: boolean
@@ -41,3 +56,153 @@ definitions:
       type: array
       items:
         type: string
+
+  service-bot:
+    type: object
+    properties:
+      controllers:
+        type: array
+        items:
+          anyOf:
+            - $ref: "#/definitions/service-controller-count"
+            - $ref: "#/definitions/service-controller-kubernetes"
+            - $ref: "#/definitions/service-controller-math"
+            - type: object
+              properties:
+                metadata:
+                  $ref: "#/definitions/service-metadata"
+      filters:
+        type: array
+        items:
+          $ref: "#/definitions/service-metadata"
+      listeners:
+        type: array
+        items:
+          $ref: "#/definitions/service-metadata"
+      logger:
+        type: object
+        properties:
+          level:
+            enum: [debug, info, warn, error]
+          name:
+            type: string
+      migrate:
+        type: boolean
+      parser:
+        type: array
+        items:
+          anyOf:
+            - type: object
+              properties:
+                metadata:
+                  $ref: "#/definitions/service-metadata"
+      storage:
+        type: object
+        properties:
+          database:
+            type: string
+          type:
+            type: string
+
+  service-controller-count:
+    type: object
+    properties:
+      metadata:
+        $ref: "#/definitions/service-metadata"
+      data:
+        type: object
+        properties:
+          default:
+            properties:
+              count:
+                type: string
+              name:
+                type: string
+          field:
+            properties:
+              count:
+                type: string
+              name:
+                type: string
+          range:
+            properties:
+              min:
+                type: number
+              max:
+                type: number
+
+  service-controller-kubernetes:
+    type: object
+    properties:
+      metadata:
+        $ref: "#/definitions/service-metadata"
+      data:
+        type: object
+        properties:
+          context:
+            properties:
+              cluster:
+                type: string
+              default:
+                type: string
+              path:
+                type: string
+          default:
+            properties:
+              namespace:
+                type: string
+
+  service-controller-math:
+    type: object
+    properties:
+      metadata:
+        $ref: "#/definitions/service-metadata"
+      data:
+        type: object
+        properties:
+          format:
+            properties:
+              list:
+                properties:
+                  join:
+                    type: string
+              number:
+                properties:
+                  notation:
+                    enum: [fixed, exponential, engineering, auto]
+                  precision:
+                    type: number
+                  lowerExp:
+                    type: number
+                  upperExp:
+                    type: number
+                  fraction:
+                    type: string
+              node:
+                properties:
+                  implicit:
+                    type: string
+                  parenthesis:
+                    type: string
+          math:
+            properties:
+              matrix:
+                type: string
+              number:
+                type: string
+
+  service-metadata:
+    type: object
+    properties:
+      kind:
+        type: string
+      name:
+        type: string
+
+# root
+type: object
+properties:
+  data:
+    $ref: "#/definitions/service-bot"
+  metadata:
+    $ref: "#/definitions/service-metadata"

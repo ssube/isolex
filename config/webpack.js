@@ -43,6 +43,11 @@ module.exports = {
       /dtrace-provider/
     ],
     rules: [{
+      test: /schema.yml$/,
+      rules: [{
+        use: ['ajv-pack-loader', 'yaml-loader']
+      }]
+    }, {
       test: /\.tsx?$/,
       rules: [{
         enforce: 'pre',
