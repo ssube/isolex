@@ -15,8 +15,6 @@ export type EchoParserOptions = ParserOptions<EchoParserData>;
 
 /**
  * Forwards the message body as a field. Does not split or otherwise parse, optionally removes the matched tag.
- *
- * @TODO: implement optional removal
  */
 export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   protected mapper: ArrayMapper;
@@ -29,15 +27,7 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
-    return [new Command({
-      context: msg.context.extend({
-        parser: this,
-      }),
-      data: this.mapper.map(data),
-      labels: this.data.defaultCommand.labels,
-      noun: this.data.defaultCommand.noun,
-      verb: this.data.defaultCommand.verb,
-    })];
+    return [await this.createCommand(msg.context, this.mapper.map(data))];
   }
 
   public async decode(msg: Message): Promise<any> {
