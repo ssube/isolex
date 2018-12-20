@@ -92,20 +92,22 @@ publish-npm:
     - npm publish
 
 # commit status
-github-failure:
-  <<: [*build-curl]
-  stage: status-post
-  script:
-    - ./scripts/github-status.sh failure
-
 github-pending:
   <<: [*build-curl]
   stage: status-pre
   script:
     - ./scripts/github-status.sh pending
 
+github-failure:
+  <<: [*build-curl]
+  stage: status-post
+  when: on_failure
+  script:
+    - ./scripts/github-status.sh failure
+
 github-success:
   <<: [*build-curl]
   stage: status-post
+  when: on_success
   script:
     - ./scripts/github-status.sh success
