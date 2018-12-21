@@ -29,7 +29,7 @@ export function completePaths(name: string, ...extras: Array<string>): Array<str
 
   const env = process.env[CONFIG_ENV];
   if (env) {
-    paths.push(env);
+    paths.push(join(env, name));
   }
 
   if (process.env.HOME) {
