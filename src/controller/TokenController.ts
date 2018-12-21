@@ -31,7 +31,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
   protected readonly tokenRepository: Repository<Token>;
 
   constructor(options: TokenControllerOptions) {
-    super(options, [NOUN_TOKEN]);
+    super(options, 'isolex#/definitions/service-controller-token', [NOUN_TOKEN]);
 
     this.clock = options.clock;
     this.storage = options.storage;

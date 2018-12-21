@@ -23,7 +23,7 @@ export class PickController extends BaseController<PickControllerData> implement
   protected list: Checklist<string>;
 
   constructor(options: PickControllerOptions) {
-    super(options, [NOUN_PICK]);
+    super(options, 'isolex#/definitions/service-controller-pick', [NOUN_PICK]);
 
     this.list = new Checklist(options.data.check);
   }

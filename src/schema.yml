@@ -1,6 +1,19 @@
 $schema: "http://json-schema.org/schema#" # yes, this is a json schema written in yaml
 $id: "https://github.com/ssube/isolex/schema.yml"
 definitions:
+  array-mapper:
+    type: object
+    additionalProperties: true
+    properties:
+      rest:
+        type: string
+      skip:
+        type: number
+      take:
+        type: array
+        items:
+          type: string
+ 
   entity-command:
     type: object
     additionalProperties: true
@@ -62,6 +75,71 @@ definitions:
       items:
         type: string
 
+  service-bot:
+    type: object
+    properties:
+      controllers:
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/service-definition"
+            - type: object
+              properties:
+                data:
+                  anyOf:
+                    - $ref: "#/definitions/service-controller-completion"
+                    - $ref: "#/definitions/service-controller-count"
+                    - $ref: "#/definitions/service-controller-dice"
+                    - $ref: "#/definitions/service-controller-echo"
+                    - $ref: "#/definitions/service-controller-kubernetes"
+                    - $ref: "#/definitions/service-controller-math"
+                    - $ref: "#/definitions/service-controller-random"
+                    - $ref: "#/definitions/service-controller-search"
+                    - $ref: "#/definitions/service-controller-sed"
+                    - $ref: "#/definitions/service-controller-session"
+                    - $ref: "#/definitions/service-controller-token"
+                    - $ref: "#/definitions/service-controller-user"
+                    - $ref: "#/definitions/service-controller-weather"
+      filters:
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/service-definition"
+      listeners:
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/service-definition"
+      logger:
+        type: object
+        properties:
+          level:
+            enum: [debug, info, warn, error]
+          name:
+            type: string
+      migrate:
+        type: boolean
+      parsers:
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/service-definition"
+            - type: object
+              properties:
+                data:
+                  anyOf:
+                    - $ref: "#/definitions/service-parser-args"
+                    - $ref: "#/definitions/service-parser-echo"
+                    - $ref: "#/definitions/service-parser-lex"
+                    - $ref: "#/definitions/service-parser-regex"
+      storage:
+        type: object
+        properties:
+          database:
+            type: string
+          type:
+            type: string
+
   service-controller:
     type: object
     properties:
@@ -73,7 +151,8 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/service-definition"
-
+  service-controller-completion:
+    $ref: "#/definitions/service-controller"
   service-controller-count:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -103,7 +182,10 @@ definitions:
                 type: number
               max:
                 type: number
-
+  service-controller-dice:
+    $ref: "#/definitions/service-controller"
+  service-controller-echo:
+    $ref: "#/definitions/service-controller"
   service-controller-kubernetes:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -114,18 +196,17 @@ definitions:
             additionalProperties: false
             properties:
               cluster:
-                type: string
+                type: boolean
               default:
-                type: string
+                type: boolean
               path:
                 type: string
-          default:
+          defunkt:
             type: object
             additionalProperties: false
             properties:
               namespace:
                 type: string
-
   service-controller-math:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -171,17 +252,169 @@ definitions:
                 type: string
               number:
                 type: string
+  service-controller-random:
+    $ref: "#/definitions/service-controller"
+  service-controller-search:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          count:
+            type: number
+          field:
+            type: string
+          request:
+            type: object
+            additionalProperties: false
+            properties:
+              method:
+                type: string
+              url:
+                type: string
+ 
+  service-controller-sed:
+    $ref: "#/definitions/service-controller"
+  service-controller-session:
+    $ref: "#/definitions/service-controller"
+  service-controller-token:
+    $ref: "#/definitions/service-controller"
+  service-controller-user:
+    $ref: "#/definitions/service-controller"
+  service-controller-weather:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          api:
+            type: object
+            additionalProperties: false
+            properties:
+              key:
+                type: string
+              root:
+                type: string
+
+  service-filter-rule:
+    type: object
+    properties:
+      match:
+        $ref: "#/definitions/match-data"
+  service-filter-user:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: string
+      mode:
+        enum: [exclude, include]
+
+  service-listener-discord:
+    type: object
+    properties:
+      presence:
+        type: object
+      token:
+        type: string
+  service-listener-express:
+    type: object
+    properties:
+      expose:
+        type: object
+        properties:
+          graph:
+            type: boolean
+          graphiql:
+            type: boolean
+          metrics:
+            type: boolean
+      graph:
+        $ref: "#/definitions/service-definition"
+      listen:
+        type: object
+        properties:
+          address:
+            type: string
+          port:
+            type: number
+      token:
+        type: object
+        properties:
+          audience:
+            type: string
+          issuer:
+            type: string
+          scheme:
+            type: string
+          secret:
+            type: string
+  service-listener-slack:
+    type: object
+    properties:
+      token:
+        type: object
+        properties:
+          bot:
+            type: string
+          web:
+            type: string
 
   service-parser:
     type: object
     properties:
       defaultCommand:
-        $ref: "#/definition/entity-command"
+        $ref: "#/definitions/entity-command"
       preferData:
         type: boolean
       match:
         $ref: "#/definitions/match-data"
- 
+  service-parser-args:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          args:
+            type: object
+            properties:
+              array:
+                type: array
+                items:
+                  type: string
+              boolean:
+                type: array
+                items:
+                  type: string
+              configuration:
+                type: object
+              count:
+                type: array
+                items:
+                  type: string
+              default:
+                type: array
+                items:
+                  type: string
+              number:
+                type: array
+                items:
+                  type: string
+              required:
+                type: array
+                items:
+                  type: string
+              string:
+                type: array
+                items:
+                  type: string
+              "--":
+                type: boolean
+  service-parser-echo:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          dataMapper:
+            $ref: "#/definitions/array-mapper"
   service-parser-lex:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -205,7 +438,61 @@ definitions:
                 type: string
               region:
                 type: string
+  service-parser-regex:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          dataMapper:
+            $ref: "#/definitions/array-mapper"
+          regexp:
+            type: string
+  service-parser-yaml:
+    $ref: "#/definitions/service-parser"
  
+  service-transform:
+    type: object
+    properties:
+      parsers:
+        type: array
+        items:
+          allOf:
+            - $ref: "#/definitions/service-definition"
+            - $ref: "#/definitions/service-parser"
+  service-transform-flatten:
+    allOf:
+      - $ref: "#/definitions/service-transform"
+      - type: object
+        properties:
+          deep:
+            type: boolean
+          join:
+            type: string
+          keys:
+            type: array
+            items:
+              type: string
+  service-transform-jsonpath:
+    allOf:
+      - $ref: "#/definitions/service-transform"
+      - type: object
+        properties:
+          queries:
+            type: object
+            additionalProperties:
+              type: string
+  service-transform-template:
+    allOf:
+      - $ref: "#/definitions/service-transform"
+      - type: object
+        properties:
+          templates:
+            type: object
+            additionalProperties:
+              type: string
+ 
+  service-graph:
+    type: object
   service-definition:
     type: object
     additionalProperties: false
@@ -215,7 +502,6 @@ definitions:
         type: object
       metadata:
         $ref: "#/definitions/service-metadata"
- 
   service-metadata:
     type: object
     additionalProperties: false
@@ -226,6 +512,15 @@ definitions:
       name:
         type: string
 
+  utils-cooldown:
+    type: object
+    additionalProperties: false
+    properties:
+      base:
+        type: number
+      grow:
+        type: number
+
 # root
 type: object
 additionalProperties: false
@@ -233,56 +528,4 @@ properties:
   metadata:
     $ref: "#/definitions/service-metadata"
   data:
-    type: object
-    properties:
-      data:
-        type: object
-        properties:
-          controllers:
-            type: array
-            items:
-              allOf:
-                - $ref: "#/definitions/service-definition"
-                - type: object
-                  properties:
-                    data:
-                      oneOf:
-                        - $ref: "#/definitions/service-controller-count"
-                        - $ref: "#/definitions/service-controller-kubernetes"
-                        - $ref: "#/definitions/service-controller-math"
-          filters:
-            type: array
-            items:
-              allOf:
-                - $ref: "#/definitions/service-definition"
-          listeners:
-            type: array
-            items:
-              allOf:
-                - $ref: "#/definitions/service-definition"
-          logger:
-            type: object
-            properties:
-              level:
-                enum: [debug, info, warn, error]
-              name:
-                type: string
-          migrate:
-            type: boolean
-          parsers:
-            type: array
-            items:
-              allOf:
-                - $ref: "#/definitions/service-definition"
-                - type: object
-                  properties:
-                    data:
-                      oneOf:
-                        - $ref: "#/definitions/service-parser-lex"
-          storage:
-            type: object
-            properties:
-              database:
-                type: string
-              type:
-                type: string
+    $ref: "#/definitions/service-bot"

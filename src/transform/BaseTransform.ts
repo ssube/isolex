@@ -13,8 +13,8 @@ export abstract class BaseTransform<TData extends TransformData> extends ChildSe
   protected readonly parsers: Array<Parser>;
   protected readonly services: ServiceModule;
 
-  constructor(options: TransformOptions<TData>) {
-    super(options);
+  constructor(options: TransformOptions<TData>, schemaPath: string) {
+    super(options, schemaPath);
 
     this.parsers = [];
     this.services = options.services;

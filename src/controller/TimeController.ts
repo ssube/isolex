@@ -15,7 +15,7 @@ export class TimeController extends BaseController<TimeControllerData> implement
   protected template: HandlebarsTemplateDelegate;
 
   constructor(options: TimeControllerOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-controller-time');
   }
 
   public async handle(cmd: Command): Promise<void> {

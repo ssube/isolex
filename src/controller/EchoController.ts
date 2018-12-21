@@ -2,17 +2,13 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { ServiceDefinition } from 'src/Service';
 import { Transform } from 'src/transform/Transform';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export const NOUN_ECHO = 'echo';
 
-export interface EchoControllerData extends ControllerData {
-  transforms: Array<ServiceDefinition>;
-}
-
+export type EchoControllerData = ControllerData;
 export interface EchoControllerOptions extends ControllerOptions<EchoControllerData> {
   compiler: TemplateCompiler;
 }
@@ -21,7 +17,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   protected readonly transforms: Array<Transform>;
 
   constructor(options: EchoControllerOptions) {
-    super(options, [NOUN_ECHO]);
+    super(options, 'isolex#/definitions/service-controller-echo', [NOUN_ECHO]);
   }
 
   public async handle(cmd: Command): Promise<void> {

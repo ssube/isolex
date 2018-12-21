@@ -8,7 +8,9 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { Service, ServiceDefinition } from 'src/Service';
 import { dictToMap } from 'src/utils/Map';
 
+import { SchemaError } from './error/SchemaError';
 import { Clock } from './utils/Clock';
+import { Schema } from './utils/Schema';
 
 export interface InjectedServiceOptions {
   clock: Clock;
@@ -27,7 +29,7 @@ export abstract class BaseService<TData> implements Service {
   protected readonly data: Readonly<TData>;
   protected readonly logger: Logger;
 
-  constructor(options: BaseServiceOptions<TData>) {
+  constructor(options: BaseServiceOptions<TData>, schemaPath: string) {
     this.id = uuid();
     this.kind = options.metadata.kind;
     this.labels = dictToMap(options.metadata.labels);
@@ -44,6 +46,19 @@ export abstract class BaseService<TData> implements Service {
       kind: kebabCase(Reflect.getPrototypeOf(this).constructor.name),
       service: options.metadata.name,
     });
+
+    // validate the data
+    // @TODO: inject this schema
+    const schema = new Schema();
+    const result = schema.match(options.data, schemaPath);
+    if (!result.valid) {
+      this.logger.error({ errors: result.errors }, 'failed to validate config');
+      throw new SchemaError('failed to validate config');
+    } else {
+      this.logger.debug('validated config data');
+    }
+
+
   }
 
   public abstract start(): Promise<void>;

@@ -30,7 +30,7 @@ export type ArgsParserOptions = ParserOptions<ArgsParserData>;
 @Inject('bot')
 export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   constructor(options: ArgsParserOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-parser-args');
   }
 
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {

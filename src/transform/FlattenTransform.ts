@@ -22,7 +22,7 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
   protected readonly keys: Array<string>;
 
   constructor(options: FlattenTransformOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-transform-flatten');
 
     this.keys = Array.from(this.data.keys);
   }

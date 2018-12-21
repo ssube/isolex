@@ -27,7 +27,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   protected webClient: WebClient;
 
   constructor(options: SlackListenerOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-listener-slack');
   }
 
   public async send(msg: Message): Promise<void> {

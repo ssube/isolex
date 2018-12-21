@@ -32,7 +32,9 @@ describeAsync('echo controller', async () => {
       data: {
         filters: [],
         transforms: [{
-          data: {},
+          data: {
+            parsers: [],
+          },
           metadata: {
             kind: 'template-transform',
             name: 'test_template',
@@ -70,7 +72,9 @@ describeAsync('echo controller', async () => {
       data: {
         filters: [],
         transforms: [{
-          data: {},
+          data: {
+            parsers: [],
+          },
           metadata: {
             kind: 'template-transform',
             name: 'test_template',

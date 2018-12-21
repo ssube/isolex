@@ -16,7 +16,7 @@ export type DiceControllerOptions = ControllerOptions<DiceControllerData>;
 
 export class DiceController extends BaseController<DiceControllerData> implements Controller {
   constructor(options: DiceControllerOptions) {
-    super(options, [NOUN_ROLL]);
+    super(options, 'isolex#/definitions/service-controller-dice', [NOUN_ROLL]);
   }
 
   public async handle(cmd: Command): Promise<void> {

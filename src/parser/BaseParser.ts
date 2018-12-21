@@ -10,8 +10,8 @@ import { Match } from 'src/utils/match';
 export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
   protected matcher: Match;
 
-  constructor(options: ChildServiceOptions<TData>) {
-    super(options);
+  constructor(options: ChildServiceOptions<TData>, schemaPath: string) {
+    super(options, schemaPath);
 
     this.matcher = new Match(options.data.match);
   }

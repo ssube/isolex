@@ -18,7 +18,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   protected regexp: RegExp;
 
   constructor(options: RegexParserOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-parser-regex');
 
     this.mapper = new ArrayMapper(options.data.dataMapper);
     this.regexp = new RegExp(options.data.regexp);

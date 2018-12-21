@@ -57,7 +57,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected server?: http.Server;
 
   constructor(options: ExpressListenerOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-listener-express');
 
     this.container = options.container;
     this.metrics = options.metrics;

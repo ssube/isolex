@@ -22,7 +22,7 @@ export class UserController extends BaseController<UserControllerData> implement
   protected readonly userRepository: UserRepository;
 
   constructor(options: UserControllerOptions) {
-    super(options, [NOUN_ROLE, NOUN_USER]);
+    super(options, 'isolex#/definitions/service-controller-user', [NOUN_ROLE, NOUN_USER]);
 
     this.storage = options.storage;
     this.userRepository = this.storage.getCustomRepository(UserRepository);

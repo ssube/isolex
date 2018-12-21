@@ -20,7 +20,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
   protected queries: Map<string, string>;
 
   constructor(options: JsonpathTransformOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-transform-jsonpath');
 
     this.queries = dictToMap(options.data.queries);
   }

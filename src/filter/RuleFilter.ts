@@ -11,7 +11,7 @@ export abstract class RuleFilter extends BaseFilter<RuleFilterData> implements F
   protected matcher: Match;
 
   constructor(options: FilterOptions<RuleFilterData>) {
-    super(options);
+    super(options, 'isolex#/definitions/service-filter-rule');
 
     this.matcher = new Match(options.data.match);
   }

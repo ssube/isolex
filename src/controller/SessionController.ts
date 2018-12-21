@@ -40,7 +40,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
   protected userRepository: UserRepository;
 
   constructor(options: SessionControllerOptions) {
-    super(options, [NOUN_GRANT, NOUN_JOIN, NOUN_SESSION]);
+    super(options, 'isolex#/definitions/service-controller-session', [NOUN_GRANT, NOUN_JOIN, NOUN_SESSION]);
 
     this.clock = options.clock;
     this.storage = options.storage;

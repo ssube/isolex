@@ -54,23 +54,23 @@ export async function loadConfig(...extras: Array<string>): Promise<BotDefinitio
     const data = await readConfig(p);
 
     if (data) {
-      return data;
+      return safeLoad(data, {
+        schema: CONFIG_SCHEMA,
+      });
     }
   }
 
   throw new Error('unable to load config');
 }
 
-export async function readConfig(path: string): Promise<BotDefinition | undefined> {
+export async function readConfig(path: string): Promise<string | undefined> {
   try {
-    const data = await readFileSync(path, {
+    console.warn('trying to load config from', path);
+    return readFileSync(path, {
       encoding: 'utf-8',
     });
-
-    return safeLoad(data, {
-      schema: CONFIG_SCHEMA,
-    });
   } catch (err) {
+    console.error(err, 'error loading config');
     if (err.code !== 'ENOENT') {
       throw err;
     }

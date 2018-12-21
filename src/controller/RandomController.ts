@@ -15,7 +15,7 @@ export const NOUN_RANDOM = 'random';
 
 export class RandomController extends BaseController<RandomControllerData> implements Controller {
   constructor(options: RandomControllerOptions) {
-    super(options, [NOUN_RANDOM]);
+    super(options, 'isolex#/definitions/service-controller-random', [NOUN_RANDOM]);
   }
 
   public async handle(cmd: Command): Promise<void> {

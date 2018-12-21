@@ -13,7 +13,7 @@ export const NOUN_SED = 'sed';
 @Inject('bot', 'services')
 export class SedController extends BaseController<SedControllerData> implements Controller {
   constructor(options: SedControllerOptions) {
-    super(options, [NOUN_SED]);
+    super(options, 'isolex#/definitions/service-controller-sed', [NOUN_SED]);
   }
 
   public async handle(cmd: Command): Promise<void> {

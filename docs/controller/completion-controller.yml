@@ -1,4 +1,6 @@
 metadata:
   kind: completion-controller
   name: default-completion
-data: {}
+data:
+  filters: []
+  transforms: []

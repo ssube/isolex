@@ -62,7 +62,7 @@ export class Bot extends BaseService<BotData> implements Service {
   protected outgoing: Subject<Message>;
 
   constructor(options: BotOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-bot');
 
     this.logger.info(options, 'creating bot');
 

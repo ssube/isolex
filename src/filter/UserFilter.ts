@@ -11,7 +11,7 @@ export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
   protected list: Checklist<string>;
 
   constructor(options: UserFilterOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-filter-user');
 
     this.list = new Checklist(options.data);
   }

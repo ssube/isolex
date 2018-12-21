@@ -30,7 +30,7 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
   protected client: k8s.Core_v1Api;
 
   constructor(options: KubernetesControllerOptions) {
-    super(options, [NOUN_POD, NOUN_SERVICE]);
+    super(options, 'isolex#/definitions/service-controller-kubernetes', [NOUN_POD, NOUN_SERVICE]);
   }
 
   public async start() {

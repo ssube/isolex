@@ -28,7 +28,7 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
   protected readonly templates: Map<string, Template>;
 
   constructor(options: TemplateTransformOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-transform-template');
 
     this.templates = new Map();
     for (const [key, data] of Object.entries(options.data.templates)) {

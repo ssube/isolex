@@ -23,7 +23,7 @@ export class ReactionController extends BaseController<ReactionControllerData> i
   protected reactions: Map<string, Array<ReactionChance>>;
 
   constructor(options: ReactionControllerOptions) {
-    super(options, [NOUN_REACTION]);
+    super(options, 'isolex#/definitions/service-controller-reaction', [NOUN_REACTION]);
 
     this.reactions = new Map(Object.entries(options.data.reactions));
     this.tags = Array.from(this.reactions.keys());

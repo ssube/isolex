@@ -15,8 +15,8 @@ export abstract class SessionListener<TData> extends BaseListener<TData> {
   protected readonly clock: Clock;
   protected readonly sessions: Map<string, Session>;
 
-  constructor(options: ChildServiceOptions<TData>) {
-    super(options);
+  constructor(options: ChildServiceOptions<TData>, schemaPath: string) {
+    super(options, schemaPath);
 
     this.clock = options.clock;
     this.sessions = new Map();

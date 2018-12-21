@@ -22,7 +22,6 @@ export class Cooldown extends BaseService<CooldownData> {
 
   protected active: boolean;
   protected boundNext: Function;
-  protected config: CooldownData;
   protected grow: number;
   protected rate: number;
   protected stream: Subject<number>;
@@ -30,11 +29,10 @@ export class Cooldown extends BaseService<CooldownData> {
   protected timer: number;
 
   constructor(options: CooldownOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/utils-cooldown');
 
     this.active = false;
     this.boundNext = this.next.bind(this);
-    this.config = options.data;
     this.grow = options.data.grow;
     this.rate = options.data.base;
     this.stream = new Subject();
@@ -61,8 +59,8 @@ export class Cooldown extends BaseService<CooldownData> {
    * @returns the new rate
    */
   public dec(): number {
-    this.grow = Math.max(this.grow / GROWTH_FACTOR, this.config.grow);
-    this.rate = Math.max(this.rate - this.grow, this.config.base);
+    this.grow = Math.max(this.grow / GROWTH_FACTOR, this.data.grow);
+    this.rate = Math.max(this.rate - this.grow, this.data.base);
     return this.rate;
   }
 

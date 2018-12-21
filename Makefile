@@ -101,13 +101,13 @@ release-dry: ## test creating a release
 	$(NODE_BIN)/standard-version --sign --dry-run
 
 run-config: ## run the bot to test the config
-	node $(TARGET_PATH)/main-bundle.js --test
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
 
 run-terminal: ## run the bot in a terminal
-	node $(TARGET_PATH)/main-bundle.js
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js
 
 run-bunyan: ## run the bot with bunyan logs
-	node $(TARGET_PATH)/main-bundle.js | $(NODE_BIN)/bunyan
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js | $(NODE_BIN)/bunyan
 
 test: test-check ## run mocha unit tests
 

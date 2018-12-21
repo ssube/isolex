@@ -27,7 +27,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   protected readonly container: Container;
 
   constructor(options: WeatherControllerOptions) {
-    super(options, [NOUN_WEATHER]);
+    super(options, 'isolex#/definitions/service-controller-weather', [NOUN_WEATHER]);
     this.container = options.container;
   }
 

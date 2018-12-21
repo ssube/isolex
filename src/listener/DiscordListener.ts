@@ -19,14 +19,12 @@ import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { ServiceMetadata } from 'src/Service';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { SessionListener } from './SessionListener';
 
 export interface DiscordListenerData {
   presence?: PresenceData;
-  sessionProvider: ServiceMetadata;
   token: string;
 }
 
@@ -45,7 +43,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   protected readonly onCounter: Counter;
 
   constructor(options: DiscordListenerOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-listener-discord');
 
     this.client = new Client();
     this.services = options.services;

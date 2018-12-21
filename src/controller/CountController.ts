@@ -34,7 +34,7 @@ export class CountController extends BaseController<CountControllerData> impleme
   protected counterRepository: Repository<Counter>;
 
   constructor(options: CountControllerOptions) {
-    super(options, [NOUN_COUNTER]);
+    super(options, 'isolex#/definitions/service-controller-count', [NOUN_COUNTER]);
 
     this.storage = options.storage;
     this.counterRepository = this.storage.getRepository(Counter);

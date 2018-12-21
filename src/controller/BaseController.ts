@@ -22,8 +22,8 @@ export abstract class BaseController<TData extends ControllerData> extends Child
   protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
-  constructor(options: BaseControllerOptions<TData>, nouns: Array<string> = []) {
-    super(options);
+  constructor(options: BaseControllerOptions<TData>, schemaPath: string, nouns: Array<string> = []) {
+    super(options, schemaPath);
 
     this.nouns = new Set(nouns);
     this.filters = [];

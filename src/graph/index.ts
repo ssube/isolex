@@ -29,7 +29,7 @@ export class GraphSchema extends ChildService<GraphSchemaData> {
   protected readonly storage: Connection;
 
   constructor(options: GraphSchemaOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-graph');
 
     this.services = options.services;
     this.storage = options.storage;

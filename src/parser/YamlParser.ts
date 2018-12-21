@@ -14,7 +14,7 @@ export const YAML_TYPES = [TYPE_JSON, TYPE_YAML];
 
 export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   constructor(options: YamlParserOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-parser-yaml');
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {

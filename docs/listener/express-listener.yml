@@ -15,7 +15,7 @@ data:
     port: 4000
     address: "0.0.0.0"
   token:
-    audience: [test-audience]
+    audience: test-audience
     issuer: test-issuer
     scheme: isolex
     secret: test-secret

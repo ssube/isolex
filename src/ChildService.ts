@@ -15,8 +15,8 @@ export interface ChildServiceOptions<TData> extends BaseServiceOptions<TData> {
 export abstract class ChildService<TData> extends BaseService<TData> implements Service {
   public readonly bot: Bot;
 
-  constructor(options: ChildServiceOptions<TData>) {
-    super(options);
+  constructor(options: ChildServiceOptions<TData>, schemaPath: string) {
+    super(options, schemaPath);
 
     this.bot = options.bot;
   }

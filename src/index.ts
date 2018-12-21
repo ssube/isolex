@@ -82,6 +82,12 @@ function createModules(botModule: BotModule, migrate: boolean) {
   return modules;
 }
 
+async function handleSignals(bot: Bot) {
+  await bot.start();
+  await signal(SIGNAL_STOP);
+  await bot.stop();
+}
+
 async function main(argv: Array<string>): Promise<number> {
   const args = yargs(argv, MAIN_ARGS);
   const config = await loadConfig();
@@ -111,9 +117,7 @@ async function main(argv: Array<string>): Promise<number> {
   botModule.setBot(bot);
 
   logger.info('starting bot');
-  await bot.start();
-  await signal(SIGNAL_STOP);
-  await bot.stop();
+  await handleSignals(bot);
 
   return STATUS_SUCCESS;
 }

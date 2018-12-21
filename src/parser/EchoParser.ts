@@ -20,7 +20,7 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   protected mapper: ArrayMapper;
 
   constructor(options: EchoParserOptions) {
-    super(options);
+    super(options, 'isolex#/definitions/service-parser-echo');
 
     this.mapper = new ArrayMapper(this.data.dataMapper);
   }
