@@ -1,35 +1,49 @@
 import * as Ajv from 'ajv';
 import { filterNil } from '.';
 
+/* tslint:disable-next-line:no-var-requires */
+export const SCHEMA_GLOBAL = require('src/schema.yml');
+
 export interface SchemaResult {
   errors: Array<string>;
   valid: boolean;
 }
 
 export class Schema {
-  protected compiled: Ajv.ValidateFunction;
   protected compiler: Ajv.Ajv;
 
-  constructor(schema: any) {
+  constructor(schema: any = SCHEMA_GLOBAL) {
     this.compiler = new Ajv({
+      allErrors: true,
       schemaId: 'auto',
     });
-    this.compiled = this.compiler.compile(schema);
+    this.compiler.addSchema(schema, 'isolex');
   }
 
-  public match(value: any): SchemaResult {
-    const valid = this.compiled(value);
+  public match(value: any, ref: string = 'isolex#'): SchemaResult {
+    const valid = this.compiler.validate({ $ref: ref }, value);
     if (valid === true) {
       return {
         errors: [],
         valid,
       };
     } else {
-      const errors = this.compiled.errors || [];
+      const errors = this.compiler.errors || [];
       return {
-        errors: filterNil(errors.map((it) => it.message)),
+        errors: filterNil(errors.map((it) => this.formatError(it))),
         valid: false,
       };
+    }
+  }
+
+  public formatError(err: Ajv.ErrorObject): string {
+    console.warn('===marker', 'schema format error', err);
+    switch (err.keyword) {
+      case 'additionalProperties':
+        const params = err.params as Ajv.AdditionalPropertiesParams;
+        return `${err.message}: ${params.additionalProperty} at ${err.schemaPath}`
+      default:
+        return `${err.message} at ${err.schemaPath}`;
     }
   }
 }

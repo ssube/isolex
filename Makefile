@@ -100,6 +100,9 @@ release: ## create a release
 release-dry: ## test creating a release
 	$(NODE_BIN)/standard-version --sign --dry-run
 
+run-config: ## run the bot to test the config
+	node $(TARGET_PATH)/main-bundle.js --test
+
 run-terminal: ## run the bot in a terminal
 	node $(TARGET_PATH)/main-bundle.js
 

@@ -6,28 +6,22 @@ import { Bot, BotOptions } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
+import { EntityModule } from 'src/module/EntityModule';
 import { FilterModule } from 'src/module/FilterModule';
 import { ListenerModule } from 'src/module/ListenerModule';
 import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { TransformModule } from 'src/module/TransformModule';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
 
-import { EntityModule } from './module/EntityModule';
-import { ServiceModule } from './module/ServiceModule';
-import { TransformModule } from './module/TransformModule';
-
-interface AjvSchema {
-  (data: any): boolean;
-  errors: Array<any>;
-}
-
-/* tslint:disable-next-line:no-var-requires */
-const SCHEMA: AjvSchema = require('./schema.yml');
+import { Schema } from './utils/Schema';
 
 // main arguments
-const MAIN_ARGS = {
+const MAIN_ARGS: yargs.Options = {
   array: ['config'],
+  boolean: ['test'],
   count: ['v'],
   envPrefix: 'isolex',
 };
@@ -80,12 +74,16 @@ async function main(argv: Array<string>): Promise<number> {
   logger.info(VERSION_INFO, 'version info');
   logger.info({ args }, 'main arguments');
 
-  const valid = SCHEMA(config);
-  if (!valid) {
-    logger.error({ errors: SCHEMA.errors }, 'config failed to validate');
+  const schema = new Schema();
+  const result = schema.match(config);
+  if (!result.valid) {
+    logger.error({ errors: result.errors }, 'config failed to validate');
     return STATUS_ERROR;
-  } else {
+  }
+
+  if (args.test) {
     logger.info('config is valid');
+    return STATUS_SUCCESS;
   }
 
   const botModule = new BotModule({ logger });

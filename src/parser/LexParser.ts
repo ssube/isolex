@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import { BaseError } from 'noicejs';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
@@ -11,6 +12,7 @@ import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { leftPad } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { Schema } from 'src/utils/Schema';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -33,6 +35,15 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
   constructor(options: LexParserOptions) {
     super(options);
+
+    const schema = new Schema();
+    const result = schema.match(options.data, 'isolex#/definitions/service-parser-lex');
+    if (!result.valid) {
+      this.logger.error({ errors: result.errors }, 'failed to validate config');
+      throw new BaseError('failed to validate config');
+    } else {
+      this.logger.debug('validated config data');
+    }
 
     this.alias = options.data.bot.alias;
 

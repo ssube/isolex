@@ -3,6 +3,7 @@ $id: "https://github.com/ssube/isolex/schema.yml"
 definitions:
   entity-command:
     type: object
+    additionalProperties: true
     properties:
       noun:
         type: string
@@ -11,6 +12,7 @@ definitions:
 
   entity-context:
     type: object
+    additionalProperties: true
     properties:
       channel:
         $ref: "#/definitions/entity-context-channel"
@@ -21,6 +23,7 @@ definitions:
 
   match-rule:
     type: object
+    additionalProperties: false
     properties:
       key:
         type: string
@@ -41,6 +44,7 @@ definitions:
                   type: string
   match-data:
     type: object
+    additionalProperties: false
     properties:
       rules:
         type: array
@@ -49,6 +53,7 @@ definitions:
 
   match-results:
     type: object
+    additionalProperties: false
     properties:
       matched:
         type: boolean
@@ -57,74 +62,42 @@ definitions:
       items:
         type: string
 
-  service-bot:
+  service-controller:
     type: object
     properties:
-      controllers:
-        type: array
-        items:
-          anyOf:
-            - $ref: "#/definitions/service-controller-count"
-            - $ref: "#/definitions/service-controller-kubernetes"
-            - $ref: "#/definitions/service-controller-math"
-            - type: object
-              properties:
-                metadata:
-                  $ref: "#/definitions/service-metadata"
       filters:
         type: array
         items:
-          $ref: "#/definitions/service-metadata"
-      listeners:
+          $ref: "#/definitions/service-definition"
+      transforms:
         type: array
         items:
-          $ref: "#/definitions/service-metadata"
-      logger:
-        type: object
-        properties:
-          level:
-            enum: [debug, info, warn, error]
-          name:
-            type: string
-      migrate:
-        type: boolean
-      parser:
-        type: array
-        items:
-          anyOf:
-            - type: object
-              properties:
-                metadata:
-                  $ref: "#/definitions/service-metadata"
-      storage:
-        type: object
-        properties:
-          database:
-            type: string
-          type:
-            type: string
+          $ref: "#/definitions/service-definition"
 
   service-controller-count:
-    type: object
-    properties:
-      metadata:
-        $ref: "#/definitions/service-metadata"
-      data:
-        type: object
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
         properties:
           default:
+            type: object
+            additionalProperties: false
             properties:
               count:
                 type: string
               name:
                 type: string
           field:
+            type: object
+            additionalProperties: false
             properties:
               count:
                 type: string
               name:
                 type: string
           range:
+            type: object
+            additionalProperties: false
             properties:
               min:
                 type: number
@@ -132,14 +105,13 @@ definitions:
                 type: number
 
   service-controller-kubernetes:
-    type: object
-    properties:
-      metadata:
-        $ref: "#/definitions/service-metadata"
-      data:
-        type: object
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
         properties:
           context:
+            type: object
+            additionalProperties: false
             properties:
               cluster:
                 type: string
@@ -148,25 +120,30 @@ definitions:
               path:
                 type: string
           default:
+            type: object
+            additionalProperties: false
             properties:
               namespace:
                 type: string
 
   service-controller-math:
-    type: object
-    properties:
-      metadata:
-        $ref: "#/definitions/service-metadata"
-      data:
-        type: object
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
         properties:
           format:
+            type: object
+            additionalProperties: false
             properties:
               list:
+                type: object
+                additionalProperties: false
                 properties:
                   join:
                     type: string
               number:
+                type: object
+                additionalProperties: false
                 properties:
                   notation:
                     enum: [fixed, exponential, engineering, auto]
@@ -179,20 +156,70 @@ definitions:
                   fraction:
                     type: string
               node:
+                type: object
+                additionalProperties: false
                 properties:
                   implicit:
                     type: string
                   parenthesis:
                     type: string
           math:
+            type: object
+            additionalProperties: false
             properties:
               matrix:
                 type: string
               number:
                 type: string
 
+  service-parser:
+    type: object
+    properties:
+      defaultCommand:
+        $ref: "#/definition/entity-command"
+      preferData:
+        type: boolean
+      match:
+        $ref: "#/definitions/match-data"
+ 
+  service-parser-lex:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          account:
+            type: object
+            additionalProperties: false
+            properties:
+              accessKey:
+                type: string
+              secretKey:
+                type: string
+          bot:
+            type: object
+            additionalProperties: false
+            properties:
+              alias:
+                type: string
+              name:
+                type: string
+              region:
+                type: string
+ 
+  service-definition:
+    type: object
+    additionalProperties: false
+    required: [data, metadata]
+    properties:
+      data:
+        type: object
+      metadata:
+        $ref: "#/definitions/service-metadata"
+ 
   service-metadata:
     type: object
+    additionalProperties: false
+    required: [kind, name]
     properties:
       kind:
         type: string
@@ -201,8 +228,61 @@ definitions:
 
 # root
 type: object
+additionalProperties: false
 properties:
-  data:
-    $ref: "#/definitions/service-bot"
   metadata:
     $ref: "#/definitions/service-metadata"
+  data:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          controllers:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/service-definition"
+                - type: object
+                  properties:
+                    data:
+                      oneOf:
+                        - $ref: "#/definitions/service-controller-count"
+                        - $ref: "#/definitions/service-controller-kubernetes"
+                        - $ref: "#/definitions/service-controller-math"
+          filters:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/service-definition"
+          listeners:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/service-definition"
+          logger:
+            type: object
+            properties:
+              level:
+                enum: [debug, info, warn, error]
+              name:
+                type: string
+          migrate:
+            type: boolean
+          parsers:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/service-definition"
+                - type: object
+                  properties:
+                    data:
+                      oneOf:
+                        - $ref: "#/definitions/service-parser-lex"
+          storage:
+            type: object
+            properties:
+              database:
+                type: string
+              type:
+                type: string

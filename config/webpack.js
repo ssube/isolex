@@ -43,9 +43,9 @@ module.exports = {
       /dtrace-provider/
     ],
     rules: [{
-      test: /schema.yml$/,
+      test: /\.yml$/,
       rules: [{
-        use: ['ajv-pack-loader', 'yaml-loader']
+        use: ['json-loader', 'yaml-loader']
       }]
     }, {
       test: /\.tsx?$/,
