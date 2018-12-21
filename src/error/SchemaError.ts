@@ -5,4 +5,3 @@ export class SchemaError extends BaseError {
     super(msg, ...nested);
   }
 }
-

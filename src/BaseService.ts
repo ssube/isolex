@@ -57,8 +57,6 @@ export abstract class BaseService<TData> implements Service {
     } else {
       this.logger.debug('validated config data');
     }
-
-
   }
 
   public abstract start(): Promise<void>;

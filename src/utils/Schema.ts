@@ -37,7 +37,6 @@ export class Schema {
   }
 
   public formatError(err: Ajv.ErrorObject): string {
-    console.warn(err);
     switch (err.keyword) {
       case 'additionalProperties':
         const params = err.params as Ajv.AdditionalPropertiesParams;
