@@ -33,7 +33,7 @@ export class MathController extends BaseController<MathControllerData> implement
 
     const args = cmd.get('args');
     if (!args || !args.length) {
-      throw new Error('invalid arguments to math controller');
+      return this.reply(cmd.context, 'invalid arguments to math controller');
     }
 
     const expr = args.join(';\n');

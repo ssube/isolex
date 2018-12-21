@@ -1,5 +1,6 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
+import { MissingKeyError } from 'src/error/MissingKeyError';
 import { dictToMap, getOrDefault, MapLike } from 'src/utils/Map';
 
 import { LabelEntity, LabelEntityOptions } from './LabelEntity';
@@ -49,7 +50,7 @@ export abstract class DataEntity<TVal> extends LabelEntity {
   public get(key: string): TVal {
     const value = this.data.get(key);
     if (value === undefined) {
-      throw new Error(`missing key: ${key}`);
+      throw new MissingKeyError(`missing key: ${key}`);
     }
     return value;
   }

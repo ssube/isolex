@@ -1,3 +1,5 @@
+import { BaseError } from 'noicejs';
+
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
@@ -47,7 +49,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
 
     this.logger.debug({ parts }, 'splitting on regexp');
     if (!parts) {
-      throw new Error('unable to split message on regexp');
+      throw new BaseError('unable to split message on regexp');
     }
 
     return Array.from(parts);

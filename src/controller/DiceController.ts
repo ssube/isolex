@@ -22,7 +22,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
   public async handle(cmd: Command): Promise<void> {
     const args = cmd.data.get('args');
     if (!args || !args.length) {
-      throw new Error('no arguments were provided!');
+      return this.reply(cmd.context, 'no arguments were provided!');
     }
 
     const results: Array<number> = [];

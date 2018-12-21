@@ -1,5 +1,6 @@
 import { Type as YamlType } from 'js-yaml';
-import { BaseError } from 'noicejs';
+
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 
 export const REGEXP_REGEXP = /\/(.*)\/([gimuy]*)/;
 
@@ -11,7 +12,7 @@ export const regexpType = new YamlType('!regexp', {
   construct(value: string): RegExp {
     const match = REGEXP_REGEXP.exec(value);
     if (!match) {
-      throw new BaseError('invalid regexp');
+      throw new InvalidArgumentError('invalid regexp');
     }
     const [_, expr, flags] = Array.from(match);
     return new RegExp(expr, flags);

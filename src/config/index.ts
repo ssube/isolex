@@ -6,6 +6,8 @@ import { promisify } from 'util';
 import { BotDefinition } from 'src/Bot';
 import { envType } from 'src/config/type/Env';
 import { includeType } from 'src/config/type/Include';
+import { NotFoundError } from 'src/error/NotFoundError';
+
 import { regexpType } from './type/Regexp';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
@@ -60,7 +62,7 @@ export async function loadConfig(...extras: Array<string>): Promise<BotDefinitio
     }
   }
 
-  throw new Error('unable to load config');
+  throw new NotFoundError('unable to load config');
 }
 
 export async function readConfig(path: string): Promise<string | undefined> {

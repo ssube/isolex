@@ -19,7 +19,7 @@ export class SedController extends BaseController<SedControllerData> implements 
   public async handle(cmd: Command): Promise<void> {
     const args = cmd.data.get('args');
     if (!args) {
-      throw new Error('no arguments were provided!');
+      return this.reply(cmd.context, 'no arguments were provided!');
     }
 
     // split into regex, replace and flags

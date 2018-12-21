@@ -1,4 +1,4 @@
-import { isNil } from 'lodash';
+import { isNil, isNumber } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
 
 import { BaseController } from 'src/controller/BaseController';
@@ -21,7 +21,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
   public async handle(cmd: Command): Promise<void> {
     const args = cmd.data.get('args');
     if (!Array.isArray(args)) {
-      throw new Error('no arguments were provided!');
+      return this.reply(cmd.context, 'no arguments were provided!');
     }
 
     const [minVal, maxVal] = args.map(Number);
@@ -55,11 +55,12 @@ export class RandomController extends BaseController<RandomControllerData> imple
   }
 
   private getRandomValue(precision: number, minVal: number, maxVal?: number): number | string {
-    if (isNaN(minVal)) {
-      throw new Error(`Provided value: ${minVal} is not a number!`);
+    if (isNumber(minVal)) {
+      return `Provided value: ${minVal} is not a number!`;
     }
-    if (!isNil(maxVal) && isNaN(maxVal)) {
-      throw new Error(`Provided value: ${maxVal} is not a number!`);
+
+    if (isNumber(maxVal)) {
+      return `Provided value: ${maxVal} is not a number!`;
     }
 
     const minimum = isNil(maxVal) ? min(minVal, 0) : min(minVal, maxVal);

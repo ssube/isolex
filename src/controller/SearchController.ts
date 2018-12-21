@@ -36,7 +36,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
   public async handle(cmd: Command): Promise<void> {
     const args = cmd.data.get(this.data.field);
     if (!args || !args.length) {
-      throw new Error('no arguments were provided!');
+      return this.reply(cmd.context, 'no arguments were provided!');
     }
 
     const requestUrl = this.url.render({ data: args });

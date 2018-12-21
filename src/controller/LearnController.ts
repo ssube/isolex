@@ -5,9 +5,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
 import { Keyword } from 'src/entity/misc/Keyword';
-import { TYPE_TEXT } from 'src/utils/Mime';
 
 export const NOUN_KEYWORD = 'keyword';
 
@@ -37,7 +35,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   public async handle(cmd: Command): Promise<void> {
     const args: Array<string> = cmd.get('args');
     if (!args) {
-      throw new Error('missing args to learn controller');
+      return this.reply(cmd.context, 'missing args to learn controller');
     }
 
     const [keyword, ...body] = args;
@@ -96,7 +94,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     });
 
     if (!keyword || !keyword.command) {
-      throw new Error('missing keyword or command');
+      return this.reply(context, 'missing keyword or command');
     }
 
     const [noun, ...args] = body;

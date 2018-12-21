@@ -1,4 +1,5 @@
 import { kebabCase } from 'lodash';
+import { MissingValueError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Registry } from 'prom-client';
@@ -39,7 +40,7 @@ export abstract class BaseService<TData> implements Service {
 
     // check this, because bunyan will throw if it is missing
     if (!this.name) {
-      throw new Error('missing service name');
+      throw new MissingValueError('missing service name');
     }
 
     this.logger = options.logger.child({

@@ -4,6 +4,7 @@ import { BaseError } from 'noicejs';
 import { join } from 'path';
 
 import { CONFIG_SCHEMA } from 'src/config';
+import { NotFoundError } from 'src/error/NotFoundError';
 
 export const includeType = new YamlType('!include', {
   kind: 'scalar',
@@ -12,7 +13,7 @@ export const includeType = new YamlType('!include', {
     if (existsSync(canonical)) {
       return true;
     } else {
-      throw new BaseError('included file does not exist');
+      throw new NotFoundError('included file does not exist');
     }
   },
   construct(path: string): any {

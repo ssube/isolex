@@ -1,5 +1,6 @@
 import { Type as YamlType } from 'js-yaml';
-import { BaseError } from 'noicejs';
+
+import { NotFoundError } from 'src/error/NotFoundError';
 
 export const envType = new YamlType('!env', {
   kind: 'scalar',
@@ -7,7 +8,7 @@ export const envType = new YamlType('!env', {
     if (Reflect.has(process.env, name)) {
       return true;
     } else {
-      throw new BaseError(`environment variable not found: ${name}`);
+      throw new NotFoundError(`environment variable not found: ${name}`);
     }
   },
   construct(name: string) {

@@ -17,6 +17,8 @@ import { Counter } from 'prom-client';
 import { ChildServiceOptions } from 'src/ChildService';
 import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -160,13 +162,13 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       return custom.id;
     }
 
-    throw new Error(`could not find emoji: ${name}`);
+    throw new NotFoundError(`could not find emoji: ${name}`);
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
     const channel = this.client.channels.get(options.channel);
     if (!DiscordListener.isTextChannel(channel)) {
-      throw new Error('channel is not a text channel');
+      throw new InvalidArgumentError('channel is not a text channel');
     }
 
     // transform the options into https://discord.js.org/#/docs/main/stable/typedef/ChannelLogsQueryOptions
