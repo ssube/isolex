@@ -66,6 +66,22 @@ sourceMapSupport.install({
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
+function createModules(botModule: BotModule, migrate: boolean) {
+  const modules: Array<Module> = [
+    botModule,
+  ];
+
+  for (const m of MAIN_MODULES) {
+    modules.push(new m());
+  }
+
+  if (migrate) {
+    modules.push(new MigrationModule());
+  }
+
+  return modules;
+}
+
 async function main(argv: Array<string>): Promise<number> {
   const args = yargs(argv, MAIN_ARGS);
   const config = await loadConfig();
@@ -87,19 +103,7 @@ async function main(argv: Array<string>): Promise<number> {
   }
 
   const botModule = new BotModule({ logger });
-  const modules: Array<Module> = [
-    botModule,
-  ];
-
-  for (const m of MAIN_MODULES) {
-    modules.push(new m());
-  }
-
-  if (config.data.migrate) {
-    modules.push(new MigrationModule());
-  }
-
-  const ctr = Container.from(...modules);
+  const ctr = Container.from(...createModules(botModule, config.data.migrate));
   logger.info('configuring container');
   await ctr.configure({ logger });
 

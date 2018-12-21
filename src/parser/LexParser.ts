@@ -56,8 +56,6 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   }
 
   /**
-   * @TODO: decode values with Lex
-   *
    * Lex uses stateful (session-based) completion and keeps track of the next slot to be filled. Values must be sent
    * to Lex to be decoded, in order to update state and otherwise behave correctly. This should probably synthesize a
    * message that will use the same Lex session-state and re-parse that.
@@ -66,9 +64,6 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     return this.decodeBody(context, value.join(' '));
   }
 
-  /**
-   * @TODO: split the Lex intent into noun and verb
-   */
   public async parse(msg: Message): Promise<Array<Command>> {
     return this.decodeBody(msg.context, msg.body);
  }

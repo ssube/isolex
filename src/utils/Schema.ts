@@ -37,11 +37,10 @@ export class Schema {
   }
 
   public formatError(err: Ajv.ErrorObject): string {
-    console.warn('===marker', 'schema format error', err);
     switch (err.keyword) {
       case 'additionalProperties':
         const params = err.params as Ajv.AdditionalPropertiesParams;
-        return `${err.message}: ${params.additionalProperty} at ${err.schemaPath}`
+        return `${err.message}: ${params.additionalProperty} at ${err.schemaPath}`;
       default:
         return `${err.message} at ${err.schemaPath}`;
     }
