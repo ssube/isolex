@@ -41,4 +41,4 @@ data:
     - !include ../docs/parser/yaml-parser.yml
   storage:
     type: sqlite
-    database: "./isolex.db"
+    database: "./out/isolex.db"
