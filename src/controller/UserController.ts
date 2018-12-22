@@ -25,6 +25,7 @@ export class UserController extends BaseController<UserControllerData> implement
     super(options, 'isolex#/definitions/service-controller-user', [NOUN_ROLE, NOUN_USER]);
 
     this.storage = options.storage;
+    this.roleRepository = this.storage.getRepository(Role);
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 

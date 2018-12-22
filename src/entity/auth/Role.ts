@@ -1,5 +1,6 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from '../base/BaseEntity';
 
 export interface RoleOptions {
   name: string;
@@ -7,7 +8,7 @@ export interface RoleOptions {
 }
 
 @Entity()
-export class Role implements RoleOptions {
+export class Role extends BaseEntity implements RoleOptions {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -20,10 +21,20 @@ export class Role implements RoleOptions {
   public grants: Array<string>;
 
   constructor(options?: RoleOptions) {
+    super();
+
     if (options) {
       this.grants = Array.from(options.grants);
       this.name = options.name;
     }
+  }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      grants: this.grants,
+      name: this.name,
+    };
   }
 }
 
