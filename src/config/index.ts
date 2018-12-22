@@ -11,7 +11,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { regexpType } from './type/Regexp';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
-export const CONFIG_NAME = '.isolex.yml';
+export const CONFIG_NAME = 'isolex.yml';
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
   envType,
   includeType,
@@ -50,11 +50,13 @@ export function completePaths(name: string, ...extras: Array<string>): Array<str
 }
 
 export async function loadConfig(...extras: Array<string>): Promise<BotDefinition> {
-  const paths = completePaths(CONFIG_NAME, ...extras);
+  const paths = [
+    ...completePaths(CONFIG_NAME, ...extras),
+    ...completePaths('.' + CONFIG_NAME, ...extras),
+  ];
 
   for (const p of paths) {
     const data = await readConfig(p);
-
     if (data) {
       return safeLoad(data, {
         schema: CONFIG_SCHEMA,
@@ -67,14 +69,15 @@ export async function loadConfig(...extras: Array<string>): Promise<BotDefinitio
 
 export async function readConfig(path: string): Promise<string | undefined> {
   try {
-    return readFileSync(path, {
+    const data = await readFileSync(path, {
       encoding: 'utf-8',
     });
+    return data;
   } catch (err) {
-    if (err.code !== 'ENOENT') {
-      throw err;
+    if (err.code === 'ENOENT') {
+      return;
     }
+    throw err;
 
-    return;
   }
 }
