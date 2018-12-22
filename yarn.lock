@@ -4905,8 +4905,8 @@ run-queue@^1.0.0, run-queue@^1.0.3:
     aproba "^1.1.1"
 
 rxjs-tslint-rules@~4.14.0:
-  version "4.14.1"
-  resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.14.1.tgz#c8520c192e59c4ac691ed6dfa4a91fdc2b1ab743"
+  version "4.14.2"
+  resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.14.2.tgz#e1e592c71a62ae87fe0378f84501be88c54aa330"
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     decamelize "^2.0.0"
@@ -5574,8 +5574,8 @@ tslint-consistent-codestyle@~1.14:
     tsutils "^2.29.0"
 
 tslint-etc@~1.2.9:
-  version "1.2.10"
-  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.2.10.tgz#732c9a1e1ad5f31ba60b4eaed8b228403c8f7805"
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.2.11.tgz#ba1596f9021e263e4f84a9121b90a3d2f6222959"
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     tslib "^1.8.0"
