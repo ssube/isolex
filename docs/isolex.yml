@@ -9,10 +9,11 @@ data:
         kind: user-filter
         name: ignore-bots
       data:
-        mode: exclude
-        data:
-          - isolex
-          - isolex-test
+        users:
+          mode: exclude
+          data:
+            - isolex
+            - isolex-test
   controllers:
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/kubernetes-controller.yml

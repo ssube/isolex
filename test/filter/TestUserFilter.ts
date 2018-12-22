@@ -40,16 +40,20 @@ async function createUserFilter(data: UserFilterData) {
 describeAsync('user filter', async () => {
   itAsync('should have a working helper', async () => {
     const { filter } = await createUserFilter({
-      data: ['test'],
-      mode: ChecklistMode.EXCLUDE,
+      users: {
+        data: ['test'],
+        mode: ChecklistMode.EXCLUDE,
+      },
     });
     expect(filter).to.be.an.instanceof(UserFilter);
   });
 
   itAsync('should allow commands from allowed users', async () => {
     const { filter } = await createUserFilter({
-      data: ['test'],
-      mode: ChecklistMode.EXCLUDE,
+      users: {
+        data: ['test'],
+        mode: ChecklistMode.EXCLUDE,
+      },
     });
 
     const cmd = new Command({
@@ -65,8 +69,10 @@ describeAsync('user filter', async () => {
 
   itAsync('should filter out commands from banned users', async () => {
     const { filter } = await createUserFilter({
-      data: ['test'],
-      mode: ChecklistMode.EXCLUDE,
+      users: {
+        data: ['test'],
+        mode: ChecklistMode.EXCLUDE,
+      }
     });
 
     const cmd = new Command({

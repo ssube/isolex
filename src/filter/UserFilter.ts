@@ -3,7 +3,9 @@ import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
-export type UserFilterData = ChecklistOptions<string>;
+export interface UserFilterData {
+  users: ChecklistOptions<string>;
+}
 
 export type UserFilterOptions = ChildServiceOptions<UserFilterData>;
 
@@ -13,7 +15,7 @@ export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
   constructor(options: UserFilterOptions) {
     super(options, 'isolex#/definitions/service-filter-user');
 
-    this.list = new Checklist(options.data);
+    this.list = new Checklist(options.data.users);
   }
 
   public async check(value: FilterValue): Promise<FilterBehavior> {

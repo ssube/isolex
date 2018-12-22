@@ -201,7 +201,7 @@ definitions:
                 type: boolean
               path:
                 type: string
-          defunkt:
+          default:
             type: object
             additionalProperties: false
             properties:
@@ -303,9 +303,12 @@ definitions:
     type: object
     properties:
       data:
-        type: array
-        items:
-          type: string
+        type: object
+        properties:
+          users:
+            type: array
+            items:
+              type: string
       mode:
         enum: [exclude, include]
 
@@ -524,6 +527,7 @@ definitions:
 # root
 type: object
 additionalProperties: false
+required: [data, metadata]
 properties:
   metadata:
     $ref: "#/definitions/service-metadata"
