@@ -7,6 +7,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
+import { Fragment } from 'src/entity/Fragment';
 
 export const NOUN_KEYWORD = 'keyword';
 
@@ -52,7 +53,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     }
   }
 
-  protected async createKeyword(keyName: string, cmd: Command, args: Array<string>): Promise<void> {
+  protected async createKeyword(key: string, cmd: Command, args: Array<string>): Promise<void> {
     const noun = cmd.getHead('noun');
     const verb = cmd.getHead('verb') as CommandVerb;
 
@@ -61,47 +62,50 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     }
 
     const keyword = new Keyword({
-      command: new Command({
-        context: cmd.context,
-        data: { args },
-        labels: {},
-        noun,
-        verb,
-      }),
-      controller: this.name,
-      name: keyName,
+      controllerId: this.name,
+      data: { args },
+      key,
+      labels: {},
+      noun,
+      verb,
     });
 
-    this.logger.debug({ args, cmd, keyName, keyword }, 'learning command');
+    this.logger.debug({ args, cmd, key, keyword }, 'learning command');
 
-    if (await this.keywordRepository.findOne(keyName)) {
-      return this.reply(cmd.context, `command already exists: ${keyName}`);
+    const existing = await this.keywordRepository.findOne({
+      key,
+    });
+    if (existing) {
+      return this.reply(cmd.context, `command already exists: ${key}`);
     }
 
     await this.keywordRepository.save(keyword);
-    return this.reply(cmd.context, `Learned command ${keyName}.`);
+    return this.reply(cmd.context, `Learned command ${key}.`);
   }
 
-  protected async deleteKeyword(keyName: string, context: Context): Promise<void> {
-    const keyword = await this.keywordRepository.findOne(keyName);
+  protected async deleteKeyword(key: string, context: Context): Promise<void> {
+    const keyword = await this.keywordRepository.findOne({
+      key,
+    });
     if (!keyword) {
-      return this.reply(context, `command ${keyName} does not exist.`);
+      return this.reply(context, `command ${key} does not exist.`);
     }
 
-    await this.keywordRepository.delete(keyName);
-    return this.reply(context, `deleted command ${keyName}.`);
+    await this.keywordRepository.delete(key);
+    return this.reply(context, `deleted command ${key}.`);
   }
 
-  protected async executeKeyword(keyName: string, context: Context, body: Array<string>) {
-    const keyword = await this.keywordRepository.findOne(keyName, {
-      relations: ['command', 'command.context'],
+  protected async executeKeyword(key: string, context: Context, body: Array<string>) {
+    const keyword = await this.keywordRepository.findOne({
+      key,
     });
 
-    if (!keyword || !keyword.command) {
+    if (!keyword) {
       return this.reply(context, 'missing keyword or command');
     }
 
-    const cmd = keyword.command.extend({
+    const cmd = new Command({
+      ...keyword,
       context,
       data: {
         [this.data.field]: body,

@@ -10,6 +10,7 @@ import { CreateFragment0001544311954 } from 'src/migration/0001544311954-CreateF
 import { CreateRole0001544312069 } from 'src/migration/0001544312069-CreateRole';
 import { CreateUser0001544312112 } from 'src/migration/0001544312112-CreateUser';
 import { CreateToken0001544317462 } from 'src/migration/0001544317462-CreateToken';
+import { KeywordCommand0001545509108 } from 'src/migration/0001545509108-KeywordCommand';
 
 export class MigrationModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
@@ -25,6 +26,7 @@ export class MigrationModule extends Module {
       CreateRole0001544312069,
       CreateUser0001544312112,
       CreateToken0001544317462,
+      KeywordCommand0001545509108,
     ]);
   }
 }
