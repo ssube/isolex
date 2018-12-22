@@ -276,6 +276,15 @@ definitions:
     $ref: "#/definitions/service-controller"
   service-controller-session:
     $ref: "#/definitions/service-controller"
+  service-controller-time:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          locale:
+            type: string
+          zone:
+            type: string
   service-controller-token:
     $ref: "#/definitions/service-controller"
   service-controller-user:

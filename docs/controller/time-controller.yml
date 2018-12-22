@@ -1,0 +1,6 @@
+metadata:
+  kind: time-controller
+  name: test-time
+data:
+  locale: en-US
+  zone: US/Central
