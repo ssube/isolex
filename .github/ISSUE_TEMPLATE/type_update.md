@@ -1,3 +1,12 @@
+---
+name: Dependency Update
+about: update a dependency
+title: ''
+labels: status/new, type/update
+assignees: ''
+
+---
+
 ### Summary
 
 (what needs to be updated)

@@ -1,3 +1,12 @@
+---
+name: Feature Suggestion
+about: Suggest an idea for this project
+title: ''
+labels: status/new, type/feature
+assignees: ''
+
+---
+
 ### Summary
 
 (elevator pitch of the feature)
@@ -8,7 +17,7 @@
 
 ### Use Case
 
-(at least one solid use case for the feature)
+(at least one concrete use case for the feature)
 
 ### Issues
 

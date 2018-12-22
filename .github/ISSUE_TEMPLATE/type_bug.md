@@ -1,3 +1,12 @@
+---
+name: Bug Report
+about: report a problem
+title: ''
+labels: status/new, type/bug
+assignees: ''
+
+---
+
 ### Summary
 
 (quick summary of the issue)
