@@ -64,19 +64,27 @@ export class Match {
   public matchRule(rule: MatchRule, value: string): boolean {
     switch (rule.operator) {
       case RuleOperator.Any:
-        if (rule.negate) {
-          return rule.values.some((it) => !this.matchValue(it, value));
-        } else {
-          return rule.values.some((it) => this.matchValue(it, value));
-        }
+        return this.matchRuleAny(rule, value);
       case RuleOperator.Every:
-        if (rule.negate) {
-          return rule.values.every((it) => !this.matchValue(it, value));
-        } else {
-          return rule.values.every((it) => this.matchValue(it, value));
-        }
+        return this.matchRuleEvery(rule, value);
       default:
         return false;
+    }
+  }
+
+  public matchRuleAny(rule: MatchRule, value: string): boolean {
+    if (rule.negate) {
+      return rule.values.some((it) => !this.matchValue(it, value));
+    } else {
+      return rule.values.some((it) => this.matchValue(it, value));
+    }
+  }
+
+  public matchRuleEvery(rule: MatchRule, value: string): boolean {
+    if (rule.negate) {
+      return rule.values.every((it) => !this.matchValue(it, value));
+    } else {
+      return rule.values.every((it) => this.matchValue(it, value));
     }
   }
 

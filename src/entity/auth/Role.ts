@@ -3,8 +3,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../base/BaseEntity';
 
 export interface RoleOptions {
-  name: string;
   grants: Array<string>;
+  name: string;
 }
 
 @Entity()
@@ -31,8 +31,8 @@ export class Role extends BaseEntity implements RoleOptions {
 
   public toJSON() {
     return {
-      id: this.id,
       grants: this.grants,
+      id: this.id,
       name: this.name,
     };
   }

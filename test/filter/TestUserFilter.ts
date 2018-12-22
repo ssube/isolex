@@ -72,7 +72,7 @@ describeAsync('user filter', async () => {
       users: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,
-      }
+      },
     });
 
     const cmd = new Command({
