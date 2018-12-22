@@ -17,6 +17,7 @@ data:
   controllers:
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/kubernetes-controller.yml
+    - !include ../docs/controller/learn-controller.yml
     - !include ../docs/controller/math-controller.yml
     - !include ../docs/controller/search-controller-mdn.yml
     - !include ../docs/controller/sed-controller.yml
@@ -40,6 +41,7 @@ data:
     - !include ../docs/parser/args-parser-login.yml
     - !include ../docs/parser/args-parser-k8s.yml
     - !include ../docs/parser/lex-parser.yml
+    - !include ../docs/parser/split-parser-learn.yml
     - !include ../docs/parser/yaml-parser.yml
   storage:
     type: sqlite

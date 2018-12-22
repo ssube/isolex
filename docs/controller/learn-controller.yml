@@ -1,0 +1,10 @@
+metadata:
+  kind: learn-controller
+  name: test-learn
+data:
+  field: args
+  nouns:
+    data:
+      - time
+      - weather
+    mode: include

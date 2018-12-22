@@ -14,6 +14,17 @@ definitions:
         items:
           type: string
  
+  checklist:
+    type: object
+    additionalProperties: true
+    properties:
+      data:
+        type: array
+        items:
+          type: string
+      mode:
+        enum: [exclude, include]
+
   entity-command:
     type: object
     additionalProperties: true
@@ -92,6 +103,7 @@ definitions:
                     - $ref: "#/definitions/service-controller-dice"
                     - $ref: "#/definitions/service-controller-echo"
                     - $ref: "#/definitions/service-controller-kubernetes"
+                    - $ref: "#/definitions/service-controller-learn"
                     - $ref: "#/definitions/service-controller-math"
                     - $ref: "#/definitions/service-controller-random"
                     - $ref: "#/definitions/service-controller-search"
@@ -132,6 +144,8 @@ definitions:
                     - $ref: "#/definitions/service-parser-echo"
                     - $ref: "#/definitions/service-parser-lex"
                     - $ref: "#/definitions/service-parser-regex"
+                    - $ref: "#/definitions/service-parser-split"
+                    - $ref: "#/definitions/service-parser-yaml"
       storage:
         type: object
         properties:
@@ -207,6 +221,15 @@ definitions:
             properties:
               namespace:
                 type: string
+  service-controller-learn:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          field:
+            type: string
+          nouns:
+            $ref: "#/definitions/checklist"
   service-controller-math:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -311,15 +334,8 @@ definitions:
   service-filter-user:
     type: object
     properties:
-      data:
-        type: object
-        properties:
-          users:
-            type: array
-            items:
-              type: string
-      mode:
-        enum: [exclude, include]
+      users:
+        $ref: "#/definitions/checklist"
 
   service-listener-discord:
     type: object
@@ -382,7 +398,7 @@ definitions:
         $ref: "#/definitions/match-data"
   service-parser-args:
     allOf:
-      - $ref: "#/definitions/service-controller"
+      - $ref: "#/definitions/service-parser"
       - type: object
         properties:
           args:
@@ -422,14 +438,14 @@ definitions:
                 type: boolean
   service-parser-echo:
     allOf:
-      - $ref: "#/definitions/service-controller"
+      - $ref: "#/definitions/service-parser"
       - type: object
         properties:
           dataMapper:
             $ref: "#/definitions/array-mapper"
   service-parser-lex:
     allOf:
-      - $ref: "#/definitions/service-controller"
+      - $ref: "#/definitions/service-parser"
       - type: object
         properties:
           account:
@@ -452,13 +468,25 @@ definitions:
                 type: string
   service-parser-regex:
     allOf:
-      - $ref: "#/definitions/service-controller"
+      - $ref: "#/definitions/service-parser"
       - type: object
         properties:
           dataMapper:
             $ref: "#/definitions/array-mapper"
           regexp:
             type: string
+  service-parser-split:
+    allOf:
+      - $ref: "#/definitions/service-parser"
+      - type: object
+        properties:
+          dataMapper:
+            $ref: "#/definitions/array-mapper"
+          every:
+            type: boolean
+          split:
+            type: object
+ 
   service-parser-yaml:
     $ref: "#/definitions/service-parser"
  

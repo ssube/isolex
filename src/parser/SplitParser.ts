@@ -27,6 +27,12 @@ export type SplitParserOptions = ParserOptions<SplitParserData>;
 export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   protected mapper: ArrayMapper;
 
+  constructor(options: SplitParserOptions) {
+    super(options, 'isolex#/definitions/service-parser-split');
+
+    this.mapper = new ArrayMapper(options.data.dataMapper);
+  }
+
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
     this.logger.debug({ data }, 'splitting string');
@@ -38,7 +44,8 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
       throw new MimeTypeError();
     }
 
-    return this.split(msg.body).map(trim).filter((it) => !isEmpty(it));
+    const body = this.matcher.removeMatches(msg.body);
+    return this.split(body).map(trim).filter((it) => !isEmpty(it));
   }
 
   public split(msg: string): Array<string> {

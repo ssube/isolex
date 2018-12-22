@@ -3,4 +3,4 @@ metadata:
   name: test-time
 data:
   locale: en-US
-  zone: US/Central
+  zone: America/Chicago
