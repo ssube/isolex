@@ -4,7 +4,7 @@ import { Container } from 'noicejs/Container';
 
 import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { Service, ServiceDefinition, ServiceMetadata } from 'src/Service';
+import { Service, ServiceDefinition, ServiceMetadata, ServiceLifecycle } from 'src/Service';
 import { mustGet } from 'src/utils/Map';
 
 /**
@@ -27,6 +27,12 @@ export class ServiceModule extends Module implements Service {
 
   public get size(): number {
     return this.services.size;
+  }
+
+  public async notify(event: ServiceLifecycle) {
+    for (const svc of this.services.values()) {
+      await svc.notify(event);
+    }
   }
 
   public async start() {

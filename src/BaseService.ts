@@ -7,7 +7,7 @@ import * as uuid from 'uuid/v4';
 
 import { SchemaError } from 'src/error/SchemaError';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { Service, ServiceDefinition } from 'src/Service';
+import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
@@ -62,6 +62,10 @@ export abstract class BaseService<TData> implements Service {
     } else {
       this.logger.debug('validated config data');
     }
+  }
+
+  public async notify(event: ServiceLifecycle): Promise<void> {
+    this.logger.debug({ event }, 'service notified of event');
   }
 
   public abstract start(): Promise<void>;

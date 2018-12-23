@@ -1,4 +1,4 @@
-import { Container, Module } from 'noicejs';
+import { Container, Logger, Module } from 'noicejs';
 import * as sourceMapSupport from 'source-map-support';
 import * as yargs from 'yargs-parser';
 
@@ -15,7 +15,8 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { Schema } from 'src/utils/Schema';
-import { signal, SIGNAL_STOP } from 'src/utils/Signal';
+import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
+import { ServiceLifecycle } from './Service';
 
 // main arguments
 const MAIN_ARGS: yargs.Options = {
@@ -81,9 +82,26 @@ function createModules(botModule: BotModule, migrate: boolean) {
   return modules;
 }
 
-async function handleSignals(bot: Bot) {
+async function handleSignals(bot: Bot, logger: Logger) {
   await bot.start();
-  await signal(SIGNAL_STOP);
+  await bot.notify(ServiceLifecycle.Start);
+
+  const signals = [SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP];
+  let s = await signal(...signals);
+  while (s !== SIGNAL_STOP) {
+    switch (s) {
+      case SIGNAL_RELOAD:
+        bot.notify(ServiceLifecycle.Reload);
+        break;
+      case SIGNAL_RESET:
+        bot.notify(ServiceLifecycle.Reset);
+        break;
+    }
+    s = await signal(...signals);
+  }
+
+  logger.info('stop signal');
+  await bot.notify(ServiceLifecycle.Stop);
   await bot.stop();
 }
 
@@ -116,7 +134,7 @@ async function main(argv: Array<string>): Promise<number> {
   botModule.setBot(bot);
 
   logger.info('starting bot');
-  await handleSignals(bot);
+  await handleSignals(bot, logger);
 
   return STATUS_SUCCESS;
 }

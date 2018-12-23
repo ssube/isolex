@@ -8,6 +8,13 @@ export interface ServiceDefinition<TData = any> {
   data: TData;
 }
 
+export enum ServiceLifecycle {
+  Reload = 'reload',
+  Reset = 'reset',
+  Start = 'start',
+  Stop = 'stop',
+}
+
 export interface ServiceMetadata {
   /**
    * The service's unique id.
@@ -33,6 +40,7 @@ export interface ServiceMetadata {
 export interface Service extends ServiceMetadata {
   readonly id: string;
 
+  notify(event: ServiceLifecycle): Promise<void>;
   start(): Promise<void>;
   stop(): Promise<void>;
 }

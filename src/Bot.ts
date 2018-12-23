@@ -13,7 +13,7 @@ import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter'
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { Service, ServiceDefinition } from 'src/Service';
+import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
@@ -86,6 +86,18 @@ export class Bot extends BaseService<BotData> implements Service {
 
   public getStorage(): Connection {
     return this.storage;
+  }
+
+  public async notify(event: ServiceLifecycle) {
+    await super.notify(event);
+    await this.services.notify(event);
+
+    switch (event) {
+      case ServiceLifecycle.Reset:
+        this.metrics.clear();
+        this.logger.info('metrics reset');
+        break;
+    }
   }
 
   /**
