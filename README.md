@@ -20,7 +20,7 @@ Inspired by the Kubernetes API.
 [![Github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
 [![Commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.5.0.svg)](https://github.com/ssube/isolex/compare/v0.5.0...master)
 
-[![NPM release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
+[![npm release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
 [![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master) 
 [![Typescript definitions](https://img.shields.io/npm/types/isolex.svg)](https://www.npmjs.com/package/isolex)
 

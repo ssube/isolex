@@ -117,10 +117,17 @@ The following abbreviations MUST be capitalized except when they appear as a var
 
 - API
 - DB
+- DI
 - DNS
+- HTTP
 - HTTPS
 - ID
 - JSON
+- JWT
+- MR
+- ORM
+- PR
+- RBAC
 - UID
 - UUID
 - YAML

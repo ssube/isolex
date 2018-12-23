@@ -102,7 +102,7 @@ The `type` field is *not* passed to the object being created. It already knows w
 
 #### Controllers
 
-A list of type-config objects for each [`Controller`](../src/controller/Handler.ts) created by the bot.
+A list of type-config objects for each [`Controller`](../src/controller/Controller.ts) created by the bot.
 
 #### Filters
 
