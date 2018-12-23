@@ -10,6 +10,10 @@ advanced deploy commands.
     - [Secrets](#secrets)
     - [Kubernetes](#kubernetes)
     - [Local](#local)
+    - [Signals](#signals)
+      - [Reload](#reload)
+      - [Reset](#reset)
+      - [Stopping](#stopping)
   - [Usage](#usage)
     - [Account](#account)
       - [Sign Up](#sign-up)
@@ -63,6 +67,41 @@ In the project directory, run:
 ```shell
 > yarn
 > make
+```
+
+### Signals
+
+The bot listens for [OS signals](https://linux.die.net/Bash-Beginners-Guide/sect_12_01.html) to reload or stop. Use
+`kill` to send signals to the bot process. Pressing `Ctrl+C` will reset counters within the bot but will not stop it.
+
+#### Reload
+
+> Signal: `SIGHUP`
+
+TODO: implement and describe reloading config
+
+#### Reset
+
+> Signal: `SIGINT`
+
+To reset the bot, setting counters and metrics back to their initial values:
+
+```shell
+{"name":"isolex","hostname":"ssube-cerberus","pid":12116,...}
+
+> kill -2 12116
+```
+
+#### Stopping
+
+> Signal: `SIGKILL`
+
+To stop the bot, `kill` the PID from the log messages:
+
+```shell
+{"name":"isolex","hostname":"ssube-cerberus","pid":12116,...}
+
+> kill 12116
 ```
 
 ## Usage

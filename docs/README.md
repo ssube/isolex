@@ -9,8 +9,12 @@ Hopefully this explains what the bot is and how it works.
       - [Completion](#completion)
     - [Executing Commands](#executing-commands)
     - [Outgoing Messages](#outgoing-messages)
+  - [Build](#build)
   - [Config](#config)
+  - [Concept](#concept)
+  - [Lex](#lex)
   - [Service Reference](#service-reference)
+  - [Workflow](#workflow)
 
 ## Getting Started
 
@@ -87,9 +91,27 @@ passed to the `controller` and consumed. Only a single controller will be run fo
 The bot handles an outgoing message queue, dispatched to `listener`s based on the message context. Listeners may
 implement their own rate limiting and add failed messages back to the queue after some delay.
 
+## Build
+
+Please see [the build docs](./build) for information on the development process and how to build the bot.
+
 ## Config
 
-Please see [the config docs](./config.md).
+Please see [the config docs](./config.md) for information on the config schema and search path.
+
+## Concept
+
+Documentation detailing the architectural concepts:
+
+- [Authentication & Authorization](./concept/auth.md)
+- [Completion](./concept/completion.md)
+- [Config](./concept/config.md)
+- [Logging](./concept/logging.md)
+- [Sessions](./concept/sessions.md)
+
+## Lex
+
+Please see [the Lex docs](./lex) for information on the Amazon Lex model and how intents map to commands.
 
 ## Service Reference
 
@@ -99,3 +121,7 @@ Documentation for individual services is organized by service type:
 - [Filter](./filter)
 - [Listener](./listener)
 - [Parser](./parser)
+
+## Workflow
+
+Please see [the workflow docs](./workflow.md) for issue types and the PR process.

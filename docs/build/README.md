@@ -1,10 +1,11 @@
-# Utils
+# Build
 
-For developers, this document explains what libraries and utilities are available in the code base.
+This section describes what build targets and tools are used, which libraries and utilities are available, and how to
+make it go.
 
-- [Utils](#utils)
+- [Build](#build)
   - [Libraries](#libraries)
-  - [Utilities](#utilities)
+  - [Style](#style)
 
 ## Libraries
 
@@ -30,9 +31,6 @@ library is still a `0.0` release, then specify the entire `^X.Y.Z` specifier.
 | test mocks   | ineeda       | test bundle |                                     |                  |
 | yaml         | js-yaml      | main bundle |                                     | custom schema    |
 
-## Utilities
+## Style
 
-| task      | class     |
-|-----------|-----------|
-| blacklist | Checklist |
-| whitelist | Checklist |
+[The style guide](./style.md) describes naming and code conventions.

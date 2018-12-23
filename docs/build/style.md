@@ -11,6 +11,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
   - [Documentation](#documentation)
     - [Headers](#headers)
     - [Table of Contents](#table-of-contents)
+    - [Types](#types)
   - [Naming](#naming)
     - [Abbreviations](#abbreviations)
     - [Capitalization](#capitalization)
@@ -91,6 +92,14 @@ the previous header:
 Create a table of contents for any document with more than three headers.
 
 Always keep the table of contents up to date. The VS Code markdown plugin can handle this.
+
+### Types
+
+Directory `README.md` files should begin with a "this category contains..." comment. Headers within a readme should
+roughly parallel and often link to the other files in the directory.
+
+Individual `.md` files should begin with a "this guide covers..." comment explaining, in a sentence, what the guide
+covers. This should be like a commit message, with a longer description following.
 
 ## Naming
 

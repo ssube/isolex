@@ -1,6 +1,6 @@
 # Workflow
 
-This document describes the issue and merge workflow for the isolex project.
+This guide describes the issue and merge workflow for the isolex project.
 
 - [Workflow](#workflow)
   - [Branches](#branches)
