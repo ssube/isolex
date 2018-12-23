@@ -1,3 +1,0 @@
-[submodule "vendor/so-client"]
-	path = vendor/so-client
-	url = https://github.com/ssube/so-client.git
