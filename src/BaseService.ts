@@ -9,15 +9,20 @@ import { SchemaError } from 'src/error/SchemaError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Service, ServiceDefinition } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
+import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
+import { MathFactory } from 'src/utils/Math';
 import { Schema } from 'src/utils/Schema';
 
 export interface InjectedServiceOptions {
   clock: Clock;
+  jsonpath: JsonPath;
   logger: Logger;
+  math: MathFactory;
   metrics: Registry;
   services: ServiceModule;
 }
+
 export type BaseServiceOptions<TData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
 export abstract class BaseService<TData> implements Service {

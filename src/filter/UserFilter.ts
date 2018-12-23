@@ -1,4 +1,4 @@
-import { BotServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/BotService';
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';

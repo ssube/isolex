@@ -68,6 +68,8 @@ export async function loadConfig(...extras: Array<string>): Promise<BotDefinitio
 
 export async function readConfig(path: string): Promise<string | undefined> {
   try {
+    // need to await this read to catch the error, need to catch the error to check the code
+    /* tslint:ignore-next-line:prefer-immediate-return */
     const data = await readFileSync(path, {
       encoding: 'utf-8',
     });

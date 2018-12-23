@@ -1,6 +1,6 @@
 import { safeLoad } from 'js-yaml';
 
-import { BotService } from 'src/ChildService';
+import { BotService } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';

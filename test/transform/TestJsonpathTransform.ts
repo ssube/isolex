@@ -1,20 +1,15 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { ConsoleLogger } from 'noicejs';
-import { Registry } from 'prom-client';
-import { Connection } from 'typeorm';
 
-import { Bot } from 'src/Bot';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { JsonpathTransform, JsonpathTransformOptions } from 'src/transform/JsonpathTransform';
-import { Clock } from 'src/utils/Clock';
+import { JsonpathTransform } from 'src/transform/JsonpathTransform';
+import { JsonPath } from 'src/utils/JsonPath';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer } from 'test/helpers/container';
+import { createContainer, createService } from 'test/helpers/container';
 
 describeAsync('jsonpath transform', async () => {
   itAsync('should transform data', async () => {
@@ -25,24 +20,17 @@ describeAsync('jsonpath transform', async () => {
       test: '$.data.test[*]',
     };
 
-    const options: JsonpathTransformOptions = {
-      bot: ineeda<Bot>(),
-      clock: ineeda<Clock>(),
-      container,
+    const transform = await createService(container, JsonpathTransform, {
       data: {
         parsers: [],
         queries,
       },
-      logger: ConsoleLogger.global,
+      jsonpath: new JsonPath(),
       metadata: {
         kind: 'jsonpath-transform',
         name: 'test_transform',
       },
-      metrics: new Registry(),
-      services: ineeda<ServiceModule>(),
-      storage: ineeda<Connection>(),
-    };
-    const transform = await container.create(JsonpathTransform, options);
+    });
     const output = await transform.transform(new Command({
       context: ineeda<Context>(),
       data: {},

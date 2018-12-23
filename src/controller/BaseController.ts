@@ -1,4 +1,4 @@
-import { BotService } from 'src/ChildService';
+import { BotService } from 'src/BotService';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';

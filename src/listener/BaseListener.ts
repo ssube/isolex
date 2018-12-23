@@ -1,4 +1,4 @@
-import { BotService } from 'src/ChildService';
+import { BotService } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';

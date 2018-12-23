@@ -1,21 +1,16 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { ConsoleLogger } from 'noicejs';
-import { Registry } from 'prom-client';
-import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
-import { NOUN_WEATHER, WeatherController, WeatherControllerOptions } from 'src/controller/WeatherController';
+import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Clock } from 'src/utils/Clock';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer } from 'test/helpers/container';
+import { createContainer, createService } from 'test/helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
@@ -31,15 +26,13 @@ describeAsync('weather controller', async () => {
     });
     module.bind('bot').toInstance(bot);
 
-    const options: WeatherControllerOptions = {
+    const controller = await createService(container, WeatherController, {
       bot,
-      clock: ineeda<Clock>(),
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test',
         }),
       }),
-      container,
       data: {
         api: {
           key: '0',
@@ -59,16 +52,11 @@ describeAsync('weather controller', async () => {
           },
         }],
       },
-      logger: ConsoleLogger.global,
       metadata: {
         kind: 'weather-controller',
         name: 'test_weather',
       },
-      metrics: new Registry(),
-      services: ineeda<ServiceModule>(),
-      storage: ineeda<Connection>(),
-    };
-    const controller = await container.create(WeatherController, options);
+    });
     expect(controller).to.be.an.instanceOf(WeatherController);
 
     const cmd = new Command({

@@ -1,11 +1,11 @@
 import { isNil } from 'lodash';
-import { format as formatMath, FormatOptions, typeof as typeOfMath } from 'mathjs';
+import * as mathjs from 'mathjs';
 
 export interface ResultFormatOptions {
   list: {
     join: string;
   };
-  number: FormatOptions;
+  number: mathjs.FormatOptions;
   node: {
     implicit: string;
     parenthesis: string;
@@ -17,7 +17,7 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     return 'nil result';
   }
 
-  const type = typeOfMath(body);
+  const type = mathjs.typeof(body);
   switch (type) {
     case 'boolean':
     case 'number':
@@ -28,7 +28,8 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     case 'Array':
       return body.map((it: any) => formatResult(it, scope, options)).join(options.list.join);
     case 'Function':
-      return body.call(undefined, scope); // TODO: make sure this doesn't allow math to escape the library
+      // TODO: make sure this doesn't allow math to escape the library sandbox
+      return body.call(undefined, scope);
     case 'Object':
       return JSON.stringify(body);
     case 'RegExp':
@@ -39,7 +40,7 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     case 'Matrix':
     case 'Range':
     case 'Unit':
-      return formatMath(body, options.number);
+      return mathjs.format(body, options.number);
     case 'ResultSet':
       return formatResult(body.entries, scope, options);
     case 'AccessorNode':
@@ -64,4 +65,10 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
 
 export function clamp(v: number, min: number, max: number) {
   return Math.max(Math.min(v, min), max);
+}
+
+export class MathFactory {
+  public create(options: mathjs.ConfigOptions): mathjs.MathJsStatic {
+    return (mathjs as any).create(options);
+  }
 }

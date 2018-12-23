@@ -1,4 +1,5 @@
-import * as mathjs from 'mathjs';
+import { MathJsStatic } from 'mathjs';
+import { Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -19,13 +20,14 @@ export interface MathControllerData extends ControllerData {
 
 export type MathControllerOptions = ControllerOptions<MathControllerData>;
 
+@Inject('bot', 'math')
 export class MathController extends BaseController<MathControllerData> implements Controller {
-  protected math: mathjs.MathJsStatic;
+  protected math: MathJsStatic;
 
   constructor(options: MathControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-math', [NOUN_MATH]);
 
-    this.math = (mathjs as any).create(options.data.math);
+    this.math = options.math.create(options.data.math);
   }
 
   public async handle(cmd: Command): Promise<void> {

@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Module, ModuleOptions, Provides } from 'noicejs';
 import { Container } from 'noicejs/Container';
 
-import { BotServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceMetadata } from 'src/Service';
 import { mustGet } from 'src/utils/Map';

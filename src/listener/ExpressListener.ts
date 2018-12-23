@@ -8,7 +8,7 @@ import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-
 import { Counter, Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
-import { BotServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/BotService';
 import { Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';

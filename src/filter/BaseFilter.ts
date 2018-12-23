@@ -1,4 +1,4 @@
-import { BotService } from 'src/ChildService';
+import { BotService } from 'src/BotService';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 
 /**

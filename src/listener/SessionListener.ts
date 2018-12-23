@@ -1,4 +1,4 @@
-import { BotServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';

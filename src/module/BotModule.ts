@@ -8,6 +8,8 @@ import { Connection } from 'typeorm';
 import { Bot } from 'src/Bot';
 import { GraphSchema } from 'src/graph';
 import { Clock } from 'src/utils/Clock';
+import { JsonPath } from 'src/utils/JsonPath';
+import { MathFactory } from 'src/utils/Math';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
@@ -36,6 +38,8 @@ export class BotModule extends Module {
     this.bind('compiler').toConstructor(TemplateCompiler);
     this.bind(kebabCase(Clock.name)).toConstructor(Clock);
     this.bind(kebabCase(GraphSchema.name)).toConstructor(GraphSchema);
+    this.bind('jsonpath').toConstructor(JsonPath);
+    this.bind('math').toConstructor(MathFactory);
   }
 
   public setBot(bot: Bot) {
