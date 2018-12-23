@@ -62,4 +62,12 @@ export abstract class BaseService<TData> implements Service {
 
   public abstract start(): Promise<void>;
   public abstract stop(): Promise<void>;
+
+  protected getId(persistent: boolean = false): string {
+    if (persistent) {
+      return `${this.kind}:${this.name}`;
+    } else {
+      return this.id;
+    }
+  }
 }

@@ -7,7 +7,6 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
-import { Fragment } from 'src/entity/Fragment';
 
 export const NOUN_KEYWORD = 'keyword';
 
@@ -62,7 +61,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     }
 
     const keyword = new Keyword({
-      controllerId: this.name,
+      controllerId: this.getId(true),
       data: { args },
       key,
       labels: {},

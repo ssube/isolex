@@ -46,6 +46,6 @@ export class Keyword extends BaseCommand implements KeywordOptions {
       key: this.key,
       noun: this.noun,
       verb: this.verb,
-    }
+    };
   }
 }

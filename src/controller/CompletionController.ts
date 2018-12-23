@@ -4,10 +4,8 @@ import { Connection, Repository } from 'typeorm';
 
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
 import { Parser } from 'src/parser/Parser';
 import { mapToDict } from 'src/utils/Map';
-import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { BaseController } from './BaseController';
 import { Controller, ControllerOptions } from './Controller';
@@ -36,7 +34,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       case NOUN_FRAGMENT:
         return this.handleFragment(cmd);
       default:
-        await this.bot.sendMessage();
+        return this.reply(cmd.context, 'invalid noun');
     }
   }
 
@@ -47,7 +45,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       case CommandVerb.Update:
         return this.updateFragment(cmd);
       default:
-        await this.bot.sendMessage();
+        return this.reply(cmd.context, 'invalid verb');
     }
   }
 
@@ -70,7 +68,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     this.logger.debug({ data: mapToDict(cmd.data), fragment }, 'creating fragment for later completion');
 
     // @TODO: send this message elsewhere (not a direct reply)
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `${fragment.id} (${key}): ${msg}`));
+    return this.reply(cmd.context, `${fragment.id} (${key}): ${msg}`);
   }
 
   public async updateFragment(cmd: Command): Promise<void> {
@@ -95,7 +93,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       await this.bot.executeCommand(...commands);
     } catch (err) {
       this.logger.error(err, 'error completing fragment');
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'error completing fragment'));
+      await this.reply(cmd.context, 'error completing fragment');
     }
   }
 }
