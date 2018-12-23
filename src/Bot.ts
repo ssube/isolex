@@ -94,7 +94,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     switch (event) {
       case ServiceLifecycle.Reset:
-        this.metrics.clear();
+        this.metrics.resetMetrics();
         this.logger.info('metrics reset');
         break;
     }
