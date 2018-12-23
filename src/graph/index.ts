@@ -125,7 +125,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
 
   public async executeCommands(args: any, req: express.Request) {
     const context = req.user as Context | undefined;
-    this.logger.debug({ args, context }, 'send message');
+    this.logger.debug({ args, context }, 'execute commands');
 
     if (!context) {
       throw new SessionRequiredError();
@@ -147,7 +147,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
 
   public async sendMessages(args: any, req: express.Request) {
     const context = req.user as Context | undefined;
-    this.logger.debug({ args, context }, 'send message');
+    this.logger.debug({ args, context }, 'send messages');
 
     if (!context) {
       throw new SessionRequiredError();

@@ -9,10 +9,10 @@ Hopefully this explains what the bot is and how it works.
       - [Completion](#completion)
     - [Executing Commands](#executing-commands)
     - [Outgoing Messages](#outgoing-messages)
+  - [Amazon Lex](#amazon-lex)
   - [Build](#build)
   - [Config](#config)
   - [Concept](#concept)
-  - [Lex](#lex)
   - [Service Reference](#service-reference)
   - [Workflow](#workflow)
 
@@ -73,7 +73,6 @@ matching and parsing messages into executable commands. Each `parser` is checked
 incoming message can produce any number of commands (and may not produce them immediately, so context must be
 passed).
 
-
 #### Completion
 
 Sometimes a message is parsed and valid, but incomplete. When this happens, the bot issues a `fragment:create` command
@@ -91,27 +90,29 @@ passed to the `controller` and consumed. Only a single controller will be run fo
 The bot handles an outgoing message queue, dispatched to `listener`s based on the message context. Listeners may
 implement their own rate limiting and add failed messages back to the queue after some delay.
 
+## Amazon Lex
+
+Please see [the lex docs](./concept/lex.md) for information on the Lex model and how intents map to commands.
+
 ## Build
 
 Please see [the build docs](./build) for information on the development process and how to build the bot.
 
 ## Config
 
-Please see [the config docs](./config.md) for information on the config schema and search path.
+Please see [the config docs](./concept/config.md) for information on the config schema and search path.
 
 ## Concept
 
 Documentation detailing the architectural concepts:
 
+- [Amazon Lex integration](./concept/lex.md)
 - [Authentication & Authorization](./concept/auth.md)
 - [Completion](./concept/completion.md)
 - [Config](./concept/config.md)
+- [GraphQL API](./concept/graph.md)
 - [Logging](./concept/logging.md)
 - [Sessions](./concept/sessions.md)
-
-## Lex
-
-Please see [the Lex docs](./lex) for information on the Amazon Lex model and how intents map to commands.
 
 ## Service Reference
 

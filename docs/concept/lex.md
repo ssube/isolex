@@ -5,5 +5,5 @@ audio input and returns an intent and slots, mapping very closely to the bot's c
 
 ## Model
 
-The Lex model is included here. This can be imported to create a chat bot with the `time_get` and `weather_get`
-intents.
+The Lex model [is included here](./lex-model.json). This can be imported to create a chat bot with the `time_get` and
+`weather_get` intents.
