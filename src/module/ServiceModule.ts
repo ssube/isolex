@@ -4,7 +4,7 @@ import { Container } from 'noicejs/Container';
 
 import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { Service, ServiceDefinition, ServiceMetadata, ServiceLifecycle } from 'src/Service';
+import { Service, ServiceDefinition, ServiceLifecycle, ServiceMetadata } from 'src/Service';
 import { mustGet } from 'src/utils/Map';
 
 /**

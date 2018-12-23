@@ -4,9 +4,10 @@ This guide will introduce the account system (authentication and authorization),
 advanced deploy commands.
 
 - [Getting Started](#getting-started)
-  - [Concept](#concept)
+  - [Concepts](#concepts)
   - [Running](#running)
     - [Config](#config)
+    - [Secrets](#secrets)
     - [Kubernetes](#kubernetes)
     - [Local](#local)
   - [Usage](#usage)
@@ -23,14 +24,16 @@ advanced deploy commands.
       - [Start Job](#start-job)
       - [Merge Pull Request](#merge-pull-request)
 
-## Concept
+## Concepts
 
 ## Running
 
 ### Config
 
 The bot comes with a [reference config file](./isolex.yml) with somewhat reasonable defaults that show off most core
-features. The local build will use this config file, remote deploys will need a config file provided.
+features. The local build will use this config file, remote deploys will need a config file to be mounted.
+
+### Secrets
 
 This config file does require some secrets to be defined in the environment. They are:
 

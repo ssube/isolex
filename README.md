@@ -1,6 +1,7 @@
 # isolex
 
-Chat bot capable of parsing natural language, driven by observables, and controlling almost anything.
+Chat bot capable of parsing natural language and markup, driven by observables, with controllers for almost anything.
+Configured in YAML with a schema, featuring JWT authentication, granular RBAC, and listeners for common chat services.
 Inspired by the Kubernetes API.
 
 [![Pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
@@ -47,7 +48,7 @@ starting bot...
 ## Config
 
 An [example config file](./docs/isolex.yml) is provided in [the `docs/` directory](./docs). This enables most of the
-core features, but requires [some secrets](./docs/getting-started.md#config) to be defined in the environment.
+core features, but requires [some secrets](./docs/getting-started.md#secrets) to be defined in the environment.
 
 ## Getting Started
 

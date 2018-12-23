@@ -5,8 +5,8 @@ export const SIGNAL_STOP: NodeJS.Signals = 'SIGTERM';
 export function signal(...signals: Array<NodeJS.Signals>): Promise<NodeJS.Signals> {
   return new Promise((res, _) => {
     function handler(fired: NodeJS.Signals) {
-      for (const signal of signals) {
-        process.removeListener(signal, handler);
+      for (const s of signals) {
+        process.removeListener(s, handler);
       }
       res(fired);
     }
