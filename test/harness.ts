@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import {ineeda} from 'ineeda';
+import { ineeda } from 'ineeda';
 import * as sinonChai from 'sinon-chai';
 import * as sourceMapSupport from 'source-map-support';
 
@@ -12,8 +12,6 @@ sourceMapSupport.install({
 
 /**
  * This will break the whole test run if any test leaks an unhandled rejection.
- *
- * To ensure only a single test breaks, make sure to wrap each test with the `handleRejection` helper.
  */
 process.on('unhandledRejection', (reason, promise) => {
   // tslint:disable-next-line:no-console
@@ -31,6 +29,10 @@ ineeda.intercept({
 });
 /* tslint:enable:no-null-keyword */
 
-const context = (require as any).context('.', true, /Test.*$/);
-context.keys().forEach(context);
-export default context;
+// enable source context inclusion when https://github.com/istanbuljs/nyc/issues/953 is resolved
+// const srcContext = (require as any).context('../src', true, /.*ts$/);
+// srcContext.keys().forEach(srcContext);
+
+const testContext = (require as any).context('../test', true, /Test.*$/);
+testContext.keys().forEach(testContext);
+export default testContext;

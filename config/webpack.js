@@ -27,7 +27,7 @@ function ignoreModules(names) {
 }
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: {
     main: modulePath.index,
     test: [modulePath.harness, 'sinon', 'chai']
