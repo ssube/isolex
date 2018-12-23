@@ -154,23 +154,23 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   protected async setupExpress(): Promise<express.Express> {
-    const app = express();
+    let app = express();
 
     if (this.passport) {
-      app.use(this.passport.initialize());
-      app.use(this.passport.authenticate('jwt'));
+      app = app.use(this.passport.initialize());
+      app = app.use(this.passport.authenticate('jwt'));
     }
 
     if (this.data.expose.metrics) {
-      app.use((req, res, next) => this.traceRequest(req, res, next));
-      app.get('/metrics', (req, res) => this.getMetrics(req, res));
+      app = app.use((req, res, next) => this.traceRequest(req, res, next));
+      app = app.get('/metrics', (req, res) => this.getMetrics(req, res));
     }
 
     if (this.data.expose.graph) {
       this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
       await this.graph.start();
 
-      app.use('/graph', expressGraphQl({
+      app = app.use('/graph', expressGraphQl({
         graphiql: this.data.expose.graphiql,
         schema: this.graph.schema,
       }));
