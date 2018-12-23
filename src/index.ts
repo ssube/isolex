@@ -91,10 +91,10 @@ async function handleSignals(bot: Bot, logger: Logger) {
   while (s !== SIGNAL_STOP) {
     switch (s) {
       case SIGNAL_RELOAD:
-        bot.notify(ServiceLifecycle.Reload);
+        await bot.notify(ServiceLifecycle.Reload);
         break;
       case SIGNAL_RESET:
-        bot.notify(ServiceLifecycle.Reset);
+        await bot.notify(ServiceLifecycle.Reset);
         break;
     }
     s = await signal(...signals);
