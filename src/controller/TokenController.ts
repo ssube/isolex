@@ -1,14 +1,13 @@
 import { Inject } from 'noicejs';
 import { Connection, Equal, Repository } from 'typeorm';
 
+import { BaseController } from 'src/controller/BaseController';
+import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Clock } from 'src/utils/Clock';
-
-import { BaseController } from './BaseController';
-import { NOUN_FRAGMENT } from './CompletionController';
-import { Controller, ControllerData, ControllerOptions } from './Controller';
 
 const MSG_SESSION_REQUIRED = 'must be logged in';
 export const NOUN_TOKEN = 'token';

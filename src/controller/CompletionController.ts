@@ -2,13 +2,12 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Fragment } from 'src/entity/Fragment';
 import { Parser } from 'src/parser/Parser';
 import { mapToDict } from 'src/utils/Map';
-
-import { BaseController } from './BaseController';
-import { Controller, ControllerOptions } from './Controller';
 
 export const NOUN_FRAGMENT = 'fragment';
 

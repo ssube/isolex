@@ -1,21 +1,25 @@
 import { Connection } from 'typeorm';
 
-import { BaseService, BaseServiceOptions } from './BaseService';
-import { Bot } from './Bot';
-import { Service } from './Service';
+import { BaseService, BaseServiceOptions } from 'src/BaseService';
+import { Bot } from 'src/Bot';
+import { Service } from 'src/Service';
 
 /**
  * Exposed injected services available to child services.
  */
-export interface ChildServiceOptions<TData> extends BaseServiceOptions<TData> {
+export interface BotServiceOptions<TData> extends BaseServiceOptions<TData> {
   bot: Bot;
   storage: Connection;
 }
 
-export abstract class ChildService<TData> extends BaseService<TData> implements Service {
+/**
+ * Services started by the bot, into which the bot is injected, and which rely on the bot for communication with
+ * other services and the outside world.
+ */
+export abstract class BotService<TData> extends BaseService<TData> implements Service {
   public readonly bot: Bot;
 
-  constructor(options: ChildServiceOptions<TData>, schemaPath: string) {
+  constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.bot = options.bot;

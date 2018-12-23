@@ -14,23 +14,22 @@ import * as emoji from 'node-emoji';
 import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener } from 'src/listener/Listener';
+import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TYPE_TEXT } from 'src/utils/Mime';
-
-import { SessionListener } from './SessionListener';
 
 export interface DiscordListenerData {
   presence?: PresenceData;
   token: string;
 }
 
-export type DiscordListenerOptions = ChildServiceOptions<DiscordListenerData>;
+export type DiscordListenerOptions = BotServiceOptions<DiscordListenerData>;
 
 @Inject('bot', 'clock', 'metrics', 'services')
 export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {

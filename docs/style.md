@@ -225,10 +225,12 @@ Generic type names MUST start with `T` and SHOULD have a somewhat meaningful nam
 
 ### Imports
 
-Imports MUST NOT start with `../`. Use `src/` or `test/` instead. Imports MAY start with `./`.
+Imports MUST refer to a module or an alias (`src/` or `test/`).
 
-Imports MUST use destructuring (`import { by, name }`) and MAY rename imports. When using a broken old library, it may
-be necessary to `import * as foo`, but destructuring should still be used if possible.
+Imports MUST NOT be relative (start with `./` or `../`).
+
+Imports SHOULD use destructuring (`import { by, name }`) and MAY rename imports. When using a library with broken
+exports, it may be necessary to `import * as foo` before (or instead of) destructuring.
 
 Long imports MUST be broken across lines as if they were object literals.
 
@@ -237,7 +239,6 @@ Long imports MUST be broken across lines as if they were object literals.
 1. Libraries
 2. `src/`
 3. `test/`
-4. `./`
 
 Imports MUST be sorted alphabetically, even within a single line. Your editor should be able to do this for you,
 because it is extremely tedious to do by hand.

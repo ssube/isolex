@@ -1,4 +1,4 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { BaseFilter } from 'src/filter/BaseFilter';
 import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
@@ -7,7 +7,7 @@ export interface UserFilterData {
   users: ChecklistOptions<string>;
 }
 
-export type UserFilterOptions = ChildServiceOptions<UserFilterData>;
+export type UserFilterOptions = BotServiceOptions<UserFilterData>;
 
 export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
   protected list: Checklist<string>;

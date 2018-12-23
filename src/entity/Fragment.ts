@@ -1,11 +1,10 @@
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { BaseCommand } from 'src/entity/base/BaseCommand';
+import { CommandOptions } from 'src/entity/Command';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
 import { dictToMap } from 'src/utils/Map';
-
-import { BaseCommand } from './base/BaseCommand';
-import { CommandOptions } from './Command';
 
 export interface FragmentOptions extends CommandOptions {
   /**

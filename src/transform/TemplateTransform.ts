@@ -2,13 +2,12 @@ import { Inject } from 'noicejs';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { BaseTransform } from 'src/transform/BaseTransform';
+import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { mapToDict } from 'src/utils/Map';
 import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
-
-import { BaseTransform } from './BaseTransform';
-import { Transform, TransformData, TransformOptions } from './Transform';
 
 /**
  * Dictionary of templates to be compiled.

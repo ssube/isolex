@@ -6,10 +6,9 @@ import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { BaseParser } from 'src/parser/BaseParser';
+import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map';
-
-import { BaseParser } from './BaseParser';
-import { Parser, ParserData, ParserOptions } from './Parser';
 
 export interface ArgsParserData extends ParserData {
   args: {

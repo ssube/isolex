@@ -1,11 +1,10 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
+import { BaseListener } from 'src/listener/BaseListener';
+import { FetchOptions } from 'src/listener/Listener';
 import { Clock } from 'src/utils/Clock';
-
-import { BaseListener } from './BaseListener';
-import { FetchOptions } from './Listener';
 
 /**
  * A listener that tracks sessions.
@@ -15,7 +14,7 @@ export abstract class SessionListener<TData> extends BaseListener<TData> {
   protected readonly clock: Clock;
   protected readonly sessions: Map<string, Session>;
 
-  constructor(options: ChildServiceOptions<TData>, schemaPath: string) {
+  constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.clock = options.clock;

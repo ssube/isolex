@@ -1,7 +1,6 @@
 import { Message } from 'src/entity/Message';
-
-import { FilterBehavior, FilterValue } from './Filter';
-import { RuleFilter } from './RuleFilter';
+import { FilterBehavior, FilterValue } from 'src/filter/Filter';
+import { RuleFilter } from 'src/filter/RuleFilter';
 
 /**
  * Simple filter for messages.

@@ -1,4 +1,4 @@
-import { ChildService, ChildServiceOptions } from 'src/ChildService';
+import { BotService, BotServiceOptions } from 'src/ChildService';
 import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
@@ -7,10 +7,10 @@ import { Parser, ParserData } from 'src/parser/Parser';
 import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
 
-export abstract class BaseParser<TData extends ParserData> extends ChildService<TData> implements Parser {
+export abstract class BaseParser<TData extends ParserData> extends BotService<TData> implements Parser {
   protected matcher: Match;
 
-  constructor(options: ChildServiceOptions<TData>, schemaPath: string) {
+  constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.matcher = new Match(options.data.match);

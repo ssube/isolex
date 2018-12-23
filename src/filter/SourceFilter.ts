@@ -1,7 +1,6 @@
 import { Message } from 'src/entity/Message';
-
-import { BaseFilter } from './BaseFilter';
-import { Filter, FilterBehavior, FilterOptions, FilterValue } from './Filter';
+import { BaseFilter } from 'src/filter/BaseFilter';
+import { Filter, FilterBehavior, FilterOptions, FilterValue } from 'src/filter/Filter';
 
 export interface SourceFilterData {
   type?: string;

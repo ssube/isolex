@@ -1,6 +1,7 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from '../base/BaseEntity';
+
+import { BaseEntity } from 'src/entity/base/BaseEntity';
 
 export interface RoleOptions {
   grants: Array<string>;

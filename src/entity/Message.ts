@@ -2,11 +2,10 @@ import * as escape from 'escape-html';
 import { GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { LabelEntity } from 'src/entity/base/LabelEntity';
 import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
-
-import { LabelEntity } from './base/LabelEntity';
 
 export interface MessageOptions {
   body: string;

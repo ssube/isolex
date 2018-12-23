@@ -1,4 +1,4 @@
-import { ChildService } from 'src/ChildService';
+import { BotService } from 'src/ChildService';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -12,7 +12,7 @@ import { TYPE_TEXT } from 'src/utils/Mime';
 
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
-export abstract class BaseController<TData extends ControllerData> extends ChildService<TData> implements Controller {
+export abstract class BaseController<TData extends ControllerData> extends BotService<TData> implements Controller {
   public readonly name: string;
 
   protected readonly nouns: Set<string>;

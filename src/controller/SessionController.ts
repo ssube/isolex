@@ -2,15 +2,14 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
-
-import { BaseController } from './BaseController';
-import { Controller, ControllerData, ControllerOptions } from './Controller';
 
 export const NOUN_GRANT = 'grant';
 export const NOUN_JOIN = 'join';

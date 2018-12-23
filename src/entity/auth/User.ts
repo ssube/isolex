@@ -1,9 +1,8 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { GRAPH_OUTPUT_ROLE, Role } from 'src/entity/auth/Role';
 import { BaseEntity } from 'src/entity/base/BaseEntity';
-
-import { GRAPH_OUTPUT_ROLE, Role } from './Role';
 
 export interface UserOptions {
   name: string;

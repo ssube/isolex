@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Module, ModuleOptions, Provides } from 'noicejs';
 import { Container } from 'noicejs/Container';
 
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceMetadata } from 'src/Service';
 import { mustGet } from 'src/utils/Map';
@@ -71,7 +71,7 @@ export class ServiceModule extends Module implements Service {
     }
 
     this.logger.info({ kind, tag }, 'creating unknown service');
-    const svc = await this.container.create<TService, ChildServiceOptions<any>>(kind, {
+    const svc = await this.container.create<TService, BotServiceOptions<any>>(kind, {
       ...conf,
       logger: this.logger.child({
         kind,

@@ -6,9 +6,8 @@ import { promisify } from 'util';
 import { BotDefinition } from 'src/Bot';
 import { envType } from 'src/config/type/Env';
 import { includeType } from 'src/config/type/Include';
+import { regexpType } from 'src/config/type/Regexp';
 import { NotFoundError } from 'src/error/NotFoundError';
-
-import { regexpType } from './type/Regexp';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 export const CONFIG_NAME = 'isolex.yml';

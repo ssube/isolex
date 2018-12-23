@@ -14,9 +14,8 @@ import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
+import { Schema } from 'src/utils/Schema';
 import { signal, SIGNAL_STOP } from 'src/utils/Signal';
-
-import { Schema } from './utils/Schema';
 
 // main arguments
 const MAIN_ARGS: yargs.Options = {

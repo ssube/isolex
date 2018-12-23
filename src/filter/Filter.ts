@@ -1,4 +1,4 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
@@ -22,7 +22,7 @@ export enum FilterBehavior {
 
 export type FilterData = any;
 
-export type FilterOptions<TData> = ChildServiceOptions<TData>;
+export type FilterOptions<TData> = BotServiceOptions<TData>;
 
 export type FilterValue = Command | Message;
 

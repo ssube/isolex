@@ -1,4 +1,4 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
@@ -21,7 +21,7 @@ export interface ParserData {
   match: MatchData;
 }
 
-export type ParserOptions<TData extends ParserData> = ChildServiceOptions<TData>;
+export type ParserOptions<TData extends ParserData> = BotServiceOptions<TData>;
 
 export type ParserValue = Buffer | string;
 

@@ -1,11 +1,11 @@
-import { ChildService } from 'src/ChildService';
+import { BotService } from 'src/ChildService';
 import { User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { FetchOptions, Listener } from 'src/listener/Listener';
 
-export abstract class BaseListener<TData> extends ChildService<TData> implements Listener {
+export abstract class BaseListener<TData> extends BotService<TData> implements Listener {
   /**
    * Check if this listener can receive messages from this context.
    *

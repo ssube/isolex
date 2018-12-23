@@ -1,4 +1,4 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
 import { FilterData } from 'src/filter/Filter';
 import { Service, ServiceDefinition } from 'src/Service';
@@ -9,7 +9,7 @@ export interface ControllerData {
   transforms: Array<ServiceDefinition<TransformData>>;
 }
 
-export type ControllerOptions<TData extends ControllerData> = ChildServiceOptions<TData>;
+export type ControllerOptions<TData extends ControllerData> = BotServiceOptions<TData>;
 
 /**
  * Controllers react to commands, consuming them before sending replies or performing background work.

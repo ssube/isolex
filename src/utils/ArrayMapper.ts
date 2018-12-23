@@ -1,4 +1,4 @@
-import { setOrPush } from './Map';
+import { setOrPush } from 'src/utils/Map';
 
 export interface ArrayMapperOptions {
   rest: string;

@@ -2,15 +2,14 @@ import { RTMClient, WebClient } from '@slack/client';
 import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
+import { Listener } from 'src/listener/Listener';
+import { SessionListener } from 'src/listener/SessionListener';
 import { TYPE_TEXT } from 'src/utils/Mime';
-
-import { Listener } from './Listener';
-import { SessionListener } from './SessionListener';
 
 export interface SlackListenerData {
   token: {
@@ -19,7 +18,7 @@ export interface SlackListenerData {
   };
 }
 
-export type SlackListenerOptions = ChildServiceOptions<SlackListenerData>;
+export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
 
 @Inject('bot', 'clock')
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {

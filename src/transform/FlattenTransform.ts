@@ -2,10 +2,9 @@ import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { BaseTransform } from 'src/transform/BaseTransform';
+import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { TYPE_TEXT } from 'src/utils/Mime';
-
-import { BaseTransform } from './BaseTransform';
-import { Transform, TransformData, TransformOptions } from './Transform';
 
 /**
  * Dictionary of templates to be compiled.

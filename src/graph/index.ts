@@ -3,7 +3,7 @@ import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'gr
 import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
-import { ChildService, ChildServiceOptions } from 'src/ChildService';
+import { BotService, BotServiceOptions } from 'src/ChildService';
 import { Command, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from 'src/entity/Message';
@@ -19,10 +19,10 @@ const GRAPH_OUTPUT_MESSAGE_LIST = new GraphQLList(GRAPH_OUTPUT_MESSAGE);
 const GRAPH_OUTPUT_SERVICE_LIST = new GraphQLList(GRAPH_OUTPUT_SERVICE);
 
 export type GraphSchemaData = any;
-export type GraphSchemaOptions = ChildServiceOptions<GraphSchemaData>;
+export type GraphSchemaOptions = BotServiceOptions<GraphSchemaData>;
 
 @Inject('bot', 'services', 'storage')
-export class GraphSchema extends ChildService<GraphSchemaData> {
+export class GraphSchema extends BotService<GraphSchemaData> {
   public readonly schema: GraphQLSchema;
 
   protected readonly services: ServiceModule;

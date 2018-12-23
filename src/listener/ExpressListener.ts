@@ -8,16 +8,15 @@ import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-
 import { Counter, Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { GraphSchema, GraphSchemaData } from 'src/graph';
+import { Listener } from 'src/listener/Listener';
+import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
-
-import { Listener } from './Listener';
-import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData {
   expose: {
@@ -38,7 +37,7 @@ export interface ExpressListenerData {
   };
 }
 
-export interface ExpressListenerOptions extends ChildServiceOptions<ExpressListenerData> {
+export interface ExpressListenerOptions extends BotServiceOptions<ExpressListenerData> {
   graph: GraphSchema;
 }
 

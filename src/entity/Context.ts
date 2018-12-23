@@ -4,11 +4,10 @@ import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Token } from 'src/entity/auth/Token';
+import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
-
-import { Token } from './auth/Token';
-import { GRAPH_OUTPUT_USER, User } from './auth/User';
 
 export interface ChannelData {
   id: string;

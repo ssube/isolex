@@ -5,13 +5,12 @@ import { Logger } from 'noicejs/logger/Logger';
 import { Registry } from 'prom-client';
 import * as uuid from 'uuid/v4';
 
+import { SchemaError } from 'src/error/SchemaError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Service, ServiceDefinition } from 'src/Service';
+import { Clock } from 'src/utils/Clock';
 import { dictToMap } from 'src/utils/Map';
-
-import { SchemaError } from './error/SchemaError';
-import { Clock } from './utils/Clock';
-import { Schema } from './utils/Schema';
+import { Schema } from 'src/utils/Schema';
 
 export interface InjectedServiceOptions {
   clock: Clock;

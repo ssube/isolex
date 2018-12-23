@@ -2,11 +2,10 @@ import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { BaseTransform } from 'src/transform/BaseTransform';
+import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { dictToMap, mapToDict } from 'src/utils/Map';
 import { TYPE_JSON } from 'src/utils/Mime';
-
-import { BaseTransform } from './BaseTransform';
-import { Transform, TransformData, TransformOptions } from './Transform';
 
 export interface JsonpathTransformData extends TransformData {
   queries: {

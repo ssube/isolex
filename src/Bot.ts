@@ -5,19 +5,18 @@ import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
+import { BaseService, BaseServiceOptions } from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
+import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
+import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
-
-import { BaseService, BaseServiceOptions } from './BaseService';
-import { ServiceModule } from './module/ServiceModule';
-import { incrementServiceCounter } from './utils/metrics/Service';
 
 export interface BotData {
   filters: Array<ServiceDefinition>;

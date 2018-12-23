@@ -1,15 +1,14 @@
 import { safeLoad } from 'js-yaml';
 
-import { ChildService } from 'src/ChildService';
+import { BotService } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser } from 'src/parser/Parser';
+import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
 
-import { Transform, TransformData, TransformOptions } from './Transform';
-
-export abstract class BaseTransform<TData extends TransformData> extends ChildService<TData> implements Transform {
+export abstract class BaseTransform<TData extends TransformData> extends BotService<TData> implements Transform {
   protected readonly parsers: Array<Parser>;
   protected readonly services: ServiceModule;
 

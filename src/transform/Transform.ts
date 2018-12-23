@@ -1,4 +1,4 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { ParserData } from 'src/parser/Parser';
@@ -8,7 +8,7 @@ export interface TransformData {
   parsers: Array<ServiceDefinition<ParserData>>;
 }
 
-export type TransformOptions<TData extends TransformData> = ChildServiceOptions<TData>;
+export type TransformOptions<TData extends TransformData> = BotServiceOptions<TData>;
 
 export interface Transform extends Service {
   /**

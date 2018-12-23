@@ -1,8 +1,7 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
+import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
 import { MapLike } from 'src/utils/Map';
-
-import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from './graph/output/Pairs';
 
 export interface ServiceDefinition<TData = any> {
   metadata: ServiceMetadata;

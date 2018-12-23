@@ -1,4 +1,4 @@
-import { ChildServiceOptions } from 'src/ChildService';
+import { BotServiceOptions } from 'src/ChildService';
 import { User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -14,7 +14,7 @@ export interface FetchOptions {
 }
 
 export type ListenerData = any;
-export type ListenerOptions<TData extends ListenerData> = ChildServiceOptions<TData>;
+export type ListenerOptions<TData extends ListenerData> = BotServiceOptions<TData>;
 
 export interface ContextFetchOptions extends FetchOptions {
   listenerId: string;
