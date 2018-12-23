@@ -3934,6 +3934,7 @@ node-pre-gyp@^0.10.0, node-pre-gyp@^0.10.3:
 noicejs@~2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.4.0.tgz#109be9ef37a4760665737f1898ee7f445a596eaa"
+  integrity sha512-QG8cS31UBCue3kzLvKb3L6APD8fTQyLRWv9i8SbpGKT0GbL8580sb4t4rOJv+9NihzKpiZz5Y8unlOsIWWAPPw==
 
 nomnom@1.5.2:
   version "1.5.2"
