@@ -100,7 +100,6 @@ async function handleSignals(bot: Bot, logger: Logger) {
     s = await signal(...signals);
   }
 
-  logger.info('stop signal');
   await bot.notify(ServiceLifecycle.Stop);
   await bot.stop();
 }

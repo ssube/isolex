@@ -1,7 +1,7 @@
 # isolex
 
-Unified chat bot with [AWS Lex](https://aws.amazon.com/lex/) integration, observables,
-[templates](https://handlebarsjs.com/) and [buzzwords](https://www.youtube.com/watch?v=PYtXuBN1Hvc).
+Chat bot capable of parsing natural language, driven by observables, and controlling almost anything.
+Inspired by the Kubernetes API.
 
 [![Pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/ssube/isolex.svg)](https://greenkeeper.io/)
@@ -23,39 +23,34 @@ Unified chat bot with [AWS Lex](https://aws.amazon.com/lex/) integration, observ
 [![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master) 
 [![Typescript definitions](https://img.shields.io/npm/types/isolex.svg)](https://www.npmjs.com/package/isolex)
 
-
 ## Build
 
+To build and run the bot locally, you will need `make`, `node`, and `yarn` installed globally or a container with the
+same.
+
+In the project directory, run:
+
 ```shell
-$ yarn
+> yarn
 
 yarn install
 [1/4] Resolving packages...
 ...
 Done in 0.65s
 
-$ make
+> make
 
 ...
-Success! make run-terminal to launch
+starting bot...
 ```
 
 ## Config
 
-Create [a config file](docs/config.md) at `${HOME}/.isolex.yml`.
+An [example config file](./docs/isolex.yml) is provided in [the `docs/` directory](./docs). This enables most of the
+core features, but requires [some secrets](./docs/getting-started.md#config) to be defined in the environment.
 
-## Usage
+## Getting Started
 
-With a valid config:
+The bot interacts through Discord, Slack, or a GraphQL API.
 
-```shell
-$ make run-terminal
-
-node /home/yourname/code/isolex//out/main-bundle.js
-hello bot
-loading config from paths [ '/home/yourname/.isolex.yml' ]
-...
-{"name":"isolex","hostname":"your-host","pid":32661,"level":30,"msg":"setting up streams","time":"2018-04-22T02:12:44.759Z","v":0}
-{"name":"isolex","hostname":"your-host","pid":32661,"level":30,"msg":"authenticating with chat","time":"2018-04-22T02:12:44.761Z","v":0}
-{"name":"isolex","hostname":"your-host","pid":32661,"level":30,"msg":"joining rooms","time":"2018-04-22T02:12:46.305Z","v":0}
-```
+The [getting started guide](./docs/getting-started.md) has more information on using the bot.

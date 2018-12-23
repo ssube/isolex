@@ -2,6 +2,12 @@
 
 Hopefully this explains what the bot is and how it works.
 
+- [Documentation](#documentation)
+  - [Architecture](#architecture)
+    - [Incoming Messages](#incoming-messages)
+    - [Executing Commands](#executing-commands)
+    - [Outgoing Messages](#outgoing-messages)
+
 ## Architecture
 
 Incoming events from the chat client (currently SO) are `parsed` into commands, with consistent fields and data. Those
@@ -10,7 +16,7 @@ commands are then `handled`, with replies being sent back through the bot. Betwe
 The flow is:
 
 ```none
-                                   cron -----> interval
+                                               interval
                                                   |
                                                   v
 listener -> <message> -> filter -> parser --> <command> <---\
@@ -48,20 +54,20 @@ Within each controller:
 <response> <-- post-transforms <------------ <data>
 ```
 
-### Incoming
+### Incoming Messages
 
 The `listener -> filter -> parser` sequence handles user input, filtering messages that should be ignored before
 matching and parsing messages into executable commands. Each `parser` is checked and potentially run, so a single
 incoming message can produce any number of commands (and may not produce them immediately, so context must be
 passed).
 
-### Execution
+### Executing Commands
 
 The `filter -> controller` pair behaves similarly, filtering commands and performing some work based on them. For each
 `<command>`, the `controller`s are checked in order until one is found that can handle the `<command>`, which is then
 passed to the `controller` and consumed. Only a single controller will be run for each command.
 
-### Outgoing
+### Outgoing Messages
 
 The bot handles an outgoing message queue, dispatched to `listener`s based on the message context. Listeners may
 implement their own rate limiting and add failed messages back to the queue after some delay.
