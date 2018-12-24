@@ -6,6 +6,7 @@ import { CompletionController } from 'src/controller/CompletionController';
 import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
+import { GithubPRController } from 'src/controller/github/PRController';
 import { KubernetesController } from 'src/controller/KubernetesController';
 import { LearnController } from 'src/controller/LearnController';
 import { MathController } from 'src/controller/MathController';
@@ -29,7 +30,6 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(CountController.name)).toConstructor(CountController);
     this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
     this.bind(kebabCase(EchoController.name)).toConstructor(EchoController);
-    this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
     this.bind(kebabCase(LearnController.name)).toConstructor(LearnController);
     this.bind(kebabCase(MathController.name)).toConstructor(MathController);
     this.bind(kebabCase(PickController.name)).toConstructor(PickController);
@@ -42,5 +42,11 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(TokenController.name)).toConstructor(TokenController);
     this.bind(kebabCase(UserController.name)).toConstructor(UserController);
     this.bind(kebabCase(WeatherController.name)).toConstructor(WeatherController);
+
+    // github controllers
+    this.bind(kebabCase(GithubPRController.name)).toConstructor(GithubPRController);
+
+    // kubernetes controllers
+    this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
   }
 }

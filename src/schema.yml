@@ -3,7 +3,7 @@ $id: "https://github.com/ssube/isolex/schema.yml"
 definitions:
   array-mapper:
     type: object
-    additionalProperties: true
+    additionalProperties: false
     properties:
       rest:
         type: string
@@ -16,7 +16,7 @@ definitions:
  
   checklist:
     type: object
-    additionalProperties: true
+    additionalProperties: false
     properties:
       data:
         type: array
@@ -25,6 +25,16 @@ definitions:
       mode:
         enum: [exclude, include]
 
+  client-github:
+    type: object
+    additionalProperties: false
+    required: [token]
+    properties:
+      root:
+        type: string
+      token:
+        type: string
+ 
   entity-command:
     type: object
     additionalProperties: true
@@ -200,6 +210,14 @@ definitions:
     $ref: "#/definitions/service-controller"
   service-controller-echo:
     $ref: "#/definitions/service-controller"
+  service-controller-github-pr:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        required: [client]
+        properties:
+          client:
+            $ref: "#/definitions/client-github"
   service-controller-kubernetes:
     allOf:
       - $ref: "#/definitions/service-controller"

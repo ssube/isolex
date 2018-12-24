@@ -10,9 +10,9 @@ Hopefully this explains what the bot is and how it works.
     - [Executing Commands](#executing-commands)
     - [Outgoing Messages](#outgoing-messages)
   - [Amazon Lex](#amazon-lex)
-  - [Build](#build)
   - [Config](#config)
   - [Concept](#concept)
+  - [Developing](#developing)
   - [Service Reference](#service-reference)
   - [Workflow](#workflow)
 
@@ -94,10 +94,6 @@ implement their own rate limiting and add failed messages back to the queue afte
 
 Please see [the lex docs](./concept/lex.md) for information on the Lex model and how intents map to commands.
 
-## Build
-
-Please see [the build docs](./build) for information on the development process and how to build the bot.
-
 ## Config
 
 Please see [the config docs](./concept/config.md) for information on the config schema and search path.
@@ -113,6 +109,10 @@ Documentation detailing the architectural concepts:
 - [GraphQL API](./concept/graph.md)
 - [Logging](./concept/logging.md)
 - [Sessions](./concept/sessions.md)
+
+## Developing
+
+Please see [the dev docs](./dev) for information on the development process and how to build the bot.
 
 ## Service Reference
 
