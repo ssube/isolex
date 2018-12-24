@@ -1,19 +1,36 @@
-import { BaseController } from '../BaseController';
-import { Controller, ControllerData, ControllerOptions } from '../Controller';
-import { Command } from 'src/entity/Command';
-
 import { defaults } from '@octokit/graphql';
 import { Inject } from 'noicejs';
+
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { TYPE_JSON } from 'src/utils/Mime';
 
+import { BaseController } from '../BaseController';
+import { Controller, ControllerData, ControllerOptions } from '../Controller';
+
 export const NOUN_PULL_REQUEST = 'github-pull-request';
+
+export const QUERY_PR_GET = `
+  query ($owner: String!, $project: String!) {
+    repository(owner: $owner, name: $project) {
+      pullRequests(first: 10, states: [OPEN]) {
+        nodes {
+          author {
+            login
+          }
+          number
+          title
+        }
+      }
+    }
+  }
+`;
 
 export interface GithubPRControllerData extends ControllerData {
   client: {
     root?: string;
     token: string;
-  }
+  };
 }
 
 export type GithubPRControllerOptions = ControllerOptions<GithubPRControllerData>;
@@ -37,24 +54,19 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
       return this.reply(cmd.context, 'invalid noun');
     }
 
+    switch (cmd.verb) {
+      case CommandVerb.List:
+        return this.listRequests(cmd);
+      default:
+        return this.reply(cmd.context, 'invalid verb');
+    }
+  }
+
+  public async listRequests(cmd: Command): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
     const project = cmd.getHead('project');
 
-    const response = await this.client(`
-      query ($owner: String!, $project: String!) {
-        repository(owner: $owner, name: $project) {
-          pullRequests(first: 10, states: [OPEN]) {
-            nodes {
-              author {
-                login
-              }
-              number
-              title
-            }
-          }
-        }
-      }
-    `, {
+    const response = await this.client(QUERY_PR_GET, {
       owner,
       project,
     });
