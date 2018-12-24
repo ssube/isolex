@@ -6,6 +6,7 @@ import { CompletionController } from 'src/controller/CompletionController';
 import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
+import { GithubPRController } from 'src/controller/github/PRController';
 import { KubernetesController } from 'src/controller/KubernetesController';
 import { LearnController } from 'src/controller/LearnController';
 import { MathController } from 'src/controller/MathController';
@@ -19,7 +20,6 @@ import { TimeController } from 'src/controller/TimeController';
 import { TokenController } from 'src/controller/TokenController';
 import { UserController } from 'src/controller/UserController';
 import { WeatherController } from 'src/controller/WeatherController';
-import { GithubPRController } from 'src/controller/github/PRController';
 
 export class ControllerModule extends Module {
   public async configure(options: ModuleOptions) {

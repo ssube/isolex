@@ -11,9 +11,9 @@ import { Controller, ControllerData, ControllerOptions } from '../Controller';
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
 export const QUERY_PR_GET = `
-  query ($owner: String!, $project: String!, $number: Int!) {
+  query ($owner: String!, $project: String!, $requestNumber: Int!) {
     repository(owner: $owner, name: $project) {
-      pullRequest(number: $number) {
+      pullRequest(number: $requestNumber) {
         author {
           login
         }
@@ -79,14 +79,14 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
   }
 
   public async getRequest(cmd: Command): Promise<void> {
-    const number = cmd.getHead('number');
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
     const project = cmd.getHead('project');
+    const requestNumber = cmd.getHead('number');
 
     const queryVars = {
       owner,
       project,
-      number,
+      requestNumber,
     };
     this.logger.debug({ queryVars }, 'query variables');
 
