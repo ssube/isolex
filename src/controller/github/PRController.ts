@@ -1,4 +1,5 @@
 import { defaults } from '@octokit/graphql';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -7,7 +8,6 @@ import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseController } from '../BaseController';
 import { Controller, ControllerData, ControllerOptions } from '../Controller';
-import { isNil } from 'lodash';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
@@ -27,7 +27,6 @@ export const QUERY_PR_CLOSE = `
     }
   }
 `;
-
 
 export const QUERY_PR_GET = `
   query ($owner: String!, $project: String!, $requestNumber: Int!) {
