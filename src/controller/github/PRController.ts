@@ -11,6 +11,20 @@ import { Controller, ControllerData, ControllerOptions } from '../Controller';
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
 export const QUERY_PR_GET = `
+  query ($owner: String!, $project: String!, $number: Int!) {
+    repository(owner: $owner, name: $project) {
+      pullRequest(number: $number) {
+        author {
+          login
+        }
+        number
+        title
+      }
+    }
+  }
+`;
+
+export const QUERY_PR_LIST = `
   query ($owner: String!, $project: String!) {
     repository(owner: $owner, name: $project) {
       pullRequests(first: 10, states: [OPEN]) {
@@ -55,6 +69,8 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     }
 
     switch (cmd.verb) {
+      case CommandVerb.Get:
+        return this.getRequest(cmd);
       case CommandVerb.List:
         return this.listRequests(cmd);
       default:
@@ -62,24 +78,44 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     }
   }
 
+  public async getRequest(cmd: Command): Promise<void> {
+    const number = cmd.getHead('number');
+    const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
+    const project = cmd.getHead('project');
+
+    const queryVars = {
+      owner,
+      project,
+      number,
+    };
+    this.logger.debug({ queryVars }, 'query variables');
+
+    const response = await this.client(QUERY_PR_GET, queryVars);
+    return this.formatResponse(cmd, [response.data.repository.pullRequest]);
+  }
+
   public async listRequests(cmd: Command): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
     const project = cmd.getHead('project');
 
-    const response = await this.client(QUERY_PR_GET, {
+    const response = await this.client(QUERY_PR_LIST, {
       owner,
       project,
     });
+    return this.formatResponse(cmd, response.data.repository.pullRequests.nodes);
+  }
 
+  protected async formatResponse(cmd: Command, response: any): Promise<void> {
     this.logger.debug({ response }, 'response from github');
 
     const body = await this.transform(cmd, new Message({
-      body: JSON.stringify(response.data.repository.pullRequests.nodes),
+      body: JSON.stringify(response),
       context: cmd.context,
       reactions: [],
       type: TYPE_JSON,
     }));
 
     await this.bot.sendMessage(...body);
+
   }
 }
