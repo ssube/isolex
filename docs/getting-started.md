@@ -24,9 +24,9 @@ advanced deploy commands.
       - [Edit Message](#edit-message)
       - [Learn Command](#learn-command)
     - [Deploy](#deploy)
-      - [Scale Apps](#scale-apps)
-      - [Start Job](#start-job)
       - [Merge Pull Request](#merge-pull-request)
+      - [Start Job](#start-job)
+      - [Scale Apps](#scale-apps)
 
 ## Concepts
 
@@ -163,14 +163,41 @@ TODO: learn a command shortcut
 
 ### Deploy
 
-#### Scale Apps
+#### Merge Pull Request
 
-TODO: scale up k8s apps deployment
+The bot is able to merge (or close) pull requests through Github's
+[GraphQL (v4) API](https://developer.github.com/v4/).
+
+To view open pull requests on a project which you own, such as a fork of the bot:
+
+```
+> !!args --noun github-pull-request --verb list --project isolex
+
+> @you, PR#69: enable test coverage (by ssube)
+> PR#74: github PR controller workflow (by ssube)
+```
+
+To merge a pull request, `update` it with a `message`:
+
+```
+> !!args --noun github-pull-request --verb update --project isolex --number 74 --message "feat: github PR controller"
+
+> @you, merged pull request 74
+```
+
+To close a pull request, `delete` it (no `message` needed):
+```
+> !!args --noun github-pull-request --verb delete --project isolex --number 77
+
+> @you, closed pull request 77
+```
+
+(this example refers to the first two pull requests closed and merged by the bot, #74 and #77)
 
 #### Start Job
 
 TODO: start Gitlab job
 
-#### Merge Pull Request
+#### Scale Apps
 
-TODO: merge Github PR
+TODO: scale up k8s apps deployment
