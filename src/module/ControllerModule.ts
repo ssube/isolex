@@ -19,6 +19,7 @@ import { TimeController } from 'src/controller/TimeController';
 import { TokenController } from 'src/controller/TokenController';
 import { UserController } from 'src/controller/UserController';
 import { WeatherController } from 'src/controller/WeatherController';
+import { GithubPRController } from 'src/controller/github/PRController';
 
 export class ControllerModule extends Module {
   public async configure(options: ModuleOptions) {
@@ -29,7 +30,6 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(CountController.name)).toConstructor(CountController);
     this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
     this.bind(kebabCase(EchoController.name)).toConstructor(EchoController);
-    this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
     this.bind(kebabCase(LearnController.name)).toConstructor(LearnController);
     this.bind(kebabCase(MathController.name)).toConstructor(MathController);
     this.bind(kebabCase(PickController.name)).toConstructor(PickController);
@@ -42,5 +42,11 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(TokenController.name)).toConstructor(TokenController);
     this.bind(kebabCase(UserController.name)).toConstructor(UserController);
     this.bind(kebabCase(WeatherController.name)).toConstructor(WeatherController);
+
+    // github controllers
+    this.bind(kebabCase(GithubPRController.name)).toConstructor(GithubPRController);
+
+    // kubernetes controllers
+    this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
   }
 }

@@ -1,0 +1,21 @@
+metadata:
+  kind: github-pr-controller
+  name: test-pr
+data:
+  client:
+    token: !env ISOLEX_GITHUB_TOKEN
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: github-pr-template
+      data:
+        templates:
+          body: >-
+            {{#each data }}
+              PR#{{ number }}: {{ title }} (by {{ author.login }})
+            {{/each}}
+    - metadata:
+        kind: flatten-transform
+        name: github-pr-body
+      data:
+        keys: [$.data.body]

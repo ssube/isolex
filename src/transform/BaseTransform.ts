@@ -33,11 +33,8 @@ export abstract class BaseTransform<TData extends TransformData> extends BotServ
 
   public abstract transform(cmd: Command, msg: Message): Promise<Array<Message>>;
 
-  /**
-   * @TODO: parse the message before merging
-   */
   protected mergeScope(cmd: Command, msg: Message): any {
-    return { cmd: cmd.toJSON(), data: this.parseMessage(msg) };
+    return { cmd, data: this.parseMessage(msg) };
   }
 
   protected parseMessage(msg: Message): any {

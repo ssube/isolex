@@ -17,4 +17,5 @@ data:
     - metadata:
         kind: flatten-transform
         name: flatten_body
-      data: {}
+      data:
+        keys: [body]

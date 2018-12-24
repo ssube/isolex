@@ -27,6 +27,7 @@
       "lodash",
       "mathjs",
       "mocha",
+      "octokit-graphql",
       "request",
       "request-promise-native",
       "sinon-chai",
