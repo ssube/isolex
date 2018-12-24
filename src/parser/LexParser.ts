@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import { kebabCase } from 'lodash';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
@@ -85,10 +86,11 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       return [];
     }
 
-    const [noun, verb] = post.intentName.split('_');
+    const [intent, verb] = post.intentName.split('_');
+    const noun = kebabCase(intent);
     const data = this.getSlots(post.slots);
 
-    this.logger.debug({ data, noun, verb }, 'decoded message');
+    this.logger.debug({ data, intent, noun, verb }, 'decoded message');
     switch (post.dialogState) {
       // completions
       case 'ConfirmIntent':
