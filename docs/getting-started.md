@@ -39,17 +39,9 @@ features. The local build will use this config file, remote deploys will need a 
 
 ### Secrets
 
-This config file does require some secrets to be defined in the environment. They are:
-
-```shell
-export ISOLEX_DISCORD_TOKEN=""
-export ISOLEX_DISCORD_USER_ID="@"
-export ISOLEX_LEX_ACCOUNT_ACCESS_KEY=""
-export ISOLEX_LEX_ACCOUNT_SECRET_KEY=""
-export ISOLEX_SLACK_TOKEN_BOT="xoxb-"
-export ISOLEX_SLACK_TOKEN_WEB="xoxp-"
-export ISOLEX_WEATHER_API_KEY=""
-```
+This config file does require some secrets to be defined in the environment. Empty defaults **suitable for testing**
+are [included in `isolex.env`](./isolex.env). To use these secrets, copy the file into your home directory, fill
+in the values, then `source ~/isolex.env` the file.
 
 If you do not plan on using a feature, the service should be removed from the config file and related secrets do not
 need to be defined.
