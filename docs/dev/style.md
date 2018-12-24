@@ -23,6 +23,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Arrays](#arrays)
     - [Arrow Functions ("lambdas")](#arrow-functions-%22lambdas%22)
     - [Async](#async)
+    - [Conditionals](#conditionals)
     - [Constructors](#constructors)
     - [Destructuring](#destructuring)
     - [Entities](#entities)
@@ -39,6 +40,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Tests](#tests)
       - [Async Tests](#async-tests)
       - [Assertions](#assertions)
+    - [Visibility](#visibility)
   - [YAML](#yaml)
 
 ## Code Climate
@@ -200,6 +202,12 @@ Async code MUST use promises. Callbacks MUST be wrapped to create and resolve (o
 Functions returning a promise SHOULD be `async` and `await` MAY be used inside them, but MAY also return plain promises
 when no `await` is needed.
 
+### Conditionals
+
+`if` and `else` MUST have parentheses and/or brackets, as allowed: `if (foo) { ... } else { ... }`
+
+`else if` MUST NOT be used. `else if` is a smell, consider a method or switch instead (or a method with a switch!).
+
 ### Constructors
 
 Classes should have a constructor if it contains more than a `super(options)` call.
@@ -292,9 +300,10 @@ Prefer `Array<Foo>` over `Foo | undefined`. If you can return 0 of them, you can
 
 ### Ternaries
 
-Ternaries SHOULD NOT be used, but MAY be used with `return` or assignments.
+Ternaries SHOULD NOT be used, but MAY be used with `return` or assignments. When reasonable, prefer an `if`/`else` or
+method call (chances are it's a logical unit worth a method and test).
 
-Ternaries MUST NOT be nested.
+Ternaries MUST NOT be nested. Ever.
 
 ### Tests
 
@@ -311,6 +320,18 @@ Always use `expect`-style assertions.
 
 Use `.to.equal(true)` instead of `.to.be.true`, since the call helps the assertion happens and appeases lint. Same with
 false.
+
+### Visibility
+
+It is easier to promote than to hide, but privacy ruins testing, so methods and properties should start with
+`protected` visibility.
+
+If a method needs to be accessible for tests, consider a subclass. If it turns out to be needed generally, it CAN be
+promoted to `public` after due diligence.
+
+`private` MUST NOT be used.
+
+Removing a method from the public API by changing it from `public` to `protected` is a breaking change.
 
 ## YAML
 
