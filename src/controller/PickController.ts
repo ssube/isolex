@@ -1,3 +1,5 @@
+import { Inject } from 'noicejs';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
@@ -19,6 +21,7 @@ export const NOUN_PICK = 'pick';
 
 export type PickControllerOptions = ControllerOptions<PickControllerData>;
 
+@Inject()
 export class PickController extends BaseController<PickControllerData> implements Controller {
   protected list: Checklist<string>;
 

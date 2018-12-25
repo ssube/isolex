@@ -14,7 +14,7 @@ export const NOUN_USER = 'user';
 export type UserControllerData = ControllerData;
 export type UserControllerOptions = ControllerOptions<UserControllerData>;
 
-@Inject('bot', 'storage')
+@Inject('storage')
 export class UserController extends BaseController<UserControllerData> implements Controller {
   protected readonly roleRepository: Repository<Role>;
   protected readonly storage: Connection;

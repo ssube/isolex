@@ -22,7 +22,7 @@ export interface WeatherControllerOptions extends ControllerOptions<WeatherContr
 
 export const NOUN_WEATHER = 'weather';
 
-@Inject('bot', 'compiler')
+@Inject('compiler')
 export class WeatherController extends BaseController<WeatherControllerData> implements Controller {
   protected readonly container: Container;
 

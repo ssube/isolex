@@ -20,7 +20,7 @@ export interface MathControllerData extends ControllerData {
 
 export type MathControllerOptions = ControllerOptions<MathControllerData>;
 
-@Inject('bot', 'math')
+@Inject('math')
 export class MathController extends BaseController<MathControllerData> implements Controller {
   protected math: MathJsStatic;
 

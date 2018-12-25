@@ -30,7 +30,7 @@ export interface SessionControllerData extends ControllerData {
 
 export type SessionControllerOptions = ControllerOptions<SessionControllerData>;
 
-@Inject('bot', 'clock', 'storage')
+@Inject('clock', 'storage')
 export class SessionController extends BaseController<SessionControllerData> implements Controller {
   protected clock: Clock;
   protected storage: Connection;

@@ -1,9 +1,10 @@
+import { Inject } from 'noicejs';
+
 import { BotService } from 'src/BotService';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { checkFilter, Filter } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { getLogInfo, ServiceDefinition } from 'src/Service';
@@ -12,6 +13,7 @@ import { TYPE_TEXT } from 'src/utils/Mime';
 
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
+@Inject('services')
 export abstract class BaseController<TData extends ControllerData> extends BotService<TData> implements Controller {
   public readonly name: string;
 

@@ -14,7 +14,7 @@ export interface TimeControllerData extends ControllerData {
 
 export type TimeControllerOptions = ControllerOptions<TimeControllerData>;
 
-@Inject('bot', 'clock')
+@Inject('clock')
 export class TimeController extends BaseController<TimeControllerData> implements Controller {
   protected readonly clock: Clock;
 

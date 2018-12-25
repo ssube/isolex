@@ -23,7 +23,7 @@ export interface TokenControllerData extends ControllerData {
 
 export type TokenControllerOptions = ControllerOptions<TokenControllerData>;
 
-@Inject('bot', 'clock', 'storage')
+@Inject('clock', 'storage')
 export class TokenController extends BaseController<TokenControllerData> implements Controller {
   protected readonly clock: Clock;
   protected readonly storage: Connection;

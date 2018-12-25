@@ -10,7 +10,7 @@ export type SedControllerOptions = ControllerOptions<SedControllerData>;
 
 export const NOUN_SED = 'sed';
 
-@Inject('bot', 'services')
+@Inject()
 export class SedController extends BaseController<SedControllerData> implements Controller {
   constructor(options: SedControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-sed', [NOUN_SED]);

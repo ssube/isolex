@@ -17,7 +17,7 @@ export interface LearnControllerData extends ControllerData {
 
 export type LearnControllerOptions = ControllerOptions<LearnControllerData>;
 
-@Inject('bot', 'storage')
+@Inject('storage')
 export class LearnController extends BaseController<LearnControllerData> implements Controller {
   protected readonly checkNoun: Checklist<string>;
   protected readonly keywordRepository: Repository<Keyword>;

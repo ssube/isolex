@@ -14,7 +14,7 @@ export const NOUN_FRAGMENT = 'fragment';
 export type CompletionControllerData = any;
 export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
 
-@Inject('bot', 'services', 'storage')
+@Inject('storage')
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
   protected storage: Connection;
   protected fragmentRepository: Repository<Fragment>;

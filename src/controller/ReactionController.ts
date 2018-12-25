@@ -1,3 +1,5 @@
+import { Inject } from 'noicejs';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
@@ -18,15 +20,14 @@ export type ReactionControllerOptions = ControllerOptions<ReactionControllerData
 
 export const NOUN_REACTION = 'reaction';
 
+@Inject()
 export class ReactionController extends BaseController<ReactionControllerData> implements Controller {
-  protected tags: Array<string>;
   protected reactions: Map<string, Array<ReactionChance>>;
 
   constructor(options: ReactionControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-reaction', [NOUN_REACTION]);
 
     this.reactions = new Map(Object.entries(options.data.reactions));
-    this.tags = Array.from(this.reactions.keys());
   }
 
   public async handle(cmd: Command): Promise<void> {

@@ -1,4 +1,5 @@
-import * as mathjs from 'mathjs';
+import { MathJsStatic } from 'mathjs';
+import { Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -14,9 +15,14 @@ export type DiceControllerData = ControllerData;
 
 export type DiceControllerOptions = ControllerOptions<DiceControllerData>;
 
+@Inject('math')
 export class DiceController extends BaseController<DiceControllerData> implements Controller {
+  protected math: MathJsStatic;
+
   constructor(options: DiceControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-dice', [NOUN_ROLL]);
+
+    this.math = options.math.create({});
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -27,7 +33,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
 
     const results: Array<number> = [];
     for (let i = 0; i < Number(args[1]); i++) {
-      const rollResult = mathjs.randomInt(DICE_MINIMUM, Number(args[2]));
+      const rollResult = this.math.randomInt(DICE_MINIMUM, Number(args[2]));
       results.push(rollResult);
     }
 

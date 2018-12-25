@@ -1,3 +1,5 @@
+import { Inject } from 'noicejs';
+
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
@@ -13,6 +15,7 @@ export interface EchoControllerOptions extends ControllerOptions<EchoControllerD
   compiler: TemplateCompiler;
 }
 
+@Inject()
 export class EchoController extends BaseController<EchoControllerData> implements Controller {
   protected readonly transforms: Array<Transform>;
 

@@ -6,10 +6,11 @@ import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
+import { BaseServiceOptions } from 'src/BaseService';
 import { Bot } from 'src/Bot';
-import { BotServiceOptions } from 'src/BotService';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Clock } from 'src/utils/Clock';
+import { Schema } from 'src/utils/Schema';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -33,7 +34,7 @@ export async function createContainer(): Promise<{ container: Container, module:
   return { container, module };
 }
 
-export async function createService<TService, TOptions extends BotServiceOptions<any>>(
+export async function createService<TService, TOptions extends BaseServiceOptions<any>>(
   container: Container,
   type: Constructor<TService, TOptions>,
   options: Partial<TOptions>,
@@ -48,6 +49,7 @@ export async function createService<TService, TOptions extends BotServiceOptions
     logger: ConsoleLogger.global,
     metrics: new Registry(),
     services: ineeda<ServiceModule>(),
+    schema: new Schema(), // tests use the real schema :D
     storage: ineeda<Connection>(),
     ...options,
   };

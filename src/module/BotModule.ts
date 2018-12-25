@@ -10,6 +10,7 @@ import { GraphSchema } from 'src/graph';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { MathFactory } from 'src/utils/Math';
+import { Schema } from 'src/utils/Schema';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
@@ -59,6 +60,11 @@ export class BotModule extends Module {
   @Provides('metrics')
   public async getMetrics(options: any): Promise<Registry> {
     return this.metrics;
+  }
+
+  @Provides('schema')
+  public async getSchema(options: any): Promise<Schema> {
+    return new Schema();
   }
 
   @Provides('storage')

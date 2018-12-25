@@ -1,5 +1,6 @@
 import { isNil, isNumber } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
+import { Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -13,6 +14,7 @@ export type RandomControllerOptions = ControllerOptions<RandomControllerData>;
 
 export const NOUN_RANDOM = 'random';
 
+@Inject()
 export class RandomController extends BaseController<RandomControllerData> implements Controller {
   constructor(options: RandomControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-random', [NOUN_RANDOM]);

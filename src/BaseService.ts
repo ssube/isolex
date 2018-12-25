@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { MissingValueError } from 'noicejs';
+import { MissingValueError, Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Registry } from 'prom-client';
@@ -20,11 +20,13 @@ export interface InjectedServiceOptions {
   logger: Logger;
   math: MathFactory;
   metrics: Registry;
+  schema: Schema;
   services: ServiceModule;
 }
 
 export type BaseServiceOptions<TData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
+@Inject('schema')
 export abstract class BaseService<TData> implements Service {
   public readonly id: string;
   public readonly kind: string;
@@ -53,9 +55,7 @@ export abstract class BaseService<TData> implements Service {
     });
 
     // validate the data
-    // @TODO: inject this schema
-    const schema = new Schema();
-    const result = schema.match(options.data, schemaPath);
+    const result = options.schema.match(options.data, schemaPath);
     if (!result.valid) {
       this.logger.error({ errors: result.errors }, 'failed to validate config');
       throw new SchemaError('failed to validate config');

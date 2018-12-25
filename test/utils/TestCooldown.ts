@@ -5,6 +5,7 @@ import { defer } from 'src/utils';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
+import { createService } from 'test/helpers/container';
 
 const COOLDOWN_NAME = 'test-cooldown';
 const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
@@ -15,12 +16,11 @@ describeAsync('utils', async () => {
       const ctr = Container.from();
       await ctr.configure();
 
-      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+      const cd = await createService<Cooldown, CooldownOptions>(ctr, Cooldown, {
         data: {
           base: 10,
           grow: 2,
         },
-        logger: ConsoleLogger.global,
         metadata: {
           kind: 'cooldown',
           name: COOLDOWN_NAME,
@@ -41,7 +41,7 @@ describeAsync('utils', async () => {
       const ctr = Container.from();
       await ctr.configure();
 
-      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+      const cd = await createService<Cooldown, CooldownOptions>(ctr, Cooldown, {
         data: {
           base: 5000,
           grow: 0,
@@ -61,7 +61,7 @@ describeAsync('utils', async () => {
       const ctr = Container.from();
       await ctr.configure();
 
-      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+      const cd = await createService<Cooldown, CooldownOptions>(ctr, Cooldown, {
         data: {
           base: 20,
           grow: 0,
