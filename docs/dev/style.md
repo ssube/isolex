@@ -305,6 +305,8 @@ method call (chances are it's a logical unit worth a method and test).
 
 Ternaries MUST NOT be nested. Ever.
 
+Ternaries MUST NOT be used within a condition or other statement.
+
 ### Tests
 
 Typescript tests (small, unit tests) are run using Mocha and Chai.
