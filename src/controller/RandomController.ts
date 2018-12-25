@@ -57,11 +57,11 @@ export class RandomController extends BaseController<RandomControllerData> imple
   }
 
   private getRandomValue(precision: number, minVal: number, maxVal?: number): number | string {
-    if (isNumber(minVal)) {
+    if (!isNumber(minVal)) {
       return `Provided value: ${minVal} is not a number!`;
     }
 
-    if (isNumber(maxVal)) {
+    if (!isNumber(maxVal)) {
       return `Provided value: ${maxVal} is not a number!`;
     }
 
