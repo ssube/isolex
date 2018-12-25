@@ -1,0 +1,6 @@
+metadata:
+  kind: dice-controller
+  name: test-dice
+data:
+  filters: []
+  transforms: []

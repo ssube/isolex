@@ -4,8 +4,6 @@ import { Inject } from 'noicejs';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { TYPE_TEXT } from 'src/utils/Mime';
 
 const DICE_MINIMUM = 1;
 
@@ -31,15 +29,17 @@ export class DiceController extends BaseController<DiceControllerData> implement
       return this.reply(cmd.context, 'no arguments were provided!');
     }
 
+    const [count, sides] = args;
+
     const results: Array<number> = [];
-    for (let i = 0; i < Number(args[1]); i++) {
-      const rollResult = this.math.randomInt(DICE_MINIMUM, Number(args[2]));
+    for (let i = 0; i < Number(count); i++) {
+      const rollResult = this.math.randomInt(DICE_MINIMUM, Number(sides));
       results.push(rollResult);
     }
 
     this.logger.debug({ args }, 'handling dice results');
-    const sum = results.reduce((a, b) => a + b);
+    const sum = results.reduce((a, b) => a + b, 0);
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `The results of your rolls were: ${results}. The sum is ${sum}.`));
+    return this.reply(cmd.context, `The results of your rolls were: ${results}. The sum is ${sum}.`);
   }
 }

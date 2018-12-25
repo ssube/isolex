@@ -6,7 +6,9 @@ config/
 deploy/
 node_modules/
 out/coverage/
+out/coverage-*
 out/docs/
+out/*.db
 out/*.html
 out/*.json
 out/test-*
