@@ -48,8 +48,8 @@ export async function createService<TService, TOptions extends BaseServiceOption
     container,
     logger: ConsoleLogger.global,
     metrics: new Registry(),
-    services: ineeda<ServiceModule>(),
     schema: new Schema(), // tests use the real schema :D
+    services: ineeda<ServiceModule>(),
     storage: ineeda<Connection>(),
     ...options,
   };

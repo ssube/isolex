@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { MissingValueError, Inject } from 'noicejs';
+import { Inject, MissingValueError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { Registry } from 'prom-client';
@@ -14,6 +14,9 @@ import { dictToMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
 import { Schema } from 'src/utils/Schema';
 
+/**
+ * TODO: these should be optional and must be included in the decorator to be available
+ */
 export interface InjectedServiceOptions {
   clock: Clock;
   jsonpath: JsonPath;
