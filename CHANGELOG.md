@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/ssube/isolex/compare/v0.5.0...v0.6.0) (2018-12-25)
+
+
+### Bug Fixes
+
+* add toJSON to role entity, init role repo in user ctrl ([a1894ae](https://github.com/ssube/isolex/commit/a1894ae))
+* append config name when loading from env root ([b9999e1](https://github.com/ssube/isolex/commit/b9999e1))
+* await response when notifying bot of lifecycle events ([f1bd70c](https://github.com/ssube/isolex/commit/f1bd70c))
+* be consistent about grants naming ([eece9d0](https://github.com/ssube/isolex/commit/eece9d0))
+* clock should return whole seconds ([b4c9f10](https://github.com/ssube/isolex/commit/b4c9f10))
+* completion for lex parser ([#54](https://github.com/ssube/isolex/issues/54)) ([d199ece](https://github.com/ssube/isolex/commit/d199ece))
+* convert camel case lex intents to kebab case nouns ([#75](https://github.com/ssube/isolex/issues/75)) ([ca2e198](https://github.com/ssube/isolex/commit/ca2e198))
+* ensure all express listener endpoints are registered ([902c6d1](https://github.com/ssube/isolex/commit/902c6d1))
+* inject clock into listeners, remove undefined log msg ([e27c237](https://github.com/ssube/isolex/commit/e27c237))
+* learn ctrl, split parser, add to ref config ([98e86b9](https://github.com/ssube/isolex/commit/98e86b9))
+* lex parser splits intent ([#54](https://github.com/ssube/isolex/issues/54)) ([3244bd0](https://github.com/ssube/isolex/commit/3244bd0))
+* load ajv schema as json, wrap and validate defs ([3cb24f4](https://github.com/ssube/isolex/commit/3cb24f4))
+* nest checklist within user filter ([17767ed](https://github.com/ssube/isolex/commit/17767ed))
+* reset prometheus metrics on signal ([bd50d76](https://github.com/ssube/isolex/commit/bd50d76))
+* support hyphenated nouns in lex parser ([40acedc](https://github.com/ssube/isolex/commit/40acedc))
+* use arg mapper logic in echo parser ([f4d8b44](https://github.com/ssube/isolex/commit/f4d8b44))
+
+
+### Features
+
+* add clock to service options ([#45](https://github.com/ssube/isolex/issues/45)) ([30c0047](https://github.com/ssube/isolex/commit/30c0047))
+* add join to session ctrl ([#50](https://github.com/ssube/isolex/issues/50)) ([d61cda3](https://github.com/ssube/isolex/commit/d61cda3))
+* add token reset as join:delete ([#50](https://github.com/ssube/isolex/issues/50)) ([8da0341](https://github.com/ssube/isolex/commit/8da0341))
+* close and merge github PRs ([#72](https://github.com/ssube/isolex/issues/72)) ([f1508cc](https://github.com/ssube/isolex/commit/f1508cc))
+* fix up time ctrl and add to ref config ([8e6828c](https://github.com/ssube/isolex/commit/8e6828c))
+* get verb for github PR ctrl ([132e24a](https://github.com/ssube/isolex/commit/132e24a))
+* github PR controller ([f65e1a2](https://github.com/ssube/isolex/commit/f65e1a2))
+* initial PR ctrl ([#72](https://github.com/ssube/isolex/issues/72)) ([5c4f2b3](https://github.com/ssube/isolex/commit/5c4f2b3))
+* inject jsonpath and math deps ([264015c](https://github.com/ssube/isolex/commit/264015c))
+* inject schema, leverage prototype injection ([0898cd7](https://github.com/ssube/isolex/commit/0898cd7))
+* lifecycle events for bot, svcs ([#16](https://github.com/ssube/isolex/issues/16)) ([2d4e650](https://github.com/ssube/isolex/commit/2d4e650))
+* move named-args data to a shared class/config stanza ([f581506](https://github.com/ssube/isolex/commit/f581506))
+* relative includes for config ([#19](https://github.com/ssube/isolex/issues/19)) ([4a4e444](https://github.com/ssube/isolex/commit/4a4e444))
+* schemas in every service, run with and validate reference config ([26c5d38](https://github.com/ssube/isolex/commit/26c5d38))
+* search for config without dot prefix ([4b51692](https://github.com/ssube/isolex/commit/4b51692))
+* turn keyword into a command fragment ([#67](https://github.com/ssube/isolex/issues/67)) ([2337d9f](https://github.com/ssube/isolex/commit/2337d9f))
+* validate config after parsing ([#13](https://github.com/ssube/isolex/issues/13)) ([b7ef1ad](https://github.com/ssube/isolex/commit/b7ef1ad))
+
+
+### BREAKING CHANGES
+
+* services must get jsonpath/mathjs instances via DI
+* replaces the keyword table (renames old table)
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/ssube/isolex/compare/v0.4.0...v0.5.0) (2018-12-16)
 
