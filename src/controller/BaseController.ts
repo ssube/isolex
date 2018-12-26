@@ -9,7 +9,7 @@ import { checkFilter, Filter } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { getLogInfo, ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
@@ -84,6 +84,19 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       batch = next;
     }
     return batch;
+  }
+
+  protected async transformJSON(cmd: Command, response: any): Promise<void> {
+    this.logger.debug({ response }, 'response from github');
+
+    const body = await this.transform(cmd, new Message({
+      body: JSON.stringify(response),
+      context: cmd.context,
+      reactions: [],
+      type: TYPE_JSON,
+    }));
+
+    await this.bot.sendMessage(...body);
   }
 
   protected async reply(ctx: Context, body: string): Promise<void> {

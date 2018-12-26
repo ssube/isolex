@@ -17,13 +17,11 @@ export class TemplateCompiler {
   protected options: CompileOptions;
 
   constructor(options: TemplateCompilerOptions) {
+    this.compiler = Handlebars.create();
     this.logger = options.logger.child({
       kind: kebabCase(TemplateCompiler.name),
     });
     this.options = {};
-
-    this.compiler = Handlebars.create();
-    Reflect.set(this.compiler, 'logger', this.logger); // @TODO: does this need to use reflection?
 
     this.compiler.registerHelper('trim', this.formatTrim.bind(this));
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));

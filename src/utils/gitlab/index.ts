@@ -37,12 +37,12 @@ export class GitlabClient {
 
   public async getJobs(options: PipelineOptions): Promise<any> {
     const projectURL = this.getProjectURL(options);
-    const response = await this.container.create('request', {
+    const response = await this.container.create<string, any>('request', {
       url: `${projectURL}/jobs`,
       ...this.getRequestOptions(options),
     });
     this.logger.debug({ response }, 'got pipeline');
-    return response;
+    return JSON.parse(response);
   }
 
   public async getPipelines(options: ProjectOptions): Promise<any> {

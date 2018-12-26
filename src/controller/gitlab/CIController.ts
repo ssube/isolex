@@ -73,7 +73,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
       pipeline,
       project,
     });
-    return this.formatResponse(cmd, jobs);
+    return this.transformJSON(cmd, jobs);
   }
 
   public async listPipelines(cmd: Command): Promise<void> {
@@ -83,19 +83,6 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
       group,
       project,
     });
-    return this.formatResponse(cmd, pipelines);
-  }
-
-  protected async formatResponse(cmd: Command, response: any): Promise<void> {
-    this.logger.debug({ response }, 'response from gitlab');
-
-    const body = await this.transform(cmd, new Message({
-      body: JSON.stringify(response),
-      context: cmd.context,
-      reactions: [],
-      type: TYPE_JSON,
-    }));
-
-    await this.bot.sendMessage(...body);
+    return this.transformJSON(cmd, pipelines);
   }
 }
