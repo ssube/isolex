@@ -1,6 +1,8 @@
 import * as Handlebars from 'handlebars';
+import { kebabCase } from 'lodash';
 import { Inject } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
+
 import { Context } from 'src/entity/Context';
 import { Template } from 'src/utils/Template';
 
@@ -15,11 +17,13 @@ export class TemplateCompiler {
   protected options: CompileOptions;
 
   constructor(options: TemplateCompilerOptions) {
-    this.compiler = Handlebars.create();
     this.logger = options.logger.child({
-      class: TemplateCompiler.name,
+      kind: kebabCase(TemplateCompiler.name),
     });
     this.options = {};
+
+    this.compiler = Handlebars.create();
+    Reflect.set(this.compiler, 'logger', this.logger); // @TODO: does this need to use reflection?
 
     this.compiler.registerHelper('trim', this.formatTrim.bind(this));
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));
@@ -52,18 +56,20 @@ export class TemplateCompiler {
   }
 
   /**
-   * Trim the value and add ellipsis it if possible.
+   * Trim the value and add ellipsis if possible.
    */
-  public formatTrim(value: string, max: number = 10): string {
+  public formatTrim(value: string, max: number = 10, tail = '...'): string {
+    this.logger.debug({ max, tail, value }, 'trimming string');
+
     if (value.length <= max) {
       return value;
     }
 
-    if (max < 3) {
+    if (max < tail.length) {
       return value.substr(0, max);
     }
 
-    const start = value.substr(0, max - 3);
-    return `${start}...`;
+    const start = value.substr(0, max - tail.length);
+    return `${start}${tail}`;
   }
 }

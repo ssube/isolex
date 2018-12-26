@@ -88,7 +88,7 @@ export interface GithubPRControllerData extends ControllerData {
 
 export type GithubPRControllerOptions = ControllerOptions<GithubPRControllerData>;
 
-@Inject('bot', 'services')
+@Inject()
 export class GithubPRController extends BaseController<GithubPRControllerData> implements Controller {
   protected client: Function;
 

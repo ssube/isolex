@@ -1,0 +1,24 @@
+metadata:
+  kind: gitlab-ci-controller
+  name: test-ci
+data:
+  client:
+    root: https://git.apextoaster.com
+    token: !env ISOLEX_GITLAB_TOKEN
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: test-ci-template
+      data:
+        templates:
+          body: >-
+            {{#each data}}
+              #{{ id }} on {{ ref }} ({{ trim sha 8 "" }}): {{ status }}
+            {{/each}}
+    - metadata:
+        kind: flatten-transform
+        name: test-ci-flatten
+      data:
+        deep: false
+        join: " "
+        keys: [$.data.body]

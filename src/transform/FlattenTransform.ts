@@ -28,11 +28,14 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
 
   public async transform(cmd: Command, msg: Message): Promise<Array<Message>> {
     const scope = this.mergeScope(cmd, msg);
+    this.logger.debug({ cmd, scope }, 'running flatten transform');
+
     const parts = [];
     for (const key of this.keys) {
       const value = jp.query(scope, key);
       parts.push(...value);
     }
+
     const body = parts.join(this.data.join);
     return [Message.reply(cmd.context, TYPE_TEXT, body)];
   }

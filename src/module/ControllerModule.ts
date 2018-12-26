@@ -7,6 +7,7 @@ import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
 import { GithubPRController } from 'src/controller/github/PRController';
+import { GitlabCIController } from 'src/controller/gitlab/CIController';
 import { KubernetesController } from 'src/controller/KubernetesController';
 import { LearnController } from 'src/controller/LearnController';
 import { MathController } from 'src/controller/MathController';
@@ -45,6 +46,9 @@ export class ControllerModule extends Module {
 
     // github controllers
     this.bind(kebabCase(GithubPRController.name)).toConstructor(GithubPRController);
+
+    // gitlab controllers
+    this.bind(kebabCase(GitlabCIController.name)).toConstructor(GitlabCIController);
 
     // kubernetes controllers
     this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
