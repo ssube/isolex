@@ -86,11 +86,11 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     return batch;
   }
 
-  protected async transformJSON(cmd: Command, response: any): Promise<void> {
-    this.logger.debug({ response }, 'response from github');
+  protected async transformJSON(cmd: Command, data: any): Promise<void> {
+    this.logger.debug({ data }, 'transforming json body');
 
     const body = await this.transform(cmd, new Message({
-      body: JSON.stringify(response),
+      body: JSON.stringify(data),
       context: cmd.context,
       reactions: [],
       type: TYPE_JSON,

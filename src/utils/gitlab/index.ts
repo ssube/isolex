@@ -37,30 +37,16 @@ export class GitlabClient {
 
   public async getJobs(options: PipelineOptions): Promise<any> {
     const projectURL = this.getProjectURL(options);
-    const response = await this.container.create<string, any>('request', {
-      url: `${projectURL}/jobs`,
-      ...this.getRequestOptions(options),
-    });
-    this.logger.debug({ response }, 'got pipeline');
-    return JSON.parse(response);
+    return this.makeRequest(`${projectURL}/jobs`, this.getRequestOptions(options));
   }
 
   public async getPipelines(options: ProjectOptions): Promise<any> {
     const projectURL = this.getProjectURL(options);
-    const response = await this.container.create<string, any>('request', {
-      url: `${projectURL}/pipelines`,
-      ...this.getRequestOptions(options),
-    });
-    this.logger.debug({ response }, 'got pipeline');
-    return JSON.parse(response);
+    return this.makeRequest(`${projectURL}/pipelines`, this.getRequestOptions(options));
   }
 
   public async getProject(options: ProjectOptions): Promise<any> {
-    const response = await this.container.create('request', {
-      url: this.getProjectURL(options),
-    });
-    this.logger.debug({ response }, 'got project');
-    return response;
+    return this.makeRequest(this.getProjectURL(options), options);
   }
 
   protected getProjectURL(options: ProjectOptions): any {
@@ -78,5 +64,14 @@ export class GitlabClient {
 
   protected getRequestUrl(path: string): string {
     return `${this.data.root}/api/v4/${path}`;
+  }
+
+  protected async makeRequest(url: string, options: ProjectOptions): Promise<any> {
+    const response = await this.container.create<string, any>('request', {
+      url,
+      ...options,
+    });
+    this.logger.debug({ response }, 'got response from gitlab');
+    return JSON.parse(response);
   }
 }
