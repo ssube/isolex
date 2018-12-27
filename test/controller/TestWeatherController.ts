@@ -39,6 +39,7 @@ describeAsync('weather controller', async () => {
           root: 'https://api.openweathermap.org/data/2.5/',
         },
         filters: [],
+        strict: true,
         transforms: [{
           data: {
             parsers: [],

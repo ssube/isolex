@@ -13,12 +13,12 @@ import { Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { GraphSchema, GraphSchemaData } from 'src/graph';
-import { Listener } from 'src/listener/Listener';
+import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 
-export interface ExpressListenerData {
+export interface ExpressListenerData extends ListenerData {
   expose: {
     graph: boolean;
     graphiql: boolean;

@@ -40,9 +40,7 @@ export async function createService<TService, TOptions extends BaseServiceOption
   options: Partial<TOptions>,
 ): Promise<TService> {
   const fullOptions = {
-    bot: ineeda<Bot>({
-      checkFilters: () => true, // TODO: remove this
-    }),
+    bot: ineeda<Bot>(),
     clock: ineeda<Clock>(),
     compiler: ineeda<TemplateCompiler>({
       compile: () => ineeda<Template>(),

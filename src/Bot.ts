@@ -37,11 +37,10 @@ export type BotOptions = BaseServiceOptions<BotData>;
 
 @Inject('logger', 'metrics', 'services')
 export class Bot extends BaseService<BotData> implements Service {
-  public readonly strict: boolean;
-
   protected readonly container: Container;
+  protected readonly metrics: Registry;
+
   protected collector: number;
-  protected metrics: Registry;
   protected storage: Connection;
 
   // counters
@@ -49,7 +48,6 @@ export class Bot extends BaseService<BotData> implements Service {
   protected msgCounter: Counter;
 
   // services
-  protected filters: Array<Filter>;
   protected controllers: Array<Controller>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
@@ -68,10 +66,8 @@ export class Bot extends BaseService<BotData> implements Service {
     this.container = options.container;
     this.metrics = options.metrics;
     this.services = options.services;
-    this.strict = options.data.strict;
 
     // set up deps
-    this.filters = [];
     this.controllers = [];
     this.listeners = [];
     this.parsers = [];
@@ -104,6 +100,8 @@ export class Bot extends BaseService<BotData> implements Service {
    * Set up the async resources that cannot be created in the constructor: filters, controllers, parsers, etc
    */
   public async start() {
+    await super.start();
+
     this.logger.info('starting bot');
 
     this.logger.info('setting up streams');
@@ -195,22 +193,6 @@ export class Bot extends BaseService<BotData> implements Service {
       results.push(cmd);
     }
     return filterNil(results);
-  }
-
-  /**
-   * @TODO: this method belongs somewhere else, perhaps bot service
-   */
-  public async checkFilters(value: FilterValue, filters: Array<Filter>): Promise<boolean> {
-    for (const filter of filters) {
-      const result = await filter.check(value);
-      this.logger.debug({ result }, 'checked filter');
-
-      if (!checkFilter(result, this.strict)) {
-        return false;
-      }
-    }
-
-    return true;
   }
 
   /**
@@ -310,11 +292,6 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   protected async startServices() {
-    this.logger.info('setting up filters');
-    for (const data of this.data.filters) {
-      this.filters.push(await this.services.createService<Filter, FilterData>(data));
-    }
-
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
       this.controllers.push(await this.services.createService<Controller, ControllerData>(data));

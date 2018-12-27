@@ -7,11 +7,11 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
-import { Listener } from 'src/listener/Listener';
+import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface SlackListenerData {
+export interface SlackListenerData extends ListenerData {
   token: {
     bot: string;
     web: string;

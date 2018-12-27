@@ -5,9 +5,8 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { checkFilter, Filter } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { getLogInfo, ServiceDefinition } from 'src/Service';
+import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 
@@ -20,7 +19,6 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   protected readonly nouns: Set<string>;
 
   // services
-  protected readonly filters: Array<Filter>;
   protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
@@ -28,27 +26,18 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     super(options, schemaPath);
 
     this.nouns = new Set(nouns);
-    this.filters = [];
     this.services = options.services;
     this.transforms = [];
   }
 
   public async start() {
-    const filters = this.data.filters || [];
-    for (const def of filters) {
-      const filter = await this.services.createService<Filter, any>(def);
-      this.filters.push(filter);
-    }
+    await super.start();
 
     const transforms: Array<ServiceDefinition<TransformData>> = this.data.transforms || [];
     for (const def of transforms) {
       const transform = await this.services.createService<Transform, any>(def);
       this.transforms.push(transform);
     }
-  }
-
-  public async stop() {
-    /* noop */
   }
 
   public async check(cmd: Command): Promise<boolean> {
@@ -59,12 +48,9 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       return false;
     }
 
-    for (const filter of this.filters) {
-      const behavior = await filter.check(cmd);
-      if (!checkFilter(behavior, this.bot.strict)) {
-        this.logger.debug({ filter: getLogInfo(filter) }, 'command failed filter');
-        return false;
-      }
+    if (!await this.checkFilters(cmd, this.filters)) {
+      this.logger.debug('command failed filters');
+      return false;
     }
 
     this.logger.debug({ cmd }, 'controller can handle command');

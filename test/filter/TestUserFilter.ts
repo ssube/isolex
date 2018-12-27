@@ -28,6 +28,8 @@ async function createUserFilter(data: UserFilterData) {
 describeAsync('user filter', async () => {
   itAsync('should have a working helper', async () => {
     const { filter } = await createUserFilter({
+      filters: [],
+      strict: true,
       users: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,
@@ -38,6 +40,8 @@ describeAsync('user filter', async () => {
 
   itAsync('should allow commands from allowed users', async () => {
     const { filter } = await createUserFilter({
+      filters: [],
+      strict: true,
       users: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,
@@ -57,6 +61,8 @@ describeAsync('user filter', async () => {
 
   itAsync('should filter out commands from banned users', async () => {
     const { filter } = await createUserFilter({
+      filters: [],
+      strict: true,
       users: {
         data: ['test'],
         mode: ChecklistMode.EXCLUDE,

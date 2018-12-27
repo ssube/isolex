@@ -1,4 +1,4 @@
-import { BotServiceOptions } from 'src/BotService';
+import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
@@ -20,9 +20,9 @@ export enum FilterBehavior {
   Ignore = 0xFF,
 }
 
-export type FilterData = any;
+export type FilterData = BotServiceData;
 
-export type FilterOptions<TData> = BotServiceOptions<TData>;
+export type FilterOptions<TData extends FilterData> = BotServiceOptions<TData>;
 
 export type FilterValue = Command | Message;
 

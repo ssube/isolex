@@ -1,8 +1,8 @@
 import { BaseFilter } from 'src/filter/BaseFilter';
-import { Filter, FilterBehavior, FilterOptions, FilterValue } from 'src/filter/Filter';
+import { Filter, FilterBehavior, FilterData, FilterOptions, FilterValue } from 'src/filter/Filter';
 import { Match, MatchData } from 'src/utils/match';
 
-export interface RuleFilterData {
+export interface RuleFilterData extends FilterData {
   match: MatchData;
 }
 

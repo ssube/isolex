@@ -30,6 +30,7 @@ describeAsync('template transform', async () => {
       }),
       data: {
         filters: [],
+        strict: true,
         templates,
       },
       metadata: {

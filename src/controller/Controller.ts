@@ -1,11 +1,9 @@
-import { BotServiceOptions } from 'src/BotService';
+import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
-import { FilterData } from 'src/filter/Filter';
 import { Service, ServiceDefinition } from 'src/Service';
 import { TransformData } from 'src/transform/Transform';
 
-export interface ControllerData {
-  filters: Array<ServiceDefinition<FilterData>>;
+export interface ControllerData extends BotServiceData {
   transforms: Array<ServiceDefinition<TransformData>>;
 }
 

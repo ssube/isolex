@@ -1,13 +1,11 @@
 import { expect } from 'chai';
-import { ConsoleLogger, Container } from 'noicejs';
+import { Container } from 'noicejs';
 
 import { defer } from 'src/utils';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService } from 'test/helpers/container';
 
-const COOLDOWN_NAME = 'test-cooldown';
 const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
 
 describeAsync('utils', async () => {
@@ -16,15 +14,9 @@ describeAsync('utils', async () => {
       const ctr = Container.from();
       await ctr.configure();
 
-      const cd = await createService<Cooldown, CooldownOptions>(ctr, Cooldown, {
-        data: {
-          base: 10,
-          grow: 2,
-        },
-        metadata: {
-          kind: 'cooldown',
-          name: COOLDOWN_NAME,
-        },
+      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+        base: 10,
+        grow: 2,
       });
 
       expect(cd.inc()).to.equal(COOLDOWN_STEPS[1]);
@@ -41,16 +33,9 @@ describeAsync('utils', async () => {
       const ctr = Container.from();
       await ctr.configure();
 
-      const cd = await createService<Cooldown, CooldownOptions>(ctr, Cooldown, {
-        data: {
-          base: 5000,
-          grow: 0,
-        },
-        logger: ConsoleLogger.global,
-        metadata: {
-          kind: 'cooldown',
-          name: COOLDOWN_NAME,
-        },
+      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+        base: 5000,
+        grow: 0,
       });
 
       await cd.start();
@@ -61,16 +46,9 @@ describeAsync('utils', async () => {
       const ctr = Container.from();
       await ctr.configure();
 
-      const cd = await createService<Cooldown, CooldownOptions>(ctr, Cooldown, {
-        data: {
-          base: 20,
-          grow: 0,
-        },
-        logger: ConsoleLogger.global,
-        metadata: {
-          kind: 'cooldown',
-          name: COOLDOWN_NAME,
-        },
+      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+        base: 20,
+        grow: 0,
       });
 
       await cd.start();

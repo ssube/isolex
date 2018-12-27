@@ -24,6 +24,7 @@ describeAsync('jsonpath transform', async () => {
       data: {
         filters: [],
         queries,
+        strict: true,
       },
       jsonpath: new JsonPath(),
       metadata: {
