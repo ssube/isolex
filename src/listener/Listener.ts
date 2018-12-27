@@ -1,4 +1,4 @@
-import { BotServiceOptions } from 'src/BotService';
+import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -13,7 +13,7 @@ export interface FetchOptions {
   id?: string;
 }
 
-export type ListenerData = any;
+export type ListenerData = BotServiceData;
 export type ListenerOptions<TData extends ListenerData> = BotServiceOptions<TData>;
 
 export interface ContextFetchOptions extends FetchOptions {

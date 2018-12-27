@@ -1,5 +1,6 @@
 import { readFile } from 'fs';
 import { DEFAULT_SAFE_SCHEMA, safeLoad, Schema } from 'js-yaml';
+import { flatten } from 'lodash';
 import { join } from 'path';
 import { promisify } from 'util';
 
@@ -10,7 +11,7 @@ import { regexpType } from 'src/config/type/Regexp';
 import { NotFoundError } from 'src/error/NotFoundError';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
-export const CONFIG_NAME = 'isolex.yml';
+export const CONFIG_NAME = ['isolex.yml', '.isolex.yml'];
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
   envType,
   includeType,
@@ -25,7 +26,7 @@ const readFileSync = promisify(readFile);
  * This will include the value of `ISOLEX_HOME`, `HOME`, the current working directory, and any extra paths
  * passed as the final arguments.
  */
-export function completePaths(name: string, ...extras: Array<string>): Array<string> {
+export function completePaths(name: string, extras: Array<string>): Array<string> {
   const paths = [];
 
   const env = process.env[CONFIG_ENV];
@@ -49,10 +50,7 @@ export function completePaths(name: string, ...extras: Array<string>): Array<str
 }
 
 export async function loadConfig(...extras: Array<string>): Promise<BotDefinition> {
-  const paths = [
-    ...completePaths(CONFIG_NAME, ...extras),
-    ...completePaths('.' + CONFIG_NAME, ...extras),
-  ];
+  const paths = flatten(CONFIG_NAME.map((it) => completePaths(it, extras)));
 
   for (const p of paths) {
     const data = await readConfig(p);

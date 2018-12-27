@@ -5,8 +5,7 @@ import { CoreOptions, RequiredUriUrl } from 'request';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JSON } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerData extends ControllerData {
@@ -34,7 +33,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   public async handle(cmd: Command): Promise<void> {
     const [location] = cmd.get('location');
     if (!location) {
-      await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, 'unknown or missing location'));
+      return this.reply(cmd.context, 'unknown or missing location');
       return;
     }
 
@@ -42,11 +41,8 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
       const weather = await this.getWeather(location);
 
       this.logger.debug({ weather }, 'transforming weather data');
-      const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, JSON.stringify(weather)));
-      for (const msg of messages) {
-        this.logger.debug({ msg }, 'sending weather msg');
-        await this.bot.sendMessage(msg);
-      }
+      const body = await this.transform(cmd, TYPE_JSON, weather);
+      return this.reply(cmd.context, body);
     } catch (err) {
       this.logger.error(err, 'error getting weather');
     }

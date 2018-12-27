@@ -19,12 +19,12 @@ import { Context, ContextData } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { FetchOptions, Listener } from 'src/listener/Listener';
+import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
-export interface DiscordListenerData {
+export interface DiscordListenerData extends ListenerData {
   presence?: PresenceData;
   token: string;
 }
@@ -180,10 +180,10 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     return Promise.all(messages);
   }
 
-  public onMessage(msg: DiscordMessage) {
+  public onMessage(input: DiscordMessage) {
     this.countEvent('message');
-    this.threads.set(msg.id, msg);
-    this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
+    this.threads.set(input.id, input);
+    this.convertMessage(input).then((msg) => this.bot.receive(msg)).catch((err) => {
       this.logger.error(err, 'error receiving message');
     });
   }

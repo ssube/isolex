@@ -1,14 +1,13 @@
+import { BaseOptions } from 'noicejs/Container';
 import { Observable, Subject } from 'rxjs';
 
-import { BaseService, BaseServiceOptions } from 'src/BaseService';
+import { Service, ServiceLifecycle } from 'src/Service';
 
 export const GROWTH_FACTOR = 2;
-export interface CooldownData {
+export interface CooldownOptions extends BaseOptions {
   base: number;
   grow: number;
 }
-
-export type CooldownOptions = BaseServiceOptions<CooldownData>;
 
 /**
  * Cooldown is a specialized counter for rate limiting, bans, and the like.
@@ -16,12 +15,14 @@ export type CooldownOptions = BaseServiceOptions<CooldownData>;
  * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
  * an exponential interval with an observable.
  */
-export class Cooldown extends BaseService<CooldownData> {
+export class Cooldown implements Service {
   public readonly id: string;
+  public readonly kind: string;
   public readonly name: string;
 
   protected active: boolean;
   protected boundNext: Function;
+  protected data: CooldownOptions;
   protected grow: number;
   protected rate: number;
   protected stream: Subject<number>;
@@ -29,15 +30,18 @@ export class Cooldown extends BaseService<CooldownData> {
   protected timer: number;
 
   constructor(options: CooldownOptions) {
-    super(options, 'isolex#/definitions/utils-cooldown');
-
     this.active = false;
     this.boundNext = this.next.bind(this);
-    this.grow = options.data.grow;
-    this.rate = options.data.base;
+    this.data = options;
+    this.grow = options.grow;
+    this.rate = options.base;
     this.stream = new Subject();
     this.ticks = 0;
     this.timer = 0;
+  }
+
+  public async notify(event: ServiceLifecycle): Promise<void> {
+    /* noop */
   }
 
   public async start() {

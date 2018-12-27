@@ -88,7 +88,7 @@ export interface GithubPRControllerData extends ControllerData {
 
 export type GithubPRControllerOptions = ControllerOptions<GithubPRControllerData>;
 
-@Inject('bot', 'services')
+@Inject()
 export class GithubPRController extends BaseController<GithubPRControllerData> implements Controller {
   protected client: Function;
 
@@ -148,7 +148,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const requestNumber = cmd.getHead('number');
 
     const response = await this.getRequestData(owner, project, requestNumber);
-    return this.formatResponse(cmd, [response.data.repository.pullRequest]);
+    return this.transformJSON(cmd, [response.data.repository.pullRequest]);
   }
 
   public async listRequests(cmd: Command): Promise<void> {
@@ -159,7 +159,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
       owner,
       project,
     });
-    return this.formatResponse(cmd, response.data.repository.pullRequests.nodes);
+    return this.transformJSON(cmd, response.data.repository.pullRequests.nodes);
   }
 
   public async updateRequest(cmd: Command): Promise<void> {
@@ -193,18 +193,5 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     this.logger.debug({ queryVars }, 'query variables');
 
     return this.client(QUERY_PR_GET, queryVars);
-  }
-
-  protected async formatResponse(cmd: Command, response: any): Promise<void> {
-    this.logger.debug({ response }, 'response from github');
-
-    const body = await this.transform(cmd, new Message({
-      body: JSON.stringify(response),
-      context: cmd.context,
-      reactions: [],
-      type: TYPE_JSON,
-    }));
-
-    await this.bot.sendMessage(...body);
   }
 }

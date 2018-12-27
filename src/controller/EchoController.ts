@@ -3,7 +3,6 @@ import { Inject } from 'noicejs';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { Transform } from 'src/transform/Transform';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -26,8 +25,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'echoing command');
 
-    const data = Message.reply(cmd.context, TYPE_TEXT, cmd.toString());
-    const messages = await this.transform(cmd, data);
-    await this.bot.sendMessage(...messages);
+    const result = await this.transform(cmd, TYPE_TEXT, {});
+    return this.reply(cmd.context, result);
   }
 }

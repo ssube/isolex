@@ -1,10 +1,8 @@
 import * as jp from 'jsonpath';
 
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
-import { TYPE_TEXT } from 'src/utils/Mime';
 
 /**
  * Dictionary of templates to be compiled.
@@ -26,14 +24,16 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
     this.keys = Array.from(this.data.keys);
   }
 
-  public async transform(cmd: Command, msg: Message): Promise<Array<Message>> {
-    const scope = this.mergeScope(cmd, msg);
+  public async transform(cmd: Command, type: string, body: any): Promise<any> {
+    const scope = this.mergeScope(cmd, body);
+    this.logger.debug({ cmd, scope }, 'running flatten transform');
+
     const parts = [];
     for (const key of this.keys) {
       const value = jp.query(scope, key);
       parts.push(...value);
     }
-    const body = parts.join(this.data.join);
-    return [Message.reply(cmd.context, TYPE_TEXT, body)];
+
+    return parts.join(this.data.join);
   }
 }

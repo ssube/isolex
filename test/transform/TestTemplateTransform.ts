@@ -29,7 +29,8 @@ describeAsync('template transform', async () => {
         }),
       }),
       data: {
-        parsers: [],
+        filters: [],
+        strict: true,
         templates,
       },
       metadata: {
@@ -43,10 +44,8 @@ describeAsync('template transform', async () => {
       labels: {},
       noun: 'test',
       verb: CommandVerb.Get,
-    }), Message.reply(ineeda<Context>(), TYPE_JSON, JSON.stringify(data)));
+    }), TYPE_JSON, data);
 
-    expect(output.length).to.equal(1);
-    const parsed = JSON.parse(output[0].body);
-    expect(parsed).to.deep.equal(templates);
+    expect(output).to.deep.equal(templates);
   });
 });

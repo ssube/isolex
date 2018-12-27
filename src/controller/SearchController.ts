@@ -3,7 +3,6 @@ import { Container, Inject } from 'noicejs';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -48,11 +47,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
       uri: requestUrl,
     });
 
-    const body = JSON.stringify(response);
-    const messages = await this.transform(cmd, Message.reply(cmd.context, TYPE_JSON, body));
-    this.logger.debug({ count: messages.length }, 'transformed search result into message');
-    for (const msg of messages) {
-      await this.bot.sendMessage(msg);
-    }
+    const body = await this.transform(cmd, TYPE_JSON, response);
+    return this.reply(cmd.context, body);
   }
 }

@@ -1,9 +1,9 @@
 import { BotServiceOptions } from 'src/BotService';
 import { BaseFilter } from 'src/filter/BaseFilter';
-import { Filter, FilterBehavior, FilterValue } from 'src/filter/Filter';
+import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter/Filter';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
-export interface UserFilterData {
+export interface UserFilterData extends FilterData {
   users: ChecklistOptions<string>;
 }
 

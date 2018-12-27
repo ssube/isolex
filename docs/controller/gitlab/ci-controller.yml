@@ -1,0 +1,56 @@
+metadata:
+  kind: gitlab-ci-controller
+  name: test-ci
+data:
+  client:
+    root: https://git.apextoaster.com
+    token: !env ISOLEX_GITLAB_TOKEN
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: test-ci-template-pipelines
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: test-ci-filter-pipelines
+            data:
+              match:
+                rules:
+                  - key: noun
+                    operator: any
+                    values:
+                      - string: gitlab-ci-pipeline
+        templates:
+          body: >-
+            {{#each data}}
+              #{{ id }} on {{ ref }} ({{ trim sha 8 "" }}): {{ status }}
+            {{/each}}
+    - metadata:
+        kind: template-transform
+        name: test-ci-template-jobs
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: test-ci-filter-jobs
+            data:
+              match:
+                rules:
+                  - key: noun
+                    operator: any
+                    values:
+                      - string: gitlab-ci-job
+        templates:
+          body: >-
+            {{#each data}}
+              {{ stage }} - {{ name }}: {{ status }}
+            {{/each}}
+ 
+    - metadata:
+        kind: flatten-transform
+        name: test-ci-flatten
+      data:
+        deep: false
+        join: " "
+        keys: [$.data.body]

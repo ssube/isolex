@@ -18,6 +18,7 @@ data:
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/dice-controller.yml
     - !include ../docs/controller/github/pr-controller.yml
+    - !include ../docs/controller/gitlab/ci-controller.yml
     - !include ../docs/controller/kubernetes-controller.yml
     - !include ../docs/controller/learn-controller.yml
     - !include ../docs/controller/math-controller.yml

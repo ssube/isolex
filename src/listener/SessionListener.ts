@@ -3,14 +3,14 @@ import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { BaseListener } from 'src/listener/BaseListener';
-import { FetchOptions } from 'src/listener/Listener';
+import { FetchOptions, ListenerData } from 'src/listener/Listener';
 import { Clock } from 'src/utils/Clock';
 
 /**
  * A listener that tracks sessions.
  */
 
-export abstract class SessionListener<TData> extends BaseListener<TData> {
+export abstract class SessionListener<TData extends ListenerData> extends BaseListener<TData> {
   protected readonly clock: Clock;
   protected readonly sessions: Map<string, Session>;
 

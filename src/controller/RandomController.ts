@@ -49,7 +49,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
 
     this.logger.debug({ args }, 'Returning random results');
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, `The result of your roll is: ${result}`));
+    return this.reply(cmd.context, `The result of your roll is: ${result}`);
   }
 
   private getRandomDefault(): number {

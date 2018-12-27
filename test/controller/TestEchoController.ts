@@ -20,9 +20,11 @@ describeAsync('echo controller', async () => {
     const controller = await createService(container, EchoController, {
       data: {
         filters: [],
+        strict: true,
         transforms: [{
           data: {
-            parsers: [],
+            filters: [],
+            strict: true,
           },
           metadata: {
             kind: 'template-transform',
@@ -53,9 +55,11 @@ describeAsync('echo controller', async () => {
       }),
       data: {
         filters: [],
+        strict: true,
         transforms: [{
           data: {
-            parsers: [],
+            filters: [],
+            strict: true,
           },
           metadata: {
             kind: 'template-transform',

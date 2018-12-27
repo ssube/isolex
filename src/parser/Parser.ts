@@ -1,4 +1,4 @@
-import { BotServiceOptions } from 'src/BotService';
+import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
@@ -6,7 +6,7 @@ import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { MatchData } from 'src/utils/match';
 
-export interface ParserData {
+export interface ParserData extends BotServiceData {
   /**
    * Default command options.
    */

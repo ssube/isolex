@@ -34,6 +34,16 @@ definitions:
         type: string
       token:
         type: string
+
+  client-gitlab:
+    type: object
+    additionalProperties: false
+    required: [token]
+    properties:
+      root:
+        type: string
+      token:
+        type: string
  
   entity-command:
     type: object
@@ -218,6 +228,14 @@ definitions:
         properties:
           client:
             $ref: "#/definitions/client-github"
+  service-controller-gitlab-ci:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        required: [client]
+        properties:
+          client:
+            $ref: "#/definitions/client-gitlab"
   service-controller-kubernetes:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -521,6 +539,7 @@ definitions:
     allOf:
       - $ref: "#/definitions/service-transform"
       - type: object
+        required: [keys]
         properties:
           deep:
             type: boolean
