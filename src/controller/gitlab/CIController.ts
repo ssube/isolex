@@ -1,12 +1,10 @@
+import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { GitlabClient, GitlabClientData } from 'src/utils/gitlab';
-import { TYPE_JSON } from 'src/utils/Mime';
-import { isNil } from 'lodash';
+import { GitlabClient, GitlabClientData, JobOptions, PipelineOptions, ProjectOptions } from 'src/utils/gitlab';
 
 export interface GitlabCIControllerData extends ControllerData {
   client: GitlabClientData;
@@ -80,27 +78,16 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
   }
 
   public async createPipeline(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const project = cmd.getHead('project');
-    const ref = cmd.getHead('ref');
-    const pipeline = await this.client.createPipeline({
-      group,
-      project,
-      ref,
-    });
+    const options = {
+      ...this.getProjectOptions(cmd),
+      ref: cmd.getHead('ref'),
+    };
+    const pipeline = await this.client.createPipeline(options);
     return this.transformJSON(cmd, pipeline);
   }
 
   public async deletePipeline(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const pipeline = cmd.getHead('pipeline');
-    const project = cmd.getHead('project');
-
-    const options = {
-      group,
-      pipeline,
-      project,
-    };
+    const options = this.getPipelineOptions(cmd);
     const existing = await this.client.getPipeline(options);
     if (isNil(existing)) {
       return this.reply(cmd.context, 'pipeline does not exist');
@@ -111,15 +98,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
   }
 
   public async deleteJob(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const job = cmd.getHead('job');
-    const project = cmd.getHead('project');
-
-    const options = {
-      group,
-      job,
-      project,
-    };
+    const options = this.getJobOptions(cmd);
     const existing = await this.client.getJob(options);
     if (isNil(existing)) {
       return this.reply(cmd.context, 'job does not exist');
@@ -130,61 +109,31 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
   }
 
   public async getJob(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const job = cmd.getHead('job');
-    const project = cmd.getHead('project');
-    const response = await this.client.getJob({
-      group,
-      job,
-      project,
-    });
+    const options = this.getJobOptions(cmd);
+    const response = await this.client.getJob(options);
     return this.transformJSON(cmd, response);
   }
 
   public async getPipeline(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const pipeline = cmd.getHead('pipeline');
-    const project = cmd.getHead('project');
-    const response = await this.client.getPipeline({
-      group,
-      pipeline,
-      project,
-    });
+    const options = this.getPipelineOptions(cmd);
+    const response = await this.client.getPipeline(options);
     return this.transformJSON(cmd, response);
   }
 
   public async listJobs(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const pipeline = cmd.getHead('pipeline');
-    const project = cmd.getHead('project');
-    const jobs = await this.client.listJobs({
-      group,
-      pipeline,
-      project,
-    });
+    const options = this.getPipelineOptions(cmd);
+    const jobs = await this.client.listJobs(options);
     return this.transformJSON(cmd, jobs);
   }
 
   public async listPipelines(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const project = cmd.getHead('project');
-    const pipelines = await this.client.listPipelines({
-      group,
-      project,
-    });
+    const options = this.getProjectOptions(cmd);
+    const pipelines = await this.client.listPipelines(options);
     return this.transformJSON(cmd, pipelines);
   }
 
   public async updateJob(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const job = cmd.getHead('job');
-    const project = cmd.getHead('project');
-
-    const options = {
-      group,
-      job,
-      project,
-    };
+    const options = this.getJobOptions(cmd);
     const existing = await this.client.getJob(options);
     if (!existing.length) {
       return this.reply(cmd.context, 'pipeline not found');
@@ -195,15 +144,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
   }
 
   public async updatePipeline(cmd: Command): Promise<void> {
-    const group = cmd.getHead('group');
-    const pipeline = cmd.getHead('pipeline');
-    const project = cmd.getHead('project');
-    
-    const options = {
-      group,
-      pipeline,
-      project,
-    };
+    const options = this.getPipelineOptions(cmd);
     const existing = await this.client.getPipeline(options);
     if (!existing.length) {
       return this.reply(cmd.context, 'pipeline not found');
@@ -211,5 +152,30 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
 
     const retried = await this.client.retryPipeline(options);
     return this.transformJSON(cmd, retried);
+  }
+
+  protected getProjectOptions(cmd: Command): ProjectOptions {
+    const group = cmd.getHead('group');
+    const project = cmd.getHead('project');
+    return {
+      group,
+      project,
+    };
+  }
+
+  protected getJobOptions(cmd: Command): JobOptions {
+    const job = cmd.getHead('job');
+    return {
+      ...this.getProjectOptions(cmd),
+      job,
+    };
+  }
+
+  protected getPipelineOptions(cmd: Command): PipelineOptions {
+    const pipeline = cmd.getHead('pipeline');
+    return {
+      ...this.getProjectOptions(cmd),
+      pipeline,
+    };
   }
 }

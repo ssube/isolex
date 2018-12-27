@@ -1,4 +1,4 @@
-import { kebabCase, isNil } from 'lodash';
+import { isNil, kebabCase } from 'lodash';
 import { Container, Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
@@ -61,7 +61,7 @@ export class GitlabClient {
         ref: options.ref,
       }
     };
-    return this.makeRequest(`${projectURL}/pipelines`, reqOptions);
+    return this.makeRequest(`${projectURL}/pipeline`, reqOptions);
   }
 
   public async getJob(options: JobOptions): Promise<any> {
@@ -122,11 +122,16 @@ export class GitlabClient {
   }
 
   protected async makeRequest(url: string, options: ProjectOptions): Promise<any> {
-    const response = await this.container.create<string, any>('request', {
-      url,
-      ...options,
-    });
-    this.logger.debug({ response }, 'got response from gitlab');
-    return JSON.parse(response);
+    try {
+      const response = await this.container.create<string, any>('request', {
+        url,
+        ...options,
+      });
+      this.logger.debug({ response }, 'got response from gitlab');
+      return JSON.parse(response);
+    } catch (err) {
+      this.logger.error(err, 'error during gitlab request');
+      return [];
+    }
   }
 }
