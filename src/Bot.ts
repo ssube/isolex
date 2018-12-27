@@ -9,7 +9,6 @@ import { BaseService, BaseServiceOptions } from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';

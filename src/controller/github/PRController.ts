@@ -3,8 +3,6 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { TYPE_JSON } from 'src/utils/Mime';
 
 import { BaseController } from '../BaseController';
 import { Controller, ControllerData, ControllerOptions } from '../Controller';

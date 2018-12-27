@@ -3,9 +3,7 @@ import { Inject } from 'noicejs';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
-import { TYPE_TEXT } from 'src/utils/Mime';
 import { Picklist } from 'src/utils/Picklist';
 
 export interface PickControllerData extends ControllerData {

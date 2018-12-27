@@ -16,8 +16,8 @@ export type JsonpathTransformOptions = TransformOptions<JsonpathTransformData>;
 
 @Inject('jsonpath')
 export class JsonpathTransform extends BaseTransform<JsonpathTransformData> implements Transform {
-  protected jsonpath: JsonPath;
-  protected queries: Map<string, string>;
+  protected readonly jsonpath: JsonPath;
+  protected readonly queries: Map<string, string>;
 
   constructor(options: JsonpathTransformOptions) {
     super(options, 'isolex#/definitions/service-transform-jsonpath');

@@ -4,9 +4,7 @@ import { Inject } from 'noicejs';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
-import { TYPE_TEXT } from 'src/utils/Mime';
 
 export const NOUN_MATH = 'math';
 

@@ -34,7 +34,6 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     const [location] = cmd.get('location');
     if (!location) {
       return this.reply(cmd.context, 'unknown or missing location');
-      return;
     }
 
     try {

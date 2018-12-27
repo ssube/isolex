@@ -2,7 +2,6 @@ import { Inject } from 'noicejs';
 
 import { BotService } from 'src/BotService';
 import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 
 @Inject()
