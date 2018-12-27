@@ -76,12 +76,17 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   protected async transform(cmd: Command, input: Message): Promise<Array<Message>> {
     let batch = [input];
     for (const transform of this.transforms) {
-      const next = [];
-      for (const msg of batch) {
-        const result = await transform.transform(cmd, msg);
-        next.push(...result);
+      const check = await transform.check(cmd);
+      if (check) {
+        const next = [];
+        for (const msg of batch) {
+          const result = await transform.transform(cmd, msg);
+          next.push(...result);
+        }
+        batch = next;
+      } else {
+        this.logger.debug({ check, transform: transform.name }, 'skipping transform');
       }
-      batch = next;
     }
     return batch;
   }

@@ -59,7 +59,7 @@ export class GitlabClient {
       ...this.getRequestOptions(options, 'POST'),
       qs: {
         ref: options.ref,
-      }
+      },
     };
     return this.makeRequest(`${projectURL}/pipeline`, reqOptions);
   }

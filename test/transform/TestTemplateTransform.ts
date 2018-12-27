@@ -29,7 +29,7 @@ describeAsync('template transform', async () => {
         }),
       }),
       data: {
-        parsers: [],
+        filters: [],
         templates,
       },
       metadata: {

@@ -141,7 +141,7 @@ export class Bot extends BaseService<BotData> implements Service {
   public async receive(msg: Message): Promise<Array<Command>> {
     this.logger.debug({ msg }, 'received incoming message');
 
-    if (!await this.checkFilters(msg)) {
+    if (!await this.checkFilters(msg, this.filters)) {
       this.logger.warn({ msg }, 'dropped incoming message due to filters');
       return [];
     }
@@ -165,7 +165,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     const filtered: Array<Message> = [];
     for (const message of messages) {
-      if (await this.checkFilters(message)) {
+      if (await this.checkFilters(message, this.filters)) {
         filtered.push(message);
       }
     }
@@ -198,6 +198,22 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   /**
+   * @TODO: this method belongs somewhere else, perhaps bot service
+   */
+  public async checkFilters(value: FilterValue, filters: Array<Filter>): Promise<boolean> {
+    for (const filter of filters) {
+      const result = await filter.check(value);
+      this.logger.debug({ result }, 'checked filter');
+
+      if (!checkFilter(result, this.strict)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * Handle a command using the appropriate controller.
    */
   protected async receiveCommand(cmd: Command): Promise<void> {
@@ -207,7 +223,7 @@ export class Bot extends BaseService<BotData> implements Service {
       commandVerb: cmd.verb,
     });
 
-    if (!await this.checkFilters(cmd)) {
+    if (!await this.checkFilters(cmd, this.filters)) {
       this.logger.warn({ cmd }, 'dropped command due to filters');
       return;
     }
@@ -231,7 +247,7 @@ export class Bot extends BaseService<BotData> implements Service {
       messageType: msg.type,
     });
 
-    if (!await this.checkFilters(msg)) {
+    if (!await this.checkFilters(msg, this.filters)) {
       this.logger.warn({ msg }, 'dropped outgoing message due to filters');
       return;
     }
@@ -340,19 +356,6 @@ export class Bot extends BaseService<BotData> implements Service {
       await this.storage.runMigrations();
       this.logger.info('database migrations complete');
     }
-  }
-
-  protected async checkFilters(next: FilterValue): Promise<boolean> {
-    for (const filter of this.filters) {
-      const result = await filter.check(next);
-      this.logger.debug({ result }, 'checked filter');
-
-      if (!checkFilter(result, this.strict)) {
-        return false;
-      }
-    }
-
-    return true;
   }
 
   /**

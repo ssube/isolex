@@ -1,34 +1,40 @@
 import { safeLoad } from 'js-yaml';
+import { Inject } from 'noicejs';
 
 import { BotService } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { Filter, FilterData, FilterOptions } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { Parser } from 'src/parser/Parser';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { TYPE_JSON, TYPE_TEXT, TYPE_YAML } from 'src/utils/Mime';
 
+@Inject('services')
 export abstract class BaseTransform<TData extends TransformData> extends BotService<TData> implements Transform {
-  protected readonly parsers: Array<Parser>;
+  protected readonly filters: Array<Filter>;
   protected readonly services: ServiceModule;
 
   constructor(options: TransformOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.parsers = [];
+    this.filters = [];
     this.services = options.services;
   }
 
   public async start() {
-    const parsers = this.data.parsers || [];
-    for (const def of parsers) {
-      const parser = await this.services.createService<Parser, any>(def);
-      this.parsers.push(parser);
+    const filters = this.data.filters || [];
+    for (const def of filters) {
+      const filter = await this.services.createService<Filter, FilterOptions<FilterData>>(def);
+      this.filters.push(filter);
     }
   }
 
   public async stop() {
-    /* noop */
+    this.filters.length = 0;
+  }
+
+  public check(cmd: Command): Promise<boolean> {
+    return this.bot.checkFilters(cmd, this.filters);
   }
 
   public abstract transform(cmd: Command, msg: Message): Promise<Array<Message>>;

@@ -22,7 +22,7 @@ describeAsync('jsonpath transform', async () => {
 
     const transform = await createService(container, JsonpathTransform, {
       data: {
-        parsers: [],
+        filters: [],
         queries,
       },
       jsonpath: new JsonPath(),

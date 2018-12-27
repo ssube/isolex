@@ -1,16 +1,18 @@
 import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { ParserData } from 'src/parser/Parser';
+import { FilterData } from 'src/filter/Filter';
 import { Service, ServiceDefinition } from 'src/Service';
 
 export interface TransformData {
-  parsers: Array<ServiceDefinition<ParserData>>;
+  filters: Array<ServiceDefinition<FilterData>>;
 }
 
 export type TransformOptions<TData extends TransformData> = BotServiceOptions<TData>;
 
 export interface Transform extends Service {
+  check(cmd: Command): Promise<boolean>;
+
   /**
    * Transform some unstructured data, string or object, into normal command args.
    *
