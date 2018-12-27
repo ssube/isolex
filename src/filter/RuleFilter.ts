@@ -9,8 +9,8 @@ export interface RuleFilterData extends FilterData {
 export abstract class RuleFilter extends BaseFilter<RuleFilterData> implements Filter {
   protected matcher: Match;
 
-  constructor(options: FilterOptions<RuleFilterData>) {
-    super(options, 'isolex#/definitions/service-filter-rule');
+  constructor(options: FilterOptions<RuleFilterData>, schemaPath: string) {
+    super(options, schemaPath);
 
     this.matcher = new Match(options.data.match);
   }

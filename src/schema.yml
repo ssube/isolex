@@ -144,16 +144,16 @@ definitions:
             type: string
 
   service-controller:
-    type: object
-    properties:
-      filters:
-        type: array
-        items:
-          $ref: "#/definitions/service-definition"
-      transforms:
-        type: array
-        items:
-          $ref: "#/definitions/service-definition"
+    allOf:
+      - $ref: "#/definitions/service-data"
+      - type: object
+        additionalProperties: true
+        required: [transforms]
+        properties:
+          transforms:
+            type: array
+            items:
+              $ref: "#/definitions/service-definition"
 
   service-controller-completion:
     $ref: "#/definitions/service-controller"
@@ -337,88 +337,128 @@ definitions:
     allOf:
       - $ref: "#/definitions/service-controller"
       - type: object
+        additionalProperties: true
+        required: [api]
         properties:
           api:
             type: object
             additionalProperties: false
+            required: [key, root]
             properties:
               key:
                 type: string
               root:
                 type: string
 
-  service-filter-rule:
-    type: object
-    properties:
-      match:
-        $ref: "#/definitions/match-data"
-  service-filter-user:
-    type: object
-    properties:
-      users:
-        $ref: "#/definitions/checklist"
+  service-filter:
+    $ref: "#/definitions/service-data"
 
+  service-filter-command:
+    $ref: "#/definitions/service-filter-rule"
+
+  service-filter-message:
+    $ref: "#/definitions/service-filter-rule"
+
+  service-filter-rule:
+     allOf:
+      - $ref: "#/definitions/service-filter"
+      - type: object
+        additionalProperties: true
+        required: [match]
+        properties:
+          match:
+            $ref: "#/definitions/match-data"
+
+  service-filter-user:
+    allOf:
+      - $ref: "#/definitions/service-filter"
+      - type: object
+        additionalProperties: true
+        required: [users]
+        properties:
+          users:
+            $ref: "#/definitions/checklist"
+
+  service-listener:
+    $ref: "#/definitions/service-data"
+ 
   service-listener-discord:
-    type: object
-    properties:
-      presence:
-        type: object
-      token:
-        type: string
+    allOf:
+      - $ref: "#/definitions/service-listener"
+      - type: object
+        additionalProperties: true
+        required: [presence, token]
+        properties:
+          presence:
+            type: object
+          token:
+            type: string
 
   service-listener-express:
-    type: object
-    properties:
-      expose:
-        type: object
+    allOf:
+      - $ref: "#/definitions/service-listener"
+      - type: object
+        additionalProperties: true
+        required: [expose, graph, listen, token]
         properties:
+          expose:
+            type: object
+            properties:
+              graph:
+                type: boolean
+              graphiql:
+                type: boolean
+              metrics:
+                type: boolean
           graph:
-            type: boolean
-          graphiql:
-            type: boolean
-          metrics:
-            type: boolean
-      graph:
-        $ref: "#/definitions/service-definition"
-      listen:
-        type: object
-        properties:
-          address:
-            type: string
-          port:
-            type: number
-      token:
-        type: object
-        properties:
-          audience:
-            type: string
-          issuer:
-            type: string
-          scheme:
-            type: string
-          secret:
-            type: string
+            $ref: "#/definitions/service-definition"
+          listen:
+            type: object
+            properties:
+              address:
+                type: string
+              port:
+                type: number
+          token:
+            type: object
+            properties:
+              audience:
+                type: string
+              issuer:
+                type: string
+              scheme:
+                type: string
+              secret:
+                type: string
 
   service-listener-slack:
-    type: object
-    properties:
-      token:
-        type: object
+    allOf:
+      - $ref: "#/definitions/service-listener"
+      - type: object
+        additionalProperties: true
+        required: [token]
         properties:
-          bot:
-            type: string
-          web:
-            type: string
+          token:
+            type: object
+            additionalProperties: false
+            required: [bot, web]
+            properties:
+              bot:
+                type: string
+              web:
+                type: string
 
   service-parser:
-    type: object
-    properties:
-      defaultCommand:
-        $ref: "#/definitions/entity-command"
-      preferData:
-        type: boolean
-      match:
-        $ref: "#/definitions/match-data"
+    allOf:
+      - $ref: "#/definitions/service-data"
+      - type: object
+        properties:
+          defaultCommand:
+            $ref: "#/definitions/entity-command"
+          preferData:
+            type: boolean
+          match:
+            $ref: "#/definitions/match-data"
 
   service-parser-args:
     allOf:
@@ -519,18 +559,13 @@ definitions:
     $ref: "#/definitions/service-parser"
  
   service-transform:
-    type: object
-    properties:
-      filters:
-        type: array
-        items:
-          $ref: "#/definitions/service-definition"
+    $ref: "#/definitions/service-data"
 
   service-transform-flatten:
     allOf:
       - $ref: "#/definitions/service-transform"
       - type: object
-        required: [keys]
+        required: [join, keys]
         properties:
           deep:
             type: boolean
@@ -555,25 +590,14 @@ definitions:
     allOf:
       - $ref: "#/definitions/service-transform"
       - type: object
+        additionalProperties: true
+        required: [templates]
         properties:
           templates:
             type: object
             additionalProperties:
               type: string
  
-  service-graph:
-    type: object
-
-  service-definition:
-    type: object
-    additionalProperties: false
-    required: [data, metadata]
-    properties:
-      data:
-        type: object
-      metadata:
-        $ref: "#/definitions/service-metadata"
-
   service-metadata:
     type: object
     additionalProperties: false
@@ -583,6 +607,31 @@ definitions:
         type: string
       name:
         type: string
+
+  service-data:
+    type: object
+    additionalProperties: true
+    properties:
+      filters:
+        type: array
+        items:
+          $ref: "#/definitions/service-definition"
+      strict:
+        type: boolean
+        default: true
+
+  service-definition:
+    type: object
+    additionalProperties: false
+    required: [data, metadata]
+    properties:
+      data:
+        $ref: "#/definitions/service-data"
+      metadata:
+        $ref: "#/definitions/service-metadata"
+
+  service-graph:
+    type: object
 
   utils-cooldown:
     type: object

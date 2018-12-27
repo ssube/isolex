@@ -2,6 +2,7 @@ metadata:
   kind: token-controller
   name: default-token
 data:
+  transforms: []
   # nothing about these token settings is secure and they should not be used in production
   token:
     audience: [test-audience]

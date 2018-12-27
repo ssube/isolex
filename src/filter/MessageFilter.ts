@@ -1,6 +1,6 @@
 import { Message } from 'src/entity/Message';
-import { FilterBehavior, FilterValue } from 'src/filter/Filter';
-import { RuleFilter } from 'src/filter/RuleFilter';
+import { FilterBehavior, FilterOptions, FilterValue } from 'src/filter/Filter';
+import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
 
 /**
  * Simple filter for messages.
@@ -9,6 +9,10 @@ import { RuleFilter } from 'src/filter/RuleFilter';
  * - type
  */
 export class MessageFilter extends RuleFilter {
+  constructor(options: FilterOptions<RuleFilterData>) {
+    super(options, 'isolex#/definitions/service-filter-message');
+  }
+
   public async check(value: FilterValue): Promise<FilterBehavior> {
     if (Message.isMessage(value)) {
       const result = this.matcher.match({

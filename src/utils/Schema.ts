@@ -15,7 +15,12 @@ export class Schema {
   constructor(schema: any = SCHEMA_GLOBAL) {
     this.compiler = new Ajv({
       allErrors: true,
+      coerceTypes: true,
+      missingRefs: 'fail',
+      removeAdditional: 'failing',
       schemaId: 'auto',
+      useDefaults: true,
+      verbose: true,
     });
     this.compiler.addSchema(schema, 'isolex');
   }

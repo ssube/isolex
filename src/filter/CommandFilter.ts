@@ -1,6 +1,6 @@
 import { Command } from 'src/entity/Command';
-import { FilterBehavior, FilterValue } from 'src/filter/Filter';
-import { RuleFilter } from 'src/filter/RuleFilter';
+import { FilterBehavior, FilterOptions, FilterValue } from 'src/filter/Filter';
+import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
 import { mapToDict } from 'src/utils/Map';
 
 /**
@@ -11,6 +11,10 @@ import { mapToDict } from 'src/utils/Map';
  * - verb
  */
 export class CommandFilter extends RuleFilter {
+  constructor(options: FilterOptions<RuleFilterData>) {
+    super(options, 'isolex#/definitions/service-filter-command');
+  }
+
   public async check(value: FilterValue): Promise<FilterBehavior> {
     if (Command.isCommand(value)) {
       const result = this.matcher.match({

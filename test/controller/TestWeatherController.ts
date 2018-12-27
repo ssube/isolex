@@ -6,6 +6,7 @@ import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherControlle
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { TemplateTransformData } from 'src/transform/TemplateTransform';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -26,6 +27,14 @@ describeAsync('weather controller', async () => {
     });
     module.bind('bot').toInstance(bot);
 
+    // this type is not detected on the literal, leading to an extra properties error
+    const templateData: TemplateTransformData = {
+      filters: [],
+      strict: true,
+      templates: {
+        body: '{{ weather.test }}',
+      },
+    };
     const controller = await createService(container, WeatherController, {
       bot,
       compiler: ineeda<TemplateCompiler>({
@@ -41,12 +50,7 @@ describeAsync('weather controller', async () => {
         filters: [],
         strict: true,
         transforms: [{
-          data: {
-            parsers: [],
-            templates: {
-              body: '{{ weather.test }}',
-            },
-          } as any, // @TODO: this should use a type that allows additional properties
+          data: templateData,
           metadata: {
             kind: 'template-transform',
             name: 'test_weather',

@@ -9,6 +9,7 @@ data:
       - session:create
     roles:
       - user
+  transforms: []
   token:
     audience: [test-audience]
     duration: 86400
