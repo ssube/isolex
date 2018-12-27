@@ -318,10 +318,11 @@ Wrap any tests using async resources (promises, observables, the bot, services, 
 
 #### Assertions
 
-Always use `expect`-style assertions.
+Assertions MUST use `expect`.
 
-Use `.to.equal(true)` instead of `.to.be.true`, since the call helps the assertion happens and appeases lint. Same with
-false.
+Assertions MUST end with a function call. Use `.to.equal(true)` instead of `.to.be.true` (and the equivalent for false).
+Use `.to.have.calledCount(N)` instead of `.to.have.been.calledOnce` (it does not read as well, but it does work
+correctly).
 
 ### Visibility
 

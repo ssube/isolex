@@ -16,6 +16,6 @@ data:
     address: "0.0.0.0"
   token:
     audience: test-audience
-    issuer: test-issuer
+    issuer: !env ISOLEX_TOKEN_ISSUER
     scheme: isolex
-    secret: test-secret
+    secret: !env ISOLEX_TOKEN_SECRET
