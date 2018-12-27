@@ -50,7 +50,7 @@ export class CountController extends BaseController<CountControllerData> impleme
     switch (count) {
       case 'ls':
         const body = await this.listCounters(cmd.context.channel.id);
-        await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, body));
+        await this.reply(cmd.context, body);
         break;
       case '++':
         ++counter.count;

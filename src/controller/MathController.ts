@@ -44,7 +44,7 @@ export class MathController extends BaseController<MathControllerData> implement
     const body = '`' + this.eval(expr, { cmd }) + '`';
     this.logger.debug({ body, expr }, 'compiled expression');
 
-    await this.bot.sendMessage(Message.reply(cmd.context, TYPE_TEXT, body));
+    return this.reply(cmd.context, body);
   }
 
   protected eval(expr: string, scope: any): string {
