@@ -15,6 +15,7 @@ Hopefully this explains what the bot is and how it works.
   - [Developing](#developing)
   - [Service Reference](#service-reference)
   - [Workflow](#workflow)
+  - [Roadmap](#roadmap)
 
 ## Getting Started
 
@@ -126,3 +127,9 @@ Documentation for individual services is organized by service type:
 ## Workflow
 
 Please see [the workflow docs](./workflow.md) for issue types and the PR process.
+
+## Roadmap
+
+While detailed progress is tracked through issues and tickets, the high level roadmap for upcoming features is:
+
+![Project roadmap tree](./roadmap.png)
