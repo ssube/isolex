@@ -75,8 +75,6 @@ describeAsync('weather controller', async () => {
 
     expect(sent.length).to.equal(1);
     expect(sent[0]).to.be.an.instanceOf(Message);
-
-    const parsed = JSON.parse(sent[0].body);
-    expect(parsed).to.deep.equal(data);
+    expect(sent[0].body).to.deep.equal(data);
   });
 });

@@ -59,35 +59,24 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   public abstract handle(cmd: Command): Promise<void>;
 
-  protected async transform(cmd: Command, input: Message): Promise<Array<Message>> {
-    let batch = [input];
+  protected async transform(cmd: Command, type: string, body: any): Promise<any> {
+    let result = body;
     for (const transform of this.transforms) {
       const check = await transform.check(cmd);
       if (check) {
-        const next = [];
-        for (const msg of batch) {
-          const result = await transform.transform(cmd, msg);
-          next.push(...result);
-        }
-        batch = next;
+        result = await transform.transform(cmd, type, result);
       } else {
         this.logger.debug({ check, transform: transform.name }, 'skipping transform');
       }
     }
-    return batch;
+    return result;
   }
 
   protected async transformJSON(cmd: Command, data: any): Promise<void> {
     this.logger.debug({ data }, 'transforming json body');
 
-    const body = await this.transform(cmd, new Message({
-      body: JSON.stringify(data),
-      context: cmd.context,
-      reactions: [],
-      type: TYPE_JSON,
-    }));
-
-    await this.bot.sendMessage(...body);
+    const body = await this.transform(cmd, TYPE_JSON, data);
+    return this.reply(cmd.context, body);
   }
 
   protected async reply(ctx: Context, body: string): Promise<void> {
