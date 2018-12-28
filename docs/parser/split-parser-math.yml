@@ -1,0 +1,25 @@
+metadata:
+  kind: split-parser
+  name: default-math
+data:
+  dataMapper:
+    take: []
+    skip: 0
+    rest: expr
+  every: false
+
+  preferData: false
+  defaultCommand:
+    noun: math
+    verb: create
+
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - regexp: !regexp /!!math/
+
+  split:
+    keepQuotes: true
+    separator: " "

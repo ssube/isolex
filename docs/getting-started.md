@@ -20,9 +20,10 @@ advanced deploy commands.
       - [Sign In](#sign-in)
       - [Revoke Tokens](#revoke-tokens)
     - [Chat](#chat)
+      - [Learn Keyword](#learn-keyword)
+      - [Solve Math](#solve-math)
       - [Roll Dice](#roll-dice)
       - [React To Message](#react-to-message)
-      - [Learn Keyword](#learn-keyword)
     - [Deploy](#deploy)
       - [Merge Pull Request](#merge-pull-request)
       - [Start Pipeline](#start-pipeline)
@@ -107,11 +108,9 @@ When the bot first starts, the database will be empty. Begin by signing up, whic
 
 In a **private** channel:
 
-```
 > !!join --name username
-
+>
 > @you, user username joined, sign in token: eyJh....A6hg
-```
 
 This will print a JWT, which can be used to sign in as this user and issue more tokens. This token is not otherwise
 useful on its own and will be referred to as the "sign in" token.
@@ -125,11 +124,9 @@ sessions can be attached to users.
 
 In a **private** channel:
 
-```
 > !!login --token eyJh...A6hg
-
+>
 > @you, created session
-```
 
 #### Revoke Tokens
 
@@ -139,11 +136,9 @@ This command takes one argument, `confirm`, which must be set to `yes` for the t
 
 In a **private** channel:
 
-```
 > !!args --noun join --verb delete --confirm yes
-
+>
 > @you, revoked tokens for username, new sign in token: eyJh..cRMs
-```
 
 **Save this token in your password manager**. Please see [sign up](#sign-up) for more information on sign in tokens.
 
@@ -151,41 +146,53 @@ In a **private** channel:
 
 The bot has a number of traditional chat bot functions, including the very necessary ability to react to messages.
 
-#### Roll Dice
-
-To roll a set of dice with the bot:
-
-```
-> !!args --noun roll --verb create --count 2 --sides 6
-
-> @you, The results of your rolls were: 5,2. The sum is 7.
-```
-
-The first argument is the number of dice to roll, the second is the number of sides on each die.
-
-#### React To Message
-
-TODO: react to an existing message
-
 #### Learn Keyword
 
 The bot is able to learn commands and execute them later using a keyword.
 
 To teach the bot a new keyword:
 
-```
 > !!learn tgif time get
-
+>
 > @you, Learned command tgif.
-```
 
 To execute the command, passing some extra data (to be merged with any saved data):
 
-```
 > !!args --noun keyword --verb update --keyword tgif
-
+>
 > @you,  12/28/2018, 1:39:06 PM
-```
+
+#### Solve Math
+
+The bot is able to solve some mathematical expressions thanks to [the mathjs library](http://mathjs.org/index.html).
+
+To solve a simple expression:
+
+> !!args --noun math --verb create --expr "1+2"
+>
+> @you, 3
+
+The [full mathjs syntax](http://mathjs.org/docs/expressions/syntax.html) and
+[all functions](http://mathjs.org/docs/reference/functions.html) are available and support some fairly complex
+operations:
+
+> !!args --noun math --verb create --expr "rationalize('2x/y - y/(x+1)')"
+>
+> @you, `(2 * x ^ 2 - y ^ 2 + 2 * x) / (x * y + y)`
+
+#### Roll Dice
+
+To roll a set of dice with the bot:
+
+> !!args --noun roll --verb create --count 2 --sides 6
+>
+> @you, The results of your rolls were: 5,2. The sum is 7.
+
+The first argument is the number of dice to roll, the second is the number of sides on each die.
+
+#### React To Message
+
+TODO: react to an existing message
 
 ### Deploy
 
@@ -196,61 +203,54 @@ The bot is able to merge (or close) pull requests through Github's
 
 To view open pull requests on a project which you own, such as a fork of the bot:
 
-```
 > !!args --noun github-pull-request --verb list --project isolex
-
+>
 > @you, PR#69: enable test coverage (by ssube)
 > PR#74: github PR controller workflow (by ssube)
-```
 
 To merge a pull request, `update` it with a `message`:
 
-```
 > !!args --noun github-pull-request --verb update --project isolex --number 74 --message "feat: github PR controller"
-
+>
 > @you, merged pull request 74
-```
 
 To close a pull request, `delete` it (no `message` needed):
-```
-> !!args --noun github-pull-request --verb delete --project isolex --number 77
 
+> !!args --noun github-pull-request --verb delete --project isolex --number 77
+>
 > @you, closed pull request 77
-```
 
 (this example refers to the first two pull requests closed and merged by the bot, #74 and #77)
 
 #### Start Pipeline
 
-The bot is able to start and check up on [Gitlab CI]'s pipelines and jobs.
+The bot is able to start and check up on [Gitlab CI's](https://docs.gitlab.com/ee/ci/) pipelines and jobs.
 
 To view recent pipelines on a project, such as the bot:
 
-```
 > !!args --noun gitlab-ci-pipeline --verb list --group ssube --project isolex
-
+>
 > @you, #1502 on master (c7bd0a0d): success
-  #1501 on master (bfe2e754): success
-  #1500 on master (ef3822d5): success
-  #1499 on master (901046fc): success
-  #1498 on master (8a2ef6f8): success
-```
+>
+> #1501 on master (bfe2e754): success
+>
+> #1500 on master (ef3822d5): success
+>
+> #1499 on master (901046fc): success
+>
+> #1498 on master (8a2ef6f8): success
 
 To run a new pipeline:
 
-```
 > !!args --noun gitlab-ci-pipeline --verb create --group ssube --project isolex --ref master
-
+>
 > @you, #1504 on master (c7bd0a0d): pending
-```
 
 To cancel that pipeline:
 
-```
 > !!args --noun gitlab-ci-pipeline --verb delete --group ssube --project isolex --pipeline 1504
-
+>
 > @you, #1504 on master (c7bd0a0d): running
-```
 
 The status is shown as `running` after canceling the pipeline, since the jobs take a moment to stop.
 

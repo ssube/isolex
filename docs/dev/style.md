@@ -14,6 +14,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Types](#types)
   - [Naming](#naming)
     - [Abbreviations](#abbreviations)
+    - [Arguments](#arguments)
     - [Capitalization](#capitalization)
     - [Commands](#commands)
     - [Messages](#messages)
@@ -122,6 +123,10 @@ consistent, the following MUST be used:
 
 If a class or entity does not appear here (such as user, role, and token), please do not shorten it unnecessarily.
 
+### Arguments
+
+Arguments are the `--foo --bar=3` flags passed on the command line. Commands have data, which is not the same thing.
+
 ### Capitalization
 
 The following abbreviations MUST be capitalized except when they appear as a variable or property name:
@@ -155,7 +160,7 @@ Message types MUST be MIME types.
 
 ### Metrics
 
-Metrics MUST be singular: `express_request`, `discord_event`. The Prometheus format is `type{labels} count`, so
+Metric names MUST be singular: `express_request`, `discord_event`. The Prometheus format is `type{labels} count`, so
 `express_request{status=200} 3` reads correctly.
 
 ## Paths

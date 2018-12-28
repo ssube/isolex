@@ -31,17 +31,15 @@ export class MathController extends BaseController<MathControllerData> implement
   public async handle(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'calculating command');
 
-    const args = cmd.get('args');
-    if (!args || !args.length) {
-      return this.reply(cmd.context, 'invalid arguments to math controller');
+    const inputExpr = cmd.get('expr');
+    if (!inputExpr.length) {
+      return this.reply(cmd.context, 'no expression given');
     }
 
-    const expr = args.join(';\n');
+    const expr = inputExpr.join(';\n');
     this.logger.debug({ expr }, 'evaluating expression');
 
     const body = '`' + this.eval(expr, { cmd }) + '`';
-    this.logger.debug({ body, expr }, 'compiled expression');
-
     return this.reply(cmd.context, body);
   }
 
