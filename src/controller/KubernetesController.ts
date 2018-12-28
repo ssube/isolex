@@ -63,30 +63,38 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
   }
 
   protected async handlePods(cmd: Command): Promise<void> {
-    const verb = cmd.getHeadOrDefault('verb', CommandVerb.Get);
-    const namespace = cmd.getHeadOrDefault('args', this.data.default.namespace);
-    this.logger.debug({ cmd, namespace, verb }, 'doing something with k8s pods');
-
-    if (cmd.verb === CommandVerb.Get) {
-      const response = await this.client.listNamespacedPod(namespace);
-      this.logger.debug({ pods: response.body }, 'found pods');
-      return this.transformJSON(cmd, response.body.items);
+    switch (cmd.verb) {
+      case CommandVerb.List:
+        return this.listPods(cmd);
+      default:
+        return this.reply(cmd.context, 'invalid verb');
     }
-
-    throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
   }
 
   protected async handleServices(cmd: Command): Promise<void> {
-    const verb = cmd.getHeadOrDefault('verb', CommandVerb.Get);
-    const namespace = cmd.getHeadOrDefault('args', this.data.default.namespace);
-    this.logger.debug({ cmd, namespace, verb }, 'doing something with k8s svcs');
-
-    if (cmd.verb === CommandVerb.Get) {
-      const response = await this.client.listNamespacedService(namespace);
-      this.logger.debug({ pods: response.body }, 'found pods');
-      return this.transformJSON(cmd, response.body.items);
+    switch (cmd.verb) {
+      case CommandVerb.List:
+        return this.listServices(cmd);
+      default:
+        return this.reply(cmd.context, 'invalid verb');
     }
+  }
 
-    throw new InvalidArgumentError(`unknown pod verb: ${verb}`);
+  protected async listPods(cmd: Command): Promise<void> {
+    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
+    this.logger.debug({ cmd, ns }, 'listing k8s pods');
+
+    const response = await this.client.listNamespacedPod(ns);
+    this.logger.debug({ pods: response.body }, 'found pods');
+    return this.transformJSON(cmd, response.body.items);
+  }
+
+  protected async listServices(cmd: Command): Promise<void> {
+    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
+    this.logger.debug({ cmd, ns }, 'listing k8s svcs');
+
+    const response = await this.client.listNamespacedService(ns);
+    this.logger.debug({ pods: response.body }, 'found pods');
+    return this.transformJSON(cmd, response.body.items);
   }
 }

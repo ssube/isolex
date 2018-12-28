@@ -4,7 +4,6 @@ import { Connection, Repository } from 'typeorm';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
