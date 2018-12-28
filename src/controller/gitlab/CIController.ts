@@ -83,7 +83,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
       ref: cmd.getHead('ref'),
     };
     const pipeline = await this.client.createPipeline(options);
-    return this.transformJSON(cmd, pipeline);
+    return this.transformJSON(cmd, [pipeline]);
   }
 
   public async deletePipeline(cmd: Command): Promise<void> {
@@ -94,7 +94,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     }
 
     const updated = await this.client.cancelPipeline(options);
-    return this.transformJSON(cmd, updated);
+    return this.transformJSON(cmd, [updated]);
   }
 
   public async deleteJob(cmd: Command): Promise<void> {
@@ -105,19 +105,19 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     }
 
     const updated = await this.client.cancelJob(options);
-    return this.transformJSON(cmd, updated);
+    return this.transformJSON(cmd, [updated]);
   }
 
   public async getJob(cmd: Command): Promise<void> {
     const options = this.getJobOptions(cmd);
     const response = await this.client.getJob(options);
-    return this.transformJSON(cmd, response);
+    return this.transformJSON(cmd, [response]);
   }
 
   public async getPipeline(cmd: Command): Promise<void> {
     const options = this.getPipelineOptions(cmd);
     const response = await this.client.getPipeline(options);
-    return this.transformJSON(cmd, response);
+    return this.transformJSON(cmd, [response]);
   }
 
   public async listJobs(cmd: Command): Promise<void> {
@@ -140,7 +140,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     }
 
     const retried = await this.client.retryJob(options);
-    return this.transformJSON(cmd, retried);
+    return this.transformJSON(cmd, [retried]);
   }
 
   public async updatePipeline(cmd: Command): Promise<void> {
@@ -151,7 +151,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     }
 
     const retried = await this.client.retryPipeline(options);
-    return this.transformJSON(cmd, retried);
+    return this.transformJSON(cmd, [retried]);
   }
 
   protected getProjectOptions(cmd: Command): ProjectOptions {

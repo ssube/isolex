@@ -103,6 +103,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       return this.reply(context, 'missing keyword or command');
     }
 
+    // TODO: merge with saved data before executing
     const cmd = new Command({
       ...keyword,
       context,
