@@ -76,7 +76,7 @@ with a MIME type.
 
 ## Services
 
-Services are created by the bot, based on the config, and their lifecycle managed by the root (bot) service. To keep
+Services are created by the bot, based on the config, and their life cycle managed by the root (bot) service. To keep
 reasonable encapsulation, services are formally managed by a service module, which later acts as a locator using the
 service metadata.
 
