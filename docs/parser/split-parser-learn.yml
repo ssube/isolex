@@ -3,9 +3,9 @@ metadata:
   name: default-learn
 data:
   dataMapper:
-    take: [noun, verb]
+    take: [keyword, future-noun, future-verb]
     skip: 0
-    rest: args
+    rest: body
   every: false
 
   preferData: false

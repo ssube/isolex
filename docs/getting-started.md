@@ -169,14 +169,12 @@ TODO: react to an existing message
 
 #### Learn Keyword
 
-TODO: the learn controller needs to be refactored to use named data (vs args)
-
 The bot is able to learn commands and execute them later using a keyword.
 
 To teach the bot a new keyword:
 
 ```
-> !!learn time get tgif
+> !!learn tgif time get
 
 > @you, Learned command tgif.
 ```
@@ -184,7 +182,7 @@ To teach the bot a new keyword:
 To execute the command, passing some extra data (to be merged with any saved data):
 
 ```
-> !!args --noun keyword --verb update --args tgif
+> !!args --noun keyword --verb update --keyword tgif
 
 > @you,  12/28/2018, 1:39:06 PM
 ```

@@ -32,29 +32,22 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const args: Array<string> = cmd.get('args');
-    if (!args) {
-      return this.reply(cmd.context, 'missing args to learn controller');
-    }
-
-    const [keyword, ...body] = args;
-
-    this.logger.debug({ body, keyword }, 'handling learned keyword');
-
     switch (cmd.verb) {
       case CommandVerb.Create:
-        return this.createKeyword(keyword, cmd, body);
+        return this.createKeyword(cmd);
       case CommandVerb.Delete:
-        return this.deleteKeyword(keyword, cmd.context);
+        return this.deleteKeyword(cmd);
       case CommandVerb.Update:
       default:
-        return this.executeKeyword(keyword, cmd.context, body);
+        return this.executeKeyword(cmd);
     }
   }
 
-  protected async createKeyword(key: string, cmd: Command, args: Array<string>): Promise<void> {
-    const noun = cmd.getHead('noun');
-    const verb = cmd.getHead('verb') as CommandVerb;
+  protected async createKeyword(cmd: Command): Promise<void> {
+    const body = cmd.getOrDefault('body', []);
+    const key = cmd.getHead('keyword');
+    const noun = cmd.getHead('future-noun');
+    const verb = cmd.getHead('future-verb') as CommandVerb;
 
     if (!this.checkNoun.check(noun)) {
       return this.reply(cmd.context, 'invalid noun');
@@ -62,14 +55,14 @@ export class LearnController extends BaseController<LearnControllerData> impleme
 
     const keyword = new Keyword({
       controllerId: this.getId(true),
-      data: { args },
+      data: { body },
       key,
       labels: {},
       noun,
       verb,
     });
 
-    this.logger.debug({ args, cmd, key, keyword }, 'learning command');
+    this.logger.debug({ body, cmd, key, keyword }, 'learning command');
 
     const existing = await this.keywordRepository.findOne({
       key,
@@ -82,38 +75,46 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     return this.reply(cmd.context, `Learned command ${key}.`);
   }
 
-  protected async deleteKeyword(key: string, context: Context): Promise<void> {
+  protected async deleteKeyword(cmd: Command): Promise<void> {
+    const key = cmd.getHead('keyword');
+
     const keyword = await this.keywordRepository.findOne({
       key,
     });
     if (!keyword) {
-      return this.reply(context, `command ${key} does not exist.`);
+      return this.reply(cmd.context, `command ${key} does not exist.`);
     }
 
-    await this.keywordRepository.delete(key);
-    return this.reply(context, `deleted command ${key}.`);
+    await this.keywordRepository.delete({
+      id: keyword.id,
+      key,
+    });
+    return this.reply(cmd.context, `deleted command ${key}.`);
   }
 
-  protected async executeKeyword(key: string, context: Context, body: Array<string>) {
+  protected async executeKeyword(cmd: Command) {
+    const body = cmd.getOrDefault('body', []);
+    const key = cmd.getHead('keyword');
+
     const keyword = await this.keywordRepository.findOne({
       key,
     });
 
     if (!keyword) {
-      return this.reply(context, 'missing keyword or command');
+      return this.reply(cmd.context, 'missing keyword or command');
     }
 
     // TODO: merge with saved data before executing
-    const cmd = new Command({
+    const merged = new Command({
       ...keyword,
-      context,
+      context: cmd.context,
       data: {
         [this.data.field]: body,
       },
     });
 
-    this.logger.debug({ cmd, keyword }, 'executing keyword command');
-    await this.bot.executeCommand(cmd);
+    this.logger.debug({ cmd, keyword, merged }, 'executing keyword command');
+    await this.bot.executeCommand(merged);
     return;
   }
 }
