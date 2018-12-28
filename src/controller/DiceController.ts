@@ -24,12 +24,8 @@ export class DiceController extends BaseController<DiceControllerData> implement
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const args = cmd.data.get('args');
-    if (!args || !args.length) {
-      return this.reply(cmd.context, 'no arguments were provided!');
-    }
-
-    const [count, sides] = args;
+    const count = cmd.getHead('count');
+    const sides = cmd.getHead('sides');
 
     const results: Array<number> = [];
     for (let i = 0; i < Number(count); i++) {
@@ -37,7 +33,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
       results.push(rollResult);
     }
 
-    this.logger.debug({ args }, 'handling dice results');
+    this.logger.debug({ count, sides }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b, 0);
 
     return this.reply(cmd.context, `The results of your rolls were: ${results}. The sum is ${sum}.`);

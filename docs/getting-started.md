@@ -153,12 +153,10 @@ The bot has a number of traditional chat bot functions, including the very neces
 
 #### Roll Dice
 
-TODO: the roll controller needs to be refactored to use named data (vs args)
-
 To roll a set of dice with the bot:
 
 ```
-> !!args --noun roll --verb create --args 2 --args 6
+> !!args --noun roll --verb create --count 2 --sides 6
 
 > @you, The results of your rolls were: 5,2. The sum is 7.
 ```
