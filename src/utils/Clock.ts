@@ -14,11 +14,19 @@ export class Clock {
     this.date = date;
   }
 
+  public clearInterval(id: number) {
+    clearInterval(id);
+  }
+
   public getDate(): Date {
     return new Date();
   }
 
   public getSeconds(): number {
     return Math.floor(this.date.now() / NOW_TO_SECONDS);
+  }
+
+  public setInterval(cb: Function, delay: number): number {
+    return setInterval(cb, delay);
   }
 }

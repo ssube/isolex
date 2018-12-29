@@ -9,6 +9,7 @@ import { BaseService, BaseServiceOptions } from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { Interval, IntervalData } from 'src/interval/Interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
@@ -20,6 +21,7 @@ import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 export interface BotData {
   filters: Array<ServiceDefinition>;
   controllers: Array<ServiceDefinition<ControllerData>>;
+  intervals: Array<ServiceDefinition>;
   listeners: Array<ServiceDefinition>;
   logger: {
     level: LogLevel;
@@ -48,6 +50,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
   // services
   protected controllers: Array<Controller>;
+  protected intervals: Array<Interval>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
   protected services: ServiceModule;
@@ -68,6 +71,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     // set up deps
     this.controllers = [];
+    this.intervals = [];
     this.listeners = [];
     this.parsers = [];
 
@@ -294,6 +298,11 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
       this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
+    }
+
+    this.logger.info('setting up intervals');
+    for (const data of this.data.intervals) {
+      this.intervals.push(await this.services.createService<Interval, IntervalData>(data));
     }
 
     this.logger.info('setting up listeners');

@@ -1,0 +1,9 @@
+metadata:
+  kind: command-interval
+  name: test-interval-cmd
+data:
+  defaultCommand:
+    noun: time
+    verb: get
+  frequency:
+    zeit: 30 seconds

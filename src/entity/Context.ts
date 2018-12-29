@@ -8,6 +8,7 @@ import { Token } from 'src/entity/auth/Token';
 import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
+import { BaseEntity } from './base/BaseEntity';
 
 export interface ChannelData {
   id: string;
@@ -44,7 +45,7 @@ export interface ContextData {
 export const TABLE_CONTEXT = 'context';
 
 @Entity(TABLE_CONTEXT)
-export class Context implements ContextData {
+export class Context extends BaseEntity implements ContextData {
   @Column('simple-json')
   public channel: ChannelData;
 
@@ -68,6 +69,8 @@ export class Context implements ContextData {
   public user?: User;
 
   constructor(options?: ContextData) {
+    super();
+
     if (options) {
       if (!options.name || !options.uid) {
         throw new MissingValueError('name and uid must be specified in context options');

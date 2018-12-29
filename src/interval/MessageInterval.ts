@@ -1,7 +1,8 @@
 import { Context } from 'src/entity/Context';
 import { Message, MessageOptions } from 'src/entity/Message';
+import { Tick } from 'src/entity/Tick';
 import { BaseInterval } from 'src/interval/BaseInterval';
-import { IntervalData, IntervalJob, IntervalOptions } from 'src/interval/Interval';
+import { IntervalData, IntervalOptions } from 'src/interval/Interval';
 
 export interface MessageIntervalData extends IntervalData {
   defaultMessage: MessageOptions;
@@ -14,7 +15,7 @@ export class MessageInterval extends BaseInterval<MessageIntervalData> {
     super(options, 'isolex#/definitions/service-interval-message');
   }
 
-  public async tick(context: Context, last: IntervalJob): Promise<number> {
+  public async tick(context: Context, last: Tick): Promise<number> {
     const msg = new Message({
       ...this.data.defaultMessage,
       body: `last fired: ${last.createdAt}`,

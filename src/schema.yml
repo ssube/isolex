@@ -79,13 +79,14 @@ definitions:
         type: array
         items:
           type: object
-          anyOf:
-            - properties:
-                string:
-                  type: string
-            - properties:
-                regexp:
-                  type: string
+          additionalProperties: false
+          oneOf:
+            - required: [regexp]
+            - required: [string]
+          properties:
+            regexp: {} # TODO: instanceof RegExp
+            string:
+              type: string
 
   match-data:
     type: object
@@ -379,6 +380,35 @@ definitions:
           users:
             $ref: "#/definitions/checklist"
 
+  service-interval:
+    allOf:
+      - $ref: "#/definitions/service-data"
+      - type: object
+        additionalProperties: true
+        required: [frequency]
+        properties:
+          frequency:
+            type: object
+            additionalProperties: false
+            oneOf:
+              - required: [cron]
+              - required: [zeit]
+            properties:
+              cron:
+                type: string
+              zeit:
+                type: string
+ 
+  service-interval-command:
+    allOf:
+      - $ref: "#/definitions/service-interval"
+      - type: object
+        additionalProperties: true
+        required: [defaultCommand]
+        properties:
+          defaultCommand:
+            $ref: "#/definitions/entity-command"
+    
   service-listener:
     $ref: "#/definitions/service-data"
  

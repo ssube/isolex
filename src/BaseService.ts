@@ -70,7 +70,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     // validate the data
     const result = options.schema.match(options.data, schemaPath);
     if (!result.valid) {
-      this.logger.error({ errors: result.errors }, 'failed to validate config');
+      this.logger.error({ data: options.data, errors: result.errors }, 'failed to validate config');
       throw new SchemaError('failed to validate config');
     } else {
       this.logger.debug('validated config data');
