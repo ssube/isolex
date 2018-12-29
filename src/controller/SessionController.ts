@@ -11,6 +11,8 @@ import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
 
+import { createCompletion } from './CompletionController';
+
 export const NOUN_GRANT = 'grant';
 export const NOUN_JOIN = 'join';
 export const NOUN_SESSION = 'session';
@@ -139,6 +141,12 @@ export class SessionController extends BaseController<SessionControllerData> imp
   public async deleteJoin(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
       return this.reply(cmd.context, 'must be logged in');
+    }
+
+    if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
+      const completion = createCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${cmd.context.user.name}`);
+      await this.bot.executeCommand(completion);
+      return;
     }
 
     await this.tokenRepository.delete({

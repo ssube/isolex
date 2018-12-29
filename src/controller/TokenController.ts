@@ -1,12 +1,11 @@
 import { Inject } from 'noicejs';
-import { Connection, Equal, Repository } from 'typeorm';
+import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
+import { createCompletion } from 'src/controller/CompletionController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Clock } from 'src/utils/Clock';
 
 const MSG_SESSION_REQUIRED = 'must be logged in';
@@ -90,11 +89,15 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       return this.reply(cmd.context, MSG_SESSION_REQUIRED);
     }
 
+    const before = cmd.getHeadOrNumber('before', this.clock.getSeconds());
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      return this.requestCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${cmd.context.user.id}`);
+      const completion = createCompletion(cmd, 'confirm', `please confirm deleting tokens for ${cmd.context.user.name} from before ${before}`);
+      await this.bot.executeCommand(completion);
+      return;
     }
 
     const results = await this.tokenRepository.delete({
+      createdAt: LessThan(before),
       subject: Equal(cmd.context.user.id),
     });
 
@@ -137,25 +140,5 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     });
 
     return this.reply(cmd.context, JSON.stringify(tokens));
-  }
-
-  protected async requestCompletion(cmd: Command, key: string, msg: string): Promise<void> {
-    if (!cmd.context.parser) {
-      throw new InvalidArgumentError('command has no parser to prompt for completion');
-    }
-
-    await this.bot.executeCommand(new Command({
-      context: cmd.context,
-      data: {
-        key: [key],
-        msg: [msg],
-        noun: [cmd.noun],
-        parser: [cmd.context.parser.id],
-        verb: [cmd.verb],
-      },
-      labels: {},
-      noun: NOUN_FRAGMENT,
-      verb: CommandVerb.Create,
-    }));
   }
 }
