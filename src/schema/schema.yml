@@ -424,6 +424,18 @@ definitions:
           defaultCommand:
             $ref: "#/definitions/entity-command"
     
+  service-interval-event:
+    allOf:
+      - $ref: "#/definitions/service-interval"
+      - type: object
+        additionalProperties: true
+        required: [services]
+        properties:
+          services:
+            type: array
+            items:
+              $ref: "#/definitions/service-metadata"
+
   service-listener:
     $ref: "#/definitions/service-data"
  

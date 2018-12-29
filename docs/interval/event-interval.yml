@@ -1,0 +1,17 @@
+metadata:
+  kind: event-interval
+  name: test-interval-event
+data:
+  defaultContext:
+    channel:
+      id: ""
+      thread: ""
+    name: svc
+    target: &discord-metadata
+      kind: discord-listener
+      name: test-discord
+    uid: svc
+  frequency:
+    zeit: 30 seconds
+  services:
+    - *discord-metadata

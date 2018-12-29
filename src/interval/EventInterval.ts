@@ -5,7 +5,6 @@ import { IntervalData, IntervalOptions } from 'src/interval/Interval';
 import { ServiceEvent, ServiceMetadata } from 'src/Service';
 
 export interface EventIntervalData extends IntervalData {
-  event: ServiceEvent;
   services: Array<ServiceMetadata>;
 }
 
@@ -18,8 +17,9 @@ export class EventInterval extends BaseInterval<EventIntervalData> {
 
   public async tick(context: Context, last: Tick): Promise<number> {
     for (const def of this.data.services) {
+      this.logger.debug({ def }, 'notifying service');
       const svc = this.services.getService(def);
-      await svc.notify(this.data.event);
+      await svc.notify(ServiceEvent.Tick);
     }
     return 0;
   }

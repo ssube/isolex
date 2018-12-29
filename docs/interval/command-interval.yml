@@ -7,8 +7,8 @@ data:
     verb: get
   defaultContext:
     channel:
-      id: foo
-      thread: bar
+      id: "440715367019446274"
+      thread: ""
     name: svc
     target:
       kind: discord-listener
