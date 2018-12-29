@@ -107,7 +107,8 @@ definitions:
             - required: [regexp]
             - required: [string]
           properties:
-            regexp: {} # TODO: instanceof RegExp
+            regexp:
+              regexp: true
             string:
               type: string
 
