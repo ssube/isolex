@@ -33,12 +33,12 @@ export class SearchController extends BaseController<SearchControllerData> imple
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const args = cmd.data.get(this.data.field);
-    if (!args || !args.length) {
+    const data = cmd.get(this.data.field);
+    if (!data.length) {
       return this.reply(cmd.context, 'no arguments were provided!');
     }
 
-    const requestUrl = this.url.render({ data: args });
+    const requestUrl = this.url.render({ data });
     this.logger.debug({ requestUrl }, 'searching at url');
 
     const response = await this.container.create<any, any>('request', {
