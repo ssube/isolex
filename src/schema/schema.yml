@@ -78,6 +78,16 @@ definitions:
       uid:
         type: string
 
+  entity-message:
+    type: object
+    additionalProperties: false
+    required: [body, type]
+    properties:
+      body:
+        type: string
+      type:
+        enum: [text/plain]
+
   match-rule:
     type: object
     additionalProperties: false
@@ -445,6 +455,16 @@ definitions:
             items:
               $ref: "#/definitions/service-metadata"
 
+  service-interval-message:
+    allOf:
+      - $ref: "#/definitions/service-interval"
+      - type: object
+        additionalProperties: true
+        required: [defaultMessage]
+        properties:
+          defaultMessage:
+            $ref: "#/definitions/entity-message"
+
   service-listener:
     $ref: "#/definitions/service-data"
  
@@ -465,7 +485,7 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
-        required: [expose, graph, listen, token]
+        required: [defaultTarget, expose, graph, listen, token]
         properties:
           defaultTarget:
             $ref: "#/definitions/service-metadata"

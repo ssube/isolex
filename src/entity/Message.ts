@@ -59,7 +59,7 @@ export class Message extends LabelEntity implements MessageOptions {
     if (options) {
       this.body = options.body;
       this.context = options.context;
-      this.reactions = Array.from(options.reactions);
+      this.reactions = Array.from(options.reactions || []);
       this.type = options.type;
     }
   }

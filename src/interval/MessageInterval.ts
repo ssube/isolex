@@ -18,7 +18,6 @@ export class MessageInterval extends BaseInterval<MessageIntervalData> {
   public async tick(context: Context, last: Tick): Promise<number> {
     const msg = new Message({
       ...this.data.defaultMessage,
-      body: `last fired: ${last.createdAt}`,
       context,
     });
     await this.bot.sendMessage(msg);
