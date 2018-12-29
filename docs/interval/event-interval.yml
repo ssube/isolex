@@ -11,6 +11,9 @@ data:
       kind: discord-listener
       name: test-discord
     uid: svc
+  defaultTarget:
+    kind: discord-listener
+    name: test-discord
   frequency:
     zeit: 30 seconds
   services:

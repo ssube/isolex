@@ -170,7 +170,14 @@ definitions:
               $ref: "#/definitions/service-definition"
 
   service-controller-completion:
-    $ref: "#/definitions/service-controller"
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        additionalProperties: true
+        required: [defaultTarget]
+        properties:
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
 
   service-controller-count:
     allOf:
@@ -398,10 +405,12 @@ definitions:
       - $ref: "#/definitions/service-data"
       - type: object
         additionalProperties: true
-        required: [frequency]
+        required: [defaultContext, defaultTarget, frequency]
         properties:
           defaultContext:
             $ref: "#/definitions/entity-context"
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
           frequency:
             type: object
             additionalProperties: false

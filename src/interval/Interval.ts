@@ -9,9 +9,8 @@ export interface IntervalFrequency {
 }
 
 export interface IntervalData extends BotServiceData {
-  defaultContext: ContextOptions & {
-    target: ServiceMetadata;
-  };
+  defaultContext: ContextOptions;
+  defaultTarget: ServiceMetadata;
   frequency: IntervalFrequency;
 }
 

@@ -1,5 +1,6 @@
 import { BotService } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
+import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
@@ -32,4 +33,12 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
 
   public abstract createSession(uid: string, user: User): Promise<Session>;
   public abstract getSession(uid: string): Promise<Session | undefined>;
+
+  protected async createContext(options: ContextOptions): Promise<Context> {
+    return new Context({
+      ...options,
+      source: this,
+      target: this,
+    });
+  }
 }

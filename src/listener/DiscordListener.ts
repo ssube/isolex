@@ -217,7 +217,6 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
         thread: msg.id,
       },
       name: msg.author.username,
-      source: this,
       uid: msg.author.id,
     };
 
@@ -226,10 +225,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       contextData.user = session.user;
     }
 
-    const context = new Context({
-      ...contextData,
-      source: this,
-    });
+    const context = await this.createContext(contextData);
     return new Message({
       body: msg.content,
       context,

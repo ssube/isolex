@@ -30,7 +30,8 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   public async start() {
     await super.start();
 
-    this.target = this.services.getService(this.data.defaultContext.target);
+    this.logger.debug({ def: this.data.defaultTarget }, 'getting default target listener');
+    this.target = this.services.getService(this.data.defaultTarget);
 
     if (this.data.frequency.cron) {
       this.logger.debug({ cron: this.data.frequency.cron }, 'starting a cron interval');
@@ -67,7 +68,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
         intervalId: Equal(this.id),
       },
     });
-    const context = await this.createTickContext();
+    const context = await this.createContext();
     const status = await this.tick(context, last[0]);
     const next = this.tickRepository.create({
       createdAt: this.clock.getSeconds(),
@@ -83,7 +84,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
    *
    * This context entity will be persisted with the command, message, or event for which it has been created.
    */
-  protected async createTickContext(): Promise<Context> {
+  protected async createContext(): Promise<Context> {
     return new Context({
       ...this.data.defaultContext,
       target: this.target,

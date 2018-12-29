@@ -133,13 +133,12 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }
 
     this.logger.debug({ token, user: token.user }, 'found token, creating context');
-    const ctx = new Context({
+    const ctx = this.createContext({
       channel: {
         id: '',
         thread: '',
       },
       name: token.user.name,
-      source: this,
       token,
       uid: token.user.id,
       user: token.user,
