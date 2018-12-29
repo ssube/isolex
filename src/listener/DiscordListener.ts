@@ -15,7 +15,7 @@ import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
 import { BotServiceOptions } from 'src/BotService';
-import { Context, ContextOptions } from 'src/entity/Context';
+import { ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';

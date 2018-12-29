@@ -3,7 +3,6 @@ import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
 import { BotServiceOptions } from 'src/BotService';
-import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
