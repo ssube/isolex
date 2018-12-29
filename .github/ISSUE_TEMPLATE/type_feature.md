@@ -9,20 +9,21 @@ assignees: ''
 
 ### Summary
 
-(elevator pitch of the feature)
+An elevator pitch of the feature and why it will be useful.
 
 ### Scope
 
-(what needs to be implemented for v1, what might be included in v2)
+- [ ] items to be implemented
+  - [ ] additional details
 
 ### Use Case
 
-(at least one concrete use case for the feature)
+At least one concrete use case for the feature, ideally with step-by-step example.
 
-### Issues
+Bonus points if you can refer to another issue here.
 
-(potential problems, questions, research)
+### Questions
 
-### Details
+Outstanding questions, potential problems, and further research that might be needed.
 
-(dependencies, requirements, other changes that need to happen first)
+New or updated dependencies should be noted here.

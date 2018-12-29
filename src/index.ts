@@ -8,15 +8,16 @@ import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
 import { EntityModule } from 'src/module/EntityModule';
 import { FilterModule } from 'src/module/FilterModule';
+import { IntervalModule } from 'src/module/IntervalModule';
 import { ListenerModule } from 'src/module/ListenerModule';
 import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
+import { ServiceLifecycle } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { Schema } from 'src/utils/Schema';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
-import { ServiceLifecycle } from './Service';
 
 // main arguments
 const MAIN_ARGS: yargs.Options = {
@@ -30,6 +31,7 @@ const MAIN_MODULES = [
   ControllerModule,
   EntityModule,
   FilterModule,
+  IntervalModule,
   ListenerModule,
   ParserModule,
   ServiceModule,

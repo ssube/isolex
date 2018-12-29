@@ -2,10 +2,9 @@ import { defaults } from '@octokit/graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
+import { BaseController } from 'src/controller/BaseController';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-
-import { BaseController } from '../BaseController';
-import { Controller, ControllerData, ControllerOptions } from '../Controller';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
