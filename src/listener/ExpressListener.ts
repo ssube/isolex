@@ -12,10 +12,10 @@ import { BotServiceOptions } from 'src/BotService';
 import { Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { GraphSchema, GraphSchemaData } from 'src/graph';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition } from 'src/Service';
 
 export interface ExpressListenerData extends ListenerData {

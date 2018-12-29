@@ -8,12 +8,12 @@ import * as uuid from 'uuid/v4';
 import { SchemaError } from 'src/error/SchemaError';
 import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { Schema } from 'src/schema';
 import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
-import { Schema } from 'src/utils/Schema';
 
 /**
  * TODO: these should be optional and must be included in the decorator to be available

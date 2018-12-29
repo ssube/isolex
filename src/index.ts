@@ -14,9 +14,9 @@ import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
+import { Schema } from 'src/schema';
 import { ServiceLifecycle } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
-import { Schema } from 'src/utils/Schema';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 
 // main arguments

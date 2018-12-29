@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand } from 'src/entity/base/BaseCommand';
 import { CommandOptions } from 'src/entity/Command';
-import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
+import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
 import { dictToMap } from 'src/utils/Map';
 
 export interface FragmentOptions extends CommandOptions {

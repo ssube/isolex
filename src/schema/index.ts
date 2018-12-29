@@ -1,8 +1,9 @@
 import * as Ajv from 'ajv';
-import { filterNil } from '.';
+
+import { filterNil } from 'src/utils';
 
 /* tslint:disable-next-line:no-var-requires */
-export const SCHEMA_GLOBAL = require('src/schema.yml');
+export const SCHEMA_GLOBAL = require('src/schema/schema.yml');
 
 export interface SchemaResult {
   errors: Array<string>;
