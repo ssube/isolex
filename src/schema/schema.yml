@@ -54,14 +54,27 @@ definitions:
       verb:
         type: string
 
+  entity-context-channel:
+    type: object
+    additionalProperties: false
+    required: [id, thread]
+    properties:
+      id:
+        type: string
+      thread:
+        type: string
+ 
   entity-context:
     type: object
-    additionalProperties: true
+    additionalProperties: false
+    required: [channel, name, uid]
     properties:
       channel:
         $ref: "#/definitions/entity-context-channel"
       name:
         type: string
+      target:
+        $ref: "#/definitions/service-metadata"
       uid:
         type: string
 
@@ -387,6 +400,8 @@ definitions:
         additionalProperties: true
         required: [frequency]
         properties:
+          defaultContext:
+            $ref: "#/definitions/entity-context"
           frequency:
             type: object
             additionalProperties: false

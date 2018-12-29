@@ -1,13 +1,18 @@
 import { BotServiceData, BotServiceOptions } from 'src/BotService';
-import { Context } from 'src/entity/Context';
+import { Context, ContextOptions } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
-import { Service } from 'src/Service';
+import { Service, ServiceMetadata } from 'src/Service';
+
+export interface IntervalFrequency {
+  cron?: string;
+  zeit?: string;
+}
 
 export interface IntervalData extends BotServiceData {
-  frequency: {
-    cron?: string;
-    zeit?: string;
+  defaultContext: ContextOptions & {
+    target: ServiceMetadata;
   };
+  frequency: IntervalFrequency;
 }
 
 export type IntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;

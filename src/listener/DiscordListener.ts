@@ -15,7 +15,7 @@ import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
 import { BotServiceOptions } from 'src/BotService';
-import { Context, ContextData } from 'src/entity/Context';
+import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
@@ -211,7 +211,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
 
   protected async convertMessage(msg: DiscordMessage): Promise<Message> {
     this.logger.debug('converting discord message');
-    const contextData: ContextData = {
+    const contextData: ContextOptions = {
       channel: {
         id: msg.channel.id,
         thread: msg.id,

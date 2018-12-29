@@ -157,6 +157,10 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   public async createSession(cmd: Command): Promise<void> {
+    if (!cmd.context.source) {
+      return this.reply(cmd.context, 'no source listener with which to create a session');
+    }
+
     const jwt = cmd.getHead('token');
     const token = Token.verify(jwt, this.data.token.secret, {
       audience: this.data.token.audience,
@@ -176,6 +180,10 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   public async getSession(cmd: Command): Promise<void> {
+    if (!cmd.context.source) {
+      return this.reply(cmd.context, 'no source listener with which to create a session');
+    }
+
     const session = cmd.context.source.getSession(cmd.context.uid);
     if (isNil(session)) {
       return this.reply(cmd.context, 'cannot get sessions unless logged in');

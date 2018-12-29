@@ -15,7 +15,7 @@ export interface ChannelData {
   thread: string;
 }
 
-export interface ContextData {
+export interface ContextOptions {
   channel: ChannelData;
 
   /**
@@ -25,7 +25,7 @@ export interface ContextData {
 
   parser?: Parser;
 
-  source: Listener;
+  source?: Listener;
 
   target?: Listener;
 
@@ -45,7 +45,7 @@ export interface ContextData {
 export const TABLE_CONTEXT = 'context';
 
 @Entity(TABLE_CONTEXT)
-export class Context extends BaseEntity implements ContextData {
+export class Context extends BaseEntity implements ContextOptions {
   @Column('simple-json')
   public channel: ChannelData;
 
@@ -57,7 +57,7 @@ export class Context extends BaseEntity implements ContextData {
 
   public parser?: Parser;
 
-  public source: Listener;
+  public source?: Listener;
 
   public target?: Listener;
 
@@ -68,7 +68,7 @@ export class Context extends BaseEntity implements ContextData {
 
   public user?: User;
 
-  constructor(options?: ContextData) {
+  constructor(options?: ContextOptions) {
     super();
 
     if (options) {
@@ -89,7 +89,7 @@ export class Context extends BaseEntity implements ContextData {
     }
   }
 
-  public extend(options: Partial<ContextData>): Context {
+  public extend(options: Partial<ContextOptions>): Context {
     const ctx = new Context(this);
     if (options.parser) {
       ctx.parser = options.parser;
@@ -164,7 +164,6 @@ export class Context extends BaseEntity implements ContextData {
       channel: this.channel,
       id: this.id,
       name: this.name,
-      source: this.source.id,
       uid: this.uid,
       user,
     };

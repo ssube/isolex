@@ -237,17 +237,23 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    let sent = false;
+    if (msg.context.target) {
+      if (await msg.context.target.check(msg)) {
+        await msg.context.target.send(msg);
+      } else {
+        this.logger.warn({ msg }, 'target listener rejected message');
+      }
+      return;
+    }
+
     for (const listener of this.listeners) {
-      if (await listener.check(msg.context)) {
+      if (await listener.check(msg)) {
         await listener.send(msg);
-        sent = true;
+        return;
       }
     }
 
-    if (!sent) {
-      this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
-    }
+    this.logger.warn({ msg }, 'message was rejected by every listener (dead letter)');
   }
 
   protected async parseMessage(msg: Message) {

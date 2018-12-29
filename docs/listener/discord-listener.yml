@@ -1,6 +1,6 @@
 metadata:
   kind: discord-listener
-  name: discord-isolex
+  name: test-discord
 data:
   presence:
     game:

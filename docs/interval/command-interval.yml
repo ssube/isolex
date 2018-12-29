@@ -5,5 +5,14 @@ data:
   defaultCommand:
     noun: time
     verb: get
+  defaultContext:
+    channel:
+      id: foo
+      thread: bar
+    name: svc
+    target:
+      kind: discord-listener
+      name: test-discord
+    uid: svc
   frequency:
     zeit: 30 seconds
