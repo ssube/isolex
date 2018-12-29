@@ -17,16 +17,13 @@ export class SedController extends BaseController<SedControllerData> implements 
   }
 
   public async handle(cmd: Command): Promise<void> {
-    const args = cmd.data.get('args');
-    if (!args) {
-      return this.reply(cmd.context, 'no arguments were provided!');
-    }
+    const expr = cmd.getHead('expr');
 
     // split into regex, replace and flags
-    const parts = args[0].match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
+    const parts = expr.match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
     if (!parts) {
-      this.logger.debug({ args }, 'incorrect input.');
-      return this.reply(cmd.context, 'Incorrect input. Please use \`!!s/e/d/[flags]\`');
+      this.logger.debug({ expr }, 'invalid input.');
+      return this.reply(cmd.context, 'invalid input. Please use \`!!s/e/d/[flags]\`');
     }
 
     this.logger.debug({ parts }, 'fetching messages');

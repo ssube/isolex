@@ -1,0 +1,25 @@
+metadata:
+  kind: split-parser
+  name: default-sed
+data:
+  dataMapper:
+    take: []
+    skip: 0
+    rest: expr
+  every: false
+
+  preferData: false
+  defaultCommand:
+    noun: sed
+    verb: create
+
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - regexp: !regexp /!!sed/
+
+  split:
+    keepQuotes: true
+    separator: " "
