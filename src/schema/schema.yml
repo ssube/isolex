@@ -101,16 +101,19 @@ definitions:
       values:
         type: array
         items:
-          type: object
-          additionalProperties: false
-          oneOf:
-            - required: [regexp]
-            - required: [string]
-          properties:
-            regexp:
-              regexp: true
-            string:
-              type: string
+          $ref: "#/definitions/match-rule-value"
+
+  match-rule-value:
+    type: object
+    additionalProperties: false
+    oneOf:
+      - required: [regexp]
+      - required: [string]
+    properties:
+      regexp:
+        regexp: true
+      string:
+        type: string
 
   match-data:
     type: object
