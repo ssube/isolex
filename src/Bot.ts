@@ -224,7 +224,7 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   /**
-   * Dispatch a message to the appropriate listeners (based on the context).
+   * Dispatch a message to the appropriate listener (based on the context).
    */
   protected async receiveMessage(msg: Message): Promise<void> {
     this.logger.debug({ msg }, 'receiving outgoing message');
@@ -243,12 +243,15 @@ export class Bot extends BaseService<BotData> implements Service {
       } else {
         this.logger.warn({ msg }, 'target listener rejected message');
       }
-      return;
+    } else {
+      return this.findMessageTarget(msg);
     }
+  }
 
-    for (const listener of this.listeners) {
-      if (await listener.check(msg)) {
-        await listener.send(msg);
+  protected async findMessageTarget(msg: Message): Promise<void> {
+    for (const target of this.listeners) {
+      if (await target.check(msg)) {
+        await target.send(msg);
         return;
       }
     }
