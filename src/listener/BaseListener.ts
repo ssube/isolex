@@ -16,10 +16,6 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
       return msg.context.target.id === this.id;
     }
 
-    if (msg.context.source) {
-      return msg.context.source.id === this.id;
-    }
-
     return false;
   }
 
