@@ -13,7 +13,7 @@ import { Interval, IntervalData } from 'src/interval/Interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
+import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
@@ -87,12 +87,12 @@ export class Bot extends BaseService<BotData> implements Service {
     return this.storage;
   }
 
-  public async notify(event: ServiceLifecycle) {
+  public async notify(event: ServiceEvent) {
     await super.notify(event);
     await this.services.notify(event);
 
     switch (event) {
-      case ServiceLifecycle.Reset:
+      case ServiceEvent.Reset:
         this.metrics.resetMetrics();
         this.logger.info('metrics reset');
         break;

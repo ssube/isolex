@@ -9,7 +9,7 @@ import { SchemaError } from 'src/error/SchemaError';
 import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
-import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
+import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
@@ -77,7 +77,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     }
   }
 
-  public async notify(event: ServiceLifecycle): Promise<void> {
+  public async notify(event: ServiceEvent): Promise<void> {
     this.logger.debug({ event }, 'service notified of event');
   }
 

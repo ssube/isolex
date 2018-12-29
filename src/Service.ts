@@ -8,11 +8,12 @@ export interface ServiceDefinition<TData = any> {
   data: TData;
 }
 
-export enum ServiceLifecycle {
+export enum ServiceEvent {
   Reload = 'reload',
   Reset = 'reset',
   Start = 'start',
   Stop = 'stop',
+  Tick = 'tick',
 }
 
 export interface ServiceMetadata {
@@ -37,12 +38,15 @@ export interface ServiceMetadata {
   readonly name: string;
 }
 
-export interface Service extends ServiceMetadata {
-  readonly id: string;
-
-  notify(event: ServiceLifecycle): Promise<void>;
+export interface ServiceLifecycle {
   start(): Promise<void>;
   stop(): Promise<void>;
+}
+
+export interface Service extends ServiceLifecycle, ServiceMetadata {
+  readonly id: string;
+
+  notify(event: ServiceEvent): Promise<void>;
 }
 
 export function getLogInfo(svc: Service) {
