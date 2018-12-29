@@ -467,6 +467,8 @@ definitions:
         additionalProperties: true
         required: [expose, graph, listen, token]
         properties:
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
           expose:
             type: object
             properties:

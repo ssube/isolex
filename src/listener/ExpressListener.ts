@@ -10,15 +10,16 @@ import { Connection, Repository } from 'typeorm';
 
 import { BotServiceOptions } from 'src/BotService';
 import { Token } from 'src/entity/auth/Token';
-import { Context } from 'src/entity/Context';
+import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
-import { ServiceDefinition } from 'src/Service';
+import { ServiceDefinition, ServiceMetadata } from 'src/Service';
 
 export interface ExpressListenerData extends ListenerData {
+  defaultTarget: ServiceMetadata;
   expose: {
     graph: boolean;
     graphiql: boolean;
@@ -54,6 +55,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected graph?: GraphSchema;
   protected passport?: passport.Authenticator;
   protected server?: http.Server;
+  protected target: Listener;
 
   constructor(options: ExpressListenerOptions) {
     super(options, 'isolex#/definitions/service-listener-express');
@@ -74,6 +76,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public async start() {
+    await super.start();
+
     this.passport = await this.setupPassport();
     this.express = await this.setupExpress();
     this.server = await new Promise<http.Server>((res, rej) => {
@@ -82,6 +86,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
         res(server);
       });
     });
+
+    this.target = this.services.getService(this.data.defaultTarget);
   }
 
   public async stop() {
@@ -200,5 +206,13 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
 
     return auth;
+  }
+
+  protected async createContext(options: ContextOptions): Promise<Context> {
+    return new Context({
+      ...options,
+      source: this,
+      target: this.target,
+    });
   }
 }

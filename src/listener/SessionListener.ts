@@ -25,10 +25,6 @@ export abstract class SessionListener<TData extends ListenerData> extends BaseLi
 
   public abstract fetch(options: FetchOptions): Promise<Array<Message>>;
 
-  public abstract start(): Promise<void>;
-
-  public abstract stop(): Promise<void>;
-
   public async createSession(uid: string, user: User): Promise<Session> {
     const now = this.clock.getSeconds();
     const session = {

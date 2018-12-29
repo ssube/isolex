@@ -23,10 +23,6 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
 
   public abstract fetch(options: FetchOptions): Promise<Array<Message>>;
 
-  public abstract start(): Promise<void>;
-
-  public abstract stop(): Promise<void>;
-
   public abstract createSession(uid: string, user: User): Promise<Session>;
   public abstract getSession(uid: string): Promise<Session | undefined>;
 
