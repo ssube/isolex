@@ -5,7 +5,6 @@ import { CoreOptions, RequiredUriUrl } from 'request';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
-import { TYPE_JSON } from 'src/utils/Mime';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerData extends ControllerData {
@@ -40,8 +39,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
       const weather = await this.getWeather(location);
 
       this.logger.debug({ weather }, 'transforming weather data');
-      const body = await this.transform(cmd, TYPE_JSON, weather);
-      return this.reply(cmd.context, body);
+      return this.transformJSON(cmd, weather);
     } catch (err) {
       this.logger.error(err, 'error getting weather');
     }

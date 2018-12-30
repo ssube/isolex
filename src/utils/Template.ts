@@ -2,7 +2,7 @@ export interface TemplateOptions {
   template: HandlebarsTemplateDelegate;
 }
 
-export type TemplateScope = unknown;
+export type TemplateScope = object;
 
 export class Template {
   protected template: HandlebarsTemplateDelegate;

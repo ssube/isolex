@@ -4,7 +4,7 @@ import { Command } from 'src/entity/Command';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { mapToDict } from 'src/utils/Map';
-import { Template } from 'src/utils/Template';
+import { Template, TemplateScope } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 /**
@@ -35,7 +35,7 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
     }
   }
 
-  public async transform(cmd: Command, type: string, body: any): Promise<any> {
+  public async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
     const scope = this.mergeScope(cmd, body);
     const out = new Map();
     for (const [key, template] of this.templates) {

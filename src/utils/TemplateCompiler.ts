@@ -39,7 +39,7 @@ export class TemplateCompiler {
     return `@${context.name}`;
   }
 
-  public formatEntries(map: Map<string, string>, block: any): string {
+  public formatEntries(map: Map<string, string>, block: Handlebars.HelperOptions): string {
     this.logger.debug({ block, map, type: typeof map }, 'formatting map entries');
 
     const parts = [];

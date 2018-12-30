@@ -1,4 +1,4 @@
-import { RTMClient, WebClient } from '@slack/client';
+import { RTMClient, WebClient, WebAPICallResult } from '@slack/client';
 import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
@@ -16,6 +16,30 @@ export interface SlackListenerData extends ListenerData {
     bot: string;
     web: string;
   };
+}
+
+export interface SlackReaction {
+  item: {
+    channel: string;
+    ts: string;
+  };
+}
+
+export interface SlackMessage {
+  channel: string;
+  reactions: Array<SlackMessageReaction>;
+  text: string;
+  ts: string;
+  type: string;
+  user: string;
+}
+
+export interface SlackMessageReaction {
+  name: string;
+}
+
+export interface SlackSearchResults extends WebAPICallResult {
+  messages: Array<SlackMessage>;
 }
 
 export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
@@ -69,28 +93,28 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     await this.client.disconnect();
   }
 
-  protected async convertReaction(reaction: any): Promise<Message> {
+  protected async convertReaction(reaction: SlackReaction): Promise<Message> {
     this.logger.debug({ reaction }, 'converting slack reaction');
     const search = await this.webClient.channels.history({
       channel: reaction.item.channel,
       inclusive: true,
       latest: reaction.item.ts,
       oldest: reaction.item.ts,
-    });
+    }) as SlackSearchResults;
 
     if (!search.ok) {
       throw new NotFoundError('message not found for reaction');
     }
 
-    const [head] = (search as any).messages;
+    const [head] = search.messages;
     return this.convertMessage({
       ...head,
       channel: reaction.item.channel,
     });
   }
 
-  protected async convertMessage(msg: any): Promise<Message> {
-    const {type, channel, user: uid, text, ts} = msg;
+  protected async convertMessage(msg: SlackMessage): Promise<Message> {
+    const { type, channel, user: uid, text, ts } = msg;
     this.logger.debug({ channel, text, ts, type, uid }, 'converting slack message');
 
     const context = await this.createContext({
@@ -113,7 +137,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     });
   }
 
-  protected reactionNames(reactions: Array<any> | undefined): Array<string> {
+  protected reactionNames(reactions: Array<SlackMessageReaction> | undefined): Array<string> {
     if (isNil(reactions)) {
       return [];
     }

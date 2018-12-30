@@ -3,6 +3,7 @@ import { Inject } from 'noicejs';
 import { BotService } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { TemplateScope } from 'src/utils/Template';
 
 @Inject()
 export abstract class BaseTransform<TData extends TransformData> extends BotService<TData> implements Transform {
@@ -15,9 +16,9 @@ export abstract class BaseTransform<TData extends TransformData> extends BotServ
     return this.checkFilters(cmd, this.filters);
   }
 
-  public abstract transform(cmd: Command, type: string, body: any): Promise<any>;
+  public abstract transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope>;
 
-  protected mergeScope(cmd: Command, data: any): any {
+  protected mergeScope(cmd: Command, data: TemplateScope): TemplateScope {
     return { cmd, data };
   }
 }

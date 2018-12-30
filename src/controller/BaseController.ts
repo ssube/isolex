@@ -1,3 +1,4 @@
+import { isString } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { BotService } from 'src/BotService';
@@ -9,6 +10,7 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
+import { TemplateScope } from 'src/utils/Template';
 
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
@@ -35,7 +37,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
     const transforms: Array<ServiceDefinition<TransformData>> = this.data.transforms || [];
     for (const def of transforms) {
-      const transform = await this.services.createService<Transform, any>(def);
+      const transform = await this.services.createService<Transform, TransformData>(def);
       this.transforms.push(transform);
     }
   }
@@ -59,24 +61,35 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   public abstract handle(cmd: Command): Promise<void>;
 
-  protected async transform(cmd: Command, type: string, body: any): Promise<any> {
+  protected async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
+    if (this.transforms.length === 0) {
+      this.logger.debug('controller has no transforms, skipping');
+      return body;
+    }
+
     let result = body;
     for (const transform of this.transforms) {
       const check = await transform.check(cmd);
       if (check) {
+        this.logger.debug({ transform: transform.name }, 'executing transform');
         result = await transform.transform(cmd, type, result);
       } else {
-        this.logger.debug({ check, transform: transform.name }, 'skipping transform');
+        this.logger.debug({ transform: transform.name }, 'skipping transform');
       }
     }
     return result;
   }
 
-  protected async transformJSON(cmd: Command, data: any): Promise<void> {
+  protected async transformJSON(cmd: Command, data: TemplateScope): Promise<void> {
     this.logger.debug({ data }, 'transforming json body');
 
     const body = await this.transform(cmd, TYPE_JSON, data);
-    return this.reply(cmd.context, body);
+
+    if (isString(body)) {
+      return this.reply(cmd.context, body);
+    } else {
+      this.logger.error({ body }, 'final transform did not return a string');
+    }
   }
 
   protected async reply(ctx: Context, body: string): Promise<void> {

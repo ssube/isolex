@@ -193,7 +193,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       issuer: this.data.token.issuer,
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
-    }, (payload: any, done: VerifiedCallback) => this.createTokenSession(payload, done)));
+    }, (payload: unknown, done: VerifiedCallback) => this.createTokenSession(payload, done)));
 
     // sessions are saved when created and keyed by uid, so pass that
     auth.serializeUser((user: Context, done) => {
