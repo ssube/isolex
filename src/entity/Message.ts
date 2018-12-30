@@ -1,4 +1,3 @@
-import * as escape from 'escape-html';
 import { GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -62,13 +61,6 @@ export class Message extends LabelEntity implements MessageOptions {
       this.reactions = Array.from(options.reactions || []);
       this.type = options.type;
     }
-  }
-
-  /**
-   * @TODO: move this to each listener
-   */
-  get escaped(): string {
-    return escape(this.body);
   }
 
   public toJSON(): object {

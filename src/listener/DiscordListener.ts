@@ -9,6 +9,7 @@ import {
   TextChannel,
   User,
 } from 'discord.js';
+import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import * as emoji from 'node-emoji';
 import { Inject } from 'noicejs';
@@ -113,7 +114,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     }
 
     if (msg.body.length) {
-      await thread.reply(msg.body);
+      await thread.reply(escape(msg.body));
     }
 
     const reactions = this.filterEmoji(msg.reactions);
@@ -137,7 +138,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       return;
     }
 
-    await channel.send(msg.body);
+    await channel.send(escape(msg.body));
     return;
   }
 

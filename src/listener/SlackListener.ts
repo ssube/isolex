@@ -1,4 +1,5 @@
 import { RTMClient, WebClient } from '@slack/client';
+import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
@@ -30,7 +31,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
 
   public async send(msg: Message): Promise<void> {
     if (msg.context.channel.id) {
-      const result = await this.client.sendMessage(msg.body, msg.context.channel.id);
+      const result = await this.client.sendMessage(escape(msg.body), msg.context.channel.id);
       if (result.error) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
