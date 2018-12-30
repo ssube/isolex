@@ -49,7 +49,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
 Code Climate runs lint and style checks against the project, on pull requests and the master branch.
 
 [Project maintainability](https://codeclimate.com/github/ssube/isolex) MUST be an A. Technical debt MUST remain
-under 2% and SHOULD NOT increase with any PR.
+under 1% and SHOULD NOT increase with any PR.
 
 ### Close Reasons
 

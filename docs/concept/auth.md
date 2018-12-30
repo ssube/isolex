@@ -62,10 +62,6 @@ For example:
 - the query `office:?` will return `door`
 - the query `factory:equipment` will return `drill`
 
-```
-TODO: example
-```
-
 ## Authentication
 
 ### Getting Started
