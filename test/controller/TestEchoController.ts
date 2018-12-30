@@ -7,6 +7,9 @@ import { EchoController, NOUN_ECHO } from 'src/controller/EchoController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { TransformModule } from 'src/module/TransformModule';
+import { Transform } from 'src/transform/Transform';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -21,16 +24,7 @@ describeAsync('echo controller', async () => {
       data: {
         filters: [],
         strict: true,
-        transforms: [{
-          data: {
-            filters: [],
-            strict: true,
-          },
-          metadata: {
-            kind: 'template-transform',
-            name: 'test_template',
-          },
-        }],
+        transforms: [],
       },
       metadata: {
         kind: 'echo-controller',
@@ -41,17 +35,19 @@ describeAsync('echo controller', async () => {
   });
 
   itAsync('should handle commands', async () => {
-    const { container } = await createContainer();
+    const modules = [new ServiceModule(), new TransformModule()];
+    const { container, module } = await createContainer(...modules);
+
+    const msg = 'hello world';
+    module.bind('test-transform').toInstance(ineeda<Transform>({
+      check: () => Promise.resolve(true),
+      transform: (c: Command, type: string, data: object) => Promise.resolve(msg),
+    }));
 
     const sendMessage = spy();
     const controller = await createService(container, EchoController, {
       bot: ineeda<Bot>({
         sendMessage,
-      }),
-      compiler: ineeda<TemplateCompiler>({
-        compile: () => ineeda<Template>({
-          render: () => 'test_echo',
-        }),
       }),
       data: {
         filters: [],
@@ -62,8 +58,8 @@ describeAsync('echo controller', async () => {
             strict: true,
           },
           metadata: {
-            kind: 'template-transform',
-            name: 'test_template',
+            kind: 'test-transform',
+            name: 'test_echo',
           },
         }],
       },
@@ -72,6 +68,7 @@ describeAsync('echo controller', async () => {
         name: 'test_echo',
       },
     });
+    await controller.start();
 
     const cmd = new Command({
       context: ineeda<Context>(),

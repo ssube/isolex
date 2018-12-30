@@ -10,6 +10,7 @@ import { BaseServiceOptions } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
+import { ServiceDefinition } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -27,9 +28,9 @@ export class TestModule extends Module {
   }
 }
 
-export async function createContainer(): Promise<{ container: Container, module: Module }> {
+export async function createContainer(...modules: Array<Module>): Promise<{ container: Container, module: Module }> {
   const module = new TestModule();
-  const container = Container.from(module);
+  const container = Container.from(module, ...modules);
   await container.configure();
   return { container, module };
 }
@@ -49,7 +50,9 @@ export async function createService<TService, TOptions extends BaseServiceOption
     logger: ConsoleLogger.global,
     metrics: new Registry(),
     schema: new Schema(), // tests use the real schema :D
-    services: ineeda<ServiceModule>(),
+    services: ineeda<ServiceModule>({
+      createService: (def: ServiceDefinition<any>) => container.create(def.metadata.kind, def),
+    }),
     storage: ineeda<Connection>(),
     ...options,
   };

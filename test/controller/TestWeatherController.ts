@@ -6,7 +6,9 @@ import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherControlle
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { TemplateTransformData } from 'src/transform/TemplateTransform';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { TransformModule } from 'src/module/TransformModule';
+import { Transform } from 'src/transform/Transform';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -15,7 +17,9 @@ import { createContainer, createService } from 'test/helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
-    const { container, module } = await createContainer();
+    const modules = [new ServiceModule(), new TransformModule()];
+    const { container, module } = await createContainer(...modules);
+
     const data = { test: 'test' };
     module.bind('request').toFactory(async () => data);
 
@@ -26,15 +30,11 @@ describeAsync('weather controller', async () => {
       },
     });
     module.bind('bot').toInstance(bot);
+    module.bind('test-transform').toInstance(ineeda<Transform>({
+      check: () => Promise.resolve(true),
+      transform: (cmd: Command, type: string, data: any) => Promise.resolve(data.test),
+    }));
 
-    // this type is not detected on the literal, leading to an extra properties error
-    const templateData: TemplateTransformData = {
-      filters: [],
-      strict: true,
-      templates: {
-        body: '{{ weather.test }}',
-      },
-    };
     const controller = await createService(container, WeatherController, {
       bot,
       compiler: ineeda<TemplateCompiler>({
@@ -50,9 +50,12 @@ describeAsync('weather controller', async () => {
         filters: [],
         strict: true,
         transforms: [{
-          data: templateData,
+          data: {
+            filters: [],
+            strict: true,
+          },
           metadata: {
-            kind: 'template-transform',
+            kind: 'test-transform',
             name: 'test_weather',
           },
         }],
@@ -62,6 +65,8 @@ describeAsync('weather controller', async () => {
         name: 'test_weather',
       },
     });
+    await controller.start();
+
     expect(controller).to.be.an.instanceOf(WeatherController);
 
     const cmd = new Command({
@@ -79,6 +84,6 @@ describeAsync('weather controller', async () => {
 
     expect(sent.length).to.equal(1);
     expect(sent[0]).to.be.an.instanceOf(Message);
-    expect(sent[0].body).to.deep.equal(data);
+    expect(sent[0].body).to.deep.equal(data.test);
   });
 });
