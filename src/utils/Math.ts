@@ -1,6 +1,10 @@
 import { isNil } from 'lodash';
 import * as mathjs from 'mathjs';
 
+export interface ResultSet {
+  entries: Array<string>;
+}
+
 export interface ResultFormatOptions {
   list: {
     join: string;
@@ -12,7 +16,7 @@ export interface ResultFormatOptions {
   };
 }
 
-export function formatResult(body: any, scope: any, options: ResultFormatOptions): string {
+export function formatResult(body: unknown, scope: any, options: ResultFormatOptions): string {
   if (isNil(body)) {
     return 'nil result';
   }
@@ -24,12 +28,12 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     case 'string':
       return String(body);
     case 'Date':
-      return body.toString();
+      return (body as Date).toString();
     case 'Array':
-      return body.map((it: any) => formatResult(it, scope, options)).join(options.list.join);
+      return (body as Array<unknown>).map((it: any) => formatResult(it, scope, options)).join(options.list.join);
     case 'Function':
       // TODO: make sure this doesn't allow math to escape the library sandbox
-      return body.call(undefined, scope);
+      return (body as Function).call(undefined, scope);
     case 'Object':
       return JSON.stringify(body);
     case 'RegExp':
@@ -42,7 +46,7 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     case 'Unit':
       return mathjs.format(body, options.number);
     case 'ResultSet':
-      return formatResult(body.entries, scope, options);
+      return formatResult((body as ResultSet).entries, scope, options);
     case 'AccessorNode':
     case 'ArrayNode':
     case 'AssignmentNode':
@@ -57,7 +61,7 @@ export function formatResult(body: any, scope: any, options: ResultFormatOptions
     case 'ParenthesisNode':
     case 'RangeNode':
     case 'SymbolNode':
-      return body.toString(options.node);
+      return (body as mathjs.MathNode).toString(options.node);
     default:
       return `unknown result type: ${JSON.stringify(body)}`;
   }

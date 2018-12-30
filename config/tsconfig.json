@@ -20,17 +20,14 @@
     "noImplicitThis": true,
     "paths": {},
     "sourceMap": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
     "strictNullChecks": true,
     "target": "es2017",
     "types": [
       "chai-as-promised",
-      "lodash",
-      "mathjs",
       "mocha",
       "octokit-graphql",
-      "request",
-      "request-promise-native",
-      "sinon-chai",
       "string-split"
     ],
     "typeRoots": [

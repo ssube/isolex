@@ -14,7 +14,7 @@ export interface SchemaResult {
 export class Schema {
   protected compiler: Ajv.Ajv;
 
-  constructor(schema: any = SCHEMA_GLOBAL) {
+  constructor(schema: object = SCHEMA_GLOBAL) {
     this.compiler = new Ajv({
       allErrors: true,
       coerceTypes: true,
@@ -28,7 +28,7 @@ export class Schema {
     this.compiler.addSchema(schema, 'isolex');
   }
 
-  public match(value: any, ref: string = 'isolex#'): SchemaResult {
+  public match(value: unknown, ref: string = 'isolex#'): SchemaResult {
     const valid = this.compiler.validate({ $ref: ref }, value);
     if (valid === true) {
       return {

@@ -158,7 +158,7 @@ export class Context extends BaseEntity implements ContextOptions {
     }
   }
 
-  public toJSON(): any {
+  public toJSON(): object {
     const user = this.user ? this.user.toJSON() : {};
     return {
       channel: this.channel,

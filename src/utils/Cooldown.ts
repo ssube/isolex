@@ -72,9 +72,8 @@ export class Cooldown implements ServiceLifecycle {
   }
 
   public next() {
-    const ticks = this.ticks++;
-
-    this.stream.next(ticks);
+    this.stream.next(this.ticks);
+    this.ticks += 1;
 
     if (this.active) {
       this.timer = setTimeout(this.boundNext, this.rate);

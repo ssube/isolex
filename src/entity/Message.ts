@@ -17,7 +17,7 @@ export const TABLE_MESSAGE = 'message';
 
 @Entity(TABLE_MESSAGE)
 export class Message extends LabelEntity implements MessageOptions {
-  public static isMessage(it: any): it is Message {
+  public static isMessage(it: unknown): it is Message {
     return it instanceof Message;
   }
 

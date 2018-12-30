@@ -9,7 +9,7 @@ export class Template {
     this.template = options.template;
   }
 
-  public render(data: any): string {
+  public render(data: unknown): string {
     return this.template(data);
   }
 }

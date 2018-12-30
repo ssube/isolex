@@ -5,7 +5,7 @@ import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
-import { BaseService, BaseServiceOptions } from 'src/BaseService';
+import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
@@ -18,11 +18,10 @@ import { filterNil, mustFind } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
-export interface BotData {
-  filters: Array<ServiceDefinition>;
+export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
-  intervals: Array<ServiceDefinition>;
-  listeners: Array<ServiceDefinition>;
+  intervals: Array<ServiceDefinition<IntervalData>>;
+  listeners: Array<ServiceDefinition<ListenerData>>;
   logger: {
     level: LogLevel;
     name: string;
@@ -30,7 +29,6 @@ export interface BotData {
   migrate: boolean;
   parsers: Array<ServiceDefinition<ParserData>>;
   storage: ConnectionOptions;
-  strict: boolean;
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
@@ -96,6 +94,8 @@ export class Bot extends BaseService<BotData> implements Service {
         this.metrics.resetMetrics();
         this.logger.info('metrics reset');
         break;
+      default:
+        this.logger.debug({ event }, 'ignoring notification');
     }
   }
 

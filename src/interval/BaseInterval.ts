@@ -1,6 +1,6 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
-import { Equal, Repository } from 'typeorm';
+import { Equal, FindManyOptions, Repository } from 'typeorm';
 
 import { BotService } from 'src/BotService';
 import { Context } from 'src/entity/Context';
@@ -58,7 +58,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   public abstract tick(context: Context, last: Tick): Promise<number>;
 
   protected async nextTick() {
-    const last = await this.tickRepository.find({
+    const options: FindManyOptions<Tick> = {
       // typeorm requires an order for toString, which is not a column
       order: {
         updatedAt: 'DESC',
@@ -67,7 +67,9 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
       where: {
         intervalId: Equal(this.id),
       },
-    });
+    };
+
+    const last = await this.tickRepository.find(options);
     const context = await this.createContext();
     const status = await this.tick(context, last[0]);
     const next = this.tickRepository.create({

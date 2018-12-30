@@ -28,7 +28,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
     const sides = cmd.getHead('sides');
 
     const results: Array<number> = [];
-    for (let i = 0; i < Number(count); i++) {
+    for (let i = 0; i < Number(count); i += 1) {
       const rollResult = this.math.randomInt(DICE_MINIMUM, Number(sides));
       results.push(rollResult);
     }

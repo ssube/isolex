@@ -98,6 +98,8 @@ async function handleSignals(bot: Bot, logger: Logger) {
       case SIGNAL_RESET:
         await bot.notify(ServiceEvent.Reset);
         break;
+      default:
+        logger.warn({ signal: s }, 'unknown signal received');
     }
     s = await signal(...signals);
   }

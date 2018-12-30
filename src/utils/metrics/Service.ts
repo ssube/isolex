@@ -13,7 +13,7 @@ export function createServiceCounter(config: Partial<CounterConfiguration>): Cou
   });
 }
 
-export function incrementServiceCounter(svc: Service, counter: Counter, data: any) {
+export function incrementServiceCounter(svc: Service, counter: Counter, data: object) {
   counter.inc({
     ...data,
     serviceId: svc.id,

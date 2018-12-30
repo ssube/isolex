@@ -7,7 +7,9 @@ import { NotFoundError } from 'src/error/NotFoundError';
  */
 export function defer<T = undefined>(ms: number, val?: T): Promise<T> {
   return new Promise((res, rej) => {
-    setTimeout(() => res(val), ms);
+    setTimeout(() => {
+      res(val);
+    }, ms);
   });
 }
 

@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import { ConsoleLogger, Container } from 'noicejs';
 
-import { defer } from 'src/utils';
 import { Picklist } from 'src/utils/Picklist';
+
 import { describeAsync, itAsync } from 'test/helpers/async';
 
 const PICK_COUNT = 3;
@@ -20,7 +19,7 @@ describeAsync('pick list', async () => {
       }],
     });
 
-    for (let i = 0; i < PICK_REPS; ++i) {
+    for (let i = 0; i < PICK_REPS; i += 1) {
       expect(list.pickOne()).to.be.oneOf(['x', 'y']);
     }
   });
@@ -36,7 +35,7 @@ describeAsync('pick list', async () => {
       }],
     });
 
-    for (let i = 0; i < PICK_REPS; ++i) {
+    for (let i = 0; i < PICK_REPS; i += 1) {
       expect(list.pickOne()).to.equal('x');
     }
   });
@@ -53,7 +52,7 @@ describeAsync('pick list', async () => {
       }],
     });
 
-    for (let i = 0; i < PICK_REPS; ++i) {
+    for (let i = 0; i < PICK_REPS; i += 1) {
       counter[list.pickOne()] += 1;
     }
   });
@@ -69,7 +68,7 @@ describeAsync('pick list', async () => {
       }],
     });
 
-    for (let i = 0; i < PICK_REPS; ++i) {
+    for (let i = 0; i < PICK_REPS; i += 2) {
       const puck = list.pick(PICK_COUNT);
       expect(puck).to.have.property('length', 3);
       expect(puck).to.deep.equal(['x', 'x', 'x']);

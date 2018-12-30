@@ -51,10 +51,10 @@ export class CountController extends BaseController<CountControllerData> impleme
         await this.reply(cmd.context, body);
         break;
       case '++':
-        ++counter.count;
+        counter.count += 1;
         break;
       case '--':
-        --counter.count;
+        counter.count -= 1;
         break;
       default:
         counter.count += clamp(Number(count), this.data.range.max, this.data.range.min);
