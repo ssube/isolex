@@ -17,6 +17,10 @@ export class SedController extends BaseController<SedControllerData> implements 
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (!cmd.context.source) {
+      return this.reply(cmd.context, 'no source listener with which to create a session');
+    }
+
     const expr = cmd.getHead('expr');
 
     // split into regex, replace and flags

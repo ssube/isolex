@@ -2,6 +2,9 @@ metadata:
   kind: express-listener
   name: test-express
 data:
+  defaultTarget:
+    kind: discord-listener
+    name: test-discord
   expose:
     graph: true
     graphiql: true

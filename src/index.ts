@@ -8,15 +8,16 @@ import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
 import { EntityModule } from 'src/module/EntityModule';
 import { FilterModule } from 'src/module/FilterModule';
+import { IntervalModule } from 'src/module/IntervalModule';
 import { ListenerModule } from 'src/module/ListenerModule';
 import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
+import { Schema } from 'src/schema';
+import { ServiceEvent } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
-import { Schema } from 'src/utils/Schema';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
-import { ServiceLifecycle } from './Service';
 
 // main arguments
 const MAIN_ARGS: yargs.Options = {
@@ -30,6 +31,7 @@ const MAIN_MODULES = [
   ControllerModule,
   EntityModule,
   FilterModule,
+  IntervalModule,
   ListenerModule,
   ParserModule,
   ServiceModule,
@@ -84,23 +86,23 @@ function createModules(botModule: BotModule, migrate: boolean) {
 
 async function handleSignals(bot: Bot, logger: Logger) {
   await bot.start();
-  await bot.notify(ServiceLifecycle.Start);
+  await bot.notify(ServiceEvent.Start);
 
   const signals = [SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP];
   let s = await signal(...signals);
   while (s !== SIGNAL_STOP) {
     switch (s) {
       case SIGNAL_RELOAD:
-        await bot.notify(ServiceLifecycle.Reload);
+        await bot.notify(ServiceEvent.Reload);
         break;
       case SIGNAL_RESET:
-        await bot.notify(ServiceLifecycle.Reset);
+        await bot.notify(ServiceEvent.Reset);
         break;
     }
     s = await signal(...signals);
   }
 
-  await bot.notify(ServiceLifecycle.Stop);
+  await bot.notify(ServiceEvent.Stop);
   await bot.stop();
 }
 

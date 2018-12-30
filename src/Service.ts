@@ -1,6 +1,6 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
-import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/graph/output/Pairs';
+import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
 import { MapLike } from 'src/utils/Map';
 
 export interface ServiceDefinition<TData = any> {
@@ -8,11 +8,12 @@ export interface ServiceDefinition<TData = any> {
   data: TData;
 }
 
-export enum ServiceLifecycle {
+export enum ServiceEvent {
   Reload = 'reload',
   Reset = 'reset',
   Start = 'start',
   Stop = 'stop',
+  Tick = 'tick',
 }
 
 export interface ServiceMetadata {
@@ -37,12 +38,15 @@ export interface ServiceMetadata {
   readonly name: string;
 }
 
-export interface Service extends ServiceMetadata {
-  readonly id: string;
-
-  notify(event: ServiceLifecycle): Promise<void>;
+export interface ServiceLifecycle {
   start(): Promise<void>;
   stop(): Promise<void>;
+}
+
+export interface Service extends ServiceLifecycle, ServiceMetadata {
+  readonly id: string;
+
+  notify(event: ServiceEvent): Promise<void>;
 }
 
 export function getLogInfo(svc: Service) {

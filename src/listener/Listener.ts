@@ -1,6 +1,5 @@
 import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
-import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { Service } from 'src/Service';
@@ -22,7 +21,10 @@ export interface ContextFetchOptions extends FetchOptions {
 }
 
 export interface Listener extends Service {
-  check(context: Context): Promise<boolean>;
+  /**
+   * Check a message, incoming or outgoing, before sending it.
+   */
+  check(msg: Message): Promise<boolean>;
 
   /**
    * Sends a message.

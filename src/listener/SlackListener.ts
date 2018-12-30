@@ -3,7 +3,6 @@ import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
 import { BotServiceOptions } from 'src/BotService';
-import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
@@ -92,13 +91,13 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   protected async convertMessage(msg: any): Promise<Message> {
     const {type, channel, user: uid, text, ts} = msg;
     this.logger.debug({ channel, text, ts, type, uid }, 'converting slack message');
-    const context = new Context({
+
+    const context = await this.createContext({
       channel: {
         id: channel,
         thread: '',
       },
       name: uid,
-      source: this,
       uid,
     });
     const session = await this.getSession(uid);

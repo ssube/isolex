@@ -54,16 +54,39 @@ definitions:
       verb:
         type: string
 
+  entity-context-channel:
+    type: object
+    additionalProperties: false
+    required: [id, thread]
+    properties:
+      id:
+        type: string
+      thread:
+        type: string
+ 
   entity-context:
     type: object
-    additionalProperties: true
+    additionalProperties: false
+    required: [channel, name, uid]
     properties:
       channel:
         $ref: "#/definitions/entity-context-channel"
       name:
         type: string
+      target:
+        $ref: "#/definitions/service-metadata"
       uid:
         type: string
+
+  entity-message:
+    type: object
+    additionalProperties: false
+    required: [body, type]
+    properties:
+      body:
+        type: string
+      type:
+        enum: [text/plain]
 
   match-rule:
     type: object
@@ -78,14 +101,19 @@ definitions:
       values:
         type: array
         items:
-          type: object
-          anyOf:
-            - properties:
-                string:
-                  type: string
-            - properties:
-                regexp:
-                  type: string
+          $ref: "#/definitions/match-rule-value"
+
+  match-rule-value:
+    type: object
+    additionalProperties: false
+    oneOf:
+      - required: [regexp]
+      - required: [string]
+    properties:
+      regexp:
+        regexp: true
+      string:
+        type: string
 
   match-data:
     type: object
@@ -156,7 +184,14 @@ definitions:
               $ref: "#/definitions/service-definition"
 
   service-controller-completion:
-    $ref: "#/definitions/service-controller"
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        additionalProperties: true
+        required: [defaultTarget]
+        properties:
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
 
   service-controller-count:
     allOf:
@@ -379,6 +414,61 @@ definitions:
           users:
             $ref: "#/definitions/checklist"
 
+  service-interval:
+    allOf:
+      - $ref: "#/definitions/service-data"
+      - type: object
+        additionalProperties: true
+        required: [defaultContext, defaultTarget, frequency]
+        properties:
+          defaultContext:
+            $ref: "#/definitions/entity-context"
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
+          frequency:
+            type: object
+            additionalProperties: false
+            oneOf:
+              - required: [cron]
+              - required: [zeit]
+            properties:
+              cron:
+                type: string
+              zeit:
+                type: string
+ 
+  service-interval-command:
+    allOf:
+      - $ref: "#/definitions/service-interval"
+      - type: object
+        additionalProperties: true
+        required: [defaultCommand]
+        properties:
+          defaultCommand:
+            $ref: "#/definitions/entity-command"
+    
+  service-interval-event:
+    allOf:
+      - $ref: "#/definitions/service-interval"
+      - type: object
+        additionalProperties: true
+        required: [services]
+        properties:
+          services:
+            type: array
+            items:
+              $ref: "#/definitions/service-metadata"
+
+  service-interval-message:
+    allOf:
+      - $ref: "#/definitions/service-interval"
+      - type: object
+        additionalProperties: true
+        required: [defaultMessage]
+        properties:
+          defaultMessage:
+            $ref: "#/definitions/entity-message"
+
   service-listener:
     $ref: "#/definitions/service-data"
  
@@ -399,8 +489,10 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
-        required: [expose, graph, listen, token]
+        required: [defaultTarget, expose, graph, listen, token]
         properties:
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
           expose:
             type: object
             properties:

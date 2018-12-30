@@ -8,12 +8,12 @@ import * as uuid from 'uuid/v4';
 import { SchemaError } from 'src/error/SchemaError';
 import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
+import { Schema } from 'src/schema';
+import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
-import { Schema } from 'src/utils/Schema';
 
 /**
  * TODO: these should be optional and must be included in the decorator to be available
@@ -70,14 +70,14 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     // validate the data
     const result = options.schema.match(options.data, schemaPath);
     if (!result.valid) {
-      this.logger.error({ errors: result.errors }, 'failed to validate config');
+      this.logger.error({ data: options.data, errors: result.errors }, 'failed to validate config');
       throw new SchemaError('failed to validate config');
     } else {
       this.logger.debug('validated config data');
     }
   }
 
-  public async notify(event: ServiceLifecycle): Promise<void> {
+  public async notify(event: ServiceEvent): Promise<void> {
     this.logger.debug({ event }, 'service notified of event');
   }
 

@@ -9,8 +9,8 @@ import { Connection } from 'typeorm';
 import { BaseServiceOptions } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { Schema } from 'src/schema';
 import { Clock } from 'src/utils/Clock';
-import { Schema } from 'src/utils/Schema';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 

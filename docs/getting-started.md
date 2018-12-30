@@ -4,7 +4,6 @@ This guide will introduce the account system (authentication and authorization),
 advanced deploy commands.
 
 - [Getting Started](#getting-started)
-  - [Concepts](#concepts)
   - [Running](#running)
     - [Config](#config)
     - [Secrets](#secrets)
@@ -29,7 +28,8 @@ advanced deploy commands.
       - [Start Pipeline](#start-pipeline)
       - [Scale Apps](#scale-apps)
 
-## Concepts
+For more details on what messages are, how commands are executed, and the various services involved, please see
+[the architecture docs](./concept/arch.md).
 
 ## Running
 
@@ -106,6 +106,11 @@ To stop the bot, `kill` the PID from the log messages:
 When the bot first starts, the database will be empty. Begin by signing up, which will create a new user and an initial
 (sign in) token.
 
+The bot does not use passwords for authentication. Passwords have no inherent meaning and require substantial work to
+salt and hash correctly. Instead, each user is issued a [JSON web token](https://jwt.io) allowing them to sign in and
+create additional tokens. Tokens are signed but not encrypted, so any party can see the payload data, but cannot modify
+existing tokens or forge new ones. Only the server has the secret necessary to create and validate tokens.
+
 In a **private** channel:
 
 > !!join --name username
@@ -115,12 +120,12 @@ In a **private** channel:
 This will print a JWT, which can be used to sign in as this user and issue more tokens. This token is not otherwise
 useful on its own and will be referred to as the "sign in" token.
 
-**Save this token in your password manager**. You will need to provide this token when logging in.
+**Save this token in your password manager**. You will use this token every time you log in.
 
 #### Sign In
 
-Most of the services to which the bot connects use accounts. Since a user has logged in to the upstream service,
-sessions can be attached to users.
+Most of the chat services to which the bot connects have their own accounts. If a user is already logged into one of
+these services, the bot can attach a session to that account and keep you logged in.
 
 In a **private** channel:
 
@@ -128,9 +133,13 @@ In a **private** channel:
 >
 > @you, created session
 
+Once you are signed in, you will be granted permission to execute some commands. Grants are based on the token and
+any roles attached to the user, and the grant must appear in both the token and roles.
+
 #### Revoke Tokens
 
-If a token is lost or compromised, you can reset tokens with the `join:delete` command.
+If any of your tokens are lost or compromised, you can revoke them. This will delete all existing tokens for your user
+and create a new sign in token.
 
 This command takes one argument, `confirm`, which must be set to `yes` for the tokens to be deleted.
 

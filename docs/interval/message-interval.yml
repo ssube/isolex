@@ -1,0 +1,18 @@
+metadata:
+  kind: message-interval
+  name: test-interval-msg
+data:
+  defaultContext:
+    channel:
+      id: "440715367019446274"
+      thread: ""
+    name: svc
+    uid: svc
+  defaultMessage:
+    body: hello world
+    type: text/plain
+  defaultTarget:
+    kind: discord-listener
+    name: test-discord
+  frequency:
+    zeit: 30 seconds

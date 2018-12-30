@@ -3,28 +3,41 @@ import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
+import { ServiceMetadata } from 'src/Service';
 import { mapToDict } from 'src/utils/Map';
 
 export const NOUN_FRAGMENT = 'fragment';
 
-export type CompletionControllerData = any;
+export interface CompletionControllerData extends ControllerData {
+  defaultTarget: ServiceMetadata;
+}
+
 export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
 
 @Inject('storage')
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
-  protected storage: Connection;
-  protected fragmentRepository: Repository<Fragment>;
+  protected readonly storage: Connection;
+  protected readonly fragmentRepository: Repository<Fragment>;
+  protected target: Listener;
 
   constructor(options: CompletionControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
 
     this.storage = options.storage;
     this.fragmentRepository = this.storage.getRepository(Fragment);
+  }
+
+  public async start() {
+    await super.start();
+
+    this.target = this.services.getService(this.data.defaultTarget);
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -65,10 +78,9 @@ export class CompletionController extends BaseController<CompletionControllerDat
       verb,
     }));
 
-    this.logger.debug({ data: mapToDict(cmd.data), fragment }, 'creating fragment for later completion');
-
-    // @TODO: send this message elsewhere (not a direct reply)
-    return this.reply(cmd.context, `${fragment.id} (${key}): ${msg}`);
+    const context = await this.createContext(cmd.context);
+    this.logger.debug({ context, fragment }, 'creating fragment for later completion');
+    return this.reply(context, `${fragment.id} (${key}): ${msg}`);
   }
 
   public async updateFragment(cmd: Command): Promise<void> {
@@ -98,6 +110,16 @@ export class CompletionController extends BaseController<CompletionControllerDat
     } catch (err) {
       this.logger.error(err, 'error completing fragment');
       return this.reply(cmd.context, 'error completing fragment');
+    }
+  }
+
+  protected async createContext(ctx: Context) {
+    if (ctx.target) {
+      return ctx;
+    } else {
+      return ctx.extend({
+        target: this.target,
+      });
     }
   }
 }

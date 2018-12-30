@@ -10,6 +10,7 @@ import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Counter } from 'src/entity/misc/Counter';
 import { Keyword } from 'src/entity/misc/Keyword';
+import { Tick } from 'src/entity/Tick';
 
 export class EntityModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
@@ -23,6 +24,7 @@ export class EntityModule extends Module {
       Context,
       Fragment,
       Message,
+      Tick,
       /* auth */
       Role,
       Token,

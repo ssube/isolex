@@ -1,6 +1,6 @@
 import { BotService } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
-import { Context } from 'src/entity/Context';
+import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
@@ -11,18 +11,26 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
    *
    * Defaults to checking that the context came from this very same listener, by id.
    */
-  public async check(context: Context): Promise<boolean> {
-    return context.source.id === this.id;
+  public async check(msg: Message): Promise<boolean> {
+    if (msg.context.target) {
+      return msg.context.target.id === this.id;
+    }
+
+    return false;
   }
 
   public abstract send(msg: Message): Promise<void>;
 
   public abstract fetch(options: FetchOptions): Promise<Array<Message>>;
 
-  public abstract start(): Promise<void>;
-
-  public abstract stop(): Promise<void>;
-
   public abstract createSession(uid: string, user: User): Promise<Session>;
   public abstract getSession(uid: string): Promise<Session | undefined>;
+
+  protected async createContext(options: ContextOptions): Promise<Context> {
+    return new Context({
+      ...options,
+      source: this,
+      target: this,
+    });
+  }
 }

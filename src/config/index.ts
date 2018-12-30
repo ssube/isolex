@@ -77,6 +77,5 @@ export async function readConfig(path: string): Promise<string | undefined> {
       return;
     }
     throw err;
-
   }
 }

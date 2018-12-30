@@ -6,11 +6,11 @@ import * as request from 'request-promise';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
-import { GraphSchema } from 'src/graph';
+import { Schema } from 'src/schema';
+import { GraphSchema } from 'src/schema/graph';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { MathFactory } from 'src/utils/Math';
-import { Schema } from 'src/utils/Schema';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {

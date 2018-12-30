@@ -35,92 +35,9 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     this.storage = options.storage;
 
     this.schema = new GraphQLSchema({
-      mutation: new GraphQLObjectType({
-        fields: {
-          executeCommands: {
-            args: {
-              commands: {
-                type: GRAPH_INPUT_COMMAND_LIST,
-              },
-              context: {
-                type: GRAPH_INPUT_CONTEXT,
-              },
-            },
-            resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.executeCommands(args, req);
-            },
-            type: GRAPH_OUTPUT_COMMAND_LIST,
-          },
-          sendMessages: {
-            args: {
-              context: {
-                type: GRAPH_INPUT_CONTEXT,
-              },
-              messages: {
-                type: GRAPH_INPUT_MESSAGE_LIST,
-              },
-            },
-            resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.sendMessages(args, req);
-            },
-            type: GRAPH_OUTPUT_MESSAGE_LIST,
-          },
-        },
-        name: 'mutation',
-      }),
-      query: new GraphQLObjectType({
-        fields: {
-          command: {
-            args: {
-              id: {
-                type: GraphQLString,
-              },
-            },
-            resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.getCommand(args, req);
-            },
-            type: GRAPH_OUTPUT_COMMAND,
-          },
-          message: {
-            fields: {
-              id: {
-                type: GraphQLString,
-              },
-            },
-            resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.getMessage(args, req);
-            },
-            type: GRAPH_OUTPUT_MESSAGE,
-          },
-          service: {
-            fields: {
-              id: {
-                type: GraphQLString,
-              },
-            },
-            resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.getService(args, req);
-            },
-            type: GRAPH_OUTPUT_SERVICE,
-          },
-          services: {
-            resolve: (_, args: Dict<any>, req: express.Request) => {
-              return this.getServices(args, req);
-            },
-            type: GRAPH_OUTPUT_SERVICE_LIST,
-          },
-        },
-        name: 'query',
-      }),
+      mutation: this.createMutation(),
+      query: this.createQuery(),
     });
-  }
-
-  public async start() {
-    /* noop */
-  }
-
-  public async stop() {
-    /* noop */
   }
 
   public async executeCommands(args: any, req: express.Request) {
@@ -194,5 +111,62 @@ export class GraphSchema extends BotService<GraphSchemaData> {
       this.logger.error(err, 'error getting services');
       return [];
     }
+  }
+
+  protected createMutation() {
+    return new GraphQLObjectType({
+      fields: {
+        executeCommands: {
+          args: {
+            commands: { type: GRAPH_INPUT_COMMAND_LIST },
+            context: { type: GRAPH_INPUT_CONTEXT },
+          },
+          resolve: (_, args: Dict<any>, req: express.Request) => this.executeCommands(args, req),
+          type: GRAPH_OUTPUT_COMMAND_LIST,
+        },
+        sendMessages: {
+          args: {
+            context: { type: GRAPH_INPUT_CONTEXT },
+            messages: { type: GRAPH_INPUT_MESSAGE_LIST },
+          },
+          resolve: (_, args: Dict<any>, req: express.Request) => this.sendMessages(args, req),
+          type: GRAPH_OUTPUT_MESSAGE_LIST,
+        },
+      },
+      name: 'mutation',
+    });
+  }
+
+  protected createQuery() {
+    return new GraphQLObjectType({
+      fields: {
+        command: {
+          args: {
+            id: { type: GraphQLString },
+          },
+          resolve: (_, args: Dict<any>, req: express.Request) => this.getCommand(args, req),
+          type: GRAPH_OUTPUT_COMMAND,
+        },
+        message: {
+          fields: {
+            id: { type: GraphQLString },
+          },
+          resolve: (_, args: Dict<any>, req: express.Request) => this.getMessage(args, req),
+          type: GRAPH_OUTPUT_MESSAGE,
+        },
+        service: {
+          fields: {
+            id: { type: GraphQLString },
+          },
+          resolve: (_, args: Dict<any>, req: express.Request) => this.getService(args, req),
+          type: GRAPH_OUTPUT_SERVICE,
+        },
+        services: {
+          resolve: (_, args: Dict<any>, req: express.Request) => this.getServices(args, req),
+          type: GRAPH_OUTPUT_SERVICE_LIST,
+        },
+      },
+      name: 'query',
+    });
   }
 }

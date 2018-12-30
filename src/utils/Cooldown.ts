@@ -1,7 +1,7 @@
 import { BaseOptions } from 'noicejs/Container';
 import { Observable, Subject } from 'rxjs';
 
-import { Service, ServiceLifecycle } from 'src/Service';
+import { ServiceLifecycle } from 'src/Service';
 
 export const GROWTH_FACTOR = 2;
 export interface CooldownOptions extends BaseOptions {
@@ -15,11 +15,7 @@ export interface CooldownOptions extends BaseOptions {
  * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
  * an exponential interval with an observable.
  */
-export class Cooldown implements Service {
-  public readonly id: string;
-  public readonly kind: string;
-  public readonly name: string;
-
+export class Cooldown implements ServiceLifecycle {
   protected active: boolean;
   protected boundNext: Function;
   protected data: CooldownOptions;
@@ -38,10 +34,6 @@ export class Cooldown implements Service {
     this.stream = new Subject();
     this.ticks = 0;
     this.timer = 0;
-  }
-
-  public async notify(event: ServiceLifecycle): Promise<void> {
-    /* noop */
   }
 
   public async start() {

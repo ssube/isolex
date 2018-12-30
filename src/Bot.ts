@@ -9,10 +9,11 @@ import { BaseService, BaseServiceOptions } from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
+import { Interval, IntervalData } from 'src/interval/Interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
-import { Service, ServiceDefinition, ServiceLifecycle } from 'src/Service';
+import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { filterNil, mustFind } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
@@ -20,6 +21,7 @@ import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 export interface BotData {
   filters: Array<ServiceDefinition>;
   controllers: Array<ServiceDefinition<ControllerData>>;
+  intervals: Array<ServiceDefinition>;
   listeners: Array<ServiceDefinition>;
   logger: {
     level: LogLevel;
@@ -48,6 +50,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
   // services
   protected controllers: Array<Controller>;
+  protected intervals: Array<Interval>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
   protected services: ServiceModule;
@@ -68,6 +71,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     // set up deps
     this.controllers = [];
+    this.intervals = [];
     this.listeners = [];
     this.parsers = [];
 
@@ -83,12 +87,12 @@ export class Bot extends BaseService<BotData> implements Service {
     return this.storage;
   }
 
-  public async notify(event: ServiceLifecycle) {
+  public async notify(event: ServiceEvent) {
     await super.notify(event);
     await this.services.notify(event);
 
     switch (event) {
-      case ServiceLifecycle.Reset:
+      case ServiceEvent.Reset:
         this.metrics.resetMetrics();
         this.logger.info('metrics reset');
         break;
@@ -220,7 +224,7 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   /**
-   * Dispatch a message to the appropriate listeners (based on the context).
+   * Dispatch a message to the appropriate listener (based on the context).
    */
   protected async receiveMessage(msg: Message): Promise<void> {
     this.logger.debug({ msg }, 'receiving outgoing message');
@@ -233,16 +237,29 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    let sent = false;
-    for (const listener of this.listeners) {
-      if (await listener.check(msg.context)) {
-        await listener.send(msg);
-        sent = true;
+    if (msg.context.target) {
+      return this.sendMessageTarget(msg, msg.context.target);
+    } else {
+      return this.findMessageTarget(msg);
+    }
+  }
+
+  protected async findMessageTarget(msg: Message): Promise<void> {
+    for (const target of this.listeners) {
+      if (await target.check(msg)) {
+        await target.send(msg);
+        return;
       }
     }
 
-    if (!sent) {
-      this.logger.warn({ msg }, 'outgoing message was not matched by any listener (dead letter)');
+    this.logger.warn({ msg }, 'message was rejected by every listener (dead letter)');
+  }
+
+  protected async sendMessageTarget(msg: Message, target: Listener): Promise<void> {
+    if (await target.check(msg)) {
+      await target.send(msg);
+    } else {
+      this.logger.warn({ msg }, 'target listener rejected message');
     }
   }
 
@@ -294,6 +311,11 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
       this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
+    }
+
+    this.logger.info('setting up intervals');
+    for (const data of this.data.intervals) {
+      this.intervals.push(await this.services.createService<Interval, IntervalData>(data));
     }
 
     this.logger.info('setting up listeners');
