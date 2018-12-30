@@ -5,8 +5,8 @@ import {AsyncHook, createHook} from 'async_hooks';
 const {stackTraceFilter} = require('mocha/lib/utils');
 const filterStack = stackTraceFilter();
 
-type AsyncMochaTest = (this: Mocha.ITestCallbackContext | void, done: MochaDone) => Promise<void>;
-type AsyncMochaSuite = (this: Mocha.ISuiteCallbackContext) => Promise<void>;
+type AsyncMochaTest = (this: Mocha.Context | void) => Promise<void>;
+type AsyncMochaSuite = (this: Mocha.Suite) => Promise<void>;
 
 export interface TrackedResource {
   source: string;
@@ -78,8 +78,8 @@ export class Tracker {
 /**
  * Describe a suite of async tests. This wraps mocha's describe to track async resources and report leaks.
  */
-export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.ISuite {
-  return describe(description, function trackSuite() {
+export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.Suite {
+  return describe(description, function trackSuite(this: Mocha.Suite) {
     const tracker = new Tracker();
 
     beforeEach(() => {
@@ -120,11 +120,11 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.I
  *
  * This function may not have any direct test coverage. It is too simple to reasonably mock.
  */
-export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.ITest {
+export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.Test {
   if (cb) {
-    return it(expectation, function trackTest(this: any) {
-      return new Promise<any>((res, rej) => {
-        cb.call(this).then((value: any) => {
+    return it(expectation, function trackTest(this: Mocha.Context) {
+      return new Promise<unknown>((res, rej) => {
+        cb.call(this).then((value: unknown) => {
           res(value);
         }, (err: Error) => {
           rej(err);
@@ -134,8 +134,4 @@ export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.ITest {
   } else {
     return it(expectation);
   }
-}
-
-export function delay(ms: number) {
-  return new Promise<void>((res) => setTimeout(() => res(), ms));
 }
