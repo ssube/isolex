@@ -2,6 +2,7 @@ import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { FilterData } from 'src/filter/Filter';
 import { Service, ServiceDefinition } from 'src/Service';
+import { TemplateScope } from 'src/utils/Template';
 
 export interface TransformData extends BotServiceData {
   filters: Array<ServiceDefinition<FilterData>>;
@@ -17,5 +18,5 @@ export interface Transform extends Service {
    *
    * Multiple transforms stack to form a `reduce(msg, cmd)`
    */
-  transform(cmd: Command, type: string, body: any): Promise<any>;
+  transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope>;
 }

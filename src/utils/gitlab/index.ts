@@ -29,6 +29,10 @@ export interface GitlabClientOptions extends BaseOptions {
   logger: Logger;
 }
 
+export type JobResults = any;
+export type PipelineResults = any;
+export type ProjectResults = any;
+
 @Inject()
 export class GitlabClient {
   protected readonly container: Container;
@@ -43,17 +47,17 @@ export class GitlabClient {
     });
   }
 
-  public async cancelJob(options: JobOptions): Promise<any> {
+  public async cancelJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/jobs/${options.job}/cancel`, this.getRequestOptions(options, 'POST'));
   }
 
-  public async cancelPipeline(options: PipelineOptions): Promise<any> {
+  public async cancelPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}/cancel`, this.getRequestOptions(options, 'POST'));
   }
 
-  public async createPipeline(options: ReferenceOptions): Promise<any> {
+  public async createPipeline(options: ReferenceOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
     const reqOptions = {
       ...this.getRequestOptions(options, 'POST'),
@@ -64,21 +68,21 @@ export class GitlabClient {
     return this.makeRequest(`${projectURL}/pipeline`, reqOptions);
   }
 
-  public async getJob(options: JobOptions): Promise<any> {
+  public async getJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/jobs/${options.job}`, options);
   }
 
-  public async getPipeline(options: PipelineOptions): Promise<any> {
+  public async getPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}`, options);
   }
 
-  public async getProject(options: ProjectOptions): Promise<any> {
+  public async getProject(options: ProjectOptions): Promise<ProjectResults> {
     return this.makeRequest(this.getProjectURL(options), options);
   }
 
-  public async listJobs(options: PipelineOptions): Promise<any> {
+  public async listJobs(options: PipelineOptions): Promise<Array<JobResults>> {
     const projectURL = this.getProjectURL(options);
     const reqOptions = this.getRequestOptions(options);
     if (isNil(options.pipeline)) {
@@ -88,22 +92,22 @@ export class GitlabClient {
     }
   }
 
-  public async listPipelines(options: ProjectOptions): Promise<any> {
+  public async listPipelines(options: ProjectOptions): Promise<Array<PipelineResults>> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/pipelines`, this.getRequestOptions(options));
   }
 
-  public async retryJob(options: JobOptions): Promise<any> {
+  public async retryJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/jobs/${options.job}/retry`, this.getRequestOptions(options, 'POST'));
   }
 
-  public async retryPipeline(options: PipelineOptions): Promise<any> {
+  public async retryPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}/retry`, this.getRequestOptions(options, 'POST'));
   }
 
-  protected getProjectURL(options: ProjectOptions): any {
+  protected getProjectURL(options: ProjectOptions): string {
     const projectPath = encodeURIComponent(`${options.group}/${options.project}`);
     return this.getRequestUrl(`projects/${projectPath}`);
   }

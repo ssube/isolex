@@ -40,7 +40,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
     })];
   }
 
-  public async decode(msg: Message): Promise<any> {
+  public async decode(msg: Message): Promise<Array<string>> {
     if (msg.type !== TYPE_TEXT) {
       throw new MimeTypeError();
     }

@@ -1,6 +1,8 @@
 import { isNil } from 'lodash';
 import * as mathjs from 'mathjs';
 
+import { TemplateScope } from './Template';
+
 export interface ResultSet {
   entries: Array<string>;
 }
@@ -16,7 +18,7 @@ export interface ResultFormatOptions {
   };
 }
 
-export function formatResult(body: unknown, scope: any, options: ResultFormatOptions): string {
+export function formatResult(body: unknown, scope: TemplateScope, options: ResultFormatOptions): string {
   if (isNil(body)) {
     return 'nil result';
   }
@@ -30,7 +32,7 @@ export function formatResult(body: unknown, scope: any, options: ResultFormatOpt
     case 'Date':
       return (body as Date).toString();
     case 'Array':
-      return (body as Array<unknown>).map((it: any) => formatResult(it, scope, options)).join(options.list.join);
+      return (body as Array<unknown>).map((it) => formatResult(it, scope, options)).join(options.list.join);
     case 'Function':
       // TODO: make sure this doesn't allow math to escape the library sandbox
       return (body as Function).call(undefined, scope);

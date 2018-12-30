@@ -2,7 +2,7 @@ import * as AWS from 'aws-sdk';
 import { kebabCase } from 'lodash';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
+import { Command, CommandData, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
@@ -12,6 +12,7 @@ import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { leftPad } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { TemplateScope } from 'src/utils/Template';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -56,9 +57,9 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     return this.decodeBody(msg.context, msg.body);
- }
+  }
 
-  public async decode(msg: Message): Promise<any> {
+  public async decode(msg: Message): Promise<TemplateScope> {
     if (msg.type !== TYPE_TEXT) {
       throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
     }
@@ -115,7 +116,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     }
   }
 
-  protected async createCompletion(context: Context, noun: string, verb: CommandVerb, data: any, key: string) {
+  protected async createCompletion(context: Context, noun: string, verb: CommandVerb, data: CommandData, key: string) {
     const fragment = dictToMap({
       key: [key],
       msg: [`missing slot: ${key}`],
@@ -129,7 +130,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     ]));
   }
 
-  protected async createReply(context: Context, noun: string, verb: CommandVerb, data: any): Promise<Array<Command>> {
+  protected async createReply(context: Context, noun: string, verb: CommandVerb, data: CommandData): Promise<Array<Command>> {
     const cmdOptions: CommandOptions = {
       context: context.extend({
         parser: this,

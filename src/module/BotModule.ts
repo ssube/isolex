@@ -48,27 +48,27 @@ export class BotModule extends Module {
   }
 
   @Provides('bot')
-  public async getBot(options: any): Promise<Bot> {
+  public async getBot(): Promise<Bot> {
     return this.bot;
   }
 
   @Provides('logger')
-  public async getLogger(options: any): Promise<Logger> {
+  public async getLogger(): Promise<Logger> {
     return this.logger;
   }
 
   @Provides('metrics')
-  public async getMetrics(options: any): Promise<Registry> {
+  public async getMetrics(): Promise<Registry> {
     return this.metrics;
   }
 
   @Provides('schema')
-  public async getSchema(options: any): Promise<Schema> {
+  public async getSchema(): Promise<Schema> {
     return new Schema();
   }
 
   @Provides('storage')
-  public async getStorage(options: any): Promise<Connection> {
+  public async getStorage(): Promise<Connection> {
     return this.bot.getStorage();
   }
 
