@@ -238,11 +238,7 @@ export class Bot extends BaseService<BotData> implements Service {
     }
 
     if (msg.context.target) {
-      if (await msg.context.target.check(msg)) {
-        await msg.context.target.send(msg);
-      } else {
-        this.logger.warn({ msg }, 'target listener rejected message');
-      }
+      return this.sendMessageTarget(msg, msg.context.target);
     } else {
       return this.findMessageTarget(msg);
     }
@@ -257,6 +253,14 @@ export class Bot extends BaseService<BotData> implements Service {
     }
 
     this.logger.warn({ msg }, 'message was rejected by every listener (dead letter)');
+  }
+
+  protected async sendMessageTarget(msg: Message, target: Listener): Promise<void> {
+    if (await target.check(msg)) {
+      await target.send(msg);
+    } else {
+      this.logger.warn({ msg }, 'target listener rejected message');
+    }
   }
 
   protected async parseMessage(msg: Message) {
