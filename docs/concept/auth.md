@@ -15,6 +15,8 @@ and context.
     - [Getting Started](#getting-started)
     - [Login](#login)
     - [Session](#session)
+  - [Config](#config)
+    - [Issuer](#issuer)
 
 ## Authorization
 
@@ -93,3 +95,15 @@ entity suitable for creating `Context`. Not all listeners maintain sessions; HTT
 which extend session, and does not need to track them outside of the request scope. Listeners that work with logged in
 users, like most chat applications, should support keeping the user logged in. This is a convenience and may be
 disabled for security reasons.
+
+## Config
+
+### Issuer
+
+Services that issue tokens need to be configured with a few secrets:
+
+- the `audience` to which they are issuing tokens
+- a stable `issuer` used to identify this service (or bot)
+- the `secret` used to sign the tokens
+
+The `secret` can be a simple string or RSA key.
