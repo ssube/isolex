@@ -4,7 +4,7 @@ import { isBoolean } from 'lodash';
 export const SCHEMA_KEYWORD_REGEXP: Ajv.KeywordDefinition = {
   compile(schema: boolean | { flags: string; }) {
     if (isBoolean(schema)) {
-      return (data: any) => data instanceof RegExp;
+      return (data: any) => (data instanceof RegExp) === schema;
     } else {
       return (data: RegExp) => data.flags === schema.flags;
     }
