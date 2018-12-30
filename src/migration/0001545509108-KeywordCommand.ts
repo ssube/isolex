@@ -5,7 +5,7 @@ import { TABLE_KEYWORD } from 'src/entity/misc/Keyword';
 const OLD_TABLE = `${TABLE_KEYWORD}_old`;
 
 export class KeywordCommand0001545509108 implements MigrationInterface {
-  public async up(query: QueryRunner): Promise<any> {
+  public async up(query: QueryRunner): Promise<void> {
     await query.renameTable(TABLE_KEYWORD, OLD_TABLE);
     await query.createTable(new Table({
       columns: [{
@@ -35,7 +35,7 @@ export class KeywordCommand0001545509108 implements MigrationInterface {
     }));
   }
 
-  public async down(query: QueryRunner): Promise<any> {
+  public async down(query: QueryRunner): Promise<void> {
     await query.dropTable(TABLE_KEYWORD);
     if (await query.hasTable(OLD_TABLE)) {
       await query.renameTable(OLD_TABLE, TABLE_KEYWORD);

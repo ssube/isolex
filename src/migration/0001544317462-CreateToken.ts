@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateToken0001544317462 implements MigrationInterface {
-  public async up(query: QueryRunner): Promise<any> {
+  public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
       columns: [{
         isPrimary: true,
@@ -36,7 +36,7 @@ export class CreateToken0001544317462 implements MigrationInterface {
     }));
   }
 
-  public async down(query: QueryRunner): Promise<any> {
+  public async down(query: QueryRunner): Promise<void> {
     await query.dropTable('token');
   }
 }

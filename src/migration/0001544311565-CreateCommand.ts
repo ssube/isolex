@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { TABLE_COMMAND } from 'src/entity/Command';
 
 export class CreateCommand0001544311565 implements MigrationInterface {
-  public async up(query: QueryRunner): Promise<any> {
+  public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
       columns: [{
         isPrimary: true,
@@ -31,7 +31,7 @@ export class CreateCommand0001544311565 implements MigrationInterface {
 
   }
 
-  public async down(query: QueryRunner): Promise<any> {
+  public async down(query: QueryRunner): Promise<void> {
     await query.dropTable(TABLE_COMMAND);
   }
 }
