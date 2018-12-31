@@ -134,7 +134,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     }));
 
     const jwt = await this.createToken(user);
-    return this.reply(cmd.context, `user ${name} joined, signin token: ${jwt}`);
+    return this.reply(cmd.context, `user ${name} joined, sign in token: ${jwt}`);
   }
 
   public async deleteJoin(cmd: Command): Promise<void> {
@@ -153,7 +153,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     });
 
     const jwt = await this.createToken(cmd.context.user);
-    return this.reply(cmd.context, `revoked tokens for ${cmd.context.user.name}, new signin token: ${jwt}`);
+    return this.reply(cmd.context, `revoked tokens for ${cmd.context.user.name}, new sign in token: ${jwt}`);
   }
 
   public async createSession(cmd: Command): Promise<void> {
@@ -161,22 +161,27 @@ export class SessionController extends BaseController<SessionControllerData> imp
       return this.reply(cmd.context, 'no source listener with which to create a session');
     }
 
-    const jwt = cmd.getHead('token');
-    const token = Token.verify(jwt, this.data.token.secret, {
-      audience: this.data.token.audience,
-      issuer: this.data.token.issuer,
-    });
-    this.logger.debug({ token }, 'creating session from token');
+    try {
+      const jwt = cmd.getHead('token');
+      const token = Token.verify(jwt, this.data.token.secret, {
+        audience: this.data.token.audience,
+        issuer: this.data.token.issuer,
+      });
+      this.logger.debug({ token }, 'creating session from token');
 
-    const user = await this.userRepository.findOneOrFail({
-      id: token.sub,
-    });
-    await this.userRepository.loadRoles(user);
-    this.logger.debug({ user }, 'logging in user');
+      const user = await this.userRepository.findOneOrFail({
+        id: token.sub,
+      });
+      await this.userRepository.loadRoles(user);
+      this.logger.debug({ user }, 'logging in user');
 
-    const session = await cmd.context.source.createSession(cmd.context.uid, user);
-    this.logger.debug({ session, user }, 'created session');
-    return this.reply(cmd.context, 'created session');
+      const session = await cmd.context.source.createSession(cmd.context.uid, user);
+      this.logger.debug({ session, user }, 'created session');
+      return this.reply(cmd.context, 'created session');
+    } catch (err) {
+      this.logger.error(err, 'error creating session');
+      return this.reply(cmd.context, err.message);
+    }
   }
 
   public async getSession(cmd: Command): Promise<void> {
@@ -193,19 +198,24 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   protected async createToken(user: User): Promise<string> {
-    const now = this.clock.getSeconds();
-    const token = await this.tokenRepository.save(new Token({
+    const issued = this.clock.getSeconds();
+    const expires = issued + this.data.token.duration;
+    this.logger.debug({ expires, issued }, 'creating token');
+
+    const tokenPre = new Token({
       audience: this.data.token.audience,
-      createdAt: this.clock.getDate(now),
+      createdAt: this.clock.getDate(issued),
       data: {},
-      expiresAt: this.clock.getDate(now + this.data.token.duration),
+      expiresAt: this.clock.getDate(expires),
       grants: this.data.join.grants,
       issuer: this.data.token.issuer,
       labels: {},
       subject: user.id,
       user,
-    }));
-    this.logger.debug({ token }, 'signing token');
+    });
+
+    const token = await this.tokenRepository.save(tokenPre);
+    this.logger.debug({ expires, issued, token }, 'signing token');
     return token.sign(this.data.token.secret);
   }
 }

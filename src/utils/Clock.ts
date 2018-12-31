@@ -23,7 +23,7 @@ export class Clock {
     if (isNil(seconds)) {
       return new Date();
     } else {
-      return new Date(seconds);
+      return new Date(seconds * NOW_TO_SECONDS);
     }
   }
 

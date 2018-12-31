@@ -100,6 +100,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
 
     if (options) {
       this.audience = options.audience;
+      this.createdAt = options.createdAt;
       this.expiresAt = options.expiresAt;
       this.issuer = options.issuer;
       this.grants = Array.from(options.grants);
