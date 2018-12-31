@@ -5,6 +5,7 @@ import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Service } from 'src/Service';
 import { MatchData } from 'src/utils/match';
+import { TemplateScope } from 'src/utils/Template';
 
 export interface ParserData extends BotServiceData {
   /**
@@ -48,7 +49,7 @@ export interface Parser extends Service {
    *
    * This allows access to the parser's data for use by transforms.
    */
-  decode(msg: Message): Promise<any>;
+  decode(msg: Message): Promise<TemplateScope>;
 
   /**
    * Complete a command from an existing fragment and new value.

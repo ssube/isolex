@@ -28,7 +28,7 @@ export function leftPad(val: string, min: number = 8, fill: string = '0'): strin
  * Arrays return their length, single values return 1, and missing values return 0. This counts the number
  * of elements that setOrPush would add.
  */
-export function countList(val: any): number {
+export function countList(val: unknown): number {
   if (Array.isArray(val)) {
     return val.length;
   }
@@ -79,6 +79,6 @@ export function getConstructor(val: any) {
   return val.constructor;
 }
 
-export function prototypeName(val: any) {
+export function prototypeName(val: object) {
   return getConstructor(Reflect.getPrototypeOf(val)).name;
 }

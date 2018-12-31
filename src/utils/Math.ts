@@ -3,6 +3,10 @@ import * as mathjs from 'mathjs';
 
 import { TemplateScope } from './Template';
 
+export interface MathCreate {
+  create(options: math.ConfigOptions): mathjs.MathJsStatic;
+}
+
 export interface ResultSet {
   entries: Array<string>;
 }
@@ -75,6 +79,6 @@ export function clamp(v: number, min: number, max: number) {
 
 export class MathFactory {
   public create(options: mathjs.ConfigOptions): mathjs.MathJsStatic {
-    return (mathjs as any).create(options);
+    return ((mathjs as unknown) as MathCreate).create(options); // thanks mathjs types
   }
 }

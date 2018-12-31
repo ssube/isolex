@@ -5,7 +5,6 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
-import { TemplateScope } from 'src/utils/Template';
 
 export const NOUN_MATH = 'math';
 
@@ -44,7 +43,7 @@ export class MathController extends BaseController<MathControllerData> implement
     return this.reply(cmd.context, body);
   }
 
-  protected eval(expr: string, scope: TemplateScope): string {
+  protected eval(expr: string, scope: object): string {
     try {
       const body = this.math.eval(expr, scope);
       this.logger.debug({ body, expr }, 'evaluated expression');

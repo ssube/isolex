@@ -27,13 +27,15 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const data = await this.decode(msg);
-    return [await this.createCommand(msg.context, this.mapper.map(data))];
+    const cmd = await this.createCommand(msg.context, this.mapper.map([data]));
+    return [cmd];
   }
 
-  public async decode(msg: Message): Promise<any> {
+  public async decode(msg: Message): Promise<string> {
     if (!isString(msg.body)) {
       throw new InvalidArgumentError('message body must be a string');
     }
+
     return msg.body;
   }
 }

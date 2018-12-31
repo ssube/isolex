@@ -12,6 +12,7 @@ import { BotServiceOptions } from 'src/BotService';
 import { Token } from 'src/entity/auth/Token';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { NotInitializedError } from 'src/error/NotInitializedError';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
@@ -25,7 +26,7 @@ export interface ExpressListenerData extends ListenerData {
     graphiql: boolean;
     metrics: boolean;
   };
-  graph: ServiceDefinition;
+  graph: ServiceDefinition<GraphSchemaData>;
   listen: {
     address: string;
     port: number;
@@ -174,12 +175,14 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }
 
     if (this.data.expose.graph) {
-      this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
-      await this.graph.start();
+      const graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
+      this.graph = graph;
+
+      await graph.start();
 
       app = app.use('/graph', expressGraphQl({
         graphiql: this.data.expose.graphiql,
-        schema: this.graph.schema,
+        schema: graph.schema,
       }));
     }
 

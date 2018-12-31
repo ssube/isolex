@@ -35,4 +35,5 @@ ineeda.intercept({
 
 const testContext = (require as any).context('../test', true, /Test.*$/);
 testContext.keys().forEach(testContext);
+// tslint:disable-next-line:no-default-export
 export default testContext;

@@ -1,6 +1,7 @@
-import { get, has } from 'lodash';
+import { get, has, isString } from 'lodash';
 
 import { mapToDict } from 'src/utils/Map';
+import { TemplateScope } from '../Template';
 
 export interface MatchData {
   rules: Array<MatchRule>;
@@ -36,12 +37,18 @@ export class Match {
     this.rules = Array.from(options.rules);
   }
 
-  public match(val: any): MatchResults {
-    const data = mapToDict<any>(val);
+  public match(val: TemplateScope): MatchResults {
     const results: MatchResults = {
       errors: [],
       matched: true,
     };
+
+    if (isString(val)) {
+      results.matched = false;
+      return results;
+    }
+
+    const data = mapToDict<unknown>(val);
 
     for (const rule of this.rules) {
       if (!has(data, rule.key)) {
@@ -51,6 +58,12 @@ export class Match {
       }
 
       const value = get(data, rule.key);
+      if (!isString(value)) {
+        results.errors.push(rule.key);
+        results.matched = false;
+        continue;
+      }
+
       if (!this.matchRule(rule, value)) {
         results.errors.push(rule.key);
         results.matched = false;

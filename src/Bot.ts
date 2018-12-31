@@ -339,8 +339,8 @@ export class Bot extends BaseService<BotData> implements Service {
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
       logger: this.logger,
     });
-    const entities = await this.container.create<Array<Function>, any>('entities');
-    const migrations = await this.container.create<Array<Function>, any>('migrations');
+    const entities = await this.container.create<Array<Function>, unknown>('entities');
+    const migrations = await this.container.create<Array<Function>, unknown>('migrations');
 
     this.storage = await createConnection({
       ...this.data.storage,

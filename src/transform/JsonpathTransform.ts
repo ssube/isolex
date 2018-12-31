@@ -5,6 +5,7 @@ import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap, mapToDict } from 'src/utils/Map';
+import { TemplateScope } from 'src/utils/Template';
 
 export interface JsonpathTransformData extends TransformData {
   queries: {
@@ -26,7 +27,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
     this.queries = dictToMap(options.data.queries);
   }
 
-  public async transform(cmd: Command, type: string, body: any): Promise<any> {
+  public async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
     const scope = this.mergeScope(cmd, body);
     const out = new Map();
     for (const [key, query] of this.queries) {

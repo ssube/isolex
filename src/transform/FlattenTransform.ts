@@ -4,6 +4,7 @@ import { Command } from 'src/entity/Command';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { JsonPath } from 'src/utils/JsonPath';
+import { TemplateScope } from 'src/utils/Template';
 
 /**
  * Dictionary of templates to be compiled.
@@ -28,7 +29,7 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
     this.jsonpath = options.jsonpath;
   }
 
-  public async transform(cmd: Command, type: string, body: any): Promise<any> {
+  public async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
     const scope = this.mergeScope(cmd, body);
     this.logger.debug({ cmd, scope }, 'running flatten transform');
 

@@ -1,5 +1,5 @@
 import { safeLoad } from 'js-yaml';
-import { isNil } from 'lodash';
+import { isObject } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { Command } from 'src/entity/Command';
@@ -29,8 +29,8 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
     }
 
     const parsed = safeLoad(msg.body);
-    if (isNil(parsed)) {
-      throw new BaseError('invalid parse value');
+    if (!isObject(parsed)) {
+      throw new BaseError('parsed value must be an object');
     }
 
     return parsed;

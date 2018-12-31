@@ -1,4 +1,4 @@
-import { RTMClient, WebClient, WebAPICallResult } from '@slack/client';
+import { RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';

@@ -6,6 +6,7 @@ import { Message } from 'src/entity/Message';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
+import { TemplateScope } from 'src/utils/Template';
 
 export abstract class BaseParser<TData extends ParserData> extends BotService<TData> implements Parser {
   protected matcher: Match;
@@ -16,14 +17,6 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
     this.matcher = new Match(options.data.match);
   }
 
-  public async start() {
-    /* noop */
-  }
-
-  public async stop() {
-    /* noop */
-  }
-
   public async match(msg: Message): Promise<boolean> {
     const results = this.matcher.match(msg);
     return results.matched;
@@ -31,7 +24,7 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
 
   public abstract parse(msg: Message): Promise<Array<Command>>;
 
-  public abstract decode(msg: Message): Promise<any>;
+  public abstract decode(msg: Message): Promise<TemplateScope>;
 
   /**
    * Very simple, stateless completion. Merges data and sends a single command without attempting to parse or decode

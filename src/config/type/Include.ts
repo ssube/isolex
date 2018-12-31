@@ -16,7 +16,7 @@ export const includeType = new YamlType('!include', {
       throw new NotFoundError('included file does not exist');
     }
   },
-  construct(path: string): any {
+  construct(path: string): unknown {
     try {
       return safeLoad(readFileSync(resolvePath(path), {
         encoding: 'utf-8',

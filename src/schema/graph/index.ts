@@ -3,13 +3,13 @@ import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'gr
 import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
-import { BotService, BotServiceOptions } from 'src/BotService';
+import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { GRAPH_OUTPUT_SERVICE } from 'src/Service';
+import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
 import { Dict, pairsToDict } from 'src/utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
@@ -18,7 +18,7 @@ const GRAPH_OUTPUT_COMMAND_LIST = new GraphQLList(GRAPH_OUTPUT_COMMAND);
 const GRAPH_OUTPUT_MESSAGE_LIST = new GraphQLList(GRAPH_OUTPUT_MESSAGE);
 const GRAPH_OUTPUT_SERVICE_LIST = new GraphQLList(GRAPH_OUTPUT_SERVICE);
 
-export type GraphSchemaData = any;
+export type GraphSchemaData = BotServiceData;
 export type GraphSchemaOptions = BotServiceOptions<GraphSchemaData>;
 
 @Inject('bot', 'services', 'storage')
@@ -97,20 +97,14 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     return repository.findOne(id);
   }
 
-  public getService(args: any, req: express.Request) {
+  public getService(args: ServiceMetadata, req: express.Request) {
     this.logger.debug({ args }, 'getting service');
-    const { id } = args;
-    return this.services.getService(id);
+    return this.services.getService(args);
   }
 
-  public getServices(args: any, req: express.Request) {
+  public getServices(args: unknown, req: express.Request) {
     this.logger.debug('getting services');
-    try {
-      return this.services.listServices();
-    } catch (err) {
-      this.logger.error(err, 'error getting services');
-      return [];
-    }
+    return this.services.listServices();
   }
 
   protected createMutation() {
@@ -144,25 +138,25 @@ export class GraphSchema extends BotService<GraphSchemaData> {
           args: {
             id: { type: GraphQLString },
           },
-          resolve: (_, args: Dict<any>, req: express.Request) => this.getCommand(args, req),
+          resolve: (_, args: any, req: express.Request) => this.getCommand(args, req),
           type: GRAPH_OUTPUT_COMMAND,
         },
         message: {
           fields: {
             id: { type: GraphQLString },
           },
-          resolve: (_, args: Dict<any>, req: express.Request) => this.getMessage(args, req),
+          resolve: (_, args: any, req: express.Request) => this.getMessage(args, req),
           type: GRAPH_OUTPUT_MESSAGE,
         },
         service: {
           fields: {
             id: { type: GraphQLString },
           },
-          resolve: (_, args: Dict<any>, req: express.Request) => this.getService(args, req),
+          resolve: (_, args: any, req: express.Request) => this.getService(args, req),
           type: GRAPH_OUTPUT_SERVICE,
         },
         services: {
-          resolve: (_, args: Dict<any>, req: express.Request) => this.getServices(args, req),
+          resolve: (_, args: any, req: express.Request) => this.getServices(args, req),
           type: GRAPH_OUTPUT_SERVICE_LIST,
         },
       },

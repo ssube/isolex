@@ -32,7 +32,7 @@ describeAsync('weather controller', async () => {
     module.bind('bot').toInstance(bot);
     module.bind('test-transform').toInstance(ineeda<Transform>({
       check: () => Promise.resolve(true),
-      transform: (cmd: Command, type: string, data: any) => Promise.resolve(data.test),
+      transform: (txCmd: Command, type: string, txData: any) => Promise.resolve(txData.test),
     }));
 
     const controller = await createService(container, WeatherController, {

@@ -27,7 +27,7 @@ export const TABLE_COMMAND = 'command';
 
 @Entity(TABLE_COMMAND)
 export class Command extends BaseCommand implements CommandOptions {
-  public static isCommand(it: any): it is Command {
+  public static isCommand(it: unknown): it is Command {
     return it instanceof Command;
   }
 
