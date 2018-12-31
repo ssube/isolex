@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { TABLE_FRAGMENT } from 'src/entity/Fragment';
+
 export class CreateFragment0001544311954 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
@@ -26,11 +28,11 @@ export class CreateFragment0001544311954 implements MigrationInterface {
         name: 'verb',
         type: 'varchar',
       }],
-      name: 'fragment',
+      name: TABLE_FRAGMENT,
     }));
   }
 
   public async down(query: QueryRunner): Promise<void> {
-    await query.dropTable('fragment');
+    await query.dropTable(TABLE_FRAGMENT);
   }
 }

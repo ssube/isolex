@@ -30,6 +30,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
   constructor(options: SearchControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-search', [NOUN_SEARCH]);
 
+    this.request = options.request;
     this.url = options.compiler.compile(options.data.request.url);
   }
 

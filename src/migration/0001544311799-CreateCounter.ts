@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { TABLE_COUNTER } from 'src/entity/misc/Counter';
+
 export class CreateCounter0001544311799 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
@@ -17,11 +19,11 @@ export class CreateCounter0001544311799 implements MigrationInterface {
         name: 'count',
         type: 'int',
       }],
-      name: 'counter',
+      name: TABLE_COUNTER,
     }));
   }
 
   public async down(query: QueryRunner): Promise<void> {
-    await query.dropTable('counter');
+    await query.dropTable(TABLE_COUNTER);
   }
 }

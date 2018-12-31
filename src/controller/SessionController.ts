@@ -196,15 +196,16 @@ export class SessionController extends BaseController<SessionControllerData> imp
     const now = this.clock.getSeconds();
     const token = await this.tokenRepository.save(new Token({
       audience: this.data.token.audience,
-      createdAt: now,
+      createdAt: this.clock.getDate(now),
       data: {},
-      expiresAt: now + this.data.token.duration,
+      expiresAt: this.clock.getDate(now + this.data.token.duration),
       grants: this.data.join.grants,
       issuer: this.data.token.issuer,
       labels: {},
       subject: user.id,
       user,
     }));
+    this.logger.debug({ token }, 'signing token');
     return token.sign(this.data.token.secret);
   }
 }

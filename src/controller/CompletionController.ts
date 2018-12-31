@@ -8,6 +8,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { NotFoundError } from 'src/error/NotFoundError';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 import { ServiceMetadata } from 'src/Service';
@@ -63,6 +64,10 @@ export class CompletionController extends BaseController<CompletionControllerDat
   }
 
   public async createFragment(cmd: Command): Promise<void> {
+    if (!cmd.context.user) {
+      return this.reply(cmd.context, 'must be logged in');
+    }
+
     const key = cmd.getHead('key');
     const msg = cmd.getHeadOrDefault('msg', `missing required argument: ${key}`);
     const noun = cmd.getHead('noun');
@@ -75,6 +80,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       labels: cmd.labels,
       noun,
       parserId,
+      userId: cmd.context.user.id,
       verb,
     }));
 
@@ -87,10 +93,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     const id = cmd.getHead('id');
     this.logger.debug({ id }, 'getting fragment to complete');
 
-    const fragment = await this.fragmentRepository.findOne({
-      id,
-    });
-
+    const fragment = await this.getFragment(cmd.context, id);
     if (isNil(fragment)) {
       return this.reply(cmd.context, 'fragment not found');
     }
@@ -119,6 +122,34 @@ export class CompletionController extends BaseController<CompletionControllerDat
     } else {
       return ctx.extend({
         target: this.target,
+      });
+    }
+  }
+
+  protected async getFragment(ctx: Context, id: string): Promise<Fragment> {
+    if (!ctx.user) {
+      throw new NotFoundError('fragment user not found');
+    }
+
+    if (id === 'last') {
+      const results = await this.fragmentRepository.find({
+        order: {
+          createdAt: 'DESC',
+        } as any,
+        take: 1,
+        where: {
+          userId: ctx.user.id,
+        },
+      });
+
+      if (results.length) {
+        return results[0];
+      } else {
+        throw new NotFoundError();
+      }
+    } else {
+      return this.fragmentRepository.findOneOrFail({
+        id,
       });
     }
   }

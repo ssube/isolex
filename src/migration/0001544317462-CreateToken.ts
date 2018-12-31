@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { TABLE_TOKEN } from 'src/entity/auth/Token';
+
 export class CreateToken0001544317462 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
@@ -32,11 +34,11 @@ export class CreateToken0001544317462 implements MigrationInterface {
         name: 'subject',
         type: 'varchar',
       }],
-      name: 'token',
+      name: TABLE_TOKEN,
     }));
   }
 
   public async down(query: QueryRunner): Promise<void> {
-    await query.dropTable('token');
+    await query.dropTable(TABLE_TOKEN);
   }
 }

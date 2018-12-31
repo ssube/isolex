@@ -69,9 +69,9 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     const now = this.clock.getSeconds();
     const token = await this.tokenRepository.save(new Token({
       audience: this.data.token.audience,
-      createdAt: now,
+      createdAt: this.clock.getDate(now),
       data: {},
-      expiresAt: now + this.data.token.duration,
+      expiresAt: this.clock.getDate(now + this.data.token.duration),
       grants,
       issuer: this.data.token.issuer,
       labels: {},

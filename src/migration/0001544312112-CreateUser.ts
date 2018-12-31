@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { TABLE_USER } from 'src/entity/auth/User';
+
 export class CreateUser0001544312112 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
@@ -15,11 +17,11 @@ export class CreateUser0001544312112 implements MigrationInterface {
         name: 'roles',
         type: 'varchar',
       }],
-      name: 'user',
+      name: TABLE_USER,
     }));
   }
 
   public async down(query: QueryRunner): Promise<void> {
-    await query.dropTable('user');
+    await query.dropTable(TABLE_USER);
   }
 }

@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { BaseOptions } from 'noicejs/Container';
 
 const NOW_TO_SECONDS = 1000;
@@ -18,8 +19,12 @@ export class Clock {
     clearInterval(id);
   }
 
-  public getDate(): Date {
-    return new Date();
+  public getDate(seconds?: number): Date {
+    if (isNil(seconds)) {
+      return new Date();
+    } else {
+      return new Date(seconds);
+    }
   }
 
   public getSeconds(): number {
@@ -29,4 +34,8 @@ export class Clock {
   public setInterval(cb: Function, delay: number): number {
     return setInterval(cb, delay);
   }
+}
+
+export function dateToSeconds(date: Date): number {
+  return Math.floor(date.valueOf() / NOW_TO_SECONDS);
 }

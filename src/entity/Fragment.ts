@@ -6,6 +6,8 @@ import { CommandOptions } from 'src/entity/Command';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
 import { dictToMap } from 'src/utils/Map';
 
+export const TABLE_FRAGMENT = 'fragment';
+
 export interface FragmentOptions extends CommandOptions {
   /**
    * The next key to be filled.
@@ -15,9 +17,11 @@ export interface FragmentOptions extends CommandOptions {
   key: string;
 
   parserId: string;
+
+  userId: string;
 }
 
-@Entity()
+@Entity(TABLE_FRAGMENT)
 export class Fragment extends BaseCommand implements FragmentOptions {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
@@ -28,6 +32,9 @@ export class Fragment extends BaseCommand implements FragmentOptions {
   @Column()
   public parserId: string;
 
+  @Column()
+  public userId: string;
+
   constructor(options?: FragmentOptions) {
     super(options);
 
@@ -37,6 +44,7 @@ export class Fragment extends BaseCommand implements FragmentOptions {
       this.labels = dictToMap(options.labels);
       this.noun = options.noun;
       this.parserId = options.parserId;
+      this.userId = options.userId;
       this.verb = options.verb;
     }
   }
@@ -48,6 +56,7 @@ export class Fragment extends BaseCommand implements FragmentOptions {
       key: this.key,
       noun: this.noun,
       parserId: this.parserId,
+      userId: this.userId,
       verb: this.verb,
     };
   }

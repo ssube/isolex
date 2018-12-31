@@ -9,7 +9,9 @@ export interface UserOptions {
   roles: Array<Role>;
 }
 
-@Entity()
+export const TABLE_USER = 'user';
+
+@Entity(TABLE_USER)
 export class User extends BaseEntity implements UserOptions {
   @PrimaryGeneratedColumn('uuid')
   public id: string;

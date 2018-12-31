@@ -1,7 +1,7 @@
 import { User } from 'src/entity/auth/User';
 
 export interface Session {
-  createdAt: number;
-  expiresAt: number;
+  createdAt: Date;
+  expiresAt: Date;
   user: User;
 }

@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity } from './base/BaseEntity';
 
@@ -7,9 +7,6 @@ export const TABLE_TICK = 'tick';
 
 @Entity(TABLE_TICK)
 export class Tick extends BaseEntity {
-  @CreateDateColumn()
-  public createdAt: number;
-
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -18,9 +15,6 @@ export class Tick extends BaseEntity {
 
   @Column()
   public status: number;
-
-  @UpdateDateColumn()
-  public updatedAt: number;
 
   public toJSON(): object {
     return {

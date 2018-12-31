@@ -6,7 +6,7 @@ import { User } from 'src/entity/auth/User';
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { Listener } from 'src/listener/Listener';
+import { dateToSeconds } from 'src/utils/Clock';
 import { Dict, mapToDict } from 'src/utils/Map';
 
 export interface JwtFields {
@@ -27,12 +27,12 @@ export interface VerifiableTokenOptions {
 }
 
 export interface TokenOptions extends Session, DataEntityOptions<Array<string>>, VerifiableTokenOptions {
-  createdAt: number;
-  expiresAt: number;
   grants: Array<string>;
 }
 
-@Entity()
+export const TABLE_TOKEN = 'token';
+
+@Entity(TABLE_TOKEN)
 export class Token extends DataEntity<Array<string>> implements TokenOptions {
   public static verify(token: string, secret: string, expected: Partial<VerifiableTokenOptions>): JwtFields {
     const data = verify(token, secret, expected);
@@ -51,19 +51,13 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   public audience: Array<string>;
 
   /**
-   * `iat` (Issued At) and `nbf` (Not Before) claims
-   * https://tools.ietf.org/html/rfc7519#section-4.1.6
-   * https://tools.ietf.org/html/rfc7519#section-4.1.5
-   */
-  @Column()
-  public createdAt: number;
-
-  /**
    * `exp` (Expiration Time) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.4
    */
-  @Column()
-  public expiresAt: number;
+  @Column({
+    type: 'datetime',
+  })
+  public expiresAt: Date;
 
   @Column('simple-json')
   public grants: Array<string>;
@@ -106,7 +100,6 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
 
     if (options) {
       this.audience = options.audience;
-      this.createdAt = options.createdAt;
       this.expiresAt = options.expiresAt;
       this.issuer = options.issuer;
       this.grants = Array.from(options.grants);
@@ -127,7 +120,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   /**
    * Turn this token into an equivalent session.
    */
-  public session(listener: Listener): Session {
+  public session(): Session {
     return {
       createdAt: this.createdAt,
       expiresAt: this.expiresAt,
@@ -160,11 +153,11 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
     return {
       aud: this.audience,
       data: mapToDict(this.data),
-      exp: this.expiresAt,
-      iat: this.createdAt,
+      exp: dateToSeconds(this.expiresAt),
+      iat: dateToSeconds(this.createdAt),
       iss: this.issuer,
       jti: this.id,
-      nbf: this.createdAt,
+      nbf: dateToSeconds(this.createdAt),
       sub: this.subject,
     };
   }

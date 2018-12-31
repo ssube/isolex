@@ -6,7 +6,9 @@ export interface CounterOptions {
   roomId: string;
 }
 
-@Entity()
+export const TABLE_COUNTER = 'counter';
+
+@Entity(TABLE_COUNTER)
 export class Counter implements CounterOptions {
   @PrimaryGeneratedColumn('uuid')
   public id: string;

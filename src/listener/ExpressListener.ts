@@ -9,7 +9,7 @@ import { Counter, Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
 import { BotServiceOptions } from 'src/BotService';
-import { Token } from 'src/entity/auth/Token';
+import { Token, JwtFields } from 'src/entity/auth/Token';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { NotInitializedError } from 'src/error/NotInitializedError';
@@ -129,20 +129,23 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     next();
   }
 
-  protected async createTokenSession(data: any, done: VerifiedCallback) {
+  protected async createTokenSession(data: JwtFields, done: VerifiedCallback) {
     this.logger.debug({ data }, 'finding token for request payload');
     const token = await this.tokenRepository.findOne({
-      id: data.id,
+      id: data.jti,
     }, {
-      relations: ['user'],
-    });
+        relations: ['user'],
+      });
     if (isNil(token)) {
       this.logger.warn('token not found');
       return done(undefined, false);
     }
 
-    this.logger.debug({ token, user: token.user }, 'found token, creating context');
-    const ctx = this.createContext({
+    const session = token.session();
+    this.sessions.set(token.user.id, session);
+    this.logger.debug({ session, token }, 'created session for token');
+
+    const context = await this.createContext({
       channel: {
         id: '',
         thread: '',
@@ -152,13 +155,10 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       uid: token.user.id,
       user: token.user,
     });
-
-    const session = token.session(this);
-    this.sessions.set(token.user.id, session);
-    this.logger.debug({ session }, 'created session for token');
+    this.logger.debug({ context, token }, 'created context for token');
 
     // tslint:disable-next-line:no-null-keyword
-    done(null, ctx);
+    done(null, context);
   }
 
   protected async setupExpress(): Promise<express.Express> {
@@ -196,18 +196,20 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       issuer: this.data.token.issuer,
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
-    }, (payload: unknown, done: VerifiedCallback) => this.createTokenSession(payload, done)));
+    }, (payload: JwtFields, done: VerifiedCallback) => this.createTokenSession(payload, done)));
 
     // sessions are saved when created and keyed by uid, so pass that
     auth.serializeUser((user: Context, done) => {
-     // tslint:disable-next-line:no-null-keyword
-     done(null, user.uid);
+      this.logger.debug({ user }, 'serializing auth user');
+      // tslint:disable-next-line:no-null-keyword
+      done(null, user.uid);
     });
 
-    // grab existing sessionj
+    // grab existing session
     auth.deserializeUser((user: Context, done) => {
+      this.logger.debug({ user }, 'deserializing auth user');
       // tslint:disable-next-line:no-null-keyword
-    done(null, this.sessions.get(user.uid));
+      done(null, this.sessions.get(user.uid));
     });
 
     return auth;

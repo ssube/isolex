@@ -1,5 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
+import { TABLE_KEYWORD } from 'src/entity/misc/Keyword';
+
 export class CreateKeyword0001544311784 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {
     await query.createTable(new Table({
@@ -14,11 +16,11 @@ export class CreateKeyword0001544311784 implements MigrationInterface {
         name: 'controller',
         type: 'varchar',
       }],
-      name: 'keyword',
+      name: TABLE_KEYWORD,
     }));
   }
 
   public async down(query: QueryRunner): Promise<void> {
-    await query.dropTable('keyword');
+    await query.dropTable(TABLE_KEYWORD);
   }
 }
