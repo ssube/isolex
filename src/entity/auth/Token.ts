@@ -8,6 +8,7 @@ import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { dateToSeconds } from 'src/utils/Clock';
 import { Dict, mapToDict } from 'src/utils/Map';
+import { isNil } from 'lodash';
 
 export interface JwtFields {
   aud: Array<string>;
@@ -98,7 +99,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   constructor(options?: TokenOptions) {
     super(options);
 
-    if (options) {
+    if (!isNil(options)) {
       this.audience = options.audience;
       this.createdAt = options.createdAt;
       this.expiresAt = options.expiresAt;

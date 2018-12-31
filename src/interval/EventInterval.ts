@@ -1,14 +1,14 @@
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
-import { BaseInterval } from 'src/interval/BaseInterval';
-import { IntervalData, IntervalOptions } from 'src/interval/Interval';
+import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
+import { IntervalData } from 'src/interval/Interval';
 import { ServiceEvent, ServiceMetadata } from 'src/Service';
 
 export interface EventIntervalData extends IntervalData {
   services: Array<ServiceMetadata>;
 }
 
-export type EventIntervalOptions = IntervalOptions<EventIntervalData>;
+export type EventIntervalOptions = BaseIntervalOptions<EventIntervalData>;
 
 export class EventInterval extends BaseInterval<EventIntervalData> {
   constructor(options: EventIntervalOptions) {

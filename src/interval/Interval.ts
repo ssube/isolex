@@ -14,7 +14,6 @@ export interface IntervalData extends BotServiceData {
   frequency: IntervalFrequency;
 }
 
-export type IntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
 export interface Interval extends Service {
   /**
    * Based on the results of the last job, run a new one.

@@ -11,8 +11,12 @@ export type RequestOptions = request.CoreOptions & request.UriOptions;
 export class RequestFactory {
   public create(options: RequestOptions): Promise<any> {
     return new Promise((res, rej) => {
-      request(options, (error: Error, response: request.Response, body: unknown) => {
-        res(body);
+      request(options, (err: Error, response: request.Response, body: unknown) => {
+        if (err) {
+          rej(err);
+        } else {
+          res(body);
+        }
       });
     });
   }

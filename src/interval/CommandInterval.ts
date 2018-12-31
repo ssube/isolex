@@ -1,14 +1,14 @@
 import { Command, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
-import { BaseInterval } from 'src/interval/BaseInterval';
-import { IntervalData, IntervalOptions } from 'src/interval/Interval';
+import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
+import { IntervalData } from 'src/interval/Interval';
 
 export interface CommandIntervalData extends IntervalData {
   defaultCommand: CommandOptions;
 }
 
-export type CommandIntervalOptions = IntervalOptions<CommandIntervalData>;
+export type CommandIntervalOptions = BaseIntervalOptions<CommandIntervalData>;
 
 export class CommandInterval extends BaseInterval<CommandIntervalData> {
   constructor(options: CommandIntervalOptions) {

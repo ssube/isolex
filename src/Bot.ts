@@ -1,4 +1,4 @@
-import { bindAll } from 'lodash';
+import { bindAll, isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 import { LogLevel } from 'noicejs/logger/Logger';
 import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
@@ -39,7 +39,6 @@ export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
   protected readonly metrics: Registry;
 
-  protected collector: number;
   protected storage: Connection;
 
   // counters
@@ -130,9 +129,6 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.debug('stopping services');
     await this.services.stop();
 
-    this.logger.debug('stopping metrics');
-    clearInterval(this.collector);
-
     this.logger.info('bot has stopped');
   }
 
@@ -148,7 +144,7 @@ export class Bot extends BaseService<BotData> implements Service {
     }
 
     const commands = await this.parseMessage(msg);
-    if (!commands.length) {
+    if (commands.length === 0) {
       this.logger.debug({ msg }, 'incoming message did not produce any commands');
     }
 
@@ -237,10 +233,10 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    if (msg.context.target) {
-      return this.sendMessageTarget(msg, msg.context.target);
-    } else {
+    if (isNil(msg.context.target)) {
       return this.findMessageTarget(msg);
+    } else {
+      return this.sendMessageTarget(msg, msg.context.target);
     }
   }
 
@@ -287,10 +283,6 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async startMetrics() {
     this.logger.info('setting up metrics');
-    this.collector = collectDefaultMetrics({
-      register: this.metrics,
-      timeout: 5000,
-    });
 
     this.cmdCounter = new Counter({
       help: 'commands received by the bot',

@@ -138,7 +138,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   public async deleteJoin(cmd: Command): Promise<void> {
-    if (!cmd.context.user) {
+    if (isNil(cmd.context.user)) {
       return this.reply(cmd.context, 'must be logged in');
     }
 
@@ -157,7 +157,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   public async createSession(cmd: Command): Promise<void> {
-    if (!cmd.context.source) {
+    if (isNil(cmd.context.source)) {
       return this.reply(cmd.context, 'no source listener with which to create a session');
     }
 
@@ -185,7 +185,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
   }
 
   public async getSession(cmd: Command): Promise<void> {
-    if (!cmd.context.source) {
+    if (isNil(cmd.context.source)) {
       return this.reply(cmd.context, 'no source listener with which to create a session');
     }
 

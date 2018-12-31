@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { BaseEntity } from 'src/entity/base/BaseEntity';
@@ -18,10 +19,10 @@ export abstract class LabelEntity extends BaseEntity {
   constructor(options?: LabelEntityOptions) {
     super();
 
-    if (options) {
-      this.labels = dictToMap(options.labels);
-    } else {
+    if (isNil(options)) {
       this.labels = new Map();
+    } else {
+      this.labels = dictToMap(options.labels);
     }
   }
 

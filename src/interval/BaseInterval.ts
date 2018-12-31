@@ -2,13 +2,15 @@ import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
 
-import { BotService } from 'src/BotService';
+import { BotService, BotServiceOptions } from 'src/BotService';
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
 import { NotImplementedError } from 'src/error/NotImplementedError';
-import { Interval, IntervalData, IntervalOptions } from 'src/interval/Interval';
+import { Interval, IntervalData } from 'src/interval/Interval';
 import { Listener } from 'src/listener/Listener';
 import { Clock } from 'src/utils/Clock';
+
+export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
 
 @Inject('clock', 'math', 'storage')
 export abstract class BaseInterval<TData extends IntervalData> extends BotService<TData> implements Interval {
@@ -19,7 +21,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   protected interval: number;
   protected target: Listener;
 
-  constructor(options: IntervalOptions<TData>, schemaPath: string) {
+  constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.clock = options.clock;
@@ -32,7 +34,17 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
 
     this.logger.debug({ def: this.data.defaultTarget }, 'getting default target listener');
     this.target = this.services.getService(this.data.defaultTarget);
+    return this.startInterval();
+  }
 
+  public async stop() {
+    await super.stop();
+    return this.stopInterval();
+  }
+
+  public abstract tick(context: Context, last: Tick): Promise<number>;
+
+  protected async startInterval() {
     if (this.data.frequency.cron) {
       this.logger.debug({ cron: this.data.frequency.cron }, 'starting a cron interval');
       throw new NotImplementedError('cron frequency is not implemented');
@@ -47,15 +59,11 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
     }
   }
 
-  public async stop() {
-    await super.stop();
-
+  protected async stopInterval() {
     if (this.data.frequency.zeit) {
       this.clock.clearInterval(this.interval);
     }
   }
-
-  public abstract tick(context: Context, last: Tick): Promise<number>;
 
   protected async nextTick() {
     const options: FindManyOptions<Tick> = {

@@ -31,9 +31,10 @@ data:
     - !include ../docs/controller/user-controller.yml
     - !include ../docs/controller/weather-controller-owm.yml
   intervals:
-    - !include ../docs/interval/command-interval.yml
-    - !include ../docs/interval/event-interval.yml
-    - !include ../docs/interval/message-interval.yml
+    # !include ../docs/interval/command-interval.yml
+    # !include ../docs/interval/event-interval.yml
+    # !include ../docs/interval/message-interval.yml
+    - !include ../docs/interval/metrics-interval.yml
   listeners:
     - !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml

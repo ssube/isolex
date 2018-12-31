@@ -469,6 +469,9 @@ definitions:
           defaultMessage:
             $ref: "#/definitions/entity-message"
 
+  service-interval-metrics:
+    $ref: "#/definitions/service-interval"
+
   service-listener:
     $ref: "#/definitions/service-data"
  

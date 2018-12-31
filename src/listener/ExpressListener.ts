@@ -137,7 +137,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       });
     if (isNil(token)) {
       this.logger.warn('token not found');
-      return done(undefined, false);
+      done(undefined, false);
+      return;
     }
 
     const session = token.session();
