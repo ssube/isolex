@@ -13,6 +13,7 @@ import { CreateToken0001544317462 } from 'src/migration/0001544317462-CreateToke
 import { KeywordCommand0001545509108 } from 'src/migration/0001545509108-KeywordCommand';
 import { CreateTick0001546063195 } from 'src/migration/0001546063195-CreateTick';
 import { Dates0001546236755 } from 'src/migration/0001546236755-Dates';
+import { FragmentUser0001546283532 } from 'src/migration/0001546283532-FragmentUser';
 
 export class MigrationModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
@@ -31,6 +32,7 @@ export class MigrationModule extends Module {
       KeywordCommand0001545509108,
       CreateTick0001546063195,
       Dates0001546236755,
+      FragmentUser0001546283532,
     ]);
   }
 }

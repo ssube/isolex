@@ -35,11 +35,15 @@ export abstract class BaseCommand extends DataEntity<Array<string>> {
   }
 
   public getHeadOrNumber(key: string, defaultValue: number): number {
-    const value = Number(this.getHead(key));
-    if (isNaN(value)) {
-      return defaultValue;
+    if (this.has(key)) {
+      const value = Number(this.get(key));
+      if (isNaN(value)) {
+        return defaultValue;
+      } else {
+        return value;
+      }
     } else {
-      return value;
+      return defaultValue;
     }
   }
 

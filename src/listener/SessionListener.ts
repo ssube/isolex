@@ -1,5 +1,3 @@
-import { isNil } from 'lodash';
-
 import { BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
@@ -40,13 +38,6 @@ export abstract class SessionListener<TData extends ListenerData> extends BaseLi
 
   public async getSession(uid: string): Promise<Session | undefined> {
     const now = this.clock.getSeconds();
-    const session = this.sessions.get(uid);
-
-    // session must have been created in the past and expire in the future
-    if (isNil(session) || session.createdAt.valueOf() >= now || session.expiresAt.valueOf() <= now) {
-      return;
-    } else {
-      return session;
-    }
+    return this.sessions.get(uid);
   }
 }

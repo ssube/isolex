@@ -9,10 +9,9 @@ import { Counter, Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
 import { BotServiceOptions } from 'src/BotService';
-import { Token, JwtFields } from 'src/entity/auth/Token';
+import { JwtFields, Token } from 'src/entity/auth/Token';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { NotInitializedError } from 'src/error/NotInitializedError';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
