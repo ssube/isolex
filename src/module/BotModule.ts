@@ -2,7 +2,6 @@ import { kebabCase } from 'lodash';
 import { Container, Logger, Module, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
-import * as request from 'request-promise';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
@@ -11,6 +10,7 @@ import { GraphSchema } from 'src/schema/graph';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { MathFactory } from 'src/utils/Math';
+import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
@@ -41,6 +41,7 @@ export class BotModule extends Module {
     this.bind(kebabCase(GraphSchema.name)).toConstructor(GraphSchema);
     this.bind('jsonpath').toConstructor(JsonPath);
     this.bind('math').toConstructor(MathFactory);
+    this.bind('request').toConstructor(RequestFactory);
   }
 
   public setBot(bot: Bot) {
@@ -70,10 +71,5 @@ export class BotModule extends Module {
   @Provides('storage')
   public async getStorage(): Promise<Connection> {
     return this.bot.getStorage();
-  }
-
-  @Provides('request')
-  public async createRequest(options: any): Promise<Request> {
-    return request(options);
   }
 }

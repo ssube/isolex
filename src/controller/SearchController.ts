@@ -1,8 +1,9 @@
-import { Container, Inject } from 'noicejs';
+import { Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
+import { RequestFactory } from 'src/utils/Request';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -19,15 +20,16 @@ export interface SearchControllerOptions extends ControllerOptions<SearchControl
   compiler: TemplateCompiler;
 }
 
-@Inject('compiler')
+export const NOUN_SEARCH = 'search';
+
+@Inject('compiler', 'request')
 export class SearchController extends BaseController<SearchControllerData> implements Controller {
-  protected container: Container;
-  protected url: Template;
+  protected readonly request: RequestFactory;
+  protected readonly url: Template;
 
   constructor(options: SearchControllerOptions) {
-    super(options, 'isolex#/definitions/service-controller-search');
+    super(options, 'isolex#/definitions/service-controller-search', [NOUN_SEARCH]);
 
-    this.container = options.container;
     this.url = options.compiler.compile(options.data.request.url);
   }
 
@@ -40,7 +42,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
     const requestUrl = this.url.render({ data });
     this.logger.debug({ requestUrl }, 'searching at url');
 
-    const response = await this.container.create<any, any>('request', {
+    const response = await this.request.create({
       json: true,
       method: this.data.request.method,
       uri: requestUrl,

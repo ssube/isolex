@@ -1,10 +1,9 @@
-import { Container, Inject } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
-import { CoreOptions, RequiredUriUrl } from 'request';
+import { Inject } from 'noicejs';
 
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
+import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerData extends ControllerData {
@@ -20,13 +19,14 @@ export interface WeatherControllerOptions extends ControllerOptions<WeatherContr
 
 export const NOUN_WEATHER = 'weather';
 
-@Inject('compiler')
+@Inject('compiler', 'request')
 export class WeatherController extends BaseController<WeatherControllerData> implements Controller {
-  protected readonly container: Container;
+  protected readonly request: RequestFactory;
 
   constructor(options: WeatherControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-weather', [NOUN_WEATHER]);
-    this.container = options.container;
+
+    this.request = options.request;
   }
 
   public async handle(cmd: Command): Promise<void> {
@@ -50,7 +50,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     this.logger.debug({ location, query, root: this.data.api.root }, 'requesting weather data from API');
 
     try {
-      return this.container.create<WeatherReply, BaseOptions & CoreOptions & RequiredUriUrl>('request', {
+      return this.request.create({
         json: true,
         method: 'GET',
         qs: query,

@@ -77,6 +77,10 @@ export function clamp(v: number, min: number, max: number) {
   return Math.max(Math.min(v, min), max);
 }
 
+/**
+ * Since each user needs to create a math environment with typed options, the container needs to inject an instance of
+ * something (this).
+ */
 export class MathFactory {
   public create(options: mathjs.ConfigOptions): mathjs.MathJsStatic {
     return ((mathjs as unknown) as MathCreate).create(options); // thanks mathjs types

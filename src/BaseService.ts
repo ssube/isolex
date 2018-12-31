@@ -14,6 +14,7 @@ import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
+import { RequestFactory } from 'src/utils/Request';
 
 /**
  * TODO: these should be optional and must be included in the decorator to be available
@@ -24,6 +25,7 @@ export interface InjectedServiceOptions {
   logger: Logger;
   math: MathFactory;
   metrics: Registry;
+  request: RequestFactory;
   schema: Schema;
   services: ServiceModule;
 }

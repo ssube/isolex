@@ -9,6 +9,7 @@ import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { Transform } from 'src/transform/Transform';
+import { RequestFactory } from 'src/utils/Request';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -21,7 +22,9 @@ describeAsync('weather controller', async () => {
     const { container, module } = await createContainer(...modules);
 
     const data = { test: 'test' };
-    module.bind('request').toFactory(async () => data);
+    module.bind('request').toInstance(ineeda<RequestFactory>({
+      create: async () => data,
+    }));
 
     const sent: Array<Message> = [];
     const bot = ineeda<Bot>({
