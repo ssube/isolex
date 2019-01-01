@@ -21,6 +21,11 @@ export interface AccountControllerData extends ControllerData {
     grants: Array<string>;
     roles: Array<string>;
   };
+  root: {
+    allow: boolean;
+    name: string;
+    roles: Array<string>;
+  };
   token: {
     audience: Array<string>;
     duration: number;
@@ -40,7 +45,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   protected userRepository: UserRepository;
 
   constructor(options: AccountControllerOptions) {
-    super(options, 'isolex#/definitions/service-controller-session', [NOUN_GRANT, NOUN_ACCOUNT, NOUN_SESSION]);
+    super(options, 'isolex#/definitions/service-controller-account', [NOUN_GRANT, NOUN_ACCOUNT, NOUN_SESSION]);
 
     this.clock = options.clock;
     this.storage = options.storage;
@@ -98,7 +103,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   public async getGrant(cmd: Command): Promise<void> {
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
-      return `${p}: \`${cmd.context.checkGrants([p])}\``;
+      return `\`${p}: ${cmd.context.checkGrants([p])}\``;
     }).join('\n');
     return this.reply(cmd.context, results);
   }
@@ -106,7 +111,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   public async listGrants(cmd: Command): Promise<void> {
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
-      return `${p}: \`${cmd.context.listGrants([p])}\``;
+      return `\`${p}: ${cmd.context.listGrants([p])}\``;
     }).join('\n');
     return this.reply(cmd.context, results);
   }
@@ -120,9 +125,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
       return this.reply(cmd.context, `user ${name} already exists`);
     }
 
+    const roleNames = this.getUserRoles(name);
     const roles = await this.roleRepository.find({
       where: {
-        name: In(this.data.join.roles),
+        name: In(roleNames),
       },
     });
     const user = await this.userRepository.save(new User({
@@ -132,6 +138,16 @@ export class AccountController extends BaseController<AccountControllerData> imp
 
     const jwt = await this.createToken(user);
     return this.reply(cmd.context, `user ${name} joined, sign in token: ${jwt}`);
+  }
+
+  protected getUserRoles(name: string): Array<string> {
+    if (this.data.root.allow && name === this.data.root.name) {
+      const roles = [...this.data.join.roles, ...this.data.root.roles];
+      this.logger.warn({ roles, user: name }, 'granting root roles to user');
+      return roles;
+    } else {
+      return this.data.join.roles;
+    }
   }
 
   public async deleteAccount(cmd: Command): Promise<void> {

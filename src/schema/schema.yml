@@ -183,6 +183,54 @@ definitions:
             items:
               $ref: "#/definitions/service-definition"
 
+  service-controller-account:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        additionalProperties: true
+        required: [join, token]
+        properties:
+          join:
+            type: object
+            additionalProperties: false
+            required: [grants, roles]
+            properties:
+              grants:
+                type: array
+                items:
+                  type: string
+              roles:
+                type: array
+                items:
+                  type: string
+          root:
+            type: object
+            additionalProperties: false
+            required: [allow, name, roles]
+            properties:
+              allow:
+                type: boolean
+                default: false
+              name:
+                type: string
+              roles:
+                type: array
+                items:
+                  type: string
+          token:
+            type: object
+            properties:
+              audience:
+                type: array
+                items:
+                  type: string
+              duration:
+                type: number
+              issuer:
+                type: string
+              secret:
+                type: string
+
   service-controller-completion:
     allOf:
       - $ref: "#/definitions/service-controller"
@@ -347,9 +395,6 @@ definitions:
                 type: string
  
   service-controller-sed:
-    $ref: "#/definitions/service-controller"
-
-  service-controller-session:
     $ref: "#/definitions/service-controller"
 
   service-controller-time:

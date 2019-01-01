@@ -9,6 +9,11 @@ data:
       - session:create
     roles:
       - user
+  root:
+    allow: true
+    name: root
+    roles:
+      - root
   transforms: []
   token:
     audience: [test-audience]
