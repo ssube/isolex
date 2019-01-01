@@ -129,16 +129,21 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   protected async createTokenSession(data: JwtFields, done: VerifiedCallback) {
-    this.logger.debug({ data }, 'finding token for request payload');
+    this.logger.debug({ data }, 'creating session from token');
     const token = await this.tokenRepository.findOne({
       id: data.jti,
     }, {
-        relations: ['user'],
-      });
+      relations: ['user'],
+    });
+
     if (isNil(token)) {
       this.logger.warn('token not found');
-      done(undefined, false);
-      return;
+      return done(undefined, false);
+    }
+
+    if (isNil(token.user)) {
+      this.logger.error({ token }, 'token user not found');
+      return done(undefined, false);
     }
 
     const session = token.session();
