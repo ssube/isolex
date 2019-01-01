@@ -14,6 +14,12 @@ import { TemplateScope } from 'src/utils/Template';
 
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
+export enum ErrorReplyType {
+  GrantMissing = 'grant-missing',
+  SessionExists = 'session-exists',
+  SessionMissing = 'session-missing',
+}
+
 @Inject('services')
 export abstract class BaseController<TData extends ControllerData> extends BotService<TData> implements Controller {
   public readonly name: string;
@@ -61,6 +67,13 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   public abstract handle(cmd: Command): Promise<void>;
 
+  /**
+   * Check a set of grants **after** scoping them to this service.
+   */
+  protected checkGrants(ctx: Context, ...stubGrants: Array<string>): boolean {
+    return ctx.checkGrants(stubGrants.map((s) => `${this.kind}:${this.name}:${s}`));
+  }
+
   protected async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
     if (this.transforms.length === 0) {
       this.logger.debug('controller has no transforms, skipping');
@@ -89,6 +102,19 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       return this.reply(cmd.context, body);
     } else {
       this.logger.error({ body }, 'final transform did not return a string');
+    }
+  }
+
+  protected async errorReply(ctx: Context, errCode: ErrorReplyType, msg?: string): Promise<void> {
+    switch (errCode) {
+      case ErrorReplyType.GrantMissing:
+        await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, 'permission denied'));
+        break;
+      case ErrorReplyType.SessionMissing:
+        await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, 'must be logged in'));
+        break;
+      default:
+        await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, `error: ${msg}`));
     }
   }
 
