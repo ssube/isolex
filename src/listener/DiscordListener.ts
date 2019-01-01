@@ -107,11 +107,6 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   public async replyToThread(msg: Message) {
-    if (!this.checkGrants(msg.context, `${msg.context.channel.thread}:${msg.type}`)) {
-      this.logger.warn({ msg }, 'thread permission denied');
-      return;
-    }
-
     const thread = this.threads.get(msg.context.channel.thread);
     if (!thread) {
       this.logger.warn({ msg }, 'message thread is missing');
@@ -132,11 +127,6 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   public async replyToChannel(msg: Message) {
-    if (!this.checkGrants(msg.context, `${msg.context.channel.id}:${msg.type}`)) {
-      this.logger.warn({ msg }, 'channel permission denied');
-      return;
-    }
-
     const channel = this.client.channels.get(msg.context.channel.id);
     if (!channel) {
       this.logger.warn({ msg }, 'message channel is missing');

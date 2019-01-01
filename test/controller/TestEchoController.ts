@@ -10,8 +10,6 @@ import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { Transform } from 'src/transform/Transform';
-import { Template } from 'src/utils/Template';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
@@ -71,7 +69,9 @@ describeAsync('echo controller', async () => {
     await controller.start();
 
     const cmd = new Command({
-      context: ineeda<Context>(),
+      context: ineeda<Context>({
+        checkGrants: () => true,
+      }),
       data: {},
       labels: {},
       noun: NOUN_ECHO,

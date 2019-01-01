@@ -1,8 +1,8 @@
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Transform } from 'src/transform/Transform';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -22,6 +22,10 @@ export class EchoController extends BaseController<EchoControllerData> implement
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, `${NOUN_ECHO}:${CommandVerb.Create}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     this.logger.debug({ cmd }, 'echoing command');
     return this.transformJSON(cmd, {});
   }

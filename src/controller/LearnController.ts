@@ -44,7 +44,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async createKeyword(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'keyword:create')) {
+    if (!this.checkGrants(cmd.context, `${NOUN_KEYWORD}:${CommandVerb.Create}`)) {
       return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
@@ -80,7 +80,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async deleteKeyword(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'keyword:delete')) {
+    if (!this.checkGrants(cmd.context, `${NOUN_KEYWORD}:${CommandVerb.Delete}`)) {
       return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
@@ -101,7 +101,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async executeKeyword(cmd: Command) {
-    if (!this.checkGrants(cmd.context, 'keyword:update')) {
+    if (!this.checkGrants(cmd.context, `${NOUN_KEYWORD}:${CommandVerb.Update}`)) {
       return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 

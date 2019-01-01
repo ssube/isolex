@@ -1,9 +1,9 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 
 const DICE_MINIMUM = 1;
 
@@ -24,6 +24,14 @@ export class DiceController extends BaseController<DiceControllerData> implement
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (cmd.verb !== CommandVerb.Create) {
+      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
+    }
+
+    if (!this.checkGrants(cmd.context, `${NOUN_ROLL}:${CommandVerb.Create}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const count = cmd.getHead('count');
     const sides = cmd.getHead('sides');
 

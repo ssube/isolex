@@ -73,7 +73,9 @@ describeAsync('weather controller', async () => {
     expect(controller).to.be.an.instanceOf(WeatherController);
 
     const cmd = new Command({
-      context: ineeda<Context>(),
+      context: ineeda<Context>({
+        checkGrants: () => true,
+      }),
       data: {
         location: ['94040'],
       },

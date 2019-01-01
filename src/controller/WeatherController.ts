@@ -34,6 +34,10 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
       return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
     }
 
+    if (!this.checkGrants(cmd.context, `${NOUN_WEATHER}:${CommandVerb.Get}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const [location] = cmd.get('location');
     if (!location) {
       return this.reply(cmd.context, 'unknown or missing location');

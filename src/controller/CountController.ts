@@ -1,9 +1,9 @@
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
 
@@ -39,6 +39,14 @@ export class CountController extends BaseController<CountControllerData> impleme
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (cmd.verb !== CommandVerb.Get) {
+      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
+    }
+
+    if (!this.checkGrants(cmd.context, `${NOUN_COUNTER}:${CommandVerb.Get}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const count = cmd.getHeadOrDefault(this.data.field.count, this.data.default.count);
     const name = cmd.getHeadOrDefault(this.data.field.name, cmd.context.channel.thread);
 

@@ -1,8 +1,8 @@
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { RequestFactory } from 'src/utils/Request';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -35,6 +35,14 @@ export class SearchController extends BaseController<SearchControllerData> imple
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (cmd.verb !== CommandVerb.List) {
+      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
+    }
+
+    if (!this.checkGrants(cmd.context, `${NOUN_SEARCH}:${CommandVerb.List}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const data = cmd.get(this.data.field);
     if (!data.length) {
       return this.reply(cmd.context, 'no arguments were provided!');

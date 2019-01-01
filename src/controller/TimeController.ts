@@ -1,8 +1,8 @@
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_TIME = 'time';
@@ -25,6 +25,10 @@ export class TimeController extends BaseController<TimeControllerData> implement
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, `${NOUN_TIME}:${CommandVerb.Get}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const date = this.clock.getDate();
     const locale = cmd.getHeadOrDefault('locale', this.data.locale);
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
