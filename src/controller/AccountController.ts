@@ -140,16 +140,6 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(cmd.context, `user ${name} joined, sign in token: ${jwt}`);
   }
 
-  protected getUserRoles(name: string): Array<string> {
-    if (this.data.root.allow && name === this.data.root.name) {
-      const roles = [...this.data.join.roles, ...this.data.root.roles];
-      this.logger.warn({ roles, user: name }, 'granting root roles to user');
-      return roles;
-    } else {
-      return this.data.join.roles;
-    }
-  }
-
   public async deleteAccount(cmd: Command): Promise<void> {
     if (isNil(cmd.context.user)) {
       return this.reply(cmd.context, 'must be logged in');
@@ -230,5 +220,14 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const token = await this.tokenRepository.save(tokenPre);
     this.logger.debug({ expires, issued, token }, 'signing token');
     return token.sign(this.data.token.secret);
+  }
+
+  protected getUserRoles(name: string): Array<string> {
+    const roles = Array.from(this.data.join.roles);
+    if (this.data.root.allow && name === this.data.root.name) {
+      roles.push(...this.data.root.roles);
+      this.logger.warn({ roles, user: name }, 'granting root roles to user');
+    }
+    return roles;
   }
 }
