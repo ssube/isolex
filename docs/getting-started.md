@@ -29,7 +29,7 @@ advanced deploy commands.
       - [Start Pipeline](#start-pipeline)
       - [Scale Apps](#scale-apps)
   - [Security](#security)
-    - [RBAC](#rbac)
+    - [Grants](#grants)
     - [Tokens](#tokens)
 
 ## Architecture
@@ -277,7 +277,7 @@ TODO: scale up k8s apps deployment
 
 The bot features role-based access control (RBAC) as a way of enforcing granular permissions for users.
 
-### RBAC
+### Grants
 
 Users are given Roles, Roles are given grants. Grants (permissions) use
 [Shiro-style syntax](http://shiro.apache.org/permissions.html) via

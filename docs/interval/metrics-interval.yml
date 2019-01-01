@@ -12,4 +12,4 @@ data:
     kind: discord-listener
     name: test-discord
   frequency:
-    zeit: 15 seconds
+    time: 15 seconds

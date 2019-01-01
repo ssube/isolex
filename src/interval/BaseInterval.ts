@@ -50,8 +50,8 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
       throw new NotImplementedError('cron frequency is not implemented');
     }
 
-    if (this.data.frequency.zeit) {
-      const ms = this.math.unit(this.data.frequency.zeit).toNumber('millisecond');
+    if (this.data.frequency.time) {
+      const ms = this.math.unit(this.data.frequency.time).toNumber('millisecond');
       this.logger.debug({ ms }, 'starting a clock interval');
       this.interval = this.clock.setInterval(() => this.nextTick().catch((err) => {
         this.logger.error(err, 'error firing next tick');
@@ -60,7 +60,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   }
 
   protected async stopInterval() {
-    if (this.data.frequency.zeit) {
+    if (this.data.frequency.time) {
       this.clock.clearInterval(this.interval);
     }
   }

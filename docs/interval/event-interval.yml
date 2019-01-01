@@ -12,6 +12,6 @@ data:
     kind: discord-listener
     name: test-discord
   frequency:
-    zeit: 30 seconds
+    time: 30 seconds
   services:
     - *discord-metadata

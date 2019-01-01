@@ -25,11 +25,11 @@ export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
   }
 
   public async startInterval() {
-    if (isNil(this.data.frequency.zeit)) {
-      throw new InvalidArgumentError('metrics interval requires a zeit frequency');
+    if (isNil(this.data.frequency.time)) {
+      throw new InvalidArgumentError('metrics interval requires a time frequency');
     }
 
-    const timeout = this.math.unit(this.data.frequency.zeit).toNumber('millisecond');
+    const timeout = this.math.unit(this.data.frequency.time).toNumber('millisecond');
     this.logger.debug({ timeout }, 'starting default metrics interval');
     this.interval = collectDefaultMetrics({
       register: this.metrics,

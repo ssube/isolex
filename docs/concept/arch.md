@@ -93,7 +93,7 @@ Every service may have filters, including filters, which should allow for limite
 
 ### Interval
 
-Intervals occasionally emit a command, event, or message. Some operate on regular intervals, cron or zeit expressions,
+Intervals occasionally emit a command, event, or message. Some operate on regular intervals, cron or time expressions,
 while others respond to external stimuli.
 
 ### Listener

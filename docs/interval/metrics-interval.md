@@ -16,4 +16,4 @@ The interval target. Not used.
 
 ### `frequency`
 
-The cron or zeit duration on which the interval will collect metrics.
+The cron or time duration on which the interval will collect metrics.

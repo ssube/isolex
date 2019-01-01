@@ -7,15 +7,17 @@ import { Service } from 'src/Service';
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer } from 'test/helpers/container';
 
+const TEST_SERVICE_NAME = 'test-service';
+
 async function createModule() {
   const metadata = {
-    kind: 'test-service',
-    name: 'test-service',
+    kind: TEST_SERVICE_NAME,
+    name: TEST_SERVICE_NAME,
   };
   const testSvc = ineeda<Service>(metadata);
 
   const module = new ServiceModule();
-  module.bind('test-service').toInstance(testSvc);
+  module.bind(TEST_SERVICE_NAME).toInstance(testSvc);
 
   const { container } = await createContainer(module);
 

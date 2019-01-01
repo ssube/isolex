@@ -430,11 +430,11 @@ definitions:
             additionalProperties: false
             oneOf:
               - required: [cron]
-              - required: [zeit]
+              - required: [time]
             properties:
               cron:
                 type: string
-              zeit:
+              time:
                 type: string
  
   service-interval-command:

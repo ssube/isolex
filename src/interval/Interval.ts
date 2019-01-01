@@ -5,7 +5,7 @@ import { Service, ServiceMetadata } from 'src/Service';
 
 export interface IntervalFrequency {
   cron?: string;
-  zeit?: string;
+  time?: string;
 }
 
 export interface IntervalData extends BotServiceData {
