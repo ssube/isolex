@@ -1,6 +1,6 @@
 metadata:
-  kind: kubernetes-controller
-  name: test_k8s
+  kind: kubernetes-core-controller
+  name: test-k8s-core
 data:
   context:
     default: true

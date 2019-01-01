@@ -9,7 +9,7 @@ import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
 import { GithubPRController } from 'src/controller/github/PRController';
 import { GitlabCIController } from 'src/controller/gitlab/CIController';
-import { KubernetesController } from 'src/controller/KubernetesController';
+import { KubernetesCoreController } from 'src/controller/kubernetes/CoreController';
 import { LearnController } from 'src/controller/LearnController';
 import { MathController } from 'src/controller/MathController';
 import { PickController } from 'src/controller/PickController';
@@ -51,6 +51,6 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(GitlabCIController.name)).toConstructor(GitlabCIController);
 
     // kubernetes controllers
-    this.bind(kebabCase(KubernetesController.name)).toConstructor(KubernetesController);
+    this.bind(kebabCase(KubernetesCoreController.name)).toConstructor(KubernetesCoreController);
   }
 }

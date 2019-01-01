@@ -6,8 +6,8 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 
-export const NOUN_POD = 'k8s-pod';
-export const NOUN_SERVICE = 'k8s-service';
+export const NOUN_POD = 'kubernetes-pod';
+export const NOUN_SERVICE = 'kubernetes-service';
 
 export interface KubernetesControllerData extends ControllerData {
   context: {
@@ -23,7 +23,7 @@ export interface KubernetesControllerData extends ControllerData {
 export type KubernetesControllerOptions = ControllerOptions<KubernetesControllerData>;
 
 @Inject()
-export class KubernetesController extends BaseController<KubernetesControllerData> implements Controller {
+export class KubernetesCoreController extends BaseController<KubernetesControllerData> implements Controller {
   protected client: k8s.Core_v1Api;
 
   constructor(options: KubernetesControllerOptions) {
