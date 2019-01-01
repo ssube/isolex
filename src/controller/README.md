@@ -54,16 +54,15 @@ public async getFoo(cmd: Command) {
 }
 ```
 
-@TODO: add a helper for permission denied message
-
 ## Nouns
 
 | Noun     | Controller |
 |----------|------------|
+| account  | Account    |
 | counter  | Count      |
 | echo     | Echo       |
 | fragment | Completion |
-| grant    | Session    |
+| grant    | Account    |
 | keyword  | Learn      |
 | math     | Math       |
 | pick     | Pick       |
@@ -74,7 +73,7 @@ public async getFoo(cmd: Command) {
 | roll     | Dice       |
 | sed      | Sed        |
 | service  | Kubernetes |
-| session  | Session    |
+| session  | Account    |
 | token    | Token      |
 | user     | User       |
 | weather  | Weather    |

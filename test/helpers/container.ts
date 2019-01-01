@@ -6,8 +6,8 @@ import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
-import { BaseServiceOptions, BaseServiceData } from 'src/BaseService';
 import { Bot } from 'src/Bot';
+import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
 import { ServiceDefinition } from 'src/Service';
@@ -35,7 +35,11 @@ export async function createContainer(...modules: Array<Module>): Promise<{ cont
   return { container, module };
 }
 
-export async function createService<TService, TOptions extends BaseServiceOptions<TData>, TData extends BaseServiceData> (
+export async function createService<
+  TService,
+  TData extends BotServiceData,
+  TOptions extends BotServiceOptions<TData> = BotServiceOptions<TData>,
+>(
   container: Container,
   type: Constructor<TService, TOptions>,
   options: Partial<TOptions>,

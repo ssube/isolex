@@ -4,7 +4,7 @@ import { ineeda } from 'ineeda';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { FilterBehavior } from 'src/filter/Filter';
-import { UserFilter, UserFilterData, UserFilterOptions } from 'src/filter/UserFilter';
+import { UserFilter, UserFilterData } from 'src/filter/UserFilter';
 import { ChecklistMode } from 'src/utils/Checklist';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
@@ -15,7 +15,7 @@ const TEST_FILTER_NAME = 'test-filter';
 
 async function createUserFilter(data: UserFilterData) {
   const { container } = await createContainer();
-  const filter = await createService<UserFilter, UserFilterOptions>(container, UserFilter, {
+  const filter = await createService(container, UserFilter, {
     data,
     metadata: {
       kind: TEST_FILTER_KIND,
