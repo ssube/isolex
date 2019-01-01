@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Keyword } from 'src/entity/misc/Keyword';
@@ -43,6 +43,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async createKeyword(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'keyword:create')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const body = cmd.getOrDefault('body', []);
     const key = cmd.getHead('keyword');
     const noun = cmd.getHead('future-noun');
@@ -75,6 +79,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async deleteKeyword(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'keyword:delete')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const key = cmd.getHead('keyword');
 
     const keyword = await this.keywordRepository.findOne({
@@ -92,6 +100,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
   }
 
   protected async executeKeyword(cmd: Command) {
+    if (!this.checkGrants(cmd.context, 'keyword:update')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const body = cmd.getOrDefault('body', []);
     const key = cmd.getHead('keyword');
 
