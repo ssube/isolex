@@ -30,6 +30,9 @@ export abstract class BotService<TData extends BotServiceData> extends BaseServi
     this.bot = options.bot;
   }
 
+  /**
+   * Check a set of grants **after** scoping them to this service.
+   */
   protected checkGrants(ctx: Context, ...stubGrants: Array<string>): boolean {
     return ctx.checkGrants(stubGrants.map((s) => `${this.kind}:${this.name}:${s}`));
   }

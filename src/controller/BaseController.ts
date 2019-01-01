@@ -15,7 +15,11 @@ import { TemplateScope } from 'src/utils/Template';
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
 export enum ErrorReplyType {
+  EntityExists = 'entity-exists',
+  EntityMissing = 'entity-missing',
   GrantMissing = 'grant-missing',
+  InvalidNoun = 'invalid-noun',
+  InvalidVerb = 'invalid-verb',
   SessionExists = 'session-exists',
   SessionMissing = 'session-missing',
 }
@@ -101,13 +105,11 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   protected async errorReply(ctx: Context, errCode: ErrorReplyType, msg?: string): Promise<void> {
     switch (errCode) {
       case ErrorReplyType.GrantMissing:
-        await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, 'permission denied'));
-        break;
+        return this.reply(ctx, 'permission denied');
       case ErrorReplyType.SessionMissing:
-        await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, 'must be logged in'));
-        break;
+        return this.reply(ctx, 'must be logged in');
       default:
-        await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, `error: ${msg}`));
+        return this.reply(ctx, `${errCode} error: ${msg}`);
     }
   }
 

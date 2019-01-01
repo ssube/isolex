@@ -37,8 +37,9 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       case CommandVerb.Delete:
         return this.deleteKeyword(cmd);
       case CommandVerb.Update:
-      default:
         return this.executeKeyword(cmd);
+      default:
+        return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
     }
   }
 
@@ -53,7 +54,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const verb = cmd.getHead('future-verb') as CommandVerb;
 
     if (!this.checkNoun.check(noun)) {
-      return this.reply(cmd.context, 'invalid noun');
+      return this.errorReply(cmd.context, ErrorReplyType.InvalidNoun);
     }
 
     const keyword = new Keyword({
@@ -71,7 +72,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       key,
     });
     if (existing) {
-      return this.reply(cmd.context, `command already exists: ${key}`);
+      return this.errorReply(cmd.context, ErrorReplyType.EntityExists, key);
     }
 
     await this.keywordRepository.save(keyword);
@@ -89,7 +90,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       key,
     });
     if (!keyword) {
-      return this.reply(cmd.context, `command ${key} does not exist.`);
+      return this.errorReply(cmd.context, ErrorReplyType.EntityMissing, key);
     }
 
     await this.keywordRepository.delete({
@@ -112,7 +113,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     });
 
     if (!keyword) {
-      return this.reply(cmd.context, 'missing keyword or command');
+      return this.errorReply(cmd.context, ErrorReplyType.EntityMissing, key);
     }
 
     // TODO: merge with saved data before executing

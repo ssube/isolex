@@ -1,8 +1,8 @@
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -30,6 +30,10 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (cmd.verb !== CommandVerb.Get) {
+      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
+    }
+
     const [location] = cmd.get('location');
     if (!location) {
       return this.reply(cmd.context, 'unknown or missing location');
