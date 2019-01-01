@@ -193,8 +193,10 @@ definitions:
           join:
             type: object
             additionalProperties: false
-            required: [grants, roles]
+            required: [allow, grants, roles]
             properties:
+              allow:
+                type: boolean
               grants:
                 type: array
                 items:

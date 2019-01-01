@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { createCompletion } from 'src/controller/CompletionController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Role } from 'src/entity/auth/Role';
@@ -18,6 +18,7 @@ export const NOUN_SESSION = 'session';
 
 export interface AccountControllerData extends ControllerData {
   join: {
+    allow: boolean;
     grants: Array<string>;
     roles: Array<string>;
   };
@@ -101,6 +102,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
   }
 
   public async getGrant(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'grant:get')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
       return `\`${p}: ${cmd.context.checkGrants([p])}\``;
@@ -109,6 +114,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
   }
 
   public async listGrants(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'grant:list')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
       return `\`${p}: ${cmd.context.listGrants([p])}\``;
@@ -117,6 +126,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
   }
 
   public async createAccount(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'account:create') && !this.data.join.allow) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
 
     if (await this.userRepository.count({
@@ -142,7 +155,11 @@ export class AccountController extends BaseController<AccountControllerData> imp
 
   public async deleteAccount(cmd: Command): Promise<void> {
     if (isNil(cmd.context.user)) {
-      return this.reply(cmd.context, 'must be logged in');
+      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+    }
+
+    if (!this.checkGrants(cmd.context, 'account:delete')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
