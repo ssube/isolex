@@ -1,5 +1,5 @@
-import { isString } from 'lodash';
-import { Inject } from 'noicejs';
+import { isNil, isString } from 'lodash';
+import { Inject, MissingValueError } from 'noicejs';
 
 import { BotService } from 'src/BotService';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -9,9 +9,13 @@ import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
+import { getMethods } from 'src/utils';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
+import { getHandlerOptions, HandlerOptions } from '.';
+
+export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command) => Promise<void>;
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
 export enum ErrorReplyType {
@@ -22,6 +26,7 @@ export enum ErrorReplyType {
   InvalidVerb = 'invalid-verb',
   SessionExists = 'session-exists',
   SessionMissing = 'session-missing',
+  Unknown = 'unknown',
 }
 
 @Inject('services')
@@ -69,7 +74,58 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     return true;
   }
 
-  public abstract handle(cmd: Command): Promise<void>;
+  public async handle(cmd: Command): Promise<void> {
+    this.logger.debug({ cmd }, 'finding handler method for command');
+
+    for (const method of getMethods(this)) {
+      const options = getHandlerOptions(method);
+      if (isNil(options)) {
+        continue;
+      }
+
+      this.logger.debug({ cmd, options }, 'checking potential handler method');
+      if (!this.checkCommand(cmd, options)) {
+        continue;
+      }
+
+      this.logger.debug({ method: method.name, options }, 'found matching handler method');
+      return this.invokeHandler(cmd, options, method as HandlerMethod);
+    }
+
+    this.logger.warn({ cmd }, 'no handler method for command');
+  }
+
+  protected checkCommand(cmd: Command, options: HandlerOptions): boolean {
+    return cmd.noun === options.noun && cmd.verb === options.verb;
+  }
+
+  protected async invokeHandler(cmd: Command, options: HandlerOptions, handler: HandlerMethod): Promise<void> {
+    if (options.rbac) {
+      if (options.rbac.user && !cmd.context.user) {
+        return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+      }
+
+      const grants = [];
+      if (Array.isArray(options.rbac.grants)) {
+        grants.push(...options.rbac.grants);
+      }
+
+      if (options.rbac.defaultGrant) {
+        grants.push(`${options.noun}:${options.verb}`);
+      }
+
+      if (!cmd.context.checkGrants(grants)) {
+        return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+      }
+    }
+
+    try {
+      return handler.call(this, cmd);
+    } catch (err) {
+      this.logger.error(err, 'error during handler method');
+      return this.errorReply(cmd.context, ErrorReplyType.Unknown, err.message);
+    }
+  }
 
   protected async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
     if (this.transforms.length === 0) {
@@ -115,5 +171,21 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   protected async reply(ctx: Context, body: string): Promise<void> {
     await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, body));
+  }
+
+  protected getSourceOrFail(ctx: Context) {
+    const source = ctx.source;
+    if (isNil(source)) {
+      throw new MissingValueError('context source must not be nil');
+    }
+    return source;
+  }
+
+  protected getUserOrFail(ctx: Context) {
+    const user = ctx.user;
+    if (isNil(user)) {
+      throw new MissingValueError('context user must not be nil');
+    }
+    return user;
   }
 }

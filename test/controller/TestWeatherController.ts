@@ -3,6 +3,7 @@ import { ineeda } from 'ineeda';
 
 import { Bot } from 'src/Bot';
 import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';
+import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -75,6 +76,7 @@ describeAsync('weather controller', async () => {
     const cmd = new Command({
       context: ineeda<Context>({
         checkGrants: () => true,
+        user: ineeda<User>(),
       }),
       data: {
         location: ['94040'],

@@ -1,6 +1,7 @@
 import { Inject } from 'noicejs';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
@@ -29,11 +30,10 @@ export class PickController extends BaseController<PickControllerData> implement
     this.list = new Checklist(options.data.check);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, `${NOUN_PICK}:${CommandVerb.Create}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
+  @HandleNoun(NOUN_PICK)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
+  public async getPick(cmd: Command): Promise<void> {
     const count = Number(cmd.getHeadOrDefault(this.data.field.count, this.data.count));
     const data = cmd.get(this.data.field.data).filter((it) => this.list.check(it));
     const list = Picklist.create(...data);

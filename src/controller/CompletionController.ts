@@ -2,7 +2,8 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -21,9 +22,6 @@ export interface CompletionControllerData extends ControllerData {
 }
 
 export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
-
-const MSG_ERROR_SESSION = 'session required';
-const MSG_ERROR_PERMISSION = 'permission denied';
 
 @Inject('storage')
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
@@ -44,37 +42,11 @@ export class CompletionController extends BaseController<CompletionControllerDat
     this.target = this.services.getService(this.data.defaultTarget);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    this.logger.debug({ cmd }, 'completing command');
-
-    switch (cmd.noun) {
-      case NOUN_FRAGMENT:
-        return this.handleFragment(cmd);
-      default:
-        return this.reply(cmd.context, 'invalid noun');
-    }
-  }
-
-  public async handleFragment(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createFragment(cmd);
-      case CommandVerb.Update:
-        return this.updateFragment(cmd);
-      default:
-        return this.reply(cmd.context, 'invalid verb');
-    }
-  }
-
+  @HandleNoun(NOUN_FRAGMENT)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
   public async createFragment(cmd: Command): Promise<void> {
-    if (!cmd.context.user) {
-      return this.reply(cmd.context, MSG_ERROR_SESSION);
-    }
-
-    if (!this.checkGrants(cmd.context, 'fragment:create')) {
-      return this.reply(cmd.context, MSG_ERROR_PERMISSION);
-    }
-
+    const user = this.getUserOrFail(cmd.context);
     const key = cmd.getHead('key');
     const msg = cmd.getHeadOrDefault('msg', `missing required argument: ${key}`);
     const noun = cmd.getHead('noun');
@@ -87,7 +59,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       labels: cmd.labels,
       noun,
       parserId,
-      userId: cmd.context.user.id,
+      userId: user.id,
       verb,
     }));
 
@@ -96,15 +68,10 @@ export class CompletionController extends BaseController<CompletionControllerDat
     return this.reply(context, `${fragment.id} (${key}): ${msg}`);
   }
 
+  @HandleNoun(NOUN_FRAGMENT)
+  @HandleVerb(CommandVerb.Update)
+  @CheckRBAC()
   public async updateFragment(cmd: Command): Promise<void> {
-    if (!cmd.context.user) {
-      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
-    }
-
-    if (!this.checkGrants(cmd.context, 'fragment:update')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const id = cmd.getHead('id');
     this.logger.debug({ id }, 'getting fragment to complete');
 
@@ -142,10 +109,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
   }
 
   protected async getFragment(ctx: Context, id: string): Promise<Fragment> {
-    if (!ctx.user) {
-      throw new NotFoundError('fragment user not found');
-    }
-
+    const user = this.getUserOrFail(ctx);
     if (id === 'last') {
       const results = await this.fragmentRepository.find({
         order: {
@@ -153,7 +117,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
         } as any,
         take: 1,
         where: {
-          userId: ctx.user.id,
+          userId: user.id,
         },
       });
 

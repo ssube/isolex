@@ -1,12 +1,14 @@
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Role } from 'src/entity/auth/Role';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
+
+import { CheckRBAC, HandleNoun, HandleVerb } from '.';
 
 export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';
@@ -28,48 +30,10 @@ export class UserController extends BaseController<UserControllerData> implement
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    switch (cmd.noun) {
-      case NOUN_ROLE:
-        return this.handleRole(cmd);
-      case NOUN_USER:
-        return this.handleUser(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported noun: ${cmd.noun}`);
-    }
-  }
-
-  public async handleRole(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createRole(cmd);
-      case CommandVerb.Get:
-        return this.getRole(cmd);
-      case CommandVerb.List:
-        return this.listRoles(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
-    }
-  }
-
-  public async handleUser(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createUser(cmd);
-      case CommandVerb.Get:
-        return this.getUser(cmd);
-      case CommandVerb.Update:
-        return this.updateUser(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
-    }
-  }
-
+  @HandleNoun(NOUN_ROLE)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
   public async createRole(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'role:create')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const name = cmd.getHead('name');
     const grants = cmd.get('grants');
     const role = await this.roleRepository.insert({
@@ -79,11 +43,10 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(cmd.context, role.toString());
   }
 
+  @HandleNoun(NOUN_ROLE)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
   public async getRole(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'role:get')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const name = cmd.get('name');
     const role = await this.roleRepository.findOne({
       where: {
@@ -97,21 +60,19 @@ export class UserController extends BaseController<UserControllerData> implement
     }
   }
 
+  @HandleNoun(NOUN_ROLE)
+  @HandleVerb(CommandVerb.List)
+  @CheckRBAC()
   public async listRoles(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'role:list')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
     const roleText = roles.map((r) => r.toString()).join('\n');
     return this.reply(cmd.context, roleText);
   }
 
+  @HandleNoun(NOUN_USER)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
   public async createUser(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'user:create')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'creating user');
@@ -132,11 +93,10 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(cmd.context, user.toString());
   }
 
+  @HandleNoun(NOUN_USER)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
   public async getUser(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'user:get')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const name = cmd.getHead('name');
     const user = await this.userRepository.findOneOrFail({
       where: {
@@ -147,11 +107,10 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(cmd.context, user.toString());
   }
 
+  @HandleNoun(NOUN_USER)
+  @HandleVerb(CommandVerb.Update)
+  @CheckRBAC()
   public async updateUser(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'user:update')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'updating user');

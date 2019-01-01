@@ -1,7 +1,8 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
@@ -28,15 +29,10 @@ export class MathController extends BaseController<MathControllerData> implement
     this.math = options.math.create(options.data.math);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (cmd.verb !== CommandVerb.Create) {
-      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
-    }
-
-    if (!this.checkGrants(cmd.context, `${NOUN_MATH}:${CommandVerb.Create}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
+  @HandleNoun(NOUN_MATH)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
+  public async createMath(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'calculating command');
 
     const inputExpr = cmd.get('expr');

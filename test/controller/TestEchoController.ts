@@ -4,6 +4,7 @@ import { match, spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
 import { EchoController, NOUN_ECHO } from 'src/controller/EchoController';
+import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -71,11 +72,12 @@ describeAsync('echo controller', async () => {
     const cmd = new Command({
       context: ineeda<Context>({
         checkGrants: () => true,
+        user: ineeda<User>(),
       }),
       data: {},
       labels: {},
       noun: NOUN_ECHO,
-      verb: CommandVerb.Get,
+      verb: CommandVerb.Create,
     });
 
     expect(await controller.check(cmd)).to.equal(true);

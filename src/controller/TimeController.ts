@@ -1,6 +1,7 @@
 import { Inject } from 'noicejs';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
@@ -24,11 +25,10 @@ export class TimeController extends BaseController<TimeControllerData> implement
     this.clock = options.clock;
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, `${NOUN_TIME}:${CommandVerb.Get}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
+  @HandleNoun(NOUN_TIME)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
+  public async getTime(cmd: Command): Promise<void> {
     const date = this.clock.getDate();
     const locale = cmd.getHeadOrDefault('locale', this.data.locale);
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);

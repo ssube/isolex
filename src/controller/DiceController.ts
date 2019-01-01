@@ -1,7 +1,8 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 
@@ -23,15 +24,10 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.math = options.math.create({});
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (cmd.verb !== CommandVerb.Create) {
-      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
-    }
-
-    if (!this.checkGrants(cmd.context, `${NOUN_ROLL}:${CommandVerb.Create}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
+  @HandleNoun(NOUN_ROLL)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
+  public async createRoll(cmd: Command): Promise<void> {
     const count = cmd.getHead('count');
     const sides = cmd.getHead('sides');
 

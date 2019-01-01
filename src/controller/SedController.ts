@@ -1,6 +1,7 @@
 import { Inject } from 'noicejs';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
@@ -16,15 +17,11 @@ export class SedController extends BaseController<SedControllerData> implements 
     super(options, 'isolex#/definitions/service-controller-sed', [NOUN_SED]);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, `${NOUN_SED}:${CommandVerb.Create}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
-    if (!cmd.context.source) {
-      return this.reply(cmd.context, 'no source listener with which to create a session');
-    }
-
+  @HandleNoun(NOUN_SED)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
+  public async createSed(cmd: Command): Promise<void> {
+    const source = this.getSourceOrFail(cmd.context);
     const expr = cmd.getHead('expr');
 
     // split into regex, replace and flags
@@ -38,7 +35,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     try {
       const messages = await this.bot.fetch({
         channel: cmd.context.channel.id,
-        listenerId: cmd.context.source.id,
+        listenerId: source.id,
         useFilters: true,
       });
 

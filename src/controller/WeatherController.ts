@@ -1,6 +1,7 @@
 import { Inject } from 'noicejs';
 
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { RequestFactory } from 'src/utils/Request';
@@ -29,22 +30,17 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     this.request = options.request;
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (cmd.verb !== CommandVerb.Get) {
-      return this.errorReply(cmd.context, ErrorReplyType.InvalidVerb);
-    }
-
-    if (!this.checkGrants(cmd.context, `${NOUN_WEATHER}:${CommandVerb.Get}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
+  @HandleNoun(NOUN_WEATHER)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
+  public async getWeather(cmd: Command): Promise<void> {
     const [location] = cmd.get('location');
     if (!location) {
       return this.reply(cmd.context, 'unknown or missing location');
     }
 
     try {
-      const weather = await this.getWeather(location);
+      const weather = await this.requestWeather(location);
 
       this.logger.debug({ weather }, 'transforming weather data');
       return this.transformJSON(cmd, weather);
@@ -53,7 +49,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     }
   }
 
-  public async getWeather(location: string): Promise<WeatherReply> {
+  public async requestWeather(location: string): Promise<WeatherReply> {
     const query = this.getQuery(location);
     this.logger.debug({ location, query, root: this.data.api.root }, 'requesting weather data from API');
 

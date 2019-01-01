@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { createCompletion } from 'src/controller/CompletionController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -55,57 +56,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    switch (cmd.noun) {
-      case NOUN_ACCOUNT:
-        return this.handleAccount(cmd);
-      case NOUN_GRANT:
-        return this.handleGrant(cmd);
-      case NOUN_SESSION:
-        return this.handleSession(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported noun: ${cmd.noun}`);
-    }
-  }
-
-  public async handleAccount(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createAccount(cmd);
-      case CommandVerb.Delete:
-        return this.deleteAccount(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
-    }
-  }
-
-  public async handleGrant(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Get:
-        return this.getGrant(cmd);
-      case CommandVerb.List:
-        return this.listGrants(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
-    }
-  }
-
-  public async handleSession(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createSession(cmd);
-      case CommandVerb.Get:
-        return this.getSession(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
-    }
-  }
-
+  @HandleNoun(NOUN_GRANT)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
   public async getGrant(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'grant:get')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
       return `\`${p}: ${cmd.context.checkGrants([p])}\``;
@@ -113,11 +67,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(cmd.context, results);
   }
 
+  @HandleNoun(NOUN_GRANT)
+  @HandleVerb(CommandVerb.List)
+  @CheckRBAC()
   public async listGrants(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'grant:list')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
-
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
       return `\`${p}: ${cmd.context.listGrants([p])}\``;
@@ -125,13 +78,14 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(cmd.context, results);
   }
 
+  @HandleNoun(NOUN_ACCOUNT)
+  @HandleVerb(CommandVerb.Create)
   public async createAccount(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, 'account:create') && !this.data.join.allow) {
+    if (!this.data.join.allow && !this.checkGrants(cmd.context, 'account:create')) {
       return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
-
     if (await this.userRepository.count({
       name,
     })) {
@@ -153,63 +107,54 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(cmd.context, `user ${name} joined, sign in token: ${jwt}`);
   }
 
+  @HandleNoun(NOUN_ACCOUNT)
+  @HandleVerb(CommandVerb.Delete)
+  @CheckRBAC()
   public async deleteAccount(cmd: Command): Promise<void> {
-    if (isNil(cmd.context.user)) {
-      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
-    }
-
-    if (!this.checkGrants(cmd.context, 'account:delete')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
-    }
+    const user = this.getUserOrFail(cmd.context);
 
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${cmd.context.user.name}`);
+      const completion = createCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${user.name}`);
       await this.bot.executeCommand(completion);
       return;
     }
 
     await this.tokenRepository.delete({
-      subject: cmd.context.user.id,
+      subject: user.id,
     });
 
-    const jwt = await this.createToken(cmd.context.user);
-    return this.reply(cmd.context, `revoked tokens for ${cmd.context.user.name}, new sign in token: ${jwt}`);
+    const jwt = await this.createToken(user);
+    return this.reply(cmd.context, `revoked tokens for ${user.name}, new sign in token: ${jwt}`);
   }
 
+  @HandleNoun(NOUN_SESSION)
+  @HandleVerb(CommandVerb.Create)
   public async createSession(cmd: Command): Promise<void> {
-    if (isNil(cmd.context.source)) {
-      return this.reply(cmd.context, 'no source listener with which to create a session');
-    }
+    const jwt = cmd.getHead('token');
+    const token = Token.verify(jwt, this.data.token.secret, {
+      audience: this.data.token.audience,
+      issuer: this.data.token.issuer,
+    });
+    this.logger.debug({ token }, 'creating session from token');
 
-    try {
-      const jwt = cmd.getHead('token');
-      const token = Token.verify(jwt, this.data.token.secret, {
-        audience: this.data.token.audience,
-        issuer: this.data.token.issuer,
-      });
-      this.logger.debug({ token }, 'creating session from token');
+    const user = await this.userRepository.findOneOrFail({
+      id: token.sub,
+    });
+    await this.userRepository.loadRoles(user);
+    this.logger.debug({ user }, 'logging in user');
 
-      const user = await this.userRepository.findOneOrFail({
-        id: token.sub,
-      });
-      await this.userRepository.loadRoles(user);
-      this.logger.debug({ user }, 'logging in user');
-
-      const session = await cmd.context.source.createSession(cmd.context.uid, user);
-      this.logger.debug({ session, user }, 'created session');
-      return this.reply(cmd.context, 'created session');
-    } catch (err) {
-      this.logger.error(err, 'error creating session');
-      return this.reply(cmd.context, err.message);
-    }
+    const source = this.getSourceOrFail(cmd.context);
+    const session = await source.createSession(cmd.context.uid, user);
+    this.logger.debug({ session, user }, 'created session');
+    return this.reply(cmd.context, 'created session');
   }
 
+  @HandleNoun(NOUN_SESSION)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
   public async getSession(cmd: Command): Promise<void> {
-    if (isNil(cmd.context.source)) {
-      return this.reply(cmd.context, 'no source listener with which to create a session');
-    }
-
-    const session = cmd.context.source.getSession(cmd.context.uid);
+    const source = this.getSourceOrFail(cmd.context);
+    const session = source.getSession(cmd.context.uid);
     if (isNil(session)) {
       return this.reply(cmd.context, 'cannot get sessions unless logged in');
     }
