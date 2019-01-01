@@ -3,6 +3,7 @@ import { Connection } from 'typeorm';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
 import { Bot } from 'src/Bot';
+import { Context } from 'src/entity/Context';
 import { Service } from 'src/Service';
 
 export type BotServiceData = BaseServiceData;
@@ -27,5 +28,9 @@ export abstract class BotService<TData extends BotServiceData> extends BaseServi
     super(options, schemaPath);
 
     this.bot = options.bot;
+  }
+
+  protected checkGrants(ctx: Context, ...stubGrants: Array<string>): boolean {
+    return ctx.checkGrants(stubGrants.map((s) => `${this.kind}:${this.name}:${s}`));
   }
 }

@@ -67,13 +67,6 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   public abstract handle(cmd: Command): Promise<void>;
 
-  /**
-   * Check a set of grants **after** scoping them to this service.
-   */
-  protected checkGrants(ctx: Context, ...stubGrants: Array<string>): boolean {
-    return ctx.checkGrants(stubGrants.map((s) => `${this.kind}:${this.name}:${s}`));
-  }
-
   protected async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
     if (this.transforms.length === 0) {
       this.logger.debug('controller has no transforms, skipping');
