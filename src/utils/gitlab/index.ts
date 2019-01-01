@@ -2,6 +2,8 @@ import { isNil, kebabCase } from 'lodash';
 import { Container, Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
+import { RequestFactory } from 'src/utils/Request';
+
 export interface ProjectOptions {
   group: string;
   project: string;
@@ -130,7 +132,8 @@ export class GitlabClient {
 
   protected async makeRequest(url: string, options: ProjectOptions): Promise<any> {
     try {
-      const response = await this.container.create<string, any>('request', {
+      const request = await this.container.create<RequestFactory, unknown>('request');
+      const response = await request.create({
         url,
         ...options,
       });

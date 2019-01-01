@@ -1,7 +1,5 @@
 import * as request from 'request';
 
-export type RequestOptions = request.CoreOptions & request.UriOptions;
-
 /**
  * Work around for the lack of existing create method (default export is the function).
  *
@@ -9,7 +7,7 @@ export type RequestOptions = request.CoreOptions & request.UriOptions;
  * something (this).
  */
 export class RequestFactory {
-  public create(options: RequestOptions): Promise<any> {
+  public create(options: request.Options): Promise<any> {
     return new Promise((res, rej) => {
       request(options, (err: Error, response: request.Response, body: unknown) => {
         if (err) {
