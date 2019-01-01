@@ -2,6 +2,7 @@ import { kebabCase } from 'lodash';
 import { Module } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 
+import { AccountController } from 'src/controller/AccountController';
 import { CompletionController } from 'src/controller/CompletionController';
 import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
@@ -16,7 +17,6 @@ import { RandomController } from 'src/controller/RandomController';
 import { ReactionController } from 'src/controller/ReactionController';
 import { SearchController } from 'src/controller/SearchController';
 import { SedController } from 'src/controller/SedController';
-import { SessionController } from 'src/controller/SessionController';
 import { TimeController } from 'src/controller/TimeController';
 import { TokenController } from 'src/controller/TokenController';
 import { UserController } from 'src/controller/UserController';
@@ -27,6 +27,7 @@ export class ControllerModule extends Module {
     await super.configure(options);
 
     // controllers
+    this.bind(kebabCase(AccountController.name)).toConstructor(AccountController);
     this.bind(kebabCase(CompletionController.name)).toConstructor(CompletionController);
     this.bind(kebabCase(CountController.name)).toConstructor(CountController);
     this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
@@ -38,7 +39,6 @@ export class ControllerModule extends Module {
     this.bind(kebabCase(ReactionController.name)).toConstructor(ReactionController);
     this.bind(kebabCase(SedController.name)).toConstructor(SedController);
     this.bind(kebabCase(SearchController.name)).toConstructor(SearchController);
-    this.bind(kebabCase(SessionController.name)).toConstructor(SessionController);
     this.bind(kebabCase(TimeController.name)).toConstructor(TimeController);
     this.bind(kebabCase(TokenController.name)).toConstructor(TokenController);
     this.bind(kebabCase(UserController.name)).toConstructor(UserController);

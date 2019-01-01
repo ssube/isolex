@@ -1,6 +1,6 @@
 metadata:
-  kind: session-controller
-  name: default-session
+  kind: account-controller
+  name: default-account
 data:
   join:
     grants:

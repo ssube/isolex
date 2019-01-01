@@ -36,8 +36,10 @@ export abstract class SessionListener<TData extends ListenerData> extends BaseLi
     return session;
   }
 
+  /**
+   * @TODO: check session start/end time
+   */
   public async getSession(uid: string): Promise<Session | undefined> {
-    const now = this.clock.getSeconds();
     return this.sessions.get(uid);
   }
 }

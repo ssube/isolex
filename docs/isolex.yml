@@ -15,6 +15,7 @@ data:
             - isolex
             - isolex-test
   controllers:
+    - !include ../docs/controller/account-controller.yml
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/dice-controller.yml
     - !include ../docs/controller/github/pr-controller.yml
@@ -25,7 +26,6 @@ data:
     - !include ../docs/controller/random-controller.yml
     - !include ../docs/controller/search-controller-mdn.yml
     - !include ../docs/controller/sed-controller.yml
-    - !include ../docs/controller/session-controller.yml
     - !include ../docs/controller/time-controller.yml
     - !include ../docs/controller/token-controller.yml
     - !include ../docs/controller/user-controller.yml

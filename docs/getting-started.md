@@ -4,6 +4,7 @@ This guide will introduce the account system (authentication and authorization),
 advanced deploy commands.
 
 - [Getting Started](#getting-started)
+  - [Architecture](#architecture)
   - [Running](#running)
     - [Config](#config)
     - [Secrets](#secrets)
@@ -27,8 +28,13 @@ advanced deploy commands.
       - [Merge Pull Request](#merge-pull-request)
       - [Start Pipeline](#start-pipeline)
       - [Scale Apps](#scale-apps)
+  - [Security](#security)
+    - [RBAC](#rbac)
+    - [Tokens](#tokens)
 
-For more details on what messages are, how commands are executed, and the various services involved, please see
+## Architecture
+
+For details on what messages are, how commands are executed, and the various services involved, please see
 [the architecture docs](./concept/arch.md).
 
 ## Running
@@ -266,3 +272,32 @@ The status is shown as `running` after canceling the pipeline, since the jobs ta
 #### Scale Apps
 
 TODO: scale up k8s apps deployment
+
+## Security
+
+The bot features role-based access control (RBAC) as a way of enforcing granular permissions for users.
+
+### RBAC
+
+Users are given Roles, Roles are given grants. Grants (permissions) use
+[Shiro-style syntax](http://shiro.apache.org/permissions.html) via
+[shiro-trie](https://www.npmjs.com/package/shiro-trie). The account controller is responsible for creating users,
+verifying tokens, and establishing sessions.
+
+When executing a command, controllers check for `kind:name:noun:verb`. Commands can be granted down to the noun and
+verb, but data is not visible to permissions yet (the syntax does not support maps).
+
+When sending a message, listeners check for `kind:name:channel:type`. Messages can be granted down to the MIME type
+and destination channel.
+
+### Tokens
+
+Instead of passwords, JSON web tokens (JWT) are used to authenticate to the bot. Rather than password reset, users
+can revoke all existing tokens and issue a new sign in token.
+
+Sign in tokens are created with a small set of grants, preventing most API access. Despite this, they are the most
+privileged token for each user. A typical set of sign in grants include:
+
+- `grant:*`
+- `join:create,delete`
+- `session:create,delete`

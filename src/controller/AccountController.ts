@@ -13,10 +13,10 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_GRANT = 'grant';
-export const NOUN_JOIN = 'join';
+export const NOUN_ACCOUNT = 'account';
 export const NOUN_SESSION = 'session';
 
-export interface SessionControllerData extends ControllerData {
+export interface AccountControllerData extends ControllerData {
   join: {
     grants: Array<string>;
     roles: Array<string>;
@@ -29,18 +29,18 @@ export interface SessionControllerData extends ControllerData {
   };
 }
 
-export type SessionControllerOptions = ControllerOptions<SessionControllerData>;
+export type AccountControllerOptions = ControllerOptions<AccountControllerData>;
 
 @Inject('clock', 'storage')
-export class SessionController extends BaseController<SessionControllerData> implements Controller {
+export class AccountController extends BaseController<AccountControllerData> implements Controller {
   protected clock: Clock;
   protected storage: Connection;
   protected roleRepository: Repository<Role>;
   protected tokenRepository: Repository<Token>;
   protected userRepository: UserRepository;
 
-  constructor(options: SessionControllerOptions) {
-    super(options, 'isolex#/definitions/service-controller-session', [NOUN_GRANT, NOUN_JOIN, NOUN_SESSION]);
+  constructor(options: AccountControllerOptions) {
+    super(options, 'isolex#/definitions/service-controller-session', [NOUN_GRANT, NOUN_ACCOUNT, NOUN_SESSION]);
 
     this.clock = options.clock;
     this.storage = options.storage;
@@ -51,14 +51,25 @@ export class SessionController extends BaseController<SessionControllerData> imp
 
   public async handle(cmd: Command): Promise<void> {
     switch (cmd.noun) {
+      case NOUN_ACCOUNT:
+        return this.handleAccount(cmd);
       case NOUN_GRANT:
         return this.handleGrant(cmd);
-      case NOUN_JOIN:
-        return this.handleJoin(cmd);
       case NOUN_SESSION:
         return this.handleSession(cmd);
       default:
         return this.reply(cmd.context, `unsupported noun: ${cmd.noun}`);
+    }
+  }
+
+  public async handleAccount(cmd: Command): Promise<void> {
+    switch (cmd.verb) {
+      case CommandVerb.Create:
+        return this.createAccount(cmd);
+      case CommandVerb.Delete:
+        return this.deleteAccount(cmd);
+      default:
+        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
   }
 
@@ -68,17 +79,6 @@ export class SessionController extends BaseController<SessionControllerData> imp
         return this.getGrant(cmd);
       case CommandVerb.List:
         return this.listGrants(cmd);
-      default:
-        return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
-    }
-  }
-
-  public async handleJoin(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.Create:
-        return this.createJoin(cmd);
-      case CommandVerb.Delete:
-        return this.deleteJoin(cmd);
       default:
         return this.reply(cmd.context, `unsupported verb: ${cmd.verb}`);
     }
@@ -111,10 +111,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     return this.reply(cmd.context, results);
   }
 
-  /**
-   * join is a slightly unusual noun that creates a user with a default role, then creates a token for that user
-   */
-  public async createJoin(cmd: Command): Promise<void> {
+  public async createAccount(cmd: Command): Promise<void> {
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
 
     if (await this.userRepository.count({
@@ -137,7 +134,7 @@ export class SessionController extends BaseController<SessionControllerData> imp
     return this.reply(cmd.context, `user ${name} joined, sign in token: ${jwt}`);
   }
 
-  public async deleteJoin(cmd: Command): Promise<void> {
+  public async deleteAccount(cmd: Command): Promise<void> {
     if (isNil(cmd.context.user)) {
       return this.reply(cmd.context, 'must be logged in');
     }
