@@ -27,13 +27,13 @@ export class BotModule extends Module {
     super();
 
     this.logger = options.logger;
-    this.metrics = new Registry();
   }
 
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
     this.container = options.container;
+    this.metrics = new Registry();
 
     // utils
     this.bind('compiler').toConstructor(TemplateCompiler);

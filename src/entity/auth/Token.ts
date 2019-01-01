@@ -1,4 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
+import { isNil } from 'lodash';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -8,7 +9,6 @@ import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { dateToSeconds } from 'src/utils/Clock';
 import { Dict, mapToDict } from 'src/utils/Map';
-import { isNil } from 'lodash';
 
 export interface JwtFields {
   aud: Array<string>;

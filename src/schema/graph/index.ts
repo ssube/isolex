@@ -4,13 +4,12 @@ import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
 import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
-import { Command, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND, CommandOptions } from 'src/entity/Command';
+import { Command, CommandOptions, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageOptions } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
-import { Dict, pairsToDict } from 'src/utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
