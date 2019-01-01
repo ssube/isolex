@@ -33,6 +33,7 @@ ineeda.intercept({
 // const srcContext = (require as any).context('../src', true, /.*ts$/);
 // srcContext.keys().forEach(srcContext);
 
+// tslint:disable-next-line:no-any
 const testContext = (require as any).context('../test', true, /Test.*$/);
 testContext.keys().forEach(testContext);
 // tslint:disable-next-line:no-default-export

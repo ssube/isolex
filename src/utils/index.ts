@@ -75,7 +75,7 @@ export function mustFind<TVal>(list: Array<TVal>, predicate: (val: TVal, idx: nu
   return val;
 }
 
-export function getConstructor(val: any) {
+export function getConstructor(val: object) {
   return val.constructor;
 }
 

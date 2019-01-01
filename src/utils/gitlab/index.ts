@@ -29,9 +29,12 @@ export interface GitlabClientOptions extends BaseOptions {
   logger: Logger;
 }
 
+// TODO: replace these with response types
+/* tslint:disable:no-any */
 export type JobResults = any;
 export type PipelineResults = any;
 export type ProjectResults = any;
+/* tslint:enable:no-any */
 
 @Inject()
 export class GitlabClient {

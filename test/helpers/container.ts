@@ -6,7 +6,7 @@ import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
-import { BaseServiceOptions } from 'src/BaseService';
+import { BaseServiceOptions, BaseServiceData } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
@@ -35,7 +35,7 @@ export async function createContainer(...modules: Array<Module>): Promise<{ cont
   return { container, module };
 }
 
-export async function createService<TService, TOptions extends BaseServiceOptions<any>>(
+export async function createService<TService, TOptions extends BaseServiceOptions<TData>, TData extends BaseServiceData> (
   container: Container,
   type: Constructor<TService, TOptions>,
   options: Partial<TOptions>,
@@ -51,7 +51,7 @@ export async function createService<TService, TOptions extends BaseServiceOption
     metrics: new Registry(),
     schema: new Schema(), // tests use the real schema :D
     services: ineeda<ServiceModule>({
-      createService: (def: ServiceDefinition<any>) => container.create(def.metadata.kind, def),
+      createService: (def: ServiceDefinition<TData>) => container.create(def.metadata.kind, def),
     }),
     storage: ineeda<Connection>(),
     ...options,

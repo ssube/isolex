@@ -118,6 +118,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     return this.services.listServices();
   }
 
+  /* tslint:disable:no-any */
   protected createMutation() {
     return new GraphQLObjectType({
       fields: {
