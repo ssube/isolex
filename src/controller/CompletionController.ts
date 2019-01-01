@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -21,6 +21,9 @@ export interface CompletionControllerData extends ControllerData {
 }
 
 export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
+
+const MSG_ERROR_SESSION = 'session required';
+const MSG_ERROR_PERMISSION = 'permission denied';
 
 @Inject('storage')
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
@@ -65,7 +68,11 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
   public async createFragment(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      return this.reply(cmd.context, 'must be logged in');
+      return this.reply(cmd.context, MSG_ERROR_SESSION);
+    }
+
+    if (!this.checkGrants(cmd.context, 'fragment:create')) {
+      return this.reply(cmd.context, MSG_ERROR_PERMISSION);
     }
 
     const key = cmd.getHead('key');
@@ -90,6 +97,14 @@ export class CompletionController extends BaseController<CompletionControllerDat
   }
 
   public async updateFragment(cmd: Command): Promise<void> {
+    if (!cmd.context.user) {
+      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+    }
+
+    if (!this.checkGrants(cmd.context, 'fragment:update')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const id = cmd.getHead('id');
     this.logger.debug({ id }, 'getting fragment to complete');
 

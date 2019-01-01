@@ -3,6 +3,7 @@ metadata:
   name: default-account
 data:
   join:
+    allow: true
     grants:
       - grant:*
       - join:create

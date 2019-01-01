@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Role } from 'src/entity/auth/Role';
 import { User } from 'src/entity/auth/User';
@@ -66,6 +66,10 @@ export class UserController extends BaseController<UserControllerData> implement
   }
 
   public async createRole(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'role:create')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const name = cmd.getHead('name');
     const grants = cmd.get('grants');
     const role = await this.roleRepository.insert({
@@ -76,6 +80,10 @@ export class UserController extends BaseController<UserControllerData> implement
   }
 
   public async getRole(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'role:get')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const name = cmd.get('name');
     const role = await this.roleRepository.findOne({
       where: {
@@ -90,12 +98,20 @@ export class UserController extends BaseController<UserControllerData> implement
   }
 
   public async listRoles(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'role:list')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
     const roleText = roles.map((r) => r.toString()).join('\n');
     return this.reply(cmd.context, roleText);
   }
 
   public async createUser(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'user:create')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'creating user');
@@ -117,6 +133,10 @@ export class UserController extends BaseController<UserControllerData> implement
   }
 
   public async getUser(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'user:get')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const name = cmd.getHead('name');
     const user = await this.userRepository.findOneOrFail({
       where: {
@@ -128,9 +148,14 @@ export class UserController extends BaseController<UserControllerData> implement
   }
 
   public async updateUser(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, 'user:update')) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     const name = cmd.getHeadOrDefault('name', cmd.context.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'updating user');
+
     const user = await this.userRepository.findOneOrFail({
       where: {
         name,
@@ -142,6 +167,7 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     user.roles = roles;
+
     const updatedUser = await this.userRepository.save(user);
     return this.reply(cmd.context, updatedUser.toString());
   }
