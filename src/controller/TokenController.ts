@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { createCompletion } from 'src/controller/CompletionController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Token } from 'src/entity/auth/Token';
@@ -62,7 +62,11 @@ export class TokenController extends BaseController<TokenControllerData> impleme
 
   public async createToken(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      return this.reply(cmd.context, MSG_SESSION_REQUIRED);
+      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+    }
+
+    if (!this.checkGrants(cmd.context, `${NOUN_TOKEN}:${CommandVerb.Create}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
     const grants = cmd.getOrDefault('grants', []);
@@ -86,7 +90,11 @@ export class TokenController extends BaseController<TokenControllerData> impleme
 
   public async deleteTokens(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      return this.reply(cmd.context, MSG_SESSION_REQUIRED);
+      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+    }
+
+    if (!this.checkGrants(cmd.context, `${NOUN_TOKEN}:${CommandVerb.Delete}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
     const before = cmd.getHeadOrNumber('before', this.clock.getSeconds());
@@ -109,6 +117,10 @@ export class TokenController extends BaseController<TokenControllerData> impleme
   }
 
   public async getToken(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, `${NOUN_TOKEN}:${CommandVerb.Get}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     if (cmd.has('token')) {
       try {
         const data = Token.verify(cmd.getHead('token'), this.data.token.secret, {
@@ -130,7 +142,11 @@ export class TokenController extends BaseController<TokenControllerData> impleme
 
   public async listTokens(cmd: Command): Promise<void> {
     if (!cmd.context.user) {
-      return this.reply(cmd.context, MSG_SESSION_REQUIRED);
+      return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+    }
+
+    if (!this.checkGrants(cmd.context, `${NOUN_TOKEN}:${CommandVerb.List}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
     }
 
     const tokens = await this.tokenRepository.find({

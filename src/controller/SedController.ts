@@ -1,8 +1,8 @@
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
+import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 
 export type SedControllerData = ControllerData;
@@ -17,6 +17,10 @@ export class SedController extends BaseController<SedControllerData> implements 
   }
 
   public async handle(cmd: Command): Promise<void> {
+    if (!this.checkGrants(cmd.context, `${NOUN_SED}:${CommandVerb.Create}`)) {
+      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+    }
+
     if (!cmd.context.source) {
       return this.reply(cmd.context, 'no source listener with which to create a session');
     }
