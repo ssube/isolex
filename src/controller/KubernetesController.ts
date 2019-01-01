@@ -1,13 +1,13 @@
 import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 
-export const NOUN_POD = 'pod';
-export const NOUN_SERVICE = 'service';
+export const NOUN_POD = 'k8s-pod';
+export const NOUN_SERVICE = 'k8s-service';
 
 export interface KubernetesControllerData extends ControllerData {
   context: {
@@ -37,15 +37,28 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
     this.client = config.makeApiClient(k8s.Core_v1Api);
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    switch (cmd.noun) {
-      case NOUN_POD:
-        return this.handlePods(cmd);
-      case NOUN_SERVICE:
-        return this.handleServices(cmd);
-      default:
-        throw new InvalidArgumentError(`unknown kind: ${cmd.noun}`);
-    }
+  @HandleNoun(NOUN_POD)
+  @HandleVerb(CommandVerb.List)
+  @CheckRBAC()
+  public async listPods(cmd: Command): Promise<void> {
+    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
+    this.logger.debug({ cmd, ns }, 'listing k8s pods');
+
+    const response = await this.client.listNamespacedPod(ns);
+    this.logger.debug({ pods: response.body }, 'found pods');
+    return this.transformJSON(cmd, response.body.items);
+  }
+
+  @HandleNoun(NOUN_SERVICE)
+  @HandleVerb(CommandVerb.List)
+  @CheckRBAC()
+  public async listServices(cmd: Command): Promise<void> {
+    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
+    this.logger.debug({ cmd, ns }, 'listing k8s svcs');
+
+    const response = await this.client.listNamespacedService(ns);
+    this.logger.debug({ pods: response.body }, 'found pods');
+    return this.transformJSON(cmd, response.body.items);
   }
 
   protected async loadConfig() {
@@ -60,41 +73,5 @@ export class KubernetesController extends BaseController<KubernetesControllerDat
       config.loadFromFile(this.data.context.path);
     }
     return config;
-  }
-
-  protected async handlePods(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.List:
-        return this.listPods(cmd);
-      default:
-        return this.reply(cmd.context, 'invalid verb');
-    }
-  }
-
-  protected async handleServices(cmd: Command): Promise<void> {
-    switch (cmd.verb) {
-      case CommandVerb.List:
-        return this.listServices(cmd);
-      default:
-        return this.reply(cmd.context, 'invalid verb');
-    }
-  }
-
-  protected async listPods(cmd: Command): Promise<void> {
-    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
-    this.logger.debug({ cmd, ns }, 'listing k8s pods');
-
-    const response = await this.client.listNamespacedPod(ns);
-    this.logger.debug({ pods: response.body }, 'found pods');
-    return this.transformJSON(cmd, response.body.items);
-  }
-
-  protected async listServices(cmd: Command): Promise<void> {
-    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
-    this.logger.debug({ cmd, ns }, 'listing k8s svcs');
-
-    const response = await this.client.listNamespacedService(ns);
-    this.logger.debug({ pods: response.body }, 'found pods');
-    return this.transformJSON(cmd, response.body.items);
   }
 }

@@ -2,6 +2,7 @@ import { defaults } from '@octokit/graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -100,25 +101,9 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     });
   }
 
-  public async handle(cmd: Command): Promise<void> {
-    if (cmd.noun !== NOUN_PULL_REQUEST) {
-      return this.reply(cmd.context, 'invalid noun');
-    }
-
-    switch (cmd.verb) {
-      case CommandVerb.Delete:
-        return this.deleteRequest(cmd);
-      case CommandVerb.Get:
-        return this.getRequest(cmd);
-      case CommandVerb.List:
-        return this.listRequests(cmd);
-      case CommandVerb.Update:
-        return this.updateRequest(cmd);
-      default:
-        return this.reply(cmd.context, 'invalid verb');
-    }
-  }
-
+  @HandleNoun(NOUN_PULL_REQUEST)
+  @HandleVerb(CommandVerb.Delete)
+  @CheckRBAC()
   public async deleteRequest(cmd: Command): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
     const project = cmd.getHead('project');
@@ -139,6 +124,9 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.reply(cmd.context, `closed pull request ${requestNumber}`);
   }
 
+  @HandleNoun(NOUN_PULL_REQUEST)
+  @HandleVerb(CommandVerb.Get)
+  @CheckRBAC()
   public async getRequest(cmd: Command): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
     const project = cmd.getHead('project');
@@ -148,6 +136,9 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.transformJSON(cmd, [response.data.repository.pullRequest]);
   }
 
+  @HandleNoun(NOUN_PULL_REQUEST)
+  @HandleVerb(CommandVerb.List)
+  @CheckRBAC()
   public async listRequests(cmd: Command): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
     const project = cmd.getHead('project');
@@ -159,6 +150,9 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.transformJSON(cmd, response.data.repository.pullRequests.nodes);
   }
 
+  @HandleNoun(NOUN_PULL_REQUEST)
+  @HandleVerb(CommandVerb.Update)
+  @CheckRBAC()
   public async updateRequest(cmd: Command): Promise<void> {
     const message = cmd.getHead('message');
     const owner = cmd.getHeadOrDefault('owner', cmd.context.name);

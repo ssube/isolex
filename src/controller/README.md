@@ -16,43 +16,32 @@ See [docs/controller](../../docs/controller) for example config for each control
 
 Most controllers should extend the `BaseController`, which implements noun and filter checks, as well as transforms.
 
-Controllers typically handle a few nouns. To keep the noun/verb logic simple, many controllers use a pair of
-`switch`es:
+Controllers typically handle a few nouns. To keep the noun/verb logic simple, controllers use a set of decorators:
 
 ```typescript
-public handle(cmd: Command) {
-  switch (cmd.noun) {
-    case NOUN_FOO:
-      return this.handleFoo(cmd);
-    default:
-      return this.reply('unknown noun');
-  }
-}
-
-public handleFoo(cmd: Command) {
-  switch (cmd.verb) {
-    case CommandVerb.Get:
-      return this.getFoo(cmd);
-    default:
-      return this.reply('unknown verb');
-  }
+@HandleNoun(NOUN_FOO)
+@HandleVerb(CommandVerb.Create)
+public async createFoo(cmd: Command) {
+  const foo = await this.fooRepository.create({ /* ... */ });
+  return this.transformJSON(foo);
 }
 ```
 
-Be careful of the 20 method limit on classes. A class that handles three nouns would have one noun switch method, three
-verb switch methods, and up to fifteen handlers (nineteen methods total).
-
-Permissions should be implemented early in the handler methods and failures must exit early:
+Grants can be checked with the RBAC decorator:
 
 ```typescript
+@CheckRBAC({
+  defaultGrant: true, /* check the noun:verb grant along with any others */
+  grants: ['special:grant'], /* other required grants */
+  user: true, /* require a logged in user */
+})
 public async getFoo(cmd: Command) {
-  if (!cmd.context.checkGrants([
-    'foo:get',
-  ])) {
-    return this.reply('permission denied');
-  }
+  /* ... */
 }
 ```
+
+Errors thrown during a handler method, sync or async, will be caught by the base controller and the message used as a
+reply.
 
 ## Nouns
 

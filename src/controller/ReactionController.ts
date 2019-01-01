@@ -1,8 +1,9 @@
 import { Inject } from 'noicejs';
 
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -30,7 +31,10 @@ export class ReactionController extends BaseController<ReactionControllerData> i
     this.reactions = new Map(Object.entries(options.data.reactions));
   }
 
-  public async handle(cmd: Command): Promise<void> {
+  @HandleNoun(NOUN_REACTION)
+  @HandleVerb(CommandVerb.Create)
+  @CheckRBAC()
+  public async createReaction(cmd: Command): Promise<void> {
     const reactions = [];
     const body = cmd.get(this.data.field);
     for (const [key, next] of this.reactions) {
