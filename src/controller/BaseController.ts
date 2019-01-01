@@ -120,7 +120,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     }
 
     try {
-      return handler.call(this, cmd);
+      await handler.call(this, cmd);
     } catch (err) {
       this.logger.error(err, 'error during handler method');
       return this.errorReply(cmd.context, ErrorReplyType.Unknown, err.message);
