@@ -1,7 +1,7 @@
 import { bindAll, isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 import { LogLevel } from 'noicejs/logger/Logger';
-import { collectDefaultMetrics, Counter, Registry } from 'prom-client';
+import { Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 

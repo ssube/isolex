@@ -1,14 +1,13 @@
 import { Inject } from 'noicejs';
 import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { createCompletion } from 'src/controller/CompletionController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
-
-import { CheckRBAC, HandleNoun, HandleVerb } from '.';
 
 export const NOUN_TOKEN = 'token';
 

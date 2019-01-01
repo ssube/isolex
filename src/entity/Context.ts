@@ -1,15 +1,14 @@
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
-import { flatten, isNil } from 'lodash';
+import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Token } from 'src/entity/auth/Token';
 import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
+import { BaseEntity } from 'src/entity/base/BaseEntity';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
-
-import { BaseEntity } from './base/BaseEntity';
 
 export interface ChannelData {
   id: string;

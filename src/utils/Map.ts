@@ -1,8 +1,7 @@
 import { isMap, isNil } from 'lodash';
 
 import { NotFoundError } from 'src/error/NotFoundError';
-
-import { mergeList } from '.';
+import { mergeList } from 'src/utils';
 
 export interface Dict<TVal> {
   [key: string]: TVal;

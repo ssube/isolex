@@ -1,14 +1,13 @@
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
+import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Role } from 'src/entity/auth/Role';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
-
-import { CheckRBAC, HandleNoun, HandleVerb } from '.';
 
 export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';

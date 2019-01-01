@@ -1,7 +1,7 @@
 import { get, has, isString } from 'lodash';
 
 import { mapToDict } from 'src/utils/Map';
-import { TemplateScope } from '../Template';
+import { TemplateScope } from 'src/utils/Template';
 
 export interface MatchData {
   rules: Array<MatchRule>;

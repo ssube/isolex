@@ -2,6 +2,7 @@ import { isNil, isString } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 
 import { BotService } from 'src/BotService';
+import { getHandlerOptions, HandlerOptions } from 'src/controller';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -12,8 +13,6 @@ import { Transform, TransformData } from 'src/transform/Transform';
 import { getMethods } from 'src/utils';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
-
-import { getHandlerOptions, HandlerOptions } from '.';
 
 export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command) => Promise<void>;
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;

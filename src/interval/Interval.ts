@@ -1,4 +1,4 @@
-import { BotServiceData, BotServiceOptions } from 'src/BotService';
+import { BotServiceData } from 'src/BotService';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
 import { Service, ServiceMetadata } from 'src/Service';
