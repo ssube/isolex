@@ -26,7 +26,7 @@ export class Schema {
   constructor(schema: object = SCHEMA_GLOBAL) {
     this.compiler = new Ajv({
       allErrors: true,
-      coerceTypes: true,
+      coerceTypes: 'array',
       missingRefs: 'fail',
       removeAdditional: 'failing',
       schemaId: 'auto',

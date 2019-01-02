@@ -1,9 +1,12 @@
-import { isNil, isNumber, isString } from 'lodash';
+import { isNil, isString } from 'lodash';
+import { BaseError } from 'noicejs';
+
+import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { Schema } from 'src/schema';
 import { mapToDict } from 'src/utils/Map';
-import { NOUN_FRAGMENT } from './CompletionController';
-import { BaseError } from 'noicejs';
+import { isNumber } from 'util';
 
 export function createCompletion(cmd: Command, key: string, msg: string): Command {
   if (isNil(cmd.context.parser)) {
@@ -88,49 +91,48 @@ export function collectOrComplete<TData extends CollectFields>(cmd: Command, fie
 }
 
 export function collectValue(value: CollectData, defaultValue: CollectData): CollectData | undefined {
-  if (Array.isArray(defaultValue)) {
-    if (Array.isArray(value)) {
-      return value;
-    }
+  const schema = new Schema({
+    properties: {
+      value: buildValueSchema(defaultValue),
+    },
+    required: ['value'],
+    type: 'object',
+  });
 
-    if (isNumber(value)) {
-      return [value.toString(10)];
-    }
-
-    if (isString(value)) {
-      return [value];
-    }
+  const coercedValue = { value };
+  if (schema.match(coercedValue)) {
+    return coercedValue.value;
+  } else {
+    throw new BaseError('value type error');
   }
+}
 
-  if (isNumber(defaultValue)) {
-    if (Array.isArray(value)) {
-      const [head] = value;
-      return parseInt(head, 10);
-    }
-
-    if (isNumber(value)) {
-      return value;
-    }
-
-    if (isString(value)) {
-      return parseInt(value, 10);
-    }
+export function buildValueSchema(defaultValue: CollectData) {
+  if (Array.isArray(defaultValue)) {
+    return {
+      type: 'array',
+      items: {
+        default: defaultValue[0],
+        type: 'string',
+      },
+    };
   }
 
   if (isString(defaultValue)) {
-    if (Array.isArray(value)) {
-      const [head] = value;
-      return head;
-    }
-
-    if (isNumber(value)) {
-      return value.toString(10);
-    }
-
-    if (isString(value)) {
-      return value;
-    }
+    return {
+      default: defaultValue,
+      type: 'string',
+    };
   }
 
-  throw new BaseError('value type error');
+  if (isNumber(defaultValue)) {
+    return {
+      default: defaultValue,
+      type: 'number',
+    };
+  }
+
+  return {
+    type: 'null',
+  };
 }
