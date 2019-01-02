@@ -4695,11 +4695,7 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-reflect-metadata@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.0.tgz#a9e0a7782e22ad3edda4955bba1124d1b044369b"
-
-reflect-metadata@^0.1.12:
+reflect-metadata@0.1.12, reflect-metadata@^0.1.12:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.12.tgz#311bf0c6b63cd782f228a81abe146a2bfa9c56f2"
 
@@ -5660,9 +5656,9 @@ typedoc@0.13.0:
     typedoc-default-themes "^0.5.0"
     typescript "3.1.x"
 
-typeorm@0.2.9:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.9.tgz#b21a55f4c7ae398c104911e298485c232bcceefc"
+typeorm@0.2.10:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.10.tgz#114592a7591014d2c46ce7754782be0b3c665888"
   dependencies:
     app-root-path "^2.0.1"
     buffer "^5.1.0"
@@ -5676,7 +5672,7 @@ typeorm@0.2.9:
     reflect-metadata "^0.1.12"
     xml2js "^0.4.17"
     yargonaut "^1.1.2"
-    yargs "^11.1.0"
+    yargs "^12.0.5"
 
 typescript@3.1.x, typescript@3.2.2:
   version "3.2.2"
@@ -6075,7 +6071,7 @@ yargs-parser@^9.0.2:
   dependencies:
     camelcase "^4.1.0"
 
-yargs@11.1.0, yargs@^11.1.0:
+yargs@11.1.0:
   version "11.1.0"
   resolved "http://registry.npmjs.org/yargs/-/yargs-11.1.0.tgz#90b869934ed6e871115ea2ff58b03f4724ed2d77"
   dependencies:
@@ -6109,7 +6105,7 @@ yargs@^10.0.3:
     y18n "^3.2.1"
     yargs-parser "^8.1.0"
 
-yargs@^12.0.2:
+yargs@^12.0.2, yargs@^12.0.5:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.5.tgz#05f5997b609647b64f66b81e3b4b10a368e7ad13"
   dependencies:
