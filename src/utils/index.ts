@@ -99,7 +99,7 @@ export function getMethods<TValue extends object>(value: TValue): Set<Function> 
   }
 
   const proto = Reflect.getPrototypeOf(value);
-  if (proto) {
+  if (proto !== value && !isNil(proto)) {
     for (const m of getMethods(proto)) {
       methods.add(m);
     }

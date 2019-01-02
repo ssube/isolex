@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import { kebabCase } from 'lodash';
+import { isNil, isString, kebabCase } from 'lodash';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandData, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
@@ -77,12 +77,12 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
     this.logger.debug({ body, context, post }, 'lex parsed message');
 
-    if (!post.dialogState) {
+    if (!isString(post.dialogState) || post.dialogState === '') {
       this.logger.warn({ body, context }, 'lex parsed message without state');
       return [];
     }
 
-    if (!post.intentName) {
+    if (!isString(post.intentName) || post.intentName === '') {
       this.logger.warn({ body, context }, 'lex parsed message without intent');
       return [];
     }
@@ -99,7 +99,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       case 'ElicitIntent':
         return [];
       case 'ElicitSlot':
-        if (!post.slotToElicit) {
+        if (!isString(post.slotToElicit)) {
           this.logger.warn({ body }, 'lex parsed message without slot to elicit');
           return [];
         }
@@ -147,7 +147,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
   protected getSlots(input: AWS.LexRuntime.StringMap | undefined): Map<string, Array<string>> {
     const slots = new Map();
-    if (input) {
+    if (!isNil(input)) {
       for (const [k, v] of Object.entries(input)) {
         slots.set(k, [v]);
       }
@@ -158,10 +158,10 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected postText(params: AWS.LexRuntime.PostTextRequest): Promise<AWS.LexRuntime.PostTextResponse> {
     return new Promise((res, rej) => {
       this.lex.postText(params, (err, reply) => {
-        if (err) {
-          rej(err);
-        } else {
+        if (isNil(err)) {
           res(reply);
+        } else {
+          rej(err);
         }
       });
     });

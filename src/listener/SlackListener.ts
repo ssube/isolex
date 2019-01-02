@@ -56,7 +56,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   public async send(msg: Message): Promise<void> {
     if (msg.context.channel.id) {
       const result = await this.client.sendMessage(escape(msg.body), msg.context.channel.id);
-      if (result.error) {
+      if (!isNil(result.error)) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
         throw err;
@@ -74,7 +74,9 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
 
   public async start() {
     this.client = new RTMClient(this.data.token.bot, {
-      logger: (level, msg) => logWithLevel(this.logger, level, { msg }, 'slack client logged message'),
+      logger: (level, msg) => {
+        logWithLevel(this.logger, level, { msg }, 'slack client logged message');
+      },
     });
     this.webClient = new WebClient(this.data.token.web);
 

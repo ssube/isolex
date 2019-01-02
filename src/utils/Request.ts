@@ -1,4 +1,7 @@
+import { isNil } from 'lodash';
 import * as request from 'request';
+
+export type RequestOptions = request.Options;
 
 /**
  * Work around for the lack of existing create method (default export is the function).
@@ -7,13 +10,13 @@ import * as request from 'request';
  * something (this).
  */
 export class RequestFactory {
-  public create(options: request.Options): Promise<any> {
+  public create(options: RequestOptions): Promise<any> {
     return new Promise((res, rej) => {
-      request(options, (err: Error, response: request.Response, body: unknown) => {
-        if (err) {
-          rej(err);
-        } else {
+      request(options, (err: Error | undefined, response: request.Response, body: unknown) => {
+        if (isNil(err)) {
           res(body);
+        } else {
+          rej(err);
         }
       });
     });

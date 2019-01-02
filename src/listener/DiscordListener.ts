@@ -60,20 +60,23 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   public async start() {
-    this.client.on('ready', () => this.onReady());
-    this.client.on('message', (msg) => this.onMessage(msg));
-    this.client.on('messageReactionAdd', (msgReaction, user) => this.onReaction(msgReaction, user));
-
+    this.client.on('ready', () => {
+      this.onReady();
+    });
+    this.client.on('message', (msg) => {
+      this.onMessage(msg);
+    });
+    this.client.on('messageReactionAdd', (msgReaction, user) => {
+      this.onReaction(msgReaction, user);
+    });
     this.client.on('debug', (msg) => {
       this.countEvent('debug');
       this.logger.debug({ upstream: msg }, 'debug from server');
     });
-
     this.client.on('error', (err) => {
       this.countEvent('error');
       this.logger.error(err, 'error from server');
     });
-
     this.client.on('warn', (msg) => {
       this.countEvent('warn');
       this.logger.warn({ upstream: msg }, 'warn from server');

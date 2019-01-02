@@ -1,7 +1,6 @@
 import * as Ajv from 'ajv';
 
 import { SCHEMA_KEYWORD_REGEXP } from 'src/schema/keyword/Regexp';
-import { filterNil } from 'src/utils';
 
 /* tslint:disable-next-line:no-var-requires */
 export const SCHEMA_GLOBAL = require('src/schema/schema.yml');
@@ -12,6 +11,16 @@ export interface SchemaResult {
 }
 
 export class Schema {
+  public static formatError(err: Ajv.ErrorObject): string {
+    switch (err.keyword) {
+      case 'additionalProperties':
+        const params = err.params as Ajv.AdditionalPropertiesParams;
+        return `${err.message}: ${params.additionalProperty} at ${err.dataPath} not expected in ${err.schemaPath}`;
+      default:
+        return `${err.message} at ${err.schemaPath}`;
+    }
+  }
+
   protected compiler: Ajv.Ajv;
 
   constructor(schema: object = SCHEMA_GLOBAL) {
@@ -36,21 +45,18 @@ export class Schema {
         valid,
       };
     } else {
-      const errors = this.compiler.errors || [];
       return {
-        errors: filterNil(errors.map((it) => this.formatError(it))),
+        errors: this.getErrors(),
         valid: false,
       };
     }
   }
 
-  public formatError(err: Ajv.ErrorObject): string {
-    switch (err.keyword) {
-      case 'additionalProperties':
-        const params = err.params as Ajv.AdditionalPropertiesParams;
-        return `${err.message}: ${params.additionalProperty} at ${err.dataPath} not expected in ${err.schemaPath}`;
-      default:
-        return `${err.message} at ${err.schemaPath}`;
+  public getErrors(): Array<string> {
+    if (Array.isArray(this.compiler.errors)) {
+      return this.compiler.errors.map((it) => Schema.formatError(it));
+    } else {
+      return [];
     }
   }
 }

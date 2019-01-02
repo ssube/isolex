@@ -2,7 +2,6 @@
   "extends": ["./tslint.cc.json", "tslint-clean-code", "tslint-sonarts"],
   "rulesDirectory": ["../node_modules/tslint-microsoft-contrib"],
   "rules": {
-    "max-func-body-length": [true, 25],
     "mocha-unneeded-done": true,
     "no-banned-terms": true,
     "no-delete-expression": true,

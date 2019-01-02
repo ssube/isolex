@@ -2,7 +2,7 @@ import { isNil, kebabCase } from 'lodash';
 import { Container, Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
-import { RequestFactory } from 'src/utils/Request';
+import { RequestFactory, RequestOptions } from 'src/utils/Request';
 
 export interface ProjectOptions {
   group: string;
@@ -75,16 +75,16 @@ export class GitlabClient {
 
   public async getJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/jobs/${options.job}`, options);
+    return this.makeRequest(`${projectURL}/jobs/${options.job}`, this.getRequestOptions(options));
   }
 
   public async getPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}`, options);
+    return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}`, this.getRequestOptions(options));
   }
 
   public async getProject(options: ProjectOptions): Promise<ProjectResults> {
-    return this.makeRequest(this.getProjectURL(options), options);
+    return this.makeRequest(this.getProjectURL(options), this.getRequestOptions(options));
   }
 
   public async listJobs(options: PipelineOptions): Promise<Array<JobResults>> {
@@ -117,7 +117,7 @@ export class GitlabClient {
     return this.getRequestUrl(`projects/${projectPath}`);
   }
 
-  protected getRequestOptions<TOptions extends ProjectOptions>(options: TOptions, method = 'GET'): any {
+  protected getRequestOptions<TOptions extends ProjectOptions>(options: TOptions, method = 'GET'): Partial<RequestOptions> {
     return {
       headers: {
         'Private-Token': this.data.token,
@@ -130,7 +130,7 @@ export class GitlabClient {
     return `${this.data.root}/api/v4/${path}`;
   }
 
-  protected async makeRequest(url: string, options: ProjectOptions): Promise<any> {
+  protected async makeRequest(url: string, options: Partial<RequestOptions>): Promise<any> {
     try {
       const request = await this.container.create<RequestFactory, unknown>('request');
       const response = await request.create({
@@ -140,7 +140,7 @@ export class GitlabClient {
       this.logger.debug({ response }, 'got response from gitlab');
       return JSON.parse(response);
     } catch (err) {
-      this.logger.error(err, 'error during gitlab request');
+      this.logger.error({ err }, 'error during gitlab request');
       return [];
     }
   }

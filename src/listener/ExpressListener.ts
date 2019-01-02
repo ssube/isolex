@@ -138,12 +138,14 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
     if (isNil(token)) {
       this.logger.warn('token not found');
-      return done(undefined, false);
+      done(undefined, false);
+      return;
     }
 
     if (isNil(token.user)) {
       this.logger.error({ token }, 'token user not found');
-      return done(undefined, false);
+      done(undefined, false);
+      return;
     }
 
     const session = token.session();
@@ -162,8 +164,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
     this.logger.debug({ context, token }, 'created context for token');
 
-    // tslint:disable-next-line:no-null-keyword
-    done(null, context);
+    done(undefined, context);
   }
 
   protected async setupExpress(): Promise<express.Express> {
@@ -201,7 +202,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       issuer: this.data.token.issuer,
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
-    }, (payload: JwtFields, done: VerifiedCallback) => this.createTokenSession(payload, done)));
+    }, (payload: JwtFields, done: VerifiedCallback) => {
+      this.createTokenSession(payload, done);
+    }));
 
     // sessions are saved when created and keyed by uid, so pass that
     auth.serializeUser((user: Context, done) => {

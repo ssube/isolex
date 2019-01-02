@@ -1,4 +1,5 @@
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { isNil } from 'lodash';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand } from 'src/entity/base/BaseCommand';
@@ -38,7 +39,7 @@ export class Fragment extends BaseCommand implements FragmentOptions {
   constructor(options?: FragmentOptions) {
     super(options);
 
-    if (options) {
+    if (!isNil(options)) {
       this.data = dictToMap(options.data);
       this.key = options.key;
       this.labels = dictToMap(options.labels);

@@ -9,6 +9,13 @@
     "arrow-parens": true,
     "arrow-return-shorthand": true,
     "await-promise": true,
+    "ban": [true, {
+      "message": "use lodash isString",
+      "name": ["util", "isString"]
+    }, {
+      "message": "use lodash isNil",
+      "name": ["util", "isNullOrUndefined"]
+    }],
     "ban-comma-operator": true,
     "ban-types": true,
     "class-name": true,
