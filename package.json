@@ -87,7 +87,7 @@
     "tslint-consistent-codestyle": "~1.14",
     "tslint-etc": "~1.2.12",
     "tslint-loader": "~3.6",
-    "tslint-microsoft-contrib": "~6.0.0",
+    "tslint-microsoft-contrib": "^6.0.0",
     "tslint-sonarts": "~1.8",
     "typedoc": "^0.13.0",
     "typeorm": "^0.2.0",

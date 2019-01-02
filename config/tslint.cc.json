@@ -125,7 +125,6 @@
       }
     ],
     "triple-equals": true,
-    "typeof-compare": true,
     "unnecessary-constructor": true,
     "use-default-type-parameter": true,
     "use-isnan": true,
