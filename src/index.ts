@@ -20,10 +20,16 @@ import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 
 // main arguments
+const CONFIG_ARGS_NAME = 'config-name';
+const CONFIG_ARGS_PATH = 'config-path';
 const MAIN_ARGS: yargs.Options = {
-  array: ['config'],
+  array: [CONFIG_ARGS_PATH],
   boolean: ['test'],
   count: ['v'],
+  default: {
+    [CONFIG_ARGS_NAME]: '.isolex.yml',
+    [CONFIG_ARGS_PATH]: [],
+  },
   envPrefix: 'isolex',
 };
 
@@ -110,9 +116,9 @@ async function handleSignals(bot: Bot, logger: Logger) {
 
 async function main(argv: Array<string>): Promise<number> {
   const args = yargs(argv, MAIN_ARGS);
-  const config = await loadConfig();
-  const logger = BunyanLogger.create(config.data.logger);
+  const config = await loadConfig(args[CONFIG_ARGS_NAME], ...args[CONFIG_ARGS_PATH]);
 
+  const logger = BunyanLogger.create(config.data.logger);
   logger.info(VERSION_INFO, 'version info');
   logger.info({ args }, 'main arguments');
 
