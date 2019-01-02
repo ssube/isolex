@@ -72,7 +72,7 @@ describeAsync('completion helper', async () => {
     itAsync('should coerce values', async () => {
       const data = {
         bar: ['a'],
-        foo: ['15'],
+        foo: ['10'],
       };
       const cmd = new Command({
         context: ineeda<Context>({
@@ -103,7 +103,7 @@ describeAsync('completion helper', async () => {
       expect(result.complete).to.equal(true);
       if (result.complete === true) {
         expect(result.data.bar).to.equal('a');
-        expect(result.data.foo).to.equal(15);
+        expect(result.data.foo).to.equal(10);
       }
     });
   });

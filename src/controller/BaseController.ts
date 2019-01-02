@@ -4,9 +4,11 @@ import { Inject, MissingValueError } from 'noicejs';
 import { BotService } from 'src/BotService';
 import { getHandlerOptions, HandlerOptions } from 'src/controller';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { User } from 'src/entity/auth/User';
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
@@ -172,7 +174,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, body));
   }
 
-  protected getSourceOrFail(ctx: Context) {
+  protected getSourceOrFail(ctx: Context): Listener {
     const source = ctx.source;
     if (isNil(source)) {
       throw new MissingValueError('context source must not be nil');
@@ -180,7 +182,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     return source;
   }
 
-  protected getUserOrFail(ctx: Context) {
+  protected getUserOrFail(ctx: Context): User {
     const user = ctx.user;
     if (isNil(user)) {
       throw new MissingValueError('context user must not be nil');

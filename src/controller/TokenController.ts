@@ -1,4 +1,4 @@
-import { isNil, isNumber } from 'lodash';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
