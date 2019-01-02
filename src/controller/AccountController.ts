@@ -5,14 +5,13 @@ import { Connection, In, Repository } from 'typeorm';
 import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { createCompletion } from 'src/controller/helpers';
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
-
-import { createCompletion } from './helpers';
 
 export const NOUN_GRANT = 'grant';
 export const NOUN_ACCOUNT = 'account';

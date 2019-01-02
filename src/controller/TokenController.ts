@@ -74,16 +74,12 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       return;
     }
 
-    const results = await this.tokenRepository.delete({
+    await this.tokenRepository.delete({
       createdAt: LessThan(before),
       subject: Equal(user.id),
     });
 
-    if (isNumber(results.affected)) {
-      return this.reply(cmd.context, `deleted ${results.affected} tokens`);
-    } else {
-      return this.reply(cmd.context, `tokens deleted`);
-    }
+    return this.reply(cmd.context, `tokens deleted`);
   }
 
   @HandleNoun(NOUN_TOKEN)

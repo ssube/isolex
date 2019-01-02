@@ -104,3 +104,7 @@ Dependencies with security issues MUST be updated as soon as possible.
 Generally update dependencies one (or a related few) at a time. Try not to update dev and prod dependencies at the
 same time. Be careful updating native dependencies, although the container build will ensure the correct binaries are
 available.
+
+Dependency versions [should be pinned](https://greenkeeper.io/faq.html#pinning-versions) to a single numeric version
+so that Greenkeeper will create PRs for changes. Otherwise, updates will not change the package version, so a new lock
+file will not be created.
