@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { collectOrComplete } from 'src/controller/CompletionController';
+import { collectOrComplete } from 'src/controller/helpers';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Parser } from 'src/parser/Parser';
