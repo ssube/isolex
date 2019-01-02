@@ -18,6 +18,6 @@ data:
   transforms: []
   token:
     audience: [test-audience]
-    duration: 86400
+    duration: 7776000 # 90 days
     issuer: !env ISOLEX_TOKEN_ISSUER
     secret: !env ISOLEX_TOKEN_SECRET
