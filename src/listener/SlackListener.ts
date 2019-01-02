@@ -73,6 +73,8 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async start() {
+    await super.start();
+
     this.client = new RTMClient(this.data.token.bot, {
       logger: (level, msg) => {
         logWithLevel(this.logger, level, { msg }, 'slack client logged message');

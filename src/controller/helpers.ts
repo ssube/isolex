@@ -110,11 +110,11 @@ export function collectValue(value: CollectData, defaultValue: CollectData): Col
 export function buildValueSchema(defaultValue: CollectData) {
   if (Array.isArray(defaultValue)) {
     return {
-      type: 'array',
       items: {
         default: defaultValue[0],
         type: 'string',
       },
+      type: 'array',
     };
   }
 

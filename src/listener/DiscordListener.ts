@@ -60,6 +60,8 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   public async start() {
+    await super.start();
+
     this.client.on('ready', () => {
       this.onReady();
     });
@@ -92,6 +94,9 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   public async stop() {
     this.client.removeAllListeners('message');
     this.client.removeAllListeners('ready');
+    await this.client.destroy();
+
+    await super.stop();
   }
 
   public async send(msg: Message): Promise<void> {

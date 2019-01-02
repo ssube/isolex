@@ -98,6 +98,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     if (this.graph) {
       await this.graph.stop();
     }
+
+    await super.stop();
   }
 
   public async send() {
