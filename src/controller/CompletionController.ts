@@ -1,5 +1,5 @@
-import { isNil } from 'lodash';
-import { Inject } from 'noicejs';
+import { isNil, isNumber, isString } from 'lodash';
+import { BaseError, Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
 import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
@@ -197,8 +197,14 @@ export function collectOrComplete<TData extends CollectFields>(cmd: Command, fie
 
     if (exists) {
       const value = cmd.get(key);
-      // TODO: type check the value
-      results.set(key, value);
+      const coerced = collectValue(value, def.default);
+      if (isNil(coerced)) {
+        return {
+          complete: false,
+          fragment: createCompletion(cmd, key, def.prompt),
+        };
+      }
+      results.set(key, coerced);
     } else {
       results.set(key, def.default);
     }
@@ -208,4 +214,52 @@ export function collectOrComplete<TData extends CollectFields>(cmd: Command, fie
     complete: true,
     data: mapToDict(results) as TData,
   };
+}
+
+export function collectValue(value: CollectData, defaultValue: CollectData): CollectData | undefined {
+  if (Array.isArray(defaultValue)) {
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+    if (isNumber(value)) {
+      return [value.toString(10)];
+    }
+
+    if (isString(value)) {
+      return [value];
+    }
+  }
+
+  if (isNumber(defaultValue)) {
+    if (Array.isArray(value)) {
+      const [head] = value;
+      return parseInt(head, 10);
+    }
+
+    if (isNumber(value)) {
+      return value;
+    }
+
+    if (isString(value)) {
+      return parseInt(value, 10);
+    }
+  }
+
+  if (isString(defaultValue)) {
+    if (Array.isArray(value)) {
+      const [head] = value;
+      return head;
+    }
+
+    if (isNumber(value)) {
+      return value.toString(10);
+    }
+
+    if (isString(value)) {
+      return value;
+    }
+  }
+
+  throw new BaseError('value type error');
 }

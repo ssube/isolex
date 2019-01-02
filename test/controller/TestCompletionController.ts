@@ -22,10 +22,10 @@ describeAsync('completion helper', async () => {
         verb: CommandVerb.Get,
       });
       const result = collectOrComplete<{
-        foo: string;
+        foo: Array<string>;
       }>(cmd, {
         foo: {
-          default: 'c',
+          default: ['c'],
           prompt: 'prompt',
           required: true,
         },
@@ -66,6 +66,44 @@ describeAsync('completion helper', async () => {
       if (result.complete === false) {
         expect(result.fragment.getHead('key')).to.equal('fin');
         expect(result.fragment.getHead('parser')).to.equal('test');
+      }
+    });
+
+    itAsync('should coerce values', async () => {
+      const data = {
+        bar: ['a'],
+        foo: ['15'],
+      };
+      const cmd = new Command({
+        context: ineeda<Context>({
+          parser: ineeda<Parser>({
+            id: 'test',
+          }),
+        }),
+        data,
+        labels: {},
+        noun: 'test',
+        verb: CommandVerb.Get,
+      });
+      const result = collectOrComplete<{
+        bar: string;
+        foo: number;
+      }>(cmd, {
+        bar: {
+          default: 'c',
+          prompt: 'prompt',
+          required: true,
+        },
+        foo: {
+          default: 3,
+          prompt: 'prompt',
+          required: true,
+        },
+      });
+      expect(result.complete).to.equal(true);
+      if (result.complete === true) {
+        expect(result.data.bar).to.equal('a');
+        expect(result.data.foo).to.equal(15);
       }
     });
   });
