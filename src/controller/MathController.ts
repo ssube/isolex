@@ -43,11 +43,11 @@ export class MathController extends BaseController<MathControllerData> implement
     const expr = inputExpr.join(';\n');
     this.logger.debug({ expr }, 'evaluating expression');
 
-    const body = '`' + this.eval(expr, { cmd }) + '`';
+    const body = '`' + this.solve(expr, { cmd }) + '`';
     return this.reply(cmd.context, body);
   }
 
-  protected eval(expr: string, scope: object): string {
+  protected solve(expr: string, scope: object): string {
     try {
       const body = this.math.eval(expr, scope);
       this.logger.debug({ body, expr }, 'evaluated expression');

@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
@@ -76,15 +77,15 @@ export class CountController extends BaseController<CountControllerData> impleme
       },
     });
 
-    if (counter) {
+    if (isNil(counter)) {
+      return new Counter({
+        count: Number(this.data.default.count),
+        name,
+        roomId,
+      });
+    } else {
       return counter;
     }
-
-    return new Counter({
-      count: Number(this.data.default.count),
-      name,
-      roomId,
-    });
   }
 
   public async listCounters(roomId: string): Promise<string> {
@@ -94,7 +95,7 @@ export class CountController extends BaseController<CountControllerData> impleme
       },
     });
 
-    if (counters.length) {
+    if (counters.length > 0) {
       return counters.join('\n');
     } else {
       return 'no counters found';

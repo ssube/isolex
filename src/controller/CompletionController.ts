@@ -99,12 +99,12 @@ export class CompletionController extends BaseController<CompletionControllerDat
   }
 
   protected async createContext(ctx: Context) {
-    if (ctx.target) {
-      return ctx;
-    } else {
+    if (isNil(ctx.target)) {
       return ctx.extend({
         target: this.target,
       });
+    } else {
+      return ctx;
     }
   }
 
@@ -121,7 +121,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
         },
       });
 
-      if (results.length) {
+      if (results.length > 0) {
         return results[0];
       } else {
         throw new NotFoundError();
@@ -135,7 +135,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 }
 
 export function createCompletion(cmd: Command, key: string, msg: string): Command {
-  if (!cmd.context.parser) {
+  if (isNil(cmd.context.parser)) {
     throw new InvalidArgumentError('command has no parser to prompt for completion');
   }
 
