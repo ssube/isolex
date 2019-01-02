@@ -1,4 +1,5 @@
-import {AsyncHook, createHook} from 'async_hooks';
+import { AsyncHook, createHook } from 'async_hooks';
+import { isNil, isString } from 'lodash';
 
 // this will pull Mocha internals out of the stacks
 // tslint:disable-next-line:no-var-requires
@@ -14,6 +15,10 @@ export interface TrackedResource {
   type: string;
 }
 
+function debugMode() {
+  return Reflect.has(process.env, 'DEBUG');
+}
+
 /**
  * Async resource tracker using  node's internal hooks.
  *
@@ -21,6 +26,15 @@ export interface TrackedResource {
  * Adapted from https://gist.github.com/boneskull/7fe75b63d613fa940db7ec990a5f5843#file-async-dump-js
  */
 export class Tracker {
+  public static getStack(): string {
+    const err = new Error();
+    if (isString(err.stack)) {
+      return filterStack(err.stack);
+    } else {
+      return 'no stack trace available';
+    }
+  }
+
   private readonly hook: AsyncHook;
   private readonly resources: Map<number, TrackedResource>;
 
@@ -31,7 +45,7 @@ export class Tracker {
         this.resources.delete(id);
       },
       init: (id: number, type: string, triggerAsyncId: number) => {
-        const source = filterStack((new Error()).stack || 'unknown');
+        const source = Tracker.getStack();
         // @TODO: exclude async hooks, including this one
         this.resources.set(id, {
           source,
@@ -58,7 +72,7 @@ export class Tracker {
     console.error(`tracking ${this.resources.size} async resources`);
     this.resources.forEach((res, id) => {
       console.error(`${id}: ${res.type}`);
-      if (Reflect.has(process.env, 'DEBUG')) {
+      if (debugMode()) {
         console.error(res.source);
         console.error('\n');
       }
@@ -94,7 +108,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.S
       if (leaked > 1) {
         tracker.dump();
         const msg = `test leaked ${leaked - 1} async resources`;
-        if (process.env.DEBUG) {
+        if (debugMode()) {
           throw new Error(msg);
         } else {
           // tslint:disable-next-line:no-console
@@ -106,7 +120,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.S
     });
 
     const suite: PromiseLike<void> | undefined = cb.call(this);
-    if (!suite || !suite.then) {
+    if (isNil(suite) || isNil(suite.then)) {
       // tslint:disable-next-line:no-console
       console.error(`test suite '${description}' did not return a promise`);
     }
