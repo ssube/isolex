@@ -14,8 +14,6 @@ import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 import { ServiceMetadata } from 'src/Service';
 import { mapToDict } from 'src/utils/Map';
-import { V1ConfigMapProjection } from '@kubernetes/client-node';
-import { strict } from 'assert';
 
 export const NOUN_FRAGMENT = 'fragment';
 
@@ -166,13 +164,13 @@ interface CollectFields {
 
 interface CollectInputKey<TData extends CollectData> {
   default: TData;
-  required: boolean;
   prompt: string;
+  required: boolean;
 }
 
 type CollectInput<TData extends CollectFields> = {
   [K in keyof TData]: CollectInputKey<TData[K]>;
-}
+};
 
 interface CompleteCollectResult<TData> {
   complete: true;
