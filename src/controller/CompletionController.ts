@@ -14,6 +14,8 @@ import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 import { ServiceMetadata } from 'src/Service';
 import { mapToDict } from 'src/utils/Map';
+import { V1ConfigMapProjection } from '@kubernetes/client-node';
+import { strict } from 'assert';
 
 export const NOUN_FRAGMENT = 'fragment';
 
@@ -154,4 +156,58 @@ export function createCompletion(cmd: Command, key: string, msg: string): Comman
     noun: NOUN_FRAGMENT,
     verb: CommandVerb.Create,
   });
+}
+
+type CollectData = number | string | Array<string>;
+
+interface CollectFields {
+  [key: string]: CollectData;
+}
+
+interface CollectInputKey<TData extends CollectData> {
+  default: TData;
+  required: boolean;
+  prompt: string;
+}
+
+type CollectInput<TData extends CollectFields> = {
+  [K in keyof TData]: CollectInputKey<TData[K]>;
+}
+
+interface CompleteCollectResult<TData> {
+  complete: true;
+  data: TData;
+}
+
+interface IncompleteCollectResult<TData> {
+  complete: false;
+  fragment: Command;
+}
+
+type CollectResult<TData> = CompleteCollectResult<TData> | IncompleteCollectResult<TData>;
+
+export function collectOrComplete<TData extends CollectFields>(cmd: Command, fields: CollectInput<TData>): CollectResult<TData> {
+  const results = new Map<string, CollectData>();
+  for (const [key, def] of Object.entries(fields)) {
+    const exists = cmd.has(key);
+    if (def.required && !exists) {
+      return {
+        complete: false,
+        fragment: createCompletion(cmd, key, def.prompt),
+      };
+    }
+
+    if (exists) {
+      const value = cmd.get(key);
+      // TODO: type check the value
+      results.set(key, value);
+    } else {
+      results.set(key, def.default);
+    }
+  }
+
+  return {
+    complete: true,
+    data: mapToDict(results) as TData,
+  };
 }
