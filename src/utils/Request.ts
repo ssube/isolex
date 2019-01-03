@@ -1,5 +1,4 @@
-import { isNil } from 'lodash';
-import * as request from 'request';
+import * as request from 'request-promise-native';
 
 export type RequestOptions = request.Options;
 
@@ -11,14 +10,6 @@ export type RequestOptions = request.Options;
  */
 export class RequestFactory {
   public create(options: RequestOptions): Promise<any> {
-    return new Promise((res, rej) => {
-      request(options, (err: Error | undefined, response: request.Response, body: unknown) => {
-        if (isNil(err)) {
-          res(body);
-        } else {
-          rej(err);
-        }
-      });
-    });
+    return request(options).promise();
   }
 }
