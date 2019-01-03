@@ -6,7 +6,11 @@ modify entities or call some external API, but may also trigger a completion or 
 - [Controllers](#controllers)
   - [Config](#config)
   - [Developing](#developing)
-  - [Nouns](#nouns)
+  - [Commands](#commands)
+    - [Nouns](#nouns)
+    - [Verbs](#verbs)
+    - [Data](#data)
+      - [`collectOrComplete` Helper](#collectorcomplete-helper)
 
 ## Config
 
@@ -43,7 +47,9 @@ public async getFoo(cmd: Command) {
 Errors thrown during a handler method, sync or async, will be caught by the base controller and the message used as a
 reply.
 
-## Nouns
+## Commands
+
+### Nouns
 
 | Noun     | Controller |
 |----------|------------|
@@ -66,3 +72,35 @@ reply.
 | token    | Token      |
 | user     | User       |
 | weather  | Weather    |
+
+### Verbs
+
+Verbs mimic HTTP and k8s verbs:
+
+| Verb   | Actions                                               |
+|--------|-------------------------------------------------------|
+| Create | Insert a new entity, perform a one-time action        |
+| Delete | Remove an existing entity, destroy something          |
+| Get    | View single entities (typically with details)         |
+| Help   | Print contextual help for a command                   |
+| List   | View many entities (typically as summaries)           |
+| Update | Update an existing entity, complete a previous action |
+
+### Data
+
+Commands have some data attached.
+
+#### `collectOrComplete` Helper
+
+This helper function will collect a type-safe set of fields from a command's data, or create a completion command to
+prompt users for the missing fields.
+
+Until Typescript is able to infer the return type, it must be passed as the generic type:
+
+```typescript
+interface GetData {
+  namespace: string;
+}
+
+const results = collectOrComplete<GetData>(cmd, defaults);
+```

@@ -1,5 +1,3 @@
-import { MissingValueError } from 'noicejs';
-
 import { BaseController } from 'src/controller/BaseController';
 import { ControllerData } from 'src/controller/Controller';
 import { CommandVerb } from 'src/entity/Command';

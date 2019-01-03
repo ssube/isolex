@@ -12,9 +12,9 @@ export enum CommandVerb {
   Create = 'create',
   Delete = 'delete',
   Get = 'get',
+  Help = 'help',
   List = 'list',
   Update = 'update',
-  Watch = 'watch',
 }
 
 export interface CommandOptions extends BaseCommandOptions {
