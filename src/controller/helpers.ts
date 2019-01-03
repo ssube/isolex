@@ -1,12 +1,12 @@
 import { isNil, isString } from 'lodash';
 import { BaseError } from 'noicejs';
+import { isNumber } from 'util';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Schema } from 'src/schema';
-import { mapToDict } from 'src/utils/Map';
-import { isNumber } from 'util';
+import { Dict, mapToDict } from 'src/utils/Map';
 
 export function createCompletion(cmd: Command, key: string, msg: string): Command {
   if (isNil(cmd.context.parser)) {
@@ -32,18 +32,14 @@ export function createCompletion(cmd: Command, key: string, msg: string): Comman
 
 type CollectData = number | string | Array<string>;
 
-interface CollectFields {
-  [key: string]: CollectData;
-}
-
-interface CollectInputKey<TData extends CollectData> {
+interface CollectKey<TData> {
   default: TData;
   prompt: string;
   required: boolean;
 }
 
-type CollectInput<TData extends CollectFields> = {
-  [K in keyof TData]: CollectInputKey<TData[K]>;
+type CollectInput<TData extends Dict<CollectData>> = {
+  [K in keyof TData]: CollectKey<TData[K]>;
 };
 
 interface CompleteCollectResult<TData> {
@@ -51,14 +47,14 @@ interface CompleteCollectResult<TData> {
   data: TData;
 }
 
-interface IncompleteCollectResult<TData> {
+interface IncompleteCollectResult {
   complete: false;
   fragment: Command;
 }
 
-type CollectResult<TData> = CompleteCollectResult<TData> | IncompleteCollectResult<TData>;
+export type CollectResult<TData> = CompleteCollectResult<TData> | IncompleteCollectResult;
 
-export function collectOrComplete<TData extends CollectFields>(cmd: Command, fields: CollectInput<TData>): CollectResult<TData> {
+export function collectOrComplete<TData extends Dict<CollectData>>(cmd: Command, fields: CollectInput<TData>): CollectResult<TData> {
   const results = new Map<string, CollectData>();
   for (const [key, def] of Object.entries(fields)) {
     const exists = cmd.has(key);
@@ -70,14 +66,7 @@ export function collectOrComplete<TData extends CollectFields>(cmd: Command, fie
     }
 
     if (exists) {
-      const value = cmd.get(key);
-      const coerced = collectValue(value, def.default);
-      if (isNil(coerced)) {
-        return {
-          complete: false,
-          fragment: createCompletion(cmd, key, def.prompt),
-        };
-      }
+      const coerced = collectValue(cmd.get(key), def.default);
       results.set(key, coerced);
     } else {
       results.set(key, def.default);
@@ -90,7 +79,7 @@ export function collectOrComplete<TData extends CollectFields>(cmd: Command, fie
   };
 }
 
-export function collectValue(value: CollectData, defaultValue: CollectData): CollectData | undefined {
+export function collectValue(value: CollectData, defaultValue: CollectData): CollectData {
   const schema = new Schema({
     properties: {
       value: buildValueSchema(defaultValue),
