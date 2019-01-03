@@ -84,7 +84,7 @@
     "standard-version": "4.4.0",
     "tslint": "5.12.0",
     "tslint-clean-code": "0.2.9",
-    "tslint-consistent-codestyle": "1.14",
+    "tslint-consistent-codestyle": "~1.15.0",
     "tslint-etc": "1.2.12",
     "tslint-loader": "3.6",
     "tslint-microsoft-contrib": "6.0.0",
