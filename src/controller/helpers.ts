@@ -62,16 +62,17 @@ export function collectOrComplete<TData extends Dict<CollectData>>(cmd: Command,
     if (exists) {
       const coerced = collectValue(cmd.get(key), def.default);
       results.set(key, coerced);
-    } else {
-      if (def.required) {
-        return {
-          complete: false,
-          fragment: createCompletion(cmd, key, def.prompt),
-        };
-      } else {
-        results.set(key, def.default);
-      }
+      continue;
     }
+
+    if (def.required) {
+      return {
+        complete: false,
+        fragment: createCompletion(cmd, key, def.prompt),
+      };
+    }
+
+    results.set(key, def.default);
   }
 
   return {
