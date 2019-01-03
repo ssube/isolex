@@ -49,13 +49,8 @@ export WEBPACK_VERSION := $(shell $(NODE_BIN)/webpack -v)
 
 all: build run-terminal
 
-build: ## builds, bundles, and tests the application
-build: configure bundle test
-
-build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
-build-strict: configure bundle-check test-check
-
 clean: ## clean up the target directory
+	rm -rf node_modules
 	rm -rf $(TARGET_PATH)
 
 configure: ## create the target directory and other files not in git
@@ -66,6 +61,44 @@ help: ## print this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort \
 		| sed 's/^.*\/\(.*\)/\1/' \
 		| awk 'BEGIN {FS = ":[^:]*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
+	git push gitlab ${GIT_BRANCH}
+	git push github ${GIT_BRANCH}
+
+# from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
+git-stats: ## print git contributor line counts (approx, for fun)
+	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" |\
+		grep -I '^author '; done | sort -f | uniq -ic | sort -n
+
+todo:
+	@echo "Remaining tasks:"
+	@echo ""
+	@grep "todo" -r src/ || true
+	@echo ""
+	@echo "Pending tests:"
+	@echo ""
+	@grep "[[:space:]]xit" -r test/ || true
+	@echo "Casts to any:"
+	@echo ""
+	@grep "as any" -r src/ || true
+	@grep "as any" -r test/ || true
+	@echo ""
+
+node_modules: yarn-install
+
+yarn-install: ## install dependencies from package and lock file
+	yarn
+
+yarn-update: ## check yarn for outdated packages
+	yarn -L -C -P '.*'
+
+# build targets
+build: ## builds, bundles, and tests the application
+build: node_modules configure bundle test
+
+build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
+build-strict: node_modules configure bundle-check test-check
 
 bundle: bundle-cover ## build the distributable version of the application
 
@@ -84,15 +117,6 @@ bundle-watch: ## bundle the application and watch for changes
 
 bundle-docs: ## generate html docs
 	$(NODE_BIN)/typedoc $(DOCS_OPTS)
-
-git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
-	git push gitlab ${GIT_BRANCH}
-	git push github ${GIT_BRANCH}
-
-# from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
-git-stats: ## print git contributor line counts (approx, for fun)
-	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" |\
-		grep -I '^author '; done | sort -f | uniq -ic | sort -n
 
 release: ## create a release
 	$(NODE_BIN)/standard-version --sign
@@ -122,20 +146,3 @@ test-leaks: ## run mocha unit tests with coverage reports
 
 test-watch:
 	$(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
-
-todo:
-	@echo "Remaining tasks:"
-	@echo ""
-	@grep "todo" -r src/ || true
-	@echo ""
-	@echo "Pending tests:"
-	@echo ""
-	@grep "[[:space:]]xit" -r test/ || true
-	@echo "Casts to any:"
-	@echo ""
-	@grep "as any" -r src/ || true
-	@grep "as any" -r test/ || true
-	@echo ""
-
-yarn-update: ## check yarn for outdated packages
-	yarn -L -C -P '.*'

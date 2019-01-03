@@ -8,12 +8,10 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 import { ServiceMetadata } from 'src/Service';
-import { mapToDict } from 'src/utils/Map';
 
 export const NOUN_FRAGMENT = 'fragment';
 
@@ -132,26 +130,4 @@ export class CompletionController extends BaseController<CompletionControllerDat
       });
     }
   }
-}
-
-export function createCompletion(cmd: Command, key: string, msg: string): Command {
-  if (isNil(cmd.context.parser)) {
-    throw new InvalidArgumentError('command has no parser to prompt for completion');
-  }
-
-  const existingData = mapToDict(cmd.data);
-  return new Command({
-    context: cmd.context,
-    data: {
-      ...existingData,
-      key: [key],
-      msg: [msg],
-      noun: [cmd.noun],
-      parser: [cmd.context.parser.id],
-      verb: [cmd.verb],
-    },
-    labels: {},
-    noun: NOUN_FRAGMENT,
-    verb: CommandVerb.Create,
-  });
 }

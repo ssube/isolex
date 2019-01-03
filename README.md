@@ -37,14 +37,14 @@ same.
 In the project directory, run:
 
 ```shell
-> yarn
+> make
 
 yarn install
 [1/4] Resolving packages...
 ...
 Done in 0.65s
 
-> make
+ℹ ｢atl｣: Using typescript@3.2.2 from typescript
 
 ...
 starting bot...

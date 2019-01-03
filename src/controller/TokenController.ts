@@ -1,11 +1,11 @@
-import { isNil, isNumber } from 'lodash';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
 import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
-import { createCompletion } from 'src/controller/CompletionController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { createCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Clock } from 'src/utils/Clock';
@@ -73,16 +73,12 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       return;
     }
 
-    const results = await this.tokenRepository.delete({
+    await this.tokenRepository.delete({
       createdAt: LessThan(before),
       subject: Equal(user.id),
     });
 
-    if (isNumber(results.affected)) {
-      return this.reply(cmd.context, `deleted ${results.affected} tokens`);
-    } else {
-      return this.reply(cmd.context, `tokens deleted`);
-    }
+    return this.reply(cmd.context, `tokens deleted`);
   }
 
   @HandleNoun(NOUN_TOKEN)
