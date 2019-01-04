@@ -1,11 +1,14 @@
+import { Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Observable, Subject } from 'rxjs';
 
 import { ServiceLifecycle } from 'src/Service';
+import { Clock, ClockHandler } from 'src/utils/Clock';
 
 export const GROWTH_FACTOR = 2;
 export interface CooldownOptions extends BaseOptions {
   base: number;
+  clock: Clock;
   grow: number;
 }
 
@@ -15,25 +18,28 @@ export interface CooldownOptions extends BaseOptions {
  * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
  * an exponential interval with an observable.
  */
+@Inject('clock')
 export class Cooldown implements ServiceLifecycle {
+  protected readonly boundNext: ClockHandler;
+  protected readonly clock: Clock;
+  protected readonly data: CooldownOptions;
+  protected readonly stream: Subject<number>;
+
   protected active: boolean;
-  protected boundNext: Function;
-  protected data: CooldownOptions;
   protected grow: number;
   protected rate: number;
-  protected stream: Subject<number>;
   protected ticks: number;
-  protected timer: number;
+  protected timer: NodeJS.Timeout;
 
   constructor(options: CooldownOptions) {
     this.active = false;
     this.boundNext = this.next.bind(this);
+    this.clock = options.clock;
     this.data = options;
     this.grow = options.grow;
     this.rate = options.base;
     this.stream = new Subject();
     this.ticks = 0;
-    this.timer = 0;
   }
 
   public async start() {
@@ -44,8 +50,7 @@ export class Cooldown implements ServiceLifecycle {
   public async stop() {
     this.stream.complete();
     if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = 0;
+      this.clock.clearTimeout(this.timer);
     }
   }
 
@@ -76,7 +81,7 @@ export class Cooldown implements ServiceLifecycle {
     this.ticks += 1;
 
     if (this.active) {
-      this.timer = setTimeout(this.boundNext, this.rate);
+      this.timer = this.clock.setTimeout(this.boundNext, this.rate);
     }
   }
 

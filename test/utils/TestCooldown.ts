@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import { Container } from 'noicejs';
+import { ConsoleLogger, Container } from 'noicejs';
 
+import { BotModule } from 'src/module/BotModule';
 import { defer } from 'src/utils';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 
@@ -8,13 +9,19 @@ import { describeAsync, itAsync } from 'test/helpers/async';
 
 const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
 
+async function createCooldown(options: Partial<CooldownOptions>) {
+  const ctr = Container.from(new BotModule({
+    logger: ConsoleLogger.global,
+  }));
+  await ctr.configure();
+
+  return ctr.create(Cooldown, options);
+}
+
 describeAsync('utils', async () => {
   describeAsync('cooldown', async () => {
     itAsync('should change the rate by the growth', async () => {
-      const ctr = Container.from();
-      await ctr.configure();
-
-      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+      const cd = await createCooldown({
         base: 10,
         grow: 2,
       });
@@ -30,10 +37,7 @@ describeAsync('utils', async () => {
     });
 
     itAsync('should stop a pending timer', async () => {
-      const ctr = Container.from();
-      await ctr.configure();
-
-      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+      const cd = await createCooldown({
         base: 5000,
         grow: 0,
       });
@@ -43,10 +47,7 @@ describeAsync('utils', async () => {
     });
 
     itAsync('should track ticks', async () => {
-      const ctr = Container.from();
-      await ctr.configure();
-
-      const cd = await ctr.create<Cooldown, CooldownOptions>(Cooldown, {
+      const cd = await createCooldown({
         base: 20,
         grow: 0,
       });

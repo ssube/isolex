@@ -18,7 +18,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   protected readonly math: MathJsStatic;
   protected readonly tickRepository: Repository<Tick>;
 
-  protected interval: number;
+  protected interval: NodeJS.Timeout;
   protected target: Listener;
 
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {

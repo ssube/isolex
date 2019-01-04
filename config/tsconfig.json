@@ -9,7 +9,6 @@
     "importHelpers": true,
     "jsx": "react",
     "lib": [
-      "dom",
       "es2017",
       "esnext.asynciterable"
     ],

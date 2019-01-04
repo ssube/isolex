@@ -34,7 +34,7 @@ export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
     this.interval = collectDefaultMetrics({
       register: this.metrics,
       timeout,
-    });
+    }) as any;
   }
 
   public async tick(context: Context, tick: Tick): Promise<number> {

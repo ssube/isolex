@@ -3,6 +3,8 @@ import { BaseOptions } from 'noicejs/Container';
 
 const NOW_TO_SECONDS = 1000;
 
+export type ClockHandler = () => void;
+
 export interface ClockOptions extends BaseOptions {
   date?: DateConstructor;
 }
@@ -15,8 +17,12 @@ export class Clock {
     this.date = date;
   }
 
-  public clearInterval(id: number) {
+  public clearInterval(id: NodeJS.Timeout) {
     clearInterval(id);
+  }
+
+  public clearTimeout(id: NodeJS.Timeout) {
+    clearTimeout(id);
   }
 
   public getDate(seconds?: number): Date {
@@ -31,8 +37,12 @@ export class Clock {
     return Math.floor(this.date.now() / NOW_TO_SECONDS);
   }
 
-  public setInterval(cb: Function, delay: number): number {
+  public setInterval(cb: ClockHandler, delay: number): NodeJS.Timeout {
     return setInterval(cb, delay);
+  }
+
+  public setTimeout(cb: ClockHandler, delay: number): NodeJS.Timeout {
+    return setTimeout(cb, delay);
   }
 }
 
