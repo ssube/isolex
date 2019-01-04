@@ -341,9 +341,12 @@ and destination channel.
 Instead of passwords, JSON web tokens (JWT) are used to authenticate to the bot. Rather than password reset, users
 can revoke all existing tokens and issue a new sign in token.
 
-Sign in tokens are created with a small set of grants, preventing most API access. Despite this, they are the most
-privileged token for each user. A typical set of sign in grants include:
+Sign in tokens should be created with a limited set of grants, preventing most API access. Despite this, they are still
+the most privileged token for each user, being able to create additional tokens.
 
-- `grant:*`
-- `join:create,delete`
+A typical set of sign in grants may include:
+
+- `account:delete`
+- `grant:get,list`
 - `session:create,delete`
+- `token:create,delete`
