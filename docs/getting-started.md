@@ -29,6 +29,7 @@ advanced deploy commands.
       - [Start Pipeline](#start-pipeline)
       - [Scale Apps](#scale-apps)
   - [Security](#security)
+    - [Root User](#root-user)
     - [Grants](#grants)
     - [Tokens](#tokens)
 
@@ -275,7 +276,52 @@ TODO: scale up k8s apps deployment
 
 ## Security
 
-The bot features role-based access control (RBAC) as a way of enforcing granular permissions for users.
+The bot features RBAC (role-based access control) as a way of enforcing granular permissions for users. Access is
+handled exclusively through JSON web tokens (JWT) and the bot does not use or store passwords.
+
+When the bot first launches, it will not have any roles or users, so most commands will be inaccessible. You should
+[create a root user](#root-user) to begin setting up other roles and users.
+
+**It is both safe and recommended that you delete the root user** after setting up an admin role and additional users.
+
+### Root User
+
+The repository includes [a script](../scripts/bot-root.sh) that will **remove any existing roles, tokens, and users**
+before creating a new `root` role. This script must be run after the bot database has been created and is safe to run
+while the bot is also running.
+
+With the bot running in another terminal:
+
+```shell
+> ./scripts/bot-root.sh
+
+DELETE FROM role;
+DELETE FROM token;
+DELETE FROM user;
+
+INSERT INTO role ("id", "name", "grants") VALUES ('9160b8fe-144d-4737-973e-485c4c8d96ae', 'root', '["*"]');
+```
+
+You do not need to know the role ID for the next steps; roles are granted by name and names must be unique.
+
+Back in chat, in a **private channel** where the bot is active:
+
+```
+> !!join --name root
+>
+> @you, user root joined, sign in token: ey.._4
+```
+
+This is the root user's [sign in token](#sign-in). It is the most important token and should be kept safe (a physical
+safe should provide adequate security).
+
+The root user will be granted the roles configured in `root.roles` *as well as* the roles in `join.roles`, while the
+sign in token will have the standard grants from `join.grants`. For additional grants, another token must be created,
+as with all users.
+
+The root user is not inherently special, but does have additional roles. It is not guaranteed to exist (and indeed
+*should not* exist unless needed). The name of the root user may be changed with the `root.name` key to make it more
+difficult to guess, although the bot will advertise whether a username exists if `join.allow` is enabled.
 
 ### Grants
 
