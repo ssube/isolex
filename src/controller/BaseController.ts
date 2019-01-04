@@ -32,8 +32,6 @@ export enum ErrorReplyType {
 
 @Inject('services')
 export abstract class BaseController<TData extends ControllerData> extends BotService<TData> implements Controller {
-  public readonly name: string;
-
   protected readonly nouns: Set<string>;
 
   // services

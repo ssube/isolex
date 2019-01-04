@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
@@ -18,8 +19,8 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   protected readonly math: MathJsStatic;
   protected readonly tickRepository: Repository<Tick>;
 
-  protected interval: NodeJS.Timeout;
-  protected target: Listener;
+  protected interval?: NodeJS.Timeout;
+  protected target?: Listener;
 
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
@@ -33,7 +34,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
     await super.start();
 
     this.logger.debug({ def: this.data.defaultTarget }, 'getting default target listener');
-    this.target = this.services.getService(this.data.defaultTarget);
+    this.target = this.services.getService<Listener>(this.data.defaultTarget);
     return this.startInterval();
   }
 
@@ -60,7 +61,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   }
 
   protected async stopInterval() {
-    if (this.data.frequency.time) {
+    if (this.data.frequency.time && !isNil(this.interval)) {
       this.clock.clearInterval(this.interval);
     }
   }

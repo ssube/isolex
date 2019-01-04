@@ -10,6 +10,7 @@ import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { mustExist } from 'src/utils';
 
 export interface SlackListenerData extends ListenerData {
   token: {
@@ -46,16 +47,17 @@ export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
 
 @Inject('bot', 'clock')
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
-  protected client: RTMClient;
-  protected webClient: WebClient;
+  protected client?: RTMClient;
+  protected webClient?: WebClient;
 
   constructor(options: SlackListenerOptions) {
     super(options, 'isolex#/definitions/service-listener-slack');
   }
 
   public async send(msg: Message): Promise<void> {
+    const client = mustExist(this.client);
     if (msg.context.channel.id) {
-      const result = await this.client.sendMessage(escape(msg.body), msg.context.channel.id);
+      const result = await client.sendMessage(escape(msg.body), msg.context.channel.id);
       if (!isNil(result.error)) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
@@ -94,12 +96,13 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async stop() {
-    await this.client.disconnect();
+    await mustExist(this.client).disconnect();
   }
 
   protected async convertReaction(reaction: SlackReaction): Promise<Message> {
     this.logger.debug({ reaction }, 'converting slack reaction');
-    const search = await this.webClient.channels.history({
+    const client = mustExist(this.webClient);
+    const search = await client.channels.history({
       channel: reaction.item.channel,
       inclusive: true,
       latest: reaction.item.ts,
@@ -133,12 +136,13 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     if (session) {
       context.user = session.user;
     }
-    return new Message({
-      body: text,
-      context,
-      reactions: this.reactionNames(msg.reactions),
-      type: TYPE_TEXT,
-    });
+
+    const result = new Message();
+    result.body = text;
+    result.context = context;
+    result.reactions = this.reactionNames(msg.reactions);
+    result.type = TYPE_TEXT;
+    return result;
   }
 
   protected reactionNames(reactions: Array<SlackMessageReaction> | undefined): Array<string> {

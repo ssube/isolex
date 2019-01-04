@@ -17,6 +17,7 @@ import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
+import { mustExist } from 'src/utils';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
@@ -51,11 +52,11 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected readonly storage: Connection;
   protected readonly tokenRepository: Repository<Token>;
 
-  protected express: express.Express;
+  protected express?: express.Express;
   protected graph?: GraphSchema;
   protected passport?: passport.Authenticator;
   protected server?: http.Server;
-  protected target: Listener;
+  protected target?: Listener;
 
   constructor(options: ExpressListenerOptions) {
     super(options, 'isolex#/definitions/service-listener-express');
@@ -81,13 +82,14 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.passport = await this.setupPassport();
     this.express = await this.setupExpress();
     this.server = await new Promise<http.Server>((res, rej) => {
+      const express = mustExist(this.express);
       let server: http.Server;
-      server = this.express.listen(this.data.listen.port, this.data.listen.address, () => {
+      server = express.listen(this.data.listen.port, this.data.listen.address, () => {
         res(server);
       });
     });
 
-    this.target = this.services.getService(this.data.defaultTarget);
+    this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
   public async stop() {

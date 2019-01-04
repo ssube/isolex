@@ -24,7 +24,7 @@ export type KubernetesControllerOptions = ControllerOptions<KubernetesController
 
 @Inject()
 export class KubernetesCoreController extends BaseController<KubernetesControllerData> implements Controller {
-  protected client: k8s.Core_v1Api;
+  protected client!: k8s.Core_v1Api;
 
   constructor(options: KubernetesControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-kubernetes', [NOUN_POD, NOUN_SERVICE]);

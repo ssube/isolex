@@ -18,7 +18,7 @@ export const NOUN_GITLAB_PIPELINE = 'gitlab-ci-pipeline';
 
 @Inject()
 export class GitlabCIController extends BaseController<GitlabCIControllerData> implements Controller {
-  protected client: GitlabClient;
+  protected client!: GitlabClient;
   protected container: Container;
 
   constructor(options: GitlabCIControllerOptions) {

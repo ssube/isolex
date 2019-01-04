@@ -4,7 +4,6 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Transform } from 'src/transform/Transform';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export const NOUN_ECHO = 'echo';
@@ -16,8 +15,6 @@ export interface EchoControllerOptions extends ControllerOptions<EchoControllerD
 
 @Inject()
 export class EchoController extends BaseController<EchoControllerData> implements Controller {
-  protected readonly transforms: Array<Transform>;
-
   constructor(options: EchoControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-echo', [NOUN_ECHO]);
   }
