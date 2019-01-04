@@ -5,6 +5,7 @@ import { LabelEntity } from 'src/entity/base/LabelEntity';
 import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/schema/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MessageOptions {
   body: string;
@@ -22,46 +23,34 @@ export class Message extends LabelEntity implements MessageOptions {
   }
 
   public static reply(context: Context, type: string, body: string): Message {
-    return new Message({
-      body,
-      context,
-      reactions: [],
-      type,
-    });
+    const msg = new Message();
+    msg.body = body;
+    msg.context = context;
+    msg.type = type;
+    return msg;
   }
 
   @Column()
-  public body: string;
+  public body: string = '';
 
   @OneToOne((type) => Context, (context) => context.id, {
     cascade: true,
   })
   @JoinColumn()
-  public context: Context;
+  public context!: Context;
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column('simple-json')
-  public reactions: Array<string>;
+  public reactions: Array<string> = [];
 
   /**
    * MIME type of the message. Typically `text/plain`, but can be an `image/*` or `audio/*` type, depending on the
    * listener.
    */
   @Column()
-  public type: string;
-
-  constructor(options?: MessageOptions) {
-    super();
-
-    if (options) {
-      this.body = options.body;
-      this.context = options.context;
-      this.reactions = Array.from(options.reactions || []);
-      this.type = options.type;
-    }
-  }
+  public type: string = TYPE_TEXT;
 
   public toJSON(): object {
     return {

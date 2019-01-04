@@ -35,18 +35,10 @@ export class Command extends BaseCommand implements CommandOptions {
     cascade: true,
   })
   @JoinColumn()
-  public context: Context;
+  public context!: Context;
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
-
-  constructor(options?: CommandOptions) {
-    super(options);
-
-    if (options && options.context) {
-      this.context = options.context;
-    }
-  }
+  public id: string = '';
 
   public extend(options: Partial<CommandOptions>) {
     if (options.noun) {
@@ -56,7 +48,8 @@ export class Command extends BaseCommand implements CommandOptions {
       throw new InvalidArgumentError('extended commands may not change verb');
     }
 
-    const cmd = new Command(this);
+    const cmd = new Command();
+    Object.assign(cmd, this); // TODO: is this right?
     if (options.context) {
       cmd.context = options.context;
     }

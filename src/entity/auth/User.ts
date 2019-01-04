@@ -14,30 +14,20 @@ export const TABLE_USER = 'user';
 @Entity(TABLE_USER)
 export class User extends BaseEntity implements UserOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column({
     unique: true,
   })
-  public name: string;
+  public name: string = '';
 
   @Column({
     name: 'roles',
     type: 'simple-json',
   })
-  public roleNames: Array<string>;
+  public roleNames: Array<string> = [];
 
-  public roles: Array<Role>;
-
-  constructor(options?: UserOptions) {
-    super();
-
-    if (options) {
-      this.name = options.name;
-      this.roles = Array.from(options.roles);
-      this.syncRoles();
-    }
-  }
+  public roles: Array<Role> = [];
 
   public toJSON(): object {
     return {

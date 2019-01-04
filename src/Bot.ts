@@ -14,7 +14,7 @@ import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listen
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
-import { filterNil, mustFind } from 'src/utils';
+import { filterNil, mustFind, mustExist } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
@@ -39,11 +39,11 @@ export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
   protected readonly metrics: Registry;
 
-  protected storage: Connection;
+  protected storage?: Connection;
 
   // counters
-  protected cmdCounter: Counter;
-  protected msgCounter: Counter;
+  protected cmdCounter!: Counter;
+  protected msgCounter!: Counter;
 
   // services
   protected controllers: Array<Controller>;
@@ -77,11 +77,11 @@ export class Bot extends BaseService<BotData> implements Service {
     this.incoming = new Subject();
     this.outgoing = new Subject();
 
-    bindAll(this, 'looseError');
+    this.startMetrics();
   }
 
   public getStorage(): Connection {
-    return this.storage;
+    return mustExist(this.storage);
   }
 
   public async notify(event: ServiceEvent) {
@@ -103,17 +103,13 @@ export class Bot extends BaseService<BotData> implements Service {
    */
   public async start() {
     await super.start();
-
     this.logger.info('starting bot');
 
-    this.logger.info('setting up streams');
-    /* tslint:disable:no-unbound-method */
-    this.commands.subscribe((next) => this.receiveCommand(next).catch(this.looseError));
-    this.incoming.subscribe((next) => this.receive(next).catch(this.looseError));
-    this.outgoing.subscribe((next) => this.receiveMessage(next).catch(this.looseError));
-    /* tslint:enable */
+    const streamError = (err: Error) => this.looseError(err);
+    this.commands.subscribe((next) => this.receiveCommand(next).catch(streamError));
+    this.incoming.subscribe((next) => this.receive(next).catch(streamError));
+    this.outgoing.subscribe((next) => this.receiveMessage(next).catch(streamError));
 
-    await this.startMetrics();
     await this.startStorage();
     await this.startServices();
 
@@ -174,9 +170,10 @@ export class Bot extends BaseService<BotData> implements Service {
    * Add a message to the send queue.
    */
   public async sendMessage(...messages: Array<Message>): Promise<Array<Message>> {
+    const storage = mustExist(this.storage);
     const results = [];
     for (const data of messages) {
-      const msg = await this.storage.getRepository(Message).save(data);
+      const msg = await storage.getRepository(Message).save(data);
       this.logger.debug({ msg }, 'message saved');
       this.outgoing.next(msg);
       results.push(msg);
@@ -185,9 +182,10 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   public async executeCommand(...commands: Array<Command>): Promise<Array<Command>> {
+    const storage = mustExist(this.storage);
     const results = [];
     for (const data of commands) {
-      const cmd = await this.storage.getRepository(Command).save(data);
+      const cmd = await storage.getRepository(Command).save(data);
       this.commands.next(cmd);
       results.push(cmd);
     }
@@ -281,7 +279,7 @@ export class Bot extends BaseService<BotData> implements Service {
     return commands;
   }
 
-  protected async startMetrics() {
+  protected startMetrics() {
     this.logger.info('setting up metrics');
 
     this.cmdCounter = new Counter({
@@ -354,7 +352,7 @@ export class Bot extends BaseService<BotData> implements Service {
    * Note: this method is already bound, so it can be passed with `this.looseError`. Using that requires
    * `tslint:disable:no-unbound-method` as well.
    */
-  protected async looseError(err: Error) {
+  protected looseError(err: Error) {
     this.logger.error(err, 'bot stream did not handle error');
   }
 }

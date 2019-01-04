@@ -25,30 +25,16 @@ export interface FragmentOptions extends CommandOptions {
 @Entity(TABLE_FRAGMENT)
 export class Fragment extends BaseCommand implements FragmentOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column()
-  public key: string;
+  public key: string = '';
 
   @Column()
-  public parserId: string;
+  public parserId: string = '';
 
   @Column()
-  public userId: string;
-
-  constructor(options?: FragmentOptions) {
-    super(options);
-
-    if (!isNil(options)) {
-      this.data = dictToMap(options.data);
-      this.key = options.key;
-      this.labels = dictToMap(options.labels);
-      this.noun = options.noun;
-      this.parserId = options.parserId;
-      this.userId = options.userId;
-      this.verb = options.verb;
-    }
-  }
+  public userId: string = '';
 
   public toJSON() {
     return {

@@ -10,6 +10,7 @@ import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageOptions } fr
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
+import { dictToMap } from 'src/utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
@@ -61,14 +62,12 @@ export class GraphSchema extends BotService<GraphSchemaData> {
 
     const commands = [];
     for (const data of args.commands) {
-      const { labels, noun, verb } = data;
-      commands.push(new Command({
-        context,
-        data: {},
-        labels,
-        noun,
-        verb,
-      }));
+      const cmd = new Command();
+      cmd.context = context;
+      cmd.labels = dictToMap(data.labels);
+      cmd.noun = data.noun;
+      cmd.verb = data.verb;
+      commands.push(cmd);
     }
     return this.bot.executeCommand(...commands);
   }
@@ -84,12 +83,12 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     const messages = [];
     for (const data of args.messages) {
       const { body, type } = data;
-      messages.push(new Message({
-        body,
-        context,
-        reactions: [],
-        type,
-      }));
+      const msg = new Message();
+      msg.body = data.body;
+      msg.context = data.context;
+      msg.reactions = data.reactions;
+      msg.type = data.type;
+      messages.push(msg);
     }
     return this.bot.sendMessage(...messages);
   }

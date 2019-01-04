@@ -25,7 +25,7 @@ export type CompletionControllerOptions = ControllerOptions<CompletionController
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
   protected readonly storage: Connection;
   protected readonly fragmentRepository: Repository<Fragment>;
-  protected target: Listener;
+  protected target?: Listener;
 
   constructor(options: CompletionControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
@@ -37,7 +37,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
   public async start() {
     await super.start();
 
-    this.target = this.services.getService(this.data.defaultTarget);
+    this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
   @HandleNoun(NOUN_FRAGMENT)
@@ -51,15 +51,14 @@ export class CompletionController extends BaseController<CompletionControllerDat
     const parserId = cmd.getHead('parser');
     const verb = cmd.getHead('verb') as CommandVerb;
 
-    const fragment = await this.fragmentRepository.save(new Fragment({
-      data: cmd.data,
-      key,
-      labels: cmd.labels,
-      noun,
-      parserId,
-      userId: user.id,
-      verb,
-    }));
+    const fragment = new Fragment();
+    fragment.data = cmd.data;
+    fragment.key = key;
+    fragment.labels = cmd.labels;
+    fragment.noun = noun;
+    fragment.parserId = parserId;
+    fragment.userId = user.id;
+    fragment.verb = verb;
 
     const context = await this.createContext(cmd.context);
     this.logger.debug({ context, fragment }, 'creating fragment for later completion');

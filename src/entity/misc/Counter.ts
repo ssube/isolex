@@ -12,24 +12,17 @@ export const TABLE_COUNTER = 'counter';
 @Entity(TABLE_COUNTER)
 export class Counter implements CounterOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column()
-  public count: number;
+  public count: number = 0;
 
   @Column()
-  public name: string;
+  public name: string = '';
 
   @Column()
-  public roomId: string;
+  public roomId: string = '';
 
-  constructor(options?: CounterOptions) {
-    if (!isNil(options)) {
-      this.count = options.count;
-      this.name = options.name;
-      this.roomId = options.roomId;
-    }
-  }
   public toJSON() {
     return {
       count: this.count,

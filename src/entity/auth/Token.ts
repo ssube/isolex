@@ -49,7 +49,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * https://tools.ietf.org/html/rfc7519#section-4.1.3
    */
   @Column('simple-json')
-  public audience: Array<string>;
+  public audience: Array<string> = [];
 
   /**
    * `exp` (Expiration Time) claim
@@ -58,17 +58,17 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   @Column({
     type: 'datetime',
   })
-  public expiresAt: Date;
+  public expiresAt: Date = new Date();
 
   @Column('simple-json')
-  public grants: Array<string>;
+  public grants: Array<string> = [];
 
   /**
    * `jti` (JWT ID) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.7
    */
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   /**
    * `iss` (Issuer) claim
@@ -77,7 +77,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * listener identifier
    */
   @Column()
-  public issuer: string;
+  public issuer: string = '';
 
   /**
    * `sub` (Subject) claim
@@ -86,7 +86,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * userName
    */
   @Column()
-  public subject: string;
+  public subject: string = '';
 
   @ManyToOne((type) => User, (user) => user.id, {
     cascade: true,
@@ -94,20 +94,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   @JoinColumn({
     name: 'subject',
   })
-  public user: User;
-
-  constructor(options?: TokenOptions) {
-    super(options);
-
-    if (!isNil(options)) {
-      this.audience = options.audience;
-      this.createdAt = options.createdAt;
-      this.expiresAt = options.expiresAt;
-      this.issuer = options.issuer;
-      this.grants = Array.from(options.grants);
-      this.subject = options.subject;
-    }
-  }
+  public user!: User;
 
   /**
    * Check if a set of Shiro-style permissions have been granted to this token. This does not check the token's user,

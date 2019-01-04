@@ -6,7 +6,7 @@ import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Schema } from 'src/schema';
-import { Dict, mapToDict } from 'src/utils/Map';
+import { Dict, mapToDict, dictToMap } from 'src/utils/Map';
 
 export function createCompletion(cmd: Command, key: string, msg: string): Command {
   if (isNil(cmd.context.parser)) {
@@ -14,20 +14,19 @@ export function createCompletion(cmd: Command, key: string, msg: string): Comman
   }
 
   const existingData = mapToDict(cmd.data);
-  return new Command({
-    context: cmd.context,
-    data: {
+  const fragment = new Command();
+  fragment.context = cmd.context;
+  fragment.data = dictToMap({
       ...existingData,
       key: [key],
       msg: [msg],
       noun: [cmd.noun],
       parser: [cmd.context.parser.id],
       verb: [cmd.verb],
-    },
-    labels: {},
-    noun: NOUN_FRAGMENT,
-    verb: CommandVerb.Create,
   });
+  fragment.noun = NOUN_FRAGMENT;
+  fragment.verb = CommandVerb.Create;
+  return fragment;
 }
 
 type CollectData = number | string | Array<string>;

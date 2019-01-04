@@ -47,13 +47,13 @@ export const TABLE_CONTEXT = 'context';
 @Entity(TABLE_CONTEXT)
 export class Context extends BaseEntity implements ContextOptions {
   @Column('simple-json')
-  public channel: ChannelData;
+  public channel!: ChannelData;
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column()
-  public name: string;
+  public name: string = '';
 
   public parser?: Parser;
 
@@ -64,7 +64,7 @@ export class Context extends BaseEntity implements ContextOptions {
   public token?: Token;
 
   @Column()
-  public uid: string;
+  public uid: string = '';
 
   public user?: User;
 

@@ -18,26 +18,13 @@ export const TABLE_KEYWORD = 'keyword';
 @Entity(TABLE_KEYWORD)
 export class Keyword extends BaseCommand implements KeywordOptions {
   @Column()
-  public controllerId: string;
+  public controllerId: string = '';
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @PrimaryColumn()
-  public key: string;
-
-  constructor(options?: KeywordOptions) {
-    super();
-
-    if (options) {
-      this.controllerId = options.controllerId;
-      this.data = dictToMap(options.data);
-      this.key = options.key;
-      this.labels = dictToMap(options.labels);
-      this.noun = options.noun;
-      this.verb = options.verb;
-    }
-  }
+  public key: string = '';
 
   public toJSON() {
     return {

@@ -2,10 +2,10 @@ import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class BaseEntity {
   @CreateDateColumn()
-  public createdAt: Date;
+  public createdAt: Date = new Date();
 
   @UpdateDateColumn()
-  public updatedAt: Date;
+  public updatedAt: Date = new Date();
 
   public abstract toJSON(): object;
 

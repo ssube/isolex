@@ -13,24 +13,15 @@ export const TABLE_ROLE = 'role';
 @Entity(TABLE_ROLE)
 export class Role extends BaseEntity implements RoleOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column({
     unique: true,
   })
-  public name: string;
+  public name: string = '';
 
   @Column('simple-json')
-  public grants: Array<string>;
-
-  constructor(options?: RoleOptions) {
-    super();
-
-    if (options) {
-      this.grants = Array.from(options.grants);
-      this.name = options.name;
-    }
-  }
+  public grants: Array<string> = [];
 
   public toJSON() {
     return {

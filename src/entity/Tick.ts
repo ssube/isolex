@@ -8,13 +8,13 @@ export const TABLE_TICK = 'tick';
 @Entity(TABLE_TICK)
 export class Tick extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column()
-  public intervalId: string;
+  public intervalId: string = '';
 
   @Column()
-  public status: number;
+  public status: number = 0;
 
   public toJSON(): object {
     return {
