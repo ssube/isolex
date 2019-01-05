@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -19,8 +19,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     super(options, 'isolex#/definitions/service-controller-sed', [NOUN_SED]);
   }
 
-  @HandleNoun(NOUN_SED)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_SED, CommandVerb.Create)
   @CheckRBAC()
   public async createSed(cmd: Command, ctx: Context): Promise<void> {
     const source = this.getSourceOrFail(ctx);

@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -32,8 +32,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     this.keywordRepository = this.storage.getRepository(Keyword);
   }
 
-  @HandleNoun(NOUN_KEYWORD)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_KEYWORD, CommandVerb.Create)
   @CheckRBAC()
   public async createKeyword(cmd: Command, ctx: Context): Promise<void> {
     const body = cmd.getOrDefault('body', []);
@@ -67,8 +66,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     return this.reply(ctx, `Learned command ${key}.`);
   }
 
-  @HandleNoun(NOUN_KEYWORD)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_KEYWORD, CommandVerb.Update)
   @CheckRBAC()
   public async deleteKeyword(cmd: Command, ctx: Context): Promise<void> {
     if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Delete}`)) {
@@ -91,8 +89,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     return this.reply(ctx, `deleted command ${key}.`);
   }
 
-  @HandleNoun(NOUN_KEYWORD)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_KEYWORD, CommandVerb.Update)
   @CheckRBAC()
   public async executeKeyword(cmd: Command, ctx: Context): Promise<void> {
     if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Update}`)) {

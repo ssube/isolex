@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Role } from 'src/entity/auth/Role';
@@ -30,8 +30,7 @@ export class UserController extends BaseController<UserControllerData> implement
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
-  @HandleNoun(NOUN_ROLE)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_ROLE, CommandVerb.Create)
   @CheckRBAC()
   public async createRole(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHead('name');
@@ -43,8 +42,7 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(ctx, role.toString());
   }
 
-  @HandleNoun(NOUN_ROLE)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_ROLE, CommandVerb.Get)
   @CheckRBAC()
   public async getRole(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.get('name');
@@ -60,8 +58,7 @@ export class UserController extends BaseController<UserControllerData> implement
     }
   }
 
-  @HandleNoun(NOUN_ROLE)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_ROLE, CommandVerb.List)
   @CheckRBAC()
   public async listRoles(cmd: Command, ctx: Context): Promise<void> {
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
@@ -69,8 +66,7 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(ctx, roleText);
   }
 
-  @HandleNoun(NOUN_USER)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_USER, CommandVerb.Create)
   @CheckRBAC()
   public async createUser(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHeadOrDefault('name', ctx.name);
@@ -93,8 +89,7 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(ctx, user.toString());
   }
 
-  @HandleNoun(NOUN_USER)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_USER, CommandVerb.Get)
   @CheckRBAC()
   public async getUser(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHead('name');
@@ -107,8 +102,7 @@ export class UserController extends BaseController<UserControllerData> implement
     return this.reply(ctx, user.toString());
   }
 
-  @HandleNoun(NOUN_USER)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_USER, CommandVerb.Update)
   @CheckRBAC()
   public async updateUser(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHeadOrDefault('name', ctx.name);

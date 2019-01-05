@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -31,8 +31,7 @@ export class PickController extends BaseController<PickControllerData> implement
     this.list = new Checklist(options.data.check);
   }
 
-  @HandleNoun(NOUN_PICK)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_PICK, CommandVerb.Get)
   @CheckRBAC()
   public async getPick(cmd: Command, ctx: Context): Promise<void> {
     const count = Number(cmd.getHeadOrDefault(this.data.field.count, this.data.count));

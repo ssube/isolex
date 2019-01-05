@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { createCompletion } from 'src/controller/helpers';
@@ -38,8 +38,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     this.tokenRepository = this.storage.getRepository(Token);
   }
 
-  @HandleNoun(NOUN_TOKEN)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_TOKEN, CommandVerb.Create)
   @CheckRBAC()
   public async createToken(cmd: Command, ctx: Context): Promise<void> {
     const user = this.getUserOrFail(ctx);
@@ -62,8 +61,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     return this.reply(ctx, jwt);
   }
 
-  @HandleNoun(NOUN_TOKEN)
-  @HandleVerb(CommandVerb.Delete)
+  @Handler(NOUN_TOKEN, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteTokens(cmd: Command, ctx: Context): Promise<void> {
     const user = this.getUserOrFail(ctx);
@@ -82,8 +80,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     return this.reply(ctx, `tokens deleted`);
   }
 
-  @HandleNoun(NOUN_TOKEN)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_TOKEN, CommandVerb.Get)
   @CheckRBAC()
   public async getToken(cmd: Command, ctx: Context): Promise<void> {
     if (cmd.has('token')) {
@@ -105,8 +102,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     }
   }
 
-  @HandleNoun(NOUN_TOKEN)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_TOKEN, CommandVerb.List)
   @CheckRBAC()
   public async listTokens(cmd: Command, ctx: Context): Promise<void> {
     const user = this.getUserOrFail(ctx);

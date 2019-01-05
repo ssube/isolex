@@ -2,7 +2,7 @@ import { isNil, isNumber } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -20,8 +20,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
     super(options, 'isolex#/definitions/service-controller-random', [NOUN_RANDOM]);
   }
 
-  @HandleNoun(NOUN_RANDOM)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_RANDOM, CommandVerb.Get)
   @CheckRBAC()
   public async getRandom(cmd: Command, ctx: Context): Promise<void> {
     const args = cmd.data.get('args');

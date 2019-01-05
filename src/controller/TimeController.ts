@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -26,8 +26,7 @@ export class TimeController extends BaseController<TimeControllerData> implement
     this.clock = options.clock;
   }
 
-  @HandleNoun(NOUN_TIME)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_TIME, CommandVerb.Get)
   @CheckRBAC()
   public async getTime(cmd: Command, ctx: Context): Promise<void> {
     const date = this.clock.getDate();

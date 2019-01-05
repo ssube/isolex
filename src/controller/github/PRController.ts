@@ -2,7 +2,7 @@ import { defaults } from '@octokit/graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -103,8 +103,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     });
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.Delete)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteRequest(cmd: Command): Promise<void> {
     const ctx = mustExist(cmd.context);
@@ -127,8 +126,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.reply(ctx, `closed pull request ${requestNumber}`);
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.Get)
   @CheckRBAC()
   public async getRequest(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
@@ -139,8 +137,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.transformJSON(cmd, [response.data.repository.pullRequest]);
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.List)
   @CheckRBAC()
   public async listRequests(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
@@ -153,8 +150,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.transformJSON(cmd, response.data.repository.pullRequests.nodes);
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.Update)
   @CheckRBAC()
   public async updateRequest(cmd: Command, ctx: Context): Promise<void> {
     const message = cmd.getHead('message');

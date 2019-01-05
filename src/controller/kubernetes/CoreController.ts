@@ -1,7 +1,7 @@
 import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -38,8 +38,7 @@ export class KubernetesCoreController extends BaseController<KubernetesControlle
     this.client = config.makeApiClient(k8s.Core_v1Api);
   }
 
-  @HandleNoun(NOUN_POD)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_POD, CommandVerb.List)
   @CheckRBAC()
   public async listPods(cmd: Command): Promise<void> {
     const client = mustExist(this.client);
@@ -51,8 +50,7 @@ export class KubernetesCoreController extends BaseController<KubernetesControlle
     return this.transformJSON(cmd, response.body.items);
   }
 
-  @HandleNoun(NOUN_SERVICE)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_SERVICE, CommandVerb.List)
   @CheckRBAC()
   public async listServices(cmd: Command): Promise<void> {
     const client = mustExist(this.client);

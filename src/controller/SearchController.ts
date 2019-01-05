@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -36,8 +36,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
     this.url = options.compiler.compile(options.data.request.url);
   }
 
-  @HandleNoun(NOUN_SEARCH)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_SEARCH, CommandVerb.Get)
   @CheckRBAC()
   public async getSearch(cmd: Command, ctx: Context): Promise<void> {
     const data = cmd.get(this.data.field);

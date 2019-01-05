@@ -1,7 +1,7 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -25,8 +25,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.math = options.math.create({});
   }
 
-  @HandleNoun(NOUN_ROLL)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_ROLL, CommandVerb.Create)
   @CheckRBAC()
   public async createRoll(cmd: Command): Promise<void> {
     const count = cmd.getHead('count');

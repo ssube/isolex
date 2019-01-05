@@ -10,7 +10,7 @@ import { Connection, Repository } from 'typeorm';
 
 import { BotServiceOptions } from 'src/BotService';
 import { JwtFields, Token } from 'src/entity/auth/Token';
-import { Context, ContextOptions } from 'src/entity/Context';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';

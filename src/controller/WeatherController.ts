@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -31,8 +31,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     this.request = options.request;
   }
 
-  @HandleNoun(NOUN_WEATHER)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_WEATHER, CommandVerb.Get)
   @CheckRBAC()
   public async getWeather(cmd: Command, ctx: Context): Promise<void> {
     const [location] = cmd.get('location');

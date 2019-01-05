@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -41,8 +41,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
-  @HandleNoun(NOUN_FRAGMENT)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_FRAGMENT, CommandVerb.Create)
   @CheckRBAC()
   public async createFragment(cmd: Command): Promise<void> {
     const context = await this.createContext(cmd.context);
@@ -67,8 +66,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     return this.reply(context, `${fragment.id} (${key}): ${msg}`);
   }
 
-  @HandleNoun(NOUN_FRAGMENT)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_FRAGMENT, CommandVerb.Update)
   @CheckRBAC()
   public async updateFragment(cmd: Command, ctx: Context): Promise<void> {
     const id = cmd.getHead('id');

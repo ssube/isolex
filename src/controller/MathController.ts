@@ -1,7 +1,7 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -30,8 +30,7 @@ export class MathController extends BaseController<MathControllerData> implement
     this.math = options.math.create(options.data.math);
   }
 
-  @HandleNoun(NOUN_MATH)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_MATH, CommandVerb.Create)
   @CheckRBAC()
   public async createMath(cmd: Command, ctx: Context): Promise<void> {
     this.logger.debug({ cmd }, 'calculating command');

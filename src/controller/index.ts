@@ -6,14 +6,9 @@ export const SYMBOL_NOUN = Symbol('handle-noun');
 export const SYMBOL_RBAC = Symbol('check-rbac');
 export const SYMBOL_VERB = Symbol('handle-verb');
 
-export function HandleNoun(noun: string) {
+export function Handler(noun: string, verb: CommandVerb) {
   return (target: BaseController<ControllerData>, key: string, desc: PropertyDescriptor) => {
     Reflect.defineMetadata(SYMBOL_NOUN, noun, desc.value);
-  };
-}
-
-export function HandleVerb(verb: CommandVerb) {
-  return (target: BaseController<ControllerData>, key: string, desc: PropertyDescriptor) => {
     Reflect.defineMetadata(SYMBOL_VERB, verb, desc.value);
   };
 }

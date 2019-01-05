@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { createCompletion } from 'src/controller/helpers';
@@ -58,8 +58,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
-  @HandleNoun(NOUN_GRANT)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_GRANT, CommandVerb.Get)
   @CheckRBAC()
   public async getGrant(cmd: Command): Promise<void> {
     const ctx = mustExist(cmd.context);
@@ -70,8 +69,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(ctx, results);
   }
 
-  @HandleNoun(NOUN_GRANT)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_GRANT, CommandVerb.List)
   @CheckRBAC()
   public async listGrants(cmd: Command): Promise<void> {
     const ctx = mustExist(cmd.context);
@@ -82,8 +80,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(ctx, results);
   }
 
-  @HandleNoun(NOUN_ACCOUNT)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_ACCOUNT, CommandVerb.Create)
   public async createAccount(cmd: Command, ctx: Context): Promise<void> {
     if (!this.data.join.allow && !this.checkGrants(ctx, 'account:create')) {
       return this.errorReply(ctx, ErrorReplyType.GrantMissing);
@@ -112,8 +109,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(ctx, `user ${name} joined, sign in token: ${jwt}`);
   }
 
-  @HandleNoun(NOUN_ACCOUNT)
-  @HandleVerb(CommandVerb.Delete)
+  @Handler(NOUN_ACCOUNT, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteAccount(cmd: Command, ctx: Context): Promise<void> {
     const user = this.getUserOrFail(ctx);
@@ -131,8 +127,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(ctx, `revoked tokens for ${user.name}, new sign in token: ${jwt}`);
   }
 
-  @HandleNoun(NOUN_SESSION)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_SESSION, CommandVerb.Create)
   public async createSession(cmd: Command, ctx: Context): Promise<void> {
     const jwt = cmd.getHead('token');
     const token = Token.verify(jwt, this.data.token.secret, {
@@ -153,8 +148,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(ctx, 'created session');
   }
 
-  @HandleNoun(NOUN_SESSION)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_SESSION, CommandVerb.Get)
   @CheckRBAC()
   public async getSession(cmd: Command, ctx: Context): Promise<void> {
     const source = this.getSourceOrFail(ctx);

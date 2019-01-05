@@ -2,7 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -41,8 +41,7 @@ export class CountController extends BaseController<CountControllerData> impleme
     this.counterRepository = this.storage.getRepository(Counter);
   }
 
-  @HandleNoun(NOUN_COUNTER)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_COUNTER, CommandVerb.Get)
   @CheckRBAC()
   public async getCounter(cmd: Command, ctx: Context): Promise<void> {
     const count = cmd.getHeadOrDefault(this.data.field.count, this.data.default.count);
