@@ -4,14 +4,11 @@ import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export const NOUN_ECHO = 'echo';
 
 export type EchoControllerData = ControllerData;
-export interface EchoControllerOptions extends ControllerOptions<EchoControllerData> {
-  compiler: TemplateCompiler;
-}
+export type EchoControllerOptions = ControllerOptions<EchoControllerData>;
 
 @Inject()
 export class EchoController extends BaseController<EchoControllerData> implements Controller {

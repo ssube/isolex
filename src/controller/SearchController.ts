@@ -7,7 +7,6 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { RequestFactory } from 'src/utils/Request';
 import { Template } from 'src/utils/Template';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface SearchControllerData extends ControllerData {
   count: number;
@@ -18,9 +17,7 @@ export interface SearchControllerData extends ControllerData {
   };
 }
 
-export interface SearchControllerOptions extends ControllerOptions<SearchControllerData> {
-  compiler: TemplateCompiler;
-}
+export type SearchControllerOptions = ControllerOptions<SearchControllerData>;
 
 export const NOUN_SEARCH = 'search';
 

@@ -6,7 +6,6 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { RequestFactory } from 'src/utils/Request';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerData extends ControllerData {
   api: {
@@ -15,9 +14,7 @@ export interface WeatherControllerData extends ControllerData {
   };
 }
 
-export interface WeatherControllerOptions extends ControllerOptions<WeatherControllerData> {
-  compiler: TemplateCompiler;
-}
+export type WeatherControllerOptions = ControllerOptions<WeatherControllerData>;
 
 export const NOUN_WEATHER = 'weather';
 

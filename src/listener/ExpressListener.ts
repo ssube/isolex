@@ -17,7 +17,7 @@ import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
-import { mustExist, doesExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
@@ -39,9 +39,7 @@ export interface ExpressListenerData extends ListenerData {
   };
 }
 
-export interface ExpressListenerOptions extends BotServiceOptions<ExpressListenerData> {
-  graph: GraphSchema;
-}
+export type ExpressListenerOptions = BotServiceOptions<ExpressListenerData>;
 
 @Inject('bot', 'clock', 'metrics', 'services', 'storage')
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {

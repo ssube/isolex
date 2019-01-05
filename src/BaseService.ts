@@ -15,12 +15,14 @@ import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
+import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 /**
  * TODO: these should be optional and must be included in the decorator to be available
  */
 export interface InjectedServiceOptions {
   clock: Clock;
+  compiler: TemplateCompiler;
   jsonpath: JsonPath;
   logger: Logger;
   math: MathFactory;
