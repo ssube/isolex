@@ -5,6 +5,7 @@ import { LabelEntity, LabelEntityOptions } from 'src/entity/base/LabelEntity';
 import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/schema/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
+import { doesExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface MessageEntityOptions extends LabelEntityOptions {
@@ -57,7 +58,7 @@ export class Message extends LabelEntity implements MessageEntityOptions {
   constructor(options: MessageEntityOptions) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.body = options.body;
       this.context = options.context;
       this.reactions = options.reactions;
@@ -66,7 +67,7 @@ export class Message extends LabelEntity implements MessageEntityOptions {
   }
 
   public toJSON(): object {
-    const context = this.context ? this.context.toJSON() : {};
+    const context = doesExist(this.context) ? this.context.toJSON() : {};
     return {
       body: this.body,
       context,

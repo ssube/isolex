@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
@@ -56,7 +57,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     const context = req.user as Context | undefined;
     this.logger.debug({ args, context }, 'execute commands');
 
-    if (!context) {
+    if (isNil(context)) {
       throw new SessionRequiredError();
     }
 
@@ -79,7 +80,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     const context = req.user as Context | undefined;
     this.logger.debug({ args, context }, 'send messages');
 
-    if (!context) {
+    if (isNil(context)) {
       throw new SessionRequiredError();
     }
 

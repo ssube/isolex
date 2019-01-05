@@ -5,7 +5,7 @@ import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 
 export const NOUN_POD = 'kubernetes-pod';
 export const NOUN_SERVICE = 'kubernetes-service';
@@ -14,7 +14,7 @@ export interface KubernetesControllerData extends ControllerData {
   context: {
     cluster: boolean;
     default: boolean;
-    path: string;
+    path?: string;
   };
   default: {
     namespace: string;
@@ -70,7 +70,7 @@ export class KubernetesCoreController extends BaseController<KubernetesControlle
     if (this.data.context.cluster) {
       config.loadFromCluster();
     }
-    if (this.data.context.path) {
+    if (doesExist(this.data.context.path)) {
       config.loadFromFile(this.data.context.path);
     }
     return config;

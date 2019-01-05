@@ -1,4 +1,4 @@
-import { kebabCase } from 'lodash';
+import { isNil, kebabCase } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
@@ -60,7 +60,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     this.services = options.services;
 
     // check this, because bunyan will throw if it is missing
-    if (!this.name) {
+    if (isNil(this.name) || this.name === '') {
       throw new MissingValueError('missing service name');
     }
 
@@ -84,7 +84,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
   }
 
   public async start() {
-    const filters = this.data.filters || [];
+    const filters = this.data.filters;
     this.logger.info('setting up filters');
     for (const def of filters) {
       const filter = await this.services.createService<Filter, FilterData>(def);

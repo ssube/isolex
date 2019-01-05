@@ -58,7 +58,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const client = mustExist(this.client);
     const ctx = mustExist(msg.context);
 
-    if (ctx.channel.id) {
+    if (doesExist(ctx.channel.id)) {
       const result = await client.sendMessage(escape(msg.body), ctx.channel.id);
       if (doesExist(result.error)) {
         const err = new BaseError(result.error.msg);
@@ -87,11 +87,15 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     this.webClient = new WebClient(this.data.token.web);
 
     this.client.on('message', (msg) => {
-      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => this.logger.error(err, 'error receiving message'));
+      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
+        this.logger.error(err, 'error receiving message');
+      });
     });
 
     this.client.on('reaction_added', (reaction) => {
-      this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => this.logger.error(err, 'error adding reaction'));
+      this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => {
+        this.logger.error(err, 'error adding reaction');
+      });
     });
 
     await this.client.start();
@@ -135,7 +139,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       uid,
     });
     const session = await this.getSession(uid);
-    if (session) {
+    if (doesExist(session)) {
       context.user = session.user;
     }
 

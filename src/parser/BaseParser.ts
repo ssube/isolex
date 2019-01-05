@@ -66,7 +66,7 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
     noun: string;
     verb: CommandVerb;
   } {
-    if (this.data.preferData) {
+    if (this.data.preferData === true) {
       return {
         noun: getHeadOrDefault(data, 'noun', cmd.noun),
         verb: getHeadOrDefault(data, 'verb', cmd.verb) as CommandVerb,

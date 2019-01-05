@@ -61,7 +61,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
   protected createReply(context: Context, data: Map<string, Array<string>>): Promise<Command> {
     const missing = this.validate(data);
-    if (missing.length) {
+    if (missing.length > 0) {
       this.logger.debug({ missing }, 'missing required arguments, creating completion');
       return this.createCompletion(context, data, missing);
     } else {

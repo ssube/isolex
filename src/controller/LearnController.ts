@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
@@ -58,7 +59,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const existing = await this.keywordRepository.findOne({
       key,
     });
-    if (existing) {
+    if (isNil(existing)) {
       return this.errorReply(ctx, ErrorReplyType.EntityExists, key);
     }
 
@@ -78,7 +79,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const keyword = await this.keywordRepository.findOne({
       key,
     });
-    if (!keyword) {
+    if (isNil(keyword)) {
       return this.errorReply(ctx, ErrorReplyType.EntityMissing, key);
     }
 
@@ -103,7 +104,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       key,
     });
 
-    if (!keyword) {
+    if (isNil(keyword)) {
       return this.errorReply(ctx, ErrorReplyType.EntityMissing, key);
     }
 
