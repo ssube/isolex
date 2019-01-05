@@ -4,7 +4,7 @@ import { Container } from 'noicejs/Container';
 import { BaseServiceData } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { Service, ServiceDefinition, ServiceEvent, ServiceMetadata } from 'src/Service';
+import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
 import { mustExist } from 'src/utils';
 import { mustGet } from 'src/utils/Map';
 
@@ -12,11 +12,7 @@ import { mustGet } from 'src/utils/Map';
  * This is a magical half-module service locator
  */
 
-export class ServiceModule extends Module implements Service {
-  public readonly id: string = '';
-  public readonly kind: string = '';
-  public readonly name: string = '';
-
+export class ServiceModule extends Module implements ServiceLifecycle {
   protected container?: Container;
   protected services: Map<string, Service>;
 
