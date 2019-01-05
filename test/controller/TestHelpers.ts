@@ -31,7 +31,7 @@ describeAsync('completion helper', async () => {
         },
       });
       expect(result.complete).to.equal(true);
-      if (result.complete === true) {
+      if (result.complete) {
         expect(result.data).to.have.ownProperty('foo');
         expect(result.data.foo).to.deep.equal(data.foo);
       }
@@ -63,7 +63,7 @@ describeAsync('completion helper', async () => {
         },
       });
       expect(result.complete).to.equal(false);
-      if (result.complete === false) {
+      if (!result.complete) {
         expect(result.fragment.getHead('key')).to.equal('fin');
         expect(result.fragment.getHead('parser')).to.equal('test');
       }
@@ -101,7 +101,7 @@ describeAsync('completion helper', async () => {
         },
       });
       expect(result.complete).to.equal(true);
-      if (result.complete === true) {
+      if (result.complete) {
         expect(result.data.bar).to.equal('a');
         expect(result.data.foo).to.equal(10);
       }

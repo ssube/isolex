@@ -9,7 +9,7 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
-import { leftPad, mustExist } from 'src/utils';
+import { doesExist, leftPad, mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
@@ -147,7 +147,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
   protected getSlots(input: AWS.LexRuntime.StringMap | undefined): Map<string, Array<string>> {
     const slots = new Map();
-    if (!isNil(input)) {
+    if (doesExist(input)) {
       for (const [k, v] of Object.entries(input)) {
         slots.set(k, [v]);
       }

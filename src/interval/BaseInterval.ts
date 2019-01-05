@@ -1,4 +1,3 @@
-import { isNil } from 'lodash';
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
@@ -9,6 +8,7 @@ import { Tick } from 'src/entity/Tick';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Interval, IntervalData } from 'src/interval/Interval';
 import { Listener } from 'src/listener/Listener';
+import { doesExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
@@ -64,7 +64,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   }
 
   protected async stopInterval() {
-    if (this.data.frequency.time && !isNil(this.interval)) {
+    if (this.data.frequency.time && doesExist(this.interval)) {
       this.clock.clearInterval(this.interval);
     }
   }

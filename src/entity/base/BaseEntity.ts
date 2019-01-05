@@ -1,5 +1,6 @@
-import { isNil } from 'lodash';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+
+import { doesExist } from 'src/utils';
 
 export interface BaseEntityOptions {
   createdAt?: Date;
@@ -14,11 +15,11 @@ export abstract class BaseEntity implements BaseEntityOptions {
   public updatedAt: Date = new Date();
 
   constructor(options: BaseEntityOptions) {
-    if (!isNil(options)) {
-      if (!isNil(options.createdAt)) {
+    if (doesExist(options)) {
+      if (doesExist(options.createdAt)) {
         this.createdAt = options.createdAt;
       }
-      if (!isNil(options.updatedAt)) {
+      if (doesExist(options.updatedAt)) {
         this.updatedAt = options.updatedAt;
       }
     }

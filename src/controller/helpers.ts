@@ -1,6 +1,5 @@
-import { isString } from 'lodash';
+import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
-import { isNumber } from 'util';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -92,7 +91,8 @@ export function collectValue(value: CollectData, defaultValue: CollectData): Col
   });
 
   const coercedValue = { value };
-  if (schema.match(coercedValue)) {
+  const result = schema.match(coercedValue);
+  if (result.valid) {
     return coercedValue.value;
   } else {
     throw new BaseError('value type error');

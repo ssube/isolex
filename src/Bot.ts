@@ -105,7 +105,9 @@ export class Bot extends BaseService<BotData> implements Service {
     await super.start();
     this.logger.info('starting bot');
 
-    const streamError = (err: Error) => this.looseError(err);
+    const streamError = (err: Error) => {
+      this.looseError(err);
+    };
     this.commands.subscribe((next) => this.receiveCommand(next).catch(streamError));
     this.incoming.subscribe((next) => this.receive(next).catch(streamError));
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(streamError));

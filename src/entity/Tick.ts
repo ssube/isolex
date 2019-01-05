@@ -1,8 +1,8 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
-import { isNil } from 'lodash';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
+import { doesExist } from 'src/utils';
 
 export const TABLE_TICK = 'tick';
 
@@ -25,7 +25,7 @@ export class Tick extends BaseEntity {
   constructor(options: TickOptions) {
     super(options);
 
-    if (!isNil(options)) {
+    if (doesExist(options)) {
       this.intervalId = options.intervalId;
       this.status = options.status;
     }

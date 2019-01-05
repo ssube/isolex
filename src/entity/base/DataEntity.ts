@@ -2,6 +2,7 @@ import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { LabelEntity, LabelEntityOptions } from 'src/entity/base/LabelEntity';
 import { MissingKeyError } from 'src/error/MissingKeyError';
+import { doesExist } from 'src/utils';
 import { dictToMap, getOrDefault, MapLike } from 'src/utils/Map';
 
 export interface DataEntityOptions<TVal> extends LabelEntityOptions {
@@ -19,7 +20,7 @@ export abstract class DataEntity<TVal> extends LabelEntity {
   constructor(options: DataEntityOptions<TVal>) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.data = dictToMap(options.data);
     }
   }

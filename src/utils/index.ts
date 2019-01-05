@@ -33,7 +33,7 @@ export function countList(val: unknown): number {
     return val.length;
   }
 
-  if (!isNil(val)) {
+  if (doesExist(val)) {
     return 1;
   }
 
@@ -44,10 +44,7 @@ export function countList(val: unknown): number {
  * Remove any null or undefined items from the list.
  */
 export function filterNil<TItem>(list: ArrayLike<TItem | null | undefined>): Array<TItem> {
-  function nilGuard(val: TItem | null | undefined): val is TItem {
-    return !isNil(val);
-  }
-  return Array.from(list).filter(nilGuard);
+  return Array.from(list).filter(doesExist);
 }
 
 /**
@@ -99,7 +96,7 @@ export function getMethods<TValue extends object>(value: TValue): Set<Function> 
   }
 
   const proto = Reflect.getPrototypeOf(value);
-  if (proto !== value && !isNil(proto)) {
+  if (proto !== value && doesExist(proto)) {
     for (const m of getMethods(proto)) {
       methods.add(m);
     }
@@ -114,4 +111,8 @@ export function mustExist<T>(val: T | undefined): T {
   }
 
   return val;
+}
+
+export function doesExist<T>(val: T | null | undefined): val is T {
+  return !isNil(val);
 }

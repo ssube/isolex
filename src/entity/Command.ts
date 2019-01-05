@@ -6,6 +6,7 @@ import { BaseCommand, BaseCommandOptions } from 'src/entity/base/BaseCommand';
 import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/schema/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
+import { doesExist } from 'src/utils';
 
 export enum CommandVerb {
   Create = 'create',
@@ -42,7 +43,7 @@ export class Command extends BaseCommand implements CommandOptions {
   constructor(options: CommandOptions) {
     super(options);
 
-    if (!isNil(options)) {
+    if (doesExist(options)) {
       this.context = options.context;
     }
   }

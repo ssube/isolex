@@ -1,6 +1,7 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
+import { doesExist } from 'src/utils';
 import { dictToMap, MapLike } from 'src/utils/Map';
 
 export interface LabelEntityOptions extends BaseEntityOptions {
@@ -18,7 +19,7 @@ export abstract class LabelEntity extends BaseEntity {
   constructor(options: LabelEntityOptions) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.labels = dictToMap(options.labels);
     }
   }

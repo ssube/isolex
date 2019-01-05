@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand } from 'src/entity/base/BaseCommand';
 import { CommandOptions } from 'src/entity/Command';
+import { doesExist } from 'src/utils';
 
 export interface KeywordOptions extends CommandOptions {
   controllerId: string;
@@ -28,7 +29,7 @@ export class Keyword extends BaseCommand implements KeywordOptions {
   constructor(options: KeywordOptions) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.controllerId = options.controllerId;
       this.key = options.key;
     }

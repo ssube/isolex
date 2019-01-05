@@ -1,5 +1,5 @@
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
-import { flatten, isNil } from 'lodash';
+import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
@@ -9,6 +9,7 @@ import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
+import { doesExist } from 'src/utils';
 
 export interface ChannelData {
   id: string;
@@ -71,7 +72,7 @@ export class Context extends BaseEntity implements ContextOptions {
   constructor(options: ContextOptions) {
     super(options);
 
-    if (!isNil(options)) {
+    if (doesExist(options)) {
       if (!options.name || !options.uid) {
         throw new MissingValueError('name and uid must be specified in context options');
       }

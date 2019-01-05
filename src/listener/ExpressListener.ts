@@ -207,7 +207,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
     }, (payload: JwtFields, done: VerifiedCallback) => {
-      this.createTokenSession(payload, done);
+      this.createTokenSession(payload, done).catch((err) => this.logger.error(err, 'error creating token session'));
     }));
 
     // sessions are saved when created and keyed by uid, so pass that

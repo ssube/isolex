@@ -23,7 +23,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface DiscordListenerData extends ListenerData {
@@ -36,7 +36,7 @@ export type DiscordListenerOptions = BotServiceOptions<DiscordListenerData>;
 @Inject('bot', 'clock', 'metrics', 'services')
 export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
-    return !isNil(chan) && chan.type === 'text';
+    return doesExist(chan) && chan.type === 'text';
   }
 
   protected readonly client: Client;
@@ -78,7 +78,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     this.startClientLogger();
     await this.client.login(this.data.token);
 
-    if (this.data.presence) {
+    if (doesExist(this.data.presence)) {
       await this.client.user.setPresence(this.data.presence);
     }
   }
@@ -95,12 +95,12 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     const ctx = mustExist(msg.context);
 
     // direct reply to message
-    if (ctx.channel.thread) {
+    if (doesExist(ctx.channel.thread)) {
       return this.replyToThread(msg, ctx);
     }
 
     // broad reply to channel
-    if (ctx.channel.id) {
+    if (doesExist(ctx.channel.id)) {
       return this.replyToChannel(msg, ctx);
     }
 
@@ -155,12 +155,12 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
 
   protected async replyToThread(msg: Message, ctx: Context) {
     const thread = this.threads.get(ctx.channel.thread);
-    if (!thread) {
+    if (isNil(thread)) {
       this.logger.warn({ msg }, 'message thread is missing');
       return;
     }
 
-    if (msg.body.length) {
+    if (msg.body.length > 0) {
       await thread.reply(escape(msg.body));
     }
 
@@ -175,7 +175,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
 
   protected async replyToChannel(msg: Message, ctx: Context) {
     const channel = this.client.channels.get(ctx.channel.id);
-    if (!channel) {
+    if (isNil(channel)) {
       this.logger.warn({ msg }, 'message channel is missing');
       return;
     }
@@ -199,13 +199,13 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
 
   protected convertEmoji(name: string): string {
     const results = emoji.search(name);
-    if (results.length) {
+    if (results.length > 0) {
       return results[0].emoji;
     }
 
     const custom = this.client.emojis.find('name', name);
 
-    if (custom) {
+    if (doesExist(custom)) {
       return custom.id;
     }
 
@@ -224,7 +224,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     };
 
     const session = await this.getSession(msg.author.id);
-    if (session) {
+    if (doesExist(session)) {
       contextData.user = session.user;
     }
 
@@ -242,7 +242,11 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     const msg = await this.convertMessage(reaction.message);
     if (reaction.emoji instanceof ReactionEmoji) {
       const result = emoji.find(reaction.emoji.toString());
-      msg.body = result ? result.key : 'missing emoji';
+      if (doesExist(result)) {
+        msg.body = result.key;
+      } else {
+        msg.body = 'missing emoji';
+      }
     } else {
       msg.body = reaction.emoji.name;
     }
@@ -258,14 +262,14 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   protected convertQueryOptions(options: FetchOptions): ChannelLogsQueryOptions {
-    if (options.after) {
+    if (doesExist(options.after)) {
       return {
         after: options.id,
         limit: options.count,
       };
     }
 
-    if (options.before) {
+    if (doesExist(options.before)) {
       return {
         before: options.id,
         limit: options.count,

@@ -9,7 +9,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SlackListenerData extends ListenerData {
@@ -60,7 +60,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
 
     if (ctx.channel.id) {
       const result = await client.sendMessage(escape(msg.body), ctx.channel.id);
-      if (!isNil(result.error)) {
+      if (doesExist(result.error)) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
         throw err;

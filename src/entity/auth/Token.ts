@@ -6,7 +6,7 @@ import { User } from 'src/entity/auth/User';
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 import { dateToSeconds } from 'src/utils/Clock';
 import { Dict, mapToDict } from 'src/utils/Map';
 
@@ -101,7 +101,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   constructor(options: TokenOptions) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.audience = options.audience;
       this.expiresAt = options.expiresAt;
       this.grants = options.grants;

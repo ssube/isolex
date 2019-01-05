@@ -1,10 +1,10 @@
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
-import { isNil } from 'lodash';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand } from 'src/entity/base/BaseCommand';
 import { CommandOptions } from 'src/entity/Command';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
+import { doesExist } from 'src/utils';
 
 export const TABLE_FRAGMENT = 'fragment';
 
@@ -38,7 +38,7 @@ export class Fragment extends BaseCommand implements FragmentOptions {
   constructor(options: FragmentOptions) {
     super(options);
 
-    if (!isNil(options)) {
+    if (doesExist(options)) {
       this.key = options.key;
       this.parserId = options.parserId;
       this.userId = options.userId;
