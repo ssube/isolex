@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { Column } from 'typeorm';
 
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
@@ -15,6 +16,15 @@ export abstract class BaseCommand extends DataEntity<Array<string>> {
 
   @Column()
   public verb: CommandVerb = CommandVerb.Help;
+
+  constructor(options: BaseCommandOptions) {
+    super(options);
+
+    if (!isNil(options)) {
+      this.noun = options.noun;
+      this.verb = options.verb;
+    }
+  }
 
   public getHead(key: string): string {
     const value = this.get(key);

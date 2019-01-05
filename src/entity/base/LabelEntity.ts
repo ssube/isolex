@@ -1,9 +1,9 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 import { MapLike } from 'src/utils/Map';
 
-export interface LabelEntityOptions {
+export interface LabelEntityOptions extends BaseEntityOptions {
   labels: MapLike<string>;
 }
 

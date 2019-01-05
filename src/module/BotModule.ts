@@ -71,6 +71,7 @@ export class BotModule extends Module {
 
   @Provides('storage')
   public async getStorage(): Promise<Connection> {
-    return this.bot.getStorage();
+    const bot = await this.getBot();
+    return bot.getStorage();
   }
 }

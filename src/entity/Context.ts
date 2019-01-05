@@ -1,12 +1,12 @@
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
-import { flatten } from 'lodash';
+import { flatten, isNil } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Token } from 'src/entity/auth/Token';
 import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 
@@ -15,7 +15,7 @@ export interface ChannelData {
   thread: string;
 }
 
-export interface ContextOptions {
+export interface ContextOptions extends BaseEntityOptions {
   channel: ChannelData;
 
   /**
@@ -47,13 +47,13 @@ export const TABLE_CONTEXT = 'context';
 @Entity(TABLE_CONTEXT)
 export class Context extends BaseEntity implements ContextOptions {
   @Column('simple-json')
-  public channel!: ChannelData;
+  public channel: ChannelData;
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @Column()
-  public name: string = '';
+  public name: string;
 
   public parser?: Parser;
 
@@ -64,17 +64,18 @@ export class Context extends BaseEntity implements ContextOptions {
   public token?: Token;
 
   @Column()
-  public uid: string = '';
+  public uid: string;
 
   public user?: User;
 
-  constructor(options?: ContextOptions) {
-    super();
+  constructor(options: ContextOptions) {
+    super(options);
 
-    if (options) {
+    if (!isNil(options)) {
       if (!options.name || !options.uid) {
         throw new MissingValueError('name and uid must be specified in context options');
       }
+
       this.channel = {
         id: options.channel.id,
         thread: options.channel.thread,
@@ -86,24 +87,14 @@ export class Context extends BaseEntity implements ContextOptions {
       this.token = options.token;
       this.uid = options.uid;
       this.user = options.user;
+    } else {
+      this.channel = {
+        id: '',
+        thread: '',
+      };
+      this.name = '';
+      this.uid = '';
     }
-  }
-
-  public extend(options: Partial<ContextOptions>): Context {
-    const ctx = new Context(this);
-    if (options.parser) {
-      ctx.parser = options.parser;
-    }
-    if (options.target) {
-      ctx.target = options.target;
-    }
-    if (options.token) {
-      ctx.token = options.token;
-    }
-    if (options.user) {
-      ctx.user = options.user;
-    }
-    return ctx;
   }
 
   /**

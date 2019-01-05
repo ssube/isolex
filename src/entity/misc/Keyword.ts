@@ -2,7 +2,6 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand } from 'src/entity/base/BaseCommand';
 import { CommandOptions } from 'src/entity/Command';
-import { dictToMap } from 'src/utils/Map';
 
 export interface KeywordOptions extends CommandOptions {
   controllerId: string;
@@ -25,6 +24,15 @@ export class Keyword extends BaseCommand implements KeywordOptions {
 
   @PrimaryColumn()
   public key: string = '';
+
+  constructor(options: KeywordOptions) {
+    super(options);
+
+    if (options) {
+      this.controllerId = options.controllerId;
+      this.key = options.key;
+    }
+  }
 
   public toJSON() {
     return {

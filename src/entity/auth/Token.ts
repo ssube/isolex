@@ -1,5 +1,4 @@
 import { sign, verify } from 'jsonwebtoken';
-import { isNil } from 'lodash';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -7,6 +6,7 @@ import { User } from 'src/entity/auth/User';
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { mustExist } from 'src/utils';
 import { dateToSeconds } from 'src/utils/Clock';
 import { Dict, mapToDict } from 'src/utils/Map';
 
@@ -27,8 +27,10 @@ export interface VerifiableTokenOptions {
   subject: string;
 }
 
-export interface TokenOptions extends Session, DataEntityOptions<Array<string>>, VerifiableTokenOptions {
+export interface TokenOptions extends DataEntityOptions<Array<string>>, VerifiableTokenOptions {
+  expiresAt: Date;
   grants: Array<string>;
+  user?: User;
 }
 
 export const TABLE_TOKEN = 'token';
@@ -94,7 +96,20 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   @JoinColumn({
     name: 'subject',
   })
-  public user!: User;
+  public user?: User;
+
+  constructor(options: TokenOptions) {
+    super(options);
+
+    if (options) {
+      this.audience = options.audience;
+      this.expiresAt = options.expiresAt;
+      this.grants = options.grants;
+      this.issuer = options.issuer;
+      this.subject = options.subject;
+      this.user = options.user;
+    }
+  }
 
   /**
    * Check if a set of Shiro-style permissions have been granted to this token. This does not check the token's user,
@@ -110,10 +125,11 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * Turn this token into an equivalent session.
    */
   public session(): Session {
+    const user = mustExist(this.user);
     return {
       createdAt: this.createdAt,
       expiresAt: this.expiresAt,
-      user: this.user,
+      user,
     };
   }
 

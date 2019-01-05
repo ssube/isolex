@@ -12,6 +12,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
 import { ServiceMetadata } from 'src/Service';
+import { mustExist } from 'src/utils';
 
 export const NOUN_FRAGMENT = 'fragment';
 
@@ -44,23 +45,24 @@ export class CompletionController extends BaseController<CompletionControllerDat
   @HandleVerb(CommandVerb.Create)
   @CheckRBAC()
   public async createFragment(cmd: Command): Promise<void> {
-    const user = this.getUserOrFail(cmd.context);
+    const context = await this.createContext(cmd.context);
+    const user = this.getUserOrFail(context);
     const key = cmd.getHead('key');
     const msg = cmd.getHeadOrDefault('msg', `missing required argument: ${key}`);
     const noun = cmd.getHead('noun');
     const parserId = cmd.getHead('parser');
     const verb = cmd.getHead('verb') as CommandVerb;
 
-    const fragment = new Fragment();
-    fragment.data = cmd.data;
-    fragment.key = key;
-    fragment.labels = cmd.labels;
-    fragment.noun = noun;
-    fragment.parserId = parserId;
-    fragment.userId = user.id;
-    fragment.verb = verb;
+    const fragment = new Fragment({
+      data: cmd.data,
+      key,
+      labels: cmd.labels,
+      noun,
+      parserId,
+      userId: user.id,
+      verb,
+    });
 
-    const context = await this.createContext(cmd.context);
     this.logger.debug({ context, fragment }, 'creating fragment for later completion');
     return this.reply(context, `${fragment.id} (${key}): ${msg}`);
   }
@@ -68,13 +70,13 @@ export class CompletionController extends BaseController<CompletionControllerDat
   @HandleNoun(NOUN_FRAGMENT)
   @HandleVerb(CommandVerb.Update)
   @CheckRBAC()
-  public async updateFragment(cmd: Command): Promise<void> {
+  public async updateFragment(cmd: Command, ctx: Context): Promise<void> {
     const id = cmd.getHead('id');
     this.logger.debug({ id }, 'getting fragment to complete');
 
-    const fragment = await this.getFragment(cmd.context, id);
+    const fragment = await this.getFragment(ctx, id);
     if (isNil(fragment)) {
-      return this.reply(cmd.context, 'fragment not found');
+      return this.reply(ctx, 'fragment not found');
     }
 
     this.logger.debug({ fragment, parserId: fragment.parserId }, 'attempting to complete fragment');
@@ -82,7 +84,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     try {
       const parser = this.services.getService<Parser>({ id: fragment.parserId });
       const value = cmd.get('next');
-      const commands = await parser.complete(cmd.context, fragment, value);
+      const commands = await parser.complete(ctx, fragment, value);
 
       // the commands have been completed (or additional completions issued), so even if they fail,
       // the previous fragment should be cleaned up. If parsing fails, the fragment should not be
@@ -91,13 +93,15 @@ export class CompletionController extends BaseController<CompletionControllerDat
       await this.bot.executeCommand(...commands);
     } catch (err) {
       this.logger.error(err, 'error completing fragment');
-      return this.reply(cmd.context, 'error completing fragment');
+      return this.reply(ctx, 'error completing fragment');
     }
   }
 
-  protected async createContext(ctx: Context) {
+  protected async createContext(maybeCtx?: Context) {
+    const ctx = mustExist(maybeCtx);
     if (isNil(ctx.target)) {
-      return ctx.extend({
+      return new Context({
+        ...ctx,
         target: this.target,
       });
     } else {

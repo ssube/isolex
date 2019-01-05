@@ -5,6 +5,7 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -27,12 +28,12 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
 
+    const replyContext = await this.createContext(ctx);
     return [new Command({
-      context: msg.context.extend({
-        parser: this,
-      }),
+      context: replyContext,
       data: this.mapper.map(data),
       labels: this.data.defaultCommand.labels,
       noun: this.data.defaultCommand.noun,

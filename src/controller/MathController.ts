@@ -5,6 +5,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
 
 export const NOUN_MATH = 'math';
@@ -32,19 +33,19 @@ export class MathController extends BaseController<MathControllerData> implement
   @HandleNoun(NOUN_MATH)
   @HandleVerb(CommandVerb.Create)
   @CheckRBAC()
-  public async createMath(cmd: Command): Promise<void> {
+  public async createMath(cmd: Command, ctx: Context): Promise<void> {
     this.logger.debug({ cmd }, 'calculating command');
 
     const inputExpr = cmd.get('expr');
     if (!inputExpr.length) {
-      return this.reply(cmd.context, 'no expression given');
+      return this.reply(ctx, 'no expression given');
     }
 
     const expr = inputExpr.join(';\n');
     this.logger.debug({ expr }, 'evaluating expression');
 
     const body = '`' + this.solve(expr, { cmd }) + '`';
-    return this.reply(cmd.context, body);
+    return this.reply(ctx, body);
   }
 
   protected solve(expr: string, scope: object): string {

@@ -4,6 +4,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -34,7 +35,7 @@ export class ReactionController extends BaseController<ReactionControllerData> i
   @HandleNoun(NOUN_REACTION)
   @HandleVerb(CommandVerb.Create)
   @CheckRBAC()
-  public async createReaction(cmd: Command): Promise<void> {
+  public async createReaction(cmd: Command, ctx: Context): Promise<void> {
     const reactions = [];
     const body = cmd.get(this.data.field);
     for (const [key, next] of this.reactions) {
@@ -53,7 +54,8 @@ export class ReactionController extends BaseController<ReactionControllerData> i
     this.logger.debug({ cmd, reactions }, 'reacting to command');
     await this.bot.sendMessage(new Message({
       body: '',
-      context: cmd.context,
+      context: ctx,
+      labels: cmd.labels,
       reactions,
       type: TYPE_TEXT,
     }));

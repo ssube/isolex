@@ -8,6 +8,7 @@ import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { mustExist } from 'src/utils';
 import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map';
 
 export interface ArgsParserData extends ParserData {
@@ -47,9 +48,10 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
     return Promise.all([
-      this.createReply(msg.context, dictToMap(data)),
+      this.createReply(ctx, dictToMap(data)),
     ]);
   }
 
@@ -85,10 +87,9 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
       parser: [this.id],
       verb: [this.data.defaultCommand.verb],
     });
+    const fragmentContext = await this.createContext(context);
     return new Command({
-      context: context.extend({
-        parser: this,
-      }),
+      context: fragmentContext,
       data: new Map([...data, ...fragment]),
       labels: this.data.defaultCommand.labels,
       noun: NOUN_FRAGMENT,

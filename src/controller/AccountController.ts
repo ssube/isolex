@@ -11,6 +11,8 @@ import { Token } from 'src/entity/auth/Token';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_GRANT = 'grant';
@@ -60,37 +62,39 @@ export class AccountController extends BaseController<AccountControllerData> imp
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
   public async getGrant(cmd: Command): Promise<void> {
+    const ctx = mustExist(cmd.context);
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
-      return `\`${p}: ${cmd.context.checkGrants([p])}\``;
+      return `\`${p}: ${ctx.checkGrants([p])}\``;
     }).join('\n');
-    return this.reply(cmd.context, results);
+    return this.reply(ctx, results);
   }
 
   @HandleNoun(NOUN_GRANT)
   @HandleVerb(CommandVerb.List)
   @CheckRBAC()
   public async listGrants(cmd: Command): Promise<void> {
+    const ctx = mustExist(cmd.context);
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
-      return `\`${p}: ${cmd.context.listGrants([p])}\``;
+      return `\`${p}: ${ctx.listGrants([p])}\``;
     }).join('\n');
-    return this.reply(cmd.context, results);
+    return this.reply(ctx, results);
   }
 
   @HandleNoun(NOUN_ACCOUNT)
   @HandleVerb(CommandVerb.Create)
-  public async createAccount(cmd: Command): Promise<void> {
-    if (!this.data.join.allow && !this.checkGrants(cmd.context, 'account:create')) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+  public async createAccount(cmd: Command, ctx: Context): Promise<void> {
+    if (!this.data.join.allow && !this.checkGrants(ctx, 'account:create')) {
+      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
     }
 
-    const name = cmd.getHeadOrDefault('name', cmd.context.name);
+    const name = cmd.getHeadOrDefault('name', ctx.name);
     const existing = await this.userRepository.count({
       name,
     });
     if (existing > 0) {
-      return this.reply(cmd.context, `user ${name} already exists`);
+      return this.reply(ctx, `user ${name} already exists`);
     }
 
     const roleNames = this.getUserRoles(name);
@@ -105,15 +109,14 @@ export class AccountController extends BaseController<AccountControllerData> imp
     }));
 
     const jwt = await this.createToken(user);
-    return this.reply(cmd.context, `user ${name} joined, sign in token: ${jwt}`);
+    return this.reply(ctx, `user ${name} joined, sign in token: ${jwt}`);
   }
 
   @HandleNoun(NOUN_ACCOUNT)
   @HandleVerb(CommandVerb.Delete)
   @CheckRBAC()
-  public async deleteAccount(cmd: Command): Promise<void> {
-    const user = this.getUserOrFail(cmd.context);
-
+  public async deleteAccount(cmd: Command, ctx: Context): Promise<void> {
+    const user = this.getUserOrFail(ctx);
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
       const completion = createCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${user.name}`);
       await this.bot.executeCommand(completion);
@@ -125,12 +128,12 @@ export class AccountController extends BaseController<AccountControllerData> imp
     });
 
     const jwt = await this.createToken(user);
-    return this.reply(cmd.context, `revoked tokens for ${user.name}, new sign in token: ${jwt}`);
+    return this.reply(ctx, `revoked tokens for ${user.name}, new sign in token: ${jwt}`);
   }
 
   @HandleNoun(NOUN_SESSION)
   @HandleVerb(CommandVerb.Create)
-  public async createSession(cmd: Command): Promise<void> {
+  public async createSession(cmd: Command, ctx: Context): Promise<void> {
     const jwt = cmd.getHead('token');
     const token = Token.verify(jwt, this.data.token.secret, {
       audience: this.data.token.audience,
@@ -144,23 +147,23 @@ export class AccountController extends BaseController<AccountControllerData> imp
     await this.userRepository.loadRoles(user);
     this.logger.debug({ user }, 'logging in user');
 
-    const source = this.getSourceOrFail(cmd.context);
-    const session = await source.createSession(cmd.context.uid, user);
+    const source = this.getSourceOrFail(ctx);
+    const session = await source.createSession(ctx.uid, user);
     this.logger.debug({ session, user }, 'created session');
-    return this.reply(cmd.context, 'created session');
+    return this.reply(ctx, 'created session');
   }
 
   @HandleNoun(NOUN_SESSION)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getSession(cmd: Command): Promise<void> {
-    const source = this.getSourceOrFail(cmd.context);
-    const session = source.getSession(cmd.context.uid);
+  public async getSession(cmd: Command, ctx: Context): Promise<void> {
+    const source = this.getSourceOrFail(ctx);
+    const session = source.getSession(ctx.uid);
     if (isNil(session)) {
-      return this.reply(cmd.context, 'cannot get sessions unless logged in');
+      return this.reply(ctx, 'cannot get sessions unless logged in');
     }
 
-    return this.reply(cmd.context, session.toString());
+    return this.reply(ctx, session.toString());
   }
 
   protected async createToken(user: User): Promise<string> {

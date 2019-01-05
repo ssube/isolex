@@ -8,6 +8,7 @@ import { Role } from 'src/entity/auth/Role';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 
 export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';
@@ -32,20 +33,20 @@ export class UserController extends BaseController<UserControllerData> implement
   @HandleNoun(NOUN_ROLE)
   @HandleVerb(CommandVerb.Create)
   @CheckRBAC()
-  public async createRole(cmd: Command): Promise<void> {
+  public async createRole(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHead('name');
     const grants = cmd.get('grants');
     const role = await this.roleRepository.insert({
       grants,
       name,
     });
-    return this.reply(cmd.context, role.toString());
+    return this.reply(ctx, role.toString());
   }
 
   @HandleNoun(NOUN_ROLE)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getRole(cmd: Command): Promise<void> {
+  public async getRole(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.get('name');
     const role = await this.roleRepository.findOne({
       where: {
@@ -53,26 +54,26 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     if (role) {
-      return this.reply(cmd.context, role.toString());
+      return this.reply(ctx, role.toString());
     } else {
-      return this.reply(cmd.context, 'role not found');
+      return this.reply(ctx, 'role not found');
     }
   }
 
   @HandleNoun(NOUN_ROLE)
   @HandleVerb(CommandVerb.List)
   @CheckRBAC()
-  public async listRoles(cmd: Command): Promise<void> {
+  public async listRoles(cmd: Command, ctx: Context): Promise<void> {
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
     const roleText = roles.map((r) => r.toString()).join('\n');
-    return this.reply(cmd.context, roleText);
+    return this.reply(ctx, roleText);
   }
 
   @HandleNoun(NOUN_USER)
   @HandleVerb(CommandVerb.Create)
   @CheckRBAC()
-  public async createUser(cmd: Command): Promise<void> {
-    const name = cmd.getHeadOrDefault('name', cmd.context.name);
+  public async createUser(cmd: Command, ctx: Context): Promise<void> {
+    const name = cmd.getHeadOrDefault('name', ctx.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'creating user');
 
@@ -89,13 +90,13 @@ export class UserController extends BaseController<UserControllerData> implement
     }));
     this.logger.debug({ user }, 'created user');
 
-    return this.reply(cmd.context, user.toString());
+    return this.reply(ctx, user.toString());
   }
 
   @HandleNoun(NOUN_USER)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getUser(cmd: Command): Promise<void> {
+  public async getUser(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHead('name');
     const user = await this.userRepository.findOneOrFail({
       where: {
@@ -103,14 +104,14 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     await this.userRepository.loadRoles(user);
-    return this.reply(cmd.context, user.toString());
+    return this.reply(ctx, user.toString());
   }
 
   @HandleNoun(NOUN_USER)
   @HandleVerb(CommandVerb.Update)
   @CheckRBAC()
-  public async updateUser(cmd: Command): Promise<void> {
-    const name = cmd.getHeadOrDefault('name', cmd.context.name);
+  public async updateUser(cmd: Command, ctx: Context): Promise<void> {
+    const name = cmd.getHeadOrDefault('name', ctx.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'updating user');
 
@@ -127,6 +128,6 @@ export class UserController extends BaseController<UserControllerData> implement
     user.roles = roles;
 
     const updatedUser = await this.userRepository.save(user);
-    return this.reply(cmd.context, updatedUser.toString());
+    return this.reply(ctx, updatedUser.toString());
   }
 }

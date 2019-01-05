@@ -1,19 +1,33 @@
+import { Inject } from 'noicejs';
+import { Repository } from 'typeorm';
+
 import { BotService } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
-import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
+import { FetchOptions, Listener, ListenerData, ListenerOptions } from 'src/listener/Listener';
+import { mustExist } from 'src/utils';
 
+@Inject('storage')
 export abstract class BaseListener<TData extends ListenerData> extends BotService<TData> implements Listener {
+  protected readonly contextRepository: Repository<Context>;
+
+  constructor(options: ListenerOptions<TData>, schemaPath: string) {
+    super(options, schemaPath);
+
+    this.contextRepository = options.storage.getRepository(Context);
+  }
+
   /**
    * Check if this listener can receive messages from this context.
    *
    * Defaults to checking that the context came from this very same listener, by id.
    */
   public async check(msg: Message): Promise<boolean> {
-    if (msg.context.target) {
-      return msg.context.target.id === this.id;
+    const ctx = mustExist(msg.context);
+    if (ctx.target) {
+      return ctx.target.id === this.id;
     }
 
     return false;
@@ -27,10 +41,12 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
   public abstract getSession(uid: string): Promise<Session | undefined>;
 
   protected async createContext(options: ContextOptions): Promise<Context> {
-    return new Context({
+    const ctx = await this.contextRepository.save(new Context({
       ...options,
       source: this,
       target: this,
-    });
+    }));
+    this.logger.debug({ ctx }, 'listener saved new context');
+    return ctx;
   }
 }

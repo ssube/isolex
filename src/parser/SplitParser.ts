@@ -6,6 +6,7 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -34,9 +35,10 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
     this.logger.debug({ data }, 'splitting string');
-    return [await this.createCommand(msg.context, this.mapper.map(data))];
+    return [await this.createCommand(ctx, this.mapper.map(data))];
   }
 
   public async decode(msg: Message): Promise<Array<string>> {

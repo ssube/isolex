@@ -1,4 +1,5 @@
 import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { isNil } from 'lodash';
 import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand, BaseCommandOptions } from 'src/entity/base/BaseCommand';
@@ -35,33 +36,23 @@ export class Command extends BaseCommand implements CommandOptions {
     cascade: true,
   })
   @JoinColumn()
-  public context!: Context;
+  public context?: Context;
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
-  public extend(options: Partial<CommandOptions>) {
-    if (options.noun) {
-      throw new InvalidArgumentError('extended commands may not change noun');
-    }
-    if (options.verb) {
-      throw new InvalidArgumentError('extended commands may not change verb');
-    }
+  constructor(options: CommandOptions) {
+    super(options);
 
-    const cmd = new Command();
-    Object.assign(cmd, this); // TODO: is this right?
-    if (options.context) {
-      cmd.context = options.context;
+    if (!isNil(options)) {
+      this.context = options.context;
     }
-    if (options.data) {
-      cmd.data = pushMergeMap(cmd.data, dictToMap(options.data));
-    }
-    return cmd;
   }
 
   public toJSON(): object {
+    const context = isNil(this.context) ? {} : this.context.toJSON();
     return {
-      context: this.context.toJSON(),
+      context,
       data: Array.from(this.data),
       id: this.id,
       noun: this.noun,

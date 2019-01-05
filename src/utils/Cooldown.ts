@@ -29,7 +29,7 @@ export class Cooldown implements ServiceLifecycle {
   protected grow: number;
   protected rate: number;
   protected ticks: number;
-  protected timer: NodeJS.Timeout;
+  protected timer?: NodeJS.Timeout;
 
   constructor(options: CooldownOptions) {
     this.active = false;

@@ -1,4 +1,4 @@
-import { bindAll, isNil } from 'lodash';
+import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 import { LogLevel } from 'noicejs/logger/Logger';
 import { Counter, Registry } from 'prom-client';
@@ -14,7 +14,7 @@ import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listen
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
-import { filterNil, mustFind, mustExist } from 'src/utils';
+import { filterNil, mustExist, mustFind } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
@@ -42,8 +42,8 @@ export class Bot extends BaseService<BotData> implements Service {
   protected storage?: Connection;
 
   // counters
-  protected cmdCounter!: Counter;
-  protected msgCounter!: Counter;
+  protected cmdCounter?: Counter;
+  protected msgCounter?: Counter;
 
   // services
   protected controllers: Array<Controller>;
@@ -197,7 +197,7 @@ export class Bot extends BaseService<BotData> implements Service {
    */
   protected async receiveCommand(cmd: Command): Promise<void> {
     this.logger.debug({ cmd }, 'receiving command');
-    incrementServiceCounter(this, this.cmdCounter, {
+    incrementServiceCounter(this, mustExist(this.cmdCounter), {
       commandNoun: cmd.noun,
       commandVerb: cmd.verb,
     });
@@ -222,7 +222,7 @@ export class Bot extends BaseService<BotData> implements Service {
    */
   protected async receiveMessage(msg: Message): Promise<void> {
     this.logger.debug({ msg }, 'receiving outgoing message');
-    incrementServiceCounter(this, this.msgCounter, {
+    incrementServiceCounter(this, mustExist(this.msgCounter), {
       messageType: msg.type,
     });
 
@@ -231,10 +231,11 @@ export class Bot extends BaseService<BotData> implements Service {
       return;
     }
 
-    if (isNil(msg.context.target)) {
+    const context = mustExist(msg.context);
+    if (isNil(context.target)) {
       return this.findMessageTarget(msg);
     } else {
-      return this.sendMessageTarget(msg, msg.context.target);
+      return this.sendMessageTarget(msg, context.target);
     }
   }
 

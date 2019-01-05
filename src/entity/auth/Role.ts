@@ -1,9 +1,9 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 
-export interface RoleOptions {
+export interface RoleOptions extends BaseEntityOptions {
   grants: Array<string>;
   name: string;
 }
@@ -22,6 +22,15 @@ export class Role extends BaseEntity implements RoleOptions {
 
   @Column('simple-json')
   public grants: Array<string> = [];
+
+  constructor(options: RoleOptions) {
+    super(options);
+
+    if (options) {
+      this.grants = options.grants;
+      this.name = options.name;
+    }
+  }
 
   public toJSON() {
     return {

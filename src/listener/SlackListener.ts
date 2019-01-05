@@ -9,8 +9,8 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
-import { TYPE_TEXT } from 'src/utils/Mime';
 import { mustExist } from 'src/utils';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SlackListenerData extends ListenerData {
   token: {
@@ -56,8 +56,10 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
 
   public async send(msg: Message): Promise<void> {
     const client = mustExist(this.client);
-    if (msg.context.channel.id) {
-      const result = await client.sendMessage(escape(msg.body), msg.context.channel.id);
+    const ctx = mustExist(msg.context);
+
+    if (ctx.channel.id) {
+      const result = await client.sendMessage(escape(msg.body), ctx.channel.id);
       if (!isNil(result.error)) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
@@ -137,11 +139,13 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       context.user = session.user;
     }
 
-    const result = new Message();
-    result.body = text;
-    result.context = context;
-    result.reactions = this.reactionNames(msg.reactions);
-    result.type = TYPE_TEXT;
+    const result = new Message({
+      body: text,
+      context,
+      labels: this.labels,
+      reactions: this.reactionNames(msg.reactions),
+      type: TYPE_TEXT,
+    });
     return result;
   }
 

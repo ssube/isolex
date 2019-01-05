@@ -8,6 +8,7 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { createCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_TOKEN = 'token';
@@ -40,8 +41,8 @@ export class TokenController extends BaseController<TokenControllerData> impleme
   @HandleNoun(NOUN_TOKEN)
   @HandleVerb(CommandVerb.Create)
   @CheckRBAC()
-  public async createToken(cmd: Command): Promise<void> {
-    const user = this.getUserOrFail(cmd.context);
+  public async createToken(cmd: Command, ctx: Context): Promise<void> {
+    const user = this.getUserOrFail(ctx);
     const grants = cmd.getOrDefault('grants', []);
     const now = this.clock.getSeconds();
     const token = await this.tokenRepository.save(new Token({
@@ -57,15 +58,15 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     }));
     const jwt = token.sign(this.data.token.secret);
 
-    await this.reply(cmd.context, token.toString());
-    return this.reply(cmd.context, jwt);
+    await this.reply(ctx, token.toString());
+    return this.reply(ctx, jwt);
   }
 
   @HandleNoun(NOUN_TOKEN)
   @HandleVerb(CommandVerb.Delete)
   @CheckRBAC()
-  public async deleteTokens(cmd: Command): Promise<void> {
-    const user = this.getUserOrFail(cmd.context);
+  public async deleteTokens(cmd: Command, ctx: Context): Promise<void> {
+    const user = this.getUserOrFail(ctx);
     const before = cmd.getHeadOrNumber('before', this.clock.getSeconds());
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
       const completion = createCompletion(cmd, 'confirm', `please confirm deleting tokens for ${user.name} from before ${before}`);
@@ -78,28 +79,28 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       subject: Equal(user.id),
     });
 
-    return this.reply(cmd.context, `tokens deleted`);
+    return this.reply(ctx, `tokens deleted`);
   }
 
   @HandleNoun(NOUN_TOKEN)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getToken(cmd: Command): Promise<void> {
+  public async getToken(cmd: Command, ctx: Context): Promise<void> {
     if (cmd.has('token')) {
       try {
         const data = Token.verify(cmd.getHead('token'), this.data.token.secret, {
           audience: this.data.token.audience,
           issuer: this.data.token.issuer,
         });
-        return this.reply(cmd.context, JSON.stringify(data));
+        return this.reply(ctx, JSON.stringify(data));
       } catch (err) {
-        return this.reply(cmd.context, `error verifying token: ${err.message}`);
+        return this.reply(ctx, `error verifying token: ${err.message}`);
       }
     } else {
-      if (isNil(cmd.context.token)) {
-        return this.reply(cmd.context, 'session must be provided by a token');
+      if (isNil(ctx.token)) {
+        return this.reply(ctx, 'session must be provided by a token');
       } else {
-        return this.reply(cmd.context, cmd.context.token.toString());
+        return this.reply(ctx, ctx.token.toString());
       }
     }
   }
@@ -107,14 +108,14 @@ export class TokenController extends BaseController<TokenControllerData> impleme
   @HandleNoun(NOUN_TOKEN)
   @HandleVerb(CommandVerb.List)
   @CheckRBAC()
-  public async listTokens(cmd: Command): Promise<void> {
-    const user = this.getUserOrFail(cmd.context);
+  public async listTokens(cmd: Command, ctx: Context): Promise<void> {
+    const user = this.getUserOrFail(ctx);
     const tokens = await this.tokenRepository.find({
       where: {
         subject: Equal(user.id),
       },
     });
 
-    return this.reply(cmd.context, JSON.stringify(tokens));
+    return this.reply(ctx, JSON.stringify(tokens));
   }
 }

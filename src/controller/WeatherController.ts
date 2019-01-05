@@ -4,6 +4,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -33,10 +34,10 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   @HandleNoun(NOUN_WEATHER)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getWeather(cmd: Command): Promise<void> {
+  public async getWeather(cmd: Command, ctx: Context): Promise<void> {
     const [location] = cmd.get('location');
     if (!location) {
-      return this.reply(cmd.context, 'unknown or missing location');
+      return this.reply(ctx, 'unknown or missing location');
     }
 
     try {

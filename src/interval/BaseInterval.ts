@@ -17,6 +17,8 @@ export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<
 export abstract class BaseInterval<TData extends IntervalData> extends BotService<TData> implements Interval {
   protected readonly clock: Clock;
   protected readonly math: MathJsStatic;
+
+  protected readonly contextRepository: Repository<Context>;
   protected readonly tickRepository: Repository<Tick>;
 
   protected interval?: NodeJS.Timeout;
@@ -27,6 +29,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
 
     this.clock = options.clock;
     this.math = options.math.create({});
+    this.contextRepository = options.storage.getRepository(Context);
     this.tickRepository = options.storage.getRepository(Tick);
   }
 
@@ -96,7 +99,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
    * This context entity will be persisted with the command, message, or event for which it has been created.
    */
   protected async createContext(): Promise<Context> {
-    return new Context({
+    return this.contextRepository.create({
       ...this.data.defaultContext,
       target: this.target,
     });

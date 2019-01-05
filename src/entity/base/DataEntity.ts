@@ -2,7 +2,7 @@ import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { LabelEntity, LabelEntityOptions } from 'src/entity/base/LabelEntity';
 import { MissingKeyError } from 'src/error/MissingKeyError';
-import { getOrDefault, MapLike } from 'src/utils/Map';
+import { dictToMap, getOrDefault, MapLike } from 'src/utils/Map';
 
 export interface DataEntityOptions<TVal> extends LabelEntityOptions {
   data: MapLike<TVal>;
@@ -15,6 +15,14 @@ export abstract class DataEntity<TVal> extends LabelEntity {
     name: 'data',
   })
   protected dataStr: string = '';
+
+  constructor(options: DataEntityOptions<TVal>) {
+    super(options);
+
+    if (options) {
+      this.data = dictToMap(options.data);
+    }
+  }
 
   @AfterLoad()
   public syncMap() {

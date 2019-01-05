@@ -6,6 +6,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Counter } from 'src/entity/misc/Counter';
 import { clamp } from 'src/utils/Math';
 
@@ -43,17 +44,17 @@ export class CountController extends BaseController<CountControllerData> impleme
   @HandleNoun(NOUN_COUNTER)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getCounter(cmd: Command): Promise<void> {
+  public async getCounter(cmd: Command, ctx: Context): Promise<void> {
     const count = cmd.getHeadOrDefault(this.data.field.count, this.data.default.count);
-    const name = cmd.getHeadOrDefault(this.data.field.name, cmd.context.channel.thread);
+    const name = cmd.getHeadOrDefault(this.data.field.name, ctx.channel.thread);
 
     this.logger.debug({ count, counterName: name }, 'finding counter');
-    const counter = await this.findOrCreateCounter(name, cmd.context.channel.id);
+    const counter = await this.findOrCreateCounter(name, ctx.channel.id);
 
     switch (count) {
       case 'ls':
-        const body = await this.listCounters(cmd.context.channel.id);
-        await this.reply(cmd.context, body);
+        const body = await this.listCounters(ctx.channel.id);
+        await this.reply(ctx, body);
         break;
       case '++':
         counter.count += 1;

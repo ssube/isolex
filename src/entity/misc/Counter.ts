@@ -1,4 +1,3 @@
-import { isNil } from 'lodash';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export interface CounterOptions {
@@ -22,6 +21,14 @@ export class Counter implements CounterOptions {
 
   @Column()
   public roomId: string = '';
+
+  constructor(options: CounterOptions) {
+    if (options) {
+      this.count = options.count;
+      this.name = options.name;
+      this.roomId = options.roomId;
+    }
+  }
 
   public toJSON() {
     return {

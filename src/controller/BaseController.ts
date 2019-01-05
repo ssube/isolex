@@ -12,11 +12,11 @@ import { Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
-import { getMethods } from 'src/utils';
+import { getMethods, mustExist } from 'src/utils';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
-export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command) => Promise<void>;
+export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command, ctx: Context) => Promise<void>;
 export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
 
 export enum ErrorReplyType {
@@ -99,9 +99,10 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   }
 
   protected async invokeHandler(cmd: Command, options: HandlerOptions, handler: HandlerMethod): Promise<void> {
+    const ctx = mustExist(cmd.context);
     if (options.rbac) {
-      if (options.rbac.user && !cmd.context.user) {
-        return this.errorReply(cmd.context, ErrorReplyType.SessionMissing);
+      if (options.rbac.user && !ctx.user) {
+        return this.errorReply(ctx, ErrorReplyType.SessionMissing);
       }
 
       const grants = [];
@@ -113,16 +114,16 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
         grants.push(`${options.noun}:${options.verb}`);
       }
 
-      if (!cmd.context.checkGrants(grants)) {
-        return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+      if (!ctx.checkGrants(grants)) {
+        return this.errorReply(ctx, ErrorReplyType.GrantMissing);
       }
     }
 
     try {
-      await handler.call(this, cmd);
+      await handler.call(this, cmd, ctx);
     } catch (err) {
       this.logger.error(err, 'error during handler method');
-      return this.errorReply(cmd.context, ErrorReplyType.Unknown, err.message);
+      return this.errorReply(ctx, ErrorReplyType.Unknown, err.message);
     }
   }
 
@@ -151,7 +152,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     const body = await this.transform(cmd, TYPE_JSON, data);
 
     if (isString(body)) {
-      return this.reply(cmd.context, body);
+      return this.reply(mustExist(cmd.context), body);
     } else {
       this.logger.error({ body }, 'final transform did not return a string');
     }

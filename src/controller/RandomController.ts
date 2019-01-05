@@ -6,6 +6,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { countList } from 'src/utils';
 
 export type RandomControllerData = ControllerData;
@@ -22,10 +23,10 @@ export class RandomController extends BaseController<RandomControllerData> imple
   @HandleNoun(NOUN_RANDOM)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getRandom(cmd: Command): Promise<void> {
+  public async getRandom(cmd: Command, ctx: Context): Promise<void> {
     const args = cmd.data.get('args');
     if (!Array.isArray(args)) {
-      return this.reply(cmd.context, 'no arguments were provided!');
+      return this.reply(ctx, 'no arguments were provided!');
     }
 
     const [minVal, maxVal] = args.map(Number);
@@ -51,7 +52,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
 
     this.logger.debug({ args }, 'Returning random results');
 
-    return this.reply(cmd.context, `The result of your roll is: ${result}`);
+    return this.reply(ctx, `The result of your roll is: ${result}`);
   }
 
   private getRandomDefault(): number {

@@ -6,7 +6,7 @@ import { Connection } from 'typeorm';
 import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command, CommandOptions, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
-import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageOptions } from 'src/entity/Message';
+import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageEntityOptions } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
@@ -27,7 +27,7 @@ interface GraphCommandOptions {
 }
 
 interface GraphMessageOptions {
-  messages: Array<MessageOptions>;
+  messages: Array<MessageEntityOptions>;
 }
 
 export type GraphSchemaData = BotServiceData;
@@ -62,11 +62,14 @@ export class GraphSchema extends BotService<GraphSchemaData> {
 
     const commands = [];
     for (const data of args.commands) {
-      const cmd = new Command();
-      cmd.context = context;
-      cmd.labels = dictToMap(data.labels);
-      cmd.noun = data.noun;
-      cmd.verb = data.verb;
+      const { noun, verb } = data;
+      const cmd = new Command({
+        context,
+        data: {},
+        labels: dictToMap(data.labels),
+        noun,
+        verb,
+      });
       commands.push(cmd);
     }
     return this.bot.executeCommand(...commands);
@@ -83,11 +86,13 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     const messages = [];
     for (const data of args.messages) {
       const { body, type } = data;
-      const msg = new Message();
-      msg.body = data.body;
-      msg.context = data.context;
-      msg.reactions = data.reactions;
-      msg.type = data.type;
+      const msg = new Message({
+        body,
+        context,
+        labels: this.labels,
+        reactions: [],
+        type,
+      });
       messages.push(msg);
     }
     return this.bot.sendMessage(...messages);

@@ -2,9 +2,9 @@ import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { GRAPH_OUTPUT_ROLE, Role } from 'src/entity/auth/Role';
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 
-export interface UserOptions {
+export interface UserOptions extends BaseEntityOptions {
   name: string;
   roles: Array<Role>;
 }
@@ -28,6 +28,16 @@ export class User extends BaseEntity implements UserOptions {
   public roleNames: Array<string> = [];
 
   public roles: Array<Role> = [];
+
+  constructor(options: UserOptions) {
+    super(options);
+
+    if (options) {
+      this.name = options.name;
+      this.roles = options.roles;
+      this.syncRoles();
+    }
+  }
 
   public toJSON(): object {
     return {

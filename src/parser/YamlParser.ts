@@ -7,6 +7,7 @@ import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { mustExist } from 'src/utils';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
 
 export type YamlParserData = ParserData;
@@ -19,8 +20,9 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
-    return [await this.createCommand(msg.context, data)];
+    return [await this.createCommand(ctx, data)];
   }
 
   public async decode(msg: Message): Promise<any> {

@@ -1,3 +1,6 @@
+import { Inject } from 'noicejs';
+import { Repository } from 'typeorm';
+
 import { BotService, BotServiceOptions } from 'src/BotService';
 import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -8,12 +11,15 @@ import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
 import { TemplateScope } from 'src/utils/Template';
 
+@Inject('storage')
 export abstract class BaseParser<TData extends ParserData> extends BotService<TData> implements Parser {
+  protected readonly contextRepository: Repository<Context>;
   protected matcher: Match;
 
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
+    this.contextRepository = options.storage.getRepository(Context);
     this.matcher = new Match(options.data.match);
   }
 
@@ -36,9 +42,7 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
   }
 
   protected async createCommand(baseContext: Context, data: Map<string, Array<string>>): Promise<Command> {
-    const context = baseContext.extend({
-      parser: this,
-    });
+    const context = await this.createContext(baseContext);
     const { noun, verb } = this.switchNounVerb(data, this.data.defaultCommand);
     this.logger.debug({ context, noun, verb }, 'create command');
 
@@ -49,6 +53,13 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
       noun,
       verb,
     });
+  }
+
+  protected createContext(baseContext: Context): Promise<Context> {
+    return this.contextRepository.save(new Context({
+      ...baseContext,
+      parser: this,
+    }));
   }
 
   protected switchNounVerb(data: Map<string, Array<string>>, cmd: CommandOptions = this.data.defaultCommand): {

@@ -4,6 +4,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_TIME = 'time';
@@ -28,7 +29,7 @@ export class TimeController extends BaseController<TimeControllerData> implement
   @HandleNoun(NOUN_TIME)
   @HandleVerb(CommandVerb.Get)
   @CheckRBAC()
-  public async getTime(cmd: Command): Promise<void> {
+  public async getTime(cmd: Command, ctx: Context): Promise<void> {
     const date = this.clock.getDate();
     const locale = cmd.getHeadOrDefault('locale', this.data.locale);
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
@@ -37,9 +38,9 @@ export class TimeController extends BaseController<TimeControllerData> implement
 
     try {
       const localDate = date.toLocaleString(locale, { timeZone: zone });
-      return this.reply(cmd.context, localDate);
+      return this.reply(ctx, localDate);
     } catch (err) {
-      return this.reply(cmd.context, `error formatting date: ${err.message}`);
+      return this.reply(ctx, `error formatting date: ${err.message}`);
     }
   }
 }

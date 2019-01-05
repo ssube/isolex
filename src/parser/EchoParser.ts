@@ -5,6 +5,7 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
+import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 
 export interface EchoParserData extends ParserData {
@@ -26,8 +27,9 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
-    const cmd = await this.createCommand(msg.context, this.mapper.map([data]));
+    const cmd = await this.createCommand(ctx, this.mapper.map([data]));
     return [cmd];
   }
 

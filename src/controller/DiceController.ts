@@ -5,6 +5,7 @@ import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { mustExist } from 'src/utils';
 
 const DICE_MINIMUM = 1;
 
@@ -40,6 +41,6 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.logger.debug({ count, sides }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b, 0);
 
-    return this.reply(cmd.context, `The results of your rolls were: ${results}. The sum is ${sum}.`);
+    return this.reply(mustExist(cmd.context), `The results of your rolls were: ${results}. The sum is ${sum}.`);
   }
 }

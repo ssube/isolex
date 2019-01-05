@@ -82,9 +82,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.passport = await this.setupPassport();
     this.express = await this.setupExpress();
     this.server = await new Promise<http.Server>((res, rej) => {
-      const express = mustExist(this.express);
+      const app = mustExist(this.express);
       let server: http.Server;
-      server = express.listen(this.data.listen.port, this.data.listen.address, () => {
+      server = app.listen(this.data.listen.port, this.data.listen.address, () => {
         res(server);
       });
     });
@@ -225,13 +225,5 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
 
     return auth;
-  }
-
-  protected async createContext(options: ContextOptions): Promise<Context> {
-    return new Context({
-      ...options,
-      source: this,
-      target: this.target,
-    });
   }
 }
