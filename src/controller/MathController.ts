@@ -36,7 +36,7 @@ export class MathController extends BaseController<MathControllerData> implement
     this.logger.debug({ cmd }, 'calculating command');
 
     const inputExpr = cmd.get('expr');
-    if (!inputExpr.length) {
+    if (inputExpr.length === 0) {
       return this.reply(ctx, 'no expression given');
     }
 

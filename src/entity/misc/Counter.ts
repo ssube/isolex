@@ -1,5 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { doesExist } from 'src/utils';
+
 export interface CounterOptions {
   count: number;
   name: string;
@@ -23,7 +25,7 @@ export class Counter implements CounterOptions {
   public roomId: string = '';
 
   constructor(options: CounterOptions) {
-    if (options) {
+    if (doesExist(options)) {
       this.count = options.count;
       this.name = options.name;
       this.roomId = options.roomId;

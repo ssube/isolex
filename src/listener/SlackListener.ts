@@ -150,6 +150,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       reactions: this.reactionNames(msg.reactions),
       type: TYPE_TEXT,
     });
+    this.logger.debug({ result }, 'converted slack message');
     return result;
   }
 

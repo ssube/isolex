@@ -2,6 +2,7 @@ import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
+import { doesExist } from 'src/utils';
 
 export interface RoleOptions extends BaseEntityOptions {
   grants: Array<string>;
@@ -26,7 +27,7 @@ export class Role extends BaseEntity implements RoleOptions {
   constructor(options: RoleOptions) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.grants = options.grants;
       this.name = options.name;
     }

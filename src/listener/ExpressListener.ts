@@ -17,7 +17,7 @@ import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
-import { mustExist } from 'src/utils';
+import { mustExist, doesExist } from 'src/utils';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
@@ -93,11 +93,11 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public async stop() {
-    if (this.server) {
+    if (doesExist(this.server)) {
       this.server.close();
     }
 
-    if (this.graph) {
+    if (doesExist(this.graph)) {
       await this.graph.stop();
     }
 
@@ -174,14 +174,18 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected async setupExpress(): Promise<express.Express> {
     let app = express();
 
-    if (this.passport) {
+    if (doesExist(this.passport)) {
       app = app.use(this.passport.initialize());
       app = app.use(this.passport.authenticate('jwt'));
     }
 
     if (this.data.expose.metrics) {
-      app = app.use((req, res, next) => this.traceRequest(req, res, next));
-      app = app.get('/metrics', (req, res) => this.getMetrics(req, res));
+      app = app.use((req, res, next) => {
+        this.traceRequest(req, res, next);
+      });
+      app = app.get('/metrics', (req, res) => {
+        this.getMetrics(req, res);
+      });
     }
 
     if (this.data.expose.graph) {

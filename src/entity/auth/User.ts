@@ -3,6 +3,7 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } fr
 
 import { GRAPH_OUTPUT_ROLE, Role } from 'src/entity/auth/Role';
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
+import { doesExist } from 'src/utils';
 
 export interface UserOptions extends BaseEntityOptions {
   name: string;
@@ -32,10 +33,9 @@ export class User extends BaseEntity implements UserOptions {
   constructor(options: UserOptions) {
     super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.name = options.name;
       this.roles = options.roles;
-      this.syncRoles();
     }
   }
 

@@ -34,10 +34,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   @Handler(NOUN_WEATHER, CommandVerb.Get)
   @CheckRBAC()
   public async getWeather(cmd: Command, ctx: Context): Promise<void> {
-    const [location] = cmd.get('location');
-    if (!location) {
-      return this.reply(ctx, 'unknown or missing location');
-    }
+    const location = cmd.getHead('location');
 
     try {
       const weather = await this.requestWeather(location);

@@ -7,7 +7,7 @@ import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { FetchOptions, Listener, ListenerData, ListenerOptions } from 'src/listener/Listener';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 
 @Inject('storage')
 export abstract class BaseListener<TData extends ListenerData> extends BotService<TData> implements Listener {
@@ -26,7 +26,7 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
    */
   public async check(msg: Message): Promise<boolean> {
     const ctx = mustExist(msg.context);
-    if (ctx.target) {
+    if (doesExist(ctx.target)) {
       return ctx.target.id === this.id;
     }
 
