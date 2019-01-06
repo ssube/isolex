@@ -79,6 +79,21 @@ export const QUERY_PR_MERGE = `
   }
 `;
 
+interface GithubGetResponse {
+  data: {
+    repository: {
+      pullRequest: {
+        author: {
+          login: string;
+        };
+        id: string;
+        number: number;
+        title: string;
+      }
+    }
+  }
+}
+
 export interface GithubPRControllerData extends ControllerData {
   client: {
     root?: string;
@@ -174,7 +189,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.reply(ctx, `merged pull request ${requestNumber}`);
   }
 
-  protected async getRequestData(owner: string, project: string, requestNumber: string): Promise<any> {
+  protected async getRequestData(owner: string, project: string, requestNumber: string): Promise<GithubGetResponse> {
     const queryVars = {
       owner,
       project,

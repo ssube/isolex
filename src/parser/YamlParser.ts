@@ -8,7 +8,9 @@ import { MimeTypeError } from 'src/error/MimeTypeError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { mustExist } from 'src/utils';
+import { dictToMap } from 'src/utils/Map';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
+import { TemplateScope } from 'src/utils/Template';
 
 export type YamlParserData = ParserData;
 export type YamlParserOptions = ParserOptions<YamlParserData>;
@@ -22,7 +24,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
-    return [await this.createCommand(ctx, data)];
+    return [await this.createCommand(ctx, dictToMap(data))];
   }
 
   public async decode(msg: Message): Promise<any> {
@@ -35,6 +37,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
       throw new BaseError('parsed value must be an object');
     }
 
+    // TODO: type check this?
     return parsed;
   }
 }

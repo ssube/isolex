@@ -1,5 +1,5 @@
 import { isNil, kebabCase } from 'lodash';
-import { Container, Inject, Logger } from 'noicejs';
+import { Container, Inject, Logger, BaseError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
 import { RequestFactory, RequestOptions } from 'src/utils/Request';
@@ -54,12 +54,12 @@ export class GitlabClient {
 
   public async cancelJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/jobs/${options.job}/cancel`, this.getRequestOptions(options, 'POST'));
+    return this.makeRequest<JobResults>(`${projectURL}/jobs/${options.job}/cancel`, this.getRequestOptions(options, 'POST'));
   }
 
   public async cancelPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}/cancel`, this.getRequestOptions(options, 'POST'));
+    return this.makeRequest<PipelineResults>(`${projectURL}/pipelines/${options.pipeline}/cancel`, this.getRequestOptions(options, 'POST'));
   }
 
   public async createPipeline(options: ReferenceOptions): Promise<PipelineResults> {
@@ -70,46 +70,46 @@ export class GitlabClient {
         ref: options.ref,
       },
     };
-    return this.makeRequest(`${projectURL}/pipeline`, reqOptions);
+    return this.makeRequest<PipelineResults>(`${projectURL}/pipeline`, reqOptions);
   }
 
   public async getJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/jobs/${options.job}`, this.getRequestOptions(options));
+    return this.makeRequest<JobResults>(`${projectURL}/jobs/${options.job}`, this.getRequestOptions(options));
   }
 
   public async getPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}`, this.getRequestOptions(options));
+    return this.makeRequest<PipelineResults>(`${projectURL}/pipelines/${options.pipeline}`, this.getRequestOptions(options));
   }
 
   public async getProject(options: ProjectOptions): Promise<ProjectResults> {
-    return this.makeRequest(this.getProjectURL(options), this.getRequestOptions(options));
+    return this.makeRequest<ProjectResults>(this.getProjectURL(options), this.getRequestOptions(options));
   }
 
   public async listJobs(options: PipelineOptions): Promise<Array<JobResults>> {
     const projectURL = this.getProjectURL(options);
     const reqOptions = this.getRequestOptions(options);
     if (isNil(options.pipeline)) {
-      return this.makeRequest(`${projectURL}/jobs`, reqOptions);
+      return this.makeRequest<Array<JobResults>>(`${projectURL}/jobs`, reqOptions);
     } else {
-      return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}/jobs`, reqOptions);
+      return this.makeRequest<Array<JobResults>>(`${projectURL}/pipelines/${options.pipeline}/jobs`, reqOptions);
     }
   }
 
   public async listPipelines(options: ProjectOptions): Promise<Array<PipelineResults>> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/pipelines`, this.getRequestOptions(options));
+    return this.makeRequest<Array<PipelineResults>>(`${projectURL}/pipelines`, this.getRequestOptions(options));
   }
 
   public async retryJob(options: JobOptions): Promise<JobResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/jobs/${options.job}/retry`, this.getRequestOptions(options, 'POST'));
+    return this.makeRequest<JobResults>(`${projectURL}/jobs/${options.job}/retry`, this.getRequestOptions(options, 'POST'));
   }
 
   public async retryPipeline(options: PipelineOptions): Promise<PipelineResults> {
     const projectURL = this.getProjectURL(options);
-    return this.makeRequest(`${projectURL}/pipelines/${options.pipeline}/retry`, this.getRequestOptions(options, 'POST'));
+    return this.makeRequest<PipelineResults>(`${projectURL}/pipelines/${options.pipeline}/retry`, this.getRequestOptions(options, 'POST'));
   }
 
   protected getProjectURL(options: ProjectOptions): string {
@@ -130,18 +130,18 @@ export class GitlabClient {
     return `${this.data.root}/api/v4/${path}`;
   }
 
-  protected async makeRequest(url: string, options: Partial<RequestOptions>): Promise<any> {
+  protected async makeRequest<T>(url: string, options: Partial<RequestOptions>): Promise<T> {
     try {
       const request = await this.container.create<RequestFactory, unknown>('request');
-      const response = await request.create({
+      const response = await request.create<string>({
         url,
         ...options,
       });
       this.logger.debug({ response }, 'got response from gitlab');
       return JSON.parse(response);
     } catch (err) {
-      this.logger.error({ err }, 'error during gitlab request');
-      return [];
+      this.logger.error({ err }, 'error making gitlab request');
+      throw new BaseError('error making gitlab request');
     }
   }
 }
