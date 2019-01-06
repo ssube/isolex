@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { BotService, BotServiceOptions } from 'src/BotService';
+import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
@@ -11,7 +11,7 @@ import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
 import { TemplateScope } from 'src/utils/Template';
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export abstract class BaseParser<TData extends ParserData> extends BotService<TData> implements Parser {
   protected readonly contextRepository: Repository<Context>;
   protected matcher: Match;
@@ -19,7 +19,7 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.contextRepository = options.storage.getRepository(Context);
+    this.contextRepository = options[INJECT_STORAGE].getRepository(Context);
     this.matcher = new Match(options.data.match);
   }
 

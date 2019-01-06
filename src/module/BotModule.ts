@@ -5,7 +5,7 @@ import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
-import { INJECT_LOCALE } from 'src/BotService';
+import { INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from 'src/BotService';
 import { Locale } from 'src/locale';
 import { Schema } from 'src/schema';
 import { GraphSchema } from 'src/schema/graph';
@@ -51,7 +51,7 @@ export class BotModule extends Module {
     this.bot = bot;
   }
 
-  @Provides('bot')
+  @Provides(INJECT_BOT)
   public async getBot(): Promise<Bot> {
     return mustExist(this.bot);
   }
@@ -77,7 +77,7 @@ export class BotModule extends Module {
     return new Schema();
   }
 
-  @Provides('storage')
+  @Provides(INJECT_STORAGE)
   public async getStorage(): Promise<Connection> {
     const bot = await this.getBot();
     return bot.getStorage();

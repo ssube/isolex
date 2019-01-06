@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -29,7 +30,7 @@ export interface CountControllerData extends ControllerData {
 
 export type CountControllerOptions = ControllerOptions<CountControllerData>;
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export class CountController extends BaseController<CountControllerData> implements Controller {
   protected storage: Connection;
   protected counterRepository: Repository<Counter>;
@@ -37,7 +38,7 @@ export class CountController extends BaseController<CountControllerData> impleme
   constructor(options: CountControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-count', [NOUN_COUNTER]);
 
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.counterRepository = this.storage.getRepository(Counter);
   }
 

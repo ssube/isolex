@@ -4,7 +4,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
-import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
+import { BotService, BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_STORAGE } from 'src/BotService';
 import { Command, CommandOptions, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
 import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageEntityOptions } from 'src/entity/Message';
@@ -34,7 +34,7 @@ interface GraphMessageOptions {
 export type GraphSchemaData = BotServiceData;
 export type GraphSchemaOptions = BotServiceOptions<GraphSchemaData>;
 
-@Inject('bot', 'services', 'storage')
+@Inject(INJECT_BOT, 'services', INJECT_STORAGE)
 export class GraphSchema extends BotService<GraphSchemaData> {
   public readonly schema: GraphQLSchema;
 
@@ -45,7 +45,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     super(options, 'isolex#/definitions/service-graph');
 
     this.services = options.services;
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
 
     this.schema = new GraphQLSchema({
       mutation: this.createMutation(),

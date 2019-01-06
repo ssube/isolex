@@ -45,7 +45,7 @@ export interface SlackSearchResults extends WebAPICallResult {
 
 export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
 
-@Inject('bot', 'clock')
+@Inject('clock')
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected client?: RTMClient;
   protected webClient?: WebClient;

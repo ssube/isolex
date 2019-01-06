@@ -17,7 +17,7 @@ library is still a `0.0` release, then specify the entire `^X.Y.Z` specifier.
 | AWS          | aws-sdk      | main bundle | `import {} from 'aws-sdk'`          |                  |
 | cron         | cron         | main bundle |                                     |                  |
 | database     | sqlite3      | production  |                                     |                  |
-| database     | typeorm      | main bundle | `@Inject('storage')`                | entity orm       |
+| database     | typeorm      | main bundle | `@Inject(INJECT_STORAGE)`           | entity orm       |
 | DI           | noicejs      | main bundle | `constructor` options container     |                  |
 | emoji        | node-emoji   | main bundle |                                     | GFM `:emoji:`    |
 | jsonpath     | jsonpath     | main bundle | `@Inject('jsonpath')`               | via DI           |

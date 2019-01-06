@@ -2,13 +2,13 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
-import { doesExist } from 'src/utils';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
 export const NOUN_KEYWORD = 'keyword';
@@ -20,7 +20,7 @@ export interface LearnControllerData extends ControllerData {
 
 export type LearnControllerOptions = ControllerOptions<LearnControllerData>;
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export class LearnController extends BaseController<LearnControllerData> implements Controller {
   protected readonly checkNoun: Checklist<string>;
   protected readonly keywordRepository: Repository<Keyword>;
@@ -30,7 +30,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     super(options, 'isolex#/definitions/service-controller-learn', [NOUN_KEYWORD]);
 
     this.checkNoun = new Checklist(options.data.nouns);
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.keywordRepository = this.storage.getRepository(Keyword);
   }
 

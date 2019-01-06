@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -40,7 +41,7 @@ export interface AccountControllerData extends ControllerData {
 
 export type AccountControllerOptions = ControllerOptions<AccountControllerData>;
 
-@Inject('clock', 'storage')
+@Inject('clock', INJECT_STORAGE)
 export class AccountController extends BaseController<AccountControllerData> implements Controller {
   protected clock: Clock;
   protected storage: Connection;
@@ -52,7 +53,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     super(options, 'isolex#/definitions/service-controller-account', [NOUN_GRANT, NOUN_ACCOUNT, NOUN_SESSION]);
 
     this.clock = options.clock;
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.roleRepository = this.storage.getRepository(Role);
     this.tokenRepository = this.storage.getRepository(Token);
     this.userRepository = this.storage.getCustomRepository(UserRepository);

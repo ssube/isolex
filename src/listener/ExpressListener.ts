@@ -8,7 +8,7 @@ import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-
 import { Counter, Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
-import { BotServiceOptions } from 'src/BotService';
+import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { JwtFields, Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -41,7 +41,7 @@ export interface ExpressListenerData extends ListenerData {
 
 export type ExpressListenerOptions = BotServiceOptions<ExpressListenerData>;
 
-@Inject('bot', 'clock', 'metrics', 'services', 'storage')
+@Inject('clock', 'metrics', INJECT_STORAGE)
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
   protected readonly container: Container;
   protected readonly metrics: Registry;
@@ -62,7 +62,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.container = options.container;
     this.metrics = options.metrics;
     this.services = options.services;
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
 
     this.requestCounter = new Counter({
       help: 'all requests through this express listener',

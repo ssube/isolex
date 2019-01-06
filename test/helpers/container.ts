@@ -7,7 +7,7 @@ import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
-import { BotServiceData, BotServiceOptions, INJECT_LOCALE } from 'src/BotService';
+import { BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from 'src/BotService';
 import { Locale } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
@@ -46,7 +46,7 @@ export async function createService<
   options: Partial<TOptions>,
 ): Promise<TService> {
   const fullOptions = {
-    bot: ineeda<Bot>(),
+    [INJECT_BOT]: ineeda<Bot>(),
     clock: ineeda<Clock>(),
     compiler: ineeda<TemplateCompiler>({
       compile: () => ineeda<Template>(),
@@ -61,7 +61,7 @@ export async function createService<
     services: ineeda<ServiceModule>({
       createService: (def: ServiceDefinition<TData>) => container.create(def.metadata.kind, def),
     }),
-    storage: ineeda<Connection>(),
+    [INJECT_STORAGE]: ineeda<Connection>(),
     ...options,
   };
 

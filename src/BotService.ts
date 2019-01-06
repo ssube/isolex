@@ -9,29 +9,31 @@ import { Service } from 'src/Service';
 
 export type BotServiceData = BaseServiceData;
 
+export const INJECT_BOT = Symbol('inject-bot');
 export const INJECT_LOCALE = Symbol('inject-locale');
+export const INJECT_STORAGE = Symbol('inject-storage');
 
 /**
  * Exposed injected services available to child services.
  */
 export interface BotServiceOptions<TData extends BotServiceData> extends BaseServiceOptions<TData> {
-  bot: Bot;
+  [INJECT_BOT]: Bot;
   [INJECT_LOCALE]: Locale;
-  storage: Connection;
+  [INJECT_STORAGE]: Connection;
 }
 
 /**
  * Services started by the bot, into which the bot is injected, and which rely on the bot for communication with
  * other services and the outside world.
  */
-@Inject('bot', 'services')
+@Inject(INJECT_BOT, 'services')
 export abstract class BotService<TData extends BotServiceData> extends BaseService<TData> implements Service {
   public readonly bot: Bot;
 
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.bot = options.bot;
+    this.bot = options[INJECT_BOT];
   }
 
   /**

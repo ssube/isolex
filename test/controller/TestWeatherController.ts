@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
 import { Bot } from 'src/Bot';
+import { INJECT_BOT } from 'src/BotService';
 import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';
 import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -33,14 +34,14 @@ describeAsync('weather controller', async () => {
         sent.push(msg);
       },
     });
-    module.bind('bot').toInstance(bot);
+    module.bind(INJECT_BOT).toInstance(bot);
     module.bind('test-transform').toInstance(ineeda<Transform>({
       check: () => Promise.resolve(true),
       transform: (txCmd: Command, type: string, txData: any) => Promise.resolve(txData.test),
     }));
 
     const controller = await createService(container, WeatherController, {
-      bot,
+      [INJECT_BOT]: bot,
       compiler: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test',

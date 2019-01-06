@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -22,7 +23,7 @@ export interface CompletionControllerData extends ControllerData {
 
 export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
   protected readonly storage: Connection;
   protected readonly fragmentRepository: Repository<Fragment>;
@@ -31,7 +32,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
   constructor(options: CompletionControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
 
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.fragmentRepository = this.storage.getRepository(Fragment);
   }
 
