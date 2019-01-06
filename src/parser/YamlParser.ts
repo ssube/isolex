@@ -10,7 +10,6 @@ import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
-import { TemplateScope } from 'src/utils/Template';
 
 export type YamlParserData = ParserData;
 export type YamlParserOptions = ParserOptions<YamlParserData>;
