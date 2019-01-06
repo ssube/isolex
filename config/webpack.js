@@ -26,6 +26,22 @@ function ignoreModules(names) {
   return names.map((it) => new webpack.IgnorePlugin(it));
 }
 
+// ignore warnings for libraries with a dynamic include
+// that cannot be excluded at the module level
+// or will not be fixed by the library (shame)
+function ignoreWarnings(warn) {
+  console.warn('===warn', warn);
+  if (/Critical dependency/.test(warn)) {
+    return (
+      /yargs-parser/.test(warn) ||
+      /express\/lib\/view.js/.test(warn) ||
+      /discord.js\/src\/client\/voice\/util\/Secretbox.js/.test(warn) ||
+      /typeorm\/platform\/PlatformTools.js/.test(warn)
+    );
+  }
+  return false;
+}
+
 module.exports = {
   devtool: 'source-map',
   entry: {
@@ -138,6 +154,9 @@ module.exports = {
     plugins: [
       new TsConfigPathsPlugin({ tsconfig, compiler: 'typescript' })
     ]
+  },
+  stats: {
+    warningsFilter: ignoreWarnings,
   },
   target: 'node'
 };
