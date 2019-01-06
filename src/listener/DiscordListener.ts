@@ -16,13 +16,14 @@ import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
 import { BotServiceOptions } from 'src/BotService';
-import { ContextOptions } from 'src/entity/Context';
+import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
+import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface DiscordListenerData extends ListenerData {
@@ -35,7 +36,7 @@ export type DiscordListenerOptions = BotServiceOptions<DiscordListenerData>;
 @Inject('bot', 'clock', 'metrics', 'services')
 export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
-    return !isNil(chan) && chan.type === 'text';
+    return doesExist(chan) && chan.type === 'text';
   }
 
   protected readonly client: Client;
@@ -77,7 +78,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     this.startClientLogger();
     await this.client.login(this.data.token);
 
-    if (this.data.presence) {
+    if (doesExist(this.data.presence)) {
       await this.client.user.setPresence(this.data.presence);
     }
   }
@@ -91,77 +92,20 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   public async send(msg: Message): Promise<void> {
+    const ctx = mustExist(msg.context);
+
     // direct reply to message
-    if (msg.context.channel.thread) {
-      return this.replyToThread(msg);
+    if (doesExist(ctx.channel.thread)) {
+      return this.replyToThread(msg, ctx);
     }
 
     // broad reply to channel
-    if (msg.context.channel.id) {
-      return this.replyToChannel(msg);
+    if (doesExist(ctx.channel.id)) {
+      return this.replyToChannel(msg, ctx);
     }
 
     // fail
     this.logger.error('could not find destination in message context');
-  }
-
-  public async replyToThread(msg: Message) {
-    const thread = this.threads.get(msg.context.channel.thread);
-    if (!thread) {
-      this.logger.warn({ msg }, 'message thread is missing');
-      return;
-    }
-
-    if (msg.body.length) {
-      await thread.reply(escape(msg.body));
-    }
-
-    const reactions = this.filterEmoji(msg.reactions);
-    for (const reaction of reactions) {
-      this.logger.debug({ reaction }, 'adding reaction to thread');
-      await thread.react(reaction);
-    }
-
-    return;
-  }
-
-  public async replyToChannel(msg: Message) {
-    const channel = this.client.channels.get(msg.context.channel.id);
-    if (!channel) {
-      this.logger.warn({ msg }, 'message channel is missing');
-      return;
-    }
-
-    if (!DiscordListener.isTextChannel(channel)) {
-      this.logger.warn('channel is not a text channel');
-      return;
-    }
-
-    await channel.send(escape(msg.body));
-    return;
-  }
-
-  public filterEmoji(names: Array<string>) {
-    const out = new Set();
-    for (const name of names) {
-      out.add(this.convertEmoji(name));
-    }
-    return Array.from(out);
-  }
-
-  public convertEmoji(name: string): string {
-    const results = emoji.search(name);
-    if (results.length) {
-      return results[0].emoji;
-    }
-
-    const custom = this.client.emojis.find('name', name);
-
-    if (custom) {
-      return custom.id;
-    }
-
-    throw new NotFoundError(`could not find emoji: ${name}`);
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
@@ -209,6 +153,65 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     });
   }
 
+  protected async replyToThread(msg: Message, ctx: Context) {
+    const thread = this.threads.get(ctx.channel.thread);
+    if (isNil(thread)) {
+      this.logger.warn({ msg }, 'message thread is missing');
+      return;
+    }
+
+    if (msg.body.length > 0) {
+      await thread.reply(escape(msg.body));
+    }
+
+    const reactions = this.filterEmoji(msg.reactions);
+    for (const reaction of reactions) {
+      this.logger.debug({ reaction }, 'adding reaction to thread');
+      await thread.react(reaction);
+    }
+
+    return;
+  }
+
+  protected async replyToChannel(msg: Message, ctx: Context) {
+    const channel = this.client.channels.get(ctx.channel.id);
+    if (isNil(channel)) {
+      this.logger.warn({ msg }, 'message channel is missing');
+      return;
+    }
+
+    if (!DiscordListener.isTextChannel(channel)) {
+      this.logger.warn('channel is not a text channel');
+      return;
+    }
+
+    await channel.send(escape(msg.body));
+    return;
+  }
+
+  protected filterEmoji(names: Array<string>) {
+    const out = new Set();
+    for (const name of names) {
+      out.add(this.convertEmoji(name));
+    }
+    return Array.from(out);
+  }
+
+  protected convertEmoji(name: string): string {
+    const results = emoji.search(name);
+    if (results.length > 0) {
+      return results[0].emoji;
+    }
+
+    const custom = this.client.emojis.find('name', name);
+
+    if (doesExist(custom)) {
+      return custom.id;
+    }
+
+    throw new NotFoundError(`could not find emoji: ${name}`);
+  }
+
   protected async convertMessage(msg: DiscordMessage): Promise<Message> {
     this.logger.debug('converting discord message');
     const contextData: ContextOptions = {
@@ -221,7 +224,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     };
 
     const session = await this.getSession(msg.author.id);
-    if (session) {
+    if (doesExist(session)) {
       contextData.user = session.user;
     }
 
@@ -229,6 +232,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     return new Message({
       body: msg.content,
       context,
+      labels: this.labels,
       reactions: msg.reactions.map((r) => r.emoji.name),
       type: TYPE_TEXT,
     });
@@ -238,26 +242,34 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     const msg = await this.convertMessage(reaction.message);
     if (reaction.emoji instanceof ReactionEmoji) {
       const result = emoji.find(reaction.emoji.toString());
-      msg.body = result ? result.key : 'missing emoji';
+      if (doesExist(result)) {
+        msg.body = result.key;
+      } else {
+        msg.body = 'missing emoji';
+      }
     } else {
       msg.body = reaction.emoji.name;
     }
 
-    msg.context.uid = user.id;
-    msg.context.name = user.username;
+    const msgContext = mustExist(msg.context);
+    msg.context = await this.createContext({
+      ...msgContext,
+      name: user.username,
+      uid: user.id,
+    });
 
     return msg;
   }
 
   protected convertQueryOptions(options: FetchOptions): ChannelLogsQueryOptions {
-    if (options.after) {
+    if (doesExist(options.after)) {
       return {
         after: options.id,
         limit: options.count,
       };
     }
 
-    if (options.before) {
+    if (doesExist(options.before)) {
       return {
         before: options.id,
         limit: options.count,

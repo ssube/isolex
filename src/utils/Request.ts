@@ -9,7 +9,7 @@ export type RequestOptions = request.Options;
  * something (this).
  */
 export class RequestFactory {
-  public create(options: RequestOptions): Promise<any> {
+  public create<T>(options: RequestOptions): Promise<T> {
     return request(options).promise();
   }
 }

@@ -1,11 +1,10 @@
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
-import { isNil } from 'lodash';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseCommand } from 'src/entity/base/BaseCommand';
 import { CommandOptions } from 'src/entity/Command';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
-import { dictToMap } from 'src/utils/Map';
+import { doesExist } from 'src/utils';
 
 export const TABLE_FRAGMENT = 'fragment';
 
@@ -25,28 +24,24 @@ export interface FragmentOptions extends CommandOptions {
 @Entity(TABLE_FRAGMENT)
 export class Fragment extends BaseCommand implements FragmentOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column()
-  public key: string;
+  public key: string = '';
 
   @Column()
-  public parserId: string;
+  public parserId: string = '';
 
   @Column()
-  public userId: string;
+  public userId: string = '';
 
-  constructor(options?: FragmentOptions) {
+  constructor(options: FragmentOptions) {
     super(options);
 
-    if (!isNil(options)) {
-      this.data = dictToMap(options.data);
+    if (doesExist(options)) {
       this.key = options.key;
-      this.labels = dictToMap(options.labels);
-      this.noun = options.noun;
       this.parserId = options.parserId;
       this.userId = options.userId;
-      this.verb = options.verb;
     }
   }
 

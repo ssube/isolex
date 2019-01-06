@@ -20,11 +20,11 @@ See [docs/controller](../../docs/controller) for example config for each control
 
 Most controllers should extend the `BaseController`, which implements noun and filter checks, as well as transforms.
 
-Controllers typically handle a few nouns. To keep the noun/verb logic simple, controllers use a set of decorators:
+Controllers typically handle a few nouns. To keep the noun/verb logic simple, controllers use a decorator for each
+handler method:
 
 ```typescript
-@HandleNoun(NOUN_FOO)
-@HandleVerb(CommandVerb.Create)
+@Handler(NOUN_FOO, CommandVerb.Create)
 public async createFoo(cmd: Command) {
   const foo = await this.fooRepository.create({ /* ... */ });
   return this.transformJSON(foo);
@@ -43,6 +43,10 @@ public async getFoo(cmd: Command) {
   /* ... */
 }
 ```
+
+When a command is received, the first handler which matches both the noun and verb will be selected. If the handler
+also has the `@CheckRBAC` decorator, grants will be checked and may cause an error reply *instead of* invoking the
+handler.
 
 Errors thrown during a handler method, sync or async, will be caught by the base controller and the message used as a
 reply.

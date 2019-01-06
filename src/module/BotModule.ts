@@ -7,6 +7,7 @@ import { Connection } from 'typeorm';
 import { Bot } from 'src/Bot';
 import { Schema } from 'src/schema';
 import { GraphSchema } from 'src/schema/graph';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { MathFactory } from 'src/utils/Math';
@@ -18,10 +19,10 @@ export interface BotModuleOptions {
 }
 
 export class BotModule extends Module {
-  protected bot: Bot;
-  protected container: Container;
+  protected bot?: Bot;
+  protected container?: Container;
   protected logger: Logger;
-  protected metrics: Registry;
+  protected metrics?: Registry;
 
   constructor(options: BotModuleOptions) {
     super();
@@ -50,7 +51,7 @@ export class BotModule extends Module {
 
   @Provides('bot')
   public async getBot(): Promise<Bot> {
-    return this.bot;
+    return mustExist(this.bot);
   }
 
   @Provides('logger')
@@ -60,7 +61,7 @@ export class BotModule extends Module {
 
   @Provides('metrics')
   public async getMetrics(): Promise<Registry> {
-    return this.metrics;
+    return mustExist(this.metrics);
   }
 
   @Provides('schema')
@@ -70,6 +71,7 @@ export class BotModule extends Module {
 
   @Provides('storage')
   public async getStorage(): Promise<Connection> {
-    return this.bot.getStorage();
+    const bot = await this.getBot();
+    return bot.getStorage();
   }
 }

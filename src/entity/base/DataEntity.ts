@@ -1,8 +1,8 @@
-import { isNil } from 'lodash';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { LabelEntity, LabelEntityOptions } from 'src/entity/base/LabelEntity';
 import { MissingKeyError } from 'src/error/MissingKeyError';
+import { doesExist } from 'src/utils';
 import { dictToMap, getOrDefault, MapLike } from 'src/utils/Map';
 
 export interface DataEntityOptions<TVal> extends LabelEntityOptions {
@@ -10,19 +10,17 @@ export interface DataEntityOptions<TVal> extends LabelEntityOptions {
 }
 
 export abstract class DataEntity<TVal> extends LabelEntity {
-  public data: Map<string, TVal>;
+  public data: Map<string, TVal> = new Map();
 
   @Column({
     name: 'data',
   })
-  protected dataStr: string;
+  protected dataStr: string = '';
 
-  constructor(options?: DataEntityOptions<TVal>) {
+  constructor(options: DataEntityOptions<TVal>) {
     super(options);
 
-    if (isNil(options)) {
-      this.data = new Map();
-    } else {
+    if (doesExist(options)) {
       this.data = dictToMap(options.data);
     }
   }

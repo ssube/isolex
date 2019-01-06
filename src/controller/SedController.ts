@@ -1,10 +1,13 @@
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { doesExist, mustExist } from 'src/utils';
 
 export type SedControllerData = ControllerData;
 export type SedControllerOptions = ControllerOptions<SedControllerData>;
@@ -17,24 +20,23 @@ export class SedController extends BaseController<SedControllerData> implements 
     super(options, 'isolex#/definitions/service-controller-sed', [NOUN_SED]);
   }
 
-  @HandleNoun(NOUN_SED)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_SED, CommandVerb.Create)
   @CheckRBAC()
-  public async createSed(cmd: Command): Promise<void> {
-    const source = this.getSourceOrFail(cmd.context);
+  public async createSed(cmd: Command, ctx: Context): Promise<void> {
+    const source = this.getSourceOrFail(ctx);
     const expr = cmd.getHead('expr');
 
     // split into regex, replace and flags
     const parts = expr.match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
-    if (!parts) {
+    if (isNil(parts)) {
       this.logger.debug({ expr }, 'invalid input.');
-      return this.reply(cmd.context, 'invalid input. Please use \`!!s/e/d/[flags]\`');
+      return this.reply(ctx, 'invalid input. Please use \`!!s/e/d/[flags]\`');
     }
 
     this.logger.debug({ parts }, 'fetching messages');
     try {
       const messages = await this.bot.fetch({
-        channel: cmd.context.channel.id,
+        channel: ctx.channel.id,
         listenerId: source.id,
         useFilters: true,
       });
@@ -45,22 +47,23 @@ export class SedController extends BaseController<SedControllerData> implements 
         }
       }
 
-      return this.reply(cmd.context, 'No messages were matched!');
+      return this.reply(ctx, 'No messages were matched!');
     } catch (error) {
       this.logger.error('Failed to fetch messages.');
     }
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
-    if (message.context.channel.thread === command.context.channel.thread) {
+    if (doesExist(message.context) && doesExist(command.context) && message.context.channel.thread === command.context.channel.thread) {
       return false;
     }
 
+    const ctx = mustExist(command.context);
     const [_, pattern, replacement, flags] = parts;
     const expr = new RegExp(pattern, flags);
     if (expr.test(message.body)) {
       const body = message.body.replace(expr, replacement);
-      await this.reply(command.context, body);
+      await this.reply(ctx, body);
       return true;
     }
 

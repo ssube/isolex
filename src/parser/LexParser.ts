@@ -9,7 +9,7 @@ import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseParser } from 'src/parser/BaseParser';
 import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
-import { leftPad } from 'src/utils';
+import { doesExist, leftPad, mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
@@ -56,15 +56,16 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
-    return this.decodeBody(msg.context, msg.body);
+    const ctx = mustExist(msg.context);
+    return this.decodeBody(ctx, msg.body);
   }
 
   public async decode(msg: Message): Promise<TemplateScope> {
     if (msg.type !== TYPE_TEXT) {
       throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
     }
-
-    return this.decodeBody(msg.context, msg.body);
+    const ctx = mustExist(msg.context);
+    return this.decodeBody(ctx, msg.body);
   }
 
   public async decodeBody(context: Context, body: string): Promise<Array<Command>> {
@@ -131,10 +132,9 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   }
 
   protected async createReply(context: Context, noun: string, verb: CommandVerb, data: CommandData): Promise<Array<Command>> {
+    const replyContext = await this.createContext(context);
     const cmdOptions: CommandOptions = {
-      context: context.extend({
-        parser: this,
-      }),
+      context: replyContext,
       data,
       labels: this.data.defaultCommand.labels,
       noun,
@@ -147,7 +147,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
 
   protected getSlots(input: AWS.LexRuntime.StringMap | undefined): Map<string, Array<string>> {
     const slots = new Map();
-    if (!isNil(input)) {
+    if (doesExist(input)) {
       for (const [k, v] of Object.entries(input)) {
         slots.set(k, [v]);
       }

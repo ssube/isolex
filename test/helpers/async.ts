@@ -120,7 +120,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.S
     });
 
     const suite: PromiseLike<void> | undefined = cb.call(this);
-    if (isNil(suite) || isNil(suite.then)) {
+    if (isNil(suite) || !Reflect.has(suite, 'then')) {
       // tslint:disable-next-line:no-console
       console.error(`test suite '${description}' did not return a promise`);
     }
@@ -135,7 +135,9 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.S
  * This function may not have any direct test coverage. It is too simple to reasonably mock.
  */
 export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.Test {
-  if (cb) {
+  if (isNil(cb)) {
+    return it(expectation);
+  } else {
     return it(expectation, function trackTest(this: Mocha.Context) {
       return new Promise<unknown>((res, rej) => {
         cb.call(this).then((value: unknown) => {
@@ -145,7 +147,5 @@ export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.Test {
         });
       });
     });
-  } else {
-    return it(expectation);
   }
 }

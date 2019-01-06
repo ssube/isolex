@@ -1,11 +1,11 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { RequestFactory } from 'src/utils/Request';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface WeatherControllerData extends ControllerData {
   api: {
@@ -14,9 +14,7 @@ export interface WeatherControllerData extends ControllerData {
   };
 }
 
-export interface WeatherControllerOptions extends ControllerOptions<WeatherControllerData> {
-  compiler: TemplateCompiler;
-}
+export type WeatherControllerOptions = ControllerOptions<WeatherControllerData>;
 
 export const NOUN_WEATHER = 'weather';
 
@@ -30,14 +28,10 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     this.request = options.request;
   }
 
-  @HandleNoun(NOUN_WEATHER)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_WEATHER, CommandVerb.Get)
   @CheckRBAC()
-  public async getWeather(cmd: Command): Promise<void> {
-    const [location] = cmd.get('location');
-    if (!location) {
-      return this.reply(cmd.context, 'unknown or missing location');
-    }
+  public async getWeather(cmd: Command, ctx: Context): Promise<void> {
+    const location = cmd.getHead('location');
 
     try {
       const weather = await this.requestWeather(location);

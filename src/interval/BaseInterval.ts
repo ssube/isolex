@@ -8,6 +8,7 @@ import { Tick } from 'src/entity/Tick';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Interval, IntervalData } from 'src/interval/Interval';
 import { Listener } from 'src/listener/Listener';
+import { doesExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
@@ -16,16 +17,19 @@ export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<
 export abstract class BaseInterval<TData extends IntervalData> extends BotService<TData> implements Interval {
   protected readonly clock: Clock;
   protected readonly math: MathJsStatic;
+
+  protected readonly contextRepository: Repository<Context>;
   protected readonly tickRepository: Repository<Tick>;
 
-  protected interval: NodeJS.Timeout;
-  protected target: Listener;
+  protected interval?: NodeJS.Timeout;
+  protected target?: Listener;
 
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.clock = options.clock;
     this.math = options.math.create({});
+    this.contextRepository = options.storage.getRepository(Context);
     this.tickRepository = options.storage.getRepository(Tick);
   }
 
@@ -33,7 +37,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
     await super.start();
 
     this.logger.debug({ def: this.data.defaultTarget }, 'getting default target listener');
-    this.target = this.services.getService(this.data.defaultTarget);
+    this.target = this.services.getService<Listener>(this.data.defaultTarget);
     return this.startInterval();
   }
 
@@ -45,12 +49,12 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   public abstract tick(context: Context, last: Tick): Promise<number>;
 
   protected async startInterval() {
-    if (this.data.frequency.cron) {
+    if (doesExist(this.data.frequency.cron)) {
       this.logger.debug({ cron: this.data.frequency.cron }, 'starting a cron interval');
       throw new NotImplementedError('cron frequency is not implemented');
     }
 
-    if (this.data.frequency.time) {
+    if (doesExist(this.data.frequency.time)) {
       const ms = this.math.unit(this.data.frequency.time).toNumber('millisecond');
       this.logger.debug({ ms }, 'starting a clock interval');
       this.interval = this.clock.setInterval(() => this.nextTick().catch((err) => {
@@ -60,7 +64,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   }
 
   protected async stopInterval() {
-    if (this.data.frequency.time) {
+    if (doesExist(this.data.frequency.time) && doesExist(this.interval)) {
       this.clock.clearInterval(this.interval);
     }
   }
@@ -95,7 +99,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
    * This context entity will be persisted with the command, message, or event for which it has been created.
    */
   protected async createContext(): Promise<Context> {
-    return new Context({
+    return this.contextRepository.create({
       ...this.data.defaultContext,
       target: this.target,
     });

@@ -1,30 +1,29 @@
-import { isNil, isString } from 'lodash';
+import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
-import { isNumber } from 'util';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Schema } from 'src/schema';
-import { Dict, mapToDict } from 'src/utils/Map';
+import { mustExist } from 'src/utils';
+import { Dict, dictToMap, mapToDict } from 'src/utils/Map';
 
 export function createCompletion(cmd: Command, key: string, msg: string): Command {
-  if (isNil(cmd.context.parser)) {
-    throw new InvalidArgumentError('command has no parser to prompt for completion');
-  }
+  const ctx = mustExist(cmd.context);
+  const parser = mustExist(ctx.parser);
 
   const existingData = mapToDict(cmd.data);
-  return new Command({
-    context: cmd.context,
-    data: {
+  const data = dictToMap({
       ...existingData,
       key: [key],
       msg: [msg],
       noun: [cmd.noun],
-      parser: [cmd.context.parser.id],
+      parser: [parser.id],
       verb: [cmd.verb],
-    },
-    labels: {},
+  });
+  return new Command({
+    context: cmd.context,
+    data,
+    labels: cmd.labels,
     noun: NOUN_FRAGMENT,
     verb: CommandVerb.Create,
   });
@@ -91,7 +90,8 @@ export function collectValue(value: CollectData, defaultValue: CollectData): Col
   });
 
   const coercedValue = { value };
-  if (schema.match(coercedValue)) {
+  const result = schema.match(coercedValue);
+  if (result.valid) {
     return coercedValue.value;
   } else {
     throw new BaseError('value type error');

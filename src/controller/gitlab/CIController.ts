@@ -1,10 +1,12 @@
 import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { GitlabClient, GitlabClientData, JobOptions, PipelineOptions, ProjectOptions } from 'src/utils/gitlab';
 
 export interface GitlabCIControllerData extends ControllerData {
@@ -18,7 +20,7 @@ export const NOUN_GITLAB_PIPELINE = 'gitlab-ci-pipeline';
 
 @Inject()
 export class GitlabCIController extends BaseController<GitlabCIControllerData> implements Controller {
-  protected client: GitlabClient;
+  protected client?: GitlabClient;
   protected container: Container;
 
   constructor(options: GitlabCIControllerOptions) {
@@ -35,107 +37,107 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     });
   }
 
-  @HandleNoun(NOUN_GITLAB_JOB)
-  @HandleVerb(CommandVerb.Delete)
+  @Handler(NOUN_GITLAB_JOB, CommandVerb.Delete)
   @CheckRBAC()
-  public async deleteJob(cmd: Command): Promise<void> {
+  public async deleteJob(cmd: Command, ctx: Context): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getJobOptions(cmd);
-    const existing = await this.client.getJob(options);
+    const existing = await client.getJob(options);
     if (isNil(existing)) {
-      return this.reply(cmd.context, 'job does not exist');
+      return this.reply(ctx, 'job does not exist');
     }
 
-    const updated = await this.client.cancelJob(options);
+    const updated = await client.cancelJob(options);
     return this.transformJSON(cmd, [updated]);
   }
 
-  @HandleNoun(NOUN_GITLAB_JOB)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_GITLAB_JOB, CommandVerb.Get)
   @CheckRBAC()
   public async getJob(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getJobOptions(cmd);
-    const response = await this.client.getJob(options);
+    const response = await client.getJob(options);
     return this.transformJSON(cmd, [response]);
   }
 
-  @HandleNoun(NOUN_GITLAB_JOB)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_GITLAB_JOB, CommandVerb.List)
   @CheckRBAC()
   public async listJobs(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getPipelineOptions(cmd);
-    const jobs = await this.client.listJobs(options);
+    const jobs = await client.listJobs(options);
     return this.transformJSON(cmd, jobs);
   }
 
-  @HandleNoun(NOUN_GITLAB_JOB)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_GITLAB_JOB, CommandVerb.Update)
   @CheckRBAC()
-  public async updateJob(cmd: Command): Promise<void> {
+  public async updateJob(cmd: Command, ctx: Context): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getJobOptions(cmd);
-    const existing = await this.client.getJob(options);
+    const existing = await client.getJob(options);
     if (!existing.length) {
-      return this.reply(cmd.context, 'pipeline not found');
+      return this.reply(ctx, 'pipeline not found');
     }
 
-    const retried = await this.client.retryJob(options);
+    const retried = await client.retryJob(options);
     return this.transformJSON(cmd, [retried]);
   }
 
-  @HandleNoun(NOUN_GITLAB_PIPELINE)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_GITLAB_PIPELINE, CommandVerb.Create)
   @CheckRBAC()
   public async createPipeline(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
     const options = {
       ...this.getProjectOptions(cmd),
       ref: cmd.getHead('ref'),
     };
-    const pipeline = await this.client.createPipeline(options);
+    const pipeline = await client.createPipeline(options);
     return this.transformJSON(cmd, [pipeline]);
   }
 
-  @HandleNoun(NOUN_GITLAB_PIPELINE)
-  @HandleVerb(CommandVerb.Delete)
+  @Handler(NOUN_GITLAB_PIPELINE, CommandVerb.Delete)
   @CheckRBAC()
-  public async deletePipeline(cmd: Command): Promise<void> {
+  public async deletePipeline(cmd: Command, ctx: Context): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getPipelineOptions(cmd);
-    const existing = await this.client.getPipeline(options);
+    const existing = await client.getPipeline(options);
     if (isNil(existing)) {
-      return this.reply(cmd.context, 'pipeline does not exist');
+      return this.reply(ctx, 'pipeline does not exist');
     }
 
-    const updated = await this.client.cancelPipeline(options);
+    const updated = await client.cancelPipeline(options);
     return this.transformJSON(cmd, [updated]);
   }
 
-  @HandleNoun(NOUN_GITLAB_PIPELINE)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_GITLAB_PIPELINE, CommandVerb.Get)
   @CheckRBAC()
   public async getPipeline(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getPipelineOptions(cmd);
-    const response = await this.client.getPipeline(options);
+    const response = await client.getPipeline(options);
     return this.transformJSON(cmd, [response]);
   }
 
-  @HandleNoun(NOUN_GITLAB_PIPELINE)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_GITLAB_PIPELINE, CommandVerb.List)
   @CheckRBAC()
   public async listPipelines(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getProjectOptions(cmd);
-    const pipelines = await this.client.listPipelines(options);
+    const pipelines = await client.listPipelines(options);
     return this.transformJSON(cmd, pipelines);
   }
 
-  @HandleNoun(NOUN_GITLAB_PIPELINE)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_GITLAB_PIPELINE, CommandVerb.Update)
   @CheckRBAC()
-  public async updatePipeline(cmd: Command): Promise<void> {
+  public async updatePipeline(cmd: Command, ctx: Context): Promise<void> {
+    const client = mustExist(this.client);
     const options = this.getPipelineOptions(cmd);
-    const existing = await this.client.getPipeline(options);
+    const existing = await client.getPipeline(options);
     if (!existing.length) {
-      return this.reply(cmd.context, 'pipeline not found');
+      return this.reply(ctx, 'pipeline not found');
     }
 
-    const retried = await this.client.retryPipeline(options);
+    const retried = await client.retryPipeline(options);
     return this.transformJSON(cmd, [retried]);
   }
 

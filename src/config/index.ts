@@ -9,6 +9,7 @@ import { envType } from 'src/config/type/Env';
 import { includeType } from 'src/config/type/Include';
 import { regexpType } from 'src/config/type/Regexp';
 import { NotFoundError } from 'src/error/NotFoundError';
+import { doesExist } from 'src/utils';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
@@ -54,7 +55,7 @@ export async function loadConfig(name: string, ...extras: Array<string>): Promis
 
   for (const p of paths) {
     const data = await readConfig(p);
-    if (data) {
+    if (doesExist(data)) {
       return safeLoad(data, {
         schema: CONFIG_SCHEMA,
       });

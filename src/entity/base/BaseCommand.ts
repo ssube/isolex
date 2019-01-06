@@ -1,8 +1,8 @@
-import { isNil } from 'lodash';
 import { Column } from 'typeorm';
 
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { CommandVerb } from 'src/entity/Command';
+import { doesExist } from 'src/utils';
 import { getHeadOrDefault } from 'src/utils/Map';
 
 export interface BaseCommandOptions extends DataEntityOptions<Array<string>> {
@@ -12,15 +12,15 @@ export interface BaseCommandOptions extends DataEntityOptions<Array<string>> {
 
 export abstract class BaseCommand extends DataEntity<Array<string>> {
   @Column()
-  public noun: string;
+  public noun: string = '';
 
   @Column()
-  public verb: CommandVerb;
+  public verb: CommandVerb = CommandVerb.Help;
 
-  constructor(options?: BaseCommandOptions) {
+  constructor(options: BaseCommandOptions) {
     super(options);
 
-    if (!isNil(options)) {
+    if (doesExist(options)) {
       this.noun = options.noun;
       this.verb = options.verb;
     }

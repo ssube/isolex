@@ -1,5 +1,3 @@
-import { kebabCase } from 'lodash';
-import { Module } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 
 import { AccountController } from 'src/controller/AccountController';
@@ -21,36 +19,37 @@ import { TimeController } from 'src/controller/TimeController';
 import { TokenController } from 'src/controller/TokenController';
 import { UserController } from 'src/controller/UserController';
 import { WeatherController } from 'src/controller/WeatherController';
+import { BaseModule } from 'src/module/BaseModule';
 
-export class ControllerModule extends Module {
+export class ControllerModule extends BaseModule {
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
     // controllers
-    this.bind(kebabCase(AccountController.name)).toConstructor(AccountController);
-    this.bind(kebabCase(CompletionController.name)).toConstructor(CompletionController);
-    this.bind(kebabCase(CountController.name)).toConstructor(CountController);
-    this.bind(kebabCase(DiceController.name)).toConstructor(DiceController);
-    this.bind(kebabCase(EchoController.name)).toConstructor(EchoController);
-    this.bind(kebabCase(LearnController.name)).toConstructor(LearnController);
-    this.bind(kebabCase(MathController.name)).toConstructor(MathController);
-    this.bind(kebabCase(PickController.name)).toConstructor(PickController);
-    this.bind(kebabCase(RandomController.name)).toConstructor(RandomController);
-    this.bind(kebabCase(ReactionController.name)).toConstructor(ReactionController);
-    this.bind(kebabCase(SedController.name)).toConstructor(SedController);
-    this.bind(kebabCase(SearchController.name)).toConstructor(SearchController);
-    this.bind(kebabCase(TimeController.name)).toConstructor(TimeController);
-    this.bind(kebabCase(TokenController.name)).toConstructor(TokenController);
-    this.bind(kebabCase(UserController.name)).toConstructor(UserController);
-    this.bind(kebabCase(WeatherController.name)).toConstructor(WeatherController);
+    this.bindService(AccountController);
+    this.bindService(CompletionController);
+    this.bindService(CountController);
+    this.bindService(DiceController);
+    this.bindService(EchoController);
+    this.bindService(LearnController);
+    this.bindService(MathController);
+    this.bindService(PickController);
+    this.bindService(RandomController);
+    this.bindService(ReactionController);
+    this.bindService(SedController);
+    this.bindService(SearchController);
+    this.bindService(TimeController);
+    this.bindService(TokenController);
+    this.bindService(UserController);
+    this.bindService(WeatherController);
 
     // github controllers
-    this.bind(kebabCase(GithubPRController.name)).toConstructor(GithubPRController);
+    this.bindService(GithubPRController);
 
     // gitlab controllers
-    this.bind(kebabCase(GitlabCIController.name)).toConstructor(GitlabCIController);
+    this.bindService(GitlabCIController);
 
     // kubernetes controllers
-    this.bind(kebabCase(KubernetesCoreController.name)).toConstructor(KubernetesCoreController);
+    this.bindService(KubernetesCoreController);
   }
 }

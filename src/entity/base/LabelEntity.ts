@@ -1,27 +1,25 @@
-import { isNil } from 'lodash';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
+import { doesExist } from 'src/utils';
 import { dictToMap, MapLike } from 'src/utils/Map';
 
-export interface LabelEntityOptions {
+export interface LabelEntityOptions extends BaseEntityOptions {
   labels: MapLike<string>;
 }
 
 export abstract class LabelEntity extends BaseEntity {
-  public labels: Map<string, string>;
+  public labels: Map<string, string> = new Map();
 
   @Column({
     name: 'labels',
   })
-  protected labelStr: string;
+  protected labelStr: string = '';
 
-  constructor(options?: LabelEntityOptions) {
-    super();
+  constructor(options: LabelEntityOptions) {
+    super(options);
 
-    if (isNil(options)) {
-      this.labels = new Map();
-    } else {
+    if (doesExist(options)) {
       this.labels = dictToMap(options.labels);
     }
   }

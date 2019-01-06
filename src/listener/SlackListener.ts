@@ -9,6 +9,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
+import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SlackListenerData extends ListenerData {
@@ -46,17 +47,20 @@ export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
 
 @Inject('bot', 'clock')
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
-  protected client: RTMClient;
-  protected webClient: WebClient;
+  protected client?: RTMClient;
+  protected webClient?: WebClient;
 
   constructor(options: SlackListenerOptions) {
     super(options, 'isolex#/definitions/service-listener-slack');
   }
 
   public async send(msg: Message): Promise<void> {
-    if (msg.context.channel.id) {
-      const result = await this.client.sendMessage(escape(msg.body), msg.context.channel.id);
-      if (!isNil(result.error)) {
+    const client = mustExist(this.client);
+    const ctx = mustExist(msg.context);
+
+    if (doesExist(ctx.channel.id)) {
+      const result = await client.sendMessage(escape(msg.body), ctx.channel.id);
+      if (doesExist(result.error)) {
         const err = new BaseError(result.error.msg);
         this.logger.error(err, 'error sending slack message');
         throw err;
@@ -83,23 +87,28 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     this.webClient = new WebClient(this.data.token.web);
 
     this.client.on('message', (msg) => {
-      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => this.logger.error(err, 'error receiving message'));
+      this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
+        this.logger.error(err, 'error receiving message');
+      });
     });
 
     this.client.on('reaction_added', (reaction) => {
-      this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => this.logger.error(err, 'error adding reaction'));
+      this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => {
+        this.logger.error(err, 'error adding reaction');
+      });
     });
 
     await this.client.start();
   }
 
   public async stop() {
-    await this.client.disconnect();
+    await mustExist(this.client).disconnect();
   }
 
   protected async convertReaction(reaction: SlackReaction): Promise<Message> {
     this.logger.debug({ reaction }, 'converting slack reaction');
-    const search = await this.webClient.channels.history({
+    const client = mustExist(this.webClient);
+    const search = await client.channels.history({
       channel: reaction.item.channel,
       inclusive: true,
       latest: reaction.item.ts,
@@ -130,15 +139,19 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       uid,
     });
     const session = await this.getSession(uid);
-    if (session) {
+    if (doesExist(session)) {
       context.user = session.user;
     }
-    return new Message({
+
+    const result = new Message({
       body: text,
       context,
+      labels: this.labels,
       reactions: this.reactionNames(msg.reactions),
       type: TYPE_TEXT,
     });
+    this.logger.debug({ result }, 'converted slack message');
+    return result;
   }
 
   protected reactionNames(reactions: Array<SlackMessageReaction> | undefined): Array<string> {

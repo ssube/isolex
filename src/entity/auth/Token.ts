@@ -1,5 +1,4 @@
 import { sign, verify } from 'jsonwebtoken';
-import { isNil } from 'lodash';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -7,6 +6,7 @@ import { User } from 'src/entity/auth/User';
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { doesExist, mustExist } from 'src/utils';
 import { dateToSeconds } from 'src/utils/Clock';
 import { Dict, mapToDict } from 'src/utils/Map';
 
@@ -27,8 +27,10 @@ export interface VerifiableTokenOptions {
   subject: string;
 }
 
-export interface TokenOptions extends Session, DataEntityOptions<Array<string>>, VerifiableTokenOptions {
+export interface TokenOptions extends DataEntityOptions<Array<string>>, VerifiableTokenOptions {
+  expiresAt: Date;
   grants: Array<string>;
+  user?: User;
 }
 
 export const TABLE_TOKEN = 'token';
@@ -49,7 +51,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * https://tools.ietf.org/html/rfc7519#section-4.1.3
    */
   @Column('simple-json')
-  public audience: Array<string>;
+  public audience: Array<string> = [];
 
   /**
    * `exp` (Expiration Time) claim
@@ -58,17 +60,17 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   @Column({
     type: 'datetime',
   })
-  public expiresAt: Date;
+  public expiresAt: Date = new Date();
 
   @Column('simple-json')
-  public grants: Array<string>;
+  public grants: Array<string> = [];
 
   /**
    * `jti` (JWT ID) claim
    * https://tools.ietf.org/html/rfc7519#section-4.1.7
    */
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   /**
    * `iss` (Issuer) claim
@@ -77,7 +79,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * listener identifier
    */
   @Column()
-  public issuer: string;
+  public issuer: string = '';
 
   /**
    * `sub` (Subject) claim
@@ -86,7 +88,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * userName
    */
   @Column()
-  public subject: string;
+  public subject: string = '';
 
   @ManyToOne((type) => User, (user) => user.id, {
     cascade: true,
@@ -94,18 +96,18 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   @JoinColumn({
     name: 'subject',
   })
-  public user: User;
+  public user?: User;
 
-  constructor(options?: TokenOptions) {
+  constructor(options: TokenOptions) {
     super(options);
 
-    if (!isNil(options)) {
+    if (doesExist(options)) {
       this.audience = options.audience;
-      this.createdAt = options.createdAt;
       this.expiresAt = options.expiresAt;
+      this.grants = options.grants;
       this.issuer = options.issuer;
-      this.grants = Array.from(options.grants);
       this.subject = options.subject;
+      this.user = options.user;
     }
   }
 
@@ -123,10 +125,11 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * Turn this token into an equivalent session.
    */
   public session(): Session {
+    const user = mustExist(this.user);
     return {
       createdAt: this.createdAt,
       expiresAt: this.expiresAt,
-      user: this.user,
+      user,
     };
   }
 

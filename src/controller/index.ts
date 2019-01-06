@@ -2,19 +2,12 @@ import { BaseController } from 'src/controller/BaseController';
 import { ControllerData } from 'src/controller/Controller';
 import { CommandVerb } from 'src/entity/Command';
 
-export const SYMBOL_NOUN = Symbol('handle-noun');
+export const SYMBOL_HANDLER = Symbol('handler');
 export const SYMBOL_RBAC = Symbol('check-rbac');
-export const SYMBOL_VERB = Symbol('handle-verb');
 
-export function HandleNoun(noun: string) {
+export function Handler(noun: string, verb: CommandVerb) {
   return (target: BaseController<ControllerData>, key: string, desc: PropertyDescriptor) => {
-    Reflect.defineMetadata(SYMBOL_NOUN, noun, desc.value);
-  };
-}
-
-export function HandleVerb(verb: CommandVerb) {
-  return (target: BaseController<ControllerData>, key: string, desc: PropertyDescriptor) => {
-    Reflect.defineMetadata(SYMBOL_VERB, verb, desc.value);
+    Reflect.defineMetadata(SYMBOL_HANDLER, [noun, verb], desc.value);
   };
 }
 
@@ -46,17 +39,12 @@ export interface HandlerOptions {
 }
 
 export function getHandlerOptions(target: Function): HandlerOptions | undefined {
-  if (!Reflect.hasMetadata(SYMBOL_NOUN, target)) {
+  if (!Reflect.hasMetadata(SYMBOL_HANDLER, target)) {
     return;
   }
 
-  if (!Reflect.hasMetadata(SYMBOL_VERB, target)) {
-    return;
-  }
-
-  const noun = Reflect.getMetadata(SYMBOL_NOUN, target);
+  const [noun, verb] = Reflect.getMetadata(SYMBOL_HANDLER, target) as [string, CommandVerb];
   const rbac = Reflect.getMetadata(SYMBOL_RBAC, target) as RBACOptions;
-  const verb = Reflect.getMetadata(SYMBOL_VERB, target) as CommandVerb;
   return {
     noun,
     rbac,

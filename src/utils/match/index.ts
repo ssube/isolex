@@ -1,5 +1,6 @@
 import { get, has, isString } from 'lodash';
 
+import { doesExist } from 'src/utils';
 import { mapToDict } from 'src/utils/Map';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -86,7 +87,7 @@ export class Match {
   }
 
   public matchRuleAny(rule: MatchRule, value: string): boolean {
-    if (rule.negate) {
+    if (rule.negate === true) {
       return rule.values.some((it) => !this.matchValue(it, value));
     } else {
       return rule.values.some((it) => this.matchValue(it, value));
@@ -94,7 +95,7 @@ export class Match {
   }
 
   public matchRuleEvery(rule: MatchRule, value: string): boolean {
-    if (rule.negate) {
+    if (rule.negate === true) {
       return rule.values.every((it) => !this.matchValue(it, value));
     } else {
       return rule.values.every((it) => this.matchValue(it, value));
@@ -102,11 +103,11 @@ export class Match {
   }
 
   public matchValue(ruleValue: RuleValue, value: string): boolean {
-    if (ruleValue.string) {
+    if (doesExist(ruleValue.string)) {
       return ruleValue.string === value;
     }
 
-    if (ruleValue.regexp) {
+    if (doesExist(ruleValue.regexp)) {
       return ruleValue.regexp.test(value);
     }
 
@@ -116,11 +117,11 @@ export class Match {
   public removeMatches(original: string): string {
     return this.rules.reduce((prev, rule) => {
       return rule.values.reduce((innerPrev, value) => {
-        if (value.regexp) {
+        if (doesExist(value.regexp)) {
           return innerPrev.replace(value.regexp, '');
         }
 
-        if (value.string) {
+        if (doesExist(value.string)) {
           return innerPrev.replace(value.string, '');
         }
 

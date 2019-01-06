@@ -1,21 +1,22 @@
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
-import { flatten } from 'lodash';
+import { flatten, isNil } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Token } from 'src/entity/auth/Token';
 import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 import { Listener } from 'src/listener/Listener';
 import { Parser } from 'src/parser/Parser';
+import { doesExist } from 'src/utils';
 
 export interface ChannelData {
   id: string;
   thread: string;
 }
 
-export interface ContextOptions {
+export interface ContextOptions extends BaseEntityOptions {
   channel: ChannelData;
 
   /**
@@ -50,7 +51,7 @@ export class Context extends BaseEntity implements ContextOptions {
   public channel: ChannelData;
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id?: string;
 
   @Column()
   public name: string;
@@ -68,13 +69,14 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public user?: User;
 
-  constructor(options?: ContextOptions) {
-    super();
+  constructor(options: ContextOptions) {
+    super(options);
 
-    if (options) {
-      if (!options.name || !options.uid) {
+    if (doesExist(options)) {
+      if (isNil(options.name) || isNil(options.uid)) {
         throw new MissingValueError('name and uid must be specified in context options');
       }
+
       this.channel = {
         id: options.channel.id,
         thread: options.channel.thread,
@@ -86,24 +88,14 @@ export class Context extends BaseEntity implements ContextOptions {
       this.token = options.token;
       this.uid = options.uid;
       this.user = options.user;
+    } else {
+      this.channel = {
+        id: '',
+        thread: '',
+      };
+      this.name = '';
+      this.uid = '';
     }
-  }
-
-  public extend(options: Partial<ContextOptions>): Context {
-    const ctx = new Context(this);
-    if (options.parser) {
-      ctx.parser = options.parser;
-    }
-    if (options.target) {
-      ctx.target = options.target;
-    }
-    if (options.token) {
-      ctx.token = options.token;
-    }
-    if (options.user) {
-      ctx.user = options.user;
-    }
-    return ctx;
   }
 
   /**
@@ -112,12 +104,12 @@ export class Context extends BaseEntity implements ContextOptions {
    * grants on a user).
    */
   public checkGrants(checks: Array<string>): boolean {
-    if (this.token && !this.token.permit(checks)) {
+    if (doesExist(this.token) && !this.token.permit(checks)) {
       return false;
     }
 
     const grants = this.getGrants();
-    if (!grants.length) {
+    if (grants.length === 0) {
       return false;
     }
 
@@ -128,7 +120,7 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public listGrants(checks: Array<string>): Array<string> {
     const grants = this.getGrants();
-    if (!grants.length) {
+    if (grants.length === 0) {
       return [];
     }
 
@@ -138,7 +130,7 @@ export class Context extends BaseEntity implements ContextOptions {
   }
 
   public getGrants(): Array<string> {
-    if (this.user) {
+    if (doesExist(this.user)) {
       return flatten(this.user.roles.map((r) => r.grants));
     } else {
       return [];
@@ -151,7 +143,7 @@ export class Context extends BaseEntity implements ContextOptions {
    * If this context does not have a logged in user, default to the listener-provided UID.
    */
   public getUserId(): string {
-    if (this.user) {
+    if (doesExist(this.user)) {
       return this.user.id;
     } else {
       return this.uid;
@@ -159,7 +151,7 @@ export class Context extends BaseEntity implements ContextOptions {
   }
 
   public toJSON(): object {
-    const user = this.user ? this.user.toJSON() : {};
+    const user = doesExist(this.user) ? this.user.toJSON() : {};
     return {
       channel: this.channel,
       id: this.id,

@@ -1,17 +1,16 @@
-import { kebabCase } from 'lodash';
-import { Module } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 
+import { BaseModule } from 'src/module/BaseModule';
 import { FlattenTransform } from 'src/transform/FlattenTransform';
 import { JsonpathTransform } from 'src/transform/JsonpathTransform';
 import { TemplateTransform } from 'src/transform/TemplateTransform';
 
-export class TransformModule extends Module {
+export class TransformModule extends BaseModule {
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
-    this.bind(kebabCase(FlattenTransform.name)).toConstructor(FlattenTransform);
-    this.bind(kebabCase(JsonpathTransform.name)).toConstructor(JsonpathTransform);
-    this.bind(kebabCase(TemplateTransform.name)).toConstructor(TemplateTransform);
+    this.bindService(FlattenTransform);
+    this.bindService(JsonpathTransform);
+    this.bindService(TemplateTransform);
  }
 }

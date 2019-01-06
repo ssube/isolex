@@ -5,13 +5,5 @@ import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter/Filt
  * Most filters are stateless, this implements methods for them.
  */
 export abstract class BaseFilter<TData extends FilterData> extends BotService<TData> implements Filter {
-  public async start() {
-    /* noop */
-  }
-
-  public async stop() {
-    /* noop */
-  }
-
   public abstract check(val: FilterValue): Promise<FilterBehavior>;
 }

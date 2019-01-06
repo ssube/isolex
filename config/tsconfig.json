@@ -19,9 +19,11 @@
     "noImplicitThis": true,
     "paths": {},
     "sourceMap": true,
+    "strict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "target": "es2017",
     "types": [
       "chai-as-promised",

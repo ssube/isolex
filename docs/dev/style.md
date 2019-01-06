@@ -241,6 +241,21 @@ Throw must always throw a new instance of `BaseError` or something which inherit
 Error messages must be literals and should not use template strings (although they may if the values are limited, like
 HTTP error codes). Errors may pass nested errors from other libraries, the stack trace should show everything.
 
+When a function can throw or return, the return should come as late as possible and errors should usually be within
+conditions. For example:
+
+```typescript
+const stats = await statFile(path);
+
+if (!stats.isFile()) {
+  throw new NotFoundError('file not found');
+}
+
+return stats.size;
+```
+
+Throwing an error should be the exception code path, so keeping it within a branch makes sense.
+
 ### Exports
 
 Modules MUST NOT use default exports (`export default`) or export a single symbol (`export =`).

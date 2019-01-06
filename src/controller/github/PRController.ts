@@ -2,10 +2,12 @@ import { defaults } from '@octokit/graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
@@ -77,6 +79,21 @@ export const QUERY_PR_MERGE = `
   }
 `;
 
+interface GithubGetResponse {
+  data: {
+    repository: {
+      pullRequest: {
+        author: {
+          login: string;
+        };
+        id: string;
+        number: number;
+        title: string;
+      };
+    };
+  };
+}
+
 export interface GithubPRControllerData extends ControllerData {
   client: {
     root?: string;
@@ -101,17 +118,17 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     });
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.Delete)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteRequest(cmd: Command): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
+    const ctx = mustExist(cmd.context);
+    const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getHead('number');
 
     const requestData = await this.getRequestData(owner, project, requestNumber);
     if (isNil(requestData)) {
-      return this.reply(cmd.context, 'pull request not found or already closed');
+      return this.reply(ctx, 'pull request not found or already closed');
     }
 
     this.logger.debug({ requestData }, 'updating pull request');
@@ -121,14 +138,13 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     await this.client(QUERY_PR_CLOSE, {
       requestID,
     });
-    return this.reply(cmd.context, `closed pull request ${requestNumber}`);
+    return this.reply(ctx, `closed pull request ${requestNumber}`);
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.Get)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.Get)
   @CheckRBAC()
-  public async getRequest(cmd: Command): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
+  public async getRequest(cmd: Command, ctx: Context): Promise<void> {
+    const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getHead('number');
 
@@ -136,11 +152,10 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.transformJSON(cmd, [response.data.repository.pullRequest]);
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.List)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.List)
   @CheckRBAC()
-  public async listRequests(cmd: Command): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
+  public async listRequests(cmd: Command, ctx: Context): Promise<void> {
+    const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
 
     const response = await this.client(QUERY_PR_LIST, {
@@ -150,18 +165,17 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     return this.transformJSON(cmd, response.data.repository.pullRequests.nodes);
   }
 
-  @HandleNoun(NOUN_PULL_REQUEST)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_PULL_REQUEST, CommandVerb.Update)
   @CheckRBAC()
-  public async updateRequest(cmd: Command): Promise<void> {
+  public async updateRequest(cmd: Command, ctx: Context): Promise<void> {
     const message = cmd.getHead('message');
-    const owner = cmd.getHeadOrDefault('owner', cmd.context.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getHead('number');
 
     const requestData = await this.getRequestData(owner, project, requestNumber);
     if (isNil(requestData)) {
-      return this.reply(cmd.context, 'pull request not found or already closed');
+      return this.reply(ctx, 'pull request not found or already closed');
     }
 
     this.logger.debug({ requestData }, 'updating pull request');
@@ -172,10 +186,10 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
       message,
       requestID,
     });
-    return this.reply(cmd.context, `merged pull request ${requestNumber}`);
+    return this.reply(ctx, `merged pull request ${requestNumber}`);
   }
 
-  protected async getRequestData(owner: string, project: string, requestNumber: string): Promise<any> {
+  protected async getRequestData(owner: string, project: string, requestNumber: string): Promise<GithubGetResponse> {
     const queryVars = {
       owner,
       project,

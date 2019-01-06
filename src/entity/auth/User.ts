@@ -2,9 +2,10 @@ import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { GRAPH_OUTPUT_ROLE, Role } from 'src/entity/auth/Role';
-import { BaseEntity } from 'src/entity/base/BaseEntity';
+import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
+import { doesExist } from 'src/utils';
 
-export interface UserOptions {
+export interface UserOptions extends BaseEntityOptions {
   name: string;
   roles: Array<Role>;
 }
@@ -14,28 +15,27 @@ export const TABLE_USER = 'user';
 @Entity(TABLE_USER)
 export class User extends BaseEntity implements UserOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column({
     unique: true,
   })
-  public name: string;
+  public name: string = '';
 
   @Column({
     name: 'roles',
     type: 'simple-json',
   })
-  public roleNames: Array<string>;
+  public roleNames: Array<string> = [];
 
-  public roles: Array<Role>;
+  public roles: Array<Role> = [];
 
-  constructor(options?: UserOptions) {
-    super();
+  constructor(options: UserOptions) {
+    super(options);
 
-    if (options) {
+    if (doesExist(options)) {
       this.name = options.name;
-      this.roles = Array.from(options.roles);
-      this.syncRoles();
+      this.roles = options.roles;
     }
   }
 

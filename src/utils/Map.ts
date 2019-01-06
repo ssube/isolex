@@ -1,7 +1,7 @@
 import { isMap, isNil } from 'lodash';
 
 import { NotFoundError } from 'src/error/NotFoundError';
-import { mergeList } from 'src/utils';
+import { doesExist, mergeList } from 'src/utils';
 
 export interface Dict<TVal> {
   [key: string]: TVal;
@@ -38,7 +38,7 @@ export function getOrDefault<TKey, TVal>(map: Map<TKey, TVal>, key: TKey, defaul
 
 export function getHead<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey): TVal {
   const value = map.get(key);
-  if (isNil(value) || !value.length) {
+  if (isNil(value) || value.length === 0) {
     throw new NotFoundError();
   }
   return value[0];
@@ -66,7 +66,7 @@ export function getHeadOrDefault<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: T
  */
 export function setOrPush<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey, val: TVal | Array<TVal>) {
   const prev = map.get(key);
-  if (prev) {
+  if (doesExist(prev)) {
     map.set(key, mergeList(prev, val));
   } else {
     if (Array.isArray(val)) {

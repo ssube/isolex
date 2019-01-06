@@ -5,7 +5,6 @@ import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { mapToDict } from 'src/utils/Map';
 import { Template, TemplateScope } from 'src/utils/Template';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 /**
  * Dictionary of templates to be compiled.
@@ -16,9 +15,7 @@ export interface TemplateTransformData extends TransformData {
   };
 }
 
-export interface TemplateTransformOptions extends TransformOptions<TemplateTransformData> {
-  compiler: TemplateCompiler;
-}
+export type TemplateTransformOptions = TransformOptions<TemplateTransformData>;
 
 @Inject('compiler')
 export class TemplateTransform extends BaseTransform<TemplateTransformData> implements Transform {

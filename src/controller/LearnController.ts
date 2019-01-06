@@ -1,10 +1,12 @@
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
-import { CheckRBAC, HandleNoun, HandleVerb } from 'src/controller';
+import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
@@ -31,17 +33,16 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     this.keywordRepository = this.storage.getRepository(Keyword);
   }
 
-  @HandleNoun(NOUN_KEYWORD)
-  @HandleVerb(CommandVerb.Create)
+  @Handler(NOUN_KEYWORD, CommandVerb.Create)
   @CheckRBAC()
-  public async createKeyword(cmd: Command): Promise<void> {
+  public async createKeyword(cmd: Command, ctx: Context): Promise<void> {
     const body = cmd.getOrDefault('body', []);
     const key = cmd.getHead('keyword');
     const noun = cmd.getHead('future-noun');
     const verb = cmd.getHead('future-verb') as CommandVerb;
 
     if (!this.checkNoun.check(noun)) {
-      return this.errorReply(cmd.context, ErrorReplyType.InvalidNoun);
+      return this.errorReply(ctx, ErrorReplyType.InvalidNoun);
     }
 
     const keyword = new Keyword({
@@ -58,20 +59,19 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const existing = await this.keywordRepository.findOne({
       key,
     });
-    if (existing) {
-      return this.errorReply(cmd.context, ErrorReplyType.EntityExists, key);
+    if (isNil(existing)) {
+      return this.errorReply(ctx, ErrorReplyType.EntityExists, key);
     }
 
     await this.keywordRepository.save(keyword);
-    return this.reply(cmd.context, `Learned command ${key}.`);
+    return this.reply(ctx, `Learned command ${key}.`);
   }
 
-  @HandleNoun(NOUN_KEYWORD)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_KEYWORD, CommandVerb.Update)
   @CheckRBAC()
-  public async deleteKeyword(cmd: Command): Promise<void> {
-    if (!this.checkGrants(cmd.context, `${NOUN_KEYWORD}:${CommandVerb.Delete}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+  public async deleteKeyword(cmd: Command, ctx: Context): Promise<void> {
+    if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Delete}`)) {
+      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
     }
 
     const key = cmd.getHead('keyword');
@@ -79,23 +79,22 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const keyword = await this.keywordRepository.findOne({
       key,
     });
-    if (!keyword) {
-      return this.errorReply(cmd.context, ErrorReplyType.EntityMissing, key);
+    if (isNil(keyword)) {
+      return this.errorReply(ctx, ErrorReplyType.EntityMissing, key);
     }
 
     await this.keywordRepository.delete({
       id: keyword.id,
       key,
     });
-    return this.reply(cmd.context, `deleted command ${key}.`);
+    return this.reply(ctx, `deleted command ${key}.`);
   }
 
-  @HandleNoun(NOUN_KEYWORD)
-  @HandleVerb(CommandVerb.Update)
+  @Handler(NOUN_KEYWORD, CommandVerb.Update)
   @CheckRBAC()
-  public async executeKeyword(cmd: Command) {
-    if (!this.checkGrants(cmd.context, `${NOUN_KEYWORD}:${CommandVerb.Update}`)) {
-      return this.errorReply(cmd.context, ErrorReplyType.GrantMissing);
+  public async executeKeyword(cmd: Command, ctx: Context): Promise<void> {
+    if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Update}`)) {
+      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
     }
 
     const body = cmd.getOrDefault('body', []);
@@ -105,8 +104,8 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       key,
     });
 
-    if (!keyword) {
-      return this.errorReply(cmd.context, ErrorReplyType.EntityMissing, key);
+    if (isNil(keyword)) {
+      return this.errorReply(ctx, ErrorReplyType.EntityMissing, key);
     }
 
     // TODO: merge with saved data before executing

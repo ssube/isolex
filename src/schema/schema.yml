@@ -180,6 +180,7 @@ definitions:
         properties:
           transforms:
             type: array
+            default: []
             items:
               $ref: "#/definitions/service-definition"
 
@@ -756,6 +757,7 @@ definitions:
     properties:
       filters:
         type: array
+        default: []
         items:
           $ref: "#/definitions/service-definition"
       strict:

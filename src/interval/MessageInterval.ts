@@ -1,11 +1,11 @@
 import { Context } from 'src/entity/Context';
-import { Message, MessageOptions } from 'src/entity/Message';
+import { Message, MessageEntityOptions } from 'src/entity/Message';
 import { Tick } from 'src/entity/Tick';
 import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
 import { IntervalData } from 'src/interval/Interval';
 
 export interface MessageIntervalData extends IntervalData {
-  defaultMessage: MessageOptions;
+  defaultMessage: MessageEntityOptions;
 }
 
 export type MessageIntervalOptions = BaseIntervalOptions<MessageIntervalData>;

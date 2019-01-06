@@ -1,23 +1,19 @@
-import { isNil } from 'lodash';
 import { Module, ModuleOptions, Provides } from 'noicejs';
 import { Container } from 'noicejs/Container';
 
 import { BaseServiceData } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { Service, ServiceDefinition, ServiceEvent, ServiceMetadata } from 'src/Service';
+import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
+import { mustExist } from 'src/utils';
 import { mustGet } from 'src/utils/Map';
 
 /**
  * This is a magical half-module service locator
  */
 
-export class ServiceModule extends Module implements Service {
-  public readonly id: string;
-  public readonly kind: string;
-  public readonly name: string;
-
-  protected container: Container;
+export class ServiceModule extends Module implements ServiceLifecycle {
+  protected container?: Container;
   protected services: Map<string, Service>;
 
   constructor() {
@@ -65,9 +61,7 @@ export class ServiceModule extends Module implements Service {
    * These are all created the same way, so they should probably have a common base...
    */
   public async createService<TService extends Service, TData extends BaseServiceData>(conf: ServiceDefinition<TData>): Promise<TService> {
-    if (isNil(this.container)) {
-      throw new NotFoundError('container not found');
-    }
+    const container = mustExist(this.container);
 
     const { metadata: { kind, name } } = conf;
     const tag = `${kind}:${name}`;
@@ -78,7 +72,7 @@ export class ServiceModule extends Module implements Service {
     }
 
     this.logger.info({ kind, tag }, 'creating unknown service');
-    const svc = await this.container.create<TService, BotServiceOptions<TData>>(kind, {
+    const svc = await container.create<TService, BotServiceOptions<TData>>(kind, {
       ...conf,
       logger: this.logger.child({
         kind,

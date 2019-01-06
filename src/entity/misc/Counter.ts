@@ -1,5 +1,6 @@
-import { isNil } from 'lodash';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import { doesExist } from 'src/utils';
 
 export interface CounterOptions {
   count: number;
@@ -12,24 +13,25 @@ export const TABLE_COUNTER = 'counter';
 @Entity(TABLE_COUNTER)
 export class Counter implements CounterOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: string = '';
 
   @Column()
-  public count: number;
+  public count: number = 0;
 
   @Column()
-  public name: string;
+  public name: string = '';
 
   @Column()
-  public roomId: string;
+  public roomId: string = '';
 
-  constructor(options?: CounterOptions) {
-    if (!isNil(options)) {
+  constructor(options: CounterOptions) {
+    if (doesExist(options)) {
       this.count = options.count;
       this.name = options.name;
       this.roomId = options.roomId;
     }
   }
+
   public toJSON() {
     return {
       count: this.count,

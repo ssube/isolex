@@ -1,15 +1,17 @@
 import * as express from 'express';
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
 import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
 import { Command, CommandOptions, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
-import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageOptions } from 'src/entity/Message';
+import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageEntityOptions } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
+import { dictToMap } from 'src/utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
@@ -26,7 +28,7 @@ interface GraphCommandOptions {
 }
 
 interface GraphMessageOptions {
-  messages: Array<MessageOptions>;
+  messages: Array<MessageEntityOptions>;
 }
 
 export type GraphSchemaData = BotServiceData;
@@ -55,20 +57,21 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     const context = req.user as Context | undefined;
     this.logger.debug({ args, context }, 'execute commands');
 
-    if (!context) {
+    if (isNil(context)) {
       throw new SessionRequiredError();
     }
 
     const commands = [];
     for (const data of args.commands) {
-      const { labels, noun, verb } = data;
-      commands.push(new Command({
+      const { noun, verb } = data;
+      const cmd = new Command({
         context,
         data: {},
-        labels,
+        labels: dictToMap(data.labels),
         noun,
         verb,
-      }));
+      });
+      commands.push(cmd);
     }
     return this.bot.executeCommand(...commands);
   }
@@ -77,19 +80,21 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     const context = req.user as Context | undefined;
     this.logger.debug({ args, context }, 'send messages');
 
-    if (!context) {
+    if (isNil(context)) {
       throw new SessionRequiredError();
     }
 
     const messages = [];
     for (const data of args.messages) {
       const { body, type } = data;
-      messages.push(new Message({
+      const msg = new Message({
         body,
         context,
+        labels: this.labels,
         reactions: [],
         type,
-      }));
+      });
+      messages.push(msg);
     }
     return this.bot.sendMessage(...messages);
   }

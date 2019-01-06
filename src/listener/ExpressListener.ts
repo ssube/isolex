@@ -10,13 +10,14 @@ import { Connection, Repository } from 'typeorm';
 
 import { BotServiceOptions } from 'src/BotService';
 import { JwtFields, Token } from 'src/entity/auth/Token';
-import { Context, ContextOptions } from 'src/entity/Context';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
+import { doesExist, mustExist } from 'src/utils';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
@@ -38,9 +39,7 @@ export interface ExpressListenerData extends ListenerData {
   };
 }
 
-export interface ExpressListenerOptions extends BotServiceOptions<ExpressListenerData> {
-  graph: GraphSchema;
-}
+export type ExpressListenerOptions = BotServiceOptions<ExpressListenerData>;
 
 @Inject('bot', 'clock', 'metrics', 'services', 'storage')
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
@@ -51,11 +50,11 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected readonly storage: Connection;
   protected readonly tokenRepository: Repository<Token>;
 
-  protected express: express.Express;
+  protected express?: express.Express;
   protected graph?: GraphSchema;
   protected passport?: passport.Authenticator;
   protected server?: http.Server;
-  protected target: Listener;
+  protected target?: Listener;
 
   constructor(options: ExpressListenerOptions) {
     super(options, 'isolex#/definitions/service-listener-express');
@@ -81,21 +80,22 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.passport = await this.setupPassport();
     this.express = await this.setupExpress();
     this.server = await new Promise<http.Server>((res, rej) => {
+      const app = mustExist(this.express);
       let server: http.Server;
-      server = this.express.listen(this.data.listen.port, this.data.listen.address, () => {
+      server = app.listen(this.data.listen.port, this.data.listen.address, () => {
         res(server);
       });
     });
 
-    this.target = this.services.getService(this.data.defaultTarget);
+    this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
   public async stop() {
-    if (this.server) {
+    if (doesExist(this.server)) {
       this.server.close();
     }
 
-    if (this.graph) {
+    if (doesExist(this.graph)) {
       await this.graph.stop();
     }
 
@@ -116,7 +116,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     res.end(this.metrics.metrics());
   }
 
-  public async traceRequest(req: express.Request, res: express.Response, next: Function) {
+  public traceRequest(req: express.Request, res: express.Response, next: Function) {
     const ctx = req.user as Context | undefined;
     this.logger.debug({ ctx, req, res }, 'handling request');
     this.requestCounter.inc({
@@ -172,14 +172,18 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected async setupExpress(): Promise<express.Express> {
     let app = express();
 
-    if (this.passport) {
+    if (doesExist(this.passport)) {
       app = app.use(this.passport.initialize());
       app = app.use(this.passport.authenticate('jwt'));
     }
 
     if (this.data.expose.metrics) {
-      app = app.use((req, res, next) => this.traceRequest(req, res, next));
-      app = app.get('/metrics', (req, res) => this.getMetrics(req, res));
+      app = app.use((req, res, next) => {
+        this.traceRequest(req, res, next);
+      });
+      app = app.get('/metrics', (req, res) => {
+        this.getMetrics(req, res);
+      });
     }
 
     if (this.data.expose.graph) {
@@ -205,7 +209,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
     }, (payload: JwtFields, done: VerifiedCallback) => {
-      this.createTokenSession(payload, done);
+      this.createTokenSession(payload, done).catch((err) => {
+        this.logger.error(err, 'error creating token session');
+      });
     }));
 
     // sessions are saved when created and keyed by uid, so pass that
@@ -223,13 +229,5 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
 
     return auth;
-  }
-
-  protected async createContext(options: ContextOptions): Promise<Context> {
-    return new Context({
-      ...options,
-      source: this,
-      target: this.target,
-    });
   }
 }
