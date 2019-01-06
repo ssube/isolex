@@ -1,5 +1,5 @@
 import { isNil, kebabCase } from 'lodash';
-import { Container, Inject, Logger, BaseError } from 'noicejs';
+import { BaseError, Container, Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
 import { RequestFactory, RequestOptions } from 'src/utils/Request';

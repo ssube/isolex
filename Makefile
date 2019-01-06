@@ -131,7 +131,7 @@ run-terminal: ## run the bot in a terminal
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
 
 run-bunyan: ## run the bot with bunyan logs
-	$(MAKE) run-terminal | $(NODE_BIN)/bunyan
+	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
 
 test: test-check ## run mocha unit tests
 

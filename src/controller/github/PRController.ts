@@ -89,9 +89,9 @@ interface GithubGetResponse {
         id: string;
         number: number;
         title: string;
-      }
-    }
-  }
+      };
+    };
+  };
 }
 
 export interface GithubPRControllerData extends ControllerData {
