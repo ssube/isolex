@@ -54,7 +54,9 @@ export class MathController extends BaseController<MathControllerData> implement
 
       return formatResult(body, scope, this.data.format);
     } catch (err) {
-      return `error evaluating math: ${err.message}\n${err.stack}`;
+      return this.locale.translate('service.controller.math.math.error', {
+        msg: err.message,
+      });
     }
   }
 }

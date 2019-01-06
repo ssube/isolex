@@ -63,7 +63,11 @@ export class CompletionController extends BaseController<CompletionControllerDat
     });
 
     this.logger.debug({ context, fragment }, 'creating fragment for later completion');
-    return this.reply(context, `${fragment.id} (${key}): ${msg}`);
+    return this.reply(context, this.locale.translate('service.controller.completion.prompt', {
+      id: fragment.id,
+      key,
+      msg,
+    }));
   }
 
   @Handler(NOUN_FRAGMENT, CommandVerb.Update)
@@ -74,25 +78,20 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     const fragment = await this.getFragment(ctx, id);
     if (isNil(fragment)) {
-      return this.reply(ctx, 'fragment not found');
+      return this.reply(ctx, this.locale.translate('service.controller.completion.missing'));
     }
 
     this.logger.debug({ fragment, parserId: fragment.parserId }, 'attempting to complete fragment');
 
-    try {
-      const parser = this.services.getService<Parser>({ id: fragment.parserId });
-      const value = cmd.get('next');
-      const commands = await parser.complete(ctx, fragment, value);
+    const parser = this.services.getService<Parser>({ id: fragment.parserId });
+    const value = cmd.get('next');
+    const commands = await parser.complete(ctx, fragment, value);
 
-      // the commands have been completed (or additional completions issued), so even if they fail,
-      // the previous fragment should be cleaned up. If parsing fails, the fragment should not be
-      // cleaned up.
-      await this.fragmentRepository.delete(fragment.id);
-      await this.bot.executeCommand(...commands);
-    } catch (err) {
-      this.logger.error(err, 'error completing fragment');
-      return this.reply(ctx, 'error completing fragment');
-    }
+    // the commands have been completed (or additional completions issued), so even if they fail,
+    // the previous fragment should be cleaned up. If parsing fails, the fragment should not be
+    // cleaned up.
+    await this.fragmentRepository.delete(fragment.id);
+    await this.bot.executeCommand(...commands);
   }
 
   protected async createContext(maybeCtx?: Context) {

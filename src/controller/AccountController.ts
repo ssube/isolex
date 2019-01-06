@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { Inject } from 'noicejs';
+import { BaseError, Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
 import { CheckRBAC, Handler } from 'src/controller';
@@ -89,7 +89,9 @@ export class AccountController extends BaseController<AccountControllerData> imp
       name,
     });
     if (existing > 0) {
-      return this.reply(ctx, `user ${name} already exists`);
+      return this.reply(ctx, this.locale.translate('service.controller.account.account.create.exists', {
+        name,
+      }));
     }
 
     const roleNames = this.getUserRoles(name);
@@ -104,15 +106,22 @@ export class AccountController extends BaseController<AccountControllerData> imp
     }));
 
     const jwt = await this.createToken(user);
-    return this.reply(ctx, `user ${name} joined, sign in token: ${jwt}`);
+    return this.reply(ctx, this.locale.translate('service.controller.account.account.create.success', {
+      jwt,
+      name,
+    }));
   }
 
   @Handler(NOUN_ACCOUNT, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteAccount(cmd: Command, ctx: Context): Promise<void> {
     const user = this.getUserOrFail(ctx);
+    const name = user.name;
+
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCompletion(cmd, 'confirm', `please confirm deleting all tokens for ${user.name}`);
+      const completion = createCompletion(cmd, 'confirm', this.locale.translate('service.controller.account.account.delete.confirm', {
+        name,
+      }));
       await this.bot.executeCommand(completion);
       return;
     }
@@ -122,7 +131,10 @@ export class AccountController extends BaseController<AccountControllerData> imp
     });
 
     const jwt = await this.createToken(user);
-    return this.reply(ctx, `revoked tokens for ${user.name}, new sign in token: ${jwt}`);
+    return this.reply(ctx, this.locale.translate('service.controller.account.account.delete.success', {
+      jwt,
+      name,
+    }));
   }
 
   @Handler(NOUN_SESSION, CommandVerb.Create)
@@ -143,7 +155,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const source = this.getSourceOrFail(ctx);
     const session = await source.createSession(ctx.uid, user);
     this.logger.debug({ session, user }, 'created session');
-    return this.reply(ctx, 'created session');
+    return this.reply(ctx, this.locale.translate('service.controller.account.session.create.success'));
   }
 
   @Handler(NOUN_SESSION, CommandVerb.Get)
@@ -151,8 +163,9 @@ export class AccountController extends BaseController<AccountControllerData> imp
   public async getSession(cmd: Command, ctx: Context): Promise<void> {
     const source = this.getSourceOrFail(ctx);
     const session = source.getSession(ctx.uid);
+
     if (isNil(session)) {
-      return this.reply(ctx, 'cannot get sessions unless logged in');
+      throw new BaseError('source does not have session for uid');
     }
 
     return this.reply(ctx, session.toString());

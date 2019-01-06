@@ -40,6 +40,9 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.logger.debug({ count, sides }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b, 0);
 
-    return this.reply(mustExist(cmd.context), `The results of your rolls were: ${results}. The sum is ${sum}.`);
+    return this.reply(mustExist(cmd.context), this.locale.translate('service.controller.dice.roll.create', {
+      results,
+      sum,
+    }));
   }
 }

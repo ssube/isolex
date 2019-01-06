@@ -6,12 +6,12 @@ import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
 import { INJECT_LOCALE } from 'src/BotService';
+import { Locale } from 'src/locale';
 import { Schema } from 'src/schema';
 import { GraphSchema } from 'src/schema/graph';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
-import { Locale } from 'src/utils/Locale';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';

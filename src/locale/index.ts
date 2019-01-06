@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+
 import { ServiceLifecycle } from 'src/Service';
 import { mustExist } from 'src/utils';
 
@@ -19,18 +20,9 @@ export class Locale implements ServiceLifecycle {
       debug: true,
       lng: this.lang,
       resources: {
-        en: {
-          translation: {
-            error: {
-              grant: {
-                missing: 'permission denied',
-              },
-              session: {
-                missing: 'must be logged in',
-              },
-            },
-          },
-        },
+        /* tslint:disable:no-var-requires */
+        en: require('src/locale/res/en.yml'),
+        /* tslint:enable:no-var-requires */
       },
     });
   }

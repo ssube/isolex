@@ -8,6 +8,7 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
+import { doesExist } from 'src/utils';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
 export const NOUN_KEYWORD = 'keyword';
@@ -59,21 +60,19 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const existing = await this.keywordRepository.findOne({
       key,
     });
-    if (isNil(existing)) {
+    if (doesExist(existing)) {
       return this.errorReply(ctx, ErrorReplyType.EntityExists, key);
     }
 
     await this.keywordRepository.save(keyword);
-    return this.reply(ctx, `Learned command ${key}.`);
+    return this.reply(ctx, this.locale.translate('service.controller.learn.keyword.create', {
+      key,
+    }));
   }
 
-  @Handler(NOUN_KEYWORD, CommandVerb.Update)
+  @Handler(NOUN_KEYWORD, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteKeyword(cmd: Command, ctx: Context): Promise<void> {
-    if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Delete}`)) {
-      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
-    }
-
     const key = cmd.getHead('keyword');
 
     const keyword = await this.keywordRepository.findOne({
@@ -87,16 +86,14 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       id: keyword.id,
       key,
     });
-    return this.reply(ctx, `deleted command ${key}.`);
+    return this.reply(ctx, this.locale.translate('service.controller.learn.keyword.delete', {
+      key,
+    }));
   }
 
   @Handler(NOUN_KEYWORD, CommandVerb.Update)
   @CheckRBAC()
   public async executeKeyword(cmd: Command, ctx: Context): Promise<void> {
-    if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Update}`)) {
-      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
-    }
-
     const body = cmd.getOrDefault('body', []);
     const key = cmd.getHead('keyword');
 

@@ -4,8 +4,8 @@ import { Connection } from 'typeorm';
 import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
+import { Locale } from 'src/locale';
 import { Service } from 'src/Service';
-import { Locale } from 'src/utils/Locale';
 
 export type BotServiceData = BaseServiceData;
 

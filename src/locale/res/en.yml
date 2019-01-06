@@ -1,0 +1,35 @@
+translation:
+  service:
+    controller:
+      account:
+        account:
+          create:
+            exists: "user {{ name }} already exists"
+            success: "user {{ name }} joined, sign in token: {{ jwt }}"
+          delete:
+            confirm: "please confirm deleting all tokens for {{ name }}"
+            success: "revoked tokens for {{ name }}, new sign in token: {{ jwt }}"
+        session:
+          create:
+            success: signed in
+      completion:
+        fragment:
+          missing: fragment not found
+          prompt: "complete {{ id }} with {{ key }}: {{ msg }}"
+      dice:
+        roll:
+          create: "the results of your rolls were: {{ results }}. The sum is {{ sum }}"
+      learn:
+        keyword:
+          create: "learned keyword {{ key }}"
+          delete: "deleted keyword {{ key }}"
+      math:
+        math:
+          error: "error evaluating math: {{ msg }}"
+
+  error:
+    grant:
+      missing: permission denied
+    session:
+      missing: must be logged in
+    unknown: "unknown error ({{ code }}): {{ msg }}"

@@ -9,12 +9,12 @@ import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener } from 'src/listener/Listener';
+import { Locale } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { applyTransforms } from 'src/transform/helpers';
 import { Transform, TransformData } from 'src/transform/Transform';
 import { doesExist, getMethods, mustExist } from 'src/utils';
-import { Locale } from 'src/utils/Locale';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -154,7 +154,10 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       case ErrorReplyType.SessionMissing:
         return this.reply(ctx, this.locale.translate('error.session.missing'));
       default:
-        return this.reply(ctx, `${errCode} error: ${msg}`);
+        return this.reply(ctx, this.locale.translate('error.unknown', {
+          code: errCode,
+          msg,
+        }));
     }
   }
 

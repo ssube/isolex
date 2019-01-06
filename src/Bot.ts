@@ -11,11 +11,11 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Interval, IntervalData } from 'src/interval/Interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
+import { Locale, LocaleOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { filterNil, mustExist, mustFind } from 'src/utils';
-import { Locale, LocaleOptions } from 'src/utils/Locale';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
