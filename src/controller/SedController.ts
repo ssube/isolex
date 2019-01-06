@@ -30,7 +30,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     const parts = expr.match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
     if (isNil(parts)) {
       this.logger.debug({ expr }, 'invalid input.');
-      return this.reply(ctx, this.locale.translate('service.controller.sed.invalid'));
+      return this.reply(ctx, this.translate('create.invalid'));
     }
 
     this.logger.debug({ parts }, 'fetching messages');
@@ -47,10 +47,15 @@ export class SedController extends BaseController<SedControllerData> implements 
         }
       }
 
-      return this.reply(ctx, this.locale.translate('service.controller.sed.missing'));
+      return this.reply(ctx, this.translate('create.missing'));
     } catch (error) {
       this.logger.error('Failed to fetch messages.');
     }
+  }
+
+  @Handler(NOUN_SED, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {

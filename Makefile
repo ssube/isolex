@@ -63,8 +63,8 @@ help: ## print this help
 		| awk 'BEGIN {FS = ":[^:]*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
-	git push gitlab ${GIT_BRANCH}
 	git push github ${GIT_BRANCH}
+	git push gitlab ${GIT_BRANCH}
 
 # from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
 git-stats: ## print git contributor line counts (approx, for fun)

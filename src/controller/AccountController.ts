@@ -80,6 +80,11 @@ export class AccountController extends BaseController<AccountControllerData> imp
     return this.reply(ctx, results);
   }
 
+  @Handler(NOUN_GRANT, CommandVerb.Help)
+  public async getGrantHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
+  }
+
   @Handler(NOUN_ACCOUNT, CommandVerb.Create)
   public async createAccount(cmd: Command, ctx: Context): Promise<void> {
     if (!this.data.join.allow && !this.checkGrants(ctx, 'account:create')) {
@@ -89,7 +94,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const name = cmd.getHeadOrDefault('name', ctx.name);
     const existing = await this.userRepository.count({ name });
     if (existing > 0) {
-      return this.reply(ctx, this.locale.translate('service.controller.account.account.create.exists', {
+      return this.reply(ctx, this.translate('account-create.exists', {
         name,
       }));
     }
@@ -106,7 +111,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     }));
 
     const jwt = await this.createToken(user);
-    return this.reply(ctx, this.locale.translate('service.controller.account.account.create.success', {
+    return this.reply(ctx, this.translate('account-create.success', {
       jwt,
       name,
     }));
@@ -119,7 +124,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const name = user.name;
 
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCompletion(cmd, 'confirm', this.locale.translate('service.controller.account.account.delete.confirm', {
+      const completion = createCompletion(cmd, 'confirm', this.translate('account-delete.confirm', {
         name,
       }));
       await this.bot.executeCommand(completion);
@@ -131,10 +136,15 @@ export class AccountController extends BaseController<AccountControllerData> imp
     });
 
     const jwt = await this.createToken(user);
-    return this.reply(ctx, this.locale.translate('service.controller.account.account.delete.success', {
+    return this.reply(ctx, this.translate('account-delete.success', {
       jwt,
       name,
     }));
+  }
+
+  @Handler(NOUN_ACCOUNT, CommandVerb.Help)
+  public async getAccountHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 
   @Handler(NOUN_SESSION, CommandVerb.Create)
@@ -155,7 +165,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const source = this.getSourceOrFail(ctx);
     const session = await source.createSession(ctx.uid, user);
     this.logger.debug({ session, user }, 'created session');
-    return this.reply(ctx, this.locale.translate('service.controller.account.session.create.success'));
+    return this.reply(ctx, this.translate('session-create.success'));
   }
 
   @Handler(NOUN_SESSION, CommandVerb.Get)
@@ -169,6 +179,11 @@ export class AccountController extends BaseController<AccountControllerData> imp
     }
 
     return this.reply(ctx, session.toString());
+  }
+
+  @Handler(NOUN_SESSION, CommandVerb.Help)
+  public async getSessionHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 
   protected async createToken(user: User): Promise<string> {

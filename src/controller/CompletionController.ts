@@ -62,7 +62,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     }));
 
     this.logger.debug({ context, fragment }, 'creating fragment for later completion');
-    return this.reply(context, this.locale.translate('service.controller.completion.fragment.prompt', {
+    return this.reply(context, this.translate('create.prompt', {
       id: fragment.id,
       key,
       msg,
@@ -77,7 +77,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     const fragment = await this.getFragment(ctx, id);
     if (isNil(fragment)) {
-      return this.reply(ctx, this.locale.translate('service.controller.completion.fragment.missing'));
+      return this.reply(ctx, this.translate('update.missing'));
     }
 
     this.logger.debug({ fragment, parserId: fragment.parserId }, 'attempting to complete fragment');
@@ -91,6 +91,11 @@ export class CompletionController extends BaseController<CompletionControllerDat
     // cleaned up.
     await this.fragmentRepository.delete(mustExist(fragment.id));
     await this.bot.executeCommand(...commands);
+  }
+
+  @Handler(NOUN_FRAGMENT, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 
   protected async createContext(maybeCtx?: Context) {

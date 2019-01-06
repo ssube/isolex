@@ -69,6 +69,11 @@ export class CountController extends BaseController<CountControllerData> impleme
     await this.counterRepository.save(counter);
   }
 
+  @Handler(NOUN_COUNTER, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
+  }
+
   public async findOrCreateCounter(name: string, roomId: string): Promise<Counter> {
     const counter = await this.counterRepository.findOne({
       where: {

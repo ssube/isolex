@@ -54,4 +54,9 @@ export class SearchController extends BaseController<SearchControllerData> imple
 
     return this.transformJSON(cmd, response);
   }
+
+  @Handler(NOUN_SEARCH, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
+  }
 }

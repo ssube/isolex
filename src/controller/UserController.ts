@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
@@ -54,7 +54,9 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     if (isNil(role)) {
-      return this.reply(ctx, this.locale.translate('service.controller.user.role.missing'));
+      return this.reply(ctx, this.translate('role-get.missing', {
+        name,
+      }));
     } else {
       return this.reply(ctx, role.toString());
     }
@@ -66,6 +68,11 @@ export class UserController extends BaseController<UserControllerData> implement
     const roles = await this.roleRepository.createQueryBuilder('role').getMany();
     const roleText = roles.map((r) => r.toString()).join('\n');
     return this.reply(ctx, roleText);
+  }
+
+  @Handler(NOUN_ROLE, CommandVerb.Help)
+  public async getRoleHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 
   @Handler(NOUN_USER, CommandVerb.Create)
@@ -125,5 +132,10 @@ export class UserController extends BaseController<UserControllerData> implement
 
     const updatedUser = await this.userRepository.save(user);
     return this.reply(ctx, updatedUser.toString());
+  }
+
+  @Handler(NOUN_USER, CommandVerb.Help)
+  public async getUserHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 }

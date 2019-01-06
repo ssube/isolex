@@ -1,46 +1,168 @@
 translation:
   service:
-    controller:
-      account:
-        account:
-          create:
-            exists: "user {{ name }} already exists"
-            success: "user {{ name }} joined, sign in token: {{ jwt }}"
-          delete:
-            confirm: "please confirm deleting all tokens for {{ name }}"
-            success: "revoked tokens for {{ name }}, new sign in token: {{ jwt }}"
-        session:
-          create:
-            success: signed in
-      completion:
-        fragment:
-          missing: fragment not found
-          prompt: "complete {{ id }} with {{ key }}: {{ msg }}"
-      dice:
-        roll:
-          create: "the results of your rolls were: {{ results }}. The sum is {{ sum }}"
-      learn:
-        keyword:
-          create: "learned keyword {{ key }}"
-          delete: "deleted keyword {{ key }}"
-      math:
-        math:
-          error: "error evaluating math: {{ msg }}"
-      sed:
+    account-controller:
+      account-create:
+        exists: "user {{ name }} already exists"
+        success: "user {{ name }} joined, sign in token: {{ jwt }}"
+      account-delete:
+        confirm: "please confirm deleting all tokens for {{ name }}"
+        success: "revoked tokens for {{ name }}, new sign in token: {{ jwt }}"
+      session-create:
+        success: signed in
+      help:
+        warn: Should only be executed in a private channel.
+        desc: >-
+          The account controller handles registering new users, sign in for existing
+          users, revoking sign in tokens, and checking grants.
+        account-create:
+          Register a new account and issue a sign in token.
+          $t(service.account-controller.help.warn)
+        account-delete: >-
+          Revoke all tokens for an account.
+          $t(service.account-controller.help.warn)
+        grant-get: >-
+          Check if a grant is allowed.
+        grant-list: >-
+          Given a grant with `?` placeholder, list all valid grants for that position.
+        session-create: >-
+          Log in with the given token.
+          $t(service.account-controller.help.warn)
+    completion-controller:
+      create:
+        prompt: "complete {{ id }} with {{ key }}: {{ msg }}"
+      update:
+        missing: fragment not found
+      help:
+        desc: >-
+          The completion controller saves fragment commands for users to
+          complete later.
+        create: >-
+          Create a command fragment to be completed and executed later.
+          Typically executed by other services or parsers upon finding a
+          missing field.
+        update: >-
+          Provide the next field for a fragment and attempt to parse it
+          again. This may complete and execute the original command or it
+          may prompt the user to complete another field.
+    count-controller:
+      help:
+        desc: >-
+          The count controller keeps track of counters for users and messages,
+          tracking their reputation or score over time.
+        get: >-
+          The GET verb is a catch-all for the counter.
+          The `count` field can be set to `++` or `--` to increment or decrement
+          a counter, `ls` to list the existing counters (scoped by channel), or
+          a number (positive or negative integer) by which to change the counter.
+    dice-controller:
+      create:
+        success: "the results of your rolls were: {{ results }}. The sum is {{ sum }}"
+      help:
+        desc: >-
+          The dice controller rolls dice.
+        create: >-
+          Create a new set of dice and roll them, replying with each die and the
+          sum.
+    echo-controller:
+      help:
+        desc: >-
+          The echo controller transforms the incoming messages and replies to the
+          user.
+        create: >-
+          Create a new echo and reply to the user.
+    learn-controller:
+      create:
+        success: "learned keyword {{ key }}"
+      delete:
+        success: "deleted keyword {{ key }}"
+      help:
+        desc: >-
+          The learn controller saves commands to be executed later with a keyword.
+        create: >-
+          Save a new command and the keyword that will execute it.
+        delete: >-
+          Delete a stored command and keyword.
+        update: >-
+          Execute a stored command by keyword.
+    math-controller:
+      create:
+        error: "error evaluating math: {{ msg }}"
+      help:
+        desc: >-
+          The math controller solves mathematical expressions.
+        create: >-
+          Create a new expression and solve it.
+    search-controller:
+      help:
+        desc: >-
+          The search controller runs a search, via REST, and formats the results.
+        get: >-
+          Get search results for the keyword in {{ data.field }}.
+    sed-controller:
+      create:
         invalid: "invalid input expression. Please use `!!s/e/d/[flags]`"
-        missing: no messages found!
-      time:
-        get: "current time is: {{ time }}"
-      token:
-        delete:
-          confirm: "please confirm deleting tokens for {{ name }} from before {{ before }}"
-          success: tokens deleted
-        get:
-          invalid: "error validating token: {{ msg }}"
-          missing: session must have been created with a token
-      user:
-        role:
-          missing: role not found
+        missing: "no messages found!"
+      help:
+        desc: >-
+          The sed controller performs regex replacement on previous messages and
+          posts the results.
+        create: >-
+          Create a new replacement. This should be a `s/e/d/` expression, with
+          optional regex flags following.
+    time-controller:
+      get:
+        success: "current time is: {{ time }}"
+      help:
+        desc: >-
+          The time controller is not able to control time, but can report it.
+        get: >-
+          Get the time in a particular locale and zone.
+    token-controller:
+      delete:
+        confirm: "please confirm deleting tokens for {{ name }} from before {{ before }}"
+        success: tokens deleted
+      get:
+        invalid: "error validating token: {{ msg }}"
+        missing: session must have been created with a token
+      help:
+        desc: >-
+          The token controller handles CRUD and validation for JWTs.
+        create: >-
+          Create a new token with the specified grants.
+        delete: >-
+          Delete tokens from before the specified date.
+        get: >-
+          Get payload of the current token or the token field.
+        list: >-
+          List tokens for the current user.
+    user-controller:
+      role-get:
+        missing: "role {{ name }} not found"
+      help:
+        desc: >-
+          The user controller provides CRUD operations for users and roles.
+        role-create: >-
+          Create a new role with the specified grants.
+        role-get: >-
+          Get a role and its grants.
+        role-list: >-
+          List the available roles.
+        user-create: >-
+          Create a new user with the specified roles.
+        user-delete: >-
+          Delete a user.
+        user-get: >-
+          Get a user and their roles.
+        user-list: >-
+          List the registered users.
+        user-update: >-
+          Update a user's roles.
+    weather-controller:
+      help:
+        desc: >-
+          The weather controller, somewhat like the time controller, reports the weather.
+        get: >-
+          Get the current weather report in a location.
 
   error:
     grant:

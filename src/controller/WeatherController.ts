@@ -45,6 +45,11 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     }
   }
 
+  @Handler(NOUN_WEATHER, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
+  }
+
   public async requestWeather(location: string): Promise<WeatherReply> {
     const query = this.getQuery(location);
     this.logger.debug({ location, query, root: this.data.api.root }, 'requesting weather data from API');

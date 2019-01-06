@@ -6,11 +6,11 @@ import { BotService, INJECT_LOCALE } from 'src/BotService';
 import { getHandlerOptions, HandlerOptions } from 'src/controller';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { User } from 'src/entity/auth/User';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener } from 'src/listener/Listener';
-import { Locale } from 'src/locale';
+import { Locale, TranslateOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { applyTransforms } from 'src/transform/helpers';
@@ -180,5 +180,24 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       throw new MissingValueError('context user must not be nil');
     }
     return user;
+  }
+
+  protected translate(key: string, options: TranslateOptions = {}): string {
+    return this.locale.translate(`service.${this.kind}.${key}`, options);
+  }
+
+  protected defaultHelp(cmd: Command): string {
+    const data = {
+      data: this.data,
+    };
+    const desc = this.translate('help.desc', data);
+
+    if (cmd.has('topic')) {
+      const topic = cmd.getHead('topic');
+      const topicDesc = this.translate(`help.${topic}`, data);
+      return `${desc}\n${topicDesc}`;
+    }
+
+    return desc;
   }
 }

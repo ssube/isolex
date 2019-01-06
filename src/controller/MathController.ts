@@ -49,6 +49,11 @@ export class MathController extends BaseController<MathControllerData> implement
     return this.reply(ctx, body);
   }
 
+  @Handler(NOUN_MATH, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
+  }
+
   protected solve(expr: string, scope: object): string {
     try {
       const body = this.math.eval(expr, scope);
@@ -56,7 +61,7 @@ export class MathController extends BaseController<MathControllerData> implement
 
       return formatResult(body, scope, this.data.format);
     } catch (err) {
-      return this.locale.translate('service.controller.math.math.error', {
+      return this.translate('create.error', {
         msg: err.message,
       });
     }

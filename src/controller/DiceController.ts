@@ -6,6 +6,7 @@ import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
 
 const DICE_MINIMUM = 1;
@@ -41,9 +42,14 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.logger.debug({ count, sides }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b, 0);
 
-    return this.reply(mustExist(cmd.context), this.locale.translate('service.controller.dice.roll.create', {
+    return this.reply(mustExist(cmd.context), this.translate('create.success', {
       results,
       sum,
     }));
+  }
+
+  @Handler(NOUN_ROLL, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 }

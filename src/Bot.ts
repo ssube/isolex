@@ -375,9 +375,6 @@ export class Bot extends BaseService<BotData> implements Service {
 
   /**
    * Log an otherwise-unhandled but non-fatal error (typically leaked from one of the observables).
-   *
-   * Note: this method is already bound, so it can be passed with `this.looseError`. Using that requires
-   * `tslint:disable:no-unbound-method` as well.
    */
   protected looseError(err: Error) {
     this.logger.error(err, 'bot stream did not handle error');

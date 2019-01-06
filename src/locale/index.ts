@@ -7,6 +7,8 @@ export interface LocaleOptions {
   lang: string;
 }
 
+export type TranslateOptions= i18next.TranslationOptions;
+
 export class Locale implements ServiceLifecycle {
   protected readonly lang: string;
   protected translator?: i18next.TranslationFunction;
@@ -31,7 +33,7 @@ export class Locale implements ServiceLifecycle {
     /* noop */
   }
 
-  public translate(key: string, options: i18next.TranslationOptions = {}): string {
+  public translate(key: string, options: TranslateOptions = {}): string {
     const t = mustExist(this.translator);
     return t(key, options);
   }

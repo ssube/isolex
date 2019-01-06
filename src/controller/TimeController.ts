@@ -36,8 +36,13 @@ export class TimeController extends BaseController<TimeControllerData> implement
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
 
     this.logger.debug({ locale, time, zone }, 'handling time');
-    return this.reply(ctx, this.locale.translate('service.controller.time.get', {
+    return this.reply(ctx, this.translate('get.success', {
       time,
     }));
+  }
+
+  @Handler(NOUN_TIME, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 }

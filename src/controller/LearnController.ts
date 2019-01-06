@@ -62,7 +62,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     }
 
     await this.keywordRepository.save(keyword);
-    return this.reply(ctx, this.locale.translate('service.controller.learn.keyword.create', {
+    return this.reply(ctx, this.translate('create.success', {
       key,
     }));
   }
@@ -83,7 +83,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       id: keyword.id,
       key,
     });
-    return this.reply(ctx, this.locale.translate('service.controller.learn.keyword.delete', {
+    return this.reply(ctx, this.translate('delete.success', {
       key,
     }));
   }
@@ -114,5 +114,10 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     this.logger.debug({ cmd, keyword, merged }, 'executing keyword command');
     await this.bot.executeCommand(merged);
     return;
+  }
+
+  @Handler(NOUN_KEYWORD, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
   }
 }

@@ -42,4 +42,9 @@ export class PickController extends BaseController<PickControllerData> implement
     this.logger.debug({ count, data, list, puck }, 'picking item');
     return this.reply(ctx, puck.join(','));
   }
+
+  @Handler(NOUN_PICK, CommandVerb.Help)
+  public async getHelp(cmd: Command, ctx: Context): Promise<void> {
+    return this.reply(ctx, this.defaultHelp(cmd));
+  }
 }
