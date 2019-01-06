@@ -14,7 +14,7 @@ export interface TickOptions extends BaseEntityOptions {
 @Entity(TABLE_TICK)
 export class Tick extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @Column()
   public intervalId: string = '';

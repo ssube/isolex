@@ -7,7 +7,6 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
@@ -120,8 +119,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
 
   @Handler(NOUN_PULL_REQUEST, CommandVerb.Delete)
   @CheckRBAC()
-  public async deleteRequest(cmd: Command): Promise<void> {
-    const ctx = mustExist(cmd.context);
+  public async deleteRequest(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getHead('number');

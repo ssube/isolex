@@ -15,7 +15,7 @@ export class CommandInterval extends BaseInterval<CommandIntervalData> {
     super(options, 'isolex#/definitions/service-interval-command');
   }
 
-  public async tick(context: Context, last: Tick): Promise<number> {
+  public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
     const cmd = new Command({
       ...this.data.defaultCommand,
       context,

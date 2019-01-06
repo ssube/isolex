@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { Command } from 'src/entity/Command';
+import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { JsonPath } from 'src/utils/JsonPath';
@@ -27,8 +27,8 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
     this.queries = dictToMap(options.data.queries);
   }
 
-  public async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
-    const scope = this.mergeScope(cmd, body);
+  public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {
+    const scope = this.mergeScope(entity, body);
     const out = new Map();
     for (const [key, query] of this.queries) {
       this.logger.debug({ key, query, scope }, 'executing jsonpath query');

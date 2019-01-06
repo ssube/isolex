@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { Command } from 'src/entity/Command';
+import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { mapToDict } from 'src/utils/Map';
@@ -32,8 +32,8 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
     }
   }
 
-  public async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
-    const scope = this.mergeScope(cmd, body);
+  public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {
+    const scope = this.mergeScope(entity, body);
     const out = new Map();
     for (const [key, template] of this.templates) {
       this.logger.debug({ key, scope }, 'rendering template with scope');

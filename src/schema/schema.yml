@@ -81,10 +81,15 @@ definitions:
   entity-message:
     type: object
     additionalProperties: false
-    required: [body, type]
+    required: [body, reactions, type]
     properties:
       body:
         type: string
+      reactions:
+        type: array
+        default: []
+        items:
+          type: string
       type:
         enum: [text/plain]
 
@@ -484,6 +489,11 @@ definitions:
                 type: string
               time:
                 type: string
+          transforms:
+            type: array
+            default: []
+            items:
+              $ref: "#/definitions/service-definition"
  
   service-interval-command:
     allOf:

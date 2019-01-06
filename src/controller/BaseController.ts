@@ -11,6 +11,7 @@ import { Message } from 'src/entity/Message';
 import { Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
+import { applyTransforms } from 'src/transform/helpers';
 import { Transform, TransformData } from 'src/transform/Transform';
 import { doesExist, getMethods, mustExist } from 'src/utils';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
@@ -128,22 +129,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   }
 
   protected async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
-    if (this.transforms.length === 0) {
-      this.logger.debug('controller has no transforms, skipping');
-      return body;
-    }
-
-    let result = body;
-    for (const transform of this.transforms) {
-      const check = await transform.check(cmd);
-      if (check) {
-        this.logger.debug({ transform: transform.name }, 'executing transform');
-        result = await transform.transform(cmd, type, result);
-      } else {
-        this.logger.debug({ transform: transform.name }, 'skipping transform');
-      }
-    }
-    return result;
+    return applyTransforms(this.transforms, cmd, type, body);
   }
 
   protected async transformJSON(cmd: Command, data: TemplateScope): Promise<void> {

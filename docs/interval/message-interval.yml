@@ -16,3 +16,18 @@ data:
     name: test-discord
   frequency:
     time: 30 seconds
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: test-interval-msg-template
+      data:
+        templates:
+          body: >
+            Hello from {{ data.next.createdAt }}!
+    - metadata:
+        kind: flatten-transform
+        name: test-interval-msg-flatten
+      data:
+        deep: false
+        join: " "
+        keys: [$.data.body]
