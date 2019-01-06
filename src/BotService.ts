@@ -5,14 +5,18 @@ import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseServic
 import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
 import { Service } from 'src/Service';
+import { Locale } from 'src/utils/Locale';
 
 export type BotServiceData = BaseServiceData;
+
+export const INJECT_LOCALE = Symbol('inject-locale');
 
 /**
  * Exposed injected services available to child services.
  */
 export interface BotServiceOptions<TData extends BotServiceData> extends BaseServiceOptions<TData> {
   bot: Bot;
+  [INJECT_LOCALE]: Locale;
   storage: Connection;
 }
 

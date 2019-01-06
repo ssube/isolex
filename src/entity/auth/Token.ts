@@ -70,7 +70,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * https://tools.ietf.org/html/rfc7519#section-4.1.7
    */
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   /**
    * `iss` (Issuer) claim
@@ -161,7 +161,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
       exp: dateToSeconds(this.expiresAt),
       iat: dateToSeconds(this.createdAt),
       iss: this.issuer,
-      jti: this.id,
+      jti: mustExist(this.id),
       nbf: dateToSeconds(this.createdAt),
       sub: this.subject,
     };

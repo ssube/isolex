@@ -39,6 +39,8 @@ data:
     - !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml
     - !include ../docs/listener/slack-listener.yml
+  locale:
+    lang: en
   logger:
     level: debug
     name: isolex

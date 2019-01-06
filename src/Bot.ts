@@ -15,6 +15,7 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { filterNil, mustExist, mustFind } from 'src/utils';
+import { Locale, LocaleOptions } from 'src/utils/Locale';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
 import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
@@ -22,6 +23,7 @@ export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
   intervals: Array<ServiceDefinition<IntervalData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
+  locale: LocaleOptions;
   logger: {
     level: LogLevel;
     name: string;
@@ -39,6 +41,7 @@ export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
   protected readonly metrics: Registry;
 
+  protected locale?: Locale;
   protected storage?: Connection;
 
   // counters
@@ -80,6 +83,10 @@ export class Bot extends BaseService<BotData> implements Service {
     this.startMetrics();
   }
 
+  public getLocale() {
+    return mustExist(this.locale);
+  }
+
   public getStorage(): Connection {
     return mustExist(this.storage);
   }
@@ -112,6 +119,7 @@ export class Bot extends BaseService<BotData> implements Service {
     this.incoming.subscribe((next) => this.receive(next).catch(streamError));
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(streamError));
 
+    await this.startLocale();
     await this.startStorage();
     await this.startServices();
 
@@ -126,6 +134,9 @@ export class Bot extends BaseService<BotData> implements Service {
 
     this.logger.debug('stopping services');
     await this.services.stop();
+
+    this.logger.debug('stopping storage');
+    await this.getStorage().close();
 
     this.logger.info('bot has stopped');
   }
@@ -325,6 +336,15 @@ export class Bot extends BaseService<BotData> implements Service {
     await this.services.start();
 
     this.logger.info('services started');
+  }
+
+  /**
+   * @TODO: should live elsewhere
+   */
+  protected async startLocale() {
+    this.logger.info({ }, 'starting localization');
+    this.locale = new Locale(this.data.locale);
+    return this.locale.start();
   }
 
   protected async startStorage() {

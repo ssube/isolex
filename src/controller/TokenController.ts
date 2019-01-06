@@ -9,6 +9,7 @@ import { createCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_TOKEN = 'token';
@@ -52,7 +53,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       grants,
       issuer: this.data.token.issuer,
       labels: {},
-      subject: user.id,
+      subject: mustExist(user.id),
       user,
     }));
     const jwt = token.sign(this.data.token.secret);
@@ -74,7 +75,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
 
     await this.tokenRepository.delete({
       createdAt: LessThan(before),
-      subject: Equal(user.id),
+      subject: Equal(mustExist(user.id)),
     });
 
     return this.reply(ctx, `tokens deleted`);
@@ -108,7 +109,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     const user = this.getUserOrFail(ctx);
     const tokens = await this.tokenRepository.find({
       where: {
-        subject: Equal(user.id),
+        subject: Equal(mustExist(user.id)),
       },
     });
 

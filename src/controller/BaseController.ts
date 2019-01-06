@@ -1,7 +1,7 @@
 import { isNil, isString } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 
-import { BotService } from 'src/BotService';
+import { BotService, INJECT_LOCALE } from 'src/BotService';
 import { getHandlerOptions, HandlerOptions } from 'src/controller';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { User } from 'src/entity/auth/User';
@@ -14,6 +14,7 @@ import { ServiceDefinition } from 'src/Service';
 import { applyTransforms } from 'src/transform/helpers';
 import { Transform, TransformData } from 'src/transform/Transform';
 import { doesExist, getMethods, mustExist } from 'src/utils';
+import { Locale } from 'src/utils/Locale';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -31,17 +32,19 @@ export enum ErrorReplyType {
   Unknown = 'unknown',
 }
 
-@Inject('services')
+@Inject('services', INJECT_LOCALE)
 export abstract class BaseController<TData extends ControllerData> extends BotService<TData> implements Controller {
   protected readonly nouns: Set<string>;
 
   // services
+  protected readonly locale: Locale;
   protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
   constructor(options: BaseControllerOptions<TData>, schemaPath: string, nouns: Array<string> = []) {
     super(options, schemaPath);
 
+    this.locale = options[INJECT_LOCALE];
     this.nouns = new Set(nouns);
     this.services = options.services;
     this.transforms = [];
@@ -147,9 +150,9 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   protected async errorReply(ctx: Context, errCode: ErrorReplyType, msg?: string): Promise<void> {
     switch (errCode) {
       case ErrorReplyType.GrantMissing:
-        return this.reply(ctx, 'permission denied');
+        return this.reply(ctx, this.locale.translate('error.grant.missing'));
       case ErrorReplyType.SessionMissing:
-        return this.reply(ctx, 'must be logged in');
+        return this.reply(ctx, this.locale.translate('error.session.missing'));
       default:
         return this.reply(ctx, `${errCode} error: ${msg}`);
     }

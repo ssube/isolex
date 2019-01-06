@@ -15,7 +15,7 @@ export const TABLE_USER = 'user';
 @Entity(TABLE_USER)
 export class User extends BaseEntity implements UserOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @Column({
     unique: true,

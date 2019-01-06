@@ -143,7 +143,7 @@ export class Context extends BaseEntity implements ContextOptions {
    * If this context does not have a logged in user, default to the listener-provided UID.
    */
   public getUserId(): string {
-    if (doesExist(this.user)) {
+    if (doesExist(this.user) && doesExist(this.user.id)) {
       return this.user.id;
     } else {
       return this.uid;

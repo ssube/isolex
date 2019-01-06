@@ -151,7 +151,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }
 
     const session = token.session();
-    this.sessions.set(token.user.id, session);
+    const uid = mustExist(token.user.id);
+    this.sessions.set(uid, session);
     this.logger.debug({ session, token }, 'created session for token');
 
     const context = await this.createContext({
@@ -161,7 +162,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       },
       name: token.user.name,
       token,
-      uid: token.user.id,
+      uid,
       user: token.user,
     });
     this.logger.debug({ context, token }, 'created context for token');

@@ -58,7 +58,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       labels: cmd.labels,
       noun,
       parserId,
-      userId: user.id,
+      userId: mustExist(user.id),
       verb,
     });
 

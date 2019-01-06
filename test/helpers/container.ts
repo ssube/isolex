@@ -7,11 +7,12 @@ import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
-import { BotServiceData, BotServiceOptions } from 'src/BotService';
+import { BotServiceData, BotServiceOptions, INJECT_LOCALE } from 'src/BotService';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
 import { ServiceDefinition } from 'src/Service';
 import { Clock } from 'src/utils/Clock';
+import { Locale } from 'src/utils/Locale';
 import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
@@ -51,6 +52,9 @@ export async function createService<
       compile: () => ineeda<Template>(),
     }),
     container,
+    [INJECT_LOCALE]: new Locale({
+      lang: 'en',
+    }),
     logger: ConsoleLogger.global,
     metrics: new Registry(),
     schema: new Schema(), // tests use the real schema :D

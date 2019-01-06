@@ -5,11 +5,13 @@ import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
 import { Bot } from 'src/Bot';
+import { INJECT_LOCALE } from 'src/BotService';
 import { Schema } from 'src/schema';
 import { GraphSchema } from 'src/schema/graph';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
+import { Locale } from 'src/utils/Locale';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -52,6 +54,12 @@ export class BotModule extends Module {
   @Provides('bot')
   public async getBot(): Promise<Bot> {
     return mustExist(this.bot);
+  }
+
+  @Provides(INJECT_LOCALE)
+  public async getLocale(): Promise<Locale> {
+    const bot = await this.getBot();
+    return bot.getLocale();
   }
 
   @Provides('logger')
