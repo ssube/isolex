@@ -85,9 +85,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     }
 
     const name = cmd.getHeadOrDefault('name', ctx.name);
-    const existing = await this.userRepository.count({
-      name,
-    });
+    const existing = await this.userRepository.count({ name });
     if (existing > 0) {
       return this.reply(ctx, this.locale.translate('service.controller.account.account.create.exists', {
         name,

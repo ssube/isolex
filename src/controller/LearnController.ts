@@ -50,17 +50,15 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       controllerId: this.getId(true),
       data: { body },
       key,
-      labels: {},
+      labels: cmd.labels,
       noun,
       verb,
     });
 
     this.logger.debug({ body, cmd, key, keyword }, 'learning command');
 
-    const existing = await this.keywordRepository.findOne({
-      key,
-    });
-    if (doesExist(existing)) {
+    const existing = await this.keywordRepository.count({ key });
+    if (existing > 0) {
       return this.errorReply(ctx, ErrorReplyType.EntityExists, key);
     }
 
