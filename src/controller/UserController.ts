@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
@@ -51,10 +52,10 @@ export class UserController extends BaseController<UserControllerData> implement
         name,
       },
     });
-    if (role) {
-      return this.reply(ctx, role.toString());
-    } else {
+    if (isNil(role)) {
       return this.reply(ctx, 'role not found');
+    } else {
+      return this.reply(ctx, role.toString());
     }
   }
 

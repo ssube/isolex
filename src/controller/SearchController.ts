@@ -37,7 +37,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
   @CheckRBAC()
   public async getSearch(cmd: Command, ctx: Context): Promise<void> {
     const data = cmd.get(this.data.field);
-    if (!data.length) {
+    if (data.length === 0) {
       return this.reply(ctx, 'no arguments were provided!');
     }
 

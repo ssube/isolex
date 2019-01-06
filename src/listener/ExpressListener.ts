@@ -116,7 +116,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     res.end(this.metrics.metrics());
   }
 
-  public async traceRequest(req: express.Request, res: express.Response, next: Function) {
+  public traceRequest(req: express.Request, res: express.Response, next: Function) {
     const ctx = req.user as Context | undefined;
     this.logger.debug({ ctx, req, res }, 'handling request');
     this.requestCounter.inc({
@@ -209,7 +209,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(this.data.token.scheme),
       secretOrKey: this.data.token.secret,
     }, (payload: JwtFields, done: VerifiedCallback) => {
-      this.createTokenSession(payload, done).catch((err) => this.logger.error(err, 'error creating token session'));
+      this.createTokenSession(payload, done).catch((err) => {
+        this.logger.error(err, 'error creating token session');
+      });
     }));
 
     // sessions are saved when created and keyed by uid, so pass that

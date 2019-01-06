@@ -12,7 +12,7 @@ import { Listener } from 'src/listener/Listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform/Transform';
-import { getMethods, mustExist } from 'src/utils';
+import { doesExist, getMethods, mustExist } from 'src/utils';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -49,7 +49,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   public async start() {
     await super.start();
 
-    const transforms: Array<ServiceDefinition<TransformData>> = this.data.transforms || [];
+    const transforms: Array<ServiceDefinition<TransformData>> = this.data.transforms;
     for (const def of transforms) {
       const transform = await this.services.createService<Transform, TransformData>(def);
       this.transforms.push(transform);
@@ -100,8 +100,8 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   protected async invokeHandler(cmd: Command, options: HandlerOptions, handler: HandlerMethod): Promise<void> {
     const ctx = mustExist(cmd.context);
-    if (options.rbac) {
-      if (options.rbac.user && !ctx.user) {
+    if (doesExist(options.rbac)) {
+      if (options.rbac.user === true && isNil(ctx.user)) {
         return this.errorReply(ctx, ErrorReplyType.SessionMissing);
       }
 
@@ -110,7 +110,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
         grants.push(...options.rbac.grants);
       }
 
-      if (options.rbac.defaultGrant) {
+      if (options.rbac.defaultGrant === true) {
         grants.push(`${options.noun}:${options.verb}`);
       }
 

@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Handler } from 'src/controller';
@@ -6,7 +7,7 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 
 export type SedControllerData = ControllerData;
 export type SedControllerOptions = ControllerOptions<SedControllerData>;
@@ -27,7 +28,7 @@ export class SedController extends BaseController<SedControllerData> implements 
 
     // split into regex, replace and flags
     const parts = expr.match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
-    if (!parts) {
+    if (isNil(parts)) {
       this.logger.debug({ expr }, 'invalid input.');
       return this.reply(ctx, 'invalid input. Please use \`!!s/e/d/[flags]\`');
     }
@@ -53,7 +54,7 @@ export class SedController extends BaseController<SedControllerData> implements 
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
-    if (message.context && command.context && message.context.channel.thread === command.context.channel.thread) {
+    if (doesExist(message.context) && doesExist(command.context) && message.context.channel.thread === command.context.channel.thread) {
       return false;
     }
 

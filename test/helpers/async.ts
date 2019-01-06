@@ -120,7 +120,7 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.S
     });
 
     const suite: PromiseLike<void> | undefined = cb.call(this);
-    if (isNil(suite) || isNil(suite.then)) {
+    if (isNil(suite) || !Reflect.has(suite, 'then')) {
       // tslint:disable-next-line:no-console
       console.error(`test suite '${description}' did not return a promise`);
     }

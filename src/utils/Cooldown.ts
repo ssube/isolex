@@ -3,6 +3,7 @@ import { BaseOptions } from 'noicejs/Container';
 import { Observable, Subject } from 'rxjs';
 
 import { ServiceLifecycle } from 'src/Service';
+import { doesExist } from 'src/utils';
 import { Clock, ClockHandler } from 'src/utils/Clock';
 
 export const GROWTH_FACTOR = 2;
@@ -49,7 +50,7 @@ export class Cooldown implements ServiceLifecycle {
 
   public async stop() {
     this.stream.complete();
-    if (this.timer) {
+    if (doesExist(this.timer)) {
       this.clock.clearTimeout(this.timer);
     }
   }

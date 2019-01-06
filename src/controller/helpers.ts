@@ -20,14 +20,13 @@ export function createCompletion(cmd: Command, key: string, msg: string): Comman
       parser: [parser.id],
       verb: [cmd.verb],
   });
-  const fragment = new Command({
+  return new Command({
     context: cmd.context,
     data,
     labels: cmd.labels,
     noun: NOUN_FRAGMENT,
     verb: CommandVerb.Create,
   });
-  return fragment;
 }
 
 type CollectData = number | string | Array<string>;

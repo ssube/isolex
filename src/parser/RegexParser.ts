@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { Command } from 'src/entity/Command';
@@ -49,7 +50,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
     const parts = msg.body.match(this.regexp);
 
     this.logger.debug({ parts }, 'splitting on regexp');
-    if (!parts) {
+    if (isNil(parts)) {
       throw new BaseError('unable to split message on regexp');
     }
 
