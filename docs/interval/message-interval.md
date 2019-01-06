@@ -21,3 +21,8 @@ The target listener for replies.
 ### `frequency`
 
 The cron or time duration on which the interval will execute a new command.
+
+### `transforms`
+
+A set of transforms to be applied to the default message before it is sent. These can be used to interpolate the time
+and other tick information into the message.

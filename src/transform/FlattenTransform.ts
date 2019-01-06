@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { Command } from 'src/entity/Command';
+import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { JsonPath } from 'src/utils/JsonPath';
@@ -29,9 +29,9 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
     this.jsonpath = options.jsonpath;
   }
 
-  public async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
-    const scope = this.mergeScope(cmd, body);
-    this.logger.debug({ cmd, scope }, 'running flatten transform');
+  public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {
+    const scope = this.mergeScope(entity, body);
+    this.logger.debug({ entity, scope }, 'running flatten transform');
 
     const parts = [];
     for (const key of this.keys) {

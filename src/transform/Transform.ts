@@ -1,6 +1,5 @@
 import { BotServiceData, BotServiceOptions } from 'src/BotService';
-import { Command } from 'src/entity/Command';
-import { FilterData } from 'src/filter/Filter';
+import { FilterData, FilterValue } from 'src/filter/Filter';
 import { Service, ServiceDefinition } from 'src/Service';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -11,12 +10,7 @@ export interface TransformData extends BotServiceData {
 export type TransformOptions<TData extends TransformData> = BotServiceOptions<TData>;
 
 export interface Transform extends Service {
-  check(cmd: Command): Promise<boolean>;
+  check(entity: FilterValue): Promise<boolean>;
 
-  /**
-   * Transform some unstructured data, string or object, into normal command args.
-   *
-   * Multiple transforms stack to form a `reduce(msg, cmd)`
-   */
-  transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope>;
+  transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope>;
 }

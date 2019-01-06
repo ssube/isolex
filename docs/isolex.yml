@@ -33,7 +33,7 @@ data:
   intervals:
     # !include ../docs/interval/command-interval.yml
     # !include ../docs/interval/event-interval.yml
-    # !include ../docs/interval/message-interval.yml
+    - !include ../docs/interval/message-interval.yml
     - !include ../docs/interval/metrics-interval.yml
   listeners:
     - !include ../docs/listener/discord-listener.yml

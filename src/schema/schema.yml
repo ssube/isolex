@@ -484,6 +484,11 @@ definitions:
                 type: string
               time:
                 type: string
+          transforms:
+            type: array
+            default: []
+            items:
+              $ref: "#/definitions/service-definition"
  
   service-interval-command:
     allOf:
