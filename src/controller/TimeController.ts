@@ -29,17 +29,13 @@ export class TimeController extends BaseController<TimeControllerData> implement
   @Handler(NOUN_TIME, CommandVerb.Get)
   @CheckRBAC()
   public async getTime(cmd: Command, ctx: Context): Promise<void> {
-    const date = this.clock.getDate();
+    const time = this.clock.getDate();
     const locale = cmd.getHeadOrDefault('locale', this.data.locale);
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
 
-    this.logger.debug({ date, locale, zone }, 'handling time');
-
-    try {
-      const localDate = date.toLocaleString(locale, { timeZone: zone });
-      return this.reply(ctx, localDate);
-    } catch (err) {
-      return this.reply(ctx, `error formatting date: ${err.message}`);
-    }
+    this.logger.debug({ locale, time, zone }, 'handling time');
+    return this.reply(ctx, this.locale.translate('service.controller.time.get', {
+      time,
+    }));
   }
 }

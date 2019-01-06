@@ -24,7 +24,7 @@ export interface FragmentOptions extends CommandOptions {
 @Entity(TABLE_FRAGMENT)
 export class Fragment extends BaseCommand implements FragmentOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @Column()
   public key: string = '';

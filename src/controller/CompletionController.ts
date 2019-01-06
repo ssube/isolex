@@ -52,7 +52,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     const parserId = cmd.getHead('parser');
     const verb = cmd.getHead('verb') as CommandVerb;
 
-    const fragment = new Fragment({
+    const fragment = await this.fragmentRepository.save(new Fragment({
       data: cmd.data,
       key,
       labels: cmd.labels,
@@ -60,10 +60,10 @@ export class CompletionController extends BaseController<CompletionControllerDat
       parserId,
       userId: mustExist(user.id),
       verb,
-    });
+    }));
 
     this.logger.debug({ context, fragment }, 'creating fragment for later completion');
-    return this.reply(context, this.locale.translate('service.controller.completion.prompt', {
+    return this.reply(context, this.locale.translate('service.controller.completion.fragment.prompt', {
       id: fragment.id,
       key,
       msg,
@@ -78,7 +78,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     const fragment = await this.getFragment(ctx, id);
     if (isNil(fragment)) {
-      return this.reply(ctx, this.locale.translate('service.controller.completion.missing'));
+      return this.reply(ctx, this.locale.translate('service.controller.completion.fragment.missing'));
     }
 
     this.logger.debug({ fragment, parserId: fragment.parserId }, 'attempting to complete fragment');
@@ -90,7 +90,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
     // the commands have been completed (or additional completions issued), so even if they fail,
     // the previous fragment should be cleaned up. If parsing fails, the fragment should not be
     // cleaned up.
-    await this.fragmentRepository.delete(fragment.id);
+    await this.fragmentRepository.delete(mustExist(fragment.id));
     await this.bot.executeCommand(...commands);
   }
 

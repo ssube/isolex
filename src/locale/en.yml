@@ -26,6 +26,21 @@ translation:
       math:
         math:
           error: "error evaluating math: {{ msg }}"
+      sed:
+        invalid: "invalid input expression. Please use `!!s/e/d/[flags]`"
+        missing: no messages found!
+      time:
+        get: "current time is: {{ time }}"
+      token:
+        delete:
+          confirm: "please confirm deleting tokens for {{ name }} from before {{ before }}"
+          success: tokens deleted
+        get:
+          invalid: "error validating token: {{ msg }}"
+          missing: session must have been created with a token
+      user:
+        role:
+          missing: role not found
 
   error:
     grant:

@@ -13,7 +13,7 @@ export const TABLE_COUNTER = 'counter';
 @Entity(TABLE_COUNTER)
 export class Counter implements CounterOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @Column()
   public count: number = 0;

@@ -53,7 +53,7 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     if (isNil(role)) {
-      return this.reply(ctx, 'role not found');
+      return this.reply(ctx, this.locale.translate('service.controller.user.role.missing'));
     } else {
       return this.reply(ctx, role.toString());
     }
