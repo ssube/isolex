@@ -15,7 +15,7 @@ import * as emoji from 'node-emoji';
 import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
-import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
+import { INJECT_CLOCK, INJECT_METRICS } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -23,7 +23,6 @@ import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { SessionListener } from 'src/listener/SessionListener';
-import { ServiceModule } from 'src/module/ServiceModule';
 import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -41,7 +40,6 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   protected readonly client: Client;
-  protected readonly services: ServiceModule;
   protected readonly threads: Map<string, DiscordMessage>;
 
   protected readonly onCounter: Counter;
@@ -50,14 +48,14 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     super(options, 'isolex#/definitions/service-listener-discord');
 
     this.client = new Client();
-    this.services = options[INJECT_SERVICES];
     this.threads = new Map();
 
+    const metrics = mustExist(options[INJECT_METRICS]);
     this.onCounter = new Counter({
       help: 'events received from discord client',
       labelNames: ['serviceId', 'serviceKind', 'serviceName', 'eventKind'],
       name: 'discord_event',
-      registers: [options[INJECT_METRICS]],
+      registers: [metrics],
     });
   }
 

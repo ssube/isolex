@@ -6,6 +6,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { RequestFactory } from 'src/utils/Request';
 import { Template } from 'src/utils/Template';
 
@@ -30,8 +31,8 @@ export class SearchController extends BaseController<SearchControllerData> imple
   constructor(options: SearchControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-search', [NOUN_SEARCH]);
 
-    this.request = options[INJECT_REQUEST];
-    this.url = options[INJECT_TEMPLATE].compile(options.data.request.url);
+    this.request = mustExist(options[INJECT_REQUEST]);
+    this.url = mustExist(options[INJECT_TEMPLATE]).compile(options.data.request.url);
   }
 
   @Handler(NOUN_SEARCH, CommandVerb.Get)

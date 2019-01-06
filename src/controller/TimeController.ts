@@ -6,6 +6,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_TIME = 'time';
@@ -24,7 +25,7 @@ export class TimeController extends BaseController<TimeControllerData> implement
   constructor(options: TimeControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-time', [NOUN_TIME]);
 
-    this.clock = options[INJECT_CLOCK];
+    this.clock = mustExist(options[INJECT_CLOCK]);
   }
 
   @Handler(NOUN_TIME, CommandVerb.Get)

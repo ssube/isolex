@@ -7,6 +7,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { formatResult, ResultFormatOptions } from 'src/utils/Math';
 
 export const NOUN_MATH = 'math';
@@ -28,7 +29,7 @@ export class MathController extends BaseController<MathControllerData> implement
   constructor(options: MathControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-math', [NOUN_MATH]);
 
-    this.math = options[INJECT_MATH].create(options.data.math);
+    this.math = mustExist(options[INJECT_MATH]).create(options.data.math);
   }
 
   @Handler(NOUN_MATH, CommandVerb.Create)

@@ -53,8 +53,8 @@ export class AccountController extends BaseController<AccountControllerData> imp
   constructor(options: AccountControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-account', [NOUN_GRANT, NOUN_ACCOUNT, NOUN_SESSION]);
 
-    this.clock = options[INJECT_CLOCK];
-    this.storage = options[INJECT_STORAGE];
+    this.clock = mustExist(options[INJECT_CLOCK]);
+    this.storage = mustExist(options[INJECT_STORAGE]);
     this.roleRepository = this.storage.getRepository(Role);
     this.tokenRepository = this.storage.getRepository(Token);
     this.userRepository = this.storage.getCustomRepository(UserRepository);

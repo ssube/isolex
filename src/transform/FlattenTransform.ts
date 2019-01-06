@@ -4,6 +4,7 @@ import { INJECT_JSONPATH } from 'src/BaseService';
 import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { mustExist } from 'src/utils';
 import { JsonPath } from 'src/utils/JsonPath';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -27,7 +28,7 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
     super(options, 'isolex#/definitions/service-transform-flatten');
 
     this.keys = Array.from(this.data.keys);
-    this.jsonpath = options[INJECT_JSONPATH];
+    this.jsonpath = mustExist(options[INJECT_JSONPATH]);
   }
 
   public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {

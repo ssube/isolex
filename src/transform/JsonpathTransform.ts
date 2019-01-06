@@ -4,6 +4,7 @@ import { INJECT_JSONPATH } from 'src/BaseService';
 import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { mustExist } from 'src/utils';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap, mapToDict } from 'src/utils/Map';
 import { TemplateScope } from 'src/utils/Template';
@@ -24,7 +25,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
   constructor(options: JsonpathTransformOptions) {
     super(options, 'isolex#/definitions/service-transform-jsonpath');
 
-    this.jsonpath = options[INJECT_JSONPATH];
+    this.jsonpath = mustExist(options[INJECT_JSONPATH]);
     this.queries = dictToMap(options.data.queries);
   }
 

@@ -16,7 +16,7 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
   constructor(options: ListenerOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.contextRepository = options[INJECT_STORAGE].getRepository(Context);
+    this.contextRepository = mustExist(options[INJECT_STORAGE]).getRepository(Context);
   }
 
   /**

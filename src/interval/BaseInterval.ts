@@ -9,7 +9,7 @@ import { Tick } from 'src/entity/Tick';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Interval, IntervalData } from 'src/interval/Interval';
 import { Listener } from 'src/listener/Listener';
-import { doesExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
@@ -28,11 +28,12 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.clock = options[INJECT_CLOCK];
-    this.math = options[INJECT_MATH].create({});
+    this.clock = mustExist(options[INJECT_CLOCK]);
+    this.math = mustExist(options[INJECT_MATH]).create({});
 
-    this.contextRepository = options[INJECT_STORAGE].getRepository(Context);
-    this.tickRepository = options[INJECT_STORAGE].getRepository(Tick);
+    const storage = mustExist(options[INJECT_STORAGE]);
+    this.contextRepository = storage.getRepository(Context);
+    this.tickRepository = storage.getRepository(Tick);
   }
 
   public async start() {

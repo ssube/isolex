@@ -7,6 +7,7 @@ import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { Parser, ParserData } from 'src/parser/Parser';
+import { mustExist } from 'src/utils';
 import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';
 import { TemplateScope } from 'src/utils/Template';
@@ -19,7 +20,7 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.contextRepository = options[INJECT_STORAGE].getRepository(Context);
+    this.contextRepository = mustExist(options[INJECT_STORAGE]).getRepository(Context);
     this.matcher = new Match(options.data.match);
   }
 

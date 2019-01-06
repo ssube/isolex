@@ -36,8 +36,8 @@ export class TokenController extends BaseController<TokenControllerData> impleme
   constructor(options: TokenControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-token', [NOUN_TOKEN]);
 
-    this.clock = options[INJECT_CLOCK];
-    this.storage = options[INJECT_STORAGE];
+    this.clock = mustExist(options[INJECT_CLOCK]);
+    this.storage = mustExist(options[INJECT_STORAGE]);
     this.tokenRepository = this.storage.getRepository(Token);
   }
 

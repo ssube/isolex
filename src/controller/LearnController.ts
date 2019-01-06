@@ -9,6 +9,7 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
+import { mustExist } from 'src/utils';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
 
 export const NOUN_KEYWORD = 'keyword';
@@ -24,14 +25,12 @@ export type LearnControllerOptions = ControllerOptions<LearnControllerData>;
 export class LearnController extends BaseController<LearnControllerData> implements Controller {
   protected readonly checkNoun: Checklist<string>;
   protected readonly keywordRepository: Repository<Keyword>;
-  protected readonly storage: Connection;
 
   constructor(options: LearnControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-learn', [NOUN_KEYWORD]);
 
     this.checkNoun = new Checklist(options.data.nouns);
-    this.storage = options[INJECT_STORAGE];
-    this.keywordRepository = this.storage.getRepository(Keyword);
+    this.keywordRepository = mustExist(options[INJECT_STORAGE]).getRepository(Keyword);
   }
 
   @Handler(NOUN_KEYWORD, CommandVerb.Create)

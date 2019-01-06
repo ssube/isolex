@@ -8,6 +8,7 @@ import { Tick } from 'src/entity/Tick';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
 import { IntervalData } from 'src/interval/Interval';
+import { mustExist } from 'src/utils';
 
 export type MetricsIntervalData = IntervalData;
 export type MetricsIntervalOptions = BaseIntervalOptions<MetricsIntervalData>;
@@ -22,7 +23,7 @@ export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
   constructor(options: MetricsIntervalOptions) {
     super(options, 'isolex#/definitions/service-interval-metrics');
 
-    this.metrics = options[INJECT_METRICS];
+    this.metrics = mustExist(options[INJECT_METRICS]);
   }
 
   public async startInterval() {

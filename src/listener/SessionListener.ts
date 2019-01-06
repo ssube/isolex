@@ -5,6 +5,7 @@ import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
 import { BaseListener } from 'src/listener/BaseListener';
 import { FetchOptions, ListenerData } from 'src/listener/Listener';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 /**
@@ -18,7 +19,7 @@ export abstract class SessionListener<TData extends ListenerData> extends BaseLi
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.clock = options[INJECT_CLOCK];
+    this.clock = mustExist(options[INJECT_CLOCK]);
     this.sessions = new Map();
   }
 

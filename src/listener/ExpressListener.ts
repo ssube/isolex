@@ -61,9 +61,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     super(options, 'isolex#/definitions/service-listener-express');
 
     this.container = options.container;
-    this.metrics = options[INJECT_METRICS];
-    this.services = options[INJECT_SERVICES];
-    this.storage = options[INJECT_STORAGE];
+    this.metrics = mustExist(options[INJECT_METRICS]);
+    this.services = mustExist(options[INJECT_SERVICES]);
+    this.storage = mustExist(options[INJECT_STORAGE]);
 
     this.requestCounter = new Counter({
       help: 'all requests through this express listener',

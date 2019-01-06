@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
@@ -9,6 +9,7 @@ import { Controller, ControllerData, ControllerOptions } from 'src/controller/Co
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Counter } from 'src/entity/misc/Counter';
+import { mustExist } from 'src/utils';
 import { clamp } from 'src/utils/Math';
 
 export const NOUN_COUNTER = 'counter';
@@ -32,14 +33,12 @@ export type CountControllerOptions = ControllerOptions<CountControllerData>;
 
 @Inject(INJECT_STORAGE)
 export class CountController extends BaseController<CountControllerData> implements Controller {
-  protected storage: Connection;
-  protected counterRepository: Repository<Counter>;
+  protected readonly counterRepository: Repository<Counter>;
 
   constructor(options: CountControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-count', [NOUN_COUNTER]);
 
-    this.storage = options[INJECT_STORAGE];
-    this.counterRepository = this.storage.getRepository(Counter);
+    this.counterRepository = mustExist(options[INJECT_STORAGE]).getRepository(Counter);
   }
 
   @Handler(NOUN_COUNTER, CommandVerb.Get)

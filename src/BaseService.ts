@@ -10,6 +10,7 @@ import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter'
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap } from 'src/utils/Map';
@@ -31,15 +32,15 @@ export const INJECT_TEMPLATE = Symbol('inject-template');
  * TODO: these should be optional and must be included in the decorator to be available
  */
 export interface InjectedServiceOptions {
-  [INJECT_CLOCK]: Clock;
-  [INJECT_JSONPATH]: JsonPath;
-  [INJECT_LOGGER]: Logger;
-  [INJECT_MATH]: MathFactory;
-  [INJECT_METRICS]: Registry;
-  [INJECT_REQUEST]: RequestFactory;
-  [INJECT_SCHEMA]: Schema;
-  [INJECT_SERVICES]: ServiceModule;
-  [INJECT_TEMPLATE]: TemplateCompiler;
+  [INJECT_CLOCK]?: Clock;
+  [INJECT_JSONPATH]?: JsonPath;
+  [INJECT_LOGGER]?: Logger;
+  [INJECT_MATH]?: MathFactory;
+  [INJECT_METRICS]?: Registry;
+  [INJECT_REQUEST]?: RequestFactory;
+  [INJECT_SCHEMA]?: Schema;
+  [INJECT_SERVICES]?: ServiceModule;
+  [INJECT_TEMPLATE]?: TemplateCompiler;
 }
 
 export interface BaseServiceData {
@@ -69,20 +70,20 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
 
     this.data = options.data;
     this.filters = [];
-    this.services = options[INJECT_SERVICES];
+    this.services = mustExist(options[INJECT_SERVICES]);
 
     // check this, because bunyan will throw if it is missing
     if (isNil(this.name) || this.name === '') {
       throw new MissingValueError('missing service name');
     }
 
-    this.logger = options[INJECT_LOGGER].child({
+    this.logger = mustExist(options[INJECT_LOGGER]).child({
       kind: kebabCase(Reflect.getPrototypeOf(this).constructor.name),
       service: options.metadata.name,
     });
 
     // validate the data
-    const result = options[INJECT_SCHEMA].match(options.data, schemaPath);
+    const result = mustExist(options[INJECT_SCHEMA]).match(options.data, schemaPath);
     if (!result.valid) {
       this.logger.error({ data: options.data, errors: result.errors }, 'failed to validate config');
       throw new SchemaError('failed to validate config');

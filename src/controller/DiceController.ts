@@ -23,7 +23,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
   constructor(options: DiceControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-dice', [NOUN_ROLL]);
 
-    this.math = options[INJECT_MATH].create({});
+    this.math = mustExist(options[INJECT_MATH]).create({});
   }
 
   @Handler(NOUN_ROLL, CommandVerb.Create)

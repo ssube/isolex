@@ -45,9 +45,9 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   constructor(options: BaseControllerOptions<TData>, schemaPath: string, nouns: Array<string> = []) {
     super(options, schemaPath);
 
-    this.locale = options[INJECT_LOCALE];
+    this.locale = mustExist(options[INJECT_LOCALE]);
     this.nouns = new Set(nouns);
-    this.services = options[INJECT_SERVICES];
+    this.services = mustExist(options[INJECT_SERVICES]);
     this.transforms = [];
   }
 

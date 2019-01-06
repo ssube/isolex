@@ -73,8 +73,8 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info(options, 'creating bot');
 
     this.container = options.container;
-    this.metrics = options[INJECT_METRICS];
-    this.services = options[INJECT_SERVICES];
+    this.metrics = mustExist(options[INJECT_METRICS]);
+    this.services = mustExist(options[INJECT_SERVICES]);
 
     // set up deps
     this.controllers = [];

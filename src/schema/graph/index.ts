@@ -12,6 +12,7 @@ import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageEntityOption
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
+import { mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
@@ -45,8 +46,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
   constructor(options: GraphSchemaOptions) {
     super(options, 'isolex#/definitions/service-graph');
 
-    this.services = options[INJECT_SERVICES];
-    this.storage = options[INJECT_STORAGE];
+    this.services = mustExist(options[INJECT_SERVICES]);
+    this.storage = mustExist(options[INJECT_STORAGE]);
 
     this.schema = new GraphQLSchema({
       mutation: this.createMutation(),

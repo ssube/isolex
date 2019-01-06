@@ -11,6 +11,7 @@ import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 
 export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';
@@ -21,15 +22,14 @@ export type UserControllerOptions = ControllerOptions<UserControllerData>;
 @Inject(INJECT_STORAGE)
 export class UserController extends BaseController<UserControllerData> implements Controller {
   protected readonly roleRepository: Repository<Role>;
-  protected readonly storage: Connection;
   protected readonly userRepository: UserRepository;
 
   constructor(options: UserControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-user', [NOUN_ROLE, NOUN_USER]);
 
-    this.storage = options[INJECT_STORAGE];
-    this.roleRepository = this.storage.getRepository(Role);
-    this.userRepository = this.storage.getCustomRepository(UserRepository);
+    const storage = mustExist(options[INJECT_STORAGE]);
+    this.roleRepository = storage.getRepository(Role);
+    this.userRepository = storage.getCustomRepository(UserRepository);
   }
 
   @Handler(NOUN_ROLE, CommandVerb.Create)

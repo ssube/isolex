@@ -6,6 +6,7 @@ import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
 import { Locale } from 'src/locale';
 import { Service } from 'src/Service';
+import { mustExist } from 'src/utils';
 
 export type BotServiceData = BaseServiceData;
 
@@ -17,9 +18,9 @@ export const INJECT_STORAGE = Symbol('inject-storage');
  * Exposed injected services available to child services.
  */
 export interface BotServiceOptions<TData extends BotServiceData> extends BaseServiceOptions<TData> {
-  [INJECT_BOT]: Bot;
-  [INJECT_LOCALE]: Locale;
-  [INJECT_STORAGE]: Connection;
+  [INJECT_BOT]?: Bot;
+  [INJECT_LOCALE]?: Locale;
+  [INJECT_STORAGE]?: Connection;
 }
 
 /**
@@ -33,7 +34,7 @@ export abstract class BotService<TData extends BotServiceData> extends BaseServi
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.bot = options[INJECT_BOT];
+    this.bot = mustExist(options[INJECT_BOT]);
   }
 
   /**

@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
@@ -25,15 +25,13 @@ export type CompletionControllerOptions = ControllerOptions<CompletionController
 
 @Inject(INJECT_STORAGE)
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
-  protected readonly storage: Connection;
   protected readonly fragmentRepository: Repository<Fragment>;
   protected target?: Listener;
 
   constructor(options: CompletionControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
 
-    this.storage = options[INJECT_STORAGE];
-    this.fragmentRepository = this.storage.getRepository(Fragment);
+    this.fragmentRepository = mustExist(options[INJECT_STORAGE]).getRepository(Fragment);
   }
 
   public async start() {

@@ -6,6 +6,7 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { RequestFactory } from 'src/utils/Request';
 
 export interface WeatherControllerData extends ControllerData {
@@ -26,7 +27,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
   constructor(options: WeatherControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-weather', [NOUN_WEATHER]);
 
-    this.request = options[INJECT_REQUEST];
+    this.request = mustExist(options[INJECT_REQUEST]);
   }
 
   @Handler(NOUN_WEATHER, CommandVerb.Get)

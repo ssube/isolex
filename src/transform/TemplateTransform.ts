@@ -4,6 +4,7 @@ import { INJECT_TEMPLATE } from 'src/BaseService';
 import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { mustExist } from 'src/utils';
 import { mapToDict } from 'src/utils/Map';
 import { Template, TemplateScope } from 'src/utils/Template';
 
@@ -28,7 +29,7 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
     this.templates = new Map();
     for (const [key, data] of Object.entries(options.data.templates)) {
       this.logger.debug({ key }, 'compiling template');
-      const template = options[INJECT_TEMPLATE].compile(data);
+      const template = mustExist(options[INJECT_TEMPLATE]).compile(data);
       this.templates.set(key, template);
     }
   }
