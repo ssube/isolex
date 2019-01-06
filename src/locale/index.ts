@@ -21,7 +21,7 @@ export class Locale implements ServiceLifecycle {
       lng: this.lang,
       resources: {
         /* tslint:disable:no-var-requires */
-        en: require('src/locale/res/en.yml'),
+        en: require('src/locale/en.yml'),
         /* tslint:enable:no-var-requires */
       },
     });
