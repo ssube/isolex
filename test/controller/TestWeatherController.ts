@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { INJECT_TEMPLATE, INJECT_REQUEST } from 'src/BaseService';
+import { INJECT_REQUEST, INJECT_TEMPLATE } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { INJECT_BOT } from 'src/BotService';
 import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';

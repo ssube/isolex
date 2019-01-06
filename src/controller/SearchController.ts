@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { INJECT_TEMPLATE, INJECT_REQUEST } from 'src/BaseService';
+import { INJECT_REQUEST, INJECT_TEMPLATE } from 'src/BaseService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
