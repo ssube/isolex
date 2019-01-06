@@ -3,14 +3,15 @@ import { kebabCase } from 'lodash';
 import { Inject } from 'noicejs';
 import { Logger } from 'noicejs/logger/Logger';
 
+import { INJECT_LOGGER } from 'src/BaseService';
 import { Context } from 'src/entity/Context';
 import { Template } from 'src/utils/Template';
 
 export interface TemplateCompilerOptions {
-  logger: Logger;
+  [INJECT_LOGGER]: Logger;
 }
 
-@Inject('logger')
+@Inject(INJECT_LOGGER)
 export class TemplateCompiler {
   protected compiler: typeof Handlebars;
   protected logger: Logger;
@@ -18,7 +19,7 @@ export class TemplateCompiler {
 
   constructor(options: TemplateCompilerOptions) {
     this.compiler = Handlebars.create();
-    this.logger = options.logger.child({
+    this.logger = options[INJECT_LOGGER].child({
       kind: kebabCase(TemplateCompiler.name),
     });
     this.options = {};

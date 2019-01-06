@@ -1,5 +1,6 @@
 import { Inject } from 'noicejs';
 
+import { INJECT_CLOCK } from 'src/BaseService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -16,14 +17,14 @@ export interface TimeControllerData extends ControllerData {
 
 export type TimeControllerOptions = ControllerOptions<TimeControllerData>;
 
-@Inject('clock')
+@Inject(INJECT_CLOCK)
 export class TimeController extends BaseController<TimeControllerData> implements Controller {
   protected readonly clock: Clock;
 
   constructor(options: TimeControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-time', [NOUN_TIME]);
 
-    this.clock = options.clock;
+    this.clock = options[INJECT_CLOCK];
   }
 
   @Handler(NOUN_TIME, CommandVerb.Get)

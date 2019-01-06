@@ -1,5 +1,6 @@
 import { Inject } from 'noicejs';
 
+import { INJECT_JSONPATH } from 'src/BaseService';
 import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
@@ -17,7 +18,7 @@ export interface FlattenTransformData extends TransformData {
 
 export type FlattenTransformOptions = TransformOptions<FlattenTransformData>;
 
-@Inject('jsonpath')
+@Inject(INJECT_JSONPATH)
 export class FlattenTransform extends BaseTransform<FlattenTransformData> implements Transform {
   protected readonly keys: Array<string>;
   protected readonly jsonpath: JsonPath;
@@ -26,7 +27,7 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
     super(options, 'isolex#/definitions/service-transform-flatten');
 
     this.keys = Array.from(this.data.keys);
-    this.jsonpath = options.jsonpath;
+    this.jsonpath = options[INJECT_JSONPATH];
   }
 
   public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {

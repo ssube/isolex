@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
+import { INJECT_TEMPLATE, INJECT_REQUEST } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { INJECT_BOT } from 'src/BotService';
 import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';
@@ -24,7 +25,7 @@ describeAsync('weather controller', async () => {
     const { container, module } = await createContainer(...modules);
 
     const data = { test: 'test' };
-    module.bind('request').toInstance(ineeda<RequestFactory>({
+    module.bind(INJECT_REQUEST).toInstance(ineeda<RequestFactory>({
       create: async () => data,
     }));
 
@@ -42,7 +43,7 @@ describeAsync('weather controller', async () => {
 
     const controller = await createService(container, WeatherController, {
       [INJECT_BOT]: bot,
-      compiler: ineeda<TemplateCompiler>({
+      [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => 'test',
         }),

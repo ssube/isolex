@@ -1,3 +1,4 @@
+import { INJECT_CLOCK } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
@@ -17,7 +18,7 @@ export abstract class SessionListener<TData extends ListenerData> extends BaseLi
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.clock = options.clock;
+    this.clock = options[INJECT_CLOCK];
     this.sessions = new Map();
   }
 

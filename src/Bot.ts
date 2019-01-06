@@ -5,7 +5,14 @@ import { Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
-import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
+import {
+  BaseService,
+  BaseServiceData,
+  BaseServiceOptions,
+  INJECT_LOGGER,
+  INJECT_METRICS,
+  INJECT_SERVICES,
+} from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
@@ -36,7 +43,7 @@ export interface BotData extends BaseServiceData {
 export type BotDefinition = ServiceDefinition<BotData>;
 export type BotOptions = BaseServiceOptions<BotData>;
 
-@Inject('logger', 'metrics', 'services')
+@Inject(INJECT_LOGGER, INJECT_METRICS, INJECT_SERVICES)
 export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
   protected readonly metrics: Registry;
@@ -66,8 +73,8 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info(options, 'creating bot');
 
     this.container = options.container;
-    this.metrics = options.metrics;
-    this.services = options.services;
+    this.metrics = options[INJECT_METRICS];
+    this.services = options[INJECT_SERVICES];
 
     // set up deps
     this.controllers = [];

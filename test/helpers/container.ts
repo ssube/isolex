@@ -6,6 +6,14 @@ import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
 import { Connection } from 'typeorm';
 
+import {
+  INJECT_CLOCK,
+  INJECT_LOGGER,
+  INJECT_METRICS,
+  INJECT_SCHEMA,
+  INJECT_SERVICES,
+  INJECT_TEMPLATE,
+} from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from 'src/BotService';
 import { Locale } from 'src/locale';
@@ -47,18 +55,18 @@ export async function createService<
 ): Promise<TService> {
   const fullOptions = {
     [INJECT_BOT]: ineeda<Bot>(),
-    clock: ineeda<Clock>(),
-    compiler: ineeda<TemplateCompiler>({
+    [INJECT_CLOCK]: ineeda<Clock>(),
+    [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
       compile: () => ineeda<Template>(),
     }),
     container,
     [INJECT_LOCALE]: new Locale({
       lang: 'en',
     }),
-    logger: ConsoleLogger.global,
-    metrics: new Registry(),
-    schema: new Schema(), // tests use the real schema :D
-    services: ineeda<ServiceModule>({
+    [INJECT_LOGGER]: ConsoleLogger.global,
+    [INJECT_METRICS]: new Registry(),
+    [INJECT_SCHEMA]: new Schema(), // tests use the real schema :D
+    [INJECT_SERVICES]: ineeda<ServiceModule>({
       createService: (def: ServiceDefinition<TData>) => container.create(def.metadata.kind, def),
     }),
     [INJECT_STORAGE]: ineeda<Connection>(),

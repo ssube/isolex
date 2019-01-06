@@ -1,5 +1,6 @@
 import { Inject } from 'noicejs';
 
+import { INJECT_TEMPLATE, INJECT_REQUEST } from 'src/BaseService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -21,7 +22,7 @@ export type SearchControllerOptions = ControllerOptions<SearchControllerData>;
 
 export const NOUN_SEARCH = 'search';
 
-@Inject('compiler', 'request')
+@Inject(INJECT_TEMPLATE, INJECT_REQUEST)
 export class SearchController extends BaseController<SearchControllerData> implements Controller {
   protected readonly request: RequestFactory;
   protected readonly url: Template;
@@ -29,8 +30,8 @@ export class SearchController extends BaseController<SearchControllerData> imple
   constructor(options: SearchControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-search', [NOUN_SEARCH]);
 
-    this.request = options.request;
-    this.url = options.compiler.compile(options.data.request.url);
+    this.request = options[INJECT_REQUEST];
+    this.url = options[INJECT_TEMPLATE].compile(options.data.request.url);
   }
 
   @Handler(NOUN_SEARCH, CommandVerb.Get)

@@ -2,6 +2,7 @@ import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
 
+import { INJECT_CLOCK, INJECT_MATH } from 'src/BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
@@ -13,7 +14,7 @@ import { Clock } from 'src/utils/Clock';
 
 export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
 
-@Inject('clock', 'math', INJECT_STORAGE)
+@Inject(INJECT_CLOCK, INJECT_MATH, INJECT_STORAGE)
 export abstract class BaseInterval<TData extends IntervalData> extends BotService<TData> implements Interval {
   protected readonly clock: Clock;
   protected readonly math: MathJsStatic;
@@ -27,8 +28,8 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.clock = options.clock;
-    this.math = options.math.create({});
+    this.clock = options[INJECT_CLOCK];
+    this.math = options[INJECT_MATH].create({});
 
     this.contextRepository = options[INJECT_STORAGE].getRepository(Context);
     this.tickRepository = options[INJECT_STORAGE].getRepository(Tick);

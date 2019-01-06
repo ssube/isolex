@@ -1,6 +1,7 @@
 import { isNil, isString } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 
+import { INJECT_SERVICES } from 'src/BaseService';
 import { BotService, INJECT_LOCALE } from 'src/BotService';
 import { getHandlerOptions, HandlerOptions } from 'src/controller';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -32,7 +33,7 @@ export enum ErrorReplyType {
   Unknown = 'unknown',
 }
 
-@Inject('services', INJECT_LOCALE)
+@Inject(INJECT_LOCALE)
 export abstract class BaseController<TData extends ControllerData> extends BotService<TData> implements Controller {
   protected readonly nouns: Set<string>;
 
@@ -46,7 +47,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
     this.locale = options[INJECT_LOCALE];
     this.nouns = new Set(nouns);
-    this.services = options.services;
+    this.services = options[INJECT_SERVICES];
     this.transforms = [];
   }
 

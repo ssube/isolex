@@ -8,6 +8,7 @@ import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-
 import { Counter, Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
+import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { JwtFields, Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
@@ -41,7 +42,7 @@ export interface ExpressListenerData extends ListenerData {
 
 export type ExpressListenerOptions = BotServiceOptions<ExpressListenerData>;
 
-@Inject('clock', 'metrics', INJECT_STORAGE)
+@Inject(INJECT_CLOCK, INJECT_METRICS, INJECT_STORAGE)
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
   protected readonly container: Container;
   protected readonly metrics: Registry;
@@ -60,8 +61,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     super(options, 'isolex#/definitions/service-listener-express');
 
     this.container = options.container;
-    this.metrics = options.metrics;
-    this.services = options.services;
+    this.metrics = options[INJECT_METRICS];
+    this.services = options[INJECT_SERVICES];
     this.storage = options[INJECT_STORAGE];
 
     this.requestCounter = new Counter({
@@ -188,14 +189,11 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }
 
     if (this.data.expose.graph) {
-      const graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
-      this.graph = graph;
-
-      await graph.start();
+      this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
 
       app = app.use('/graph', expressGraphQl({
         graphiql: this.data.expose.graphiql,
-        schema: graph.schema,
+        schema: this.graph.schema,
       }));
     }
 

@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Connection } from 'typeorm';
 
-import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
+import { BaseService, BaseServiceData, BaseServiceOptions, INJECT_SERVICES } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
 import { Locale } from 'src/locale';
@@ -26,7 +26,7 @@ export interface BotServiceOptions<TData extends BotServiceData> extends BaseSer
  * Services started by the bot, into which the bot is injected, and which rely on the bot for communication with
  * other services and the outside world.
  */
-@Inject(INJECT_BOT, 'services')
+@Inject(INJECT_BOT, INJECT_SERVICES)
 export abstract class BotService<TData extends BotServiceData> extends BaseService<TData> implements Service {
   public readonly bot: Bot;
 
