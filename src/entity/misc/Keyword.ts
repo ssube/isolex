@@ -21,7 +21,7 @@ export class Keyword extends BaseCommand implements KeywordOptions {
   public controllerId: string = '';
 
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @PrimaryColumn()
   public key: string = '';

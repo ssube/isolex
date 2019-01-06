@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { BotService } from 'src/BotService';
+import { BotService, INJECT_STORAGE } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -9,14 +9,14 @@ import { Session } from 'src/entity/Session';
 import { FetchOptions, Listener, ListenerData, ListenerOptions } from 'src/listener/Listener';
 import { doesExist, mustExist } from 'src/utils';
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export abstract class BaseListener<TData extends ListenerData> extends BotService<TData> implements Listener {
   protected readonly contextRepository: Repository<Context>;
 
   constructor(options: ListenerOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.contextRepository = options.storage.getRepository(Context);
+    this.contextRepository = options[INJECT_STORAGE].getRepository(Context);
   }
 
   /**

@@ -1,5 +1,6 @@
 import { Inject } from 'noicejs';
 
+import { INJECT_JSONPATH } from 'src/BaseService';
 import { FilterValue } from 'src/filter/Filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
@@ -15,7 +16,7 @@ export interface JsonpathTransformData extends TransformData {
 
 export type JsonpathTransformOptions = TransformOptions<JsonpathTransformData>;
 
-@Inject('jsonpath')
+@Inject(INJECT_JSONPATH)
 export class JsonpathTransform extends BaseTransform<JsonpathTransformData> implements Transform {
   protected readonly jsonpath: JsonPath;
   protected readonly queries: Map<string, string>;
@@ -23,7 +24,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
   constructor(options: JsonpathTransformOptions) {
     super(options, 'isolex#/definitions/service-transform-jsonpath');
 
-    this.jsonpath = options.jsonpath;
+    this.jsonpath = options[INJECT_JSONPATH];
     this.queries = dictToMap(options.data.queries);
   }
 

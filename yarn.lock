@@ -83,7 +83,6 @@
 "@fimbul/bifrost@^0.17.0":
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/@fimbul/bifrost/-/bifrost-0.17.0.tgz#f0383ba7e40992e3193dc87e2ddfde2ad62a9cf4"
-  integrity sha512-gVTkJAOef5HtN6LPmrtt5fAUmBywwlgmObsU3FBhPoNeXPLaIl2zywXkJEtvvVLQnaFmtff3x+wIj5lHRCDE3Q==
   dependencies:
     "@fimbul/ymir" "^0.17.0"
     get-caller-file "^2.0.0"
@@ -93,7 +92,6 @@
 "@fimbul/ymir@^0.17.0":
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/@fimbul/ymir/-/ymir-0.17.0.tgz#4f28389b9f804d1cd202e11983af1743488b7815"
-  integrity sha512-xMXM9KTXRLHLVS6dnX1JhHNEkmWHcAVCQ/4+DA1KKwC/AFnGHzu/7QfQttEPgw3xplT+ILf9e3i64jrFwB3JtA==
   dependencies:
     inversify "^5.0.0"
     reflect-metadata "^0.1.12"
@@ -297,6 +295,10 @@
 "@types/highlight.js@^9.12.3":
   version "9.12.3"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
+
+"@types/i18next@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-12.1.0.tgz#7c3fd3dbe03f9531147033773bbd0ca4f474a180"
 
 "@types/is-stream@^1.1.0":
   version "1.1.0"
@@ -848,7 +850,6 @@ awesome-typescript-loader@5.2:
 aws-sdk@2.383.0:
   version "2.383.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.383.0.tgz#86045c0a4a4898dca84a4877cbe765b7dc0f8bba"
-  integrity sha512-PN+s+NTABtBloS46c7C2dvoEzrdY2NZ5nsfljL3xDX2rvjJEQxdchS2jcCpyc5ZNudFwta66wY4EGBZqf4Attw==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -2873,6 +2874,10 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
 
+i18next@^13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.0.tgz#d8656bbc53216ffcd428364fbfb75f75647846a5"
+
 iconv-lite@0.4.23:
   version "0.4.23"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.23.tgz#297871f63be507adcfbfca715d0cd0eed84e9a63"
@@ -4092,9 +4097,9 @@ node-pre-gyp@^0.10.0, node-pre-gyp@^0.10.3:
     semver "^5.3.0"
     tar "^4"
 
-noicejs@2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.4.1.tgz#02d7df3eacc1a17a9fe111d1f4478d6c9e5f3d67"
+noicejs@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.5.1.tgz#07f7bab0aeefb4743adbc7038ca2e6b02af64fa1"
 
 nomnom@1.5.2:
   version "1.5.2"
@@ -5702,7 +5707,6 @@ tslint-clean-code@0.2.9:
 tslint-consistent-codestyle@~1.15.0:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/tslint-consistent-codestyle/-/tslint-consistent-codestyle-1.15.0.tgz#a3acf8d0a3ca0dc7d1285705102ba1fe4a17c4cb"
-  integrity sha512-6BNDBbZh2K0ibRXe70Mkl9gfVttxQ3t3hqV1BRDfpIcjrUoOgD946iH4SrXp+IggDgeMs3dJORjD5tqL5j4jXg==
   dependencies:
     "@fimbul/bifrost" "^0.17.0"
     tslib "^1.7.1"

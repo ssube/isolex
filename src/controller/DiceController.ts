@@ -1,6 +1,7 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
+import { INJECT_MATH } from 'src/BaseService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -15,14 +16,14 @@ export type DiceControllerData = ControllerData;
 
 export type DiceControllerOptions = ControllerOptions<DiceControllerData>;
 
-@Inject('math')
+@Inject(INJECT_MATH)
 export class DiceController extends BaseController<DiceControllerData> implements Controller {
   protected math: MathJsStatic;
 
   constructor(options: DiceControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-dice', [NOUN_ROLL]);
 
-    this.math = options.math.create({});
+    this.math = options[INJECT_MATH].create({});
   }
 
   @Handler(NOUN_ROLL, CommandVerb.Create)
@@ -40,6 +41,9 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.logger.debug({ count, sides }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b, 0);
 
-    return this.reply(mustExist(cmd.context), `The results of your rolls were: ${results}. The sum is ${sum}.`);
+    return this.reply(mustExist(cmd.context), this.locale.translate('service.controller.dice.roll.create', {
+      results,
+      sum,
+    }));
   }
 }

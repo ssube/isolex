@@ -1,7 +1,7 @@
 import { Module, ModuleOptions, Provides } from 'noicejs';
 import { Container } from 'noicejs/Container';
 
-import { BaseServiceData } from 'src/BaseService';
+import { BaseServiceData, INJECT_LOGGER, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
@@ -51,7 +51,7 @@ export class ServiceModule extends Module implements ServiceLifecycle {
     this.logger.debug({ options }, 'configuring service module');
   }
 
-  @Provides('services')
+  @Provides(INJECT_SERVICES)
   public getServices() {
     this.logger.debug('getting services from service module');
     return this;
@@ -74,10 +74,10 @@ export class ServiceModule extends Module implements ServiceLifecycle {
     this.logger.info({ kind, tag }, 'creating unknown service');
     const svc = await container.create<TService, BotServiceOptions<TData>>(kind, {
       ...conf,
-      logger: this.logger.child({
+      [INJECT_LOGGER]: this.logger.child({
         kind,
       }),
-      services: this,
+      [INJECT_SERVICES]: this,
     });
 
     this.logger.debug({ id: svc.id, kind, tag }, 'service created');

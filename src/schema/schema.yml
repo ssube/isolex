@@ -142,6 +142,7 @@ definitions:
 
   service-bot:
     type: object
+    required: [controllers, filters, listeners, locale, logger, migrate, parsers, storage]
     properties:
       controllers:
         type: array
@@ -155,8 +156,16 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/service-definition"
+      locale:
+        type: object
+        required: [lang]
+        properties:
+          lang:
+            default: en
+            type: string
       logger:
         type: object
+        required: [level, name]
         properties:
           level:
             enum: [debug, info, warn, error]
@@ -164,6 +173,7 @@ definitions:
             type: string
       migrate:
         type: boolean
+        default: false
       parsers:
         type: array
         items:

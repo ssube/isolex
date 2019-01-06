@@ -17,19 +17,29 @@ import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
+export const INJECT_CLOCK = Symbol('inject-clock');
+export const INJECT_JSONPATH = Symbol('inject-jsonpath');
+export const INJECT_LOGGER = Symbol('inject-logger');
+export const INJECT_MATH = Symbol('inject-math');
+export const INJECT_METRICS = Symbol('inject-metrics');
+export const INJECT_REQUEST = Symbol('inject-request');
+export const INJECT_SCHEMA = Symbol('inject-schema');
+export const INJECT_SERVICES = Symbol('inject-services');
+export const INJECT_TEMPLATE = Symbol('inject-template');
+
 /**
  * TODO: these should be optional and must be included in the decorator to be available
  */
 export interface InjectedServiceOptions {
-  clock: Clock;
-  compiler: TemplateCompiler;
-  jsonpath: JsonPath;
-  logger: Logger;
-  math: MathFactory;
-  metrics: Registry;
-  request: RequestFactory;
-  schema: Schema;
-  services: ServiceModule;
+  [INJECT_CLOCK]: Clock;
+  [INJECT_JSONPATH]: JsonPath;
+  [INJECT_LOGGER]: Logger;
+  [INJECT_MATH]: MathFactory;
+  [INJECT_METRICS]: Registry;
+  [INJECT_REQUEST]: RequestFactory;
+  [INJECT_SCHEMA]: Schema;
+  [INJECT_SERVICES]: ServiceModule;
+  [INJECT_TEMPLATE]: TemplateCompiler;
 }
 
 export interface BaseServiceData {
@@ -39,7 +49,7 @@ export interface BaseServiceData {
 
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
-@Inject('schema', 'services')
+@Inject(INJECT_SCHEMA, INJECT_SERVICES)
 export abstract class BaseService<TData extends BaseServiceData> implements Service {
   public readonly id: string;
   public readonly kind: string;
@@ -59,20 +69,20 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
 
     this.data = options.data;
     this.filters = [];
-    this.services = options.services;
+    this.services = options[INJECT_SERVICES];
 
     // check this, because bunyan will throw if it is missing
     if (isNil(this.name) || this.name === '') {
       throw new MissingValueError('missing service name');
     }
 
-    this.logger = options.logger.child({
+    this.logger = options[INJECT_LOGGER].child({
       kind: kebabCase(Reflect.getPrototypeOf(this).constructor.name),
       service: options.metadata.name,
     });
 
     // validate the data
-    const result = options.schema.match(options.data, schemaPath);
+    const result = options[INJECT_SCHEMA].match(options.data, schemaPath);
     if (!result.valid) {
       this.logger.error({ data: options.data, errors: result.errors }, 'failed to validate config');
       throw new SchemaError('failed to validate config');

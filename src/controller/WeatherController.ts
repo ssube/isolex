@@ -1,5 +1,6 @@
 import { Inject } from 'noicejs';
 
+import { INJECT_REQUEST } from 'src/BaseService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -18,14 +19,14 @@ export type WeatherControllerOptions = ControllerOptions<WeatherControllerData>;
 
 export const NOUN_WEATHER = 'weather';
 
-@Inject('compiler', 'request')
+@Inject(INJECT_REQUEST)
 export class WeatherController extends BaseController<WeatherControllerData> implements Controller {
   protected readonly request: RequestFactory;
 
   constructor(options: WeatherControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-weather', [NOUN_WEATHER]);
 
-    this.request = options.request;
+    this.request = options[INJECT_REQUEST];
   }
 
   @Handler(NOUN_WEATHER, CommandVerb.Get)

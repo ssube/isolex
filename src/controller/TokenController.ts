@@ -2,6 +2,8 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
+import { INJECT_CLOCK } from 'src/BaseService';
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -9,6 +11,7 @@ import { createCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
 export const NOUN_TOKEN = 'token';
@@ -24,7 +27,7 @@ export interface TokenControllerData extends ControllerData {
 
 export type TokenControllerOptions = ControllerOptions<TokenControllerData>;
 
-@Inject('clock', 'storage')
+@Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class TokenController extends BaseController<TokenControllerData> implements Controller {
   protected readonly clock: Clock;
   protected readonly storage: Connection;
@@ -33,8 +36,8 @@ export class TokenController extends BaseController<TokenControllerData> impleme
   constructor(options: TokenControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-token', [NOUN_TOKEN]);
 
-    this.clock = options.clock;
-    this.storage = options.storage;
+    this.clock = options[INJECT_CLOCK];
+    this.storage = options[INJECT_STORAGE];
     this.tokenRepository = this.storage.getRepository(Token);
   }
 
@@ -52,7 +55,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       grants,
       issuer: this.data.token.issuer,
       labels: {},
-      subject: user.id,
+      subject: mustExist(user.id),
       user,
     }));
     const jwt = token.sign(this.data.token.secret);
@@ -67,14 +70,17 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     const user = this.getUserOrFail(ctx);
     const before = cmd.getHeadOrNumber('before', this.clock.getSeconds());
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCompletion(cmd, 'confirm', `please confirm deleting tokens for ${user.name} from before ${before}`);
+      const completion = createCompletion(cmd, 'confirm', this.locale.translate('service.controller.token.delete.confirm', {
+        before,
+        name: user.name,
+      }));
       await this.bot.executeCommand(completion);
       return;
     }
 
     await this.tokenRepository.delete({
       createdAt: LessThan(before),
-      subject: Equal(user.id),
+      subject: Equal(mustExist(user.id)),
     });
 
     return this.reply(ctx, `tokens deleted`);
@@ -91,11 +97,13 @@ export class TokenController extends BaseController<TokenControllerData> impleme
         });
         return this.reply(ctx, JSON.stringify(data));
       } catch (err) {
-        return this.reply(ctx, `error verifying token: ${err.message}`);
+        return this.reply(ctx, this.locale.translate('service.controller.token.get.invalid', {
+          msg: err.message,
+        }));
       }
     } else {
       if (isNil(ctx.token)) {
-        return this.reply(ctx, 'session must be provided by a token');
+        return this.reply(ctx, this.locale.translate('service.controller.token.get.missing'));
       } else {
         return this.reply(ctx, ctx.token.toString());
       }
@@ -108,7 +116,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     const user = this.getUserOrFail(ctx);
     const tokens = await this.tokenRepository.find({
       where: {
-        subject: Equal(user.id),
+        subject: Equal(mustExist(user.id)),
       },
     });
 

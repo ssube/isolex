@@ -15,6 +15,7 @@ import * as emoji from 'node-emoji';
 import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
+import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -33,7 +34,7 @@ export interface DiscordListenerData extends ListenerData {
 
 export type DiscordListenerOptions = BotServiceOptions<DiscordListenerData>;
 
-@Inject('bot', 'clock', 'metrics', 'services')
+@Inject(INJECT_CLOCK, INJECT_METRICS)
 export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
     return doesExist(chan) && chan.type === 'text';
@@ -49,14 +50,14 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     super(options, 'isolex#/definitions/service-listener-discord');
 
     this.client = new Client();
-    this.services = options.services;
+    this.services = options[INJECT_SERVICES];
     this.threads = new Map();
 
     this.onCounter = new Counter({
       help: 'events received from discord client',
       labelNames: ['serviceId', 'serviceKind', 'serviceName', 'eventKind'],
       name: 'discord_event',
-      registers: [options.metrics],
+      registers: [options[INJECT_METRICS]],
     });
   }
 

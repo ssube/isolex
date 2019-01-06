@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -22,7 +23,7 @@ export interface CompletionControllerData extends ControllerData {
 
 export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
   protected readonly storage: Connection;
   protected readonly fragmentRepository: Repository<Fragment>;
@@ -31,7 +32,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
   constructor(options: CompletionControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
 
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.fragmentRepository = this.storage.getRepository(Fragment);
   }
 
@@ -52,18 +53,22 @@ export class CompletionController extends BaseController<CompletionControllerDat
     const parserId = cmd.getHead('parser');
     const verb = cmd.getHead('verb') as CommandVerb;
 
-    const fragment = new Fragment({
+    const fragment = await this.fragmentRepository.save(new Fragment({
       data: cmd.data,
       key,
       labels: cmd.labels,
       noun,
       parserId,
-      userId: user.id,
+      userId: mustExist(user.id),
       verb,
-    });
+    }));
 
     this.logger.debug({ context, fragment }, 'creating fragment for later completion');
-    return this.reply(context, `${fragment.id} (${key}): ${msg}`);
+    return this.reply(context, this.locale.translate('service.controller.completion.fragment.prompt', {
+      id: fragment.id,
+      key,
+      msg,
+    }));
   }
 
   @Handler(NOUN_FRAGMENT, CommandVerb.Update)
@@ -74,25 +79,20 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     const fragment = await this.getFragment(ctx, id);
     if (isNil(fragment)) {
-      return this.reply(ctx, 'fragment not found');
+      return this.reply(ctx, this.locale.translate('service.controller.completion.fragment.missing'));
     }
 
     this.logger.debug({ fragment, parserId: fragment.parserId }, 'attempting to complete fragment');
 
-    try {
-      const parser = this.services.getService<Parser>({ id: fragment.parserId });
-      const value = cmd.get('next');
-      const commands = await parser.complete(ctx, fragment, value);
+    const parser = this.services.getService<Parser>({ id: fragment.parserId });
+    const value = cmd.get('next');
+    const commands = await parser.complete(ctx, fragment, value);
 
-      // the commands have been completed (or additional completions issued), so even if they fail,
-      // the previous fragment should be cleaned up. If parsing fails, the fragment should not be
-      // cleaned up.
-      await this.fragmentRepository.delete(fragment.id);
-      await this.bot.executeCommand(...commands);
-    } catch (err) {
-      this.logger.error(err, 'error completing fragment');
-      return this.reply(ctx, 'error completing fragment');
-    }
+    // the commands have been completed (or additional completions issued), so even if they fail,
+    // the previous fragment should be cleaned up. If parsing fails, the fragment should not be
+    // cleaned up.
+    await this.fragmentRepository.delete(mustExist(fragment.id));
+    await this.bot.executeCommand(...commands);
   }
 
   protected async createContext(maybeCtx?: Context) {

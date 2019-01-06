@@ -5,12 +5,20 @@ import { Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
-import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
+import {
+  BaseService,
+  BaseServiceData,
+  BaseServiceOptions,
+  INJECT_LOGGER,
+  INJECT_METRICS,
+  INJECT_SERVICES,
+} from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller/Controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Interval, IntervalData } from 'src/interval/Interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
+import { Locale, LocaleOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
@@ -22,6 +30,7 @@ export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
   intervals: Array<ServiceDefinition<IntervalData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
+  locale: LocaleOptions;
   logger: {
     level: LogLevel;
     name: string;
@@ -34,11 +43,12 @@ export interface BotData extends BaseServiceData {
 export type BotDefinition = ServiceDefinition<BotData>;
 export type BotOptions = BaseServiceOptions<BotData>;
 
-@Inject('logger', 'metrics', 'services')
+@Inject(INJECT_LOGGER, INJECT_METRICS, INJECT_SERVICES)
 export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
   protected readonly metrics: Registry;
 
+  protected locale?: Locale;
   protected storage?: Connection;
 
   // counters
@@ -63,8 +73,8 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info(options, 'creating bot');
 
     this.container = options.container;
-    this.metrics = options.metrics;
-    this.services = options.services;
+    this.metrics = options[INJECT_METRICS];
+    this.services = options[INJECT_SERVICES];
 
     // set up deps
     this.controllers = [];
@@ -78,6 +88,10 @@ export class Bot extends BaseService<BotData> implements Service {
     this.outgoing = new Subject();
 
     this.startMetrics();
+  }
+
+  public getLocale() {
+    return mustExist(this.locale);
   }
 
   public getStorage(): Connection {
@@ -112,6 +126,7 @@ export class Bot extends BaseService<BotData> implements Service {
     this.incoming.subscribe((next) => this.receive(next).catch(streamError));
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(streamError));
 
+    await this.startLocale();
     await this.startStorage();
     await this.startServices();
 
@@ -126,6 +141,9 @@ export class Bot extends BaseService<BotData> implements Service {
 
     this.logger.debug('stopping services');
     await this.services.stop();
+
+    this.logger.debug('stopping storage');
+    await this.getStorage().close();
 
     this.logger.info('bot has stopped');
   }
@@ -325,6 +343,12 @@ export class Bot extends BaseService<BotData> implements Service {
     await this.services.start();
 
     this.logger.info('services started');
+  }
+
+  protected async startLocale() {
+    this.logger.info({ }, 'starting localization');
+    this.locale = new Locale(this.data.locale);
+    return this.locale.start();
   }
 
   protected async startStorage() {

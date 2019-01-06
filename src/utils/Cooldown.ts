@@ -2,14 +2,15 @@ import { Inject } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Observable, Subject } from 'rxjs';
 
+import { INJECT_CLOCK } from 'src/BaseService';
 import { ServiceLifecycle } from 'src/Service';
 import { doesExist } from 'src/utils';
 import { Clock, ClockHandler } from 'src/utils/Clock';
 
 export const GROWTH_FACTOR = 2;
 export interface CooldownOptions extends BaseOptions {
+  [INJECT_CLOCK]: Clock;
   base: number;
-  clock: Clock;
   grow: number;
 }
 
@@ -19,7 +20,7 @@ export interface CooldownOptions extends BaseOptions {
  * Every time it is increased, the rate of growth for next time increases by the same amount. This is, essentially,
  * an exponential interval with an observable.
  */
-@Inject('clock')
+@Inject(INJECT_CLOCK)
 export class Cooldown implements ServiceLifecycle {
   protected readonly boundNext: ClockHandler;
   protected readonly clock: Clock;
@@ -35,7 +36,7 @@ export class Cooldown implements ServiceLifecycle {
   constructor(options: CooldownOptions) {
     this.active = false;
     this.boundNext = this.next.bind(this);
-    this.clock = options.clock;
+    this.clock = options[INJECT_CLOCK];
     this.data = options;
     this.grow = options.grow;
     this.rate = options.base;

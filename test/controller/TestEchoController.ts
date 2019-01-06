@@ -3,6 +3,7 @@ import { ineeda } from 'ineeda';
 import { match, spy } from 'sinon';
 
 import { Bot } from 'src/Bot';
+import { INJECT_BOT } from 'src/BotService';
 import { EchoController, NOUN_ECHO } from 'src/controller/EchoController';
 import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -45,7 +46,7 @@ describeAsync('echo controller', async () => {
 
     const sendMessage = spy();
     const controller = await createService(container, EchoController, {
-      bot: ineeda<Bot>({
+      [INJECT_BOT]: ineeda<Bot>({
         sendMessage,
       }),
       data: {

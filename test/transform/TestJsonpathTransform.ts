@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
+import { INJECT_JSONPATH } from 'src/BaseService';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { JsonpathTransform } from 'src/transform/JsonpathTransform';
@@ -25,7 +26,7 @@ describeAsync('jsonpath transform', async () => {
         queries,
         strict: true,
       },
-      jsonpath: new JsonPath(),
+      [INJECT_JSONPATH]: new JsonPath(),
       metadata: {
         kind: 'jsonpath-transform',
         name: 'test_transform',

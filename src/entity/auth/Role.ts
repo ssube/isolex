@@ -14,7 +14,7 @@ export const TABLE_ROLE = 'role';
 @Entity(TABLE_ROLE)
 export class Role extends BaseEntity implements RoleOptions {
   @PrimaryGeneratedColumn('uuid')
-  public id: string = '';
+  public id?: string;
 
   @Column({
     unique: true,

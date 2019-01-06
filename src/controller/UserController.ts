@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, In, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -17,7 +18,7 @@ export const NOUN_USER = 'user';
 export type UserControllerData = ControllerData;
 export type UserControllerOptions = ControllerOptions<UserControllerData>;
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export class UserController extends BaseController<UserControllerData> implements Controller {
   protected readonly roleRepository: Repository<Role>;
   protected readonly storage: Connection;
@@ -26,7 +27,7 @@ export class UserController extends BaseController<UserControllerData> implement
   constructor(options: UserControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-user', [NOUN_ROLE, NOUN_USER]);
 
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.roleRepository = this.storage.getRepository(Role);
     this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
@@ -53,7 +54,7 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     if (isNil(role)) {
-      return this.reply(ctx, 'role not found');
+      return this.reply(ctx, this.locale.translate('service.controller.user.role.missing'));
     } else {
       return this.reply(ctx, role.toString());
     }

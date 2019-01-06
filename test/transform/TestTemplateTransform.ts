@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
+import { INJECT_TEMPLATE } from 'src/BaseService';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
 import { TemplateTransform } from 'src/transform/TemplateTransform';
 import { TYPE_JSON } from 'src/utils/Mime';
 import { Template } from 'src/utils/Template';
@@ -23,7 +23,7 @@ describeAsync('template transform', async () => {
       body: 'test_body',
     };
     const transform = await createService(container, TemplateTransform, {
-      compiler: ineeda<TemplateCompiler>({
+      [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
         compile: () => ineeda<Template>({
           render: () => templates.body,
         }),

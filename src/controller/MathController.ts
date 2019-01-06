@@ -1,6 +1,7 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
+import { INJECT_MATH } from 'src/BaseService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -20,14 +21,14 @@ export interface MathControllerData extends ControllerData {
 
 export type MathControllerOptions = ControllerOptions<MathControllerData>;
 
-@Inject('math')
+@Inject(INJECT_MATH)
 export class MathController extends BaseController<MathControllerData> implements Controller {
   protected math: MathJsStatic;
 
   constructor(options: MathControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-math', [NOUN_MATH]);
 
-    this.math = options.math.create(options.data.math);
+    this.math = options[INJECT_MATH].create(options.data.math);
   }
 
   @Handler(NOUN_MATH, CommandVerb.Create)
@@ -54,7 +55,9 @@ export class MathController extends BaseController<MathControllerData> implement
 
       return formatResult(body, scope, this.data.format);
     } catch (err) {
-      return `error evaluating math: ${err.message}\n${err.stack}`;
+      return this.locale.translate('service.controller.math.math.error', {
+        msg: err.message,
+      });
     }
   }
 }

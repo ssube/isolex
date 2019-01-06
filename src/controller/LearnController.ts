@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Connection, Repository } from 'typeorm';
 
+import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
 import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
@@ -19,7 +20,7 @@ export interface LearnControllerData extends ControllerData {
 
 export type LearnControllerOptions = ControllerOptions<LearnControllerData>;
 
-@Inject('storage')
+@Inject(INJECT_STORAGE)
 export class LearnController extends BaseController<LearnControllerData> implements Controller {
   protected readonly checkNoun: Checklist<string>;
   protected readonly keywordRepository: Repository<Keyword>;
@@ -29,7 +30,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     super(options, 'isolex#/definitions/service-controller-learn', [NOUN_KEYWORD]);
 
     this.checkNoun = new Checklist(options.data.nouns);
-    this.storage = options.storage;
+    this.storage = options[INJECT_STORAGE];
     this.keywordRepository = this.storage.getRepository(Keyword);
   }
 
@@ -49,31 +50,27 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       controllerId: this.getId(true),
       data: { body },
       key,
-      labels: {},
+      labels: cmd.labels,
       noun,
       verb,
     });
 
     this.logger.debug({ body, cmd, key, keyword }, 'learning command');
 
-    const existing = await this.keywordRepository.findOne({
-      key,
-    });
-    if (isNil(existing)) {
+    const existing = await this.keywordRepository.count({ key });
+    if (existing > 0) {
       return this.errorReply(ctx, ErrorReplyType.EntityExists, key);
     }
 
     await this.keywordRepository.save(keyword);
-    return this.reply(ctx, `Learned command ${key}.`);
+    return this.reply(ctx, this.locale.translate('service.controller.learn.keyword.create', {
+      key,
+    }));
   }
 
-  @Handler(NOUN_KEYWORD, CommandVerb.Update)
+  @Handler(NOUN_KEYWORD, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteKeyword(cmd: Command, ctx: Context): Promise<void> {
-    if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Delete}`)) {
-      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
-    }
-
     const key = cmd.getHead('keyword');
 
     const keyword = await this.keywordRepository.findOne({
@@ -87,16 +84,14 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       id: keyword.id,
       key,
     });
-    return this.reply(ctx, `deleted command ${key}.`);
+    return this.reply(ctx, this.locale.translate('service.controller.learn.keyword.delete', {
+      key,
+    }));
   }
 
   @Handler(NOUN_KEYWORD, CommandVerb.Update)
   @CheckRBAC()
   public async executeKeyword(cmd: Command, ctx: Context): Promise<void> {
-    if (!this.checkGrants(ctx, `${NOUN_KEYWORD}:${CommandVerb.Update}`)) {
-      return this.errorReply(ctx, ErrorReplyType.GrantMissing);
-    }
-
     const body = cmd.getOrDefault('body', []);
     const key = cmd.getHead('keyword');
 

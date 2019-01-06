@@ -3,6 +3,7 @@ import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
+import { INJECT_CLOCK } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { Message } from 'src/entity/Message';
 import { NotFoundError } from 'src/error/NotFoundError';
@@ -45,7 +46,7 @@ export interface SlackSearchResults extends WebAPICallResult {
 
 export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
 
-@Inject('bot', 'clock')
+@Inject(INJECT_CLOCK)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected client?: RTMClient;
   protected webClient?: WebClient;

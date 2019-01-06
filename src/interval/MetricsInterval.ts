@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { collectDefaultMetrics, Registry } from 'prom-client';
 
+import { INJECT_METRICS } from 'src/BaseService';
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
@@ -14,14 +15,14 @@ export type MetricsIntervalOptions = BaseIntervalOptions<MetricsIntervalData>;
 /**
  * This interval is responsible for starting collection of default metrics, clearing the registry, etc.
  */
-@Inject('metrics')
+@Inject(INJECT_METRICS)
 export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
   protected readonly metrics: Registry;
 
   constructor(options: MetricsIntervalOptions) {
     super(options, 'isolex#/definitions/service-interval-metrics');
 
-    this.metrics = options.metrics;
+    this.metrics = options[INJECT_METRICS];
   }
 
   public async startInterval() {
