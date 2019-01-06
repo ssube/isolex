@@ -120,8 +120,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
 
   @Handler(NOUN_PULL_REQUEST, CommandVerb.Delete)
   @CheckRBAC()
-  public async deleteRequest(cmd: Command): Promise<void> {
-    const ctx = mustExist(cmd.context);
+  public async deleteRequest(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getHead('number');

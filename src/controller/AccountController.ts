@@ -60,8 +60,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
 
   @Handler(NOUN_GRANT, CommandVerb.Get)
   @CheckRBAC()
-  public async getGrant(cmd: Command): Promise<void> {
-    const ctx = mustExist(cmd.context);
+  public async getGrant(cmd: Command, ctx: Context): Promise<void> {
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
       return `\`${p}: ${ctx.checkGrants([p])}\``;
@@ -71,8 +70,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
 
   @Handler(NOUN_GRANT, CommandVerb.List)
   @CheckRBAC()
-  public async listGrants(cmd: Command): Promise<void> {
-    const ctx = mustExist(cmd.context);
+  public async listGrants(cmd: Command, ctx: Context): Promise<void> {
     const grants = cmd.get('grants');
     const results = grants.map((p) => {
       return `\`${p}: ${ctx.listGrants([p])}\``;
