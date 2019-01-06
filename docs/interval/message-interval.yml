@@ -23,12 +23,11 @@ data:
       data:
         templates:
           body: >
-            Hello from {{ data.createdAt }}!
+            Hello from {{ data.next.createdAt }}!
     - metadata:
         kind: flatten-transform
         name: test-interval-msg-flatten
       data:
-        args:
-          deep: false
-          join: " "
-          take: [$.data.body]
+        deep: false
+        join: " "
+        keys: [$.data.body]

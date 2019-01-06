@@ -15,7 +15,7 @@ export class EventInterval extends BaseInterval<EventIntervalData> {
     super(options, 'isolex#/definitions/service-interval-event');
   }
 
-  public async tick(context: Context, last: Tick): Promise<number> {
+  public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
     for (const def of this.data.services) {
       this.logger.debug({ def }, 'notifying service');
       const svc = this.services.getService(def);

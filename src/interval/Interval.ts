@@ -18,5 +18,5 @@ export interface Interval extends Service {
   /**
    * Based on the results of the last job, run a new one.
    */
-  tick(context: Context, last: Tick): Promise<number>;
+  tick(context: Context, next: Tick, last?: Tick): Promise<number>;
 }

@@ -7,7 +7,6 @@ import { BaseController } from 'src/controller/BaseController';
 import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 

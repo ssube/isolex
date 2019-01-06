@@ -37,7 +37,7 @@ export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
     }) as any;
   }
 
-  public async tick(context: Context, tick: Tick): Promise<number> {
+  public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
     return 0;
   }
 }

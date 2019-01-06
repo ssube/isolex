@@ -95,12 +95,12 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     const ctx = mustExist(msg.context);
 
     // direct reply to message
-    if (doesExist(ctx.channel.thread)) {
+    if (ctx.channel.thread !== '') {
       return this.replyToThread(msg, ctx);
     }
 
     // broad reply to channel
-    if (doesExist(ctx.channel.id)) {
+    if (ctx.channel.id !== '') {
       return this.replyToChannel(msg, ctx);
     }
 

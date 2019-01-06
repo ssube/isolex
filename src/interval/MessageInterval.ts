@@ -42,13 +42,16 @@ export class MessageInterval extends BaseInterval<MessageIntervalData> {
     return super.stop();
   }
 
-  public async tick(context: Context, last: Tick): Promise<number> {
+  public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
     const initial = new Message({
       ...this.data.defaultMessage,
       context,
     });
 
-    const body = await applyTransforms(this.transforms, initial, this.data.defaultMessage.type, last);
+    const body = await applyTransforms(this.transforms, initial, this.data.defaultMessage.type, {
+      last,
+      next,
+    });
     if (!isString(body)) {
       throw new BaseError('final transform did not return a string');
     }

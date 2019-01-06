@@ -46,7 +46,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
     return this.stopInterval();
   }
 
-  public abstract tick(context: Context, last: Tick): Promise<number>;
+  public abstract tick(context: Context, next: Tick, last?: Tick): Promise<number>;
 
   protected async startInterval() {
     if (doesExist(this.data.frequency.cron)) {
@@ -83,13 +83,15 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
 
     const last = await this.tickRepository.find(options);
     const context = await this.createContext();
-    const status = await this.tick(context, last[0]);
     const next = this.tickRepository.create({
       createdAt: this.clock.getSeconds(),
       intervalId: this.id,
-      status,
+      status: 0,
       updatedAt: this.clock.getSeconds(),
     });
+
+    this.logger.debug({ last, next }, 'executing tick');
+    next.status = await this.tick(context, next, last[0]);
     await this.tickRepository.save(next);
   }
 
@@ -99,9 +101,9 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
    * This context entity will be persisted with the command, message, or event for which it has been created.
    */
   protected async createContext(): Promise<Context> {
-    return this.contextRepository.create({
+    return this.contextRepository.save(new Context({
       ...this.data.defaultContext,
       target: this.target,
-    });
+    }));
   }
 }
