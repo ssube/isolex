@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Handler } from 'src/controller';
