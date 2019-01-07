@@ -127,6 +127,10 @@ release-dry: ## test creating a release
 run-config: ## run the bot to test the config
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
 
+run-docker: ## run the bot inside a docker container
+	docker run --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
+		ssube/isolex:master --config-name 'isolex.yml' --config-path '/app/docs'
+
 run-terminal: ## run the bot in a terminal
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
 
