@@ -328,6 +328,24 @@ definitions:
                 type: boolean
               path:
                 type: string
+ 
+  service-controller-kubernetes-apps:
+    allOf:
+      - $ref: "#/definitions/service-controller-kubernetes"
+      - type: object
+        properties:
+          default:
+            type: object
+            additionalProperties: false
+            properties:
+              namespace:
+                type: string
+ 
+  service-controller-kubernetes-core:
+    allOf:
+      - $ref: "#/definitions/service-controller-kubernetes"
+      - type: object
+        properties:
           default:
             type: object
             additionalProperties: false

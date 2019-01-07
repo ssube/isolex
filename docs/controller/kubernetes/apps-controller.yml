@@ -1,0 +1,35 @@
+metadata:
+  kind: kubernetes-apps-controller
+  name: test-k8s-apps
+data:
+  context:
+    default: true
+  default:
+    namespace: default
+  filters:
+    - metadata:
+        kind: command-filter
+        name: k8s_test_filter
+      data:
+        match:
+          rules:
+            - key: labels.test_k8s
+              operator: any
+              values:
+                - string: test
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: k8s_deployment_names
+      data:
+        templates:
+          body: >-
+            {{#each data}}
+              {{ metadata.name }}: {{ spec.replicas }}
+            {{/each}}
+    - metadata:
+        kind: flatten-transform
+        name: k8s_deployment_flatten
+      data:
+        join: ""
+        keys: [$.data.body]

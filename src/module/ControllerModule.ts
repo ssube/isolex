@@ -7,6 +7,7 @@ import { DiceController } from 'src/controller/DiceController';
 import { EchoController } from 'src/controller/EchoController';
 import { GithubPRController } from 'src/controller/github/PRController';
 import { GitlabCIController } from 'src/controller/gitlab/CIController';
+import { KubernetesAppsController } from 'src/controller/kubernetes/AppsController';
 import { KubernetesCoreController } from 'src/controller/kubernetes/CoreController';
 import { LearnController } from 'src/controller/LearnController';
 import { MathController } from 'src/controller/MathController';
@@ -50,6 +51,7 @@ export class ControllerModule extends BaseModule {
     this.bindService(GitlabCIController);
 
     // kubernetes controllers
+    this.bindService(KubernetesAppsController);
     this.bindService(KubernetesCoreController);
   }
 }

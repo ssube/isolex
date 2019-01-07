@@ -20,6 +20,7 @@ data:
     - !include ../docs/controller/dice-controller.yml
     - !include ../docs/controller/github/pr-controller.yml
     - !include ../docs/controller/gitlab/ci-controller.yml
+    - !include ../docs/controller/kubernetes/apps-controller.yml
     - !include ../docs/controller/kubernetes/core-controller.yml
     - !include ../docs/controller/learn-controller.yml
     - !include ../docs/controller/math-controller.yml

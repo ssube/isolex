@@ -2,33 +2,28 @@ import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerOptions } from 'src/controller/Controller';
+import { KubernetesBaseController, KubernetesBaseControllerData } from 'src/controller/kubernetes/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { doesExist, mustExist } from 'src/utils';
+import { mustExist } from 'src/utils';
 
 export const NOUN_POD = 'kubernetes-pod';
 export const NOUN_SERVICE = 'kubernetes-service';
 
-export interface KubernetesControllerData extends ControllerData {
-  context: {
-    cluster: boolean;
-    default: boolean;
-    path?: string;
-  };
+export interface CoreControllerData extends KubernetesBaseControllerData {
   default: {
     namespace: string;
   };
 }
 
-export type KubernetesControllerOptions = ControllerOptions<KubernetesControllerData>;
+export type CoreControllerOptions = ControllerOptions<CoreControllerData>;
 
 @Inject()
-export class KubernetesCoreController extends BaseController<KubernetesControllerData> implements Controller {
+export class KubernetesCoreController extends KubernetesBaseController<CoreControllerData> implements Controller {
   protected client?: k8s.Core_v1Api;
 
-  constructor(options: KubernetesControllerOptions) {
-    super(options, 'isolex#/definitions/service-controller-kubernetes', [NOUN_POD, NOUN_SERVICE]);
+  constructor(options: CoreControllerOptions) {
+    super(options, 'isolex#/definitions/service-controller-kubernetes-core', [NOUN_POD, NOUN_SERVICE]);
   }
 
   public async start() {
@@ -60,19 +55,5 @@ export class KubernetesCoreController extends BaseController<KubernetesControlle
     const response = await client.listNamespacedService(ns);
     this.logger.debug({ pods: response.body }, 'found pods');
     return this.transformJSON(cmd, response.body.items);
-  }
-
-  protected async loadConfig() {
-    const config = new k8s.KubeConfig();
-    if (this.data.context.default) {
-      config.loadFromDefault();
-    }
-    if (this.data.context.cluster) {
-      config.loadFromCluster();
-    }
-    if (doesExist(this.data.context.path)) {
-      config.loadFromFile(this.data.context.path);
-    }
-    return config;
   }
 }
