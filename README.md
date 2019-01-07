@@ -1,8 +1,8 @@
 # isolex
 
-Chat bot capable of parsing natural language and markup, driven by observables, with controllers for almost anything.
-Configured in YAML with a schema, featuring JWT authentication, granular RBAC, and listeners for common chat services.
-Inspired by the Kubernetes API.
+Chat bot able to speak natural language and markup, prompt to complete commands, and offer localized help.
+It is configured with schema-validated YAML, features JWT authentication with granular RBAC, and SQL persistence.
+Listeners for common chat services, controllers for chat functions and devops tools, and inspired by the Kubernetes API.
 
 [![Pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
 [![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
@@ -20,6 +20,12 @@ Inspired by the Kubernetes API.
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
 
+## Getting Started
+
+The bot interacts through Discord, Slack, or a GraphQL API.
+
+The [getting started guide](./docs/getting-started.md) has more information on using the bot.
+
 ## Releases
 
 [![Github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
@@ -34,7 +40,15 @@ Inspired by the Kubernetes API.
 To build and run the bot locally, you will need `make`, `node`, and `yarn` installed globally or a container with the
 same.
 
-In the project directory, run:
+Clone this repository:
+
+```shell
+> git clone git@github.com:ssube/isolex.git
+
+> cd isolex
+```
+
+Within the project directory, make the bundle:
 
 ```shell
 > make
@@ -54,9 +68,3 @@ starting bot...
 
 An [example config file](./docs/isolex.yml) is provided in [the `docs/` directory](./docs). This enables most of the
 core features, but requires [some secrets](./docs/getting-started.md#secrets) to be defined in the environment.
-
-## Getting Started
-
-The bot interacts through Discord, Slack, or a GraphQL API.
-
-The [getting started guide](./docs/getting-started.md) has more information on using the bot.
