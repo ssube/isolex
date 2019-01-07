@@ -1,6 +1,6 @@
 {
   "name": "isolex",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "isolex chat bot",
   "main": "out/main-bundle.js",
   "repository": "https://github.com/ssube/isolex",
