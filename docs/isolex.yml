@@ -52,6 +52,7 @@ data:
     - !include ../docs/parser/args-parser-login.yml
     - !include ../docs/parser/args-parser-k8s.yml
     - !include ../docs/parser/lex-parser.yml
+    - !include ../docs/parser/split-parser-help.yml
     - !include ../docs/parser/split-parser-learn.yml
     - !include ../docs/parser/split-parser-math.yml
     - !include ../docs/parser/split-parser-sed.yml

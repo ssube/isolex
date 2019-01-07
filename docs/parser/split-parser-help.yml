@@ -1,0 +1,25 @@
+metadata:
+  kind: split-parser
+  name: default-help
+data:
+  dataMapper:
+    take: [noun, topic]
+    skip: 0
+    rest: body
+  every: false
+
+  preferData: true
+  defaultCommand:
+    noun: account
+    verb: help
+
+  match:
+    rules:
+      - key: body
+        operator: every
+        values:
+          - regexp: !regexp /!!help/
+
+  split:
+    keepQuotes: true
+    separator: " "

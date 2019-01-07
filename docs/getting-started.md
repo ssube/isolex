@@ -19,6 +19,9 @@ advanced deploy commands.
       - [Sign Up](#sign-up)
       - [Sign In](#sign-in)
       - [Revoke Tokens](#revoke-tokens)
+    - [Help](#help)
+      - [Noun](#noun)
+      - [Topic](#topic)
     - [Chat](#chat)
       - [Learn Keyword](#learn-keyword)
       - [Solve Math](#solve-math)
@@ -157,6 +160,29 @@ In a **private** channel:
 > @you, revoked tokens for username, new sign in token: eyJh..cRMs
 
 **Save this token in your password manager**. Please see [sign up](#sign-up) for more information on sign in tokens.
+
+### Help
+
+The bot has a dynamic, localized help system. Users may set their language, while the bot sets the default language.
+
+#### Noun
+
+The help noun is required and only controller able to handle that noun will provide help.
+
+> !!help account
+>
+> @you, The account controller handles registering new users, sign in for existing users,
+> revoking sign in tokens, and checking grants.
+
+#### Topic
+
+The help topic is optional, but may be passed to get more information about a particular verb:
+
+> !!help account account-create
+>
+> @you, The account controller handles registering new users, sign in for existing users,
+> revoking sign in tokens, and checking grants.
+> Register a new account and issue a sign in token. Should only be executed in a private channel.
 
 ### Chat
 
