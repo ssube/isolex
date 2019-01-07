@@ -347,7 +347,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async startLocale() {
     this.logger.info({ }, 'starting localization');
-    this.locale = new Locale(this.data.locale);
+    this.locale = await this.container.create(Locale, this.data.locale);
     return this.locale.start();
   }
 
