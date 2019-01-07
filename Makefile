@@ -2,6 +2,7 @@
 export GIT_BRANCH 	= $(shell git rev-parse --abbrev-ref HEAD)
 export GIT_COMMIT		= $(shell git rev-parse HEAD)
 export GIT_REMOTES	= $(shell git remote -v | awk '{ print $1; }' | sort | uniq)
+export GIT_OPTIONS  ?=
 
 # CI
 export CI_COMMIT_REF_SLUG		?= $(GIT_BRANCH)
@@ -41,6 +42,7 @@ COVER_OPTS	?= --reporter=text-summary --reporter=html --report-dir="$(TARGET_PAT
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
 MOCHA_OPTS  ?= --check-leaks --colors --max-old-space-size=4096 --sort --ui bdd
+RELEASE_OPTS ?= --commit-all
 
 # Versions
 export NODE_VERSION		:= $(shell node -v)
@@ -63,8 +65,8 @@ help: ## print this help
 		| awk 'BEGIN {FS = ":[^:]*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
-	git push github ${GIT_BRANCH}
-	git push gitlab ${GIT_BRANCH}
+	git push $(GIT_OPTIONS) github $(GIT_BRANCH)
+	git push $(GIT_OPTIONS) gitlab $(GIT_BRANCH)
 
 # from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
 git-stats: ## print git contributor line counts (approx, for fun)
@@ -119,10 +121,11 @@ bundle-docs: ## generate html docs
 	$(NODE_BIN)/typedoc $(DOCS_OPTS)
 
 release: ## create a release
-	$(NODE_BIN)/standard-version --sign
+	$(NODE_BIN)/standard-version --sign $(RELEASE_OPTS)
+	GIT_OPTIONS=--tags $(MAKE) git-push
 
 release-dry: ## test creating a release
-	$(NODE_BIN)/standard-version --sign --dry-run
+	$(NODE_BIN)/standard-version --sign $(RELEASE_OPTS) --dry-run
 
 run-config: ## run the bot to test the config
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test

@@ -12,6 +12,7 @@ This guide describes the issue and merge workflow for the isolex project.
       - [Feature](#feature)
       - [Update](#update)
   - [Merges](#merges)
+  - [Release](#release)
   - [Updates](#updates)
 
 ## Branches
@@ -94,10 +95,21 @@ Branches should be squashed before merging and the merge commit must follow
 - `test` (type/test)
   - new tests or fixes with no source changes
 
+## Release
+
+The release process is mostly handled by Gitlab. The only human intervention required is to tag and cut the release.
+
+1. Update the readme's "commits since" badge for the new release
+2. `git add README.md`
+3. `make release`
+
+This will update the changelog, commit everything, tag it, and push. Once Gitlab picks up the tag, the pipeline will
+build and publish a release bundle.
+
 ## Updates
 
-Greenkeeper is set up to handle most updates. Some libraries are difficult test, especially clients, but this
-will create PRs to be tested.
+Greenkeeper is set up to handle most updates. Not all libraries have great test coverage yet, but this will catch any
+type issues and create a PR to be manually tested.
 
 Dependencies with security issues MUST be updated as soon as possible.
 
