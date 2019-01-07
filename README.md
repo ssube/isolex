@@ -29,7 +29,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 ## Releases
 
 [![Github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
-[![Commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.6.0.svg)](https://github.com/ssube/isolex/compare/v0.6.0...master)
+[![Commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.7.0.svg)](https://github.com/ssube/isolex/compare/v0.7.0...master)
 
 [![npm release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
 [![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master) 
