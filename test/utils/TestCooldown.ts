@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ConsoleLogger, Container } from 'noicejs';
 
 import { BotModule } from 'src/module/BotModule';
-import { defer } from 'src/utils';
+import { defer } from 'src/utils/Async';
 import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
