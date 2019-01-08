@@ -1,5 +1,5 @@
 import { BotServiceData, BotServiceOptions } from 'src/BotService';
-import { FilterData, FilterValue } from 'src/filter/Filter';
+import { FilterData, FilterValue } from 'src/filter';
 import { Service, ServiceDefinition } from 'src/Service';
 import { TemplateScope } from 'src/utils/Template';
 

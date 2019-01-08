@@ -1,7 +1,7 @@
 import { Inject } from 'noicejs';
 
 import { INJECT_JSONPATH } from 'src/BaseService';
-import { FilterValue } from 'src/filter/Filter';
+import { FilterValue } from 'src/filter';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { mustExist } from 'src/utils';

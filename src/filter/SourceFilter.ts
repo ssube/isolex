@@ -1,6 +1,6 @@
 import { Message } from 'src/entity/Message';
-import { BaseFilter } from 'src/filter/BaseFilter';
-import { Filter, FilterBehavior, FilterData, FilterOptions, FilterValue } from 'src/filter/Filter';
+import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter';
+import { BaseFilter, BaseFilterOptions } from 'src/filter/BaseFilter';
 
 export interface SourceFilterData extends FilterData {
   type?: string;
@@ -9,7 +9,7 @@ export interface SourceFilterData extends FilterData {
 export class SourceFilter extends BaseFilter<SourceFilterData> implements Filter {
   public readonly type?: string;
 
-  constructor(options: FilterOptions<SourceFilterData>) {
+  constructor(options: BaseFilterOptions<SourceFilterData>) {
     super(options, 'isolex#/definitions/service-filter-source');
   }
 

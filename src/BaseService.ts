@@ -6,7 +6,7 @@ import { Registry } from 'prom-client';
 import * as uuid from 'uuid/v4';
 
 import { SchemaError } from 'src/error/SchemaError';
-import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter/Filter';
+import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';

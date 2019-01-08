@@ -1,4 +1,4 @@
-import { FilterValue } from 'src/filter/Filter';
+import { FilterValue } from 'src/filter';
 import { Transform } from 'src/transform/Transform';
 import { TemplateScope } from 'src/utils/Template';
 

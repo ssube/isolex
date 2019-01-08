@@ -3,7 +3,7 @@ import { Inject } from 'noicejs';
 import { BotService } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { FilterValue } from 'src/filter/Filter';
+import { FilterValue } from 'src/filter';
 import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
 import { TemplateScope } from 'src/utils/Template';
 

@@ -1,5 +1,5 @@
-import { BaseFilter } from 'src/filter/BaseFilter';
-import { Filter, FilterBehavior, FilterData, FilterOptions, FilterValue } from 'src/filter/Filter';
+import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter';
+import { BaseFilter, BaseFilterOptions } from 'src/filter/BaseFilter';
 import { Match, MatchData } from 'src/utils/match';
 
 export interface RuleFilterData extends FilterData {
@@ -9,7 +9,7 @@ export interface RuleFilterData extends FilterData {
 export abstract class RuleFilter extends BaseFilter<RuleFilterData> implements Filter {
   protected matcher: Match;
 
-  constructor(options: FilterOptions<RuleFilterData>, schemaPath: string) {
+  constructor(options: BaseFilterOptions<RuleFilterData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.matcher = new Match(options.data.match);

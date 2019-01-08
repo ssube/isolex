@@ -1,5 +1,6 @@
 import { Message } from 'src/entity/Message';
-import { FilterBehavior, FilterOptions, FilterValue } from 'src/filter/Filter';
+import { FilterBehavior, FilterValue } from 'src/filter';
+import { BaseFilterOptions } from 'src/filter/BaseFilter';
 import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
 
 /**
@@ -9,7 +10,7 @@ import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
  * - type
  */
 export class MessageFilter extends RuleFilter {
-  constructor(options: FilterOptions<RuleFilterData>) {
+  constructor(options: BaseFilterOptions<RuleFilterData>) {
     super(options, 'isolex#/definitions/service-filter-message');
   }
 
