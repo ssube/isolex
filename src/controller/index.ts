@@ -1,6 +1,26 @@
+import { BotServiceData } from 'src/BotService';
 import { BaseController } from 'src/controller/BaseController';
-import { ControllerData } from 'src/controller/Controller';
-import { CommandVerb } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
+import { Service, ServiceDefinition } from 'src/Service';
+import { TransformData } from 'src/transform/Transform';
+
+export interface ControllerData extends BotServiceData {
+  transforms: Array<ServiceDefinition<TransformData>>;
+}
+
+/**
+ * Controllers react to commands, consuming them before sending replies or performing background work.
+ */
+export interface Controller extends Service {
+  check(cmd: Command): Promise<boolean>;
+
+  /**
+   * Handle a command, sending any replies.
+   * @param cmd the command to be handled
+   * @returns true if the command was handled
+   */
+  handle(cmd: Command): Promise<void>;
+}
 
 export const SYMBOL_HANDLER = Symbol('handler');
 export const SYMBOL_RBAC = Symbol('check-rbac');

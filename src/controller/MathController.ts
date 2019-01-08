@@ -2,9 +2,8 @@ import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
 import { INJECT_MATH } from 'src/BaseService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
@@ -20,7 +19,7 @@ export interface MathControllerData extends ControllerData {
   };
 }
 
-export type MathControllerOptions = ControllerOptions<MathControllerData>;
+export type MathControllerOptions = BaseControllerOptions<MathControllerData>;
 
 @Inject(INJECT_MATH)
 export class MathController extends BaseController<MathControllerData> implements Controller {

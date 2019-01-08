@@ -1,9 +1,8 @@
 import { Inject } from 'noicejs';
 
 import { INJECT_CLOCK } from 'src/BaseService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
@@ -16,7 +15,7 @@ export interface TimeControllerData extends ControllerData {
   zone: string;
 }
 
-export type TimeControllerOptions = ControllerOptions<TimeControllerData>;
+export type TimeControllerOptions = BaseControllerOptions<TimeControllerData>;
 
 @Inject(INJECT_CLOCK)
 export class TimeController extends BaseController<TimeControllerData> implements Controller {

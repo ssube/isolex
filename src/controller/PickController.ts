@@ -1,8 +1,7 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
@@ -19,7 +18,7 @@ export interface PickControllerData extends ControllerData {
 
 export const NOUN_PICK = 'pick';
 
-export type PickControllerOptions = ControllerOptions<PickControllerData>;
+export type PickControllerOptions = BaseControllerOptions<PickControllerData>;
 
 @Inject()
 export class PickController extends BaseController<PickControllerData> implements Controller {

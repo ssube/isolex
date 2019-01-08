@@ -4,9 +4,8 @@ import { Connection, In, Repository } from 'typeorm';
 
 import { INJECT_CLOCK } from 'src/BaseService';
 import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions, ErrorReplyType } from 'src/controller/BaseController';
 import { createCompletion } from 'src/controller/helpers';
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
@@ -40,7 +39,7 @@ export interface AccountControllerData extends ControllerData {
   };
 }
 
-export type AccountControllerOptions = ControllerOptions<AccountControllerData>;
+export type AccountControllerOptions = BaseControllerOptions<AccountControllerData>;
 
 @Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class AccountController extends BaseController<AccountControllerData> implements Controller {

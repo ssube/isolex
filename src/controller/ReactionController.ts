@@ -1,8 +1,7 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
@@ -18,7 +17,7 @@ export interface ReactionControllerData extends ControllerData {
   reactions: Map<string, Array<ReactionChance>>;
 }
 
-export type ReactionControllerOptions = ControllerOptions<ReactionControllerData>;
+export type ReactionControllerOptions = BaseControllerOptions<ReactionControllerData>;
 
 export const NOUN_REACTION = 'reaction';
 

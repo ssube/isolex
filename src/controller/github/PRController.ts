@@ -2,94 +2,13 @@ import { defaults } from '@octokit/graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { GithubGetResponse, QUERY_PR_CLOSE, QUERY_PR_GET, QUERY_PR_LIST, QUERY_PR_MERGE } from 'src/utils/github/queries';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
-
-export const QUERY_PR_CLOSE = `
-  mutation merge ($requestID: ID!) {
-    closePullRequest(input: {
-      pullRequestId: $requestID
-    }) {
-      pullRequest {
-        author {
-          login
-        }
-        id
-        number
-        title
-      }
-    }
-  }
-`;
-
-export const QUERY_PR_GET = `
-  query ($owner: String!, $project: String!, $requestNumber: Int!) {
-    repository(owner: $owner, name: $project) {
-      pullRequest(number: $requestNumber) {
-        author {
-          login
-        }
-        id
-        number
-        title
-      }
-    }
-  }
-`;
-
-export const QUERY_PR_LIST = `
-  query ($owner: String!, $project: String!) {
-    repository(owner: $owner, name: $project) {
-      pullRequests(first: 10, states: [OPEN]) {
-        nodes {
-          author {
-            login
-          }
-          id
-          number
-          title
-        }
-      }
-    }
-  }
-`;
-
-export const QUERY_PR_MERGE = `
-  mutation merge ($requestID: ID!, $message: String!) {
-    mergePullRequest(input: {
-      commitBody: ""
-      commitHeadline: $message
-      pullRequestId: $requestID
-    }) {
-      pullRequest {
-        author {
-          login
-        }
-        id
-        number
-        title
-      }
-    }
-  }
-`;
-
-interface GithubGetResponse {
-  repository: {
-    pullRequest: {
-      author: {
-        login: string;
-      };
-      id: string;
-      number: number;
-      title: string;
-    };
-  };
-}
 
 export interface GithubPRControllerData extends ControllerData {
   client: {
@@ -98,7 +17,7 @@ export interface GithubPRControllerData extends ControllerData {
   };
 }
 
-export type GithubPRControllerOptions = ControllerOptions<GithubPRControllerData>;
+export type GithubPRControllerOptions = BaseControllerOptions<GithubPRControllerData>;
 
 @Inject()
 export class GithubPRController extends BaseController<GithubPRControllerData> implements Controller {

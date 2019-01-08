@@ -3,9 +3,8 @@ import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController, ErrorReplyType } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions, ErrorReplyType } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Keyword } from 'src/entity/misc/Keyword';
@@ -19,7 +18,7 @@ export interface LearnControllerData extends ControllerData {
   nouns: ChecklistOptions<string>;
 }
 
-export type LearnControllerOptions = ControllerOptions<LearnControllerData>;
+export type LearnControllerOptions = BaseControllerOptions<LearnControllerData>;
 
 @Inject(INJECT_STORAGE)
 export class LearnController extends BaseController<LearnControllerData> implements Controller {

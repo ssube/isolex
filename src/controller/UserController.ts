@@ -3,9 +3,8 @@ import { Inject } from 'noicejs';
 import { In, Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Role } from 'src/entity/auth/Role';
 import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
@@ -17,7 +16,7 @@ export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';
 
 export type UserControllerData = ControllerData;
-export type UserControllerOptions = ControllerOptions<UserControllerData>;
+export type UserControllerOptions = BaseControllerOptions<UserControllerData>;
 
 @Inject(INJECT_STORAGE)
 export class UserController extends BaseController<UserControllerData> implements Controller {

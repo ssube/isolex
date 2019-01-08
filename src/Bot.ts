@@ -13,7 +13,7 @@ import {
   INJECT_METRICS,
   INJECT_SERVICES,
 } from 'src/BaseService';
-import { Controller, ControllerData } from 'src/controller/Controller';
+import { Controller, ControllerData } from 'src/controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Interval, IntervalData } from 'src/interval/Interval';

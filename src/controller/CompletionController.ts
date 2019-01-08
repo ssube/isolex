@@ -3,9 +3,8 @@ import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
@@ -21,7 +20,7 @@ export interface CompletionControllerData extends ControllerData {
   defaultTarget: ServiceMetadata;
 }
 
-export type CompletionControllerOptions = ControllerOptions<CompletionControllerData>;
+export type CompletionControllerOptions = BaseControllerOptions<CompletionControllerData>;
 
 @Inject(INJECT_STORAGE)
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {

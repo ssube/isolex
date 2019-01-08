@@ -2,15 +2,14 @@ import { isNil, isNumber } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { countList } from 'src/utils';
 
 export type RandomControllerData = ControllerData;
-export type RandomControllerOptions = ControllerOptions<RandomControllerData>;
+export type RandomControllerOptions = BaseControllerOptions<RandomControllerData>;
 
 export const NOUN_RANDOM = 'random';
 

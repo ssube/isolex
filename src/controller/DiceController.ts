@@ -2,9 +2,8 @@ import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
 import { INJECT_MATH } from 'src/BaseService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
@@ -15,7 +14,7 @@ export const NOUN_ROLL = 'roll';
 
 export type DiceControllerData = ControllerData;
 
-export type DiceControllerOptions = ControllerOptions<DiceControllerData>;
+export type DiceControllerOptions = BaseControllerOptions<DiceControllerData>;
 
 @Inject(INJECT_MATH)
 export class DiceController extends BaseController<DiceControllerData> implements Controller {

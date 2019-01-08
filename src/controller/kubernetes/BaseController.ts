@@ -1,8 +1,8 @@
 import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { Controller, ControllerData } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { doesExist } from 'src/utils';
 
 export const NOUN_POD = 'kubernetes-pod';
@@ -16,7 +16,7 @@ export interface KubernetesBaseControllerData extends ControllerData {
   };
 }
 
-export type KubernetesBaseControllerOptions<TData extends KubernetesBaseControllerData> = ControllerOptions<TData>;
+export type KubernetesBaseControllerOptions<TData extends KubernetesBaseControllerData> = BaseControllerOptions<TData>;
 
 @Inject()
 export class KubernetesBaseController<TData extends KubernetesBaseControllerData> extends BaseController<TData> implements Controller {

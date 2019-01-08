@@ -4,9 +4,8 @@ import { Connection, Equal, LessThan, Repository } from 'typeorm';
 
 import { INJECT_CLOCK } from 'src/BaseService';
 import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { createCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
@@ -25,7 +24,7 @@ export interface TokenControllerData extends ControllerData {
   };
 }
 
-export type TokenControllerOptions = ControllerOptions<TokenControllerData>;
+export type TokenControllerOptions = BaseControllerOptions<TokenControllerData>;
 
 @Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class TokenController extends BaseController<TokenControllerData> implements Controller {

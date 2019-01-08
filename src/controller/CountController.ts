@@ -3,9 +3,8 @@ import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Counter } from 'src/entity/misc/Counter';
@@ -29,7 +28,7 @@ export interface CountControllerData extends ControllerData {
   };
 }
 
-export type CountControllerOptions = ControllerOptions<CountControllerData>;
+export type CountControllerOptions = BaseControllerOptions<CountControllerData>;
 
 @Inject(INJECT_STORAGE)
 export class CountController extends BaseController<CountControllerData> implements Controller {

@@ -1,9 +1,8 @@
 import { Inject } from 'noicejs';
 
 import { INJECT_REQUEST, INJECT_TEMPLATE } from 'src/BaseService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
@@ -19,7 +18,7 @@ export interface SearchControllerData extends ControllerData {
   };
 }
 
-export type SearchControllerOptions = ControllerOptions<SearchControllerData>;
+export type SearchControllerOptions = BaseControllerOptions<SearchControllerData>;
 
 export const NOUN_SEARCH = 'search';
 

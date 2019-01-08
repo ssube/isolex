@@ -1,9 +1,8 @@
 import { Inject } from 'noicejs';
 
 import { INJECT_REQUEST } from 'src/BaseService';
-import { CheckRBAC, Handler } from 'src/controller';
-import { BaseController } from 'src/controller/BaseController';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
+import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
@@ -16,7 +15,7 @@ export interface WeatherControllerData extends ControllerData {
   };
 }
 
-export type WeatherControllerOptions = ControllerOptions<WeatherControllerData>;
+export type WeatherControllerOptions = BaseControllerOptions<WeatherControllerData>;
 
 export const NOUN_WEATHER = 'weather';
 

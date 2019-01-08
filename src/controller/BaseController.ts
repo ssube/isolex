@@ -2,11 +2,10 @@ import { isNil, isString } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 
 import { INJECT_SERVICES } from 'src/BaseService';
-import { BotService, INJECT_LOCALE } from 'src/BotService';
-import { getHandlerOptions, HandlerOptions } from 'src/controller';
-import { Controller, ControllerData, ControllerOptions } from 'src/controller/Controller';
+import { BotService, BotServiceOptions, INJECT_LOCALE } from 'src/BotService';
+import { Controller, ControllerData, getHandlerOptions, HandlerOptions } from 'src/controller';
 import { User } from 'src/entity/auth/User';
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener } from 'src/listener/Listener';
@@ -20,7 +19,7 @@ import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
 export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command, ctx: Context) => Promise<void>;
-export type BaseControllerOptions<TData extends ControllerData> = ControllerOptions<TData>;
+export type BaseControllerOptions<TData extends ControllerData> = BotServiceOptions<TData>;
 
 export enum ErrorReplyType {
   EntityExists = 'entity-exists',

@@ -1,8 +1,8 @@
 import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Handler } from 'src/controller';
-import { Controller, ControllerOptions } from 'src/controller/Controller';
+import { CheckRBAC, Controller, Handler } from 'src/controller';
+import { BaseControllerOptions } from 'src/controller/BaseController';
 import { KubernetesBaseController, KubernetesBaseControllerData } from 'src/controller/kubernetes/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { mustExist } from 'src/utils';
@@ -17,7 +17,7 @@ export interface AppsControllerData extends KubernetesBaseControllerData {
   };
 }
 
-export type AppsControllerOptions = ControllerOptions<AppsControllerData>;
+export type AppsControllerOptions = BaseControllerOptions<AppsControllerData>;
 
 @Inject()
 export class KubernetesAppsController extends KubernetesBaseController<AppsControllerData> implements Controller {
