@@ -3,7 +3,6 @@ import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter';
 
 export type BaseFilterOptions<TData extends FilterData> = BotServiceOptions<TData>;
 
-
 /**
  * Most filters are stateless, this implements methods for them.
  */

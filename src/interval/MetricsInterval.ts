@@ -6,8 +6,8 @@ import { INJECT_METRICS } from 'src/BaseService';
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { IntervalData } from 'src/interval';
 import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
-import { IntervalData } from 'src/interval/Interval';
 import { mustExist } from 'src/utils';
 
 export type MetricsIntervalData = IntervalData;

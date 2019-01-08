@@ -16,7 +16,7 @@ import {
 import { Controller, ControllerData } from 'src/controller';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { Interval, IntervalData } from 'src/interval/Interval';
+import { Interval, IntervalData } from 'src/interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener/Listener';
 import { Locale, LocaleOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
