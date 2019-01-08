@@ -2,7 +2,6 @@ import { isFunction, isNil } from 'lodash';
 
 import { NotFoundError } from 'src/error/NotFoundError';
 
-
 export function leftPad(val: string, min: number = 8, fill: string = '0'): string {
   if (val.length < min) {
     const pre = Array(min - val.length).fill(fill).join('');
