@@ -1,6 +1,8 @@
-import { Logger, Inject } from 'noicejs';
+import { Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
+
 import { INJECT_LOGGER } from 'src/BaseService';
+import { classLogger } from 'src/utils/logger';
 
 export interface LocaleLoggerOptions extends BaseOptions {
   logger: Logger;
@@ -13,7 +15,7 @@ export class LocaleLogger {
   protected logger: Logger;
 
   constructor(options: LocaleLoggerOptions) {
-    this.logger = options.logger;
+    this.logger = classLogger(options.logger, LocaleLogger);
   }
 
   public error(args: Array<unknown>) {

@@ -6,7 +6,7 @@ import { BaseOptions } from 'noicejs/Container';
 import { INJECT_LOGGER } from 'src/BaseService';
 import { ServiceLifecycle } from 'src/Service';
 import { mustExist } from 'src/utils';
-import { LocaleLogger } from 'src/utils/LocaleLogger';
+import { LocaleLogger } from 'src/utils/logger/LocaleLogger';
 
 export interface LocaleOptions extends BaseOptions {
   [INJECT_LOGGER]: Logger;

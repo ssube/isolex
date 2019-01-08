@@ -23,8 +23,8 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser/Parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { filterNil, mustExist, mustFind } from 'src/utils';
+import { StorageLogger, StorageLoggerOptions } from 'src/utils/logger/StorageLogger';
 import { incrementServiceCounter } from 'src/utils/metrics/Service';
-import { StorageLogger, StorageLoggerOptions } from 'src/utils/StorageLogger';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;

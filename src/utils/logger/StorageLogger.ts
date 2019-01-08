@@ -2,6 +2,8 @@ import { Logger, LogLevel, logWithLevel } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
+import { classLogger } from 'src/utils/logger';
+
 export interface StorageLoggerOptions extends BaseOptions {
   logger: Logger;
 }
@@ -10,7 +12,7 @@ export class StorageLogger implements OrmLogger {
   protected logger: Logger;
 
   constructor(options: StorageLoggerOptions) {
-    this.logger = options.logger;
+    this.logger = classLogger(options.logger, StorageLogger);
   }
 
   public log(level: string, message: string) {

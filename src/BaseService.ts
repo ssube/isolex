@@ -1,4 +1,4 @@
-import { isNil, kebabCase } from 'lodash';
+import { isNil } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
@@ -13,6 +13,7 @@ import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
+import { serviceLogger } from 'src/utils/logger';
 import { dictToMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
@@ -77,10 +78,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
       throw new MissingValueError('missing service name');
     }
 
-    this.logger = mustExist(options[INJECT_LOGGER]).child({
-      kind: kebabCase(Reflect.getPrototypeOf(this).constructor.name),
-      service: options.metadata.name,
-    });
+    this.logger = serviceLogger(mustExist(options[INJECT_LOGGER]), this);
 
     // validate the data
     const result = mustExist(options[INJECT_SCHEMA]).match(options.data, schemaPath);
