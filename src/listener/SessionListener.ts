@@ -3,8 +3,8 @@ import { BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
+import { FetchOptions, Listener, ListenerData } from 'src/listener';
 import { BaseListener } from 'src/listener/BaseListener';
-import { FetchOptions, ListenerData } from 'src/listener/Listener';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
@@ -12,7 +12,7 @@ import { Clock } from 'src/utils/Clock';
  * A listener that tracks sessions.
  */
 
-export abstract class SessionListener<TData extends ListenerData> extends BaseListener<TData> {
+export abstract class SessionListener<TData extends ListenerData> extends BaseListener<TData> implements Listener {
   protected readonly clock: Clock;
   protected readonly sessions: Map<string, Session>;
 

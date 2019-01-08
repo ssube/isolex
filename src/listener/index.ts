@@ -13,7 +13,6 @@ export interface FetchOptions {
 }
 
 export type ListenerData = BotServiceData;
-export type ListenerOptions<TData extends ListenerData> = BotServiceOptions<TData>;
 
 export interface ContextFetchOptions extends FetchOptions {
   listenerId: string;

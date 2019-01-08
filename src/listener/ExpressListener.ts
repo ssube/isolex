@@ -13,7 +13,7 @@ import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { JwtFields, Token } from 'src/entity/auth/Token';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { Listener, ListenerData } from 'src/listener/Listener';
+import { Listener, ListenerData } from 'src/listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';

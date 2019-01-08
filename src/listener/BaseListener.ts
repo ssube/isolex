@@ -1,19 +1,21 @@
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { BotService, INJECT_STORAGE } from 'src/BotService';
+import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
 import { Context, ContextOptions } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Session } from 'src/entity/Session';
-import { FetchOptions, Listener, ListenerData, ListenerOptions } from 'src/listener/Listener';
+import { FetchOptions, Listener, ListenerData } from 'src/listener';
 import { doesExist, mustExist } from 'src/utils';
+
+export type BaseListenerOptions<TData extends ListenerData> = BotServiceOptions<TData>;
 
 @Inject(INJECT_STORAGE)
 export abstract class BaseListener<TData extends ListenerData> extends BotService<TData> implements Listener {
   protected readonly contextRepository: Repository<Context>;
 
-  constructor(options: ListenerOptions<TData>, schemaPath: string) {
+  constructor(options: BaseListenerOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.contextRepository = mustExist(options[INJECT_STORAGE]).getRepository(Context);
