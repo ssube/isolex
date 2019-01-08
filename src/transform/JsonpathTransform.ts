@@ -2,8 +2,8 @@ import { Inject } from 'noicejs';
 
 import { INJECT_JSONPATH } from 'src/BaseService';
 import { FilterValue } from 'src/filter';
-import { BaseTransform } from 'src/transform/BaseTransform';
-import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { Transform, TransformData } from 'src/transform';
+import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
 import { mustExist } from 'src/utils';
 import { JsonPath } from 'src/utils/JsonPath';
 import { dictToMap, mapToDict } from 'src/utils/Map';
@@ -15,7 +15,7 @@ export interface JsonpathTransformData extends TransformData {
   };
 }
 
-export type JsonpathTransformOptions = TransformOptions<JsonpathTransformData>;
+export type JsonpathTransformOptions = BaseTransformOptions<JsonpathTransformData>;
 
 @Inject(INJECT_JSONPATH)
 export class JsonpathTransform extends BaseTransform<JsonpathTransformData> implements Transform {

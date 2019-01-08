@@ -2,8 +2,8 @@ import { Inject } from 'noicejs';
 
 import { INJECT_JSONPATH } from 'src/BaseService';
 import { FilterValue } from 'src/filter';
-import { BaseTransform } from 'src/transform/BaseTransform';
-import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { Transform, TransformData } from 'src/transform';
+import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
 import { mustExist } from 'src/utils';
 import { JsonPath } from 'src/utils/JsonPath';
 import { TemplateScope } from 'src/utils/Template';
@@ -17,7 +17,7 @@ export interface FlattenTransformData extends TransformData {
   keys: Array<string>;
 }
 
-export type FlattenTransformOptions = TransformOptions<FlattenTransformData>;
+export type FlattenTransformOptions = BaseTransformOptions<FlattenTransformData>;
 
 @Inject(INJECT_JSONPATH)
 export class FlattenTransform extends BaseTransform<FlattenTransformData> implements Transform {

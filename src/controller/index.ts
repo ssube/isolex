@@ -2,7 +2,7 @@ import { BotServiceData } from 'src/BotService';
 import { BaseController } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Service, ServiceDefinition } from 'src/Service';
-import { TransformData } from 'src/transform/Transform';
+import { TransformData } from 'src/transform';
 
 export interface ControllerData extends BotServiceData {
   transforms: Array<ServiceDefinition<TransformData>>;

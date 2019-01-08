@@ -2,8 +2,8 @@ import { Inject } from 'noicejs';
 
 import { INJECT_TEMPLATE } from 'src/BaseService';
 import { FilterValue } from 'src/filter';
-import { BaseTransform } from 'src/transform/BaseTransform';
-import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { Transform, TransformData } from 'src/transform';
+import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
 import { mustExist } from 'src/utils';
 import { mapToDict } from 'src/utils/Map';
 import { Template, TemplateScope } from 'src/utils/Template';
@@ -17,7 +17,7 @@ export interface TemplateTransformData extends TransformData {
   };
 }
 
-export type TemplateTransformOptions = TransformOptions<TemplateTransformData>;
+export type TemplateTransformOptions = BaseTransformOptions<TemplateTransformData>;
 
 @Inject(INJECT_TEMPLATE)
 export class TemplateTransform extends BaseTransform<TemplateTransformData> implements Transform {

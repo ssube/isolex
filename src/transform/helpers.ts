@@ -1,5 +1,5 @@
 import { FilterValue } from 'src/filter';
-import { Transform } from 'src/transform/Transform';
+import { Transform } from 'src/transform';
 import { TemplateScope } from 'src/utils/Template';
 
 export async function applyTransforms(

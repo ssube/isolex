@@ -1,16 +1,18 @@
 import { Inject } from 'noicejs';
 
-import { BotService } from 'src/BotService';
+import { BotService, BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { FilterValue } from 'src/filter';
-import { Transform, TransformData, TransformOptions } from 'src/transform/Transform';
+import { Transform, TransformData } from 'src/transform';
 import { TemplateScope } from 'src/utils/Template';
+
+export type BaseTransformOptions<TData extends TransformData> = BotServiceOptions<TData>;
 
 @Inject()
 export abstract class BaseTransform<TData extends TransformData> extends BotService<TData> implements Transform {
 
-  constructor(options: TransformOptions<TData>, schemaPath: string) {
+  constructor(options: BaseTransformOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
   }
 

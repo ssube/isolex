@@ -7,8 +7,8 @@ import { Tick } from 'src/entity/Tick';
 import { IntervalData } from 'src/interval';
 import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
 import { ServiceDefinition } from 'src/Service';
+import { Transform, TransformData } from 'src/transform';
 import { applyTransforms } from 'src/transform/helpers';
-import { Transform, TransformData } from 'src/transform/Transform';
 
 export interface MessageIntervalData extends IntervalData {
   defaultMessage: MessageEntityOptions;

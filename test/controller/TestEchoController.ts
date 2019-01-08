@@ -11,7 +11,7 @@ import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
-import { Transform } from 'src/transform/Transform';
+import { Transform } from 'src/transform';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
