@@ -123,10 +123,9 @@
     universal-user-agent "^2.0.1"
     url-template "^2.0.8"
 
-"@octokit/graphql@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@octokit/graphql/-/graphql-2.0.0.tgz#503319802e6cb64c54494156a64403da870ce392"
-  integrity sha512-mE+xMcXADcLFu5z3bx7y0pepg/N27gcze/Fw8AINeEShvSvMaK5sHO3nQsSHpL2FTJIHiyy/1c8sHU1WActVdQ==
+"@octokit/graphql@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@octokit/graphql/-/graphql-2.0.1.tgz#0e9d7f41d6ac3305f37767e723183bd0b77af7d2"
   dependencies:
     "@octokit/request" "^2.1.2"
 
