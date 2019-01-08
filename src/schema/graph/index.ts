@@ -34,7 +34,6 @@ interface GraphMessageOptions {
 }
 
 export type GraphSchemaData = BotServiceData;
-export type GraphSchemaOptions = BotServiceOptions<GraphSchemaData>;
 
 @Inject(INJECT_BOT, INJECT_CLOCK, INJECT_STORAGE)
 export class GraphSchema extends BotService<GraphSchemaData> {
@@ -43,7 +42,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
   protected readonly services: ServiceModule;
   protected readonly storage: Connection;
 
-  constructor(options: GraphSchemaOptions) {
+  constructor(options: BotServiceOptions<GraphSchemaData>) {
     super(options, 'isolex#/definitions/service-graph');
 
     this.services = mustExist(options[INJECT_SERVICES]);

@@ -31,8 +31,6 @@ export interface DiscordListenerData extends ListenerData {
   token: string;
 }
 
-export type DiscordListenerOptions = BotServiceOptions<DiscordListenerData>;
-
 @Inject(INJECT_CLOCK, INJECT_METRICS)
 export class DiscordListener extends SessionListener<DiscordListenerData> implements Listener {
   public static isTextChannel(chan: Channel | undefined): chan is TextChannel {
@@ -44,7 +42,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
 
   protected readonly onCounter: Counter;
 
-  constructor(options: DiscordListenerOptions) {
+  constructor(options: BotServiceOptions<DiscordListenerData>) {
     super(options, 'isolex#/definitions/service-listener-discord');
 
     this.client = new Client();

@@ -40,8 +40,6 @@ export interface ExpressListenerData extends ListenerData {
   };
 }
 
-export type ExpressListenerOptions = BotServiceOptions<ExpressListenerData>;
-
 @Inject(INJECT_CLOCK, INJECT_METRICS, INJECT_STORAGE)
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
   protected readonly container: Container;
@@ -57,7 +55,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected server?: http.Server;
   protected target?: Listener;
 
-  constructor(options: ExpressListenerOptions) {
+  constructor(options: BotServiceOptions<ExpressListenerData>) {
     super(options, 'isolex#/definitions/service-listener-express');
 
     this.container = options.container;

@@ -16,13 +16,11 @@ export interface RegexParserData extends ParserData {
   regexp: string;
 }
 
-export type RegexParserOptions = BotServiceOptions<RegexParserData>;
-
 export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   protected mapper: ArrayMapper;
   protected regexp: RegExp;
 
-  constructor(options: RegexParserOptions) {
+  constructor(options: BotServiceOptions<RegexParserData>) {
     super(options, 'isolex#/definitions/service-parser-regex');
 
     this.mapper = new ArrayMapper(options.data.dataMapper);

@@ -24,12 +24,10 @@ export interface SplitParserData extends ParserData {
   split: SplitString.SplitOptions;
 }
 
-export type SplitParserOptions = BotServiceOptions<SplitParserData>;
-
 export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   protected mapper: ArrayMapper;
 
-  constructor(options: SplitParserOptions) {
+  constructor(options: BotServiceOptions<SplitParserData>) {
     super(options, 'isolex#/definitions/service-parser-split');
 
     this.mapper = new ArrayMapper(options.data.dataMapper);

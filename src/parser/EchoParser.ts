@@ -13,15 +13,13 @@ export interface EchoParserData extends ParserData {
   dataMapper: ArrayMapperOptions;
 }
 
-export type EchoParserOptions = BotServiceOptions<EchoParserData>;
-
 /**
  * Forwards the message body as a field. Does not split or otherwise parse, optionally removes the matched tag.
  */
 export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   protected mapper: ArrayMapper;
 
-  constructor(options: EchoParserOptions) {
+  constructor(options: BotServiceOptions<EchoParserData>) {
     super(options, 'isolex#/definitions/service-parser-echo');
 
     this.mapper = new ArrayMapper(this.data.dataMapper);

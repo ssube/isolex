@@ -27,14 +27,12 @@ export interface LexParserData extends ParserData {
   };
 }
 
-export type LexParserOptions = BotServiceOptions<LexParserData>;
-
 export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected alias: string;
   protected credentials: AWS.Credentials;
   protected lex: AWS.LexRuntime;
 
-  constructor(options: LexParserOptions) {
+  constructor(options: BotServiceOptions<LexParserData>) {
     super(options, 'isolex#/definitions/service-parser-lex');
 
     this.alias = options.data.bot.alias;

@@ -44,14 +44,12 @@ export interface SlackSearchResults extends WebAPICallResult {
   messages: Array<SlackMessage>;
 }
 
-export type SlackListenerOptions = BotServiceOptions<SlackListenerData>;
-
 @Inject(INJECT_CLOCK)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected client?: RTMClient;
   protected webClient?: WebClient;
 
-  constructor(options: SlackListenerOptions) {
+  constructor(options: BotServiceOptions<SlackListenerData>) {
     super(options, 'isolex#/definitions/service-listener-slack');
   }
 

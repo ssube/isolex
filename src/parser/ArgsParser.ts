@@ -26,11 +26,9 @@ export interface ArgsParserData extends ParserData {
   };
 }
 
-export type ArgsParserOptions = BotServiceOptions<ArgsParserData>;
-
 @Inject()
 export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
-  constructor(options: ArgsParserOptions) {
+  constructor(options: BotServiceOptions<ArgsParserData>) {
     super(options, 'isolex#/definitions/service-parser-args');
   }
 
