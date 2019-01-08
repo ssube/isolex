@@ -13,7 +13,7 @@ import { dictToMap } from 'src/utils/Map';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
 
 export type YamlParserData = ParserData;
-export const YAML_TYPES = [TYPE_JSON, TYPE_YAML];
+export const YAML_TYPES = new Set([TYPE_JSON, TYPE_YAML]);
 
 export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   constructor(options: BotServiceOptions<YamlParserData>) {
@@ -27,7 +27,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<any> {
-    if (!YAML_TYPES.includes(msg.type)) {
+    if (!YAML_TYPES.has(msg.type)) {
       throw new MimeTypeError(`body type (${msg.type}) must be one of ${YAML_TYPES}`);
     }
 
