@@ -79,16 +79,14 @@ export const QUERY_PR_MERGE = `
 `;
 
 interface GithubGetResponse {
-  data: {
-    repository: {
-      pullRequest: {
-        author: {
-          login: string;
-        };
-        id: string;
-        number: number;
-        title: string;
+  repository: {
+    pullRequest: {
+      author: {
+        login: string;
       };
+      id: string;
+      number: number;
+      title: string;
     };
   };
 }
@@ -130,12 +128,13 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     }
 
     this.logger.debug({ requestData }, 'updating pull request');
-    const requestID = requestData.data.repository.pullRequest.id;
+    const requestID = requestData.repository.pullRequest.id;
 
     this.logger.debug({ owner, project, requestID, requestNumber }, 'closing pull request');
     await this.client(QUERY_PR_CLOSE, {
       requestID,
     });
+
     return this.reply(ctx, `closed pull request ${requestNumber}`);
   }
 
@@ -147,7 +146,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const requestNumber = cmd.getHead('number');
 
     const response = await this.getRequestData(owner, project, requestNumber);
-    return this.transformJSON(cmd, [response.data.repository.pullRequest]);
+    return this.transformJSON(cmd, [response.repository.pullRequest]);
   }
 
   @Handler(NOUN_PULL_REQUEST, CommandVerb.List)
@@ -160,7 +159,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
       owner,
       project,
     });
-    return this.transformJSON(cmd, response.data.repository.pullRequests.nodes);
+    return this.transformJSON(cmd, response.repository.pullRequests.nodes);
   }
 
   @Handler(NOUN_PULL_REQUEST, CommandVerb.Update)
@@ -177,7 +176,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     }
 
     this.logger.debug({ requestData }, 'updating pull request');
-    const requestID = requestData.data.repository.pullRequest.id;
+    const requestID = requestData.repository.pullRequest.id;
 
     this.logger.debug({ owner, project, requestID, requestNumber }, 'merging pull request');
     await this.client(QUERY_PR_MERGE, {
