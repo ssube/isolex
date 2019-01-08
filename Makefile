@@ -76,15 +76,14 @@ git-stats: ## print git contributor line counts (approx, for fun)
 todo:
 	@echo "Remaining tasks:"
 	@echo ""
-	@grep "todo" -r src/ || true
+	@grep "TODO" -r docs/ src/ test/ || true
 	@echo ""
 	@echo "Pending tests:"
 	@echo ""
 	@grep "[[:space:]]xit" -r test/ || true
 	@echo "Casts to any:"
 	@echo ""
-	@grep "as any" -r src/ || true
-	@grep "as any" -r test/ || true
+	@grep "as any" -r src/ test/ || true
 	@echo ""
 
 node_modules: yarn-install

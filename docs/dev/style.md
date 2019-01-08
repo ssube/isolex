@@ -4,8 +4,9 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
 
 - [Style](#style)
   - [Code Climate](#code-climate)
+    - [Helpful Views](#helpful-views)
     - [Close Reasons](#close-reasons)
-      - [Noun/Verb Switch Complexity](#nounverb-switch-complexity)
+      - [Decorator Complexity](#decorator-complexity)
       - [Super Call Complexity](#super-call-complexity)
       - [Test Data & Fixtures](#test-data--fixtures)
   - [Documentation](#documentation)
@@ -20,6 +21,7 @@ This document covers Typescript and YAML style, explains some lint rules, and ma
     - [Messages](#messages)
     - [Metrics](#metrics)
   - [Paths](#paths)
+  - [TODOs](#todos)
   - [Typescript](#typescript)
     - [Arrays](#arrays)
     - [Arrow Functions ("lambdas")](#arrow-functions-%22lambdas%22)
@@ -51,14 +53,29 @@ Code Climate runs lint and style checks against the project, on pull requests an
 [Project maintainability](https://codeclimate.com/github/ssube/isolex) MUST be an A. Technical debt MUST remain
 under 1% and SHOULD NOT increase with any PR.
 
+### Helpful Views
+
+- [Exclude complexity and duplicates](https://codeclimate.com/github/ssube/isolex/issues?category%5B%5D=style&category%5B%5D=bugrisk&status%5B%5D=&status%5B%5D=open&status%5B%5D=confirmed&status%5B%5D=invalid&status%5B%5D=wontfix&engine_name%5B%5D=structure&engine_name%5B%5D=duplication&engine_name%5B%5D=fixme&engine_name%5B%5D=tslint&language_name%5B%5D=TypeScript&language_name%5B%5D=Other)
+- [TODOs](https://codeclimate.com/github/ssube/isolex/issues?category%5B%5D=complexity&category%5B%5D=duplication&category%5B%5D=style&category%5B%5D=bugrisk&status%5B%5D=&status%5B%5D=open&status%5B%5D=confirmed&status%5B%5D=invalid&status%5B%5D=wontfix&engine_name%5B%5D=fixme&language_name%5B%5D=TypeScript&language_name%5B%5D=Other)
+
 ### Close Reasons
 
 Warnings shown here can be closed. Others MUST be fixed.
 
-#### Noun/Verb Switch Complexity
+#### Decorator Complexity
 
-Any complexity, duplication, or length warnings related to a controller's noun or verb switches should be marked as
-`WONTFIX`.
+Any complexity warnings around the declaration of a controller's handler method, especially on with decorators, should
+be closed as `WONTFIX`.
+
+```typescript
+@Handler(NOUN_FOO, CommandVerb.Get)
+@CheckRBAC({
+  grants: ['a', 'b', 'c']
+})
+public async getFoo(cmd: Command, ctx: Context) {
+  /* ... */
+}
+```
 
 #### Super Call Complexity
 
@@ -176,6 +193,16 @@ Metric names MUST be singular: `express_request`, `discord_event`. The Prometheu
 | src/          | typescript source                                             |
 | test/         | mocha tests                                                   |
 | vendor/       | vendored (inlined, submoduled, etc) dependencies and typedefs |
+
+## TODOs
+
+There are no shame in TODOs, unless you merge them into master. Code climate is set up to catch them in PRs, so use
+them liberally while developing features.
+
+When a TODO falls in a TS doc comment (jsdoc-style blocks), use `@TODO`. Otherwise, it must appear as `TODO: task`.
+TODOs in source MUST be in a comment, TODOS in documentation MUST be in a block quote.
+
+`make todo` will show any TODO comments, along with a few other issues that can be detected with `grep`.
 
 ## Typescript
 
