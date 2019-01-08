@@ -7,8 +7,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Token } from 'src/entity/auth/Token';
 import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
-import { Listener } from 'src/listener/Listener';
-import { Parser } from 'src/parser/Parser';
+import { Listener } from 'src/listener';
+import { Parser } from 'src/parser';
 import { doesExist } from 'src/utils';
 
 export interface ChannelData {

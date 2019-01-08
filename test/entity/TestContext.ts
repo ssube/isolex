@@ -4,7 +4,7 @@ import { ineeda } from 'ineeda';
 import { Role } from 'src/entity/auth/Role';
 import { User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
-import { Listener } from 'src/listener/Listener';
+import { Listener } from 'src/listener';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 

@@ -22,8 +22,6 @@ export interface ParserData extends BotServiceData {
   match: MatchData;
 }
 
-export type ParserOptions<TData extends ParserData> = BotServiceOptions<TData>;
-
 export type ParserValue = Buffer | string;
 
 /**

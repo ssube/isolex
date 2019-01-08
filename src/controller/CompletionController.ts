@@ -9,8 +9,8 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { Listener } from 'src/listener/Listener';
-import { Parser } from 'src/parser/Parser';
+import { Listener } from 'src/listener';
+import { Parser } from 'src/parser';
 import { ServiceMetadata } from 'src/Service';
 import { mustExist } from 'src/utils';
 

@@ -1,11 +1,12 @@
 import { isEmpty, trim } from 'lodash';
 import * as split from 'split-string';
 
+import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
+import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -23,7 +24,7 @@ export interface SplitParserData extends ParserData {
   split: SplitString.SplitOptions;
 }
 
-export type SplitParserOptions = ParserOptions<SplitParserData>;
+export type SplitParserOptions = BotServiceOptions<SplitParserData>;
 
 export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   protected mapper: ArrayMapper;

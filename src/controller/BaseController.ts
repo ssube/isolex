@@ -8,7 +8,7 @@ import { User } from 'src/entity/auth/User';
 import { Command } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { Listener } from 'src/listener/Listener';
+import { Listener } from 'src/listener';
 import { Locale, TranslateOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';

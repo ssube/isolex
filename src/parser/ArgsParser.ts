@@ -1,13 +1,14 @@
 import { Inject } from 'noicejs';
 import * as yargs from 'yargs-parser';
 
+import { BotServiceOptions } from 'src/BotService';
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { mustExist } from 'src/utils';
 import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map';
 
@@ -25,7 +26,7 @@ export interface ArgsParserData extends ParserData {
   };
 }
 
-export type ArgsParserOptions = ParserOptions<ArgsParserData>;
+export type ArgsParserOptions = BotServiceOptions<ArgsParserData>;
 
 @Inject()
 export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {

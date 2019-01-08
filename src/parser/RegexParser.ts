@@ -1,11 +1,12 @@
 import { isNil } from 'lodash';
 import { BaseError } from 'noicejs';
 
+import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
+import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -15,7 +16,7 @@ export interface RegexParserData extends ParserData {
   regexp: string;
 }
 
-export type RegexParserOptions = ParserOptions<RegexParserData>;
+export type RegexParserOptions = BotServiceOptions<RegexParserData>;
 
 export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   protected mapper: ArrayMapper;

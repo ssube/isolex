@@ -1,14 +1,15 @@
 import * as AWS from 'aws-sdk';
 import { isNil, isString, kebabCase } from 'lodash';
 
+import { BotServiceOptions } from 'src/BotService';
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
 import { Command, CommandData, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { doesExist, leftPad, mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
@@ -26,7 +27,7 @@ export interface LexParserData extends ParserData {
   };
 }
 
-export type LexParserOptions = ParserOptions<LexParserData>;
+export type LexParserOptions = BotServiceOptions<LexParserData>;
 
 export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected alias: string;

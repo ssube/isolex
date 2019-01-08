@@ -6,7 +6,7 @@ import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/enti
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
-import { Parser, ParserData } from 'src/parser/Parser';
+import { Parser, ParserData } from 'src/parser';
 import { mustExist } from 'src/utils';
 import { getHeadOrDefault } from 'src/utils/Map';
 import { Match } from 'src/utils/match';

@@ -2,17 +2,18 @@ import { safeLoad } from 'js-yaml';
 import { isObject } from 'lodash';
 import { BaseError } from 'noicejs';
 
+import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
+import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
-import { Parser, ParserData, ParserOptions } from 'src/parser/Parser';
 import { mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
 
 export type YamlParserData = ParserData;
-export type YamlParserOptions = ParserOptions<YamlParserData>;
+export type YamlParserOptions = BotServiceOptions<YamlParserData>;
 export const YAML_TYPES = [TYPE_JSON, TYPE_YAML];
 
 export class YamlParser extends BaseParser<YamlParserData> implements Parser {

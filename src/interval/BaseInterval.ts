@@ -8,7 +8,7 @@ import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Interval, IntervalData } from 'src/interval';
-import { Listener } from 'src/listener/Listener';
+import { Listener } from 'src/listener';
 import { doesExist, mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 
