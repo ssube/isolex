@@ -33,10 +33,10 @@ export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
 
     const timeout = this.math.unit(this.data.frequency.time).toNumber('millisecond');
     this.logger.debug({ timeout }, 'starting default metrics interval');
-    this.interval = collectDefaultMetrics({
+    this.interval = ((collectDefaultMetrics({
       register: this.metrics,
       timeout,
-    }) as any;
+    }) as unknown) as NodeJS.Timeout);
   }
 
   public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
