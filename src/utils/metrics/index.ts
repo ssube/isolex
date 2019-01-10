@@ -1,15 +1,17 @@
-import { Counter, CounterConfiguration } from 'prom-client';
+import { Counter, CounterConfiguration, Registry } from 'prom-client';
 
 import { Service } from 'src/Service';
 
-export function createServiceCounter(config: Partial<CounterConfiguration>): Counter {
+export function createServiceCounter(registry: Registry, config: Partial<CounterConfiguration>): Counter {
   const { labelNames = [] } = config;
-  labelNames.unshift('serviceId', 'serviceKind', 'serviceName');
+  const combinedLabels = [...labelNames, 'serviceId', 'serviceKind', 'serviceName'];
+
   return new Counter({
     help: 'default service counter',
     name: 'change_me',
     ...config,
-    labelNames,
+    labelNames: combinedLabels,
+    registers: [registry],
   });
 }
 

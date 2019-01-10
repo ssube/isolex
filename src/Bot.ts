@@ -272,18 +272,16 @@ export class Bot extends BaseService<BotData> implements Service {
   protected startMetrics() {
     this.logger.info('setting up metrics');
 
-    this.cmdCounter = createServiceCounter({
+    this.cmdCounter = createServiceCounter(this.metrics, {
       help: 'commands received by the bot',
       labelNames: ['commandNoun', 'commandVerb'],
       name: 'bot_command',
-      registers: [this.metrics],
     });
 
-    this.msgCounter = createServiceCounter({
+    this.msgCounter = createServiceCounter(this.metrics, {
       help: 'messages received by the bot',
       labelNames: ['messageType'],
       name: 'bot_message',
-      registers: [this.metrics],
     });
   }
 

@@ -25,6 +25,7 @@ import { FetchOptions, Listener, ListenerData } from 'src/listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
+import { createServiceCounter } from 'src/utils/metrics';
 
 export interface DiscordListenerData extends ListenerData {
   presence?: PresenceData;
@@ -49,11 +50,10 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     this.threads = new Map();
 
     const metrics = mustExist(options[INJECT_METRICS]);
-    this.onCounter = new Counter({
+    this.onCounter = createServiceCounter(metrics, {
       help: 'events received from discord client',
-      labelNames: ['serviceId', 'serviceKind', 'serviceName', 'eventKind'],
+      labelNames: ['eventKind'],
       name: 'discord_event',
-      registers: [metrics],
     });
   }
 
