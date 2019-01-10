@@ -298,7 +298,40 @@ The status is shown as `running` after canceling the pipeline, since the jobs ta
 
 #### Scale Apps
 
-TODO: scale up k8s apps deployment
+The bot is able to view and scale applications on [Kubernetes](https://kubernetes.io/). Support is split by
+`apiVersion` on the k8s side, with a bot controller for each set of resources.
+
+To view running pods:
+
+> !!k8s --noun kubernetes-pod --verb list --ns gitlab
+>
+> @you, gitlab-0: Running
+> postgres-0: Running
+> redis-0: Running
+
+To view the stateful sets (or deployment) that created those pods:
+
+> !!k8s --noun kubernetes-statefulset --verb list --ns gitlab
+>
+> @you, gitlab: 1
+> postgres: 1
+> redis: 1
+
+To scale the set up or down::
+
+> !!k8s --noun kubernetes-statefulset --verb update --ns gitlab --name redis --replicas 2
+>
+> @you, k8s-app&amp;#x3D;redis: 1
+
+The response will show the *current* number of replicas, not the desired number. After a moment, new pods should
+appear:
+
+> !!k8s --noun kubernetes-pod --verb list --ns gitlab
+>
+> @you, gitlab-0: Running
+> postgres-0: Running
+> redis-0: Running
+> redis-1: Running
 
 ## Security
 
