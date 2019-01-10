@@ -1,7 +1,7 @@
 version: "2"
 
 exclude_patterns:
-  - docs/style.md
+  - docs/dev/style.md
   - src/migration/
   - vendor/
 
