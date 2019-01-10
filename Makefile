@@ -76,7 +76,7 @@ git-stats: ## print git contributor line counts (approx, for fun)
 todo:
 	@echo "Remaining tasks:"
 	@echo ""
-	@grep "TODO" -r docs/ src/ test/ || true
+	@grep -i "todo" -r docs/ src/ test/ || true
 	@echo ""
 	@echo "Pending tests:"
 	@echo ""
