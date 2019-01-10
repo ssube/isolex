@@ -2,7 +2,7 @@ import * as AWS from 'aws-sdk';
 import { isNil, isString, kebabCase } from 'lodash';
 
 import { BotServiceOptions } from 'src/BotService';
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
+import { createCompletion } from 'src/controller/helpers';
 import { Command, CommandData, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
@@ -11,7 +11,6 @@ import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { doesExist, leftPad, mustExist } from 'src/utils';
-import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -87,47 +86,39 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       return [];
     }
 
-    const [intent, verb] = post.intentName.split('_');
+    const [intent, intentVerb] = post.intentName.split('_');
     const noun = kebabCase(intent);
+    const verb = intentVerb as CommandVerb;
     const data = this.getSlots(post.slots);
 
     this.logger.debug({ data, intent, noun, verb }, 'decoded message');
     switch (post.dialogState) {
-      // completions
       case 'ConfirmIntent':
-        return [];
-      case 'ElicitIntent':
-        return [];
+        return [createCompletion({
+          context,
+          data,
+          labels: this.labels,
+          noun,
+          verb,
+        }, 'confirm', 'please confirm', this)];
       case 'ElicitSlot':
         if (!isString(post.slotToElicit)) {
           this.logger.warn({ body }, 'lex parsed message without slot to elicit');
           return [];
         }
-        return this.createCompletion(context, noun, verb as CommandVerb, data, post.slotToElicit);
-      // command
+        return [createCompletion({
+          context,
+          data,
+          labels: this.labels,
+          noun,
+          verb,
+        }, post.slotToElicit, 'missing field', this)];
       case 'ReadyForFulfillment':
-        return this.createReply(context, noun, verb as CommandVerb, data);
-      // message
-      case 'Failed':
-      case 'Fulfilled':
+        return this.createReply(context, noun, verb, data);
       default:
-        // error
+        this.logger.warn({ post }, 'unsupported dialog state');
         return [];
     }
-  }
-
-  protected async createCompletion(context: Context, noun: string, verb: CommandVerb, data: CommandData, key: string) {
-    const fragment = dictToMap({
-      key: [key],
-      msg: [`missing slot: ${key}`],
-      noun: [noun],
-      parser: [this.id],
-      verb: [verb],
-    });
-    return this.createReply(context, NOUN_FRAGMENT, CommandVerb.Create, new Map<string, CommandDataValue>([
-      ...data,
-      ...fragment,
-    ]));
   }
 
   protected async createReply(context: Context, noun: string, verb: CommandVerb, data: CommandData): Promise<Array<Command>> {

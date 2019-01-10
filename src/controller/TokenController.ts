@@ -6,7 +6,7 @@ import { INJECT_CLOCK } from 'src/BaseService';
 import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
 import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { createCompletion } from 'src/controller/helpers';
+import { createCommandCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -70,7 +70,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     const user = this.getUserOrFail(ctx);
     const before = cmd.getHeadOrNumber('before', this.clock.getSeconds());
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCompletion(cmd, 'confirm', this.translate('delete.confirm', {
+      const completion = createCommandCompletion(cmd, 'confirm', this.translate('delete.confirm', {
         before,
         name: user.name,
       }));

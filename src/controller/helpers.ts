@@ -2,15 +2,19 @@ import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { Command, CommandVerb } from 'src/entity/Command';
+import { Command, CommandOptions, CommandVerb } from 'src/entity/Command';
+import { Parser } from 'src/parser';
 import { Schema } from 'src/schema';
 import { mustExist } from 'src/utils';
 import { Dict, dictToMap, mapToDict } from 'src/utils/Map';
 
-export function createCompletion(cmd: Command, key: string, msg: string): Command {
+export function createCommandCompletion(cmd: Command, key: string, msg: string): Command {
   const ctx = mustExist(cmd.context);
   const parser = mustExist(ctx.parser);
+  return createCompletion(cmd, key, msg, parser);
+}
 
+export function createCompletion(cmd: CommandOptions, key: string, msg: string, parser: Parser): Command {
   const existingData = mapToDict(cmd.data);
   const data = dictToMap({
       ...existingData,
@@ -67,7 +71,7 @@ export function collectOrComplete<TData extends Dict<CollectData>>(cmd: Command,
     if (def.required) {
       return {
         complete: false,
-        fragment: createCompletion(cmd, key, def.prompt),
+        fragment: createCommandCompletion(cmd, key, def.prompt),
       };
     }
 

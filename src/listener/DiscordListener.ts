@@ -24,8 +24,8 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener, ListenerData } from 'src/listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { doesExist, mustExist } from 'src/utils';
-import { TYPE_TEXT } from 'src/utils/Mime';
 import { createServiceCounter } from 'src/utils/metrics';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface DiscordListenerData extends ListenerData {
   presence?: PresenceData;
