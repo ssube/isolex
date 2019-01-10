@@ -2,7 +2,6 @@ import * as express from 'express';
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection } from 'typeorm';
 
 import { INJECT_CLOCK, INJECT_SERVICES } from 'src/BaseService';
 import { BotService, BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_STORAGE } from 'src/BotService';
@@ -14,6 +13,7 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
 import { mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
+import { Storage } from 'src/utils/Storage';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
@@ -40,7 +40,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
   public readonly schema: GraphQLSchema;
 
   protected readonly services: ServiceModule;
-  protected readonly storage: Connection;
+  protected readonly storage: Storage;
 
   constructor(options: BotServiceOptions<GraphSchemaData>) {
     super(options, 'isolex#/definitions/service-graph');

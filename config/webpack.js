@@ -30,7 +30,6 @@ function ignoreModules(names) {
 // that cannot be excluded at the module level
 // or will not be fixed by the library (shame)
 function ignoreWarnings(warn) {
-  console.warn('===warn', warn);
   if (/Critical dependency/.test(warn)) {
     return (
       /yargs-parser/.test(warn) ||

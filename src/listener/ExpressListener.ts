@@ -6,7 +6,7 @@ import { Container, Inject } from 'noicejs';
 import * as passport from 'passport';
 import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 import { Counter, Registry } from 'prom-client';
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
@@ -19,6 +19,7 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
 import { doesExist, mustExist } from 'src/utils';
+import { Storage } from 'src/utils/Storage';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
@@ -46,7 +47,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected readonly metrics: Registry;
   protected readonly requestCounter: Counter;
   protected readonly services: ServiceModule;
-  protected readonly storage: Connection;
+  protected readonly storage: Storage;
   protected readonly tokenRepository: Repository<Token>;
 
   protected express?: express.Express;

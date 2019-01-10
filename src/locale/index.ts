@@ -1,16 +1,20 @@
 import i18next from 'i18next';
-import { kebabCase } from 'lodash';
 import { Container, Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
 import { INJECT_LOGGER } from 'src/BaseService';
 import { ServiceLifecycle } from 'src/Service';
 import { mustExist } from 'src/utils';
+import { classLogger } from 'src/utils/logger';
 import { LocaleLogger } from 'src/utils/logger/LocaleLogger';
+
+export interface LocaleData {
+  lang: string;
+}
 
 export interface LocaleOptions extends BaseOptions {
   [INJECT_LOGGER]: Logger;
-  lang: string;
+  data: LocaleData;
 }
 
 export type TranslateOptions = i18next.TranslationOptions;
@@ -18,16 +22,14 @@ export type TranslateOptions = i18next.TranslationOptions;
 @Inject(INJECT_LOGGER)
 export class Locale implements ServiceLifecycle {
   protected readonly container: Container;
-  protected readonly lang: string;
+  protected readonly data: LocaleData;
   protected readonly logger: Logger;
   protected translator?: i18next.TranslationFunction;
 
   constructor(options: LocaleOptions) {
     this.container = options.container;
-    this.lang = options.lang;
-    this.logger = options[INJECT_LOGGER].child({
-      kind: kebabCase(Locale.name),
-    });
+    this.data = options.data;
+    this.logger = classLogger(options[INJECT_LOGGER], Locale);
   }
 
   public async start() {
@@ -36,7 +38,7 @@ export class Locale implements ServiceLifecycle {
     });
     this.translator = await i18next.use(logger).init({
       debug: true,
-      lng: this.lang,
+      lng: this.data.lang,
       resources: {
         /* tslint:disable:no-var-requires */
         en: require('src/locale/en.yml'),

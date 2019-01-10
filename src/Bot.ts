@@ -3,7 +3,6 @@ import { Container, Inject } from 'noicejs';
 import { LogLevel } from 'noicejs/logger/Logger';
 import { Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
-import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 import {
   BaseService,
@@ -23,8 +22,8 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { filterNil, mustExist, mustFind } from 'src/utils';
-import { StorageLogger, StorageLoggerOptions } from 'src/utils/logger/StorageLogger';
 import { incrementServiceCounter } from 'src/utils/metrics';
+import { Storage, StorageData } from 'src/utils/Storage';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
@@ -35,9 +34,8 @@ export interface BotData extends BaseServiceData {
     level: LogLevel;
     name: string;
   };
-  migrate: boolean;
   parsers: Array<ServiceDefinition<ParserData>>;
-  storage: ConnectionOptions;
+  storage: StorageData;
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
@@ -49,7 +47,7 @@ export class Bot extends BaseService<BotData> implements Service {
   protected readonly metrics: Registry;
 
   protected locale?: Locale;
-  protected storage?: Connection;
+  protected storage?: Storage;
 
   // counters
   protected cmdCounter?: Counter;
@@ -90,11 +88,11 @@ export class Bot extends BaseService<BotData> implements Service {
     this.startMetrics();
   }
 
-  public getLocale() {
+  public getLocale(): Locale {
     return mustExist(this.locale);
   }
 
-  public getStorage(): Connection {
+  public getStorage(): Storage {
     return mustExist(this.storage);
   }
 
@@ -143,7 +141,7 @@ export class Bot extends BaseService<BotData> implements Service {
     await this.services.stop();
 
     this.logger.debug('stopping storage');
-    await this.getStorage().close();
+    await this.getStorage().stop();
 
     this.logger.info('bot has stopped');
   }
@@ -346,31 +344,19 @@ export class Bot extends BaseService<BotData> implements Service {
   }
 
   protected async startLocale() {
-    this.logger.info({ }, 'starting localization');
-    this.locale = await this.container.create(Locale, this.data.locale);
+    this.logger.info('starting localization');
+    this.locale = await this.container.create(Locale, {
+      data: this.data.locale,
+    });
     return this.locale.start();
   }
 
   protected async startStorage() {
-    this.logger.info('connecting to storage');
-    const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
-      logger: this.logger,
+    this.logger.info('starting storage');
+    this.storage = await this.container.create(Storage, {
+      data: this.data.storage,
     });
-    const entities = await this.container.create<Array<Function>, unknown>('entities');
-    const migrations = await this.container.create<Array<Function>, unknown>('migrations');
-
-    this.storage = await createConnection({
-      ...this.data.storage,
-      entities,
-      logger: storageLogger,
-      migrations,
-    });
-
-    if (this.data.migrate) {
-      this.logger.info('running pending database migrations');
-      await this.storage.runMigrations();
-      this.logger.info('database migrations complete');
-    }
+    return this.storage.start();
   }
 
   /**

@@ -142,7 +142,7 @@ definitions:
 
   service-bot:
     type: object
-    required: [controllers, filters, listeners, locale, logger, migrate, parsers, storage]
+    required: [controllers, filters, listeners, locale, logger, parsers, storage]
     properties:
       controllers:
         type: array
@@ -171,20 +171,27 @@ definitions:
             enum: [debug, info, warn, error]
           name:
             type: string
-      migrate:
-        type: boolean
-        default: false
       parsers:
         type: array
         items:
           $ref: "#/definitions/service-definition"
       storage:
         type: object
+        additionalProperties: false
+        required: [migrate, orm]
         properties:
-          database:
-            type: string
-          type:
-            type: string
+          migrate:
+            type: boolean
+            default: false
+          orm:
+            type: object
+            additionalProperties: false
+            required: [database, type]
+            properties:
+              database:
+                type: string
+              type:
+                type: string
 
   service-controller:
     allOf:

@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
-import { Connection, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { INJECT_CLOCK } from 'src/BaseService';
 import { INJECT_STORAGE } from 'src/BotService';
@@ -15,6 +15,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
+import { Storage } from 'src/utils/Storage';
 
 export const NOUN_GRANT = 'grant';
 export const NOUN_ACCOUNT = 'account';
@@ -44,7 +45,7 @@ export type AccountControllerOptions = BaseControllerOptions<AccountControllerDa
 @Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class AccountController extends BaseController<AccountControllerData> implements Controller {
   protected clock: Clock;
-  protected storage: Connection;
+  protected storage: Storage;
   protected roleRepository: Repository<Role>;
   protected tokenRepository: Repository<Token>;
   protected userRepository: UserRepository;

@@ -62,7 +62,9 @@ export async function createService<
     container,
     [INJECT_LOCALE]: new Locale({
       container,
-      lang: 'en',
+      data: {
+        lang: 'en',
+      },
       [INJECT_LOGGER]: ConsoleLogger.global,
     }),
     [INJECT_LOGGER]: ConsoleLogger.global,

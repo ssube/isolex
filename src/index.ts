@@ -39,6 +39,7 @@ const MAIN_MODULES = [
   FilterModule,
   IntervalModule,
   ListenerModule,
+  MigrationModule,
   ParserModule,
   ServiceModule,
   TransformModule,
@@ -74,17 +75,13 @@ sourceMapSupport.install({
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
-function createModules(botModule: BotModule, migrate: boolean) {
+function createModules(botModule: BotModule) {
   const modules: Array<Module> = [
     botModule,
   ];
 
   for (const m of MAIN_MODULES) {
     modules.push(new m());
-  }
-
-  if (migrate) {
-    modules.push(new MigrationModule());
   }
 
   return modules;
@@ -135,7 +132,7 @@ async function main(argv: Array<string>): Promise<number> {
   }
 
   const botModule = new BotModule({ logger });
-  const ctr = Container.from(...createModules(botModule, config.data.migrate));
+  const ctr = Container.from(...createModules(botModule));
   logger.info('configuring container');
   await ctr.configure({ logger });
 

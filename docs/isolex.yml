@@ -45,7 +45,6 @@ data:
   logger:
     level: debug
     name: isolex
-  migrate: true
   parsers:
     - !include ../docs/parser/args-parser.yml
     - !include ../docs/parser/args-parser-complete.yml
@@ -59,5 +58,7 @@ data:
     - !include ../docs/parser/split-parser-sed.yml
     - !include ../docs/parser/yaml-parser.yml
   storage:
-    type: sqlite
-    database: "./out/isolex.db"
+    migrate: true
+    orm:
+      type: sqlite
+      database: "./out/isolex.db"

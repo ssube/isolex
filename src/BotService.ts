@@ -1,5 +1,4 @@
 import { Inject } from 'noicejs';
-import { Connection } from 'typeorm';
 
 import { BaseService, BaseServiceData, BaseServiceOptions, INJECT_SERVICES } from 'src/BaseService';
 import { Bot } from 'src/Bot';
@@ -7,6 +6,7 @@ import { Context } from 'src/entity/Context';
 import { Locale } from 'src/locale';
 import { Service } from 'src/Service';
 import { mustExist } from 'src/utils';
+import { Storage } from 'src/utils/Storage';
 
 export type BotServiceData = BaseServiceData;
 
@@ -20,7 +20,7 @@ export const INJECT_STORAGE = Symbol('inject-storage');
 export interface BotServiceOptions<TData extends BotServiceData> extends BaseServiceOptions<TData> {
   [INJECT_BOT]?: Bot;
   [INJECT_LOCALE]?: Locale;
-  [INJECT_STORAGE]?: Connection;
+  [INJECT_STORAGE]?: Storage;
 }
 
 /**

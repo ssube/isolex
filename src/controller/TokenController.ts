@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { Connection, Equal, LessThan, Repository } from 'typeorm';
+import { Equal, LessThan, Repository } from 'typeorm';
 
 import { INJECT_CLOCK } from 'src/BaseService';
 import { INJECT_STORAGE } from 'src/BotService';
@@ -12,6 +12,7 @@ import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
+import { Storage } from 'src/utils/Storage';
 
 export const NOUN_TOKEN = 'token';
 
@@ -29,7 +30,7 @@ export type TokenControllerOptions = BaseControllerOptions<TokenControllerData>;
 @Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class TokenController extends BaseController<TokenControllerData> implements Controller {
   protected readonly clock: Clock;
-  protected readonly storage: Connection;
+  protected readonly storage: Storage;
   protected readonly tokenRepository: Repository<Token>;
 
   constructor(options: TokenControllerOptions) {

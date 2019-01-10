@@ -1,7 +1,6 @@
 import { Container, Logger, Provides } from 'noicejs';
 import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
-import { Connection } from 'typeorm';
 
 import {
   INJECT_CLOCK,
@@ -24,6 +23,7 @@ import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
+import { Storage } from 'src/utils/Storage';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {
@@ -89,7 +89,7 @@ export class BotModule extends BaseModule {
   }
 
   @Provides(INJECT_STORAGE)
-  public async getStorage(): Promise<Connection> {
+  public async getStorage(): Promise<Storage> {
     const bot = await this.getBot();
     return bot.getStorage();
   }
