@@ -23,7 +23,7 @@ import { Parser, ParserData } from 'src/parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { Storage, StorageData } from 'src/storage';
 import { filterNil, mustExist, mustFind } from 'src/utils';
-import { incrementServiceCounter } from 'src/utils/metrics';
+import { createServiceCounter, incrementServiceCounter } from 'src/utils/metrics';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
@@ -117,14 +117,12 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info('starting bot');
 
     const streamError = (err: Error) => {
-      this.looseError(err);
+      this.logger.error(err, 'bot stream did not handle error');
     };
     this.commands.subscribe((next) => this.receiveCommand(next).catch(streamError));
     this.incoming.subscribe((next) => this.receive(next).catch(streamError));
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(streamError));
 
-    await this.startLocale();
-    await this.startStorage();
     await this.startServices();
 
     this.logger.info('bot started');
@@ -158,6 +156,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     return this.executeCommand(...commands);
   }
+
   /**
    * Fetches messages using a specified listener.
    */
@@ -273,22 +272,30 @@ export class Bot extends BaseService<BotData> implements Service {
   protected startMetrics() {
     this.logger.info('setting up metrics');
 
-    this.cmdCounter = new Counter({
+    this.cmdCounter = createServiceCounter({
       help: 'commands received by the bot',
-      labelNames: ['commandNoun', 'commandVerb', 'serviceId', 'serviceKind', 'serviceName'],
+      labelNames: ['commandNoun', 'commandVerb'],
       name: 'bot_command',
       registers: [this.metrics],
     });
 
-    this.msgCounter = new Counter({
+    this.msgCounter = createServiceCounter({
       help: 'messages received by the bot',
-      labelNames: ['messageType', 'serviceId', 'serviceKind', 'serviceName'],
+      labelNames: ['messageType'],
       name: 'bot_message',
       registers: [this.metrics],
     });
   }
 
   protected async startServices() {
+    this.logger.info('starting localization');
+    this.locale = await this.container.create(Locale, this.data.locale);
+    await this.locale.start();
+
+    this.logger.info('starting storage');
+    this.storage = await this.container.create(Storage, this.data.storage);
+    await this.storage.start();
+
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
       this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
@@ -313,24 +320,5 @@ export class Bot extends BaseService<BotData> implements Service {
     await this.services.start();
 
     this.logger.info('services started');
-  }
-
-  protected async startLocale() {
-    this.logger.info('starting localization');
-    this.locale = await this.container.create(Locale, this.data.locale);
-    return this.locale.start();
-  }
-
-  protected async startStorage() {
-    this.logger.info('starting storage');
-    this.storage = await this.container.create(Storage, this.data.storage);
-    return this.storage.start();
-  }
-
-  /**
-   * Log an otherwise-unhandled but non-fatal error (typically leaked from one of the observables).
-   */
-  protected looseError(err: Error) {
-    this.logger.error(err, 'bot stream did not handle error');
   }
 }
