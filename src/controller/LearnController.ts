@@ -101,13 +101,13 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       return this.errorReply(ctx, ErrorReplyType.EntityMissing, key);
     }
 
-    // TODO: merge with saved data before executing
     const merged = new Command({
       ...keyword,
       context: cmd.context,
-      data: {
-        [this.data.field]: body,
-      },
+      data: new Map([
+        ...keyword.data,
+        [this.data.field, body],
+      ]),
     });
 
     this.logger.debug({ cmd, keyword, merged }, 'executing keyword command');
