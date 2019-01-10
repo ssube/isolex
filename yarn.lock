@@ -1704,11 +1704,7 @@ decamelize@^2.0.0:
   dependencies:
     xregexp "4.0.0"
 
-decimal.js@10.0.1:
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.0.1.tgz#d04b16b277f0f9af09671cee225c4882e8857c58"
-
-decimal.js@^10.0.0:
+decimal.js@10.0.2, decimal.js@^10.0.0:
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.0.2.tgz#50fd0f9184139f543e5b84c97681534292deb640"
 
@@ -2340,9 +2336,10 @@ forwarded@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
 
-fraction.js@4.0.11:
-  version "4.0.11"
-  resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.0.11.tgz#f82474349f7a198b6ad8d713d65621302a0e6f58"
+fraction.js@4.0.12:
+  version "4.0.12"
+  resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.0.12.tgz#0526d47c65a5fb4854df78bc77f7bec708d7b8c3"
+  integrity sha512-8Z1K0VTG4hzYY7kA/1sj4/r1/RWLBD3xwReT/RCrUCbzPszjNQCCsy3ktkU/eaEqX3MYa4pY37a52eiBlPMlhA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -3483,14 +3480,15 @@ marked@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
 
-mathjs@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.4.0.tgz#e456ae00e22e352d078cd5f6d87000d5467be1ee"
+mathjs@5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.4.1.tgz#c20c8f2909b432bcff89f9ea35079a5bd71e2826"
+  integrity sha512-sgJtr7tEW0hDLHG1SUuVeLHa9gnWwsmYs7NjRRpgowMYWvEszwvng7GzTN+ABWP9I0gO6AIIgNhCwRlE5eyG2Q==
   dependencies:
     complex.js "2.0.11"
-    decimal.js "10.0.1"
+    decimal.js "10.0.2"
     escape-latex "1.2.0"
-    fraction.js "4.0.11"
+    fraction.js "4.0.12"
     javascript-natural-sort "0.7.1"
     seed-random "2.2.0"
     tiny-emitter "2.0.2"
