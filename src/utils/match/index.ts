@@ -1,4 +1,4 @@
-import { get, has, isString } from 'lodash';
+import { get, isString } from 'lodash';
 
 import { doesExist } from 'src/utils';
 import { mapToDict } from 'src/utils/Map';

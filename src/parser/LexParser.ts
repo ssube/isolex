@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 import { isNil, isString, kebabCase } from 'lodash';
+import { MissingValueError } from 'noicejs';
 
 import { BotServiceOptions } from 'src/BotService';
 import { createCompletion } from 'src/controller/helpers';
@@ -11,6 +12,7 @@ import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { doesExist, leftPad, mustExist } from 'src/utils';
+import { dictToMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -74,47 +76,21 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
       userId: leftPad(context.getUserId()),
     });
 
-    this.logger.debug({ body, context, post }, 'lex parsed message');
+    const response = this.validateResponse(post);
 
-    if (!isString(post.dialogState) || post.dialogState === '') {
-      this.logger.warn({ body, context }, 'lex parsed message without state');
-      return [];
-    }
-
-    if (!isString(post.intentName) || post.intentName === '') {
-      this.logger.warn({ body, context }, 'lex parsed message without intent');
-      return [];
-    }
-
-    const [intent, intentVerb] = post.intentName.split('_');
-    const noun = kebabCase(intent);
-    const verb = intentVerb as CommandVerb;
-    const data = this.getSlots(post.slots);
-
-    this.logger.debug({ data, intent, noun, verb }, 'decoded message');
     switch (post.dialogState) {
       case 'ConfirmIntent':
         return [createCompletion({
+          ...response,
           context,
-          data,
-          labels: this.labels,
-          noun,
-          verb,
         }, 'confirm', 'please confirm', this)];
       case 'ElicitSlot':
-        if (!isString(post.slotToElicit)) {
-          this.logger.warn({ body }, 'lex parsed message without slot to elicit');
-          return [];
-        }
         return [createCompletion({
+          ...response,
           context,
-          data,
-          labels: this.labels,
-          noun,
-          verb,
-        }, post.slotToElicit, 'missing field', this)];
+        }, mustExist(post.slotToElicit), 'missing field', this)];
       case 'ReadyForFulfillment':
-        return this.createReply(context, noun, verb, data);
+        return this.createReply(context, response.noun, response.verb, dictToMap(response.data));
       default:
         this.logger.warn({ post }, 'unsupported dialog state');
         return [];
@@ -155,5 +131,37 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
         }
       });
     });
+  }
+
+  protected validateResponse(post: AWS.LexRuntime.PostTextResponse): CommandOptions {
+    if (!isString(post.dialogState) || post.dialogState === '') {
+      const msg = 'lex parsed message without state';
+      this.logger.warn({ context, post }, msg);
+      throw new MissingValueError(msg);
+    }
+
+    if (!isString(post.intentName) || post.intentName === '') {
+      const msg = 'lex parsed message without intent';
+      this.logger.warn({ context, post }, msg);
+      throw new MissingValueError(msg);
+    }
+
+    if (post.dialogState === 'ElicitSlot' && !isString(post.slotToElicit)) {
+      const msg = 'lex parsed message without slot to elicit';
+      this.logger.warn({ context, post }, msg);
+      throw new MissingValueError(msg);
+    }
+
+    const [intent, intentVerb] = post.intentName.split('_');
+    const noun = kebabCase(intent);
+    const verb = intentVerb as CommandVerb;
+    const data = this.getSlots(post.slots);
+
+    return {
+      data,
+      labels: this.labels,
+      noun,
+      verb,
+    };
   }
 }
