@@ -1,4 +1,3 @@
-import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, Handler } from 'src/controller';
@@ -6,6 +5,7 @@ import { BaseControllerOptions } from 'src/controller/BaseController';
 import { KubernetesBaseController, KubernetesBaseControllerData } from 'src/controller/kubernetes/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { mustExist } from 'src/utils';
+import { AppsClient } from 'src/utils/kubernetes/AppsClient';
 
 export const NOUN_DAEMONSET = 'kubernetes-daemonset';
 export const NOUN_DEPLOYMENT = 'kubernetes-deployment';
@@ -21,7 +21,7 @@ export type AppsControllerOptions = BaseControllerOptions<AppsControllerData>;
 
 @Inject()
 export class KubernetesAppsController extends KubernetesBaseController<AppsControllerData> implements Controller {
-  protected client?: k8s.Apps_v1Api;
+  protected client?: AppsClient;
 
   constructor(options: AppsControllerOptions) {
     super(options, 'isolex#/definitions/service-controller-kubernetes-apps', [
@@ -35,7 +35,7 @@ export class KubernetesAppsController extends KubernetesBaseController<AppsContr
     await super.start();
 
     const config = await this.loadConfig();
-    this.client = config.makeApiClient(k8s.Apps_v1Api);
+    this.client = config.makeApiClient(AppsClient);
   }
 
   @Handler(NOUN_DAEMONSET, CommandVerb.List)
@@ -60,6 +60,24 @@ export class KubernetesAppsController extends KubernetesBaseController<AppsContr
     return this.transformJSON(cmd, response.body.items);
   }
 
+  @Handler(NOUN_DEPLOYMENT, CommandVerb.Update)
+  @CheckRBAC()
+  public async updateDeploys(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
+    const name = cmd.getHead('name');
+    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
+    const replicas = cmd.getHeadOrNumber('replicas', 1);
+
+    this.logger.debug({ cmd, name, ns, replicas }, 'scaling k8s deployments');
+
+    const response = await client.patchNamespacedDeploymentScale(name, ns, {
+      spec: {
+        replicas,
+      },
+    });
+    return this.transformJSON(cmd, response.body.status);
+  }
+
   @Handler(NOUN_STATEFULSET, CommandVerb.List)
   @CheckRBAC()
   public async listStatefuls(cmd: Command): Promise<void> {
@@ -69,5 +87,23 @@ export class KubernetesAppsController extends KubernetesBaseController<AppsContr
 
     const response = await client.listNamespacedStatefulSet(ns);
     return this.transformJSON(cmd, response.body.items);
+  }
+
+  @Handler(NOUN_STATEFULSET, CommandVerb.Update)
+  @CheckRBAC()
+  public async updateStateful(cmd: Command): Promise<void> {
+    const client = mustExist(this.client);
+    const name = cmd.getHead('name');
+    const ns = cmd.getHeadOrDefault('ns', this.data.default.namespace);
+    const replicas = cmd.getHeadOrNumber('replicas', 1);
+
+    this.logger.debug({ cmd, name, ns, replicas }, 'scaling k8s stateful sets');
+
+    const response = await client.patchNamespacedStatefulSetScale(name, ns, {
+      spec: {
+        replicas,
+      },
+    });
+    return this.transformJSON(cmd, response.body.status);
   }
 }

@@ -20,8 +20,37 @@ data:
   transforms:
     - metadata:
         kind: template-transform
-        name: k8s_deployment_names
+        name: k8s_deployment_scale
       data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: test-k8s-app-scale
+            data:
+              match:
+                rules:
+                  - key: verb
+                    operator: any
+                    values:
+                      - string: update
+        templates:
+          body: >-
+            {{ data.selector }}: {{ data.replicas }}
+    - metadata:
+        kind: template-transform
+        name: k8s_deployment_list
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: test-k8s-app-list
+            data:
+              match:
+                rules:
+                  - key: verb
+                    operator: any
+                    values:
+                      - string: list
         templates:
           body: >-
             {{#each data}}
