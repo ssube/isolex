@@ -52,12 +52,6 @@ export class Match {
     const data = mapToDict<unknown>(val);
 
     for (const rule of this.rules) {
-      if (!has(data, rule.key)) {
-        results.errors.push(rule.key);
-        results.matched = false;
-        continue;
-      }
-
       const value = get(data, rule.key);
       if (!isString(value)) {
         results.errors.push(rule.key);
