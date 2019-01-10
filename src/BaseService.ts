@@ -29,9 +29,6 @@ export const INJECT_SCHEMA = Symbol('inject-schema');
 export const INJECT_SERVICES = Symbol('inject-services');
 export const INJECT_TEMPLATE = Symbol('inject-template');
 
-/**
- * TODO: these should be optional and must be included in the decorator to be available
- */
 export interface InjectedServiceOptions {
   [INJECT_CLOCK]?: Clock;
   [INJECT_JSONPATH]?: JsonPath;
