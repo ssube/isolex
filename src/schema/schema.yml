@@ -157,12 +157,12 @@ definitions:
         items:
           $ref: "#/definitions/service-definition"
       locale:
-        type: object
-        required: [lang]
-        properties:
-          lang:
-            default: en
-            type: string
+        allOf:
+          - $ref: "#/definitions/service-definition"
+          - type: object
+            properties:
+              data:
+                $ref: "#/definitions/service-locale"
       logger:
         type: object
         required: [level, name]
@@ -176,22 +176,38 @@ definitions:
         items:
           $ref: "#/definitions/service-definition"
       storage:
+        allOf:
+          - $ref: "#/definitions/service-definition"
+          - type: object
+            properties:
+              data:
+                $ref: "#/definitions/service-storage"
+
+  service-locale:
+    type: object
+    required: [lang]
+    properties:
+      lang:
+        default: en
+        type: string
+ 
+  service-storage:
+    type: object
+    additionalProperties: false
+    required: [migrate, orm]
+    properties:
+      migrate:
+        type: boolean
+        default: false
+      orm:
         type: object
         additionalProperties: false
-        required: [migrate, orm]
+        required: [database, type]
         properties:
-          migrate:
-            type: boolean
-            default: false
-          orm:
-            type: object
-            additionalProperties: false
-            required: [database, type]
-            properties:
-              database:
-                type: string
-              type:
-                type: string
+          database:
+            type: string
+          type:
+            type: string
 
   service-controller:
     allOf:

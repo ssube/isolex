@@ -6,7 +6,6 @@ import { Registry } from 'prom-client';
 import * as uuid from 'uuid/v4';
 
 import { SchemaError } from 'src/error/SchemaError';
-import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Schema } from 'src/schema';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
@@ -41,10 +40,7 @@ export interface InjectedServiceOptions {
   [INJECT_TEMPLATE]?: TemplateCompiler;
 }
 
-export interface BaseServiceData {
-  filters: Array<ServiceDefinition<FilterData>>;
-  strict: boolean;
-}
+export type BaseServiceData = any;
 
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
@@ -56,7 +52,6 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
   public readonly name: string;
 
   protected readonly data: Readonly<TData>;
-  protected readonly filters: Array<Filter>;
   protected readonly logger: Logger;
   protected readonly services: ServiceModule;
 
@@ -67,7 +62,6 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     this.name = options.metadata.name;
 
     this.data = options.data;
-    this.filters = [];
     this.services = mustExist(options[INJECT_SERVICES]);
 
     // check this, because bunyan will throw if it is missing
@@ -91,18 +85,8 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     this.logger.debug({ event }, 'service notified of event');
   }
 
-  public async start() {
-    const filters = this.data.filters;
-    this.logger.info('setting up filters');
-    for (const def of filters) {
-      const filter = await this.services.createService<Filter, FilterData>(def);
-      this.filters.push(filter);
-    }
-  }
-
-  public async stop() {
-    this.filters.length = 0;
-  }
+  public abstract start(): Promise<void>;
+  public abstract stop(): Promise<void>;
 
   protected getId(persistent: boolean = false): string {
     if (persistent) {
@@ -110,18 +94,5 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     } else {
       return this.id;
     }
-  }
-
-  protected async checkFilters(value: FilterValue, filters: Array<Filter>): Promise<boolean> {
-    for (const filter of filters) {
-      const result = await filter.check(value);
-      this.logger.debug({ result }, 'checked filter');
-
-      if (!checkFilter(result, this.data.strict)) {
-        return false;
-      }
-    }
-
-    return true;
   }
 }

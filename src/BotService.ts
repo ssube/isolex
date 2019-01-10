@@ -3,12 +3,16 @@ import { Inject } from 'noicejs';
 import { BaseService, BaseServiceData, BaseServiceOptions, INJECT_SERVICES } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { Context } from 'src/entity/Context';
+import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter';
 import { Locale } from 'src/locale';
-import { Service } from 'src/Service';
+import { Service, ServiceDefinition } from 'src/Service';
+import { Storage } from 'src/storage';
 import { mustExist } from 'src/utils';
-import { Storage } from 'src/utils/Storage';
 
-export type BotServiceData = BaseServiceData;
+export interface BotServiceData extends BaseServiceData {
+  filters: Array<ServiceDefinition<FilterData>>;
+  strict: boolean;
+}
 
 export const INJECT_BOT = Symbol('inject-bot');
 export const INJECT_LOCALE = Symbol('inject-locale');
@@ -29,12 +33,40 @@ export interface BotServiceOptions<TData extends BotServiceData> extends BaseSer
  */
 @Inject(INJECT_BOT, INJECT_SERVICES)
 export abstract class BotService<TData extends BotServiceData> extends BaseService<TData> implements Service {
-  public readonly bot: Bot;
+  protected readonly bot: Bot;
+  protected readonly filters: Array<Filter>;
 
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.bot = mustExist(options[INJECT_BOT]);
+    this.filters = [];
+  }
+
+  public async start() {
+    const filters = this.data.filters;
+    this.logger.info('setting up filters');
+    for (const def of filters) {
+      const filter = await this.services.createService<Filter, FilterData>(def);
+      this.filters.push(filter);
+    }
+  }
+
+  public async stop() {
+    this.filters.length = 0;
+  }
+
+  protected async checkFilters(value: FilterValue, filters: Array<Filter>): Promise<boolean> {
+    for (const filter of filters) {
+      const result = await filter.check(value);
+      this.logger.debug({ result }, 'checked filter');
+
+      if (!checkFilter(result, this.data.strict)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   /**

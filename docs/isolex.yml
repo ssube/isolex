@@ -41,7 +41,11 @@ data:
     - !include ../docs/listener/express-listener.yml
     - !include ../docs/listener/slack-listener.yml
   locale:
-    lang: en
+    metadata:
+      kind: locale
+      name: locale
+    data:
+      lang: en
   logger:
     level: debug
     name: isolex
@@ -58,7 +62,11 @@ data:
     - !include ../docs/parser/split-parser-sed.yml
     - !include ../docs/parser/yaml-parser.yml
   storage:
-    migrate: true
-    orm:
-      type: sqlite
-      database: "./out/isolex.db"
+    metadata:
+      kind: storage
+      name: storage
+    data:
+      migrate: true
+      orm:
+        type: sqlite
+        database: "./out/isolex.db"

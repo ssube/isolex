@@ -10,9 +10,9 @@ import { createCompletion } from 'src/controller/helpers';
 import { Token } from 'src/entity/auth/Token';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { Storage } from 'src/storage';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
-import { Storage } from 'src/utils/Storage';
 
 export const NOUN_TOKEN = 'token';
 

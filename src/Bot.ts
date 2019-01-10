@@ -21,9 +21,9 @@ import { Locale, LocaleOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
+import { Storage, StorageData } from 'src/storage';
 import { filterNil, mustExist, mustFind } from 'src/utils';
 import { incrementServiceCounter } from 'src/utils/metrics';
-import { Storage, StorageData } from 'src/utils/Storage';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
@@ -114,7 +114,6 @@ export class Bot extends BaseService<BotData> implements Service {
    * Set up the async resources that cannot be created in the constructor: filters, controllers, parsers, etc
    */
   public async start() {
-    await super.start();
     this.logger.info('starting bot');
 
     const streamError = (err: Error) => {
@@ -152,11 +151,6 @@ export class Bot extends BaseService<BotData> implements Service {
   public async receive(msg: Message): Promise<Array<Command>> {
     this.logger.debug({ msg }, 'received incoming message');
 
-    if (!await this.checkFilters(msg, this.filters)) {
-      this.logger.warn({ msg }, 'dropped incoming message due to filters');
-      return [];
-    }
-
     const commands = await this.parseMessage(msg);
     if (commands.length === 0) {
       this.logger.debug({ msg }, 'incoming message did not produce any commands');
@@ -169,19 +163,7 @@ export class Bot extends BaseService<BotData> implements Service {
    */
   public async fetch(options: ContextFetchOptions) {
     const listener = mustFind(this.listeners, (it) => it.id === options.listenerId);
-    const messages = await listener.fetch(options);
-    if (!options.useFilters) {
-      return messages;
-    }
-
-    const filtered: Array<Message> = [];
-    for (const message of messages) {
-      if (await this.checkFilters(message, this.filters)) {
-        filtered.push(message);
-      }
-    }
-
-    return filtered;
+    return listener.fetch(options);
   }
 
   /**
@@ -220,11 +202,6 @@ export class Bot extends BaseService<BotData> implements Service {
       commandVerb: cmd.verb,
     });
 
-    if (!await this.checkFilters(cmd, this.filters)) {
-      this.logger.warn({ cmd }, 'dropped command due to filters');
-      return;
-    }
-
     for (const h of this.controllers) {
       if (await h.check(cmd)) {
         await h.handle(cmd);
@@ -243,11 +220,6 @@ export class Bot extends BaseService<BotData> implements Service {
     incrementServiceCounter(this, mustExist(this.msgCounter), {
       messageType: msg.type,
     });
-
-    if (!await this.checkFilters(msg, this.filters)) {
-      this.logger.warn({ msg }, 'dropped outgoing message due to filters');
-      return;
-    }
 
     const context = mustExist(msg.context);
     if (isNil(context.target)) {
@@ -345,17 +317,13 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async startLocale() {
     this.logger.info('starting localization');
-    this.locale = await this.container.create(Locale, {
-      data: this.data.locale,
-    });
+    this.locale = await this.container.create(Locale, this.data.locale);
     return this.locale.start();
   }
 
   protected async startStorage() {
     this.logger.info('starting storage');
-    this.storage = await this.container.create(Storage, {
-      data: this.data.storage,
-    });
+    this.storage = await this.container.create(Storage, this.data.storage);
     return this.storage.start();
   }
 

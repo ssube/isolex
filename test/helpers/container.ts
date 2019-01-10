@@ -53,27 +53,36 @@ export async function createService<
   type: Constructor<TService, TOptions>,
   options: Partial<TOptions>,
 ): Promise<TService> {
+  const services = ineeda<ServiceModule>({
+      createService: (def: ServiceDefinition<TData>) => container.create(def.metadata.kind, def),
+    });
+  const schema = new Schema(); // tests use the real schema :D
+  const locale = await container.create(Locale, {
+    data: {
+      lang: 'en',
+    },
+    metadata: {
+      kind: 'locale',
+      name: 'locale',
+    },
+    [INJECT_LOGGER]: ConsoleLogger.global,
+    [INJECT_SCHEMA]: schema,
+    [INJECT_SERVICES]: services,
+  });
+
   const fullOptions = {
     [INJECT_BOT]: ineeda<Bot>(),
     [INJECT_CLOCK]: ineeda<Clock>(),
     [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
       compile: () => ineeda<Template>(),
     }),
-    container,
-    [INJECT_LOCALE]: new Locale({
-      container,
-      data: {
-        lang: 'en',
-      },
-      [INJECT_LOGGER]: ConsoleLogger.global,
-    }),
+    [INJECT_LOCALE]: locale,
     [INJECT_LOGGER]: ConsoleLogger.global,
     [INJECT_METRICS]: new Registry(),
-    [INJECT_SCHEMA]: new Schema(), // tests use the real schema :D
-    [INJECT_SERVICES]: ineeda<ServiceModule>({
-      createService: (def: ServiceDefinition<TData>) => container.create(def.metadata.kind, def),
-    }),
+    [INJECT_SCHEMA]: schema,
+    [INJECT_SERVICES]: services,
     [INJECT_STORAGE]: ineeda<Connection>(),
+    container,
     ...options,
   };
 

@@ -13,9 +13,9 @@ import { User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { Storage } from 'src/storage';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
-import { Storage } from 'src/utils/Storage';
 
 export const NOUN_GRANT = 'grant';
 export const NOUN_ACCOUNT = 'account';

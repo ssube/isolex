@@ -1,8 +1,7 @@
 import { Container, Inject, Logger } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
-import { INJECT_LOGGER } from 'src/BaseService';
+import { BaseService, BaseServiceOptions, INJECT_LOGGER } from 'src/BaseService';
 import { ServiceLifecycle } from 'src/Service';
 import { mustExist } from 'src/utils';
 import { classLogger } from 'src/utils/logger';
@@ -13,21 +12,21 @@ export interface StorageData {
   orm: ConnectionOptions;
 }
 
-export interface StorageOptions extends BaseOptions {
+export interface StorageOptions extends BaseServiceOptions<StorageData> {
   [INJECT_LOGGER]: Logger;
   data: StorageData;
 }
 
 @Inject(INJECT_LOGGER)
-export class Storage implements ServiceLifecycle {
+export class Storage extends BaseService<StorageData> implements ServiceLifecycle {
   protected connection?: Connection;
   protected container: Container;
-  protected data: StorageData;
   protected logger: Logger;
 
   constructor(options: StorageOptions) {
+    super(options, 'isolex#/definitions/service-storage');
+
     this.container = options.container;
-    this.data = options.data;
     this.logger = classLogger(options[INJECT_LOGGER], Storage);
   }
 

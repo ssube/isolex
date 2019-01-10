@@ -1,8 +1,8 @@
 import { Module, ModuleOptions, Provides } from 'noicejs';
 import { Container } from 'noicejs/Container';
 
-import { BaseServiceData, INJECT_LOGGER, INJECT_SERVICES } from 'src/BaseService';
-import { BotServiceOptions } from 'src/BotService';
+import { INJECT_LOGGER, INJECT_SERVICES } from 'src/BaseService';
+import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
 import { mustExist } from 'src/utils';
@@ -67,7 +67,7 @@ export class ServiceModule extends Module implements ServiceLifecycle {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  public async createService<TService extends Service, TData extends BaseServiceData>(conf: ServiceDefinition<TData>): Promise<TService> {
+  public async createService<TService extends Service, TData extends BotServiceData>(conf: ServiceDefinition<TData>): Promise<TService> {
     const container = mustExist(this.container);
 
     const { metadata: { kind, name } } = conf;

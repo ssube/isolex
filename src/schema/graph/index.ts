@@ -11,9 +11,9 @@ import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageEntityOption
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
+import { Storage } from 'src/storage';
 import { mustExist } from 'src/utils';
 import { dictToMap } from 'src/utils/Map';
-import { Storage } from 'src/utils/Storage';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);

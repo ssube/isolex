@@ -18,12 +18,12 @@ import { Locale } from 'src/locale';
 import { BaseModule } from 'src/module/BaseModule';
 import { Schema } from 'src/schema';
 import { GraphSchema } from 'src/schema/graph';
+import { Storage } from 'src/storage';
 import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
-import { Storage } from 'src/utils/Storage';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 export interface BotModuleOptions {

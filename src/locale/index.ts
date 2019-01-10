@@ -1,8 +1,7 @@
 import i18next from 'i18next';
 import { Container, Inject, Logger } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
 
-import { INJECT_LOGGER } from 'src/BaseService';
+import { BaseService, BaseServiceOptions, INJECT_LOGGER } from 'src/BaseService';
 import { ServiceLifecycle } from 'src/Service';
 import { mustExist } from 'src/utils';
 import { classLogger } from 'src/utils/logger';
@@ -12,7 +11,7 @@ export interface LocaleData {
   lang: string;
 }
 
-export interface LocaleOptions extends BaseOptions {
+export interface LocaleOptions extends BaseServiceOptions<LocaleData> {
   [INJECT_LOGGER]: Logger;
   data: LocaleData;
 }
@@ -20,13 +19,16 @@ export interface LocaleOptions extends BaseOptions {
 export type TranslateOptions = i18next.TranslationOptions;
 
 @Inject(INJECT_LOGGER)
-export class Locale implements ServiceLifecycle {
+export class Locale extends BaseService<LocaleData> implements ServiceLifecycle {
   protected readonly container: Container;
   protected readonly data: LocaleData;
   protected readonly logger: Logger;
+
   protected translator?: i18next.TranslationFunction;
 
   constructor(options: LocaleOptions) {
+    super(options, 'isolex#/definitions/service-locale');
+
     this.container = options.container;
     this.data = options.data;
     this.logger = classLogger(options[INJECT_LOGGER], Locale);

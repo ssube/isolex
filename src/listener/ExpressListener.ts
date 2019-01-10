@@ -18,8 +18,8 @@ import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
+import { Storage } from 'src/storage';
 import { doesExist, mustExist } from 'src/utils';
-import { Storage } from 'src/utils/Storage';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
