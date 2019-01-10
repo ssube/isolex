@@ -35,6 +35,9 @@ export interface BotData extends BaseServiceData {
     name: string;
   };
   parsers: Array<ServiceDefinition<ParserData>>;
+  services: {
+    timeout: number;
+  };
   storage: StorageData;
 }
 

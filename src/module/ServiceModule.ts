@@ -9,19 +9,24 @@ import { mustExist } from 'src/utils';
 import { timeout } from 'src/utils/Async';
 import { mustGet } from 'src/utils/Map';
 
-const SERVICE_TIMEOUT = 5_000;
+export interface ServiceModuleData {
+  timeout: number;
+}
 
 /**
  * This is a magical half-module service locator
  */
 
 export class ServiceModule extends Module implements ServiceLifecycle {
-  protected container?: Container;
-  protected services: Map<string, Service>;
+  protected readonly data: ServiceModuleData;
+  protected readonly services: Map<string, Service>;
 
-  constructor() {
+  protected container?: Container;
+
+  constructor(data: ServiceModuleData) {
     super();
 
+    this.data = data;
     this.services = new Map();
   }
 
@@ -38,7 +43,7 @@ export class ServiceModule extends Module implements ServiceLifecycle {
   public async start() {
     for (const svc of this.services.values()) {
       try {
-        await timeout(SERVICE_TIMEOUT, svc.start());
+        await timeout(this.data.timeout, svc.start());
       } catch (err) {
         this.logger.error({ err }, 'error starting service');
       }

@@ -142,7 +142,7 @@ definitions:
 
   service-bot:
     type: object
-    required: [controllers, filters, listeners, locale, logger, parsers, storage]
+    required: [controllers, filters, listeners, locale, logger, parsers, services, storage]
     properties:
       controllers:
         type: array
@@ -175,6 +175,13 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/service-definition"
+      services:
+        type: object
+        additionalProperties: false
+        required: [timeout]
+        properties:
+          timeout:
+            type: number
       storage:
         allOf:
           - $ref: "#/definitions/service-definition"

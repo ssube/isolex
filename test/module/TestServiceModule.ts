@@ -17,7 +17,9 @@ async function createModule() {
   };
   const testSvc = ineeda<Service>(metadata);
 
-  const module = new ServiceModule();
+  const module = new ServiceModule({
+    timeout: 100,
+  });
   module.bind(TEST_SERVICE_NAME).toInstance(testSvc);
 
   const { container } = await createContainer(module);

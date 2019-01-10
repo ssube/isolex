@@ -41,7 +41,6 @@ const MAIN_MODULES = [
   ListenerModule,
   MigrationModule,
   ParserModule,
-  ServiceModule,
   TransformModule,
 ];
 
@@ -75,9 +74,10 @@ sourceMapSupport.install({
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
-function createModules(botModule: BotModule) {
+function createModules(botModule: BotModule, svcModule: ServiceModule) {
   const modules: Array<Module> = [
     botModule,
+    svcModule,
   ];
 
   for (const m of MAIN_MODULES) {
@@ -132,7 +132,8 @@ async function main(argv: Array<string>): Promise<number> {
   }
 
   const botModule = new BotModule({ logger });
-  const ctr = Container.from(...createModules(botModule));
+  const svcModule = new ServiceModule(config.data.services);
+  const ctr = Container.from(...createModules(botModule, svcModule));
   logger.info('configuring container');
   await ctr.configure({ logger });
 

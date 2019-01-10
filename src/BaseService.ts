@@ -40,6 +40,7 @@ export interface InjectedServiceOptions {
   [INJECT_TEMPLATE]?: TemplateCompiler;
 }
 
+// tslint:disable-next-line:no-any
 export type BaseServiceData = any;
 
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;

@@ -35,7 +35,9 @@ describeAsync('echo controller', async () => {
   });
 
   itAsync('should handle commands', async () => {
-    const modules = [new ServiceModule(), new TransformModule()];
+    const modules = [new ServiceModule({
+      timeout: 100,
+    }), new TransformModule()];
     const { container, module } = await createContainer(...modules);
 
     const msg = 'hello world';

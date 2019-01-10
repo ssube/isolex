@@ -61,6 +61,8 @@ data:
     - !include ../docs/parser/split-parser-math.yml
     - !include ../docs/parser/split-parser-sed.yml
     - !include ../docs/parser/yaml-parser.yml
+  services:
+    timeout: 5000
   storage:
     metadata:
       kind: storage
