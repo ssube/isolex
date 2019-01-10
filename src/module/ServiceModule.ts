@@ -6,7 +6,10 @@ import { BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
 import { mustExist } from 'src/utils';
+import { timeout } from 'src/utils/Async';
 import { mustGet } from 'src/utils/Map';
+
+const SERVICE_TIMEOUT = 5_000;
 
 /**
  * This is a magical half-module service locator
@@ -34,7 +37,11 @@ export class ServiceModule extends Module implements ServiceLifecycle {
 
   public async start() {
     for (const svc of this.services.values()) {
-      await svc.start();
+      try {
+        await timeout(SERVICE_TIMEOUT, svc.start());
+      } catch (err) {
+        this.logger.error({ err }, 'error starting service');
+      }
     }
   }
 
