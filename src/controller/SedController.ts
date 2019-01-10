@@ -63,7 +63,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     }
 
     const ctx = mustExist(command.context);
-    const [_, pattern, replacement, flags] = parts;
+    const [/* input */, pattern, replacement, flags] = parts;
     const expr = new RegExp(pattern, flags);
     if (expr.test(message.body)) {
       const body = message.body.replace(expr, replacement);

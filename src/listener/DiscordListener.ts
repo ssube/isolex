@@ -114,7 +114,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     // transform the options into https://discord.js.org/#/docs/main/stable/typedef/ChannelLogsQueryOptions
     const queryOptions = this.convertQueryOptions(options);
     const messages = [];
-    for (const [_, msg] of await channel.fetchMessages(queryOptions)) {
+    for (const [/* key */, msg] of await channel.fetchMessages(queryOptions)) {
       messages.push(this.convertMessage(msg));
     }
 

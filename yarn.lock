@@ -296,7 +296,7 @@
   version "9.12.3"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
 
-"@types/i18next@^12.1.0":
+"@types/i18next@12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-12.1.0.tgz#7c3fd3dbe03f9531147033773bbd0ca4f474a180"
 
@@ -837,7 +837,6 @@ awesome-typescript-loader@5.2:
 aws-sdk@2.385.0:
   version "2.385.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.385.0.tgz#0b773bbf0e317cb2fe3fadb97540fe15bdeee133"
-  integrity sha512-ensf8QVbFdHQYLwhHgkH0FpE7nVxDl1SYJMM09p7neveW48rxQEwSOi/BmXDuI2/xsm7aHASUEZqK6zzeEx77g==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -2731,7 +2730,7 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
 
-i18next@^13.1.0:
+i18next@13.1.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.0.tgz#d8656bbc53216ffcd428364fbfb75f75647846a5"
 
@@ -5429,7 +5428,7 @@ tslint-clean-code@0.2.9:
     memoize-decorator "^1.0.2"
     tsutils "2.7.1"
 
-tslint-consistent-codestyle@~1.15.0:
+tslint-consistent-codestyle@1.15.0:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/tslint-consistent-codestyle/-/tslint-consistent-codestyle-1.15.0.tgz#a3acf8d0a3ca0dc7d1285705102ba1fe4a17c4cb"
   dependencies:

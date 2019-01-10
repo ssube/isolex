@@ -257,6 +257,13 @@ Destructuring MUST NOT be nested.
 
 Default values SHOULD be used instead `||`. For example, `const { foo = 3 } = bar;` over `const foo = bar.foo || 3;`.
 
+When destructuring an array and skipping elements, the missing elements MUST have comments with a descriptive name (if
+one exists) or an underscore. For example:
+
+```typescript
+const [/* input */, foo, bar] = /(a)(b)/.exec('ab');
+```
+
 ### Entities
 
 Always provide the table name as an exported constant and use it in `@Entity(TABLE_FOO)` and the migrations.

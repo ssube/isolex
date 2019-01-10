@@ -1,4 +1,4 @@
-import { BotServiceData, BotServiceOptions } from 'src/BotService';
+import { BotServiceData } from 'src/BotService';
 import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
