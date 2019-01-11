@@ -647,8 +647,15 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
-        required: [token]
+        required: [fetch, token]
         properties:
+          fetch:
+            type: object
+            additionalProperties: false
+            required: [window]
+            properties:
+              window:
+                type: number
           token:
             type: object
             additionalProperties: false

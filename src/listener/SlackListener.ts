@@ -1,4 +1,4 @@
-import { RTMClient, WebAPICallResult, WebClient } from '@slack/client';
+import { LogLevel, RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
@@ -7,13 +7,15 @@ import { INJECT_CLOCK } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { Message } from 'src/entity/Message';
 import { NotFoundError } from 'src/error/NotFoundError';
-import { NotImplementedError } from 'src/error/NotImplementedError';
-import { Listener, ListenerData } from 'src/listener';
+import { FetchOptions, Listener, ListenerData } from 'src/listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { doesExist, mustExist } from 'src/utils';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SlackListenerData extends ListenerData {
+  fetch: {
+    window: number;
+  };
   token: {
     bot: string;
     web: string;
@@ -71,19 +73,34 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     this.logger.error('could not find destination in message context');
   }
 
-  public async fetch(): Promise<Array<Message>> {
-    throw new NotImplementedError('slack listener cannot fetch specific messages yet');
+  public async fetch(options: FetchOptions): Promise<Array<Message>> {
+    const client = mustExist(this.webClient);
+    const latest = this.clock.getSeconds();
+    const oldest = latest - this.data.fetch.window;
+    const search = await client.channels.history({
+      channel: mustExist(options.channel),
+      inclusive: true,
+      latest: latest.toString(),
+      oldest: oldest.toString(),
+    }) as SlackSearchResults;
+
+    if (!search.ok) {
+      throw new NotFoundError('message not found for reaction');
+    }
+
+    const messages = await Promise.all(search.messages.map((msg) => this.convertMessage(msg)));
+    this.logger.debug({ messages }, 'fetched slack messages');
+    return messages;
   }
 
   public async start() {
     await super.start();
 
-    this.client = new RTMClient(this.data.token.bot, {
-      logger: (level, msg) => {
-        logWithLevel(this.logger, level, { msg }, 'slack client logged message');
-      },
-    });
-    this.webClient = new WebClient(this.data.token.web);
+    const logger = (level: LogLevel, msg: string) => {
+      logWithLevel(this.logger, level, { msg }, 'slack client logged message');
+    };
+    this.client = new RTMClient(this.data.token.bot, { logger });
+    this.webClient = new WebClient(this.data.token.web, { logger });
 
     this.client.on('message', (msg) => {
       this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {

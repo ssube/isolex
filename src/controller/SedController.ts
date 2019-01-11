@@ -47,8 +47,8 @@ export class SedController extends BaseController<SedControllerData> implements 
       }
 
       return this.reply(ctx, this.translate('create.missing'));
-    } catch (error) {
-      this.logger.error('Failed to fetch messages.');
+    } catch (err) {
+      this.logger.error(err, 'Failed to fetch messages.');
     }
   }
 
@@ -58,7 +58,7 @@ export class SedController extends BaseController<SedControllerData> implements 
   }
 
   private async processMessage(message: Message, command: Command, parts: RegExpMatchArray): Promise<boolean> {
-    if (doesExist(message.context) && doesExist(command.context) && message.context.channel.thread === command.context.channel.thread) {
+    if (doesExist(message.context) && doesExist(command.context) && message.context.channel.thread !== command.context.channel.thread) {
       return false;
     }
 

@@ -5,8 +5,8 @@ import { Session } from 'src/entity/Session';
 import { Service } from 'src/Service';
 
 export interface FetchOptions {
-  after?: boolean;
-  before?: boolean;
+  after?: number;
+  before?: number;
   channel: string;
   count?: number;
   id?: string;
