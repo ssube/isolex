@@ -1,6 +1,7 @@
 import { ModuleOptions } from 'noicejs/Module';
 
 import { AccountController } from 'src/controller/AccountController';
+import { BotController } from 'src/controller/BotController';
 import { CompletionController } from 'src/controller/CompletionController';
 import { CountController } from 'src/controller/CountController';
 import { DiceController } from 'src/controller/DiceController';
@@ -28,6 +29,7 @@ export class ControllerModule extends BaseModule {
 
     // controllers
     this.bindService(AccountController);
+    this.bindService(BotController);
     this.bindService(CompletionController);
     this.bindService(CountController);
     this.bindService(DiceController);

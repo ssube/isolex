@@ -1,0 +1,22 @@
+metadata:
+  kind: bot-controller
+  name: default-bot
+data:
+  filters: []
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: default-bot-template
+      data:
+        templates:
+          body: >-
+            {{#each data}}
+              {{key}}: {{noun}}
+            {{/each}}
+    - metadata:
+        kind: flatten-transform
+        name: default-bot-flatten
+      data:
+        deep: false
+        join: ''
+        keys: [$.data.body]

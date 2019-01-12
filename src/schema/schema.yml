@@ -279,6 +279,9 @@ definitions:
               secret:
                 type: string
 
+  service-controller-bot:
+    $ref: "#/definitions/service-controller"
+
   service-controller-completion:
     allOf:
       - $ref: "#/definitions/service-controller"

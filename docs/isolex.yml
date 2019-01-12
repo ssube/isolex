@@ -16,6 +16,7 @@ data:
             - isolex-test
   controllers:
     - !include ../docs/controller/account-controller.yml
+    - !include ../docs/controller/bot-controller.yml
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/dice-controller.yml
     - !include ../docs/controller/github/pr-controller.yml
