@@ -442,6 +442,27 @@ definitions:
   service-controller-random:
     $ref: "#/definitions/service-controller"
 
+  service-controller-reaction:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        properties:
+          reactions:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              required: [add, chance, match]
+              properties:
+                add:
+                  type: array
+                  items:
+                    type: string
+                chance:
+                  type: number
+                match:
+                  $ref: "#/definitions/match-data"
+
   service-controller-search:
     allOf:
       - $ref: "#/definitions/service-controller"

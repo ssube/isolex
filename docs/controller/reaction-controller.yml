@@ -1,0 +1,13 @@
+metadata:
+  kind: reaction-controller
+  name: default-reaction
+data:
+  reactions:
+    - chance: 0.5
+      match:
+        rules:
+          - key: body
+            operator: any
+            values:
+              - regexp: !regexp /maple/
+      add: [":maple_leaf:"]

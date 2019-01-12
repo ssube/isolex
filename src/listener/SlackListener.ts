@@ -1,6 +1,7 @@
 import { LogLevel, RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import * as escape from 'escape-html';
 import { isNil } from 'lodash';
+import { find as findEmoji } from 'node-emoji';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
 import { INJECT_CLOCK } from 'src/BaseService';
@@ -48,7 +49,7 @@ export interface SlackSearchResults extends WebAPICallResult {
 
 @Inject(INJECT_CLOCK)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
-  protected client?: RTMClient;
+  protected rtmClient?: RTMClient;
   protected webClient?: WebClient;
 
   constructor(options: BotServiceOptions<SlackListenerData>) {
@@ -56,21 +57,15 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async send(msg: Message): Promise<void> {
-    const client = mustExist(this.client);
-    const ctx = mustExist(msg.context);
-
-    if (doesExist(ctx.channel.id)) {
-      const result = await client.sendMessage(escape(msg.body), ctx.channel.id);
-      if (doesExist(result.error)) {
-        const err = new BaseError(result.error.msg);
-        this.logger.error(err, 'error sending slack message');
-        throw err;
-      }
-      return;
+    if (msg.reactions.length > 0) {
+      await this.sendReactions(msg);
     }
 
-    // fail
-    this.logger.error('could not find destination in message context');
+    if (msg.body !== '') {
+      return this.sendText(msg);
+    }
+
+    this.logger.warn({ msg }, 'unsupported message type, unable to send');
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
@@ -99,26 +94,63 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const logger = (level: LogLevel, msg: string) => {
       logWithLevel(this.logger, level, { msg }, 'slack client logged message');
     };
-    this.client = new RTMClient(this.data.token.bot, { logger });
+    this.rtmClient = new RTMClient(this.data.token.bot, { logger });
     this.webClient = new WebClient(this.data.token.web, { logger });
 
-    this.client.on('message', (msg) => {
+    this.rtmClient.on('message', (msg) => {
       this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
         this.logger.error(err, 'error receiving message');
       });
     });
 
-    this.client.on('reaction_added', (reaction) => {
+    this.rtmClient.on('reaction_added', (reaction) => {
       this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => {
         this.logger.error(err, 'error adding reaction');
       });
     });
 
-    await this.client.start();
+    await this.rtmClient.start();
   }
 
   public async stop() {
-    await mustExist(this.client).disconnect();
+    await mustExist(this.rtmClient).disconnect();
+  }
+
+  protected async sendReactions(msg: Message): Promise<void> {
+    const ctx = mustExist(msg.context);
+    const web = mustExist(this.webClient);
+
+    for (const reaction of msg.reactions) {
+      const result = findEmoji(reaction);
+
+      if (doesExist(result)) {
+        await web.reactions.add({
+          channel: ctx.channel.id,
+          name: result.key,
+          timestamp: ctx.channel.thread,
+        });
+      } else {
+        this.logger.warn({ reaction, result }, 'unsupported reaction');
+      }
+    }
+  }
+
+  protected async sendText(msg: Message): Promise<void> {
+    const ctx = mustExist(msg.context);
+    const rtm = mustExist(this.rtmClient);
+
+    if (ctx.channel.id !== '') {
+      const result = await rtm.sendMessage(escape(msg.body), ctx.channel.id);
+      if (doesExist(result.error)) {
+        const err = new BaseError(result.error.msg);
+        this.logger.error(err, 'error sending slack message');
+        throw err;
+      }
+      return;
+    }
+
+    // fail
+    this.logger.error('message missing body or destination');
   }
 
   protected async convertReaction(reaction: SlackReaction): Promise<Message> {
@@ -149,7 +181,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const context = await this.createContext({
       channel: {
         id: channel,
-        thread: '',
+        thread: ts,
       },
       name: uid,
       uid,

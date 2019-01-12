@@ -234,7 +234,34 @@ The first argument is the number of dice to roll, the second is the number of si
 
 #### React To Message
 
-TODO: react to an existing message
+The bot can react to messages, adding emojis if the message matches a set of rules. This relies more on configuration
+than interacting with the bot while it is running.
+
+Reactions use [their own matching rules](./controller/reaction-controller.yml), and each reaction has a `chance` to
+happen. Those chances are rolled individually, so the bot may add many reactions to a single message, or none.
+
+Reactions are configured with the string or regexp to match and the emojis to be added:
+
+```yaml
+data:
+  reactions:
+    - chance: 0.5
+      match:
+        rules:
+          - key: body
+            operator: any
+            values:
+              - regexp: !regexp /maple/
+      add: [":maple:"]
+```
+
+Emojis should be supported by [node-emoji](https://www.npmjs.com/package/node-emoji).
+
+The bot rolls a random number `[0, 1)` for each message, for each reaction, and will add the listed emojis if that roll
+is greater than the `chance`. To make it very likely the bot responds, use the keyword more than once:
+
+> maple trees maple trees maple trees
+> 🍁
 
 ### Deploy
 

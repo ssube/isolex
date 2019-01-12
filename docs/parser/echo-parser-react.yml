@@ -1,0 +1,18 @@
+metadata:
+  kind: echo-parser
+  name: default-react
+data:
+  dataMapper:
+    rest: body
+    skip: 0
+    take: []
+  defaultCommand:
+    noun: reaction
+    verb: create
+  match:
+    rules:
+      - key: body
+        operator: any
+        values:
+          - regexp: !regexp /maple/
+  preferData: false
