@@ -48,7 +48,7 @@ export interface SlackSearchResults extends WebAPICallResult {
 
 @Inject(INJECT_CLOCK)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
-  protected client?: RTMClient;
+  protected rtmClient?: RTMClient;
   protected webClient?: WebClient;
 
   constructor(options: BotServiceOptions<SlackListenerData>) {
@@ -56,21 +56,32 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async send(msg: Message): Promise<void> {
-    const client = mustExist(this.client);
+    const rtm = mustExist(this.rtmClient);
+    const web = mustExist(this.webClient);
     const ctx = mustExist(msg.context);
 
-    if (doesExist(ctx.channel.id)) {
-      const result = await client.sendMessage(escape(msg.body), ctx.channel.id);
-      if (doesExist(result.error)) {
-        const err = new BaseError(result.error.msg);
-        this.logger.error(err, 'error sending slack message');
-        throw err;
-      }
-      return;
+    for (const name of msg.reactions) {
+      await web.reactions.add({
+        channel: ctx.channel.id,
+        name,
+        timestamp: ctx.channel.thread,
+      });
     }
 
-    // fail
-    this.logger.error('could not find destination in message context');
+    if (msg.body !== '') {
+      if (ctx.channel.id !== '') {
+        const result = await rtm.sendMessage(escape(msg.body), ctx.channel.id);
+        if (doesExist(result.error)) {
+          const err = new BaseError(result.error.msg);
+          this.logger.error(err, 'error sending slack message');
+          throw err;
+        }
+        return;
+      }
+
+      // fail
+      this.logger.error('message missing body or destination');
+    }
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
@@ -99,26 +110,26 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const logger = (level: LogLevel, msg: string) => {
       logWithLevel(this.logger, level, { msg }, 'slack client logged message');
     };
-    this.client = new RTMClient(this.data.token.bot, { logger });
+    this.rtmClient = new RTMClient(this.data.token.bot, { logger });
     this.webClient = new WebClient(this.data.token.web, { logger });
 
-    this.client.on('message', (msg) => {
+    this.rtmClient.on('message', (msg) => {
       this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
         this.logger.error(err, 'error receiving message');
       });
     });
 
-    this.client.on('reaction_added', (reaction) => {
+    this.rtmClient.on('reaction_added', (reaction) => {
       this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => {
         this.logger.error(err, 'error adding reaction');
       });
     });
 
-    await this.client.start();
+    await this.rtmClient.start();
   }
 
   public async stop() {
-    await mustExist(this.client).disconnect();
+    await mustExist(this.rtmClient).disconnect();
   }
 
   protected async convertReaction(reaction: SlackReaction): Promise<Message> {
@@ -149,7 +160,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const context = await this.createContext({
       channel: {
         id: channel,
-        thread: '',
+        thread: ts,
       },
       name: uid,
       uid,
