@@ -42,7 +42,7 @@ export class BotController extends BaseController<BotControllerData> implements 
   @Handler(NOUN_METRIC, CommandVerb.List)
   @CheckRBAC()
   public async listMetrics(cmd: Command, ctx: Context): Promise<void> {
-    const metrics = this.metrics.getMetricsAsJSON();
+    const metrics = this.metrics.getMetricsAsArray();
     return this.transformJSON(cmd, metrics);
   }
 

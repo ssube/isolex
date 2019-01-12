@@ -6,6 +6,28 @@ data:
   transforms:
     - metadata:
         kind: template-transform
+        name: default-bot-template-metric
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: default-bot-filter-metric
+            data:
+              match:
+                rules:
+                  - key: noun
+                    operator: every
+                    values:
+                      - string: bot-metric
+        templates:
+          body: >-
+            {{#each data as |metric| }}
+              {{#each metric.hashMap as |entry| }}
+                {{ metric.name }}: {{ entry.value }}
+              {{/each }}
+            {{/each }}
+    - metadata:
+        kind: template-transform
         name: default-bot-template-noun
       data:
         filters:
