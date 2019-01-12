@@ -11,7 +11,6 @@ export type BaseTransformOptions<TData extends TransformData> = BotServiceOption
 
 @Inject()
 export abstract class BaseTransform<TData extends TransformData> extends BotService<TData> implements Transform {
-
   constructor(options: BaseTransformOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
   }

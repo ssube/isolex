@@ -15,10 +15,10 @@ data:
             data:
               match:
                 rules:
-                  key: noun
-                  operator: every
-                  values:
-                    - string: bot-noun
+                  - key: noun
+                    operator: every
+                    values:
+                      - string: bot-noun
         templates:
           body: >-
             {{#each data}}
@@ -35,13 +35,13 @@ data:
             data:
               match:
                 rules:
-                  key: noun
-                  operator: every
-                  values:
-                    - string: bot-version
+                  - key: noun
+                    operator: every
+                    values:
+                      - string: bot-version
         templates:
           body: >-
-            isolex version {{git.commit}} from {{git.branch}}, build {{build.job}} by {{build.runner}}
+            isolex version {{data.git.commit}} from {{data.git.branch}}, build {{data.build.job}} by {{data.build.runner}}
     - metadata:
         kind: flatten-transform
         name: default-bot-flatten

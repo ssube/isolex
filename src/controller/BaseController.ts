@@ -86,17 +86,10 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
     for (const method of getMethods(this)) {
       const options = getHandlerOptions(method);
-      if (isNil(options)) {
-        continue;
+      if (doesExist(options)  && this.checkCommand(cmd, options)) {
+        this.logger.debug({ method: method.name, options }, 'found matching handler method');
+        return this.invokeHandler(cmd, options, method as HandlerMethod);
       }
-
-      this.logger.debug({ cmd, options }, 'checking potential handler method');
-      if (!this.checkCommand(cmd, options)) {
-        continue;
-      }
-
-      this.logger.debug({ method: method.name, options }, 'found matching handler method');
-      return this.invokeHandler(cmd, options, method as HandlerMethod);
     }
 
     this.logger.warn({ cmd }, 'no handler method for command');
