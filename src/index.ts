@@ -18,6 +18,7 @@ import { Schema } from 'src/schema';
 import { ServiceEvent } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
+import { VERSION_INFO } from 'src/version';
 
 // main arguments
 const CONFIG_ARGS_NAME = 'config-name';
@@ -43,27 +44,6 @@ const MAIN_MODULES = [
   ParserModule,
   TransformModule,
 ];
-
-// webpack environment defines
-declare const BUILD_JOB: string;
-declare const BUILD_RUNNER: string;
-declare const GIT_BRANCH: string;
-declare const GIT_COMMIT: string;
-declare const NODE_VERSION: string;
-declare const WEBPACK_VERSION: string;
-
-const VERSION_INFO = {
-  build: {
-    job: BUILD_JOB,
-    node: NODE_VERSION,
-    runner: BUILD_RUNNER,
-    webpack: WEBPACK_VERSION,
-  },
-  git: {
-    branch: GIT_BRANCH,
-    commit: GIT_COMMIT,
-  },
-};
 
 sourceMapSupport.install({
   environment: 'node',

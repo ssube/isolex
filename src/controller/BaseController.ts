@@ -50,6 +50,10 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     this.transforms = [];
   }
 
+  public getNouns(): ReadonlyArray<string> {
+    return Array.from(this.nouns);
+  }
+
   public async start() {
     await super.start();
 

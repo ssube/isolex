@@ -136,19 +136,19 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected validateResponse(post: AWS.LexRuntime.PostTextResponse): CommandOptions {
     if (!isString(post.dialogState) || post.dialogState === '') {
       const msg = 'lex parsed message without state';
-      this.logger.warn({ context, post }, msg);
+      this.logger.warn({ post }, msg);
       throw new MissingValueError(msg);
     }
 
     if (!isString(post.intentName) || post.intentName === '') {
       const msg = 'lex parsed message without intent';
-      this.logger.warn({ context, post }, msg);
+      this.logger.warn({ post }, msg);
       throw new MissingValueError(msg);
     }
 
     if (post.dialogState === 'ElicitSlot' && !isString(post.slotToElicit)) {
       const msg = 'lex parsed message without slot to elicit';
-      this.logger.warn({ context, post }, msg);
+      this.logger.warn({ post }, msg);
       throw new MissingValueError(msg);
     }
 

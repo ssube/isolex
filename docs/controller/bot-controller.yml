@@ -6,13 +6,42 @@ data:
   transforms:
     - metadata:
         kind: template-transform
-        name: default-bot-template
+        name: default-bot-template-noun
       data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: default-bot-filter-noun
+            data:
+              match:
+                rules:
+                  key: noun
+                  operator: every
+                  values:
+                    - string: bot-noun
         templates:
           body: >-
             {{#each data}}
               {{key}}: {{noun}}
             {{/each}}
+    - metadata:
+        kind: template-transform
+        name: default-bot-template-version
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: default-bot-filter-version
+            data:
+              match:
+                rules:
+                  key: noun
+                  operator: every
+                  values:
+                    - string: bot-version
+        templates:
+          body: >-
+            isolex version {{git.commit}} from {{git.branch}}, build {{build.job}} by {{build.runner}}
     - metadata:
         kind: flatten-transform
         name: default-bot-flatten

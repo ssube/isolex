@@ -20,8 +20,6 @@ advanced deploy commands.
       - [Sign In](#sign-in)
       - [Revoke Tokens](#revoke-tokens)
     - [Help](#help)
-      - [Noun](#noun)
-      - [Topic](#topic)
     - [Chat](#chat)
       - [Learn Keyword](#learn-keyword)
       - [Solve Math](#solve-math)
@@ -165,18 +163,44 @@ In a **private** channel:
 
 The bot has a dynamic, localized help system. Users may set their language, while the bot sets the default language.
 
-#### Noun
+To list available nouns and the controllers that might be able to handle them:
 
-The help noun is required and only controller able to handle that noun will provide help.
+> !!args --noun bot-noun --verb list
+>
+> @you, account-controller:default-account: grant
+> account-controller:default-account: account
+> account-controller:default-account: session
+> bot-controller:default-bot: bot-noun
+> completion-controller:default-completion: fragment
+> dice-controller:test-dice: roll
+> github-pr-controller:test-pr: github-pull-request
+> gitlab-ci-controller:test-ci: gitlab-ci-job
+> gitlab-ci-controller:test-ci: gitlab-ci-pipeline
+> kubernetes-apps-controller:test-k8s-apps: kubernetes-daemonset
+> kubernetes-apps-controller:test-k8s-apps: kubernetes-deployment
+> kubernetes-apps-controller:test-k8s-apps: kubernetes-statefulset
+> kubernetes-core-controller:test-k8s-core: kubernetes-pod
+> kubernetes-core-controller:test-k8s-core: kubernetes-service
+> learn-controller:test-learn: keyword
+> math-controller:test_math: math
+> random-controller:test-random: random
+> reaction-controller:default-reaction: reaction
+> search-controller:search_mdn: search
+> sed-controller:test-sed: sed
+> time-controller:test-time: time
+> token-controller:default-token: token
+> user-controller:default-user: role
+> user-controller:default-user: user
+> weather-controller:test_weather: weather
+
+To get help for a noun:
 
 > !!help account
 >
 > @you, The account controller handles registering new users, sign in for existing users,
 > revoking sign in tokens, and checking grants.
 
-#### Topic
-
-The help topic is optional, but may be passed to get more information about a particular verb:
+The get help for a topic within the noun:
 
 > !!help account account-create
 >
