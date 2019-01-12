@@ -25,6 +25,7 @@ data:
     - !include ../docs/controller/learn-controller.yml
     - !include ../docs/controller/math-controller.yml
     - !include ../docs/controller/random-controller.yml
+    - !include ../docs/controller/reaction-controller.yml
     - !include ../docs/controller/search-controller-mdn.yml
     - !include ../docs/controller/sed-controller.yml
     - !include ../docs/controller/time-controller.yml
@@ -55,6 +56,7 @@ data:
     - !include ../docs/parser/args-parser-join.yml
     - !include ../docs/parser/args-parser-login.yml
     - !include ../docs/parser/args-parser-k8s.yml
+    - !include ../docs/parser/echo-parser-react.yml
     - !include ../docs/parser/lex-parser.yml
     - !include ../docs/parser/split-parser-help.yml
     - !include ../docs/parser/split-parser-learn.yml

@@ -11,7 +11,7 @@ plugins:
     config:
       languages:
         typescript:
-          mass_threshold: 125 # avoid increasing, increments of 5
+          mass_threshold: 225 # avoid increasing, increments of 5
   fixme:
     enabled: true
   markdownlint:
