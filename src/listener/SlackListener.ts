@@ -1,6 +1,7 @@
 import { LogLevel, RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import * as escape from 'escape-html';
 import { isNil } from 'lodash';
+import { find as findEmoji } from 'node-emoji';
 import { BaseError, Inject, logWithLevel } from 'noicejs';
 
 import { INJECT_CLOCK } from 'src/BaseService';
@@ -56,32 +57,15 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async send(msg: Message): Promise<void> {
-    const rtm = mustExist(this.rtmClient);
-    const web = mustExist(this.webClient);
-    const ctx = mustExist(msg.context);
-
-    for (const name of msg.reactions) {
-      await web.reactions.add({
-        channel: ctx.channel.id,
-        name,
-        timestamp: ctx.channel.thread,
-      });
+    if (msg.reactions.length > 0) {
+      await this.sendReactions(msg);
     }
 
     if (msg.body !== '') {
-      if (ctx.channel.id !== '') {
-        const result = await rtm.sendMessage(escape(msg.body), ctx.channel.id);
-        if (doesExist(result.error)) {
-          const err = new BaseError(result.error.msg);
-          this.logger.error(err, 'error sending slack message');
-          throw err;
-        }
-        return;
-      }
-
-      // fail
-      this.logger.error('message missing body or destination');
+      return this.sendText(msg);
     }
+
+    this.logger.warn({ msg }, 'unsupported message type, unable to send');
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
@@ -130,6 +114,43 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
 
   public async stop() {
     await mustExist(this.rtmClient).disconnect();
+  }
+
+  protected async sendReactions(msg: Message): Promise<void> {
+    const ctx = mustExist(msg.context);
+    const web = mustExist(this.webClient);
+
+    for (const reaction of msg.reactions) {
+      const result = findEmoji(reaction);
+
+      if (doesExist(result)) {
+        await web.reactions.add({
+          channel: ctx.channel.id,
+          name: result.key,
+          timestamp: ctx.channel.thread,
+        });
+      } else {
+        this.logger.warn({ reaction, result }, 'unsupported reaction');
+      }
+    }
+  }
+
+  protected async sendText(msg: Message): Promise<void> {
+    const ctx = mustExist(msg.context);
+    const rtm = mustExist(this.rtmClient);
+
+    if (ctx.channel.id !== '') {
+      const result = await rtm.sendMessage(escape(msg.body), ctx.channel.id);
+      if (doesExist(result.error)) {
+        const err = new BaseError(result.error.msg);
+        this.logger.error(err, 'error sending slack message');
+        throw err;
+      }
+      return;
+    }
+
+    // fail
+    this.logger.error('message missing body or destination');
   }
 
   protected async convertReaction(reaction: SlackReaction): Promise<Message> {

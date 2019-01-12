@@ -49,22 +49,12 @@ export class ReactionController extends BaseController<ReactionControllerData> i
     const reactions = [];
     const bodies = cmd.get('body');
     for (const body of bodies) {
-      for (const next of this.reactions) {
-        const results = next.match.match({
-          body,
-          cmd,
-        });
-        this.logger.debug({ body, next }, 'checking reaction');
-        if (results.matched) {
-          for (const reaction of next.add) {
-            const result = Math.random();
-            this.logger.debug({ next, result, reaction }, 'rolling reaction');
-            if (result < next.chance) {
-              reactions.push(reaction);
-            }
-          }
-        }
-      }
+      const matchScope = {
+        body,
+        cmd,
+      };
+      const potential = this.reactions.filter((r) => r.match.match(matchScope).matched);
+      reactions.push(...this.rollReactions(potential));
     }
 
     if (reactions.length === 0) {
@@ -79,5 +69,20 @@ export class ReactionController extends BaseController<ReactionControllerData> i
       reactions,
       type: TYPE_TEXT,
     }));
+  }
+
+  protected rollReactions(reactions: Array<CompiledReaction>): Array<string> {
+    const results = [];
+    this.logger.debug({ reactions }, 'checking reactions');
+    for (const reaction of reactions) {
+      for (const emoji of reaction.add) {
+        const result = Math.random();
+        this.logger.debug({ result, reaction }, 'rolling reaction');
+        if (result < reaction.chance) {
+          results.push(emoji);
+        }
+      }
+    }
+    return results;
   }
 }
