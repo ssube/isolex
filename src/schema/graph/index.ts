@@ -5,15 +5,15 @@ import { Inject } from 'noicejs';
 
 import { INJECT_CLOCK, INJECT_SERVICES } from 'src/BaseService';
 import { BotService, BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_STORAGE } from 'src/BotService';
-import { Command, CommandOptions, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
+import { Command, CommandVerb, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
 import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
-import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message, MessageEntityOptions } from 'src/entity/Message';
+import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from 'src/entity/Message';
 import { SessionRequiredError } from 'src/error/SessionRequiredError';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
 import { Storage } from 'src/storage';
 import { mustExist } from 'src/utils';
-import { dictToMap } from 'src/utils/Map';
+import { pairsToMap } from 'src/utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
@@ -26,11 +26,30 @@ interface GraphIDOptions {
 }
 
 interface GraphCommandOptions {
-  commands: Array<CommandOptions>;
+  commands: Array<{
+    data: Array<{
+      name: string;
+      value: Array<string>;
+    }>;
+    labels: Array<{
+      name: string;
+      value: string;
+    }>;
+    noun: string;
+    verb: CommandVerb;
+  }>;
 }
 
 interface GraphMessageOptions {
-  messages: Array<MessageEntityOptions>;
+  messages: Array<{
+    body: string;
+    labels: Array<{
+      name: string;
+      value: string;
+    }>;
+    reactions: Array<string>;
+    type: string;
+  }>;
 }
 
 export type GraphSchemaData = BotServiceData;
@@ -67,8 +86,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
       const { noun, verb } = data;
       const cmd = new Command({
         context,
-        data: {},
-        labels: dictToMap(data.labels),
+        data: pairsToMap(data.data),
+        labels: pairsToMap(data.labels),
         noun,
         verb,
       });
@@ -91,8 +110,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
       const msg = new Message({
         body,
         context,
-        labels: this.labels,
-        reactions: [],
+        labels: pairsToMap(data.labels),
+        reactions: data.reactions,
         type,
       });
       messages.push(msg);

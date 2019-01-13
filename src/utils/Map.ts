@@ -129,12 +129,13 @@ export interface NameValuePair<TVal> {
   value: TVal;
 }
 
-export function pairsToDict<TVal>(pairs: Array<NameValuePair<TVal>>): Map<string, TVal> {
+export function pairsToMap<TVal>(pairs: Array<NameValuePair<TVal>> | undefined): Map<string, TVal> {
   const map = new Map();
-  for (const p of pairs) {
-    map.set(p.name, p.value);
+  if (doesExist(pairs)) {
+    for (const p of pairs) {
+      map.set(p.name, p.value);
+    }
   }
-
   return map;
 }
 

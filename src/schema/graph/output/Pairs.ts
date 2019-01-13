@@ -17,7 +17,7 @@ export const GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR = new GraphQLObjectType({
     name: {
       type: GraphQLString,
     },
-    values: {
+    value: {
       type: new GraphQLList(GraphQLString),
     },
   },
