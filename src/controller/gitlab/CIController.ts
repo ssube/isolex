@@ -74,7 +74,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     const client = mustExist(this.client);
     const options = this.getJobOptions(cmd);
     const existing = await client.getJob(options);
-    if (!existing.length) {
+    if (existing.length === 0) {
       return this.reply(ctx, 'pipeline not found');
     }
 
@@ -132,7 +132,7 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
     const client = mustExist(this.client);
     const options = this.getPipelineOptions(cmd);
     const existing = await client.getPipeline(options);
-    if (!existing.length) {
+    if (existing.length === 0) {
       return this.reply(ctx, 'pipeline not found');
     }
 
