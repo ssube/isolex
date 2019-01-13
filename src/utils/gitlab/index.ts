@@ -1,8 +1,10 @@
-import { isNil, kebabCase } from 'lodash';
+import { isNil } from 'lodash';
 import { BaseError, Container, Inject, Logger } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
 
 import { RequestFactory, RequestOptions } from 'src/utils/Request';
+
+import { classLogger } from '../logger';
 
 export interface ProjectOptions {
   group: string;
@@ -31,12 +33,42 @@ export interface GitlabClientOptions extends BaseOptions {
   logger: Logger;
 }
 
-// TODO: replace these with response types
-/* tslint:disable:no-any */
-export type JobResults = any;
-export type PipelineResults = any;
-export type ProjectResults = any;
-/* tslint:enable:no-any */
+export interface JobResults {
+  created_at: string;
+  started_at: string;
+  finished_at: string;
+  duration: number;
+  id: number;
+  name: string;
+  pipeline: {
+    id: number;
+    ref: string;
+    sha: string;
+    status: string;
+  };
+  ref: string;
+  runner: string;
+  stage: string;
+  status: string;
+}
+
+export interface PipelineResults {
+  id: number;
+  status: string;
+  ref: string;
+  sha: string;
+  web_url: string;
+}
+
+export interface ProjectResults {
+  id: number;
+  description: string;
+  default_branch: string;
+  name: string;
+  path: string;
+  created_at: string;
+  last_activity_at: string;
+}
 
 @Inject()
 export class GitlabClient {
@@ -47,9 +79,7 @@ export class GitlabClient {
   constructor(options: GitlabClientOptions) {
     this.container = options.container;
     this.data = options.data;
-    this.logger = options.logger.child({
-      kind: kebabCase(GitlabClient.name),
-    });
+    this.logger = classLogger(options.logger, GitlabClient);
   }
 
   public async cancelJob(options: JobOptions): Promise<JobResults> {
