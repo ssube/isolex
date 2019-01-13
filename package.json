@@ -9,7 +9,7 @@
   "private": false,
   "dependencies": {
     "jsonpath": "1.0",
-    "sqlite3": "~4.0.6"
+    "sqlite3": "4.0.6"
   },
   "devDependencies": {
     "@kubernetes/client-node": "0.7.2",
@@ -102,5 +102,9 @@
   "resolutions": {
     "**/lodash": "4.17.11",
     "**/typescript": "3.2.2"
+  },
+  "nyc": {
+    "instrument": true,
+    "sourceMap": true
   }
 }

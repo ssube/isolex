@@ -17,6 +17,13 @@ stages:
     - platform:k8s
     - runner:shared
 
+.build-climate: &build-climate
+  image: apextoaster/code-climate:0.6
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
 .build-docker: &build-docker
   image: docker:stable
   services:
@@ -92,6 +99,18 @@ publish-npm:
     - npm publish
 
 # commit status
+climate-pending:
+  <<: [*build-climate]
+  stage: status-pre
+  script:
+    - cc-test-reporter before-build
+
+climate-success:
+  <<: [*build-climate]
+  stage: status-pre
+  script:
+    - cc-test-reporter after-build --debug -t lvoc --exit-code 0
+
 github-pending:
   <<: [*build-curl]
   stage: status-pre

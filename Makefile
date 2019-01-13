@@ -38,7 +38,7 @@ NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
 # Tool options
 BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
 COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statements 85 	# increase this every so often
-COVER_OPTS	?= --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage"
+COVER_OPTS	?= --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
 MOCHA_OPTS  ?= --check-leaks --colors --max-old-space-size=4096 --sort --ui bdd
@@ -98,16 +98,19 @@ yarn-update: ## check yarn for outdated packages
 build: ## builds, bundles, and tests the application
 build: node_modules configure bundle test
 
+build-cover: ## builds, bundles, and tests the application with code coverage
+build-cover: node_modules configure bundle-cover test-cover
+
 build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
-build-strict: node_modules configure bundle-check test-check
+build-strict: node_modules configure bundle-strict test-cover
 
 bundle: bundle-cover ## build the distributable version of the application
 
-bundle-check: ## bundle the application with full type checking (stricter)
-	TEST_CHECK=true $(NODE_BIN)/webpack $(BUNDLE_OPTS)
-
 bundle-cover: ## bundle the application without type checking (faster)
 	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS)
+
+bundle-strict: ## bundle the application with full type checking (stricter)
+	TEST_CHECK=true $(NODE_BIN)/webpack $(BUNDLE_OPTS)
 
 bundle-stats: ## bundle the application and print statistics
 	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --json --profile |\

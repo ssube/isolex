@@ -665,7 +665,6 @@ ajv-keywords@^3.1.0:
 ajv@6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.7.0.tgz#e3ce7bb372d6577bb1839f1dfdfcbf5ad2948d96"
-  integrity sha512-RZXPviBTtfmtka9n9sy1N5M5b82CbxWIR6HIis4s3WQTXDJamc/0gpCWNGz6EWdWp4DOfjzJfhz/AS9zVPjjWg==
   dependencies:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
@@ -847,7 +846,6 @@ awesome-typescript-loader@5.2:
 aws-sdk@2.387.0:
   version "2.387.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.387.0.tgz#c4b95c280e8b737a30df37928aa18a892eaedb8a"
-  integrity sha512-GSJwNBqdDDqRpTBNnSlAVeQ4wqIiWIhqsnvE0GcGmVQWDq7yM89EiYqkIcB8dFV/l6bm7f0TFDtEbIwoRP6C4w==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -2349,7 +2347,6 @@ forwarded@~0.1.2:
 fraction.js@4.0.12:
   version "4.0.12"
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.0.12.tgz#0526d47c65a5fb4854df78bc77f7bec708d7b8c3"
-  integrity sha512-8Z1K0VTG4hzYY7kA/1sj4/r1/RWLBD3xwReT/RCrUCbzPszjNQCCsy3ktkU/eaEqX3MYa4pY37a52eiBlPMlhA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -2741,7 +2738,6 @@ https-browserify@^1.0.0:
 i18next@13.1.2:
   version "13.1.2"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.2.tgz#25b663e6562e76cc4f384f1b5c21bbe4f81b3e85"
-  integrity sha512-W7qVWQiuLcVeq39QE5y1tMh1SFZR1BQ4PdGILuVLYa9dd1Hf7KfFpxqEcRx/UxTiqHpdC99e6C58oqie1bxyGg==
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -3494,7 +3490,6 @@ marked@^0.4.0:
 mathjs@5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.4.1.tgz#c20c8f2909b432bcff89f9ea35079a5bd71e2826"
-  integrity sha512-sgJtr7tEW0hDLHG1SUuVeLHa9gnWwsmYs7NjRRpgowMYWvEszwvng7GzTN+ABWP9I0gO6AIIgNhCwRlE5eyG2Q==
   dependencies:
     complex.js "2.0.11"
     decimal.js "10.0.2"
@@ -3899,7 +3894,6 @@ node-pre-gyp@^0.10.0:
 node-pre-gyp@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.11.0.tgz#db1f33215272f692cd38f03238e3e9b47c5dd054"
-  integrity sha512-TwWAOZb0j7e9eGaf9esRx3ZcLaE5tQ2lvYy1pb5IAaG1a2e2Kv5Lms1Y4hpj+ciXJRofIxxlt5haeQ/2ANeE0Q==
   dependencies:
     detect-libc "^1.0.2"
     mkdirp "^0.5.1"
@@ -4806,7 +4800,6 @@ run-queue@^1.0.0, run-queue@^1.0.3:
 rxjs-tslint-rules@4.14.4:
   version "4.14.4"
   resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.14.4.tgz#1d7ba88a68963a494488a8114ac66507bf2b0df3"
-  integrity sha512-FVF8nqJ1NWFrgbqGpZTZVIw5ENJGkbbGKeEQE0zxYNrgCX20Z/v8TtTQaqkTk2WngofZfi7vq0Kb+NvTu3zTmA==
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     decamelize "^2.0.0"
@@ -5106,10 +5099,9 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "http://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
-sqlite3@~4.0.6:
+sqlite3@4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/sqlite3/-/sqlite3-4.0.6.tgz#e587b583b5acc6cb38d4437dedb2572359c080ad"
-  integrity sha512-EqBXxHdKiwvNMRCgml86VTL5TK1i0IKiumnfxykX0gh6H6jaKijAXvE9O1N7+omfNSawR2fOmIyJZcfe8HYWpw==
   dependencies:
     nan "~2.10.0"
     node-pre-gyp "^0.11.0"
@@ -5585,7 +5577,6 @@ typedoc-default-themes@^0.5.0:
 typedoc@0.14.1:
   version "0.14.1"
   resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.14.1.tgz#5e659f7a78ccac91547cb2328490665d9c10c4b2"
-  integrity sha512-gM8ajT1oPk/EHfwp60SECcW0p2MfdxhLfBE6zl9/P2DV8vDnE+a5XRgdIRym1X2Ffv8FQ7WPbNaOQbHoESh65g==
   dependencies:
     "@types/fs-extra" "^5.0.3"
     "@types/handlebars" "^4.0.38"
@@ -5845,7 +5836,6 @@ webpack-sources@^1.1.0, webpack-sources@^1.3.0:
 webpack@4.28.4:
   version "4.28.4"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.28.4.tgz#1ddae6c89887d7efb752adf0c3cd32b9b07eacd0"
-  integrity sha512-NxjD61WsK/a3JIdwWjtIpimmvE6UrRi3yG54/74Hk9rwNj5FPkA4DJCf1z4ByDWLkvZhTZE+P3C/eh6UD5lDcw==
   dependencies:
     "@webassemblyjs/ast" "1.7.11"
     "@webassemblyjs/helper-module-context" "1.7.11"
