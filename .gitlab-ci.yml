@@ -116,7 +116,18 @@ climate-success:
   <<: [*build-climate]
   stage: status-post
   script:
-    - cc-test-reporter after-build --debug -t lcov --exit-code 0
+    - cc-test-reporter format-coverage -t lcov -o out/coverage/codeclimate.json -p ${CI_BUILD_DIR}
+    - cc-test-reporter upload-coverage -i out/coverage/codeclimate.json
+
+codecov-success:
+  <<: [*build-node]
+  stage: status-post
+  when: on_success
+
+  dependencies:
+    - build-node
+  script:
+    - ./node_modules/.bin/codecov --file out/coverage/lcov.info --token "$(echo "${CODECOV_SECRET}" | base64 -d)"
 
 github-pending:
   <<: [*build-curl]
