@@ -49,6 +49,7 @@
     "bunyan": "1.8",
     "chai": "4.2",
     "chai-as-promised": "7.1",
+    "codecov": "^3.1.0",
     "cron": "1.6.0",
     "discord.js": "11.4",
     "escape-html": "1.0",
