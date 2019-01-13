@@ -115,6 +115,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
         grants.push(`${options.noun}:${options.verb}`);
       }
 
+      this.logger.debug({ ctx, grants }, 'checking context for handler grants');
       if (!ctx.checkGrants(grants)) {
         return this.errorReply(ctx, ErrorReplyType.GrantMissing);
       }

@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { JwtFields, Token } from 'src/entity/auth/Token';
+import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { Listener, ListenerData } from 'src/listener';
@@ -49,6 +50,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected readonly services: ServiceModule;
   protected readonly storage: Storage;
   protected readonly tokenRepository: Repository<Token>;
+  protected readonly userRepository: UserRepository;
 
   protected express?: express.Express;
   protected graph?: GraphSchema;
@@ -72,6 +74,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     });
 
     this.tokenRepository = this.storage.getRepository(Token);
+    this.userRepository = this.storage.getCustomRepository(UserRepository);
   }
 
   public async start() {
@@ -149,6 +152,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       done(undefined, false);
       return;
     }
+
+    await this.userRepository.loadRoles(token.user);
+    this.logger.debug({ roles: token.user.roles }, 'loaded user roles');
 
     const session = token.session();
     const uid = mustExist(token.user.id);
