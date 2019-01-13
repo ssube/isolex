@@ -65,7 +65,6 @@ build-node:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - yarn
     - make build-strict
 
   artifacts:
@@ -117,7 +116,7 @@ climate-success:
   stage: status-post
   script:
     - cc-test-reporter format-coverage -t lcov -o out/coverage/codeclimate.json -p ${CI_BUILD_DIR}
-    - cc-test-reporter upload-coverage -i out/coverage/codeclimate.json
+    - cc-test-reporter upload-coverage -i out/coverage/codeclimate.json -r "$(echo ${CODECLIMATE_SECRET}" | base64 -d)"
 
 codecov-success:
   <<: [*build-node]
