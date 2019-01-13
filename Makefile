@@ -41,7 +41,7 @@ COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statem
 COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
-MOCHA_OPTS  ?= --check-leaks --colors --max-old-space-size=1800 --sort --ui bdd
+MOCHA_OPTS  ?= --check-leaks --colors --sort --ui bdd
 RELEASE_OPTS ?= --commit-all
 
 # Versions
@@ -149,6 +149,7 @@ test-check: ## run mocha unit tests with coverage reports
 
 test-cover: ## run mocha unit tests with coverage reports
 	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
+	sed -e '/ sync$/,/end_of_record/d' -e '/node_modules/,/end_of_record/d' -i $(TARGET_PATH)/coverage/lcov.info
 
 test-leaks: ## run mocha unit tests with coverage reports
 	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
