@@ -149,8 +149,8 @@ test-check: ## run mocha unit tests with coverage reports
 
 test-cover: ## run mocha unit tests with coverage reports
 	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
-	sed -e '/ sync$/,/end_of_record/d' -e '/node_modules/,/end_of_record/d' -i $(TARGET_PATH)/coverage/lcov.info
-	sed -n '/^SF/,$p' -i $(TARGET_PATH)/coverage/lcov.info
+	sed -e '/ sync$$/,/end_of_record/d' -e '/node_modules/,/end_of_record/d' -i $(TARGET_PATH)/coverage/lcov.info
+	sed -n '/^SF/,$$p' -i $(TARGET_PATH)/coverage/lcov.info
 	sed '1s;^;TN:\n;' -i $(TARGET_PATH)/coverage/lcov.info
 
 test-leaks: ## run mocha unit tests with coverage reports
