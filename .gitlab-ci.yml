@@ -105,9 +105,16 @@ climate-pending:
   script:
     - cc-test-reporter before-build
 
+climate-failure:
+  <<: [*build-climate]
+  stage: status-post
+  when: on_failure
+  script:
+    - cc-test-reporter after-build --debug --exit-code 1
+
 climate-success:
   <<: [*build-climate]
-  stage: status-pre
+  stage: status-post
   script:
     - cc-test-reporter after-build --debug -t lvoc --exit-code 0
 
