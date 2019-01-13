@@ -116,7 +116,7 @@ climate-success:
   <<: [*build-climate]
   stage: status-post
   script:
-    - cc-test-reporter after-build --debug -t lvoc --exit-code 0
+    - cc-test-reporter after-build --debug -t lcov --exit-code 0
 
 github-pending:
   <<: [*build-curl]
