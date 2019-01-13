@@ -37,9 +37,6 @@ export function formatResult(body: unknown, scope: TemplateScope, options: Resul
       return (body as Date).toString();
     case 'Array':
       return (body as Array<unknown>).map((it) => formatResult(it, scope, options)).join(options.list.join);
-    case 'Function':
-      // TODO: make sure this doesn't allow math to escape the library sandbox
-      return (body as Function).call(undefined, scope);
     case 'Object':
       return JSON.stringify(body);
     case 'RegExp':
