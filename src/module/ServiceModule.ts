@@ -7,6 +7,7 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
 import { mustExist } from 'src/utils';
 import { timeout } from 'src/utils/Async';
+import { kindLogger } from 'src/utils/logger';
 import { mustGet } from 'src/utils/Map';
 
 export interface ServiceModuleData {
@@ -86,9 +87,7 @@ export class ServiceModule extends Module implements ServiceLifecycle {
     this.logger.info({ kind, tag }, 'creating unknown service');
     const svc = await container.create<TService, BotServiceOptions<TData>>(kind, {
       ...conf,
-      [INJECT_LOGGER]: this.logger.child({
-        kind,
-      }),
+      [INJECT_LOGGER]: kindLogger(this.logger, kind),
       [INJECT_SERVICES]: this,
     });
 
