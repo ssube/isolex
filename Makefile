@@ -155,3 +155,10 @@ test-leaks: ## run mocha unit tests with coverage reports
 
 test-watch:
 	$(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
+
+upload-climate:
+	cc-test-reporter format-coverage -t lcov -o out/coverage/codeclimate.json -p $(ROOT_PATH) $(TARGET_PATH)/coverage/lcov.info
+	cc-test-reporter upload-coverage -i out/coverage/codeclimate.json -r "$(shell echo "${CODECLIMATE_SECRET}" | base64 -d)"
+
+upload-codecov:
+	$(NODE_BIN)/codecov --file out/coverage/lcov.info --token "$(shell echo "${CODECOV_SECRET}" | base64 -d)"
