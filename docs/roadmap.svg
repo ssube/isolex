@@ -168,7 +168,7 @@
     pointer-events="none" />
   <path d="M 798.88 205 L 791.88 208.5 L 793.63 205 L 791.88 201.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10"
     pointer-events="none" />
-  <rect x="640" y="800" width="120" height="60" fill="#a9c4eb" stroke="#000000" pointer-events="none" />
+  <rect x="640" y="800" width="120" height="60" fill="#ffe599" stroke="#000000" pointer-events="none" />
   <g transform="translate(675.5,816.5)">
     <switch>
       <foreignObject style="overflow:visible;" pointer-events="all" width="48" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
@@ -261,7 +261,7 @@
   <path d="M 600 990 L 633.63 990" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
   <path d="M 638.88 990 L 631.88 993.5 L 633.63 990 L 631.88 986.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10"
     pointer-events="none" />
-  <rect x="480" y="960" width="120" height="60" fill="#ffe599" stroke="#000000" pointer-events="none" />
+  <rect x="480" y="960" width="120" height="60" fill="#97d077" stroke="#000000" pointer-events="none" />
   <g transform="translate(511.5,983.5)">
     <switch>
       <foreignObject style="overflow:visible;" pointer-events="all" width="56" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
