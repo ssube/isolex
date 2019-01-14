@@ -1,0 +1,45 @@
+sources:
+  npm: true
+
+allowed:
+  - apache-2.0
+  - bsd-2-clause
+  - bsd-3-clause
+  - isc
+  - mit
+  - unlicense
+
+reviewed:
+  npm:
+    - abbrev # mit
+    - bcrypt-pbkdf # ics
+    - cjson # mit
+    - concat-map # mit
+    - fast-json-stable-stringify # mit
+    - dashdash # mit
+    - deep-is # mit
+    - escodegen # bsd-2-clause/bsd-3-clause
+    - esprima # bsd-2-clause
+    - estraverse # bsd-2-clause
+    - esutils # bsd-2-clause
+    - fs.realpath # mit
+    - is-typedarray # mit
+    - jison # mit
+    - jsbn # mit
+    - json-schema # bsd-3-clause
+    - minimist # mit
+    - minizlib # mit
+    - mkdirp # mit
+    - nan # mit
+    - nomnom # mit
+    - node-pre-gyp # bsd-3-clause
+    - qs # bsd-3-clause
+    - rc # mit
+    - readable-stream # mit
+    - sax # mit
+    - source-map # bsd-3-clause
+    - sqlite3 # bsd-3-clause
+    - static-eval # mit
+    - string_decoder # mit
+    - uri-js # bsd-2-clause
+    - wordwrap # mit

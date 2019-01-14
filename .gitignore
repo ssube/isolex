@@ -1,5 +1,10 @@
 .awcache/
+.licenses/
 .nyc_output/
 node_modules/
 out/
 yarn-error.log
+
+*.bak
+*.swp
+*.tmp

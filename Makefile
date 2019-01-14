@@ -58,20 +58,13 @@ clean: ## clean up the target directory
 configure: ## create the target directory and other files not in git
 	mkdir -p $(TARGET_PATH)
 
+node_modules: yarn-install
+
 # from https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## print this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort \
 		| sed 's/^.*\/\(.*\)/\1/' \
 		| awk 'BEGIN {FS = ":[^:]*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
-git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
-	git push $(GIT_OPTIONS) github $(GIT_BRANCH)
-	git push $(GIT_OPTIONS) gitlab $(GIT_BRANCH)
-
-# from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
-git-stats: ## print git contributor line counts (approx, for fun)
-	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" |\
-		grep -I '^author '; done | sort -f | uniq -ic | sort -n
 
 todo:
 	@echo "Remaining tasks:"
@@ -85,14 +78,6 @@ todo:
 	@echo ""
 	@grep "as any" -r src/ test/ || true
 	@echo ""
-
-node_modules: yarn-install
-
-yarn-install: ## install dependencies from package and lock file
-	yarn
-
-yarn-update: ## check yarn for outdated packages
-	yarn -L -C -P '.*'
 
 # build targets
 build: ## builds, bundles, and tests the application
@@ -122,26 +107,6 @@ bundle-watch: ## bundle the application and watch for changes
 bundle-docs: ## generate html docs
 	$(NODE_BIN)/typedoc $(DOCS_OPTS)
 
-release: ## create a release
-	$(NODE_BIN)/standard-version --sign $(RELEASE_OPTS)
-	GIT_OPTIONS=--tags $(MAKE) git-push
-
-release-dry: ## test creating a release
-	$(NODE_BIN)/standard-version --sign $(RELEASE_OPTS) --dry-run
-
-run-config: ## run the bot to test the config
-	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
-
-run-docker: ## run the bot inside a docker container
-	docker run --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
-		ssube/isolex:master --config-name 'isolex.yml' --config-path '/app/docs'
-
-run-terminal: ## run the bot in a terminal
-	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
-
-run-bunyan: ## run the bot with bunyan logs
-	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
-
 test: test-check ## run mocha unit tests
 
 test-check: ## run mocha unit tests with coverage reports
@@ -163,9 +128,50 @@ test-leaks: ## run mocha unit tests with coverage reports
 test-watch:
 	$(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
 
+yarn-install: ## install dependencies from package and lock file
+	yarn
+
+yarn-update: ## check yarn for outdated packages
+	yarn -L -C -P '.*'
+
+# release targets
+git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
+	git push $(GIT_OPTIONS) github $(GIT_BRANCH)
+	git push $(GIT_OPTIONS) gitlab $(GIT_BRANCH)
+
+# from https://gist.github.com/amitchhajer/4461043#gistcomment-2349917
+git-stats: ## print git contributor line counts (approx, for fun)
+	git ls-files | while read f; do git blame -w -M -C -C --line-porcelain "$$f" |\
+		grep -I '^author '; done | sort -f | uniq -ic | sort -n
+
+license-check: ## check license status
+	licensed cache
+	licensed status
+
+release: ## create a release
+	$(NODE_BIN)/standard-version --sign $(RELEASE_OPTS)
+	GIT_OPTIONS=--tags $(MAKE) git-push
+
+release-dry: ## test creating a release
+	$(NODE_BIN)/standard-version --sign $(RELEASE_OPTS) --dry-run
+
 upload-climate:
 	cc-test-reporter format-coverage -t lcov -o $(TARGET_PATH)/coverage/codeclimate.json -p $(ROOT_PATH) $(TARGET_PATH)/coverage/lcov.info
 	cc-test-reporter upload-coverage -i $(TARGET_PATH)/coverage/codeclimate.json -r "$(shell echo "${CODECLIMATE_SECRET}" | base64 -d)"
 
 upload-codecov:
 	$(NODE_BIN)/codecov --disable=gcov --file=$(TARGET_PATH)/coverage/lcov.info --token=$(shell echo "${CODECOV_SECRET}" | base64 -d)
+
+# run targets
+run-config: ## run the bot to test the config
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
+
+run-docker: ## run the bot inside a docker container
+	docker run --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
+		ssube/isolex:master --config-name 'isolex.yml' --config-path '/app/docs'
+
+run-terminal: ## run the bot in a terminal
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
+
+run-bunyan: ## run the bot with bunyan logs
+	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict

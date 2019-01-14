@@ -23,6 +23,7 @@ vendor/
 .mdlrc
 
 Dockerfile
+licensed.yml
 Makefile
 tsconfig.json
 yarn-*
