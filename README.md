@@ -5,6 +5,7 @@ It is configured with schema-validated YAML, features JWT authentication with gr
 Listeners for common chat services, controllers for chat functions and devops tools, and inspired by the Kubernetes API.
 
 [![Pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
+[![Test coverage](https://codecov.io/gh/ssube/isolex/branch/master/graph/badge.svg)](https://codecov.io/gh/ssube/isolex)
 [![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
 [![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
