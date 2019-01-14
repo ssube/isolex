@@ -1,22 +1,24 @@
 import { expect } from 'chai';
-import { BaseError } from 'noicejs';
+import { join } from 'path';
 
 import { includeType } from 'src/config/type/Include';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 
+const TEST_ROOT = '../test/config/type';
+
 describeAsync('include config type', async () => {
-  itAsync('resolve existing files', async () => {
-    expect(includeType.resolve('./include.yml')).to.equal(true);
+  itAsync('should resolve existing files', async () => {
+    expect(includeType.resolve(join(TEST_ROOT, 'include.yml'))).to.equal(true);
   });
 
-  itAsync('throw on missing files', async () => {
+  itAsync('should throw on missing files', async () => {
     expect(() => {
-      includeType.resolve('./missing.yml');
-    }).to.throw(BaseError);
+      includeType.resolve(join(TEST_ROOT, 'missing.yml'));
+    }).to.throw(Error);
   });
 
-  itAsync('read contents of file', async () => {
-    expect(includeType.construct('./include.yml')).to.equal('test');
+  itAsync('should read contents of file', async () => {
+    expect(includeType.construct(join(TEST_ROOT, 'include.yml'))).to.equal('test');
   });
 });
