@@ -74,6 +74,11 @@ build-node:
       - out/docs
       - out/main-bundle.*
       - out/version.json
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    policy: pull-push
+    paths:
+      - node_modules
 
 build-image:
   <<: [*build-docker]
@@ -124,6 +129,10 @@ codecov-success:
 
   dependencies:
     - build-node
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    policy: pull
+
   script:
     - make node_modules upload-codecov
 
