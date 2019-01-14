@@ -23,6 +23,9 @@ stages:
     - platform:k8s
     - runner:shared
   allow_failure: false
+  variables:
+    GIT_BRANCH: "${CI_COMMIT_REF_NAME}"
+    GIT_COMMIT_SHA: "${CI_COMMIT_SHA}"
 
 .build-docker: &build-docker
   image: docker:stable
