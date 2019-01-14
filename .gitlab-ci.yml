@@ -125,7 +125,7 @@ codecov-success:
   dependencies:
     - build-node
   script:
-    - make upload-codecov
+    - make node_modules upload-codecov
 
 github-pending:
   <<: [*build-curl]
