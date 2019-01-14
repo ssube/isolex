@@ -30,7 +30,8 @@ ineeda.intercept({
 /* tslint:enable:no-null-keyword */
 
 // enable source context inclusion when https://github.com/istanbuljs/nyc/issues/953 is resolved
-// const srcContext = (require as any).context('../src', true, /.*ts$/);
+// tslint:disable-next-line:no-any
+// const srcContext = (require as any).context('../src', true, /\/(?!main|shim).+\.ts$/m);
 // srcContext.keys().forEach(srcContext);
 
 // tslint:disable-next-line:no-any

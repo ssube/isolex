@@ -17,6 +17,13 @@ stages:
     - platform:k8s
     - runner:shared
 
+.build-climate: &build-climate
+  image: apextoaster/code-climate:0.6
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
 .build-docker: &build-docker
   image: docker:stable
   services:
@@ -58,7 +65,6 @@ build-node:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
-    - yarn
     - make build-strict
 
   artifacts:
@@ -68,6 +74,11 @@ build-node:
       - out/docs
       - out/main-bundle.*
       - out/version.json
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    policy: pull-push
+    paths:
+      - node_modules
 
 build-image:
   <<: [*build-docker]
@@ -92,6 +103,39 @@ publish-npm:
     - npm publish
 
 # commit status
+climate-pending:
+  <<: [*build-climate]
+  stage: status-pre
+  script:
+    - cc-test-reporter before-build
+
+climate-failure:
+  <<: [*build-climate]
+  stage: status-post
+  when: on_failure
+  script:
+    - cc-test-reporter after-build --debug --exit-code 1
+
+climate-success:
+  <<: [*build-climate]
+  stage: status-post
+  script:
+    - make upload-climate
+
+codecov-success:
+  <<: [*build-node]
+  stage: status-post
+  when: on_success
+
+  dependencies:
+    - build-node
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    policy: pull
+
+  script:
+    - make node_modules upload-codecov
+
 github-pending:
   <<: [*build-curl]
   stage: status-pre
