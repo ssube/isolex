@@ -6,7 +6,7 @@ import { promisify } from 'util';
 
 import { BotDefinition } from 'src/Bot';
 import { envType } from 'src/config/type/Env';
-import { includeType } from 'src/config/type/Include';
+import { includeSchema, includeType } from 'src/config/type/Include';
 import { regexpType } from 'src/config/type/Regexp';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { doesExist } from 'src/utils';
@@ -17,6 +17,8 @@ export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
   includeType,
   regexpType,
 ]);
+
+includeSchema.schema = CONFIG_SCHEMA;
 
 const readFileSync = promisify(readFile);
 

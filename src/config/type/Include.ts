@@ -1,10 +1,14 @@
 import { existsSync, readFileSync, realpathSync } from 'fs';
-import { safeLoad, Type as YamlType } from 'js-yaml';
+import { SAFE_SCHEMA, safeLoad, Type as YamlType } from 'js-yaml';
 import { BaseError } from 'noicejs';
 import { join } from 'path';
 
-import { CONFIG_SCHEMA } from 'src/config';
 import { NotFoundError } from 'src/error/NotFoundError';
+
+// work around the circular dependency by setting the schema later
+export const includeSchema = {
+  schema: SAFE_SCHEMA,
+};
 
 export const includeType = new YamlType('!include', {
   kind: 'scalar',
@@ -21,7 +25,7 @@ export const includeType = new YamlType('!include', {
       return safeLoad(readFileSync(resolvePath(path), {
         encoding: 'utf-8',
       }), {
-        schema: CONFIG_SCHEMA,
+        schema: includeSchema.schema,
       });
     } catch (err) {
       throw new BaseError('error including file', err);
