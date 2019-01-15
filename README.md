@@ -1,7 +1,7 @@
 # isolex
 
 Chat bot able to speak natural language and markup, prompt to complete commands, and offer localized help.
-It is configured with schema-validated YAML, features JWT authentication with granular RBAC, and SQL persistence.
+Configured with schema-validated YAML, features JWT authentication with granular RBAC, and SQL persistence.
 Listeners for common chat services, controllers for chat functions and devops tools, and inspired by the Kubernetes API.
 
 ## Getting Started
