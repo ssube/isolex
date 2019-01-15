@@ -2,3 +2,11 @@
 ---
 
 @import "{{ site.theme }}";
+
+.wrapper {
+  max-width: 1600px;
+}
+
+section {
+  max-width: 1600px;
+}
