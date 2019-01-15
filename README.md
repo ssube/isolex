@@ -4,13 +4,24 @@ Chat bot able to speak natural language and markup, prompt to complete commands,
 It is configured with schema-validated YAML, features JWT authentication with granular RBAC, and SQL persistence.
 Listeners for common chat services, controllers for chat functions and devops tools, and inspired by the Kubernetes API.
 
+## Getting Started
+
+The bot interacts through Discord, Slack, or a GraphQL API.
+
+The [getting started guide](./docs/getting-started.md) has more information on using the bot.
+
+## Status
+
 [![Pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
 [![Test coverage](https://codecov.io/gh/ssube/isolex/branch/master/graph/badge.svg)](https://codecov.io/gh/ssube/isolex)
-[![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
-[![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
 
+[![Open bug count](https://img.shields.io/github/issues-raw/ssube/isolex/type-bug.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue+label%3Atype%2Fbug)
+[![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
+[![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/ssube/isolex.svg)](https://greenkeeper.io/)
+[![Known vulnerabilities](https://snyk.io/test/github/ssube/isolex/badge.svg)](https://snyk.io/test/github/ssube/isolex)
 [![Dependency status](https://img.shields.io/david/ssube/isolex.svg)](https://david-dm.org/ssube/isolex)
 [![Dev dependency status](https://img.shields.io/david/dev/ssube/isolex.svg)](https://david-dm.org/ssube/isolex?type=dev)
 
@@ -20,12 +31,6 @@ Listeners for common chat services, controllers for chat functions and devops to
 
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
-
-## Getting Started
-
-The bot interacts through Discord, Slack, or a GraphQL API.
-
-The [getting started guide](./docs/getting-started.md) has more information on using the bot.
 
 ## Releases
 
