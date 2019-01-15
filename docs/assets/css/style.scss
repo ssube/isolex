@@ -11,7 +11,8 @@ section {
   max-width: 1600px;
 }
 
-p > code {
-  border: inset 1px black;
+p > code, pre {
   background: rgba(0, 0, 0, 0.2);
+  border: inset 1px black;
+  box-shadow: none;
 }
