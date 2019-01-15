@@ -4,6 +4,15 @@ import { ineeda } from 'ineeda';
 import * as sinonChai from 'sinon-chai';
 import * as sourceMapSupport from 'source-map-support';
 
+import { BotModule } from 'src/module/BotModule';
+import { EntityModule } from 'src/module/EntityModule';
+import { FilterModule } from 'src/module/FilterModule';
+import { IntervalModule } from 'src/module/IntervalModule';
+import { MigrationModule } from 'src/module/MigrationModule';
+import { ParserModule } from 'src/module/ParserModule';
+import { ServiceModule } from 'src/module/ServiceModule';
+import { TransformModule } from 'src/module/TransformModule';
+
 sourceMapSupport.install({
   environment: 'node',
   handleUncaughtExceptions: true,
@@ -33,6 +42,17 @@ ineeda.intercept({
 // tslint:disable-next-line:no-any
 // const srcContext = (require as any).context('../src', true, /\/(?!main|shim).+\.ts$/m);
 // srcContext.keys().forEach(srcContext);
+
+const modules = [
+  BotModule,
+  EntityModule,
+  FilterModule,
+  IntervalModule,
+  MigrationModule,
+  ParserModule,
+  ServiceModule,
+  TransformModule,
+];
 
 // tslint:disable-next-line:no-any
 const testContext = (require as any).context('../test', true, /Test.*$/);

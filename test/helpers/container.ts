@@ -28,10 +28,10 @@ export class TestModule extends Module {
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
-    this.bind('compiler').toConstructor(TemplateCompiler);
+    this.bind(INJECT_TEMPLATE).toConstructor(TemplateCompiler);
   }
 
-  @Provides('logger')
+  @Provides(INJECT_LOGGER)
   public async getLogger(): Promise<Logger> {
     return ConsoleLogger.global;
   }

@@ -1,7 +1,7 @@
 import { isMap, isNil } from 'lodash';
 
 import { NotFoundError } from 'src/error/NotFoundError';
-import { doesExist, mergeList } from 'src/utils';
+import { doesExist, mergeList, mustExist } from 'src/utils';
 
 export interface Dict<TVal> {
   [key: string]: TVal;
@@ -17,23 +17,18 @@ export type MapLike<TVal> = Map<string, TVal> | Dict<TVal>;
  */
 export function mustGet<TKey, TVal>(map: Map<TKey, TVal>, key: TKey): TVal {
   const val = map.get(key);
-  if (isNil(val)) {
-    throw new NotFoundError();
-  }
-  return val;
+  return mustExist(val);
 }
 
 export function getOrDefault<TKey, TVal>(map: Map<TKey, TVal>, key: TKey, defaultValue: TVal): TVal {
   if (map.has(key)) {
     const data = map.get(key);
-    if (isNil(data)) {
-      return defaultValue;
-    } else {
+    if (doesExist(data)) {
       return data;
     }
-  } else {
-    return defaultValue;
   }
+
+  return defaultValue;
 }
 
 export function getHead<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey): TVal {
