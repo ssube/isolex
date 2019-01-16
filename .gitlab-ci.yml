@@ -27,6 +27,13 @@ stages:
     GIT_BRANCH: "${CI_COMMIT_REF_NAME}"
     GIT_COMMIT_SHA: "${CI_COMMIT_SHA}"
 
+.build-codecov: &build-codecov
+  image: apextoaster/codecov:3.1
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
 .build-docker: &build-docker
   image: docker:stable
   services:
@@ -123,22 +130,19 @@ climate-failure:
 climate-success:
   <<: [*build-climate]
   stage: status-post
+  dependencies:
+    - build-node
   script:
     - make upload-climate
 
 codecov-success:
-  <<: [*build-node]
+  <<: [*build-codecov]
   stage: status-post
   when: on_success
-
   dependencies:
     - build-node
-  cache:
-    key: "${CI_COMMIT_REF_SLUG}"
-    policy: pull
-
   script:
-    - make node_modules upload-codecov
+    - make upload-codecov
 
 github-pending:
   <<: [*build-curl]
