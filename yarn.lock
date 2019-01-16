@@ -284,9 +284,14 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/graphql@*", "@types/graphql@14.0.4":
+"@types/graphql@*":
   version "14.0.4"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.4.tgz#d71a75967cd93c33eaea32b626b362ce0f2b2ae9"
+
+"@types/graphql@14.0.5":
+  version "14.0.5"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.5.tgz#e696292fd2d77dc168b5b791710f83463aa39abd"
+  integrity sha512-bwGYLE0SRy5ZraC91dqI2bxbspfm10kyJ2Yjuvk4OjdGznh7fkoWW+xXZHfFydJaqu9syZi099cpiZw3GlPDiA==
 
 "@types/handlebars@^4.0.38":
   version "4.0.40"
