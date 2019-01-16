@@ -291,8 +291,7 @@ is greater than the `chance`. To make it very likely the bot responds, use the k
 
 #### Merge Pull Request
 
-The bot is able to merge (or close) pull requests through Github's
-[GraphQL (v4) API](https://developer.github.com/v4/).
+The bot is able to merge (or close) pull requests through [Github's API](https://developer.github.com/v3/).
 
 To view open pull requests on a project which you own, such as a fork of the bot:
 
