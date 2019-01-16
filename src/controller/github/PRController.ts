@@ -88,6 +88,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
 
     this.logger.debug({ owner, project, requestNumber }, 'merging pull request');
     await this.client.pulls.merge({
+      commit_message: message,
       commit_title: message,
       number: requestNumber,
       owner,
