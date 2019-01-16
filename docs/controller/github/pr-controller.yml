@@ -12,7 +12,7 @@ data:
         templates:
           body: >-
             {{#each data }}
-              PR#{{ number }}: {{ title }} (by {{ author.login }})
+              PR#{{ number }}: {{ title }} (by {{ user.login }})
             {{/each}}
     - metadata:
         kind: flatten-transform
