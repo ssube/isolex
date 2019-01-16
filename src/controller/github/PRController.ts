@@ -37,7 +37,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
   public async deleteRequest(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
-    const requestNumber = cmd.getHeadOrNumber('number', 0);
+    const requestNumber = cmd.getNumber('number');
 
     this.logger.debug({ owner, project, requestNumber }, 'closing pull request');
     await this.client.pulls.update({
@@ -55,7 +55,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
   public async getRequest(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
-    const requestNumber = cmd.getHeadOrNumber('number', 0);
+    const requestNumber = cmd.getNumber('number');
 
     const response = await this.client.pulls.get({
       number: requestNumber,
@@ -84,7 +84,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const message = cmd.getHead('message');
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
-    const requestNumber = cmd.getHeadOrNumber('number', 0);
+    const requestNumber = cmd.getNumber('number');
 
     this.logger.debug({ owner, project, requestNumber }, 'merging pull request');
     await this.client.pulls.merge({

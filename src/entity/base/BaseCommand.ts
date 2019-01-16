@@ -31,6 +31,10 @@ export abstract class BaseCommand extends DataEntity<Array<string>> {
     return value[0];
   }
 
+  public getNumber(key: string): number {
+    return Number(this.getHead(key));
+  }
+
   public getHeadOrDefault(key: string, defaultValue: string): string {
     return getHeadOrDefault(this.data, key, defaultValue);
   }
