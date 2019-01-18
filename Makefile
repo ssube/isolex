@@ -1,7 +1,7 @@
 # Git
-export GIT_BRANCH 	= $(shell git rev-parse --abbrev-ref HEAD)
-export GIT_COMMIT		= $(shell git rev-parse HEAD)
-export GIT_REMOTES	= $(shell git remote -v | awk '{ print $1; }' | sort | uniq)
+export GIT_BRANCH 	?= $(shell git rev-parse --abbrev-ref HEAD)
+export GIT_COMMIT		?= $(shell git rev-parse HEAD)
+export GIT_REMOTES	?= $(shell git remote -v | awk '{ print $1; }' | sort | uniq)
 export GIT_OPTIONS  ?=
 
 # CI

@@ -24,6 +24,7 @@ stages:
     - runner:shared
   allow_failure: false
   variables:
+    CI_BRANCH: "${CI_COMMIT_REF_NAME}"
     GIT_BRANCH: "${CI_COMMIT_REF_NAME}"
     GIT_COMMIT_SHA: "${CI_COMMIT_SHA}"
 
