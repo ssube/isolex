@@ -91,7 +91,7 @@
     "tslint-sonarts": "1.8",
     "typedoc": "0.14.2",
     "typeorm": "0.2.11",
-    "typescript": "3.2.2",
+    "typescript": "3.2.4",
     "utf-8-validate": "5.0.2",
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "3.0",
