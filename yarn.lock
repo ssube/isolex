@@ -135,7 +135,6 @@
 "@octokit/rest@16.9.0":
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.9.0.tgz#8fda1952b28c7671872620ad4f6884bd7d22802f"
-  integrity sha512-B34ViPeGypYcZzYFocIVZFEdd2/peOJX2/rYk7UhhvyTvSfG4aaQWLr0f+yQKl8y8fjbglh33rvzaFiO9ZnBTw==
   dependencies:
     "@octokit/request" "2.2.1"
     before-after-hook "^1.2.0"
@@ -334,7 +333,11 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@4.14.119", "@types/lodash@^4.14.110":
+"@types/lodash@4.14.120":
+  version "4.14.120"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.120.tgz#cf265d06f6c7a710db087ed07523ab8c1a24047b"
+
+"@types/lodash@^4.14.110":
   version "4.14.119"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.119.tgz#be847e5f4bc3e35e46d041c394ead8b603ad8b39"
 
@@ -864,7 +867,6 @@ awesome-typescript-loader@5.2:
 aws-sdk@2.390.0:
   version "2.390.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.390.0.tgz#eacb6d613681564716cf1933fbb347c43cbc5e84"
-  integrity sha512-kKLBVaIa8nJWH8G8ZFMT5s/Fe1XmCHn246Vt/QrQYqD1p2C6k3doWvOBjBpisipbqxauo/o/ZABwzCbuIOJEmw==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -2607,7 +2609,6 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
 graphql@14.1.1:
   version "14.1.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.1.1.tgz#d5d77df4b19ef41538d7215d1e7a28834619fac0"
-  integrity sha512-C5zDzLqvfPAgTtP8AUPIt9keDabrdRAqSWjj2OPRKrKxI9Fb65I36s1uCs1UUBFnSWTdO7hyHi7z1ZbwKMKF6Q==
   dependencies:
     iterall "^1.2.2"
 
@@ -2715,7 +2716,6 @@ he@1.1.1:
 highlight.js@^9.13.1, highlight.js@^9.6.0:
   version "9.13.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.13.1.tgz#054586d53a6863311168488a0f58d6c505ce641e"
-  integrity sha512-Sc28JNQNDzaH6PORtRLMvif9RSn1mYuOoX3omVjnb0+HbpPygU2ALBI0R/wsiqCb4/fcp07Gdo8g+fhtFrQl6A==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -4852,9 +4852,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs-tslint-rules@4.14.4:
-  version "4.14.4"
-  resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.14.4.tgz#1d7ba88a68963a494488a8114ac66507bf2b0df3"
+rxjs-tslint-rules@4.15.0:
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.15.0.tgz#418015e0ec106b91f5af1c065857f532b036292f"
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     decamelize "^2.0.0"
@@ -5639,7 +5639,6 @@ typedoc-default-themes@^0.5.0:
 typedoc@0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.14.2.tgz#769f457f4f9e4bdb8b5f3b177c86b6a31d8c3dc3"
-  integrity sha512-aEbgJXV8/KqaVhcedT7xG6d2r+mOvB5ep3eIz1KuB5sc4fDYXcepEEMdU7XSqLFO5hVPu0nllHi1QxX2h/QlpQ==
   dependencies:
     "@types/fs-extra" "^5.0.3"
     "@types/handlebars" "^4.0.38"
