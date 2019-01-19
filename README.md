@@ -12,7 +12,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 
 ## Status
 
-[![Pipeline status](https://git.apextoaster.com/ssube/isolex/badges/master/pipeline.svg)](https://git.apextoaster.com/ssube/isolex/commits/master)
+[![Pipeline status](https://img.shields.io/gitlab/pipeline/ssube/isolex.svg?gitlab_url=https%3A%2F%2Fgit.apextoaster.com&logo=gitlab)](https://git.apextoaster.com/ssube/isolex/commits/master)
 [![Test coverage](https://codecov.io/gh/ssube/isolex/branch/master/graph/badge.svg)](https://codecov.io/gh/ssube/isolex)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
 
@@ -38,8 +38,9 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.7.0.svg)](https://github.com/ssube/isolex/compare/v0.7.0...master)
 
 [![npm release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
-[![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master)
 [![Typescript definitions](https://img.shields.io/npm/types/isolex.svg)](https://www.npmjs.com/package/isolex)
+
+[![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master)
 
 ## Build
 

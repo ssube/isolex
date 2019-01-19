@@ -1,7 +1,5 @@
-import { isNil } from 'lodash';
-import { Inject, MissingValueError } from 'noicejs';
+import { Inject, Logger, MissingValueError } from 'noicejs';
 import { BaseOptions } from 'noicejs/Container';
-import { Logger } from 'noicejs/logger/Logger';
 import { Registry } from 'prom-client';
 import * as uuid from 'uuid/v4';
 
@@ -57,6 +55,11 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
   protected readonly services: ServiceModule;
 
   constructor(options: BaseServiceOptions<TData>, schemaPath: string) {
+    // check this, because bunyan will throw if it is missing
+    if (options.metadata.name === '') {
+      throw new MissingValueError('missing service name');
+    }
+
     this.id = uuid();
     this.kind = options.metadata.kind;
     this.labels = dictToMap(options.metadata.labels);
@@ -64,11 +67,6 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
 
     this.data = options.data;
     this.services = mustExist(options[INJECT_SERVICES]);
-
-    // check this, because bunyan will throw if it is missing
-    if (isNil(this.name) || this.name === '') {
-      throw new MissingValueError('missing service name');
-    }
 
     this.logger = serviceLogger(mustExist(options[INJECT_LOGGER]), this);
 
@@ -89,7 +87,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
   public abstract start(): Promise<void>;
   public abstract stop(): Promise<void>;
 
-  protected getId(persistent: boolean = false): string {
+  public getId(persistent: boolean = false): string {
     if (persistent) {
       return `${this.kind}:${this.name}`;
     } else {
