@@ -34,6 +34,7 @@ export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 NODE_BIN		:= $(ROOT_PATH)/node_modules/.bin
 NODE_CMD		?= $(shell env node)
 NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
+NODE_INFO		:= $(shell node -v)
 
 # Tool options
 BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
@@ -81,13 +82,13 @@ todo:
 
 # build targets
 build: ## builds, bundles, and tests the application
-build: node_modules configure bundle test
+build: build-cover
 
 build-cover: ## builds, bundles, and tests the application with code coverage
-build-cover: node_modules configure bundle-cover test-cover
+build-cover: configure node_modules bundle-cover test-cover
 
 build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
-build-strict: node_modules configure bundle-strict test-cover
+build-strict: configure node_modules bundle-strict test-cover
 
 bundle: bundle-cover ## build the distributable version of the application
 
