@@ -19,8 +19,6 @@ describeAsync('json schema', async () => {
     };
 
     const results = schema.match(data, 'isolex#/definitions/service-definition');
-    console.warn(results.errors);
-
     expect(results.valid).to.equal(true, 'schema must validate object');
   });
 
@@ -37,8 +35,6 @@ describeAsync('json schema', async () => {
     };
 
     const results = schema.match(data, 'isolex#/definitions/service-definition');
-    console.warn(results.errors);
-
     expect(results.valid).to.equal(true, 'schema must validate object');
     expect(data.data).to.have.ownProperty('strict').which.equals(true, 'schema should default to strict');
   });
