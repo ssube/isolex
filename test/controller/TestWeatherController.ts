@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { INJECT_REQUEST, INJECT_TEMPLATE } from 'src/BaseService';
+import { INJECT_REQUEST } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { INJECT_BOT } from 'src/BotService';
 import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';
@@ -13,8 +13,6 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { Transform } from 'src/transform';
 import { RequestFactory } from 'src/utils/Request';
-import { Template } from 'src/utils/Template';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
@@ -45,11 +43,6 @@ describeAsync('weather controller', async () => {
 
     const controller = await createService(container, WeatherController, {
       [INJECT_BOT]: bot,
-      [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
-        compile: () => ineeda<Template>({
-          render: () => 'test',
-        }),
-      }),
       data: {
         api: {
           key: '0',

@@ -4,7 +4,7 @@ import { Constructor } from 'noicejs/Container';
 import { Logger } from 'noicejs/logger/Logger';
 import { ModuleOptions } from 'noicejs/Module';
 import { Registry } from 'prom-client';
-import { Connection } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 
 import {
   INJECT_CLOCK,
@@ -81,7 +81,11 @@ export async function createService<
     [INJECT_METRICS]: new Registry(),
     [INJECT_SCHEMA]: schema,
     [INJECT_SERVICES]: services,
-    [INJECT_STORAGE]: ineeda<Connection>(),
+    [INJECT_STORAGE]: ineeda<Connection>({
+      getRepository<T>(ctor: T) {
+        return ineeda<Repository<T>>();
+      },
+    }),
     container,
     ...options,
   };

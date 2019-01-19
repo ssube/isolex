@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { MissingValueError } from 'noicejs';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
+import { ServiceEvent } from 'src/Service';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
@@ -42,6 +43,7 @@ describeAsync('base service', async () => {
         name: 'bar',
       },
     });
+    await svc.notify(ServiceEvent.Tick);
   });
 
   itAsync('should get ephemeral ID as UUID', async () => {
