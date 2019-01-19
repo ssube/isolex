@@ -1,5 +1,4 @@
-import { Module, ModuleOptions, Provides } from 'noicejs';
-import { Container } from 'noicejs/Container';
+import { Container, Module, ModuleOptions, Provides } from 'noicejs';
 
 import { INJECT_LOGGER, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceData, BotServiceOptions } from 'src/BotService';

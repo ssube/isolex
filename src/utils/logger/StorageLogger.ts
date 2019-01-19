@@ -1,5 +1,4 @@
-import { Logger, LogLevel, logWithLevel } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
+import { BaseOptions, Logger, LogLevel, logWithLevel } from 'noicejs';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
 import { classLogger } from 'src/utils/logger';

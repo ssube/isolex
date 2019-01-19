@@ -1,4 +1,4 @@
-import { ModuleOptions } from 'noicejs/Module';
+import { ModuleOptions } from 'noicejs';
 
 import { CommandInterval } from 'src/interval/CommandInterval';
 import { EventInterval } from 'src/interval/EventInterval';

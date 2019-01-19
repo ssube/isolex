@@ -1,5 +1,4 @@
-import { Inject, Logger, MissingValueError } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
+import { BaseOptions, Inject, Logger, MissingValueError } from 'noicejs';
 import { Registry } from 'prom-client';
 import * as uuid from 'uuid/v4';
 

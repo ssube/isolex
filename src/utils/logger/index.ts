@@ -1,6 +1,5 @@
 import { kebabCase } from 'lodash';
-import { Logger } from 'noicejs';
-import { BaseOptions, Constructor } from 'noicejs/Container';
+import { BaseOptions, Constructor, Logger } from 'noicejs';
 
 import { Service } from 'src/Service';
 import { getConstructor } from 'src/utils';

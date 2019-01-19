@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BaseOptions } from 'noicejs/Container';
+import { BaseOptions } from 'noicejs';
 
 const NOW_TO_SECONDS = 1000;
 

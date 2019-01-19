@@ -1,6 +1,5 @@
 import { isNil } from 'lodash';
-import { BaseError, Container, Inject, Logger } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
+import { BaseError, BaseOptions, Container, Inject, Logger } from 'noicejs';
 
 import { classLogger } from 'src/utils/logger';
 import { RequestFactory, RequestOptions } from 'src/utils/Request';

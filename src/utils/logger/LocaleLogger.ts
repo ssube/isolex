@@ -1,5 +1,4 @@
-import { Inject, Logger } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
+import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { INJECT_LOGGER } from 'src/BaseService';
 import { classLogger } from 'src/utils/logger';

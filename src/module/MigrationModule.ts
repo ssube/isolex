@@ -1,5 +1,4 @@
-import { Module } from 'noicejs';
-import { ModuleOptions } from 'noicejs/Module';
+import { Module, ModuleOptions } from 'noicejs';
 
 import { CreateContext0001544311178 } from 'src/migration/0001544311178-CreateContext';
 import { CreateCommand0001544311565 } from 'src/migration/0001544311565-CreateCommand';

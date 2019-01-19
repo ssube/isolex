@@ -1,4 +1,4 @@
-import { ModuleOptions } from 'noicejs/Module';
+import { ModuleOptions } from 'noicejs';
 
 import { BaseModule } from 'src/module/BaseModule';
 import { FlattenTransform } from 'src/transform/FlattenTransform';

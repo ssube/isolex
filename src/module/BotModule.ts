@@ -1,5 +1,4 @@
-import { Container, Logger, Provides } from 'noicejs';
-import { ModuleOptions } from 'noicejs/Module';
+import { Container, Logger, ModuleOptions, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 
 import {

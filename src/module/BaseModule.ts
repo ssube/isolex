@@ -1,6 +1,5 @@
 import { kebabCase } from 'lodash';
-import { Module } from 'noicejs';
-import { Constructor } from 'noicejs/Container';
+import { Constructor, Module } from 'noicejs';
 
 import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
 

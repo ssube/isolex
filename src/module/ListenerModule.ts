@@ -1,4 +1,4 @@
-import { ModuleOptions } from 'noicejs/Module';
+import { ModuleOptions } from 'noicejs';
 
 import { DiscordListener } from 'src/listener/DiscordListener';
 import { ExpressListener } from 'src/listener/ExpressListener';

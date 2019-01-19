@@ -1,5 +1,4 @@
-import { Inject } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
+import { BaseOptions, Inject } from 'noicejs';
 import { Observable, Subject } from 'rxjs';
 
 import { INJECT_CLOCK } from 'src/BaseService';

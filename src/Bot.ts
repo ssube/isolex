@@ -1,6 +1,5 @@
 import { isNil } from 'lodash';
-import { Container, Inject } from 'noicejs';
-import { LogLevel } from 'noicejs/logger/Logger';
+import { Container, Inject, LogLevel } from 'noicejs';
 import { Counter, Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 

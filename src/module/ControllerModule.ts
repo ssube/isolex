@@ -1,4 +1,4 @@
-import { ModuleOptions } from 'noicejs/Module';
+import { ModuleOptions } from 'noicejs';
 
 import { AccountController } from 'src/controller/AccountController';
 import { BotController } from 'src/controller/BotController';

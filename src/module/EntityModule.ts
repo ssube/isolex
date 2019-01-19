@@ -1,5 +1,4 @@
-import { Module, Provides } from 'noicejs';
-import { ModuleOptions } from 'noicejs/Module';
+import { Module, ModuleOptions, Provides } from 'noicejs';
 
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';

@@ -1,7 +1,5 @@
 import * as Handlebars from 'handlebars';
-import { Inject } from 'noicejs';
-import { BaseOptions } from 'noicejs/Container';
-import { Logger } from 'noicejs/logger/Logger';
+import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { INJECT_LOGGER } from 'src/BaseService';
 import { Context } from 'src/entity/Context';

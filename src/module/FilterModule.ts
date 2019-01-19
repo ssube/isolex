@@ -1,4 +1,4 @@
-import { ModuleOptions } from 'noicejs/Module';
+import { ModuleOptions } from 'noicejs';
 
 import { CommandFilter } from 'src/filter/CommandFilter';
 import { MessageFilter } from 'src/filter/MessageFilter';

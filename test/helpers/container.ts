@@ -1,8 +1,5 @@
 import { ineeda } from 'ineeda';
-import { ConsoleLogger, Container, Module, Provides } from 'noicejs';
-import { Constructor } from 'noicejs/Container';
-import { Logger } from 'noicejs/logger/Logger';
-import { ModuleOptions } from 'noicejs/Module';
+import { ConsoleLogger, Constructor, Container, Logger, Module, ModuleOptions, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
