@@ -117,6 +117,7 @@ module.exports = {
     ...ignoreModules([
       /^erlpack$/,
       /^ffmpeg-binaries$/,
+      /^ioredis$/,
       /^mssql$/,
       /^mysql$/,
       /^mysql2$/,
