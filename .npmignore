@@ -25,5 +25,6 @@ vendor/
 Dockerfile
 licensed.yml
 Makefile
+renovate.json
 tsconfig.json
 yarn-*

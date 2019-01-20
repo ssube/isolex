@@ -1,5 +1,9 @@
 {
   "extends": [
     "config:base"
-  ]
+  ],
+  "branchPrefix": "deps/",
+  "semanticCommitScope": "update",
+  "semanticCommitType": "deps",
+  "semanticCommits": true
 }
