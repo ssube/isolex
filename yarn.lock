@@ -3953,9 +3953,9 @@ node-pre-gyp@^0.11.0:
     semver "^5.3.0"
     tar "^4"
 
-noicejs@2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.5.1.tgz#07f7bab0aeefb4743adbc7038ca2e6b02af64fa1"
+noicejs@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/noicejs/-/noicejs-2.5.2.tgz#71d5ef524a2ac1e4d998474017a0e8a7c862e0c7"
 
 nomnom@1.5.2:
   version "1.5.2"
