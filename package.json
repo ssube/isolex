@@ -93,7 +93,7 @@
     "typeorm": "0.2.12",
     "typescript": "3.2.4",
     "utf-8-validate": "5.0.2",
-    "webpack": "4.28.4",
+    "webpack": "4.29.0",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-cli": "3.2.1",
     "ws": "6.1.2",
