@@ -133,7 +133,7 @@ yarn-install: ## install dependencies from package and lock file
 	yarn
 
 yarn-update: ## check yarn for outdated packages
-	yarn -L -C -P '.*'
+	yarn upgrade-interactive --latest
 
 # release targets
 git-push: ## push to both gitlab and github (this assumes you have both remotes set up)
