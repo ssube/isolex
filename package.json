@@ -102,7 +102,7 @@
   },
   "resolutions": {
     "**/lodash": "4.17.11",
-    "**/typescript": "3.2.2"
+    "**/typescript": "3.2.4"
   },
   "nyc": {
     "instrument": true,
