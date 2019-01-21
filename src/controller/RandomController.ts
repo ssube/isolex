@@ -46,6 +46,8 @@ export class RandomController extends BaseController<RandomControllerData> imple
         result = this.getRandomValue(precision, minVal, maxVal);
         break;
       }
+      default:
+        return this.reply(ctx, 'invalid args');
     }
 
     this.logger.debug({ args }, 'Returning random results');
