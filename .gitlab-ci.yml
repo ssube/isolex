@@ -109,18 +109,6 @@ build-image:
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
 
-build-sonar:
-  <<: [*build-sonar]
-  stage: build
-  script:
-    - make node_modules
-    - sonar-scanner
-        -Dsonar.projectKey=ssube_isolex
-        -Dsonar.organization=ssube-github
-        -Dsonar.sources=src/
-        -Dsonar.host.url=https://sonarcloud.io
-        -Dsonar.login=${SONAR_SECRET}
-
 # publish jobs
 publish-npm:
   <<: [*build-node]
@@ -183,3 +171,19 @@ github-success:
   when: on_success
   script:
     - ./scripts/github-status.sh success
+
+sonar-success:
+  <<: [*build-sonar]
+  stage: status-post
+  when: on_success
+  dependencies:
+    - build-node
+  script:
+    - make node_modules
+    - sonar-scanner
+        -Dsonar.projectKey=ssube_isolex
+        -Dsonar.organization=ssube-github
+        -Dsonar.sources=src/
+        -Dsonar.host.url=https://sonarcloud.io
+        -Dsonar.login=${SONAR_SECRET}
+        -Dsonar.typescript.lcov.reportPaths=out/coverage/lcov.info
