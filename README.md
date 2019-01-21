@@ -29,8 +29,8 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Technical debt ratio](https://img.shields.io/codeclimate/tech-debt/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/trends/technical_debt)
 [![Quality issues](https://img.shields.io/codeclimate/issues/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/issues)
 
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg?logo=lgtm)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
 
 ## Releases
 
