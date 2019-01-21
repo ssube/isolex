@@ -183,7 +183,7 @@ sonar-success:
     - sonar-scanner
         -Dsonar.projectKey=ssube_isolex
         -Dsonar.organization=ssube-github
-        -Dsonar.sources=src/
+        -Dsonar.sources=.
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.login=${SONAR_SECRET}
         -Dsonar.typescript.lcov.reportPaths=out/coverage/lcov.info
