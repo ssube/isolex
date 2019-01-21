@@ -39,7 +39,7 @@ export interface InjectedServiceOptions {
 
 // tslint:disable-next-line:no-any
 export type BaseServiceData = any;
-
+// tslint:disable-next-line:no-useless-intersection
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
 @Inject(INJECT_SCHEMA, INJECT_SERVICES)
