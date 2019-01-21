@@ -20,7 +20,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
 [![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/ssube/isolex.svg)](https://greenkeeper.io/)
+[![Renovate badge](https://badges.renovateapi.com/github/ssube/isolex)](https://renovatebot.com)
 [![Known vulnerabilities](https://snyk.io/test/github/ssube/isolex/badge.svg)](https://snyk.io/test/github/ssube/isolex)
 [![Dependency status](https://img.shields.io/david/ssube/isolex.svg)](https://david-dm.org/ssube/isolex)
 [![Dev dependency status](https://img.shields.io/david/dev/ssube/isolex.svg)](https://david-dm.org/ssube/isolex?type=dev)
