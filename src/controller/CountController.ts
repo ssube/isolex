@@ -28,13 +28,11 @@ export interface CountControllerData extends ControllerData {
   };
 }
 
-export type CountControllerOptions = BaseControllerOptions<CountControllerData>;
-
 @Inject(INJECT_STORAGE)
 export class CountController extends BaseController<CountControllerData> implements Controller {
   protected readonly counterRepository: Repository<Counter>;
 
-  constructor(options: CountControllerOptions) {
+  constructor(options: BaseControllerOptions<CountControllerData>) {
     super(options, 'isolex#/definitions/service-controller-count', [NOUN_COUNTER]);
 
     this.counterRepository = mustExist(options[INJECT_STORAGE]).getRepository(Counter);

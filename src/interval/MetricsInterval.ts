@@ -11,7 +11,6 @@ import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
 import { mustExist } from 'src/utils';
 
 export type MetricsIntervalData = IntervalData;
-export type MetricsIntervalOptions = BaseIntervalOptions<MetricsIntervalData>;
 
 /**
  * This interval is responsible for starting collection of default metrics, clearing the registry, etc.
@@ -20,7 +19,7 @@ export type MetricsIntervalOptions = BaseIntervalOptions<MetricsIntervalData>;
 export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
   protected readonly metrics: Registry;
 
-  constructor(options: MetricsIntervalOptions) {
+  constructor(options: BaseIntervalOptions<MetricsIntervalData>) {
     super(options, 'isolex#/definitions/service-interval-metrics');
 
     this.metrics = mustExist(options[INJECT_METRICS]);

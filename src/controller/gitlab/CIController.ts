@@ -12,17 +12,15 @@ export interface GitlabCIControllerData extends ControllerData {
   client: GitlabClientData;
 }
 
-export type GitlabCIControllerOptions = BaseControllerOptions<GitlabCIControllerData>;
-
 export const NOUN_GITLAB_JOB = 'gitlab-ci-job';
 export const NOUN_GITLAB_PIPELINE = 'gitlab-ci-pipeline';
 
 @Inject()
 export class GitlabCIController extends BaseController<GitlabCIControllerData> implements Controller {
+  protected readonly container: Container;
   protected client?: GitlabClient;
-  protected container: Container;
 
-  constructor(options: GitlabCIControllerOptions) {
+  constructor(options: BaseControllerOptions<GitlabCIControllerData>) {
     super(options, 'isolex#/definitions/service-controller-gitlab-ci', [NOUN_GITLAB_JOB, NOUN_GITLAB_PIPELINE]);
     this.container = options.container;
   }

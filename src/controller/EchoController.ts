@@ -8,11 +8,10 @@ import { Context } from 'src/entity/Context';
 export const NOUN_ECHO = 'echo';
 
 export type EchoControllerData = ControllerData;
-export type EchoControllerOptions = BaseControllerOptions<EchoControllerData>;
 
 @Inject()
 export class EchoController extends BaseController<EchoControllerData> implements Controller {
-  constructor(options: EchoControllerOptions) {
+  constructor(options: BaseControllerOptions<EchoControllerData>) {
     super(options, 'isolex#/definitions/service-controller-echo', [NOUN_ECHO]);
   }
 

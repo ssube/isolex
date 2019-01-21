@@ -17,14 +17,12 @@ export interface FlattenTransformData extends TransformData {
   keys: Array<string>;
 }
 
-export type FlattenTransformOptions = BaseTransformOptions<FlattenTransformData>;
-
 @Inject(INJECT_JSONPATH)
 export class FlattenTransform extends BaseTransform<FlattenTransformData> implements Transform {
   protected readonly keys: Array<string>;
   protected readonly jsonpath: JsonPath;
 
-  constructor(options: FlattenTransformOptions) {
+  constructor(options: BaseTransformOptions<FlattenTransformData>) {
     super(options, 'isolex#/definitions/service-transform-flatten');
 
     this.keys = Array.from(this.data.keys);

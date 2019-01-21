@@ -18,13 +18,11 @@ export interface PickControllerData extends ControllerData {
 
 export const NOUN_PICK = 'pick';
 
-export type PickControllerOptions = BaseControllerOptions<PickControllerData>;
-
 @Inject()
 export class PickController extends BaseController<PickControllerData> implements Controller {
   protected list: Checklist<string>;
 
-  constructor(options: PickControllerOptions) {
+  constructor(options: BaseControllerOptions<PickControllerData>) {
     super(options, 'isolex#/definitions/service-controller-pick', [NOUN_PICK]);
 
     this.list = new Checklist(options.data.check);

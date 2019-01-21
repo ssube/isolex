@@ -24,15 +24,13 @@ export interface CompiledReaction {
   match: Match;
 }
 
-export type ReactionControllerOptions = BaseControllerOptions<ReactionControllerData>;
-
 export const NOUN_REACTION = 'reaction';
 
 @Inject()
 export class ReactionController extends BaseController<ReactionControllerData> implements Controller {
   protected reactions: Array<CompiledReaction>;
 
-  constructor(options: ReactionControllerOptions) {
+  constructor(options: BaseControllerOptions<ReactionControllerData>) {
     super(options, 'isolex#/definitions/service-controller-reaction', [NOUN_REACTION]);
 
     this.reactions = options.data.reactions.map((r) => {

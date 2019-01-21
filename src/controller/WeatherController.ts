@@ -15,15 +15,13 @@ export interface WeatherControllerData extends ControllerData {
   };
 }
 
-export type WeatherControllerOptions = BaseControllerOptions<WeatherControllerData>;
-
 export const NOUN_WEATHER = 'weather';
 
 @Inject(INJECT_REQUEST)
 export class WeatherController extends BaseController<WeatherControllerData> implements Controller {
   protected readonly request: RequestFactory;
 
-  constructor(options: WeatherControllerOptions) {
+  constructor(options: BaseControllerOptions<WeatherControllerData>) {
     super(options, 'isolex#/definitions/service-controller-weather', [NOUN_WEATHER]);
 
     this.request = mustExist(options[INJECT_REQUEST]);

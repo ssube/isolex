@@ -17,13 +17,11 @@ export interface TemplateTransformData extends TransformData {
   };
 }
 
-export type TemplateTransformOptions = BaseTransformOptions<TemplateTransformData>;
-
 @Inject(INJECT_TEMPLATE)
 export class TemplateTransform extends BaseTransform<TemplateTransformData> implements Transform {
   protected readonly templates: Map<string, Template>;
 
-  constructor(options: TemplateTransformOptions) {
+  constructor(options: BaseTransformOptions<TemplateTransformData>) {
     super(options, 'isolex#/definitions/service-transform-template');
 
     this.templates = new Map();

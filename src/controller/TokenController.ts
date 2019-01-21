@@ -25,15 +25,13 @@ export interface TokenControllerData extends ControllerData {
   };
 }
 
-export type TokenControllerOptions = BaseControllerOptions<TokenControllerData>;
-
 @Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class TokenController extends BaseController<TokenControllerData> implements Controller {
   protected readonly clock: Clock;
   protected readonly storage: Storage;
   protected readonly tokenRepository: Repository<Token>;
 
-  constructor(options: TokenControllerOptions) {
+  constructor(options: BaseControllerOptions<TokenControllerData>) {
     super(options, 'isolex#/definitions/service-controller-token', [NOUN_TOKEN]);
 
     this.clock = mustExist(options[INJECT_CLOCK]);

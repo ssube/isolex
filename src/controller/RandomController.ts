@@ -9,13 +9,12 @@ import { Context } from 'src/entity/Context';
 import { countList } from 'src/utils';
 
 export type RandomControllerData = ControllerData;
-export type RandomControllerOptions = BaseControllerOptions<RandomControllerData>;
 
 export const NOUN_RANDOM = 'random';
 
 @Inject()
 export class RandomController extends BaseController<RandomControllerData> implements Controller {
-  constructor(options: RandomControllerOptions) {
+  constructor(options: BaseControllerOptions<RandomControllerData>) {
     super(options, 'isolex#/definitions/service-controller-random', [NOUN_RANDOM]);
   }
 

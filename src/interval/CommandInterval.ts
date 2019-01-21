@@ -8,10 +8,8 @@ export interface CommandIntervalData extends IntervalData {
   defaultCommand: CommandOptions;
 }
 
-export type CommandIntervalOptions = BaseIntervalOptions<CommandIntervalData>;
-
 export class CommandInterval extends BaseInterval<CommandIntervalData> {
-  constructor(options: CommandIntervalOptions) {
+  constructor(options: BaseIntervalOptions<CommandIntervalData>) {
     super(options, 'isolex#/definitions/service-interval-command');
   }
 

@@ -15,13 +15,11 @@ export interface TimeControllerData extends ControllerData {
   zone: string;
 }
 
-export type TimeControllerOptions = BaseControllerOptions<TimeControllerData>;
-
 @Inject(INJECT_CLOCK)
 export class TimeController extends BaseController<TimeControllerData> implements Controller {
   protected readonly clock: Clock;
 
-  constructor(options: TimeControllerOptions) {
+  constructor(options: BaseControllerOptions<TimeControllerData>) {
     super(options, 'isolex#/definitions/service-controller-time', [NOUN_TIME]);
 
     this.clock = mustExist(options[INJECT_CLOCK]);

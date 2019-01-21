@@ -16,14 +16,13 @@ export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';
 
 export type UserControllerData = ControllerData;
-export type UserControllerOptions = BaseControllerOptions<UserControllerData>;
 
 @Inject(INJECT_STORAGE)
 export class UserController extends BaseController<UserControllerData> implements Controller {
   protected readonly roleRepository: Repository<Role>;
   protected readonly userRepository: UserRepository;
 
-  constructor(options: UserControllerOptions) {
+  constructor(options: BaseControllerOptions<UserControllerData>) {
     super(options, 'isolex#/definitions/service-controller-user', [NOUN_ROLE, NOUN_USER]);
 
     const storage = mustExist(options[INJECT_STORAGE]);

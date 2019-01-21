@@ -15,12 +15,10 @@ export interface MessageIntervalData extends IntervalData {
   transforms: Array<ServiceDefinition<TransformData>>;
 }
 
-export type MessageIntervalOptions = BaseIntervalOptions<MessageIntervalData>;
-
 export class MessageInterval extends BaseInterval<MessageIntervalData> {
   protected readonly transforms: Array<Transform>;
 
-  constructor(options: MessageIntervalOptions) {
+  constructor(options: BaseIntervalOptions<MessageIntervalData>) {
     super(options, 'isolex#/definitions/service-interval-message');
 
     this.transforms = [];

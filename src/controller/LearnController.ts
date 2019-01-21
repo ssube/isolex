@@ -18,14 +18,12 @@ export interface LearnControllerData extends ControllerData {
   nouns: ChecklistOptions<string>;
 }
 
-export type LearnControllerOptions = BaseControllerOptions<LearnControllerData>;
-
 @Inject(INJECT_STORAGE)
 export class LearnController extends BaseController<LearnControllerData> implements Controller {
   protected readonly checkNoun: Checklist<string>;
   protected readonly keywordRepository: Repository<Keyword>;
 
-  constructor(options: LearnControllerOptions) {
+  constructor(options: BaseControllerOptions<LearnControllerData>) {
     super(options, 'isolex#/definitions/service-controller-learn', [NOUN_KEYWORD]);
 
     this.checkNoun = new Checklist(options.data.nouns);

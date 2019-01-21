@@ -20,14 +20,12 @@ export interface CompletionControllerData extends ControllerData {
   defaultTarget: ServiceMetadata;
 }
 
-export type CompletionControllerOptions = BaseControllerOptions<CompletionControllerData>;
-
 @Inject(INJECT_STORAGE)
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
   protected readonly fragmentRepository: Repository<Fragment>;
   protected target?: Listener;
 
-  constructor(options: CompletionControllerOptions) {
+  constructor(options: BaseControllerOptions<CompletionControllerData>) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
 
     this.fragmentRepository = mustExist(options[INJECT_STORAGE]).getRepository(Fragment);

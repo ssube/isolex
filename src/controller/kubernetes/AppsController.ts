@@ -17,13 +17,11 @@ export interface AppsControllerData extends KubernetesBaseControllerData {
   };
 }
 
-export type AppsControllerOptions = BaseControllerOptions<AppsControllerData>;
-
 @Inject()
 export class KubernetesAppsController extends KubernetesBaseController<AppsControllerData> implements Controller {
   protected client?: AppsClient;
 
-  constructor(options: AppsControllerOptions) {
+  constructor(options: BaseControllerOptions<AppsControllerData>) {
     super(options, 'isolex#/definitions/service-controller-kubernetes-apps', [
       NOUN_DAEMONSET,
       NOUN_DEPLOYMENT,

@@ -40,8 +40,6 @@ export interface AccountControllerData extends ControllerData {
   };
 }
 
-export type AccountControllerOptions = BaseControllerOptions<AccountControllerData>;
-
 @Inject(INJECT_CLOCK, INJECT_STORAGE)
 export class AccountController extends BaseController<AccountControllerData> implements Controller {
   protected clock: Clock;
@@ -50,7 +48,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   protected tokenRepository: Repository<Token>;
   protected userRepository: UserRepository;
 
-  constructor(options: AccountControllerOptions) {
+  constructor(options: BaseControllerOptions<AccountControllerData>) {
     super(options, 'isolex#/definitions/service-controller-account', [NOUN_GRANT, NOUN_ACCOUNT, NOUN_SESSION]);
 
     this.clock = mustExist(options[INJECT_CLOCK]);

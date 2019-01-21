@@ -9,13 +9,12 @@ import { Message } from 'src/entity/Message';
 import { doesExist, mustExist } from 'src/utils';
 
 export type SedControllerData = ControllerData;
-export type SedControllerOptions = BaseControllerOptions<SedControllerData>;
 
 export const NOUN_SED = 'sed';
 
 @Inject()
 export class SedController extends BaseController<SedControllerData> implements Controller {
-  constructor(options: SedControllerOptions) {
+  constructor(options: BaseControllerOptions<SedControllerData>) {
     super(options, 'isolex#/definitions/service-controller-sed', [NOUN_SED]);
   }
 

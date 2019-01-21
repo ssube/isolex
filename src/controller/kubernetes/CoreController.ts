@@ -16,13 +16,11 @@ export interface CoreControllerData extends KubernetesBaseControllerData {
   };
 }
 
-export type CoreControllerOptions = BaseControllerOptions<CoreControllerData>;
-
 @Inject()
 export class KubernetesCoreController extends KubernetesBaseController<CoreControllerData> implements Controller {
   protected client?: k8s.Core_v1Api;
 
-  constructor(options: CoreControllerOptions) {
+  constructor(options: BaseControllerOptions<CoreControllerData>) {
     super(options, 'isolex#/definitions/service-controller-kubernetes-core', [NOUN_POD, NOUN_SERVICE]);
   }
 

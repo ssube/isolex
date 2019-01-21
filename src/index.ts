@@ -2,7 +2,7 @@ import { Container, Logger, Module } from 'noicejs';
 import * as sourceMapSupport from 'source-map-support';
 import * as yargs from 'yargs-parser';
 
-import { Bot, BotOptions } from 'src/Bot';
+import { Bot, BotData } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
@@ -15,7 +15,7 @@ import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { Schema } from 'src/schema';
-import { ServiceEvent } from 'src/Service';
+import { ServiceEvent, ServiceDefinition } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';
@@ -117,7 +117,7 @@ async function main(argv: Array<string>): Promise<number> {
   logger.info('configuring container');
   await ctr.configure({ logger });
 
-  const bot = await ctr.create<Bot, BotOptions>(Bot, config);
+  const bot = await ctr.create<Bot, ServiceDefinition<BotData>>(Bot, config);
   botModule.setBot(bot);
 
   logger.info('starting bot');

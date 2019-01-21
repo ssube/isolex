@@ -19,13 +19,11 @@ export interface MathControllerData extends ControllerData {
   };
 }
 
-export type MathControllerOptions = BaseControllerOptions<MathControllerData>;
-
 @Inject(INJECT_MATH)
 export class MathController extends BaseController<MathControllerData> implements Controller {
   protected math: MathJsStatic;
 
-  constructor(options: MathControllerOptions) {
+  constructor(options: BaseControllerOptions<MathControllerData>) {
     super(options, 'isolex#/definitions/service-controller-math', [NOUN_MATH]);
 
     this.math = mustExist(options[INJECT_MATH]).create(options.data.math);

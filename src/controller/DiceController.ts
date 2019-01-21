@@ -14,13 +14,11 @@ export const NOUN_ROLL = 'roll';
 
 export type DiceControllerData = ControllerData;
 
-export type DiceControllerOptions = BaseControllerOptions<DiceControllerData>;
-
 @Inject(INJECT_MATH)
 export class DiceController extends BaseController<DiceControllerData> implements Controller {
   protected math: MathJsStatic;
 
-  constructor(options: DiceControllerOptions) {
+  constructor(options: BaseControllerOptions<DiceControllerData>) {
     super(options, 'isolex#/definitions/service-controller-dice', [NOUN_ROLL]);
 
     this.math = mustExist(options[INJECT_MATH]).create({});

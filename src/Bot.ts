@@ -41,7 +41,6 @@ export interface BotData extends BaseServiceData {
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
-export type BotOptions = BaseServiceOptions<BotData>;
 
 @Inject(INJECT_LOGGER, INJECT_METRICS, INJECT_SERVICES)
 export class Bot extends BaseService<BotData> implements Service {
@@ -67,7 +66,7 @@ export class Bot extends BaseService<BotData> implements Service {
   protected incoming: Subject<Message>;
   protected outgoing: Subject<Message>;
 
-  constructor(options: BotOptions) {
+  constructor(options: BaseServiceOptions<BotData>) {
     super(options, 'isolex#/definitions/service-bot');
 
     this.logger.info(options, 'creating bot');

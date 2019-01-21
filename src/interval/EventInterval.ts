@@ -8,10 +8,8 @@ export interface EventIntervalData extends IntervalData {
   services: Array<ServiceMetadata>;
 }
 
-export type EventIntervalOptions = BaseIntervalOptions<EventIntervalData>;
-
 export class EventInterval extends BaseInterval<EventIntervalData> {
-  constructor(options: EventIntervalOptions) {
+  constructor(options: BaseIntervalOptions<EventIntervalData>) {
     super(options, 'isolex#/definitions/service-interval-event');
   }
 

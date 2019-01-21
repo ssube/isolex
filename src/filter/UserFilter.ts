@@ -7,12 +7,10 @@ export interface UserFilterData extends FilterData {
   users: ChecklistOptions<string>;
 }
 
-export type UserFilterOptions = BaseFilterOptions<UserFilterData>;
-
 export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
   protected list: Checklist<string>;
 
-  constructor(options: UserFilterOptions) {
+  constructor(options: BaseFilterOptions<UserFilterData>) {
     super(options, 'isolex#/definitions/service-filter-user');
 
     this.list = new Checklist(options.data.users);

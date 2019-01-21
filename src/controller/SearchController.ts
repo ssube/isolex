@@ -18,8 +18,6 @@ export interface SearchControllerData extends ControllerData {
   };
 }
 
-export type SearchControllerOptions = BaseControllerOptions<SearchControllerData>;
-
 export const NOUN_SEARCH = 'search';
 
 @Inject(INJECT_TEMPLATE, INJECT_REQUEST)
@@ -27,7 +25,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
   protected readonly request: RequestFactory;
   protected readonly url: Template;
 
-  constructor(options: SearchControllerOptions) {
+  constructor(options: BaseControllerOptions<SearchControllerData>) {
     super(options, 'isolex#/definitions/service-controller-search', [NOUN_SEARCH]);
 
     this.request = mustExist(options[INJECT_REQUEST]);
