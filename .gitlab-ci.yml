@@ -113,6 +113,7 @@ build-sonar:
   <<: [*build-sonar]
   stage: build
   script:
+    - make node_modules
     - sonar-scanner
         -Dsonar.projectKey=ssube_isolex
         -Dsonar.organization=ssube-github
