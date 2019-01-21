@@ -132,15 +132,14 @@
     node-fetch "^2.3.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@16.11.0":
-  version "16.11.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.11.0.tgz#66af848e8e6110bbfec4be3d9ecfac78a55f30a3"
+"@octokit/rest@16.13.0":
+  version "16.13.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.13.0.tgz#ec7a0574b2a6a38fad8a6840385ffdeb48ae200a"
   dependencies:
     "@octokit/request" "2.3.0"
     before-after-hook "^1.2.0"
     btoa-lite "^1.0.0"
     lodash.get "^4.4.2"
-    lodash.pick "^4.4.0"
     lodash.set "^4.3.2"
     lodash.uniq "^4.5.0"
     octokit-pagination-methods "^1.1.0"
@@ -3415,10 +3414,6 @@ lodash.isstring@^4.0.1:
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
-
-lodash.pick@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
 
 lodash.set@^4.3.2:
   version "4.3.2"
