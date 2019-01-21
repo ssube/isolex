@@ -30,36 +30,31 @@ export class RandomController extends BaseController<RandomControllerData> imple
     const [minVal, maxVal] = args.map(Number);
 
     this.logger.debug({ max, min }, 'computing random');
-    let result = 0 as number | string;
     switch (args.length) {
       case 0: {
-        result = this.getRandomDefault();
-        break;
+        const result = this.getRandomDefault();
+        return this.reply(ctx, `The result of your roll is: ${result}`);
       }
       case 1: {
         const precision = this.getPrecision(minVal);
-        result = this.getRandomValue(precision, minVal);
-        break;
+        const result = this.getRandomValue(precision, minVal);
+        return this.reply(ctx, `The result of your roll is: ${result}`);
       }
       case 2: {
         const precision = this.getPrecision(minVal, maxVal);
-        result = this.getRandomValue(precision, minVal, maxVal);
-        break;
+        const result = this.getRandomValue(precision, minVal, maxVal);
+        return this.reply(ctx, `The result of your roll is: ${result}`);
       }
       default:
         return this.reply(ctx, 'invalid args');
     }
-
-    this.logger.debug({ args }, 'Returning random results');
-
-    return this.reply(ctx, `The result of your roll is: ${result}`);
   }
 
   private getRandomDefault(): number {
     return randomInt(1, 6);
   }
 
-  private getRandomValue(precision: number, minVal: number, maxVal?: number): number | string {
+  private getRandomValue(precision: number, minVal: number, maxVal?: number): string {
     if (!isNumber(minVal)) {
       return `Provided value: ${minVal} is not a number!`;
     }
@@ -73,7 +68,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
 
     this.logger.debug({ precision }, 'getting random value');
     if (precision === 0) {
-      return randomInt(minimum, maximum);
+      return randomInt(minimum, maximum).toFixed(precision);
     }
 
     // Otherwise we are dealing with at least one float
