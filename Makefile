@@ -1,17 +1,17 @@
 # Git
-export GIT_BRANCH 	?= $(shell git rev-parse --abbrev-ref HEAD)
-export GIT_COMMIT		?= $(shell git rev-parse HEAD)
+export GIT_BRANCH	?= $(shell git rev-parse --abbrev-ref HEAD)
+export GIT_COMMIT	?= $(shell git rev-parse HEAD)
 export GIT_REMOTES	?= $(shell git remote -v | awk '{ print $1; }' | sort | uniq)
-export GIT_OPTIONS  ?=
+export GIT_OPTIONS	?=
 
 # CI
-export CI_COMMIT_REF_SLUG		?= $(GIT_BRANCH)
-export CI_COMMIT_SHA ?= $(GIT_COMMIT)
-export CI_ENVIRONMENT_SLUG 	?= local
-export CI_JOB_ID ?= 0
-export CI_RUNNER_DESCRIPTION ?= $(shell hostname)
-export CI_RUNNER_ID ?= $(shell hostname)
-export CI_RUNNER_VERSION ?= 0.0.0
+export CI_COMMIT_REF_SLUG	?= $(GIT_BRANCH)
+export CI_COMMIT_SHA	?= $(GIT_COMMIT)
+export CI_ENVIRONMENT_SLUG	?= local
+export CI_JOB_ID	?= 0
+export CI_RUNNER_DESCRIPTION	?= $(shell hostname)
+export CI_RUNNER_ID	?= $(shell hostname)
+export CI_RUNNER_VERSION	?= 0.0.0
 
 # Debug
 export DEBUG_BIND  ?= 127.0.0.1
@@ -19,22 +19,21 @@ export DEBUG_PORT  ?= 9229
 
 # Paths
 # resolve the makefile's path and directory, from https://stackoverflow.com/a/18137056
-export MAKE_PATH		?= $(abspath $(lastword $(MAKEFILE_LIST)))
-export ROOT_PATH		?= $(dir $(MAKE_PATH))
+export MAKE_PATH	?= $(abspath $(lastword $(MAKEFILE_LIST)))
+export ROOT_PATH	?= $(dir $(MAKE_PATH))
 export CONFIG_PATH 	?= $(ROOT_PATH)/config
 export SCRIPT_PATH 	?= $(ROOT_PATH)/scripts
 export SOURCE_PATH 	?= $(ROOT_PATH)/src
 export TARGET_PATH	?= $(ROOT_PATH)/out
-export TARGET_LOG		?= $(TARGET_PATH)/apex-reference.log
+export TARGET_LOG	?= $(TARGET_PATH)/apex-reference.log
 export TARGET_MAIN 	?= $(TARGET_PATH)/main-bundle.js
-export TEST_PATH		?= $(ROOT_PATH)/test
+export TEST_PATH	?= $(ROOT_PATH)/test
 export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 
 # Node options
-NODE_BIN		:= $(ROOT_PATH)/node_modules/.bin
-NODE_CMD		?= $(shell env node)
+NODE_BIN	:= $(ROOT_PATH)/node_modules/.bin
+NODE_CMD	?= $(shell env node)
 NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
-NODE_INFO		:= $(shell node -v)
 
 # Tool options
 BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
