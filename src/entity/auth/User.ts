@@ -5,10 +5,28 @@ import { GRAPH_OUTPUT_ROLE, Role } from 'src/entity/auth/Role';
 import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
 import { doesExist } from 'src/utils';
 
+export interface UserLocale {
+  date: string;
+  lang: string;
+  time: string;
+  timezone: string;
+}
+
 export interface UserOptions extends BaseEntityOptions {
+  locale: UserLocale;
   name: string;
   roles: Array<Role>;
 }
+
+/**
+ * TODO: do this without hard-coded fallbacks
+ */
+export const LOCALE_DEFAULT = {
+  date: 'YYYY-MM-DD',
+  lang: 'en-US',
+  time: 'HH:MM:SSZ',
+  timezone: 'GMT',
+};
 
 export const TABLE_USER = 'user';
 
@@ -16,6 +34,11 @@ export const TABLE_USER = 'user';
 export class User extends BaseEntity implements UserOptions {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
+
+  @Column({
+    type: 'simple-json',
+  })
+  public locale: UserLocale;
 
   @Column({
     unique: true,
@@ -34,8 +57,16 @@ export class User extends BaseEntity implements UserOptions {
     super(options);
 
     if (doesExist(options)) {
+      this.locale = {
+        ...LOCALE_DEFAULT,
+        ...options.locale,
+      };
       this.name = options.name;
       this.roles = options.roles;
+    } else {
+      this.locale = {
+        ...LOCALE_DEFAULT,
+      };
     }
   }
 

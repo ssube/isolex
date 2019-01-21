@@ -15,7 +15,7 @@ import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { Schema } from 'src/schema';
-import { ServiceEvent, ServiceDefinition } from 'src/Service';
+import { ServiceDefinition, ServiceEvent } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';

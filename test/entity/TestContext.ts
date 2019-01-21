@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
 import { Role } from 'src/entity/auth/Role';
-import { User } from 'src/entity/auth/User';
+import { LOCALE_DEFAULT, User } from 'src/entity/auth/User';
 import { Context } from 'src/entity/Context';
 import { Listener } from 'src/listener';
 
@@ -20,6 +20,7 @@ describeAsync('context entity', async () => {
       source: ineeda<Listener>(),
       uid: 'test',
       user: new User({
+        locale: LOCALE_DEFAULT,
         name: 'test',
         roles: [new Role({
           grants,
@@ -47,6 +48,7 @@ describeAsync('context entity', async () => {
       source: ineeda<Listener>(),
       uid: 'test',
       user: new User({
+        locale: LOCALE_DEFAULT,
         name: 'test',
         roles: [new Role({
           grants,

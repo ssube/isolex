@@ -9,7 +9,7 @@ import { BaseController, BaseControllerOptions, ErrorReplyType } from 'src/contr
 import { createCommandCompletion } from 'src/controller/helpers';
 import { Role } from 'src/entity/auth/Role';
 import { Token } from 'src/entity/auth/Token';
-import { User } from 'src/entity/auth/User';
+import { LOCALE_DEFAULT, User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -104,6 +104,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
       },
     });
     const user = await this.userRepository.save(new User({
+      locale: LOCALE_DEFAULT,
       name,
       roles,
     }));

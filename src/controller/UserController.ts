@@ -6,7 +6,7 @@ import { INJECT_STORAGE } from 'src/BotService';
 import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
 import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Role } from 'src/entity/auth/Role';
-import { User } from 'src/entity/auth/User';
+import { LOCALE_DEFAULT, User } from 'src/entity/auth/User';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
@@ -88,6 +88,7 @@ export class UserController extends BaseController<UserControllerData> implement
     this.logger.debug({ roles }, 'found roles');
 
     const user = await this.userRepository.save(new User({
+      locale: LOCALE_DEFAULT,
       name,
       roles,
     }));
