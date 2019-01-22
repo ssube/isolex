@@ -14,15 +14,15 @@ import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map
 
 export interface ArgsParserData extends ParserData {
   args: {
-    array: Array<string>;
-    boolean: Array<string>;
-    configuration: Partial<yargs.Configuration>;
-    count: Array<string>;
-    default: Array<string>;
-    number: Array<string>;
+    array?: Array<string>;
+    boolean?: Array<string>;
+    configuration?: Partial<yargs.Configuration>;
+    count?: Array<string>;
+    default?: Array<string>;
+    number?: Array<string>;
     required: Array<string>;
-    string: Array<string>;
-    '--': boolean;
+    string?: Array<string>;
+    '--'?: boolean;
   };
 }
 
