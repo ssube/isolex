@@ -182,6 +182,7 @@ sonar-success:
     - make node_modules
     - sonar-scanner
         -Dsonar.projectKey=ssube_isolex
+        -Dsonar.projectVersion=${CI_COMMIT_REF_SLUG}
         -Dsonar.organization=ssube-github
         -Dsonar.sources=src/,test/
         -Dsonar.host.url=https://sonarcloud.io
