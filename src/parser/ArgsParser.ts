@@ -2,8 +2,8 @@ import { Inject } from 'noicejs';
 import * as yargs from 'yargs-parser';
 
 import { BotServiceOptions } from 'src/BotService';
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { Command, CommandDataValue, CommandVerb } from 'src/entity/Command';
+import { createCompletion } from 'src/controller/helpers';
+import { Command, CommandDataValue } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
@@ -79,20 +79,15 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   }
 
   protected async createCompletion(context: Context, data: Map<string, Array<string>>, missing: Array<string>): Promise<Command> {
-    const fragment = dictToMap({
-      key: missing,
-      msg: [`missing required arguments: ${missing.join(', ')}`],
-      noun: [this.data.defaultCommand.noun],
-      parser: [this.id],
-      verb: [this.data.defaultCommand.verb],
-    });
+    const msg = `missing required arguments: ${missing.join(', ')}`;
     const fragmentContext = await this.createContext(context);
-    return new Command({
+    const [key] = missing;
+    return createCompletion({
       context: fragmentContext,
-      data: new Map([...data, ...fragment]),
+      data,
       labels: this.data.defaultCommand.labels,
-      noun: NOUN_FRAGMENT,
-      verb: CommandVerb.Create,
-    });
+      noun: this.data.defaultCommand.noun,
+      verb: this.data.defaultCommand.verb,
+    }, key, msg, this);
   }
 }
