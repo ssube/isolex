@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
-import { countList, leftPad } from 'src/utils';
+import { NotFoundError } from 'src/error/NotFoundError';
+import { countList, filterNil, leftPad, mustFind } from 'src/utils';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 
@@ -36,6 +37,25 @@ describeAsync('utils', async () => {
       expect(countList(undefined)).to.equal(0, 'undefined');
       // tslint:disable-next-line:no-null-keyword
       expect(countList(null)).to.equal(0, 'null');
+    });
+  });
+
+  describeAsync('filter nil', async () => {
+    itAsync('should remove nil items', async () => {
+      // tslint:disable-next-line:no-null-keyword
+      expect(filterNil([1, undefined, 2, null, 3])).to.deep.equal([1, 2, 3]);
+    });
+  });
+
+  describeAsync('must find helper', async () => {
+    itAsync('should return matching item', async () => {
+      expect(mustFind([1, 2, 3], (val) => (val % 2) === 0)).to.equal(2);
+    });
+
+    itAsync('should throw if no item matches', async () => {
+      expect(() => {
+        mustFind([1, 2, 3], (val) => val === 4);
+      }).to.throw(NotFoundError);
     });
   });
 });

@@ -56,10 +56,7 @@ export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Ar
 
 export function mustFind<TVal>(list: Array<TVal>, predicate: (val: TVal, idx: number, list: Array<TVal>) => boolean): TVal {
   const val = list.find(predicate);
-  if (isNil(val)) {
-    throw new NotFoundError();
-  }
-  return val;
+  return mustExist(val);
 }
 
 export function getConstructor(val: object) {
