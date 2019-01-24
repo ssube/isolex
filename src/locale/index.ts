@@ -16,7 +16,7 @@ export interface LocaleOptions extends BaseServiceOptions<LocaleData> {
   data: LocaleData;
 }
 
-export type TranslateOptions = i18next.TranslationOptions;
+export type TranslateOptions = i18next.TOptions;
 
 @Inject(INJECT_LOGGER)
 export class Locale extends BaseService<LocaleData> implements ServiceLifecycle {
@@ -24,7 +24,7 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
   protected readonly data: LocaleData;
   protected readonly logger: Logger;
 
-  protected translator?: i18next.TranslationFunction;
+  protected translator?: i18next.TFunction;
 
   constructor(options: LocaleOptions) {
     super(options, 'isolex#/definitions/service-locale');
