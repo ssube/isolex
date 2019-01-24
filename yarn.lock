@@ -97,14 +97,15 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@kubernetes/client-node@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@kubernetes/client-node/-/client-node-0.7.2.tgz#b4d58b7e984615cb61c3c4482c93b06fb2d0e5d1"
+"@kubernetes/client-node@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@kubernetes/client-node/-/client-node-0.8.0.tgz#e256e208d21af1bca489434080cb3740d57e9c8c"
   dependencies:
+    "@types/node" "^10.12.0"
+    "@types/request" "^2.47.1"
     base-64 "^0.1.0"
     bluebird "^3.5.2"
     byline "^5.0.0"
-    execa "^1.0.0"
     isomorphic-ws "^4.0.1"
     js-yaml "^3.12.0"
     jsonpath "^1.0.0"
@@ -378,7 +379,7 @@
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@types/node-emoji/-/node-emoji-1.8.1.tgz#689cb74fdf6e84309bcafce93a135dfecd01de3f"
 
-"@types/node@*", "@types/node@>=6.0.0":
+"@types/node@*", "@types/node@>=6.0.0", "@types/node@^10.12.0":
   version "10.12.18"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.18.tgz#1d3ca764718915584fcd9f6344621b7672665c67"
 
@@ -434,7 +435,7 @@
     "@types/bluebird" "*"
     "@types/request" "*"
 
-"@types/request@*", "@types/request@2.48.1":
+"@types/request@*", "@types/request@2.48.1", "@types/request@^2.47.1":
   version "2.48.1"
   resolved "https://registry.yarnpkg.com/@types/request/-/request-2.48.1.tgz#e402d691aa6670fbbff1957b15f1270230ab42fa"
   dependencies:
