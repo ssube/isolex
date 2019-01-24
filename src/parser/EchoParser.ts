@@ -1,13 +1,12 @@
-import { isString } from 'lodash';
-
 import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface EchoParserData extends ParserData {
   dataMapper: ArrayMapperOptions;
@@ -33,8 +32,8 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<string> {
-    if (!isString(msg.body)) {
-      throw new InvalidArgumentError('message body must be a string');
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
     }
 
     return msg.body;

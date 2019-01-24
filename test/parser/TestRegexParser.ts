@@ -6,9 +6,10 @@ import { INJECT_STORAGE } from 'src/BotService';
 import { CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { RegexParser } from 'src/parser/RegexParser';
 import { Storage } from 'src/storage';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
@@ -75,5 +76,26 @@ describeAsync('regex parser', async () => {
     expect(cmd.getHead('body')).to.equal(body);
     expect(cmd.getHead('numbers')).to.equal('0123456789');
     expect(cmd.getHead('letters')).to.equal('abcdefghij');
+  });
+
+  itAsync('should reject messages with other types', async () => {
+    const { container } = await createContainer();
+    const svc = await createService(container, RegexParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: {
+        kind: 'test',
+        name: 'test',
+      },
+    });
+
+    const msg = new Message({
+      body: '',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_JPEG,
+    });
+    return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
   });
 });

@@ -6,9 +6,10 @@ import { INJECT_STORAGE } from 'src/BotService';
 import { CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { EchoParser } from 'src/parser/EchoParser';
 import { Storage } from 'src/storage';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
@@ -31,6 +32,11 @@ const TEST_CONFIG = {
   },
   preferData: false,
   strict: true,
+};
+
+const TEST_METADATA = {
+  kind: 'test',
+  name: 'test',
 };
 
 const TEST_STORAGE = ineeda<Storage>({
@@ -70,5 +76,23 @@ describeAsync('echo parser', async () => {
       type: TYPE_TEXT,
     }));
     expect(cmd.getHead('foo')).to.equal('test message');
+  });
+
+  itAsync('should reject messages with other types', async () => {
+    const { container } = await createContainer();
+    const svc = await createService(container, EchoParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: TEST_METADATA,
+    });
+
+    const msg = new Message({
+      body: '',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_JPEG,
+    });
+    return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
   });
 });

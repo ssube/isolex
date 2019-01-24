@@ -7,10 +7,12 @@ import { Command, CommandDataValue } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { Parser, ParserData } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { mustExist } from 'src/utils';
 import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface ArgsParserData extends ParserData {
   args: {
@@ -43,6 +45,10 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<Dict<Array<string>>> {
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
+    }
+
     return this.decodeBody(this.matcher.removeMatches(msg.body));
   }
 

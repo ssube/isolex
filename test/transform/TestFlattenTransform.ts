@@ -1,0 +1,36 @@
+import { expect } from 'chai';
+import { ineeda } from 'ineeda';
+
+import { INJECT_JSONPATH } from 'src/BaseService';
+import { Command } from 'src/entity/Command';
+import { FlattenTransform } from 'src/transform/FlattenTransform';
+import { JsonPath } from 'src/utils/JsonPath';
+import { TYPE_JSON } from 'src/utils/Mime';
+
+import { describeAsync, itAsync } from 'test/helpers/async';
+import { createContainer, createService } from 'test/helpers/container';
+
+describeAsync('flatten transform', async () => {
+  itAsync('should transform data', async () => {
+    const { container } = await createContainer();
+
+    const data = { foo: 'hello', bar: 'world' };
+    const transform = await createService(container, FlattenTransform, {
+      data: {
+        deep: true,
+        filters: [],
+        join: '-',
+        keys: ['$.data.foo', '$.data.bar'],
+        strict: true,
+      },
+      [INJECT_JSONPATH]: new JsonPath(),
+      metadata: {
+        kind: 'flatten-transform',
+        name: 'test_transform',
+      },
+    });
+
+    const output = await transform.transform(ineeda<Command>(), TYPE_JSON, data);
+    expect(output).to.equal('hello-world');
+  });
+});

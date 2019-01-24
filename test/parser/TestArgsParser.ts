@@ -8,9 +8,10 @@ import { CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
+import { MimeTypeError } from 'src/error/MimeTypeError';
 import { ArgsParser } from 'src/parser/ArgsParser';
 import { Storage } from 'src/storage';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
@@ -33,6 +34,11 @@ const TEST_CONFIG = {
   strict: true,
 };
 
+const TEST_METADATA = {
+  kind: 'test',
+  name: 'test',
+};
+
 const TEST_STORAGE = ineeda<Storage>({
   getRepository() {
     return ineeda<Repository<Context>>({
@@ -48,10 +54,7 @@ describeAsync('args parser', async () => {
     const { container } = await createContainer();
     const svc = await createService(container, ArgsParser, {
       data: TEST_CONFIG,
-      metadata: {
-        kind: 'test',
-        name: 'test',
-      },
+      metadata: TEST_METADATA,
     });
 
     const data = await svc.decode(new Message({
@@ -72,10 +75,7 @@ describeAsync('args parser', async () => {
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
-      metadata: {
-        kind: 'test',
-        name: 'test',
-      },
+      metadata: TEST_METADATA,
     });
 
     const commands = await svc.parse(new Message({
@@ -104,10 +104,7 @@ describeAsync('args parser', async () => {
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
-      metadata: {
-        kind: 'test',
-        name: 'test',
-      },
+      metadata: TEST_METADATA,
     });
 
     const commands = await svc.complete(new Context({
@@ -134,5 +131,23 @@ describeAsync('args parser', async () => {
     expect(cmd.noun).to.equal('test');
     expect(cmd.getHead('foo')).to.equal('1');
     expect(cmd.getHead('bar')).to.equal(2); // TODO: should convert to string
+  });
+
+  itAsync('should reject messages with other types', async () => {
+    const { container } = await createContainer();
+    const svc = await createService(container, ArgsParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: TEST_METADATA,
+    });
+
+    const msg = new Message({
+      body: '',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_JPEG,
+    });
+    return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
   });
 });

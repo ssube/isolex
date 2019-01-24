@@ -7,40 +7,25 @@ import { CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { SplitParser } from 'src/parser/SplitParser';
+import { YamlParser } from 'src/parser/YamlParser';
 import { Storage } from 'src/storage';
-import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
+import { TYPE_JPEG, TYPE_YAML } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createContainer, createService } from 'test/helpers/container';
 
 const TEST_CONFIG = {
-  dataMapper: {
-    rest: 'foo',
-    skip: 0,
-    take: [],
-  },
   defaultCommand: {
     data: {},
     labels: {},
     noun: 'test',
     verb: CommandVerb.Get,
   },
-  every: false,
   filters: [],
   match: {
     rules: [],
   },
   preferData: false,
-  split: {
-    brackets: true,
-    keepDoubleQuotes: true,
-    keepEscaping: false,
-    keepQuotes: true,
-    keepSingleQuotes: true,
-    quotes: ['"'],
-    separator: ' ',
-  },
   strict: true,
 };
 
@@ -54,10 +39,10 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeAsync('split parser', async () => {
-  itAsync('should split on whitespace', async () => {
+describeAsync('yaml parser', async () => {
+  itAsync('should parse the message body', async () => {
     const { container } = await createContainer();
-    const svc = await createService(container, SplitParser, {
+    const svc = await createService(container, YamlParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
       metadata: {
@@ -66,8 +51,8 @@ describeAsync('split parser', async () => {
       },
     });
 
-    const commands = await svc.parse(new Message({
-      body: 'test message',
+    const [cmd] = await svc.parse(new Message({
+      body: '{foo: ["1"], bar: ["2"]}',
       context: new Context({
         channel: {
           id: 'test',
@@ -78,51 +63,16 @@ describeAsync('split parser', async () => {
       }),
       labels: {},
       reactions: [],
-      type: TYPE_TEXT,
+      type: TYPE_YAML,
     }));
-    expect(commands[0].get('foo')).to.deep.equal([
-      'test',
-      'message',
-    ]);
-  });
-
-  itAsync('should split respect parens', async () => {
-    const { container } = await createContainer();
-    const svc = await createService(container, SplitParser, {
-      [INJECT_STORAGE]: TEST_STORAGE,
-      data: TEST_CONFIG,
-      metadata: {
-        kind: 'test',
-        name: 'test',
-      },
-    });
-
-    const commands = await svc.parse(new Message({
-      body: 'test (message group) [second group] bits "third group"',
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        name: 'test',
-        uid: 'test',
-      }),
-      labels: {},
-      reactions: [],
-      type: TYPE_TEXT,
-    }));
-    expect(commands[0].get('foo')).to.deep.equal([
-      'test',
-      '(message group)',
-      '[second group]',
-      'bits',
-      '"third group"',
-    ]);
+    console.info(cmd);
+    expect(cmd.getHead('foo')).to.equal('1', 'foo');
+    expect(cmd.getHead('bar')).to.equal('2', 'bar');
   });
 
   itAsync('should reject messages with other types', async () => {
     const { container } = await createContainer();
-    const svc = await createService(container, SplitParser, {
+    const svc = await createService(container, YamlParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
       metadata: {
