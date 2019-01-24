@@ -3,6 +3,8 @@ import { FilterBehavior, FilterValue } from 'src/filter';
 import { BaseFilterOptions } from 'src/filter/BaseFilter';
 import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
 
+export type MessageFilterData = RuleFilterData;
+
 /**
  * Simple filter for messages.
  *

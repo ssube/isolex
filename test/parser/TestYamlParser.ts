@@ -65,7 +65,6 @@ describeAsync('yaml parser', async () => {
       reactions: [],
       type: TYPE_YAML,
     }));
-    console.info(cmd);
     expect(cmd.getHead('foo')).to.equal('1', 'foo');
     expect(cmd.getHead('bar')).to.equal('2', 'bar');
   });

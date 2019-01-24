@@ -13,6 +13,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 ## Status
 
 [![Pipeline status](https://img.shields.io/gitlab/pipeline/ssube/isolex.svg?gitlab_url=https%3A%2F%2Fgit.apextoaster.com&logo=gitlab)](https://git.apextoaster.com/ssube/isolex/commits/master)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=ncloc)](https://sonarcloud.io/dashboard?id=ssube_isolex)
 [![Test coverage](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=coverage)](https://sonarcloud.io/dashboard?id=ssube_isolex)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
 
@@ -25,13 +26,12 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Dependency status](https://img.shields.io/david/ssube/isolex.svg)](https://david-dm.org/ssube/isolex)
 [![Dev dependency status](https://img.shields.io/david/dev/ssube/isolex.svg)](https://david-dm.org/ssube/isolex?type=dev)
 
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=ncloc)](https://sonarcloud.io/dashboard?id=ssube_isolex)
 [![Maintainability score](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/maintainability)](https://codeclimate.com/github/ssube/isolex/maintainability)
 [![Technical debt ratio](https://img.shields.io/codeclimate/tech-debt/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/trends/technical_debt)
 [![Quality issues](https://img.shields.io/codeclimate/issues/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/issues)
 
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg?logo=lgtm)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg?logo=lgtm)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
 
 ## Releases
 

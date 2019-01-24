@@ -4,6 +4,8 @@ import { BaseFilterOptions } from 'src/filter/BaseFilter';
 import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
 import { mapToDict } from 'src/utils/Map';
 
+export type CommandFilterData = RuleFilterData;
+
 /**
  * Simple filter for commands.
  *
@@ -12,7 +14,7 @@ import { mapToDict } from 'src/utils/Map';
  * - verb
  */
 export class CommandFilter extends RuleFilter {
-  constructor(options: BaseFilterOptions<RuleFilterData>) {
+  constructor(options: BaseFilterOptions<CommandFilterData>) {
     super(options, 'isolex#/definitions/service-filter-command');
   }
 

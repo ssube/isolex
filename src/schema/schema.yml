@@ -539,6 +539,16 @@ definitions:
           match:
             $ref: "#/definitions/match-data"
 
+  service-filter-source:
+    allOf:
+      - $ref: "#/definitions/service-filter"
+      - type: object
+        additionalProperties: true
+        required: [type]
+        properties:
+          type:
+            type: string
+
   service-filter-user:
     allOf:
       - $ref: "#/definitions/service-filter"
