@@ -6,7 +6,7 @@ import { INJECT_STORAGE } from 'src/BotService';
 import { CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
-import { EchoParser } from 'src/parser/EchoParser';
+import { SplitParser } from 'src/parser/SplitParser';
 import { Storage } from 'src/storage';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
@@ -25,11 +25,21 @@ const TEST_CONFIG = {
     noun: 'test',
     verb: CommandVerb.Get,
   },
+  every: false,
   filters: [],
   match: {
     rules: [],
   },
   preferData: false,
+  split: {
+    brackets: true,
+    keepDoubleQuotes: true,
+    keepEscaping: false,
+    keepQuotes: true,
+    keepSingleQuotes: true,
+    quotes: ['"'],
+    separator: ' ',
+  },
   strict: true,
 };
 
@@ -43,10 +53,10 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeAsync('echo parser', async () => {
-  itAsync('should parse the message body as-is', async () => {
+describeAsync('split parser', async () => {
+  itAsync('should split on whitespace', async () => {
     const { container } = await createContainer();
-    const svc = await createService(container, EchoParser, {
+    const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
       metadata: {
@@ -55,7 +65,7 @@ describeAsync('echo parser', async () => {
       },
     });
 
-    const [cmd] = await svc.parse(new Message({
+    const commands = await svc.parse(new Message({
       body: 'test message',
       context: new Context({
         channel: {
@@ -69,6 +79,43 @@ describeAsync('echo parser', async () => {
       reactions: [],
       type: TYPE_TEXT,
     }));
-    expect(cmd.getHead('foo')).to.equal('test message');
+    expect(commands[0].get('foo')).to.deep.equal([
+      'test',
+      'message',
+    ]);
+  });
+
+  itAsync('should split respect parens', async () => {
+    const { container } = await createContainer();
+    const svc = await createService(container, SplitParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: {
+        kind: 'test',
+        name: 'test',
+      },
+    });
+
+    const commands = await svc.parse(new Message({
+      body: 'test (message group) [second group] bits "third group"',
+      context: new Context({
+        channel: {
+          id: 'test',
+          thread: 'test',
+        },
+        name: 'test',
+        uid: 'test',
+      }),
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    }));
+    expect(commands[0].get('foo')).to.deep.equal([
+      'test',
+      '(message group)',
+      '[second group]',
+      'bits',
+      '"third group"',
+    ]);
   });
 });
