@@ -92,7 +92,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const name = cmd.getHeadOrDefault('name', ctx.name);
     const existing = await this.userRepository.count({ name });
     if (existing > 0) {
-      return this.reply(ctx, this.translate('account-create.exists', {
+      return this.reply(ctx, this.translate(ctx, 'account-create.exists', {
         name,
       }));
     }
@@ -110,7 +110,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     }));
 
     const jwt = await this.createToken(user);
-    return this.reply(ctx, this.translate('account-create.success', {
+    return this.reply(ctx, this.translate(ctx, 'account-create.success', {
       jwt,
       name,
     }));
@@ -123,7 +123,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const name = user.name;
 
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCommandCompletion(cmd, 'confirm', this.translate('account-delete.confirm', {
+      const completion = createCommandCompletion(cmd, 'confirm', this.translate(ctx, 'account-delete.confirm', {
         name,
       }));
       await this.bot.executeCommand(completion);
@@ -135,7 +135,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     });
 
     const jwt = await this.createToken(user);
-    return this.reply(ctx, this.translate('account-delete.success', {
+    return this.reply(ctx, this.translate(ctx, 'account-delete.success', {
       jwt,
       name,
     }));
@@ -164,7 +164,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     const source = this.getSourceOrFail(ctx);
     const session = await source.createSession(ctx.uid, user);
     this.logger.debug({ session, user }, 'created session');
-    return this.reply(ctx, this.translate('session-create.success'));
+    return this.reply(ctx, this.translate(ctx, 'session-create.success'));
   }
 
   @Handler(NOUN_SESSION, CommandVerb.Get)

@@ -59,7 +59,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     }
 
     await this.keywordRepository.save(keyword);
-    return this.reply(ctx, this.translate('create.success', {
+    return this.reply(ctx, this.translate(ctx, 'create.success', {
       key,
     }));
   }
@@ -80,7 +80,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
       id: keyword.id,
       key,
     });
-    return this.reply(ctx, this.translate('delete.success', {
+    return this.reply(ctx, this.translate(ctx, 'delete.success', {
       key,
     }));
   }

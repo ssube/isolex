@@ -53,6 +53,10 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
     /* noop */
   }
 
+  public get lang(): string {
+    return this.data.lang;
+  }
+
   public translate(key: string, options: TranslateOptions = {}): string {
     const t = mustExist(this.translator);
     return t(key, options);

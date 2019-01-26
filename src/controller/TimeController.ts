@@ -33,7 +33,7 @@ export class TimeController extends BaseController<TimeControllerData> implement
     const zone = cmd.getHeadOrDefault('zone', this.data.zone);
 
     this.logger.debug({ locale, time, zone }, 'handling time');
-    return this.reply(ctx, this.translate('get.success', {
+    return this.reply(ctx, this.translate(ctx, 'get.success', {
       time,
     }));
   }

@@ -26,7 +26,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
 
   @Handler(NOUN_ROLL, CommandVerb.Create)
   @CheckRBAC()
-  public async createRoll(cmd: Command): Promise<void> {
+  public async createRoll(cmd: Command, ctx: Context): Promise<void> {
     const count = cmd.getHead('count');
     const sides = cmd.getHead('sides');
 
@@ -39,7 +39,7 @@ export class DiceController extends BaseController<DiceControllerData> implement
     this.logger.debug({ count, sides }, 'handling dice results');
     const sum = results.reduce((a, b) => a + b, 0);
 
-    return this.reply(mustExist(cmd.context), this.translate('create.success', {
+    return this.reply(mustExist(cmd.context), this.translate(ctx, 'create.success', {
       results,
       sum,
     }));

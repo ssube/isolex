@@ -39,9 +39,8 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
   @Handler(NOUN_FRAGMENT, CommandVerb.Create)
   @CheckRBAC()
-  public async createFragment(cmd: Command): Promise<void> {
-    const context = await this.createContext(cmd.context);
-    const user = this.getUserOrFail(context);
+  public async createFragment(cmd: Command, ctx: Context): Promise<void> {
+    const user = this.getUserOrFail(ctx);
     const key = cmd.getHead('key');
     const msg = cmd.getHeadOrDefault('msg', `missing required argument: ${key}`);
     const noun = cmd.getHead('noun');
@@ -58,8 +57,8 @@ export class CompletionController extends BaseController<CompletionControllerDat
       verb,
     }));
 
-    this.logger.debug({ context, fragment }, 'creating fragment for later completion');
-    return this.reply(context, this.translate('create.prompt', {
+    this.logger.debug({ ctx, fragment }, 'creating fragment for later completion');
+    return this.reply(ctx, this.translate(ctx, 'create.prompt', {
       id: fragment.id,
       key,
       msg,
@@ -74,7 +73,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
     const fragment = await this.getFragment(ctx, id);
     if (isNil(fragment)) {
-      return this.reply(ctx, this.translate('update.missing'));
+      return this.reply(ctx, this.translate(ctx, 'update.missing'));
     }
 
     this.logger.debug({ fragment, parserId: fragment.parserId }, 'attempting to complete fragment');

@@ -28,7 +28,7 @@ export class SedController extends BaseController<SedControllerData> implements 
     const parts = expr.match(/\/((?:[^\\]|\\.)*)\/((?:[^\\]|\\.)*)\/([gmiuy]*)/);
     if (isNil(parts)) {
       this.logger.debug({ expr }, 'invalid input.');
-      return this.reply(ctx, this.translate('create.invalid'));
+      return this.reply(ctx, this.translate(ctx, 'create.invalid'));
     }
 
     this.logger.debug({ parts }, 'fetching messages');
@@ -45,7 +45,7 @@ export class SedController extends BaseController<SedControllerData> implements 
         }
       }
 
-      return this.reply(ctx, this.translate('create.missing'));
+      return this.reply(ctx, this.translate(ctx, 'create.missing'));
     } catch (err) {
       this.logger.error(err, 'Failed to fetch messages.');
     }

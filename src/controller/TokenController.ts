@@ -68,7 +68,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
     const user = this.getUserOrFail(ctx);
     const before = cmd.getHeadOrNumber('before', this.clock.getSeconds());
     if (cmd.getHeadOrDefault('confirm', 'no') !== 'yes') {
-      const completion = createCommandCompletion(cmd, 'confirm', this.translate('delete.confirm', {
+      const completion = createCommandCompletion(cmd, 'confirm', this.translate(ctx, 'delete.confirm', {
         before,
         name: user.name,
       }));
@@ -81,7 +81,7 @@ export class TokenController extends BaseController<TokenControllerData> impleme
       subject: Equal(mustExist(user.id)),
     });
 
-    return this.reply(ctx, this.translate('delete.success'));
+    return this.reply(ctx, this.translate(ctx, 'delete.success'));
   }
 
   @Handler(NOUN_TOKEN, CommandVerb.Get)
@@ -95,13 +95,13 @@ export class TokenController extends BaseController<TokenControllerData> impleme
         });
         return this.reply(ctx, JSON.stringify(data));
       } catch (err) {
-        return this.reply(ctx, this.translate('get.invalid', {
+        return this.reply(ctx, this.translate(ctx, 'get.invalid', {
           msg: err.message,
         }));
       }
     } else {
       if (isNil(ctx.token)) {
-        return this.reply(ctx, this.translate('get.missing'));
+        return this.reply(ctx, this.translate(ctx, 'get.missing'));
       } else {
         return this.reply(ctx, ctx.token.toString());
       }

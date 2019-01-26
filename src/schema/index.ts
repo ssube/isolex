@@ -17,7 +17,7 @@ export class Schema {
         const params = err.params as Ajv.AdditionalPropertiesParams;
         return `${err.message}: ${params.additionalProperty} at ${err.dataPath} not expected in ${err.schemaPath}`;
       default:
-        return `${err.message} at ${err.schemaPath}`;
+        return `${err.message} at ${err.schemaPath} (${err.dataPath})`;
     }
   }
 

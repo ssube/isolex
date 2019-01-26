@@ -42,7 +42,7 @@ export class MathController extends BaseController<MathControllerData> implement
     const expr = inputExpr.join(';\n');
     this.logger.debug({ expr }, 'evaluating expression');
 
-    const body = '`' + this.solve(expr, { cmd }) + '`';
+    const body = '`' + this.solve(ctx, expr, { cmd }) + '`';
     return this.reply(ctx, body);
   }
 
@@ -51,14 +51,14 @@ export class MathController extends BaseController<MathControllerData> implement
     return this.reply(ctx, this.defaultHelp(cmd));
   }
 
-  protected solve(expr: string, scope: object): string {
+  protected solve(ctx: Context, expr: string, scope: object): string {
     try {
       const body = this.math.eval(expr, scope);
       this.logger.debug({ body, expr }, 'evaluated expression');
 
       return formatResult(body, scope, this.data.format);
     } catch (err) {
-      return this.translate('create.error', {
+      return this.translate(ctx, 'create.error', {
         msg: err.message,
       });
     }

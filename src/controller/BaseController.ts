@@ -179,19 +179,33 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     return user;
   }
 
-  protected translate(key: string, options: TranslateOptions = {}): string {
-    return this.locale.translate(`service.${this.kind}.${key}`, options);
+  protected translate(ctx: Context, key: string, options: TranslateOptions = {}): string {
+    const lngs = this.translateLangs(ctx);
+    this.logger.debug({ ctx, key, lngs }, 'translating message');
+    return this.locale.translate(`service.${this.kind}.${key}`, {
+      ...options,
+      lngs,
+    });
+  }
+
+  protected translateLangs(ctx: Context): Array<string> {
+    const langs = [this.bot.getLocale().lang];
+    if (doesExist(ctx.user)) {
+      langs.unshift(ctx.user.locale.lang);
+    }
+    return langs;
   }
 
   protected defaultHelp(cmd: Command): string {
+    const ctx = mustExist(cmd.context);
     const data = {
       data: this.data,
     };
-    const desc = this.translate('help.desc', data);
+    const desc = this.translate(ctx, 'help.desc', data);
 
     if (cmd.has('topic')) {
       const topic = cmd.getHead('topic');
-      const topicDesc = this.translate(`help.${topic}`, data);
+      const topicDesc = this.translate(ctx, `help.${topic}`, data);
       return `${desc}\n${topicDesc}`;
     }
 
