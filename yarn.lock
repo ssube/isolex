@@ -133,9 +133,9 @@
     node-fetch "^2.3.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@16.13.2":
-  version "16.13.2"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.13.2.tgz#03fa8a636f17de2f4a54b0b139607b28e16f77d3"
+"@octokit/rest@16.13.3":
+  version "16.13.3"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.13.3.tgz#706fd99eb94de7fad13c4ebdf2d589bb4df41ba5"
   dependencies:
     "@octokit/request" "2.3.0"
     before-after-hook "^1.2.0"
