@@ -52,7 +52,7 @@ export class UserController extends BaseController<UserControllerData> implement
       },
     });
     if (isNil(role)) {
-      return this.reply(ctx, this.translate('role-get.missing', {
+      return this.reply(ctx, this.translate(ctx, 'role-get.missing', {
         name,
       }));
     } else {
@@ -114,23 +114,42 @@ export class UserController extends BaseController<UserControllerData> implement
   @CheckRBAC()
   public async updateUser(cmd: Command, ctx: Context): Promise<void> {
     const name = cmd.getHeadOrDefault('name', ctx.name);
-    const roleNames = cmd.getOrDefault('roles', []);
-    this.logger.debug({ name, roles: roleNames }, 'updating user');
+    this.logger.debug({ name }, 'updating user');
 
     const user = await this.userRepository.findOneOrFail({
       where: {
         name,
       },
     });
-    const roles = await this.roleRepository.find({
-      where: {
-        name: In(roleNames),
-      },
-    });
-    user.roles = roles;
+
+    if (cmd.has('roles')) {
+      const roleNames = cmd.get('roles');
+      const roles = await this.roleRepository.find({
+        where: {
+          name: In(roleNames),
+        },
+      });
+      user.roles = roles;
+    }
+
+    if (cmd.has('date')) {
+      user.locale.date = cmd.getHead('date');
+    }
+
+    if (cmd.has('lang')) {
+      user.locale.lang = cmd.getHead('lang');
+    }
+
+    if (cmd.has('time')) {
+      user.locale.time = cmd.getHead('time');
+    }
+
+    if (cmd.has('timezone')) {
+      user.locale.timezone = cmd.getHead('timezone');
+    }
 
     const updatedUser = await this.userRepository.save(user);
-    return this.reply(ctx, updatedUser.toString());
+    return this.reply(ctx, `updated user ${updatedUser.name}`);
   }
 
   @Handler(NOUN_USER, CommandVerb.Help)
