@@ -45,12 +45,6 @@ const MAIN_MODULES = [
   TransformModule,
 ];
 
-sourceMapSupport.install({
-  environment: 'node',
-  handleUncaughtExceptions: true,
-  hookRequire: true,
-});
-
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
