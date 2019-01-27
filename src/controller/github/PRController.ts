@@ -5,14 +5,12 @@ import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
 import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
+import { GithubClientData } from 'src/utils/github';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
 export interface GithubPRControllerData extends ControllerData {
-  client: {
-    root?: string;
-    token: string;
-  };
+  client: GithubClientData;
 }
 
 @Inject()
