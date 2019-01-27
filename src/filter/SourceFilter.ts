@@ -1,6 +1,7 @@
 import { Message } from 'src/entity/Message';
 import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter';
 import { BaseFilter, BaseFilterOptions } from 'src/filter/BaseFilter';
+import { doesExist } from 'src/utils';
 
 export interface SourceFilterData extends FilterData {
   type?: string;
@@ -22,7 +23,7 @@ export class SourceFilter extends BaseFilter<SourceFilterData> implements Filter
   }
 
   public async filterMessage(msg: Message): Promise<FilterBehavior> {
-    if (this.type && msg.type !== this.type) {
+    if (doesExist(this.type) && msg.type !== this.type) {
       return FilterBehavior.Drop;
     }
 

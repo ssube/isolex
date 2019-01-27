@@ -52,12 +52,13 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
     this.logger.debug({ location, query, root: this.data.api.root }, 'requesting weather data from API');
 
     try {
-      return this.request.create({
+      const reply = await this.request.create<WeatherReply>({
         json: true,
         method: 'GET',
         qs: query,
         uri: `${this.data.api.root}/weather`,
       });
+      return reply;
     } catch (err) {
       if (err.name === 'StatusCodeError') {
         const [code, body] = err.message.split(' - ');
