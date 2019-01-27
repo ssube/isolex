@@ -15,7 +15,7 @@ export interface GithubPRControllerData extends ControllerData {
 
 @Inject()
 export class GithubPRController extends BaseController<GithubPRControllerData> implements Controller {
-  protected client: Octokit;
+  protected readonly client: Octokit;
 
   constructor(options: BaseControllerOptions<GithubPRControllerData>) {
     super(options, 'isolex#/definitions/service-controller-github-pr', [NOUN_PULL_REQUEST]);

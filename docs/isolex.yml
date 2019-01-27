@@ -36,11 +36,13 @@ data:
   intervals:
     # !include ../docs/interval/command-interval.yml
     # !include ../docs/interval/event-interval.yml
+    - !include ../docs/interval/github-listener-interval.yml
     # !include ../docs/interval/message-interval.yml
     - !include ../docs/interval/metrics-interval.yml
   listeners:
     - !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml
+    - !include ../docs/listener/github-listener.yml
     - !include ../docs/listener/slack-listener.yml
   locale:
     metadata:

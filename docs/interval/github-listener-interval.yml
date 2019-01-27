@@ -1,0 +1,17 @@
+metadata:
+  kind: event-interval
+  name: github-listener-interval
+data:
+  defaultContext:
+    channel:
+      id: ""
+      thread: ""
+    name: svc
+    uid: svc
+  defaultTarget: &github-metadata
+    kind: github-listener
+    name: test-github
+  frequency:
+    time: 60 seconds
+  services:
+    - *github-metadata

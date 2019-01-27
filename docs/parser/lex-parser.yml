@@ -16,4 +16,5 @@ data:
       - key: body
         operator: any
         values:
-          - regexp: !regexp /isolex/
+          - regexp: !regexp /hey isolex/
+          - regexp: !regexp /hey \@isolex/

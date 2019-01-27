@@ -676,6 +676,29 @@ definitions:
               secret:
                 type: string
 
+  service-listener-github:
+    allOf:
+      - $ref: "#/definitions/service-listener"
+      - type: object
+        additionalProperties: true
+        required: [client, repos, start]
+        properties:
+          client:
+            $ref: "#/definitions/client-github"
+          repos:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              required: [owner, repo]
+              properties:
+                owner:
+                  type: string
+                repo:
+                  type: string
+          start:
+            type: string
+ 
   service-listener-slack:
     allOf:
       - $ref: "#/definitions/service-listener"

@@ -1,0 +1,10 @@
+metadata:
+  kind: github-listener
+  name: test-github
+data:
+  client:
+    token: !env ISOLEX_GITHUB_TOKEN
+  repos:
+    - owner: ssube
+      repo: isolex
+  start: "2019-01-26T00:00:00Z"
