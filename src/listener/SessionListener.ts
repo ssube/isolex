@@ -1,3 +1,5 @@
+import { Inject } from 'noicejs';
+
 import { INJECT_CLOCK } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
 import { User } from 'src/entity/auth/User';
@@ -12,6 +14,7 @@ import { Clock } from 'src/utils/Clock';
  * A listener that tracks sessions.
  */
 
+@Inject(INJECT_CLOCK)
 export abstract class SessionListener<TData extends ListenerData> extends BaseListener<TData> implements Listener {
   protected readonly clock: Clock;
   protected readonly sessions: Map<string, Session>;

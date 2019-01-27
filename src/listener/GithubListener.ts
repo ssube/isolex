@@ -3,13 +3,11 @@ import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
-import { User } from 'src/entity/auth/User';
 import { Message } from 'src/entity/Message';
-import { Session } from 'src/entity/Session';
 import { Tick } from 'src/entity/Tick';
 import { NotImplementedError } from 'src/error/NotImplementedError';
 import { FetchOptions, ListenerData } from 'src/listener';
-import { BaseListener } from 'src/listener/BaseListener';
+import { SessionListener } from 'src/listener/SessionListener';
 import { ServiceEvent } from 'src/Service';
 import { doesExist, mustExist } from 'src/utils';
 import { GithubClientData } from 'src/utils/github';
@@ -27,7 +25,7 @@ export interface GithubListenerData extends ListenerData {
 }
 
 @Inject(INJECT_STORAGE)
-export class GithubListener extends BaseListener<GithubListenerData> {
+export class GithubListener extends SessionListener<GithubListenerData> {
   protected readonly client: Octokit;
   protected readonly tickRepository: Repository<Tick>;
 
@@ -54,20 +52,33 @@ export class GithubListener extends BaseListener<GithubListenerData> {
     throw new NotImplementedError();
   }
 
-  public createSession(uid: string, user: User): Promise<Session> {
-    throw new NotImplementedError();
-  }
-
-  public getSession(uid: string): Promise<Session | undefined> {
-    throw new NotImplementedError();
-  }
-
   public async send(msg: Message): Promise<void> {
-    // comment on github
+    const ctx = mustExist(msg.context);
+    const [owner, repo] = ctx.channel.id.split('/');
+    const [type, issue] = ctx.channel.thread.split('/');
+    const options = {
+        body: msg.body,
+        number: Number(issue),
+        owner,
+        repo,
+      };
+
+    if (type === 'issues') {
+      this.logger.debug(options, 'commenting on github issue');
+      await this.client.issues.createComment(options);
+      return;
+    } else {
+      this.logger.warn({ issue, type }, 'unable to comment on github issue type');
+    }
   }
 
   protected async fetchSince() {
     const since = await this.getLastUpdate();
+
+    await this.tickRepository.save(new Tick({
+      intervalId: this.id,
+      status: 0,
+    }));
 
     for (const repo of this.data.repos) {
       const options = {
@@ -82,19 +93,21 @@ export class GithubListener extends BaseListener<GithubListenerData> {
       this.logger.debug({ comments }, 'got github comments');
 
       for (const comment of comments) {
-        const msg = await this.convertMessage(comment, repo);
-        await this.bot.receive(msg);
+        try {
+          const msg = await this.convertMessage(comment, repo);
+          await this.bot.receive(msg);
+        } catch (err) {
+          this.logger.error(err, 'error receiving github comment');
+        }
       }
     }
-
-    await this.tickRepository.save(new Tick({
-      intervalId: this.id,
-      status: 0,
-    }));
   }
 
   protected async getLastUpdate() {
     const lastTick = await this.tickRepository.findOne({
+      order: {
+        createdAt: 'DESC',
+      } as any,
       where: {
         intervalId: this.id,
       },
@@ -108,14 +121,23 @@ export class GithubListener extends BaseListener<GithubListenerData> {
   }
 
   protected async convertMessage(msg: Octokit.IssuesListCommentsForRepoResponseItem, repo: GithubRepoOptions): Promise<Message> {
+    const [thread] = mustExist(/((issues|pull)\/\d+)/.exec(msg.html_url));
+    const uid = msg.user.id.toString();
     const context = await this.createContext({
       channel: {
         id: `${repo.owner}/${repo.repo}`,
-        thread: msg.node_id,
+        thread,
       },
       name: msg.user.login,
-      uid: msg.user.id.toString(),
+      uid,
     });
+
+    const session = await this.getSession(uid);
+    if (doesExist(session)) {
+      this.logger.debug({ context, msg, session }, 'attaching session to message context');
+      context.user = session.user;
+    }
+
     return new Message({
       body: msg.body,
       context,

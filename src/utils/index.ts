@@ -92,7 +92,7 @@ export function getMethods<TValue extends object>(value: TValue): Set<Function> 
   return methods;
 }
 
-export function mustExist<T>(val: T | undefined): T {
+export function mustExist<T>(val: T | null | undefined): T {
   if (isNil(val)) {
     throw new NotFoundError();
   }
