@@ -4858,9 +4858,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs-tslint-rules@4.15.1:
-  version "4.15.1"
-  resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.15.1.tgz#3522a6e1d25ac823999f50b9942855d1e984e2ee"
+rxjs-tslint-rules@4.16.1:
+  version "4.16.1"
+  resolved "https://registry.yarnpkg.com/rxjs-tslint-rules/-/rxjs-tslint-rules-4.16.1.tgz#66c347e49f4a682e157d3e6159c9e3c944ae9971"
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     decamelize "^2.0.0"
