@@ -92,7 +92,7 @@
     "tslint-sonarts": "1.9.0",
     "typedoc": "0.14.2",
     "typeorm": "0.2.12",
-    "typescript": "3.2.4",
+    "typescript": "3.3.1",
     "utf-8-validate": "5.0.2",
     "uuid": "3.3.2",
     "webpack": "4.29.0",
@@ -104,7 +104,7 @@
   },
   "resolutions": {
     "**/lodash": "4.17.11",
-    "**/typescript": "3.2.4"
+    "**/typescript": "3.3.1"
   },
   "nyc": {
     "instrument": true,
