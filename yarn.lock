@@ -357,9 +357,9 @@
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.4.2.tgz#64a89e53ea37f61cc0f3ee1732c555c2dbf6452f"
 
-"@types/mathjs@4.4.5":
-  version "4.4.5"
-  resolved "https://registry.yarnpkg.com/@types/mathjs/-/mathjs-4.4.5.tgz#b28d46919c68b93bcabf0551729624b302af9b4b"
+"@types/mathjs@5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/mathjs/-/mathjs-5.0.0.tgz#5d7e68a3e396a65e8d643c18ee10523a67da0ae3"
   dependencies:
     decimal.js "^10.0.0"
 
