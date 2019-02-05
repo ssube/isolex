@@ -6,7 +6,7 @@ Listeners for common chat services, controllers for chat functions and devops to
 
 ## Getting Started
 
-The bot interacts through Discord, Slack, or a GraphQL API.
+The bot interacts through Discord and Slack, Github and Gitlab comments, and a GraphQL API.
 
 The [getting started guide](./docs/getting-started.md) has more information on using the bot.
 
