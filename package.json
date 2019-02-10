@@ -42,7 +42,7 @@
     "@types/websocket": "0.0.40",
     "@types/ws": "6.0.1",
     "@types/yargs-parser": "11.0.2",
-    "ajv": "6.9.0",
+    "ajv": "6.9.1",
     "awesome-typescript-loader": "5.2.1",
     "aws-sdk": "2.400.0",
     "bufferutil": "4.0.1",
