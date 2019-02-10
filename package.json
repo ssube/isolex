@@ -76,7 +76,7 @@
     "request-promise": "4.2.2",
     "request-promise-native": "1.0.5",
     "rxjs": "6.4.0",
-    "rxjs-tslint-rules": "4.16.2",
+    "rxjs-tslint-rules": "4.17.0",
     "shiro-trie": "0.4.8",
     "sinon": "7.2.3",
     "sinon-chai": "3.3.0",
