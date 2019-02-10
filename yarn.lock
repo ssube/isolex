@@ -2795,9 +2795,9 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
 
-i18next@15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.0.tgz#26faacb69949c71328e10bcdb51afc7d7a1e326c"
+i18next@15.0.1:
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.1.tgz#214057bd6cdc774e4c2f87f96f1c3d05d3eeafeb"
   dependencies:
     "@babel/runtime" "^7.3.1"
 
