@@ -44,7 +44,7 @@
     "@types/yargs-parser": "11.0.2",
     "ajv": "6.9.1",
     "awesome-typescript-loader": "5.2.1",
-    "aws-sdk": "2.400.0",
+    "aws-sdk": "2.402.0",
     "bufferutil": "4.0.1",
     "bunyan": "1.8.12",
     "chai": "4.2.0",
