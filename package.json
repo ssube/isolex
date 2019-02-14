@@ -37,7 +37,7 @@
     "@types/request-promise": "4.1.42",
     "@types/request-promise-native": "1.0.15",
     "@types/sinon-chai": "3.2.2",
-    "@types/source-map-support": "0.4.1",
+    "@types/source-map-support": "0.4.2",
     "@types/uuid": "3.4.4",
     "@types/websocket": "0.0.40",
     "@types/ws": "6.0.1",

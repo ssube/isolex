@@ -480,9 +480,9 @@
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.0.3.tgz#f8647e883d873962130f906a6114a4e187755696"
 
-"@types/source-map-support@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@types/source-map-support/-/source-map-support-0.4.1.tgz#ad77158e8c6695a16629ef82b9fb9dfe7c610ac0"
+"@types/source-map-support@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@types/source-map-support/-/source-map-support-0.4.2.tgz#5b9f4502183430511bb90e84a6e4bf4214e55a67"
   dependencies:
     "@types/node" "*"
 
