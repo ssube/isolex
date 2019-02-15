@@ -14,7 +14,7 @@
   "devDependencies": {
     "@kubernetes/client-node": "0.8.1",
     "@octokit/rest": "16.15.0",
-    "@slack/client": "4.8.0",
+    "@slack/client": "4.9.0",
     "@types/bunyan": "1.8.5",
     "@types/chai": "4.1.7",
     "@types/chai-as-promised": "7.1.0",
