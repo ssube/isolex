@@ -74,7 +74,7 @@
     "reflect-metadata": "0.1.13",
     "request": "2.88.0",
     "request-promise": "4.2.4",
-    "request-promise-native": "1.0.5",
+    "request-promise-native": "1.0.7",
     "rxjs": "6.4.0",
     "rxjs-tslint-rules": "4.17.0",
     "shiro-trie": "0.4.8",
