@@ -95,7 +95,7 @@
     "typescript": "3.3.3",
     "utf-8-validate": "5.0.2",
     "uuid": "3.3.2",
-    "webpack": "4.29.4",
+    "webpack": "4.29.5",
     "webpack-bundle-analyzer": "3.0.4",
     "webpack-cli": "3.2.3",
     "ws": "6.1.4",
