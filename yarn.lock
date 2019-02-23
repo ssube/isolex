@@ -5507,13 +5507,14 @@ tslint-consistent-codestyle@1.15.0:
     tslib "^1.7.1"
     tsutils "^2.29.0"
 
-tslint-etc@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.3.0.tgz#0b695fb3253b09dee27900f4d396024431fca1d6"
+tslint-etc@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.3.1.tgz#18eba98a75e02b0fabe2fde45d026b978a01a545"
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     tslib "^1.8.0"
     tsutils "^3.0.0"
+    tsutils-etc "^1.0.0"
 
 tslint-loader@3.6.0:
   version "3.6.0"
@@ -5553,6 +5554,10 @@ tslint@5.12.1:
     semver "^5.3.0"
     tslib "^1.8.0"
     tsutils "^2.27.2"
+
+tsutils-etc@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tsutils-etc/-/tsutils-etc-1.0.0.tgz#0e98230aad1e5d488556b67312b7b395b74de7a5"
 
 tsutils@2.7.1:
   version "2.7.1"
