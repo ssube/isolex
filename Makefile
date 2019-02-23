@@ -84,7 +84,7 @@ build: ## builds, bundles, and tests the application
 build: build-cover
 
 build-cover: ## builds, bundles, and tests the application with code coverage
-build-cover: configure node_modules bundle-cover test-cover
+build-cover: configure node_modules bundle-cover
 
 build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
 build-strict: configure node_modules bundle-strict test-cover

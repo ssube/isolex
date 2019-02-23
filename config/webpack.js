@@ -98,12 +98,12 @@ module.exports = {
   },
   plugins: [
     new CheckerPlugin(),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      generateStatsFile: true,
-      openAnalyzer: false,
-      reportFilename: 'bundles.html'
-    }),
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: 'static',
+    //   generateStatsFile: true,
+    //   openAnalyzer: false,
+    //   reportFilename: 'bundles.html'
+    // }),
     new webpack.DefinePlugin({
       // make sure to stringify these (handles quotes, escapes, etc)
       BUILD_JOB: JSON.stringify(process.env['CI_JOB_ID']),
