@@ -376,9 +376,9 @@
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.4.2.tgz#64a89e53ea37f61cc0f3ee1732c555c2dbf6452f"
 
-"@types/mathjs@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@types/mathjs/-/mathjs-5.0.0.tgz#5d7e68a3e396a65e8d643c18ee10523a67da0ae3"
+"@types/mathjs@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/mathjs/-/mathjs-5.0.1.tgz#b98e163ea396b4f27bec20ee25ffb8fe9e656af8"
   dependencies:
     decimal.js "^10.0.0"
 
@@ -1751,7 +1751,11 @@ decamelize@^2.0.0:
   dependencies:
     xregexp "4.0.0"
 
-decimal.js@10.0.2, decimal.js@^10.0.0:
+decimal.js@10.1.1:
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.1.1.tgz#fb541922a2e8fc618f5e6fbb474e281ed3d2a64c"
+
+decimal.js@^10.0.0:
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.0.2.tgz#50fd0f9184139f543e5b84c97681534292deb640"
 
@@ -3577,12 +3581,12 @@ marked@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
 
-mathjs@5.5.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.5.0.tgz#4b4dfc8fb88f1a57d164fc2ff0bf7110c04669e6"
+mathjs@5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.7.0.tgz#2395951429ec9709f361e239f7f58d75c758d6de"
   dependencies:
     complex.js "2.0.11"
-    decimal.js "10.0.2"
+    decimal.js "10.1.1"
     escape-latex "1.2.0"
     fraction.js "4.0.12"
     javascript-natural-sort "0.7.1"
