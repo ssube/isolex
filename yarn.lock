@@ -257,9 +257,11 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cron@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@types/cron/-/cron-1.6.0.tgz#cafddc20eadc55fb6ae38352c85c106bed533271"
+"@types/cron@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@types/cron/-/cron-1.6.1.tgz#b22a7106a2f512cf0d3f565fc72691e287d2f23a"
+  dependencies:
+    moment ">=2.14.0"
 
 "@types/escape-html@0.0.20":
   version "0.0.20"
@@ -1627,9 +1629,9 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cron@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/cron/-/cron-1.6.0.tgz#15f92c1b5a930c5cdfcd53fe940064fa8ca2e72d"
+cron@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/cron/-/cron-1.7.0.tgz#9102864e0022da7f7475598be7d6110353ff8f96"
   dependencies:
     moment-timezone "^0.5.x"
 
@@ -3828,6 +3830,10 @@ moment-timezone@^0.5.x:
 "moment@>= 2.9.0", moment@^2.10.6:
   version "2.23.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+
+moment@>=2.14.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
