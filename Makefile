@@ -81,17 +81,21 @@ todo:
 
 # build targets
 build: ## builds, bundles, and tests the application
-build: build-cover
+build: build-fast
 
 build-cover: ## builds, bundles, and tests the application with code coverage
-build-cover: configure node_modules bundle-cover test-cover
+build-cover: configure node_modules bundle-fast test-cover
+
+build-fast: ## builds, bundles, and tests the application
+build-fast: configure node_modules bundle-fast test-fast
 
 build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
 build-strict: configure node_modules bundle-strict test-cover
 
-bundle: bundle-cover ## build the distributable version of the application
+# bundle targets
+bundle: bundle-fast ## build the distributable version of the application
 
-bundle-cover: ## bundle the application without type checking (faster)
+bundle-fast: ## bundle the application without type checking (faster)
 	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS)
 
 bundle-strict: ## bundle the application with full type checking (stricter)
@@ -107,10 +111,8 @@ bundle-watch: ## bundle the application and watch for changes
 bundle-docs: ## generate html docs
 	$(NODE_BIN)/typedoc $(DOCS_OPTS)
 
-test: test-check ## run mocha unit tests
-
-test-check: ## run mocha unit tests with coverage reports
-	$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
+# test targets
+test: test-fast ## run mocha unit tests
 
 test-cover: ## run mocha unit tests with coverage reports
 	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
@@ -123,8 +125,8 @@ test-cover: ## run mocha unit tests with coverage reports
 	sed -n '/^SF/,$$p' -i $(TARGET_PATH)/coverage/lcov.info
 	sed '1s;^;TN:\n;' -i $(TARGET_PATH)/coverage/lcov.info
 
-test-leaks: ## run mocha unit tests with coverage reports
-	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
+test-fast: ## run mocha unit tests with coverage reports
+	$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
 
 test-watch:
 	$(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
@@ -164,7 +166,7 @@ upload-codecov:
 	codecov --disable=gcov --file=$(TARGET_PATH)/coverage/lcov.info --token=$(shell echo "${CODECOV_SECRET}" | base64 -d)
 
 # run targets
-run-config: ## run the bot to test the config
+run-config-test: ## run the bot to test the config
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
 
 run-docker: ## run the bot inside a docker container
