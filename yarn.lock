@@ -281,11 +281,12 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cron@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@types/cron/-/cron-1.6.1.tgz#b22a7106a2f512cf0d3f565fc72691e287d2f23a"
-  integrity sha512-abeTtw2np7TTWM6Oe6gCayxv7y+vooT8qXS84PS1NLi++P51IACO1Cwsu3KhjRyL0a48kfv8547wekTrMK8dTA==
+"@types/cron@1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@types/cron/-/cron-1.7.0.tgz#8bcad3e45fb1c47671d0edb26a062cd3fbc6968b"
+  integrity sha512-LRu/XiiOExELholyEwEuSTPAEiO+sVR1nXmWEjezneGgYpDyMNVIsjiaHYBoCEUJo4F1hCOlAzQAh80iEUVbKw==
   dependencies:
+    "@types/node" "*"
     moment ">=2.14.0"
 
 "@types/escape-html@0.0.20":
