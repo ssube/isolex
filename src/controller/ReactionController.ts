@@ -46,9 +46,11 @@ export class ReactionController extends BaseController<ReactionControllerData> i
   public async createReaction(cmd: Command, ctx: Context): Promise<void> {
     const reactions = [];
     const bodies = cmd.get('body');
+    const channel = ctx.channel.id;
     for (const body of bodies) {
       const matchScope = {
         body,
+        channel,
         cmd,
       };
       const potential = this.reactions.filter((r) => r.match.match(matchScope).matched);
