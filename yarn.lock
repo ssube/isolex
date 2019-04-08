@@ -583,9 +583,10 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/yargs-parser@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-11.0.2.tgz#bee412b129dd04c867c33a8d00e0e3e30d602a46"
+"@types/yargs-parser@11.0.3":
+  version "11.0.3"
+  resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-11.0.3.tgz#8e2020da68b5e361ede75481f584a613b47951de"
+  integrity sha512-sH9fKms0dImyf6CEaMb5PpeiMqIwIK9rm8c0Wchac/vuOxaYeQa+w/w8L+eBnpxc9Ih92MtYrI3a40Huk25UVQ==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
