@@ -3336,10 +3336,10 @@ js-yaml@3.13.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js-yaml@^3.12.2:
-  version "3.12.2"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.2.tgz#ef1d067c5a9d9cb65bd72f285b5d8105c77f14fc"
-  integrity sha512-QHn/Lh/7HhZ/Twc7vJYQTkjuCa0kaCcDcjK5Zlk2rvnUpy7DxMJ23+Jc2dcyvltwQVg1nygAVlB2oRDFHoRS5Q==
+js-yaml@^3.13.1:
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
+  integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -5917,10 +5917,10 @@ typedoc@0.14.2:
     typedoc-default-themes "^0.5.0"
     typescript "3.2.x"
 
-typeorm@0.2.15:
-  version "0.2.15"
-  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.15.tgz#b0cdb4fdc6c38671350135ed72d91d1242e6ea30"
-  integrity sha512-Gpl6fdgb7WLngtuSw2l7dOdOp4jrbVIjlSgpL3P6DX9GKvSzbXmjurmGQ9RRomn+us1Bg+tCYAiSv3j55riplQ==
+typeorm@0.2.17:
+  version "0.2.17"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.17.tgz#eb98e9eeb2ce0dfc884620f49de0aeca3dc4e027"
+  integrity sha512-a2Yi6aG7qcSQNyYHjAZtRwhuMKt/ZPmNQg8PvpgF52Z3AgJ4LL4T5mtpfTzKgNzM4o4wP0JQcZNoGGlaRovKpw==
   dependencies:
     app-root-path "^2.0.1"
     buffer "^5.1.0"
@@ -5929,7 +5929,7 @@ typeorm@0.2.15:
     debug "^4.1.1"
     dotenv "^6.2.0"
     glob "^7.1.2"
-    js-yaml "^3.12.2"
+    js-yaml "^3.13.1"
     mkdirp "^0.5.1"
     reflect-metadata "^0.1.13"
     tslib "^1.9.0"
