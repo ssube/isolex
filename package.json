@@ -41,7 +41,7 @@
     "@types/uuid": "3.4.4",
     "@types/websocket": "0.0.40",
     "@types/ws": "6.0.1",
-    "@types/yargs-parser": "11.0.2",
+    "@types/yargs-parser": "13.0.0",
     "ajv": "6.10.0",
     "awesome-typescript-loader": "5.2.1",
     "aws-sdk": "2.426.0",
@@ -99,7 +99,7 @@
     "webpack-cli": "3.3.0",
     "ws": "6.2.0",
     "yaml-loader": "0.5.0",
-    "yargs-parser": "13.0.0"
+    "yargs-parser": "13.1.0"
   },
   "resolutions": {
     "**/lodash": "4.17.11"
