@@ -1850,10 +1850,10 @@ decamelize@^3.0.0:
   dependencies:
     xregexp "^4.2.4"
 
-decimal.js@10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.1.1.tgz#fb541922a2e8fc618f5e6fbb474e281ed3d2a64c"
-  integrity sha512-vEEgyk1fWVEnv7lPjkNedAIjzxQDue5Iw4FeX4UkNUDSVyD/jZTD0Bw2kAO7k6iyyJRAhM9oxxI0D1ET6k0Mmg==
+decimal.js@10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.2.0.tgz#39466113a9e036111d02f82489b5fd6b0b5ed231"
+  integrity sha512-vDPw+rDgn3bZe1+F/pyEwb1oMG2XTlRVgAa6B4KccTEpYgF8w6eQllVbQcfIJnZyvzFtFpxnpGtx8dd7DJp/Rw==
 
 decimal.js@^10.0.0:
   version "10.0.2"
@@ -3730,13 +3730,13 @@ marked@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
 
-mathjs@5.8.0:
-  version "5.8.0"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.8.0.tgz#25e36843db3b577f89193d1b7d299c27eab58ed7"
-  integrity sha512-hFHcxpG9IwNKP50NLg8PUnYSWUUotyJs1HAn9GTosJ6Q9LBNd2owSB/DvFm9vG88IkhGlo8evE+aiAzBweVK6A==
+mathjs@5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.10.3.tgz#e998885f932ea8886db8b40f7f5b199f89b427f1"
+  integrity sha512-ySjg30BC3dYjQm73ILZtwcWzFJde0VU6otkXW/57IjjuYRa3Qaf0Kb8pydEuBZYtqW2OxreAtsricrAmOj3jIw==
   dependencies:
     complex.js "2.0.11"
-    decimal.js "10.1.1"
+    decimal.js "10.2.0"
     escape-latex "1.2.0"
     fraction.js "4.0.12"
     javascript-natural-sort "0.7.1"
