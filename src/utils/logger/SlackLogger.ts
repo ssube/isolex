@@ -12,19 +12,19 @@ export class SlackLogger {
   }
 
   public debug(...msg: Array<string>) {
-    this.logger.debug('slack client logged', { msg });
+    this.logger.debug({ inner: msg }, 'slack client logged debug');
   }
 
   public error(...msg: Array<string>) {
-    this.logger.error('slack client logged', { msg });
+    this.logger.error({ inner: msg }, 'slack client logged error');
   }
 
   public info(...msg: Array<string>) {
-    this.logger.info('slack client logged', { msg });
+    this.logger.info({ inner: msg }, 'slack client logged info');
   }
 
   public warn(...msg: Array<string>) {
-    this.logger.warn('slack client logged', { msg });
+    this.logger.warn({ inner: msg }, 'slack client logged warn');
   }
 
   public setLevel(level: LogLevel) {
