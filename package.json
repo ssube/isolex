@@ -56,7 +56,7 @@
     "express-graphql": "0.8.0",
     "graphql": "14.3.0",
     "handlebars": "4.1.2",
-    "hard-source-webpack-plugin": "^0.13.1",
+    "hard-source-webpack-plugin": "0.13.1",
     "i18next": "15.1.1",
     "ineeda": "0.12.0-alpha.0",
     "js-yaml": "3.13.1",
