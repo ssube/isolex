@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -102,7 +103,7 @@ module.exports = {
       analyzerMode: 'static',
       generateStatsFile: true,
       openAnalyzer: false,
-      reportFilename: 'bundles.html'
+      reportFilename: 'bundles.html',
     }),
     new webpack.DefinePlugin({
       // make sure to stringify these (handles quotes, escapes, etc)
@@ -130,8 +131,9 @@ module.exports = {
       /^react-native-sqlite-storage$/,
       /^redis$/,
       /^sql.js$/,
-      /^term.js$/
-    ])
+      /^term.js$/,
+    ]),
+    new HardSourceWebpackPlugin(),
   ],
   resolve: {
     alias: [{
