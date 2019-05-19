@@ -103,7 +103,8 @@
     "yargs-parser": "13.1.0"
   },
   "resolutions": {
-    "**/lodash": "4.17.11"
+    "**/lodash": "4.17.11",
+    "**/@types/graphql": "14.2.0"
   },
   "nyc": {
     "instrument": true,
