@@ -13,7 +13,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     ];
   }
 
-  abstract register(router: IRoute): void;
+  public abstract register(router: IRoute): void;
 
   public async start(): Promise<void> {
     /* noop */
