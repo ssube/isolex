@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 
 import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
+import { Endpoint } from 'src/endpoint';
 import { JwtFields, Token } from 'src/entity/auth/Token';
 import { UserRepository } from 'src/entity/auth/UserRepository';
 import { Context } from 'src/entity/Context';
@@ -21,7 +22,6 @@ import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
 import { Storage } from 'src/storage';
 import { doesExist, mustExist } from 'src/utils';
-import { Endpoint } from 'src/endpoint';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
