@@ -33,6 +33,8 @@ data:
     - !include ../docs/controller/token-controller.yml
     - !include ../docs/controller/user-controller.yml
     - !include ../docs/controller/weather-controller-owm.yml
+  endpoints:
+    - !include ../docs/endpoint/echo-endpoint.yml
   intervals:
     # !include ../docs/interval/command-interval.yml
     # !include ../docs/interval/cron-interval.yml

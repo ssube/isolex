@@ -24,8 +24,11 @@ import { Storage, StorageData } from 'src/storage';
 import { filterNil, mustExist, mustFind } from 'src/utils';
 import { createServiceCounter, incrementServiceCounter } from 'src/utils/metrics';
 
+import { Endpoint, EndpointData } from './endpoint';
+
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
+  endpoints: Array<ServiceDefinition<EndpointData>>;
   intervals: Array<ServiceDefinition<IntervalData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
   locale: LocaleOptions;
@@ -56,6 +59,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
   // services
   protected controllers: Array<Controller>;
+  protected endpoints: Array<Endpoint>;
   protected intervals: Array<Interval>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
@@ -77,6 +81,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     // set up deps
     this.controllers = [];
+    this.endpoints = [];
     this.intervals = [];
     this.listeners = [];
     this.parsers = [];
@@ -298,6 +303,11 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.info('setting up controllers');
     for (const data of this.data.controllers) {
       this.controllers.push(await this.services.createService<Controller, ControllerData>(data));
+    }
+
+    this.logger.info('setting up endpoints');
+    for (const data of this.data.endpoints) {
+      this.endpoints.push(await this.services.createService<Endpoint, EndpointData>(data));
     }
 
     this.logger.info('setting up intervals');

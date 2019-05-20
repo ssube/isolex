@@ -148,6 +148,10 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/service-definition"
+      endpoints:
+        type: array
+        items:
+          $ref: "#/definitions/service-definition"
       filters:
         type: array
         items:
@@ -520,6 +524,12 @@ definitions:
               root:
                 type: string
 
+  service-endpoint:
+    $ref: "#/definitions/service-data"
+
+  service-endpoint-echo:
+    $ref: "#/definitions/service-endpoint"
+
   service-filter:
     $ref: "#/definitions/service-data"
 
@@ -648,13 +658,20 @@ definitions:
             $ref: "#/definitions/service-metadata"
           expose:
             type: object
+            required: [endpoints, graph]
             properties:
+              endpoints:
+                type: array
+                items:
+                  $ref: "#/definitions/service-metadata"
               graph:
                 type: boolean
               graphiql:
                 type: boolean
+                default: false
               metrics:
                 type: boolean
+                default: true
           graph:
             $ref: "#/definitions/service-definition"
           listen:

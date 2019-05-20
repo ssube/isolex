@@ -5,6 +5,7 @@ import { Bot, BotData } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
+import { EndpointModule } from 'src/module/EndpointModule';
 import { EntityModule } from 'src/module/EntityModule';
 import { FilterModule } from 'src/module/FilterModule';
 import { IntervalModule } from 'src/module/IntervalModule';
@@ -35,6 +36,7 @@ const MAIN_ARGS: yargs.Options = {
 
 const MAIN_MODULES = [
   ControllerModule,
+  EndpointModule,
   EntityModule,
   FilterModule,
   IntervalModule,

@@ -1,0 +1,4 @@
+metadata:
+  kind: echo-endpoint
+  name: test-echo-endpoint
+data: {}

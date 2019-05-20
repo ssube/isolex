@@ -6,6 +6,9 @@ data:
     kind: discord-listener
     name: test-discord
   expose:
+    endpoints:
+      - kind: echo-endpoint
+        name: test-echo-endpoint
     graph: true
     graphiql: true
     metrics: true
