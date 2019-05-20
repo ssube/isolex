@@ -21,10 +21,12 @@ import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
 import { ServiceDefinition, ServiceMetadata } from 'src/Service';
 import { Storage } from 'src/storage';
 import { doesExist, mustExist } from 'src/utils';
+import { Endpoint } from 'src/endpoint';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
   expose: {
+    endpoints: Array<ServiceMetadata>;
     graph: boolean;
     graphiql: boolean;
     metrics: boolean;
@@ -200,6 +202,24 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
         graphiql: this.data.expose.graphiql,
         schema: this.graph.schema,
       }));
+    }
+
+    app = await this.setupEndpoints(app);
+
+    return app;
+  }
+
+  protected async setupEndpoints(app: express.Express): Promise<express.Express> {
+    for (const metadata of this.data.expose.endpoints) {
+      const endpoint = this.services.getService<Endpoint>(metadata);
+      for (const path of endpoint.paths) {
+        this.logger.debug({
+          endpoint: endpoint.name,
+          path,
+        }, 'registering endpoint at path');
+        const router = app.route(path);
+        endpoint.register(router);
+      }
     }
 
     return app;
