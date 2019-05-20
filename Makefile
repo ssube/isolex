@@ -34,14 +34,15 @@ export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 NODE_BIN	:= $(ROOT_PATH)/node_modules/.bin
 NODE_CMD	?= $(shell env node)
 NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
+NODE_MEMORY ?= --max-old-space-size=5500
 
 # Tool options
-BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
+BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details $(NODE_MEMORY)
 COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statements 85 	# increase this every so often
 COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
-MOCHA_OPTS  ?= --check-leaks --colors --max-old-space-size=5500 --sort --timeout 30000 --ui bdd
+MOCHA_OPTS  ?= --check-leaks --colors $(NODE_MEMORY) --sort --timeout 30000 --ui bdd
 RELEASE_OPTS ?= --commit-all
 
 # Versions
