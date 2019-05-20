@@ -35,6 +35,7 @@ data:
     - !include ../docs/controller/weather-controller-owm.yml
   intervals:
     # !include ../docs/interval/command-interval.yml
+    # !include ../docs/interval/cron-interval.yml
     # !include ../docs/interval/event-interval.yml
     - !include ../docs/interval/github-listener-interval.yml
     # !include ../docs/interval/message-interval.yml

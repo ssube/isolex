@@ -1,3 +1,4 @@
+import { CronJob } from 'cron';
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
@@ -6,7 +7,6 @@ import { INJECT_CLOCK, INJECT_MATH } from 'src/BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
 import { Context } from 'src/entity/Context';
 import { Tick } from 'src/entity/Tick';
-import { NotImplementedError } from 'src/error/NotImplementedError';
 import { Interval, IntervalData } from 'src/interval';
 import { Listener } from 'src/listener';
 import { doesExist, mustExist } from 'src/utils';
@@ -23,6 +23,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   protected readonly tickRepository: Repository<Tick>;
 
   protected interval?: NodeJS.Timeout;
+  protected job?: CronJob;
   protected target?: Listener;
 
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
@@ -54,7 +55,13 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   protected async startInterval() {
     if (doesExist(this.data.frequency.cron)) {
       this.logger.debug({ cron: this.data.frequency.cron }, 'starting a cron interval');
-      throw new NotImplementedError('cron frequency is not implemented');
+      this.job = new CronJob(this.data.frequency.cron, () => {
+        this.nextTick().catch((err) => {
+          this.logger.error(err, 'error firing next tick');
+        });
+      }, () => {
+        /* on complete */
+      }, true);
     }
 
     if (doesExist(this.data.frequency.time)) {
@@ -67,6 +74,10 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
   }
 
   protected async stopInterval() {
+    if (doesExist(this.job)) {
+      this.job.stop();
+    }
+
     if (doesExist(this.data.frequency.time) && doesExist(this.interval)) {
       this.clock.clearInterval(this.interval);
     }

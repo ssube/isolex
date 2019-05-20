@@ -1,0 +1,17 @@
+metadata:
+  kind: event-interval
+  name: test-cron-interval
+data:
+  defaultContext:
+    channel:
+      id: ""
+      thread: ""
+    name: svc
+    uid: svc
+  defaultTarget: &target
+    kind: discord-listener
+    name: test-discord
+  frequency:
+    cron: '*/30 * * * * *'
+  services:
+    - *target
