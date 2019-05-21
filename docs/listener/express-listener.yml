@@ -7,6 +7,8 @@ data:
     name: test-discord
   expose:
     endpoints:
+      - kind: debug-endpoint
+        name: test-debug-endpoint
       - kind: echo-endpoint
         name: test-echo-endpoint
     graph: true

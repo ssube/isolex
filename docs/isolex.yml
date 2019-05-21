@@ -34,6 +34,7 @@ data:
     - !include ../docs/controller/user-controller.yml
     - !include ../docs/controller/weather-controller-owm.yml
   endpoints:
+    # !include ../docs/endpoint/debug-endpoint.yml
     - !include ../docs/endpoint/echo-endpoint.yml
   intervals:
     # !include ../docs/interval/command-interval.yml
