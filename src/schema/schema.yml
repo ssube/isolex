@@ -527,6 +527,9 @@ definitions:
   service-endpoint:
     $ref: "#/definitions/service-data"
 
+  service-endpoint-debug:
+    $ref: "#/definitions/service-endpoint"
+
   service-endpoint-echo:
     $ref: "#/definitions/service-endpoint"
 

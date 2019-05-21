@@ -1,0 +1,4 @@
+metadata:
+  kind: debug-endpoint
+  name: test-debug-endpoint
+data: {}
