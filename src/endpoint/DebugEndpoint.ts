@@ -22,10 +22,10 @@ export class DebugEndpoint extends BaseEndpoint<EndpointData> implements Endpoin
       for (const [key, svc] of this.services.listServices()) {
         svcs.push({
           data: Reflect.get(svc, 'data'),
+          id: svc.id,
           key,
           kind: svc.kind,
           name: svc.name,
-          id: svc.id,
         });
       }
       res.json(svcs);
