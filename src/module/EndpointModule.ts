@@ -13,4 +13,3 @@ export class EndpointModule extends BaseModule {
     this.bindService(EchoEndpoint);
   }
 }
-
