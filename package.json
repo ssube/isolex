@@ -54,7 +54,7 @@
     "escape-html": "1.0.3",
     "express": "4.17.0",
     "express-graphql": "0.8.0",
-    "graphql": "14.3.0",
+    "graphql": "14.3.1",
     "handlebars": "4.1.2",
     "hard-source-webpack-plugin": "0.13.1",
     "i18next": "15.1.3",
