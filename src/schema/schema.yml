@@ -105,6 +105,9 @@ definitions:
       require:
         type: string
 
+  external-service-data:
+    type: object
+
   match-rule:
     type: object
     additionalProperties: false

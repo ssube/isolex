@@ -17,10 +17,14 @@ import { TransformModule } from 'src/module/TransformModule';
 import { Schema } from 'src/schema';
 import { ServiceDefinition, ServiceEvent } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
+import { ModuleCtor } from 'src/utils/ExternalModule';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';
 
-import { isModule, ModuleCtor } from 'src/utils/ExternalModule';
+// re-exports
+export { Inject, Module } from 'noicejs';
+export { BotService } from 'src/BotService';
+export { INJECT_LOGGER } from 'src/BaseService';
 
 // main arguments
 const CONFIG_ARGS_NAME = 'config-name';
@@ -109,7 +113,7 @@ async function handleSignals(bot: Bot, logger: Logger) {
   await bot.stop();
 }
 
-async function main(argv: Array<string>): Promise<number> {
+export async function main(argv: Array<string>): Promise<number> {
   const args = yargs(argv, MAIN_ARGS);
   const config = await loadConfig(args[CONFIG_ARGS_NAME], ...args[CONFIG_ARGS_PATH]);
 
