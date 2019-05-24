@@ -95,6 +95,8 @@ module.exports = {
     filename: '[name]-bundle.js',
     hashDigest: 'base64',
     hashFunction: 'sha256',
+    library: 'isolex',
+    libraryTarget: 'global',
     path: path.target
   },
   plugins: [
