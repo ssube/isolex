@@ -46,6 +46,7 @@ describeAsync('bot service', async () => {
           level: 'info',
           name: 'test',
         },
+        modules: [],
         parsers: [],
         services: {
           timeout: 1000,

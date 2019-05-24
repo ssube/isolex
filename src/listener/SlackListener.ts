@@ -1,8 +1,8 @@
-import { LogLevel, RTMClient, WebAPICallResult, WebClient } from '@slack/client';
+import { RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import * as escape from 'escape-html';
 import { isNil } from 'lodash';
 import { find as findEmoji } from 'node-emoji';
-import { BaseError, Inject, logWithLevel } from 'noicejs';
+import { BaseError, Inject } from 'noicejs';
 
 import { INJECT_CLOCK } from 'src/BaseService';
 import { BotServiceOptions } from 'src/BotService';
@@ -11,8 +11,8 @@ import { NotFoundError } from 'src/error/NotFoundError';
 import { FetchOptions, Listener, ListenerData } from 'src/listener';
 import { SessionListener } from 'src/listener/SessionListener';
 import { doesExist, mustExist } from 'src/utils';
-import { TYPE_TEXT } from 'src/utils/Mime';
 import { SlackLogger } from 'src/utils/logger/SlackLogger';
+import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface SlackListenerData extends ListenerData {
   fetch: {

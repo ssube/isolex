@@ -93,6 +93,18 @@ definitions:
       type:
         enum: [text/plain]
 
+  external-module:
+    type: object
+    additionalProperties: false
+    required: [export, require]
+    properties:
+      data:
+        type: object
+      export:
+        type: string
+      require:
+        type: string
+
   match-rule:
     type: object
     additionalProperties: false
@@ -142,7 +154,7 @@ definitions:
 
   service-bot:
     type: object
-    required: [controllers, filters, listeners, locale, logger, parsers, services, storage]
+    required: [controllers, filters, listeners, locale, logger, modules, parsers, services, storage]
     properties:
       controllers:
         type: array
@@ -175,6 +187,10 @@ definitions:
             enum: [debug, info, warn, error]
           name:
             type: string
+      modules:
+        type: array
+        items:
+          $ref: "#/definitions/external-module"
       parsers:
         type: array
         items:
