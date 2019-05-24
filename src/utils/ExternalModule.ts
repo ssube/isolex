@@ -9,5 +9,6 @@ export interface ExternalModule {
 export type ModuleCtor = new (data: unknown) => Module;
 
 export function isModule(it: object): it is ModuleCtor {
-  return Reflect.getPrototypeOf(it) instanceof Module;
+  const p = Reflect.getPrototypeOf(it);
+  return p === Module || p instanceof Module;
 }

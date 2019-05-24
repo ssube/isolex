@@ -59,7 +59,7 @@ data:
     name: isolex
   modules:
     - require: isolex-oot-example
-      export: ExampleModule
+      export: example-module
   parsers:
     - !include ../docs/parser/args-parser.yml
     - !include ../docs/parser/args-parser-complete.yml
