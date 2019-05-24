@@ -12,6 +12,7 @@ import {
   INJECT_SERVICES,
 } from 'src/BaseService';
 import { Controller, ControllerData } from 'src/controller';
+import { Endpoint, EndpointData } from 'src/endpoint';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Interval, IntervalData } from 'src/interval';
@@ -22,9 +23,8 @@ import { Parser, ParserData } from 'src/parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
 import { Storage, StorageData } from 'src/storage';
 import { filterNil, mustExist, mustFind } from 'src/utils';
+import { ExternalModule } from 'src/utils/ExternalModule';
 import { createServiceCounter, incrementServiceCounter } from 'src/utils/metrics';
-
-import { Endpoint, EndpointData } from './endpoint';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
@@ -36,6 +36,7 @@ export interface BotData extends BaseServiceData {
     level: LogLevel;
     name: string;
   };
+  modules: Array<ExternalModule>;
   parsers: Array<ServiceDefinition<ParserData>>;
   services: {
     timeout: number;

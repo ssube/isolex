@@ -57,6 +57,9 @@ data:
   logger:
     level: debug
     name: isolex
+  modules:
+    - require: isolex-oot-example
+      export: ExampleModule
   parsers:
     - !include ../docs/parser/args-parser.yml
     - !include ../docs/parser/args-parser-complete.yml

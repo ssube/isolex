@@ -1,7 +1,7 @@
 import { Container, Logger, Module } from 'noicejs';
 import * as yargs from 'yargs-parser';
 
-import { Bot, BotData } from 'src/Bot';
+import { Bot, BotData, BotDefinition } from 'src/Bot';
 import { loadConfig } from 'src/config';
 import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
@@ -19,6 +19,8 @@ import { ServiceDefinition, ServiceEvent } from 'src/Service';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';
+
+import { isModule, ModuleCtor } from 'src/utils/ExternalModule';
 
 // main arguments
 const CONFIG_ARGS_NAME = 'config-name';
@@ -57,6 +59,27 @@ function createModules(botModule: BotModule, svcModule: ServiceModule) {
 
   for (const m of MAIN_MODULES) {
     modules.push(new m());
+  }
+
+  return modules;
+}
+
+async function loadModules(config: BotDefinition, logger: Logger) {
+  const modules: Array<Module> = [];
+
+  for (const p of config.data.modules) {
+    try {
+      const nodeModule = await import(/* webpackIgnore: true */ p.require);
+      const moduleType = nodeModule[p.export];
+      if (isModule(moduleType)) {
+        const module = new moduleType(p.data);
+        modules.push(module);
+      } else {
+        logger.warn('external module loaded wrong type', p);
+      }
+    } catch (err) {
+      logger.error(err, 'error loading external module', p);
+    }
   }
 
   return modules;
@@ -108,7 +131,12 @@ async function main(argv: Array<string>): Promise<number> {
 
   const botModule = new BotModule({ logger });
   const svcModule = new ServiceModule(config.data.services);
-  const ctr = Container.from(...createModules(botModule, svcModule));
+  const extModules = await loadModules(config, logger);
+
+  const ctr = Container.from(
+    ...createModules(botModule, svcModule),
+    ...extModules,
+  );
   logger.info('configuring container');
   await ctr.configure({ logger });
 

@@ -1,4 +1,4 @@
-import { Logger, LogLevel } from "noicejs";
+import { Logger, LogLevel } from 'noicejs';
 
 export interface SlackLoggerOptions {
   logger: Logger;
