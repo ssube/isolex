@@ -64,19 +64,19 @@ function createModules(botModule: BotModule, svcModule: ServiceModule) {
   return modules;
 }
 
+declare function __non_webpack_require__(name: string): {[name: string]: ModuleCtor};
+
 async function loadModules(config: BotDefinition, logger: Logger) {
   const modules: Array<Module> = [];
 
   for (const p of config.data.modules) {
     try {
-      const nodeModule = await import(/* webpackIgnore: true */ p.require);
+      const nodeModule = __non_webpack_require__(/* webpackIgnore: true */ p.require);
       const moduleType = nodeModule[p.export];
-      if (isModule(moduleType)) {
-        const module = new moduleType(p.data);
-        modules.push(module);
-      } else {
-        logger.warn('external module loaded wrong type', p);
-      }
+
+      // TODO: verify this is a module constructor before instantiating
+      const module = new moduleType(p.data);
+      modules.push(module);
     } catch (err) {
       logger.error(err, 'error loading external module', p);
     }
