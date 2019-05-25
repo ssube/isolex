@@ -1,8 +1,27 @@
-import { Container, Logger, Module } from 'noicejs';
+import { Container, Inject, Logger, Module } from 'noicejs';
 import * as yargs from 'yargs-parser';
 
+import {
+  BaseService,
+  INJECT_CLOCK,
+  INJECT_JSONPATH,
+  INJECT_LOGGER,
+  INJECT_MATH,
+  INJECT_METRICS,
+  INJECT_REQUEST,
+  INJECT_SCHEMA,
+  INJECT_SERVICES,
+  INJECT_TEMPLATE,
+} from 'src/BaseService';
 import { Bot, BotData, BotDefinition } from 'src/Bot';
+import { BotService } from 'src/BotService';
 import { loadConfig } from 'src/config';
+import { BaseController } from 'src/controller/BaseController';
+import { BaseEndpoint } from 'src/endpoint/BaseEndpoint';
+import { BaseFilter } from 'src/filter/BaseFilter';
+import { BaseInterval } from 'src/interval/BaseInterval';
+import { BaseListener } from 'src/listener/BaseListener';
+import { BaseModule } from 'src/module/BaseModule';
 import { BotModule } from 'src/module/BotModule';
 import { ControllerModule } from 'src/module/ControllerModule';
 import { EndpointModule } from 'src/module/EndpointModule';
@@ -14,17 +33,44 @@ import { MigrationModule } from 'src/module/MigrationModule';
 import { ParserModule } from 'src/module/ParserModule';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
+import { BaseParser } from 'src/parser/BaseParser';
 import { Schema } from 'src/schema';
 import { ServiceDefinition, ServiceEvent } from 'src/Service';
+import { BaseTransform } from 'src/transform/BaseTransform';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { ModuleCtor } from 'src/utils/ExternalModule';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';
 
 // re-exports
-export { Inject, Module } from 'noicejs';
-export { BotService } from 'src/BotService';
-export { INJECT_LOGGER, INJECT_SCHEMA } from 'src/BaseService';
+export const base = {
+  BaseController,
+  BaseEndpoint,
+  BaseFilter,
+  BaseInterval,
+  BaseListener,
+  BaseModule,
+  BaseParser,
+  BaseService,
+  BaseTransform,
+  BotService,
+};
+export const inject = {
+  INJECT_CLOCK,
+  INJECT_JSONPATH,
+  INJECT_LOGGER,
+  INJECT_MATH,
+  INJECT_METRICS,
+  INJECT_REQUEST,
+  INJECT_SCHEMA,
+  INJECT_SERVICES,
+  INJECT_TEMPLATE,
+};
+export const noicejs = {
+  Container,
+  Inject,
+  Module,
+};
 
 // main arguments
 const CONFIG_ARGS_NAME = 'config-name';
@@ -68,7 +114,7 @@ function createModules(botModule: BotModule, svcModule: ServiceModule) {
   return modules;
 }
 
-declare function __non_webpack_require__(name: string): {[name: string]: ModuleCtor};
+declare function __non_webpack_require__(name: string): { [name: string]: ModuleCtor };
 
 async function loadModules(config: BotDefinition, logger: Logger) {
   const modules: Array<Module> = [];
