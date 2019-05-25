@@ -12,7 +12,7 @@ export interface SchemaResult {
 }
 
 export class Schema {
-  private children: Map<string, object>;
+  private readonly children: Map<string, object>;
 
   public static formatError(err: Ajv.ErrorObject): string {
     switch (err.keyword) {
