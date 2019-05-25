@@ -36,6 +36,7 @@ data:
   endpoints:
     # !include ../docs/endpoint/debug-endpoint.yml
     - !include ../docs/endpoint/echo-endpoint.yml
+    - !include ../docs/endpoint/gitlab-endpoint.yml
   intervals:
     # !include ../docs/interval/command-interval.yml
     # !include ../docs/interval/cron-interval.yml

@@ -1,0 +1,4 @@
+metadata:
+  kind: gitlab-endpoint
+  name: test-gitlab-endpoint
+data: {}
