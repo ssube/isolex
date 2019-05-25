@@ -24,7 +24,7 @@ import { VERSION_INFO } from 'src/version';
 // re-exports
 export { Inject, Module } from 'noicejs';
 export { BotService } from 'src/BotService';
-export { INJECT_LOGGER } from 'src/BaseService';
+export { INJECT_LOGGER, INJECT_SCHEMA } from 'src/BaseService';
 
 // main arguments
 const CONFIG_ARGS_NAME = 'config-name';
