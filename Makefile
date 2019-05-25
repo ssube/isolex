@@ -40,6 +40,7 @@ export NODE_OPTIONS ?= --max-old-space-size=5500
 BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
 COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statements 85 	# increase this every so often
 COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
+DOCKER_IMAGE ?= ssube/isolex:master
 DOCS_OPTS		?= --exclude "test.+" --tsconfig "$(CONFIG_PATH)/tsconfig.json" --out "$(TARGET_PATH)/docs"
 MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mocha.json",spec
 MOCHA_OPTS  ?= --check-leaks --colors $(NODE_MEMORY) --sort --timeout 30000 --ui bdd
@@ -171,8 +172,8 @@ run-config-test: ## run the bot to test the config
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
 
 run-docker: ## run the bot inside a docker container
-	docker run --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
-		ssube/isolex:master --config-name 'isolex.yml' --config-path '/app/docs'
+	docker run --rm --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
+		$(DOCKER_IMAGE) --config-name 'isolex.yml' --config-path '/app/docs'
 
 run-terminal: ## run the bot in a terminal
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
