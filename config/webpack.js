@@ -136,6 +136,9 @@ module.exports = {
       /^term.js$/,
     ]),
     new HardSourceWebpackPlugin(),
+    new HardSourceWebpackPlugin.ExcludeModulePlugin([{
+      test: /version/,
+    }]),
   ],
   resolve: {
     alias: [{
