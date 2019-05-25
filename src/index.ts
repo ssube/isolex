@@ -101,11 +101,8 @@ const MAIN_MODULES = [
 const STATUS_SUCCESS = 0;
 const STATUS_ERROR = 1;
 
-function createModules(botModule: BotModule, svcModule: ServiceModule) {
-  const modules: Array<Module> = [
-    botModule,
-    svcModule,
-  ];
+function mainModules() {
+  const modules: Array<Module> = [];
 
   for (const m of MAIN_MODULES) {
     modules.push(new m());
@@ -184,7 +181,9 @@ export async function main(argv: Array<string>): Promise<number> {
   const extModules = await loadModules(config, logger);
 
   const ctr = Container.from(
-    ...createModules(botModule, svcModule),
+    botModule,
+    svcModule,
+    ...mainModules(),
     ...extModules,
   );
   logger.info('configuring container');
