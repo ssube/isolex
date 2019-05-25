@@ -552,6 +552,9 @@ definitions:
   service-endpoint-echo:
     $ref: "#/definitions/service-endpoint"
 
+  service-endpoint-gitlab:
+    $ref: "#/definitions/service-endpoint"
+
   service-filter:
     $ref: "#/definitions/service-data"
 
