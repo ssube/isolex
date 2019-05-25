@@ -34,6 +34,7 @@ export class BotModule extends BaseModule {
   protected container?: Container;
   protected logger: Logger;
   protected metrics?: Registry;
+  protected schema?: Schema;
 
   constructor(options: BotModuleOptions) {
     super();
@@ -46,6 +47,7 @@ export class BotModule extends BaseModule {
 
     this.container = options.container;
     this.metrics = new Registry();
+    this.schema = new Schema();
 
     this.bindService(GraphSchema);
 
@@ -84,7 +86,7 @@ export class BotModule extends BaseModule {
 
   @Provides(INJECT_SCHEMA)
   public async getSchema(): Promise<Schema> {
-    return new Schema();
+    return mustExist(this.schema);
   }
 
   @Provides(INJECT_STORAGE)
