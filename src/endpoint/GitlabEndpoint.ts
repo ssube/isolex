@@ -1,4 +1,4 @@
-import { IRoute, Request, Response } from 'express';
+import { json as expressJSON, Request, Response, Router } from 'express';
 
 import { BotServiceOptions } from 'src/BotService';
 import { Endpoint, EndpointData } from 'src/endpoint';
@@ -80,36 +80,45 @@ export class GitlabEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
     ];
   }
 
-  public register(router: IRoute): void {
-    router.get((req: Request, res: Response) => {
+  public createRouter(): Promise<Router> {
+    const router = Router();
+    router.use(expressJSON());
+    router.route('/hook').post((req: Request, res: Response) => {
       this.logger.debug('gitlab endpoint got webhook');
 
       // authenticate & authorize
 
       const hook: GitlabBaseWebhook = req.body;
-      // switch on hook kind
-      switch (hook.object_kind) {
+      this.hookKind(req, res, hook);
+    });
+    return Promise.resolve(router);
+  }
+
+  public hookKind(req: Request, res: Response, data: GitlabBaseWebhook) {
+    switch (data.object_kind) {
         case 'issue':
-          this.issueHook(req, res, hook as GitlabIssueWebhook);
+          this.issueHook(req, res, data as GitlabIssueWebhook);
         case 'job':
-          this.jobHook(req, res, hook as GitlabJobWebhook);
+          this.jobHook(req, res, data as GitlabJobWebhook);
         case 'note':
           // switch on target kind
         case 'push':
-          this.pushHook(req, res, hook as GitlabPushWebhook);
+          this.pushHook(req, res, data as GitlabPushWebhook);
       }
-    });
   }
 
   public issueHook(req: Request, res: Response, data: GitlabIssueWebhook) {
     this.logger.debug(data, 'gitlab issue hook');
+    res.sendStatus(200);
   }
 
   public jobHook(req: Request, res: Response, data: GitlabJobWebhook) {
     this.logger.debug(data, 'gitlab job hook');
+    res.sendStatus(200);
   }
 
   public pushHook(req: Request, res: Response, data: GitlabPushWebhook) {
     this.logger.debug(data, 'gitlab push hook');
+    res.sendStatus(200);
   }
 }
