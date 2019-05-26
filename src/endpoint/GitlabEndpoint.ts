@@ -9,7 +9,7 @@ export interface GitlabBaseWebhook {
 }
 
 export interface GitlabIssueWebhook extends GitlabBaseWebhook {
-  object_kind: 'issue',
+  object_kind: 'issue';
   user: any;
   project: any;
   repository: any;
@@ -21,7 +21,7 @@ export interface GitlabIssueWebhook extends GitlabBaseWebhook {
 }
 
 export interface GitlabJobWebhook extends GitlabBaseWebhook {
-  object_kind: 'job',
+  object_kind: 'job';
   ref: string;
   tag: boolean;
   before_sha: string;
@@ -42,7 +42,7 @@ export interface GitlabJobWebhook extends GitlabBaseWebhook {
 }
 
 export interface GitlabNoteWebhook extends GitlabBaseWebhook {
-  object_kind: 'note',
+  object_kind: 'note';
   user: any;
   project: any;
   repository: any;
@@ -50,8 +50,17 @@ export interface GitlabNoteWebhook extends GitlabBaseWebhook {
   commit: any;
 }
 
+export interface GitlabPipelineWebhook extends GitlabBaseWebhook {
+  object_kind: 'pipeline';
+  object_attributes: any;
+  user: any;
+  project: any;
+  commit: any;
+  builds: Array<any>;
+}
+
 export interface GitlabPushWebhook extends GitlabBaseWebhook {
-  object_kind: 'push',
+  object_kind: 'push';
   before: string;
   after: string;
   ref: string;
@@ -84,7 +93,10 @@ export class GitlabEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
     const router = Router();
     router.use(expressJSON());
     router.route('/hook').post((req: Request, res: Response) => {
-      this.logger.debug('gitlab endpoint got webhook');
+      this.logger.debug({
+        req,
+        res,
+      }, 'gitlab endpoint got webhook');
 
       // authenticate & authorize
 
@@ -98,12 +110,23 @@ export class GitlabEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
     switch (data.object_kind) {
         case 'issue':
           this.issueHook(req, res, data as GitlabIssueWebhook);
+          return;
         case 'job':
           this.jobHook(req, res, data as GitlabJobWebhook);
+          return;
         case 'note':
-          // switch on target kind
+          this.noteHook(req, res, data as GitlabNoteWebhook);
+          return;
+        case 'pipeline':
+          this.pipelineHook(req, res, data as GitlabPipelineWebhook);
+          return;
         case 'push':
           this.pushHook(req, res, data as GitlabPushWebhook);
+          return;
+        default:
+          this.logger.warn({
+            kind: data.object_kind,
+          }, 'unknown hook kind');
       }
   }
 
@@ -114,6 +137,16 @@ export class GitlabEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
 
   public jobHook(req: Request, res: Response, data: GitlabJobWebhook) {
     this.logger.debug(data, 'gitlab job hook');
+    res.sendStatus(200);
+  }
+
+  public noteHook(req: Request, res: Response, data: GitlabNoteWebhook) {
+    this.logger.debug(data, 'gitlab note hook');
+    res.sendStatus(200);
+  }
+
+  public pipelineHook(req: Request, res: Response, data: GitlabPipelineWebhook) {
+    this.logger.debug(data, 'gitlab pipeline hook');
     res.sendStatus(200);
   }
 
