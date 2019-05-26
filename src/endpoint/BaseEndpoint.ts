@@ -1,4 +1,4 @@
-import { IRoute } from 'express';
+import { Router } from 'express';
 
 import { BotService, BotServiceOptions } from 'src/BotService';
 import { Endpoint, EndpointData } from 'src/endpoint';
@@ -13,7 +13,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     ];
   }
 
-  public abstract register(router: IRoute): void;
+  public abstract createRouter(): Promise<Router>;
 
   public async start(): Promise<void> {
     /* noop */

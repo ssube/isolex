@@ -140,8 +140,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     const token = await this.tokenRepository.findOne({
       id: data.jti,
     }, {
-      relations: ['user'],
-    });
+        relations: ['user'],
+      });
 
     if (isNil(token)) {
       this.logger.warn('token not found');
@@ -212,13 +212,13 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected async setupEndpoints(app: express.Express): Promise<express.Express> {
     for (const metadata of this.data.expose.endpoints) {
       const endpoint = this.services.getService<Endpoint>(metadata);
+      const router = await endpoint.createRouter();
       for (const path of endpoint.paths) {
         this.logger.debug({
           endpoint: endpoint.name,
           path,
         }, 'registering endpoint at path');
-        const router = app.route(path);
-        endpoint.register(router);
+        app.use(path, router);
       }
     }
 

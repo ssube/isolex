@@ -1,4 +1,4 @@
-import { IRoute, Request, Response } from 'express';
+import { IRoute, Request, Response, Router } from 'express';
 
 import { BotServiceOptions } from 'src/BotService';
 import { Endpoint, EndpointData } from 'src/endpoint';
@@ -16,19 +16,23 @@ export class DebugEndpoint extends BaseEndpoint<EndpointData> implements Endpoin
     ];
   }
 
-  public register(router: IRoute): void {
-    router.get((req: Request, res: Response) => {
-      const svcs = [];
-      for (const [key, svc] of this.services.listServices()) {
-        svcs.push({
-          data: Reflect.get(svc, 'data'),
-          id: svc.id,
-          key,
-          kind: svc.kind,
-          name: svc.name,
-        });
-      }
-      res.json(svcs);
-    });
+  public createRouter(): Promise<Router> {
+    const router = Router();
+    router.route('/').get((req: Request, res: Response) => this.getIndex(req, res));
+    return Promise.resolve(router);
+  }
+
+  public getIndex(req: Request, res: Response) {
+    const svcs = [];
+    for (const [key, svc] of this.services.listServices()) {
+      svcs.push({
+        data: Reflect.get(svc, 'data'),
+        id: svc.id,
+        key,
+        kind: svc.kind,
+        name: svc.name,
+      });
+    }
+    res.json(svcs);
   }
 }
