@@ -553,7 +553,14 @@ definitions:
     $ref: "#/definitions/service-endpoint"
 
   service-endpoint-gitlab:
-    $ref: "#/definitions/service-endpoint"
+    allOf:
+      - $ref: "#/definitions/service-endpoint"
+      - type: object
+        additionalProperties: true
+        required: [defaultCommand]
+        properties:
+          defaultCommand:
+            $ref: "#/definitions/entity-command"
 
   service-filter:
     $ref: "#/definitions/service-data"
