@@ -1,4 +1,10 @@
 metadata:
   kind: gitlab-endpoint
   name: test-gitlab-endpoint
-data: {}
+  labels:
+    gitlab: webhook
+data:
+  defaultCommand:
+    noun: echo
+    verb: create
+  transforms: []

@@ -1,0 +1,4 @@
+metadata:
+  kind: echo-controller
+  name: endpoint-push-controller
+data: {}
