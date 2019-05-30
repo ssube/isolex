@@ -50,7 +50,7 @@
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "cron": "1.7.1",
-    "discord.js": "11.5.0",
+    "discord.js": "11.5.1",
     "escape-html": "1.0.3",
     "express": "4.17.1",
     "express-graphql": "0.8.0",
