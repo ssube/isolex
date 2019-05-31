@@ -29,7 +29,7 @@
     "@types/jsonwebtoken": "8.3.2",
     "@types/lodash": "4.14.132",
     "@types/mathjs": "5.0.1",
-    "@types/mocha": "5.2.6",
+    "@types/mocha": "5.2.7",
     "@types/node-emoji": "1.8.1",
     "@types/passport": "1.0.0",
     "@types/passport-jwt": "3.0.1",
