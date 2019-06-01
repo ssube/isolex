@@ -14,7 +14,7 @@ import { ServiceModule } from 'src/module/ServiceModule';
 import { ServiceDefinition } from 'src/Service';
 import { Transform, TransformData } from 'src/transform';
 import { applyTransforms } from 'src/transform/helpers';
-import { doesExist, getMethods, mustExist } from 'src/utils';
+import { doesExist, getMethods, mustCoalesce, mustExist } from 'src/utils';
 import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -86,7 +86,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
     for (const method of getMethods(this)) {
       const options = getHandlerOptions(method);
-      if (doesExist(options)  && this.checkCommand(cmd, options)) {
+      if (doesExist(options) && this.checkCommand(cmd, options)) {
         this.logger.debug({ method: method.name, options }, 'found matching handler method');
         return this.invokeHandler(cmd, options, method as HandlerMethod);
       }
@@ -133,13 +133,13 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     return applyTransforms(this.transforms, cmd, type, body);
   }
 
-  protected async transformJSON(cmd: Command, data: TemplateScope): Promise<void> {
+  protected async transformJSON(cmd: Command, data: TemplateScope, ctx?: Context): Promise<void> {
     this.logger.debug({ data }, 'transforming json body');
 
     const body = await this.transform(cmd, TYPE_JSON, data);
 
     if (isString(body)) {
-      return this.reply(mustExist(cmd.context), body);
+      return this.reply(mustCoalesce(ctx, cmd.context), body);
     } else {
       this.logger.error({ body }, 'final transform did not return a string');
     }
