@@ -3,6 +3,7 @@ import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { INJECT_LOGGER } from 'src/BaseService';
 import { Context } from 'src/entity/Context';
+import { mustExist } from 'src/utils';
 import { classLogger } from 'src/utils/logger';
 import { Template } from 'src/utils/Template';
 
@@ -24,6 +25,7 @@ export class TemplateCompiler {
     this.compiler.registerHelper('trim', this.formatTrim.bind(this));
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));
     this.compiler.registerHelper('json', this.formatJSON.bind(this));
+    this.compiler.registerHelper('key', this.getKey.bind(this));
     this.compiler.registerHelper('reply', this.formatContext.bind(this));
   }
 
@@ -67,5 +69,10 @@ export class TemplateCompiler {
 
     const start = value.substr(0, max - tail.length);
     return `${start}${tail}`;
+  }
+
+  public getKey(map: Map<string, unknown>, key: string): unknown {
+    this.logger.debug({ key, map }, 'getting key for template');
+    return mustExist(map.get(key));
   }
 }
