@@ -34,6 +34,9 @@ export class TestModule extends Module {
   }
 }
 
+/**
+ * Create a DI container for tests.
+ */
 export async function createContainer(...modules: Array<Module>): Promise<{ container: Container, module: Module }> {
   const module = new TestModule();
   const container = Container.from(module, ...modules);
@@ -41,18 +44,31 @@ export async function createContainer(...modules: Array<Module>): Promise<{ cont
   return { container, module };
 }
 
+/**
+ * Create a DI container for tests with a stub service module that will create, but not get, services.
+ */
+export async function createServiceContainer(...modules: Array<Module>): Promise<{
+  container: Container,
+  module: Module,
+  services: ServiceModule,
+}> {
+  const services = new ServiceModule({
+    timeout: 100,
+  });
+  const { container, module } = await createContainer(...modules, services);
+  module.bind(INJECT_SERVICES).toInstance(services);
+  return { container, module, services };
+}
+
 export async function createService<
   TService,
   TData extends BotServiceData,
   TOptions extends BotServiceOptions<TData> = BotServiceOptions<TData>,
->(
-  container: Container,
-  type: Constructor<TService, TOptions>,
-  options: Partial<TOptions>,
+  >(
+    container: Container,
+    type: Constructor<TService, TOptions>,
+    options: Partial<TOptions>,
 ): Promise<TService> {
-  const services = ineeda<ServiceModule>({
-      createService: (def: ServiceDefinition<TData>) => container.create(def.metadata.kind, def),
-    });
   const schema = new Schema(); // tests use the real schema :D
   const locale = await container.create(Locale, {
     data: {
@@ -64,7 +80,6 @@ export async function createService<
     },
     [INJECT_LOGGER]: ConsoleLogger.global,
     [INJECT_SCHEMA]: schema,
-    [INJECT_SERVICES]: services,
   });
 
   const fullOptions = {
@@ -77,7 +92,6 @@ export async function createService<
     [INJECT_LOGGER]: ConsoleLogger.global,
     [INJECT_METRICS]: new Registry(),
     [INJECT_SCHEMA]: schema,
-    [INJECT_SERVICES]: services,
     [INJECT_STORAGE]: ineeda<Connection>({
       getRepository<T>(ctor: T) {
         return ineeda<Repository<T>>();

@@ -9,19 +9,24 @@ import { User } from 'src/entity/auth/User';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { Listener } from 'src/listener';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { TransformModule } from 'src/module/TransformModule';
 import { Transform } from 'src/transform';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 describeAsync('echo controller', async () => {
   itAsync('should exist', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
 
     const controller = await createService(container, EchoController, {
       data: {
+        defaultTarget: {
+          kind: 'test-listener',
+          name: 'test-listener',
+        },
         filters: [],
         strict: true,
         transforms: [],
@@ -38,7 +43,12 @@ describeAsync('echo controller', async () => {
     const modules = [new ServiceModule({
       timeout: 100,
     }), new TransformModule()];
-    const { container, module } = await createContainer(...modules);
+    const { container, module, services } = await createServiceContainer(...modules);
+
+    services.addService(ineeda<Listener>({
+      kind: 'test-listener',
+      name: 'test-listener',
+    }));
 
     const msg = 'hello world';
     module.bind('test-transform').toInstance(ineeda<Transform>({
@@ -52,6 +62,10 @@ describeAsync('echo controller', async () => {
         sendMessage,
       }),
       data: {
+        defaultTarget: {
+          kind: 'test-listener',
+          name: 'test-listener',
+        },
         filters: [],
         strict: true,
         transforms: [{
@@ -75,6 +89,8 @@ describeAsync('echo controller', async () => {
     const cmd = new Command({
       context: ineeda<Context>({
         checkGrants: () => true,
+        name: 'test-user',
+        uid: 'test-user',
         user: ineeda<User>(),
       }),
       data: {},

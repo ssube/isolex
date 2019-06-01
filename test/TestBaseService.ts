@@ -5,7 +5,7 @@ import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseServic
 import { ServiceEvent } from 'src/Service';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 class StubService extends BaseService<BaseServiceData> {
   constructor(options: BaseServiceOptions<BaseServiceData>) {
@@ -18,7 +18,7 @@ class StubService extends BaseService<BaseServiceData> {
 
 describeAsync('base service', async () => {
   itAsync('should throw on missing name', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     return expect(createService(container, StubService, {
       data: {
         filters: [],
@@ -32,7 +32,7 @@ describeAsync('base service', async () => {
   });
 
   itAsync('should log notifications', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
         filters: [],
@@ -47,7 +47,7 @@ describeAsync('base service', async () => {
   });
 
   itAsync('should get ephemeral ID as UUID', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
         filters: [],
@@ -62,7 +62,7 @@ describeAsync('base service', async () => {
   });
 
   itAsync('should get stable ID as kind:name pair', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
         filters: [],

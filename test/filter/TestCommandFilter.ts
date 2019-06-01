@@ -7,13 +7,13 @@ import { FilterBehavior } from 'src/filter';
 import { CommandFilter, CommandFilterData } from 'src/filter/CommandFilter';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';
 
 async function createFilter(data: CommandFilterData) {
-  const { container } = await createContainer();
+  const { container } = await createServiceContainer();
   const filter = await createService(container, CommandFilter, {
     data,
     metadata: {

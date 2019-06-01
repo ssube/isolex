@@ -10,11 +10,11 @@ import { Template } from 'src/utils/Template';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 describeAsync('template transform', async () => {
   itAsync('should transform data', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
 
     const data = {
       test: 1,
