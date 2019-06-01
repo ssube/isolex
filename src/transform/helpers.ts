@@ -1,5 +1,8 @@
+import { isString } from 'lodash';
+
 import { FilterValue } from 'src/filter';
 import { Transform } from 'src/transform';
+import { MapLike, mapToDict, setOrPush } from 'src/utils/Map';
 import { TemplateScope } from 'src/utils/Template';
 
 export async function applyTransforms(
@@ -21,4 +24,18 @@ export async function applyTransforms(
   }
 
   return result;
+}
+
+export function scopeToData(scope: TemplateScope): MapLike<Array<string>> {
+  const data = new Map();
+  for (const [key, value] of Object.entries(scope)) {
+    if (isString(value)) {
+      setOrPush(data, key, value);
+    } else if (Array.isArray(value)) {
+      setOrPush(data, key, value);
+    } else {
+      setOrPush(data, key, JSON.stringify(value));
+    }
+  }
+  return mapToDict(data);
 }
