@@ -103,3 +103,13 @@ export function mustExist<T>(val: T | null | undefined): T {
 export function doesExist<T>(val: T | null | undefined): val is T {
   return !isNil(val);
 }
+
+export function mustCoalesce<T>(...vals: Array<T | null | undefined>): T {
+  for (const v of vals) {
+    if (doesExist(v)) {
+      return v;
+    }
+  }
+
+  throw new NotFoundError();
+}
