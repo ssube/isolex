@@ -6,7 +6,7 @@ data:
     kind: slack-listener
     name: slack-isolex
   forceChannel:
-    id: CEA8362AJ
+    id: !env ISOLEX_SLACK_CHANNEL_ID
     thread: ""
 
   transforms:
