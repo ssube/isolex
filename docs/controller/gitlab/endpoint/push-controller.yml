@@ -1,4 +1,25 @@
 metadata:
   kind: echo-controller
   name: endpoint-push-controller
-data: {}
+data:
+  defaultTarget:
+    kind: slack-listener
+    name: slack-isolex
+  forceChannel:
+    id: CEA8362AJ
+    thread: ""
+
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: endpoint-push-template
+      data:
+        templates:
+          body: >-
+            {{ key cmd.data "ref" }} by {{ key cmd.data "user_name" }}
+    - metadata:
+        kind: flatten-transform
+        name: endpoint-push-flatten
+      data:
+        join: ""
+        keys: [$.data.body]

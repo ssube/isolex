@@ -349,7 +349,15 @@ definitions:
     $ref: "#/definitions/service-controller"
 
   service-controller-echo:
-    $ref: "#/definitions/service-controller"
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        additionalProperties: true
+        properties:
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
+          forceChannel:
+            $ref: "#/definitions/entity-context-channel"
 
   service-controller-github-pr:
     allOf:
