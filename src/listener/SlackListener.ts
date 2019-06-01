@@ -142,6 +142,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const rtm = mustExist(this.rtmClient);
 
     if (ctx.channel.id !== '') {
+      this.logger.debug({ channel: ctx.channel }, 'sending message to channel');
       const result = await rtm.sendMessage(escape(msg.body), ctx.channel.id);
       if (doesExist(result.error)) {
         const err = new BaseError(result.error.msg);
