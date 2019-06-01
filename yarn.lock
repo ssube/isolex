@@ -137,20 +137,20 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@kubernetes/client-node@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@kubernetes/client-node/-/client-node-0.9.1.tgz#5b9267f354cbeb6c3b03e2b670fb7bdf2fc3bbd9"
-  integrity sha512-eDs79/NsxN508tYUUJZqIYVz/YZcE63W6GYsE0P4Foq9+rfCdPCBLOGZ2Wibk3bxo2a5G1JKy4AUWoLBKMZrvA==
+"@kubernetes/client-node@0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@kubernetes/client-node/-/client-node-0.8.2.tgz#75cc8a3d1ee15842583c649ca769307149cee4f1"
+  integrity sha512-crS3h59+fOGXQgxVdq3XH81ytY7FV2HnB5z/+lSWD3bi5D5lHKu3PVN2PHCDMNExPy0KthcfqBoIVFVy4CoG3A==
   dependencies:
     "@types/js-yaml" "^3.11.2"
     "@types/node" "^10.12.0"
     "@types/request" "^2.47.1"
     "@types/underscore" "^1.8.9"
     "@types/ws" "^6.0.1"
+    byline "^5.0.0"
     isomorphic-ws "^4.0.1"
     js-yaml "^3.12.0"
-    json-stream "^1.0.0"
-    jsonpath-plus "^0.19.0"
+    jsonpath "^1.0.0"
     request "^2.88.0"
     shelljs "^0.8.2"
     tslib "^1.9.3"
@@ -465,14 +465,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/js-yaml@3.12.1":
+"@types/js-yaml@3.12.1", "@types/js-yaml@^3.11.2":
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.12.1.tgz#5c6f4a1eabca84792fbd916f0cb40847f123c656"
   integrity sha512-SGGAhXLHDx+PK4YLNcNGa6goPf9XRWQNAUUbffkwVGGXIxmDKWyGGL4inzq2sPmExu431Ekb9aEMn9BkPqEYFA==
-
-"@types/js-yaml@^3.11.2":
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.12.0.tgz#3494ce97358e2675e24e97a747ec23478eeaf8b6"
 
 "@types/jsonpath@0.2.0":
   version "0.2.0"
@@ -633,8 +629,9 @@
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.4.tgz#821878b81bfab971b93a265a561d54ea61f9059f"
 
 "@types/underscore@^1.8.9":
-  version "1.8.9"
-  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.9.tgz#fef41f800cd23db1b4f262ddefe49cd952d82323"
+  version "1.8.18"
+  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.18.tgz#025371cfe062439aaa088d2b64af87cbcfe3c2b7"
+  integrity sha512-mXQ8u416FWMPjp2zWrcVmOZtzKQM6IeyVcuE+RGF/04JLBrMjfnmNKn74VN8fIkFzU97TpzkP0ny0p0h65eC7w==
 
 "@types/uuid@3.4.4":
   version "3.4.4"
@@ -652,6 +649,7 @@
 "@types/ws@6.0.1", "@types/ws@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-6.0.1.tgz#ca7a3f3756aa12f62a0a62145ed14c6db25d5a28"
+  integrity sha512-EzH8k1gyZ4xih/MaZTXwT2xOkPiIMSrhQ9b8wrlX88L0T02eYsddatQlwVFlEPyEqV0ChpdpNnE51QPH6NVT4Q==
   dependencies:
     "@types/events" "*"
     "@types/node" "*"
@@ -1332,6 +1330,11 @@ bunyan@1.8.12:
     moment "^2.10.6"
     mv "~2"
     safe-json-stringify "~1"
+
+byline@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/byline/-/byline-5.0.0.tgz#741c5216468eadc457b03410118ad77de8c1ddb1"
+  integrity sha1-dBxSFkaOrcRXsDQQEYrXfejB3bE=
 
 bytes@3.0.0:
   version "3.0.0"
@@ -3635,11 +3638,6 @@ json-schema@0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/json-schema/-/json-schema-0.2.3.tgz#b480c892e59a2f05954ce727bd3f2a4e882f9e13"
 
-json-stream@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/json-stream/-/json-stream-1.0.0.tgz#1a3854e28d2bbeeab31cc7ddf683d2ddc5652708"
-  integrity sha1-GjhU4o0rvuqzHMfd9oPS3cVlJwg=
-
 json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
@@ -3660,12 +3658,7 @@ jsonparse@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
 
-jsonpath-plus@^0.19.0:
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-0.19.0.tgz#b901e57607055933dc9a8bef0cc25160ee9dd64c"
-  integrity sha512-GSVwsrzW9LsA5lzsqe4CkuZ9wp+kxBb2GwNniaWzI2YFn5Ig42rSW8ZxVpWXaAfakXNrx5pgY5AbQq7kzX29kg==
-
-jsonpath@1.0.1:
+jsonpath@1.0.1, jsonpath@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/jsonpath/-/jsonpath-1.0.1.tgz#fde977c5a64614aa8dde61a84b9b076d2b9c38ce"
   integrity sha512-HY5kSg82LHIs0r0h9gYBwpNc1w1qGY0qJ7al01W1bJltsN2lp+mjjA/a79gXWuvD6Xf8oPkD2d5uKMZQXTGzqA==
