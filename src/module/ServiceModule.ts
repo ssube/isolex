@@ -69,6 +69,17 @@ export class ServiceModule extends Module implements ServiceLifecycle {
     return this;
   }
 
+  public addService<TService extends Service>(svc: TService) {
+    const { kind, name } = svc;
+    const tag = `${kind}:${name}`;
+
+    if (this.services.has(tag)) {
+      this.logger.warn({ tag }, 'adding duplicate service');
+    } else {
+      this.services.set(tag, svc);
+    }
+  }
+
   /**
    * These are all created the same way, so they should probably have a common base...
    */

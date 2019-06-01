@@ -38,6 +38,7 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
     for (const [key, template] of this.templates) {
       this.logger.debug({ key, scope }, 'rendering template with scope');
       const result = template.render(scope);
+      this.logger.debug({ key, result }, 'rendered template with scope');
       out.set(key, result);
     }
     return mapToDict(out);
