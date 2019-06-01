@@ -15,6 +15,7 @@ export interface GitlabBaseWebhook {
   object_kind: string;
 }
 
+// tslint:disable:no-any
 export interface GitlabIssueWebhook extends GitlabBaseWebhook {
   object_kind: 'issue';
   user: any;
@@ -83,6 +84,7 @@ export interface GitlabPushWebhook extends GitlabBaseWebhook {
   commits: Array<any>;
   total_commits_count: number;
 }
+// tslint:enable:no-any
 
 export interface GitlabEndpointData extends EndpointData {
   defaultCommand: CommandOptions;
