@@ -10,6 +10,7 @@ import { Message } from 'src/entity/Message';
 import { applyTransforms, scopeToData } from 'src/transform/helpers';
 import { mustExist } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
+import { TemplateScope } from 'src/utils/Template';
 
 export interface GitlabBaseWebhook {
   object_kind: string;
@@ -160,20 +161,32 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
 
   public async pipelineHook(req: Request, res: Response, data: GitlabPipelineWebhook) {
     this.logger.debug(data, 'gitlab pipeline hook');
+    const msg = await this.createHookMessage(req, res, data);
+
+    const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
+    this.logger.debug({ data, txData }, 'applied transforms');
+ 
+    if (Array.isArray(txData) || isString(txData)) {
+      this.logger.warn({ data: txData }, 'transforms did not return object');
+    }
+
+    const cmdCtx = await this.createContext({
+      channel: {
+        id: data.project.web_url,
+        thread: data.object_attributes.ref,
+      },
+      name: data.user.name,
+      uid: data.user.username,
+      user: mustExist(msg.context).user,
+    });
+    const cmd = await this.createHookCommand(msg, cmdCtx, txData, data.object_kind);
+    await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
   }
 
   public async pushHook(req: Request, res: Response, data: GitlabPushWebhook) {
     this.logger.debug(data, 'gitlab push hook');
-    const msgCtx = mustExist<Context>(req.user);
-    // fake message for the transforms to check and filter
-    const msg = new Message({
-      body: data.object_kind,
-      context: msgCtx,
-      labels: this.labels,
-      reactions: [],
-      type: TYPE_JSON,
-    });
+    const msg = await this.createHookMessage(req, res, data);
 
     const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
     this.logger.debug({ data, txData }, 'applied transforms');
@@ -188,16 +201,35 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
       },
       name: data.user_name,
       uid: data.user_username,
-      user: msgCtx.user,
+      user: mustExist(msg.context).user,
     });
-    const cmd = new Command({
-      context: cmdCtx,
-      data: scopeToData(txData),
+    const cmd = await this.createHookCommand(msg, cmdCtx, txData, data.object_kind);
+    await this.bot.executeCommand(cmd);
+    res.sendStatus(STATUS_SUCCESS);
+  }
+
+  protected async createHookMessage(req: Request, res: Response, data: GitlabBaseWebhook): Promise<Message> {
+    const msgCtx = mustExist<Context>(req.user);
+    // fake message for the transforms to check and filter
+    return new Message({
+      body: data.object_kind,
+      context: msgCtx,
       labels: this.labels,
+      reactions: [],
+      type: TYPE_JSON,
+    });
+  }
+
+  protected async createHookCommand(msg: Message, context: Context, data: TemplateScope, kind: string): Promise<Command> {
+    const labels = new Map(this.labels);
+    labels.set('hook', kind);
+
+    return new Command({
+      context,
+      data: scopeToData(data),
+      labels,
       noun: this.data.defaultCommand.noun,
       verb: this.data.defaultCommand.verb,
     });
-    await this.bot.executeCommand(cmd);
-    res.sendStatus(STATUS_SUCCESS);
   }
 }

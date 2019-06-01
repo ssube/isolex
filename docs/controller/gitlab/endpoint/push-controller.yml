@@ -14,9 +14,44 @@ data:
         kind: template-transform
         name: endpoint-push-template
       data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: endpoint-push-template-kind
+            data:
+              match:
+                rules:
+                  - key: labels.hook
+                    operator: any
+                    values:
+                      - string: push
         templates:
           body: >-
-            {{ key cmd.data "ref" }} by {{ key cmd.data "user_name" }}
+            Push to {{ key cmd.data "ref" }} by {{ key cmd.data "user_name" }}.
+
+    - metadata:
+        kind: template-transform
+        name: endpoint-pipeline-template
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: endpoint-pipeline-template-kind
+            data:
+              match:
+                rules:
+                  - key: labels.hook
+                    operator: any
+                    values:
+                      - string: pipeline
+        templates:
+          body: >-
+            {{#withMap cmd.data pipeline="object_attributes" user="user" }}
+            Pipeline {{ pipeline.id }} on {{ pipeline.ref }} by {{ user.username }} has finished: {{ pipeline.status }}
+            after {{ pipeline.duration }} seconds.
+            {{ json this }}
+            {{/withMap}}
+
     - metadata:
         kind: flatten-transform
         name: endpoint-push-flatten

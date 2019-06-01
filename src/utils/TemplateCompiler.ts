@@ -5,6 +5,7 @@ import { INJECT_LOGGER } from 'src/BaseService';
 import { Context } from 'src/entity/Context';
 import { mustExist } from 'src/utils';
 import { classLogger } from 'src/utils/logger';
+import { Dict } from 'src/utils/Map';
 import { Template } from 'src/utils/Template';
 
 export interface TemplateCompilerOptions extends BaseOptions {
@@ -22,11 +23,12 @@ export class TemplateCompiler {
     this.logger = classLogger(options[INJECT_LOGGER], TemplateCompiler);
     this.options = {};
 
-    this.compiler.registerHelper('trim', this.formatTrim.bind(this));
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));
     this.compiler.registerHelper('json', this.formatJSON.bind(this));
     this.compiler.registerHelper('key', this.getKey.bind(this));
     this.compiler.registerHelper('reply', this.formatContext.bind(this));
+    this.compiler.registerHelper('trim', this.formatTrim.bind(this));
+    this.compiler.registerHelper('withMap', this.withMap.bind(this));
   }
 
   public compile(body: string): Template {
@@ -74,5 +76,15 @@ export class TemplateCompiler {
   public getKey(map: Map<string, unknown>, key: string): unknown {
     this.logger.debug({ key, map }, 'getting key for template');
     return mustExist(map.get(key));
+  }
+
+  public withMap(context: Map<string, unknown>, options: Handlebars.HelperOptions): string {
+    const args: Dict<unknown> = {};
+    for (const [key, src] of Object.entries(options.hash as Dict<string>)) {
+      this.logger.debug({ key, context }, 'getting key for template');
+      const val = mustExist(context.get(src));
+      args[key] = val;
+    }
+    return options.fn(args);
   }
 }
