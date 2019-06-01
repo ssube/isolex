@@ -3,7 +3,7 @@ import { Inject } from 'noicejs';
 import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
 import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
-import { Context, ChannelData } from 'src/entity/Context';
+import { ChannelData, Context } from 'src/entity/Context';
 import { Listener } from 'src/listener';
 import { ServiceMetadata } from 'src/Service';
 import { mustCoalesce } from 'src/utils';
