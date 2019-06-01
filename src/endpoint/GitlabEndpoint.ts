@@ -1,14 +1,15 @@
 import { json as expressJSON, Request, Response, Router } from 'express';
+import { isString } from 'lodash';
 
 import { BotServiceOptions } from 'src/BotService';
 import { Endpoint, EndpointData } from 'src/endpoint';
 import { BaseEndpoint } from 'src/endpoint/BaseEndpoint';
-import { Command, CommandVerb, CommandOptions } from 'src/entity/Command';
-import { applyTransforms } from 'src/transform/helpers';
+import { Command, CommandOptions } from 'src/entity/Command';
+import { Context } from 'src/entity/Context';
 import { Message } from 'src/entity/Message';
+import { applyTransforms, scopeToData } from 'src/transform/helpers';
+import { mustExist } from 'src/utils';
 import { TYPE_JSON } from 'src/utils/Mime';
-import { mapToDict, dictValuesToArrays, Dict } from 'src/utils/Map';
-import { isString } from 'lodash';
 
 export interface GitlabBaseWebhook {
   object_kind: string;
@@ -87,6 +88,10 @@ export interface GitlabEndpointData extends EndpointData {
   defaultCommand: CommandOptions;
 }
 
+const STATUS_SUCCESS = 200;
+const STATUS_ERROR = 500;
+const STATUS_UNKNOWN = 404;
+
 export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements Endpoint {
   constructor(options: BotServiceOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');
@@ -132,59 +137,65 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
         this.logger.warn({
           kind: data.object_kind,
         }, 'unknown hook kind');
+        res.sendStatus(STATUS_UNKNOWN);
     }
   }
 
   public async issueHook(req: Request, res: Response, data: GitlabIssueWebhook) {
     this.logger.debug(data, 'gitlab issue hook');
-    res.sendStatus(200);
+    res.sendStatus(STATUS_SUCCESS);
   }
 
   public async jobHook(req: Request, res: Response, data: GitlabJobWebhook) {
     this.logger.debug(data, 'gitlab job hook');
-    res.sendStatus(200);
+    res.sendStatus(STATUS_SUCCESS);
   }
 
   public async noteHook(req: Request, res: Response, data: GitlabNoteWebhook) {
     this.logger.debug(data, 'gitlab note hook');
-    res.sendStatus(200);
+    res.sendStatus(STATUS_SUCCESS);
   }
 
   public async pipelineHook(req: Request, res: Response, data: GitlabPipelineWebhook) {
     this.logger.debug(data, 'gitlab pipeline hook');
-    res.sendStatus(200);
+    res.sendStatus(STATUS_SUCCESS);
   }
 
   public async pushHook(req: Request, res: Response, data: GitlabPushWebhook) {
     this.logger.debug(data, 'gitlab push hook');
-    const context = await this.createContext({
+    const msgCtx = mustExist<Context>(req.user);
+    // fake message for the transforms to check and filter
+    const msg = new Message({
+      body: data.object_kind,
+      context: msgCtx,
+      labels: this.labels,
+      reactions: [],
+      type: TYPE_JSON,
+    });
+
+    const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
+    this.logger.debug({ data, txData }, 'applied transforms');
+    if (Array.isArray(txData) || isString(txData)) {
+      this.logger.warn({ data: txData }, 'transforms did not return object');
+    }
+
+    const cmdCtx = await this.createContext({
       channel: {
         id: data.project.web_url,
         thread: data.ref,
       },
       name: data.user_name,
       uid: data.user_username,
+      user: msgCtx.user,
     });
-    // fake message for the transforms to check and filter
-    const msg = new Message({
-      context,
-      body: data.object_kind,
-      labels: this.labels,
-      reactions: [],
-      type: TYPE_JSON,
-    });
-    const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
-    if (Array.isArray(txData) || isString(txData)) {
-      this.logger.warn({data: txData}, 'transforms did not return object');
-    }
     const cmd = new Command({
-      context,
-      data: dictValuesToArrays(txData as Dict<string>),
+      context: cmdCtx,
+      data: scopeToData(txData),
       labels: this.labels,
       noun: this.data.defaultCommand.noun,
       verb: this.data.defaultCommand.verb,
     });
     await this.bot.executeCommand(cmd);
-    res.sendStatus(200);
+    res.sendStatus(STATUS_SUCCESS);
   }
 }
