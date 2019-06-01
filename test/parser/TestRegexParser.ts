@@ -12,7 +12,7 @@ import { Storage } from 'src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 const TEST_CONFIG = {
   dataMapper: {
@@ -47,7 +47,7 @@ const TEST_STORAGE = ineeda<Storage>({
 
 describeAsync('regex parser', async () => {
   itAsync('should split the message body into groups', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, RegexParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
@@ -79,7 +79,7 @@ describeAsync('regex parser', async () => {
   });
 
   itAsync('should reject messages with other types', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, RegexParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,

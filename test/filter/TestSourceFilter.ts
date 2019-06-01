@@ -8,13 +8,13 @@ import { SourceFilter, SourceFilterData } from 'src/filter/SourceFilter';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';
 
 async function createFilter(data: SourceFilterData) {
-  const { container } = await createContainer();
+  const { container } = await createServiceContainer();
   const filter = await createService(container, SourceFilter, {
     data,
     metadata: {

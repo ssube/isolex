@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import { RandomController } from 'src/controller/RandomController';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 describeAsync('random controller', async () => {
   itAsync('should exist', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
 
     const controller = await createService(container, RandomController, {
       data: {

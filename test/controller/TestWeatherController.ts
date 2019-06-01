@@ -15,14 +15,14 @@ import { Transform } from 'src/transform';
 import { RequestFactory } from 'src/utils/Request';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {
     const modules = [new ServiceModule({
       timeout: 100,
     }), new TransformModule()];
-    const { container, module } = await createContainer(...modules);
+    const { container, module } = await createServiceContainer(...modules);
 
     const data = { test: 'test' };
     module.bind(INJECT_REQUEST).toInstance(ineeda<RequestFactory>({

@@ -12,7 +12,7 @@ import { Storage } from 'src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 const TEST_CONFIG = {
   dataMapper: {
@@ -51,7 +51,7 @@ const TEST_STORAGE = ineeda<Storage>({
 
 describeAsync('echo parser', async () => {
   itAsync('should parse the message body as-is', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, EchoParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
@@ -79,7 +79,7 @@ describeAsync('echo parser', async () => {
   });
 
   itAsync('should reject messages with other types', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, EchoParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,

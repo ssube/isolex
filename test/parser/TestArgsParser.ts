@@ -14,7 +14,7 @@ import { Storage } from 'src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer, createService } from 'test/helpers/container';
+import { createService, createServiceContainer } from 'test/helpers/container';
 
 const TEST_CONFIG = {
   args: {
@@ -51,7 +51,7 @@ const TEST_STORAGE = ineeda<Storage>({
 
 describeAsync('args parser', async () => {
   itAsync('should parse a message body', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       data: TEST_CONFIG,
       metadata: TEST_METADATA,
@@ -71,7 +71,7 @@ describeAsync('args parser', async () => {
   });
 
   itAsync('should prompt to complete missing fields', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
@@ -100,7 +100,7 @@ describeAsync('args parser', async () => {
   });
 
   itAsync('should complete a fragment', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
@@ -134,7 +134,7 @@ describeAsync('args parser', async () => {
   });
 
   itAsync('should reject messages with other types', async () => {
-    const { container } = await createContainer();
+    const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
       data: TEST_CONFIG,
