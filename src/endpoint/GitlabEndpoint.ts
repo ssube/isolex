@@ -165,7 +165,7 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
 
     const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
     this.logger.debug({ data, txData }, 'applied transforms');
- 
+
     if (Array.isArray(txData) || isString(txData)) {
       this.logger.warn({ data: txData }, 'transforms did not return object');
     }

@@ -17,6 +17,8 @@ import { Transform } from 'src/transform';
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createService, createServiceContainer } from 'test/helpers/container';
 
+const TEST_LISTENER = 'test-listener';
+
 describeAsync('echo controller', async () => {
   itAsync('should exist', async () => {
     const { container } = await createServiceContainer();
@@ -24,8 +26,8 @@ describeAsync('echo controller', async () => {
     const controller = await createService(container, EchoController, {
       data: {
         defaultTarget: {
-          kind: 'test-listener',
-          name: 'test-listener',
+          kind: TEST_LISTENER,
+          name: TEST_LISTENER,
         },
         filters: [],
         strict: true,
@@ -46,8 +48,8 @@ describeAsync('echo controller', async () => {
     const { container, module, services } = await createServiceContainer(...modules);
 
     services.addService(ineeda<Listener>({
-      kind: 'test-listener',
-      name: 'test-listener',
+      kind: TEST_LISTENER,
+      name: TEST_LISTENER,
     }));
 
     const msg = 'hello world';
@@ -63,8 +65,8 @@ describeAsync('echo controller', async () => {
       }),
       data: {
         defaultTarget: {
-          kind: 'test-listener',
-          name: 'test-listener',
+          kind: TEST_LISTENER,
+          name: TEST_LISTENER,
         },
         filters: [],
         strict: true,
