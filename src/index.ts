@@ -42,6 +42,8 @@ import { ModuleCtor } from 'src/utils/ExternalModule';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';
 
+import { writePid, removePid } from './utils/PidFile';
+
 // re-exports
 export const base = {
   BaseController,
@@ -193,7 +195,9 @@ export async function main(argv: Array<string>): Promise<number> {
   botModule.setBot(bot);
 
   logger.info('starting bot');
+  await writePid(config.data.process.pid.file);
   await handleSignals(bot, logger);
+  await removePid(config.data.process.pid.file);
 
   return STATUS_SUCCESS;
 }

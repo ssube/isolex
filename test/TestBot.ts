@@ -48,6 +48,11 @@ describeAsync('bot service', async () => {
         },
         modules: [],
         parsers: [],
+        process: {
+          pid: {
+            file: '../out/isolex.pid',
+          },
+        },
         services: {
           timeout: 1000,
         },
