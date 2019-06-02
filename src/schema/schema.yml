@@ -157,7 +157,7 @@ definitions:
 
   service-bot:
     type: object
-    required: [controllers, filters, listeners, locale, logger, modules, parsers, services, storage]
+    required: [controllers, filters, listeners, locale, logger, modules, parsers, process, services, storage]
     properties:
       controllers:
         type: array
@@ -198,6 +198,16 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/service-definition"
+      process:
+        type: object
+        required: [pid]
+        properties:
+          pid:
+            type: object
+            required: [file]
+            properties:
+              file:
+                type: string
       services:
         type: object
         additionalProperties: false

@@ -38,6 +38,11 @@ export interface BotData extends BaseServiceData {
   };
   modules: Array<ExternalModule>;
   parsers: Array<ServiceDefinition<ParserData>>;
+  process: {
+    pid: {
+      file: string;
+    };
+  };
   services: {
     timeout: number;
   };
