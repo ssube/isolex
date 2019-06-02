@@ -39,10 +39,9 @@ import { ServiceDefinition, ServiceEvent } from 'src/Service';
 import { BaseTransform } from 'src/transform/BaseTransform';
 import { BunyanLogger } from 'src/utils/BunyanLogger';
 import { ModuleCtor } from 'src/utils/ExternalModule';
+import { removePid, writePid } from 'src/utils/PidFile';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
 import { VERSION_INFO } from 'src/version';
-
-import { writePid, removePid } from './utils/PidFile';
 
 // re-exports
 export const base = {
