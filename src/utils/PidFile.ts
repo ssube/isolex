@@ -3,13 +3,13 @@ import { pid } from 'process';
 
 export async function writePid(path: string): Promise<void> {
   return new Promise((res, rej) => {
-    open(path, 'wx', (err: Error, fd: number) => {
-      if (err) {
-        rej(err);
+    open(path, 'wx', (openErr: Error, fd: number) => {
+      if (openErr) {
+        rej(openErr);
       } else {
-        write(fd, pid.toString(), 0, 'utf8', (err: Error) => {
-          if (err) {
-            rej(err);
+        write(fd, pid.toString(), 0, 'utf8', (writeErr: Error) => {
+          if (writeErr) {
+            rej(writeErr);
           } else {
             res();
           }
