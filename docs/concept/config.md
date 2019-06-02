@@ -18,6 +18,7 @@ custom types available.
       - [Listeners](#listeners)
       - [Logger](#logger)
       - [Parsers](#parsers)
+      - [Process](#process)
     - [Metadata](#metadata)
       - [Kind](#kind)
       - [Name](#name)
@@ -128,6 +129,13 @@ The only required field is a `name: string`.
 #### Parsers
 
 A list of type-config objects for each [`Parser`](../src/parser/Parser.ts) created by the bot.
+
+#### Process
+
+Process-specific (as opposed to cluster-level) configuration.
+
+The only required field is `pid`, containing a `file: string`. The bot's process ID (`pid`) will be written to this
+file, for make targets and service monitors to use when reloading or stopping the bot.
 
 ### Metadata
 
