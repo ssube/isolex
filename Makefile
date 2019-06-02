@@ -180,3 +180,12 @@ run-terminal: ## run the bot in a terminal
 
 run-bunyan: ## run the bot with bunyan logs
 	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
+
+pid-stop:
+	$(shell kill --signal TERM $(shell cat "$(TARGET_PATH)/isolex.pid"))
+
+pid-reload:
+	$(shell kill --signal HUP $(shell cat "$(TARGET_PATH)/isolex.pid"))
+
+pid-reset:
+	$(shell kill --signal INT $(shell cat "$(TARGET_PATH)/isolex.pid"))
