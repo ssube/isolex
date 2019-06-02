@@ -26,6 +26,13 @@ export async function applyTransforms(
   return result;
 }
 
+/**
+ * Convert a template scope (before or after rendering) into suitable data for
+ * a Command or Message.
+ *
+ * This helper exists to mask some Dict/Map inconsistencies that should be
+ * resolved elsewhere.
+ */
 export function scopeToData(scope: TemplateScope): MapLike<Array<string>> {
   const data = new Map();
   for (const [key, value] of Object.entries(scope)) {
@@ -34,7 +41,8 @@ export function scopeToData(scope: TemplateScope): MapLike<Array<string>> {
     } else if (Array.isArray(value)) {
       setOrPush(data, key, value);
     } else {
-      setOrPush(data, key, JSON.stringify(value));
+      // TODO: handle nested objects
+      setOrPush(data, key, value);
     }
   }
   return mapToDict(data);

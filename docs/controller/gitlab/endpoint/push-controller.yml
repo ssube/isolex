@@ -47,9 +47,8 @@ data:
         templates:
           body: >-
             {{#withMap cmd.data pipeline="object_attributes" user="user" }}
-            Pipeline {{ pipeline.id }} on {{ pipeline.ref }} by {{ user.username }} has finished: {{ pipeline.status }}
-            after {{ pipeline.duration }} seconds.
-            {{ json this }}
+            Pipeline {{ this.pipeline.[0].id }} on {{ this.pipeline.[0].ref }} by {{ this.user.[0].username }} has
+            finished: {{ this.pipeline.[0].status }} after {{ this.pipeline.[0].duration }} seconds.
             {{/withMap}}
 
     - metadata:
