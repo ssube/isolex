@@ -12,7 +12,7 @@
     "sqlite3": "4.0.8"
   },
   "devDependencies": {
-    "@kubernetes/client-node": "0.8.2",
+    "@kubernetes/client-node": "0.10.2",
     "@octokit/rest": "16.27.3",
     "@slack/client": "5.0.1",
     "@types/bunyan": "1.8.6",
