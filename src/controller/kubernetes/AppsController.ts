@@ -1,11 +1,11 @@
 import { Inject } from 'noicejs';
+import * as k8s from '@kubernetes/client-node';
 
 import { CheckRBAC, Controller, Handler } from 'src/controller';
 import { BaseControllerOptions } from 'src/controller/BaseController';
 import { KubernetesBaseController, KubernetesBaseControllerData } from 'src/controller/kubernetes/BaseController';
 import { Command, CommandVerb } from 'src/entity/Command';
 import { mustExist } from 'src/utils';
-import { AppsClient } from 'src/utils/kubernetes/AppsClient';
 
 export const NOUN_DAEMONSET = 'kubernetes-daemonset';
 export const NOUN_DEPLOYMENT = 'kubernetes-deployment';
@@ -19,7 +19,7 @@ export interface AppsControllerData extends KubernetesBaseControllerData {
 
 @Inject()
 export class KubernetesAppsController extends KubernetesBaseController<AppsControllerData> implements Controller {
-  protected client?: AppsClient;
+  protected client?: k8s.AppsV1Api;
 
   constructor(options: BaseControllerOptions<AppsControllerData>) {
     super(options, 'isolex#/definitions/service-controller-kubernetes-apps', [
@@ -33,7 +33,7 @@ export class KubernetesAppsController extends KubernetesBaseController<AppsContr
     await super.start();
 
     const config = await this.loadConfig();
-    this.client = config.makeApiClient(AppsClient);
+    this.client = config.makeApiClient(k8s.AppsV1Api);
   }
 
   @Handler(NOUN_DAEMONSET, CommandVerb.List)
@@ -73,7 +73,9 @@ export class KubernetesAppsController extends KubernetesBaseController<AppsContr
         replicas,
       },
     });
-    return this.transformJSON(cmd, response.body.status);
+
+    const status = mustExist(response.body.status);
+    return this.transformJSON(cmd, status);
   }
 
   @Handler(NOUN_STATEFULSET, CommandVerb.List)
@@ -102,6 +104,8 @@ export class KubernetesAppsController extends KubernetesBaseController<AppsContr
         replicas,
       },
     });
-    return this.transformJSON(cmd, response.body.status);
+
+    const status = mustExist(response.body.status);
+    return this.transformJSON(cmd, status);
   }
 }

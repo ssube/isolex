@@ -18,7 +18,7 @@ export interface CoreControllerData extends KubernetesBaseControllerData {
 
 @Inject()
 export class KubernetesCoreController extends KubernetesBaseController<CoreControllerData> implements Controller {
-  protected client?: k8s.Core_v1Api;
+  protected client?: k8s.CoreV1Api;
 
   constructor(options: BaseControllerOptions<CoreControllerData>) {
     super(options, 'isolex#/definitions/service-controller-kubernetes-core', [NOUN_POD, NOUN_SERVICE]);
@@ -28,7 +28,7 @@ export class KubernetesCoreController extends KubernetesBaseController<CoreContr
     await super.start();
 
     const config = await this.loadConfig();
-    this.client = config.makeApiClient(k8s.Core_v1Api);
+    this.client = config.makeApiClient(k8s.CoreV1Api);
   }
 
   @Handler(NOUN_POD, CommandVerb.List)
