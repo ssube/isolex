@@ -54,7 +54,7 @@
     "escape-html": "1.0.3",
     "express": "4.17.1",
     "express-graphql": "0.8.0",
-    "graphql": "14.3.1",
+    "graphql": "14.4.1",
     "handlebars": "4.1.2",
     "hard-source-webpack-plugin": "0.13.1",
     "i18next": "17.0.6",
@@ -104,7 +104,7 @@
   },
   "resolutions": {
     "**/lodash": "4.17.11",
-    "**/@types/graphql": "14.2.0"
+    "**/@types/graphql": "14.2.2"
   },
   "nyc": {
     "instrument": true,
