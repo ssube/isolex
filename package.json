@@ -9,7 +9,7 @@
   "private": false,
   "dependencies": {
     "jsonpath": "1.0.1",
-    "sqlite3": "4.0.8"
+    "sqlite3": "4.0.9"
   },
   "devDependencies": {
     "@kubernetes/client-node": "0.10.2",
