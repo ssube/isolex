@@ -100,7 +100,7 @@
     "webpack-cli": "3.3.5",
     "ws": "7.0.0",
     "yaml-loader": "0.5.0",
-    "yargs-parser": "13.1.0"
+    "yargs-parser": "13.1.1"
   },
   "resolutions": {
     "**/lodash": "4.17.11",
