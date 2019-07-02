@@ -6203,10 +6203,10 @@ tslint-consistent-codestyle@1.15.1:
     tslib "^1.7.1"
     tsutils "^2.29.0"
 
-tslint-etc@1.5.3:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.5.3.tgz#c1058636f74452080e7b8a9b633a37b552affe30"
-  integrity sha512-2BQYNBWMV6FvqkGr1GuccEjYS9APbQaYk834gDDIXALpKImYuxfMxkQAZcc1U/KHhyvWrlpMDSfHo3HeyZy7aQ==
+tslint-etc@1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.5.6.tgz#dcc8ecce95b75c897889a472ee5a470380787054"
+  integrity sha512-9C+QsAoWqJ1GcV/sNc+BZCNfi6j1jXJ00L3n+/Iq13YWHJwUz56NWrzOgoYmVUJBTjNsDGudK/YslE6UrKwQVQ==
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     tslib "^1.8.0"
