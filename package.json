@@ -70,7 +70,7 @@
     "nyc": "14.1.1",
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
-    "prom-client": "11.3.0",
+    "prom-client": "11.5.3",
     "reflect-metadata": "0.1.13",
     "request": "2.88.0",
     "request-promise": "4.2.4",
