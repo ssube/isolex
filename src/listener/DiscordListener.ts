@@ -186,8 +186,8 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     return;
   }
 
-  protected filterEmoji(names: Array<string>) {
-    const out = new Set();
+  protected filterEmoji(names: Array<string>): Array<string> {
+    const out = new Set<string>();
     for (const name of names) {
       out.add(this.convertEmoji(name));
     }

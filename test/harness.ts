@@ -31,10 +31,11 @@ process.on('unhandledRejection', (reason, promise) => {
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
+// TODO: replace ineeda with sinon mocks (#327)
 /* tslint:disable:no-null-keyword */
 ineeda.intercept({
-  then: null,
-  unsubscribe: null,
+  then: null as any,
+  unsubscribe: null as any,
 });
 /* tslint:enable:no-null-keyword */
 

@@ -38,7 +38,7 @@ export class Match {
     this.rules = Array.from(options.rules);
   }
 
-  public match(val: TemplateScope): MatchResults {
+  public match(val: unknown): MatchResults {
     const results: MatchResults = {
       errors: [],
       matched: true,
@@ -49,7 +49,8 @@ export class Match {
       return results;
     }
 
-    const data = mapToDict<unknown>(val);
+    // TODO: remove this conversion (#327)
+    const data = mapToDict<unknown>(val as any);
 
     for (const rule of this.rules) {
       const value = get(data, rule.key);

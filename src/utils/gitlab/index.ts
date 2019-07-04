@@ -158,13 +158,15 @@ export class GitlabClient {
     return `${this.data.root}/api/v4/${path}`;
   }
 
-  protected async makeRequest<T>(url: string, options: Partial<RequestOptions>): Promise<T> {
+  protected async makeRequest<T>(url: string, extraOptions: Partial<RequestOptions>): Promise<T> {
     try {
       const request = await this.container.create<RequestFactory, unknown>('request');
-      const response = await request.create<string>({
+      const options: RequestOptions = {
+        ...extraOptions,
+        uri: url,
         url,
-        ...options,
-      });
+      };
+      const response = await request.create<string>(options);
       this.logger.debug({ response }, 'got response from gitlab');
       return JSON.parse(response);
     } catch (err) {

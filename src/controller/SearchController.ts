@@ -43,7 +43,7 @@ export class SearchController extends BaseController<SearchControllerData> imple
     const requestUrl = this.url.render({ data });
     this.logger.debug({ requestUrl }, 'searching at url');
 
-    const response = await this.request.create({
+    const response: any = await this.request.create({
       json: true,
       method: this.data.request.method,
       uri: requestUrl,
