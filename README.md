@@ -16,6 +16,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=ncloc)](https://sonarcloud.io/dashboard?id=ssube_isolex)
 [![Test coverage](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=coverage)](https://sonarcloud.io/dashboard?id=ssube_isolex)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_shield)
 
 [![Open bug count](https://img.shields.io/github/issues-raw/ssube/isolex/type-bug.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue+label%3Atype%2Fbug)
 [![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
@@ -76,3 +77,7 @@ starting bot...
 
 An [example config file](./docs/isolex.yml) is provided in [the `docs/` directory](./docs). This enables most of the
 core features, but requires [some secrets](./docs/getting-started.md#secrets) to be defined in the environment.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_large)
