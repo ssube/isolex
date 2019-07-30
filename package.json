@@ -96,7 +96,7 @@
     "utf-8-validate": "5.0.2",
     "uuid": "3.3.2",
     "webpack": "4.35.3",
-    "webpack-bundle-analyzer": "3.3.2",
+    "webpack-bundle-analyzer": "3.4.1",
     "webpack-cli": "3.3.6",
     "ws": "7.1.0",
     "yaml-loader": "0.5.0",
