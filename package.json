@@ -82,7 +82,7 @@
     "sinon-chai": "3.3.0",
     "source-map-support": "0.5.12",
     "split-string": "6.1.0",
-    "standard-version": "6.0.1",
+    "standard-version": "7.0.0",
     "tslint": "5.18.0",
     "tslint-clean-code": "0.2.9",
     "tslint-consistent-codestyle": "1.15.1",
