@@ -8,7 +8,7 @@ import { Session } from 'src/entity/Session';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
 import { doesExist, mustExist } from 'src/utils';
 import { dateToSeconds } from 'src/utils/Clock';
-import { Dict, mapToDict } from 'src/utils/Map';
+import { Dict, makeDict } from 'src/utils/Map';
 
 export interface JwtFields {
   aud: Array<string>;
@@ -157,7 +157,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   public toTokenJSON(): JwtFields {
     return {
       aud: this.audience,
-      data: mapToDict(this.data),
+      data: makeDict(this.data),
       exp: dateToSeconds(this.expiresAt),
       iat: dateToSeconds(this.createdAt),
       iss: this.issuer,

@@ -1,16 +1,16 @@
 import { FilterValue } from 'src/filter';
-import { Transform } from 'src/transform';
-import { MapLike, mapToDict, setOrPush } from 'src/utils/Map';
+import { Transform, TransformInput, TransformOutput } from 'src/transform';
+import { makeDict, MapLike, setOrPush } from 'src/utils/Map';
 import { TemplateScope } from 'src/utils/Template';
 
 export async function applyTransforms(
   transforms: Array<Transform>,
   entity: FilterValue,
   type: string,
-  body: TemplateScope,
-): Promise<TemplateScope> {
+  body: TransformInput,
+): Promise<TransformOutput> {
   if (transforms.length === 0) {
-    return body;
+    return {};
   }
 
   let result = body;
@@ -21,7 +21,8 @@ export async function applyTransforms(
     }
   }
 
-  return result;
+  // @TODO: remove this cast
+  return result as TransformOutput;
 }
 
 /**
@@ -38,5 +39,5 @@ export function scopeToData(scope: TemplateScope): MapLike<Array<string>> {
   for (const [key, value] of Object.entries(scope)) {
     setOrPush(data, key, value);
   }
-  return mapToDict(data);
+  return makeDict(data);
 }

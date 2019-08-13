@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { NotFoundError } from 'src/error/NotFoundError';
-import { dictToMap, getHead, getHeadOrDefault, mustGet } from 'src/utils/Map';
+import { makeMap, getHead, getHeadOrDefault, mustGet } from 'src/utils/Map';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 
@@ -17,7 +17,7 @@ describeAsync('map utils', async () => {
         bar: '2',
         foo: '1',
       };
-      const map = dictToMap(data);
+      const map = makeMap(data);
 
       expect(Array.from(map.entries())).to.deep.equal(Object.entries(data));
     });

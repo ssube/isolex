@@ -17,7 +17,7 @@ describeAsync('template transform', async () => {
     const { container } = await createServiceContainer();
 
     const data = {
-      test: 1,
+      test: ['1'],
     };
     const templates = {
       body: 'test_body',

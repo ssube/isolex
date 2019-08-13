@@ -6,7 +6,7 @@ import { Transform, TransformData } from 'src/transform';
 import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
 import { mustExist } from 'src/utils';
 import { JsonPath } from 'src/utils/JsonPath';
-import { dictToMap, mapToDict } from 'src/utils/Map';
+import { makeMap, makeDict } from 'src/utils/Map';
 import { TemplateScope } from 'src/utils/Template';
 
 export interface JsonpathTransformData extends TransformData {
@@ -24,7 +24,7 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
     super(options, 'isolex#/definitions/service-transform-jsonpath');
 
     this.jsonpath = mustExist(options[INJECT_JSONPATH]);
-    this.queries = dictToMap(options.data.queries);
+    this.queries = makeMap(options.data.queries);
   }
 
   public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {
@@ -35,6 +35,6 @@ export class JsonpathTransform extends BaseTransform<JsonpathTransformData> impl
       const result = this.jsonpath.query(scope, query);
       out.set(key, result);
     }
-    return mapToDict(out);
+    return makeDict(out);
   }
 }

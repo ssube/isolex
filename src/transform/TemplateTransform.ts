@@ -5,7 +5,7 @@ import { FilterValue } from 'src/filter';
 import { Transform, TransformData } from 'src/transform';
 import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
 import { mustExist } from 'src/utils';
-import { mapToDict } from 'src/utils/Map';
+import { makeDict } from 'src/utils/Map';
 import { Template, TemplateScope } from 'src/utils/Template';
 
 /**
@@ -41,6 +41,6 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
       this.logger.debug({ key, result }, 'rendered template with scope');
       out.set(key, result);
     }
-    return mapToDict(out);
+    return makeDict(out);
   }
 }

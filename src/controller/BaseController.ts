@@ -129,14 +129,10 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     }
   }
 
-  protected async transform(cmd: Command, type: string, body: TemplateScope): Promise<TemplateScope> {
-    return applyTransforms(this.transforms, cmd, type, body);
-  }
-
-  protected async transformJSON(cmd: Command, data: TemplateScope, ctx?: Context): Promise<void> {
+  protected async transformJSON(cmd: Command, data: object, ctx?: Context): Promise<void> {
     this.logger.debug({ data }, 'transforming json body');
 
-    const body = await this.transform(cmd, TYPE_JSON, data);
+    const body = await applyTransforms(this.transforms, cmd, TYPE_JSON, data);
 
     if (isString(body)) {
       return this.reply(mustCoalesce(ctx, cmd.context), body);

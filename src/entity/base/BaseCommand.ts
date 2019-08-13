@@ -3,14 +3,17 @@ import { Column } from 'typeorm';
 import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
 import { CommandVerb } from 'src/entity/Command';
 import { doesExist } from 'src/utils';
-import { getHeadOrDefault } from 'src/utils/Map';
+import { Dict, getHeadOrDefault } from 'src/utils/Map';
 
-export interface BaseCommandOptions extends DataEntityOptions<Array<string>> {
+export type CommandValue = Array<string>;
+export type CommandData = Dict<CommandValue>;
+
+export interface BaseCommandOptions extends DataEntityOptions<CommandValue> {
   noun: string;
   verb: CommandVerb;
 }
 
-export abstract class BaseCommand extends DataEntity<Array<string>> {
+export abstract class BaseCommand extends DataEntity<CommandValue> {
   @Column()
   public noun: string = '';
 

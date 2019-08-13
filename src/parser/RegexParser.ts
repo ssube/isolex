@@ -5,7 +5,7 @@ import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { Parser, ParserData } from 'src/parser';
+import { Parser, ParserData, ParserOutput } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { mustExist } from 'src/utils';
 import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
@@ -29,7 +29,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const ctx = mustExist(msg.context);
-    const data = await this.decode(msg);
+    const data = await this.split(msg);
 
     const replyContext = await this.createContext(ctx);
     return [new Command({
@@ -41,7 +41,17 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
     })];
   }
 
-  public async decode(msg: Message): Promise<Array<string>> {
+  public async decode(msg: Message): Promise<ParserOutput> {
+    const parts = await this.split(msg); 
+
+    return {
+      data: {
+        body: Array.from(parts),
+      },
+    };
+  }
+
+  protected async split(msg: Message): Promise<Array<string>> {
     if (msg.type !== TYPE_TEXT) {
       throw new MimeTypeError();
     }

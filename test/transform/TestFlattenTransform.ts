@@ -14,7 +14,10 @@ describeAsync('flatten transform', async () => {
   itAsync('should transform data', async () => {
     const { container } = await createServiceContainer();
 
-    const data = { foo: 'hello', bar: 'world' };
+    const data = {
+      foo: ['hello'],
+      bar: ['world'],
+    };
     const transform = await createService(container, FlattenTransform, {
       data: {
         deep: true,

@@ -9,12 +9,11 @@ import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { Parser, ParserData } from 'src/parser';
+import { Parser, ParserData, ParserOutput } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { doesExist, leftPad, mustExist } from 'src/utils';
-import { dictToMap } from 'src/utils/Map';
+import { makeMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
-import { TemplateScope } from 'src/utils/Template';
 
 export interface LexParserData extends ParserData {
   account: {
@@ -60,12 +59,18 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
     return this.decodeBody(ctx, msg.body);
   }
 
-  public async decode(msg: Message): Promise<TemplateScope> {
+  public async decode(msg: Message): Promise<ParserOutput> {
     if (msg.type !== TYPE_TEXT) {
       throw new InvalidArgumentError(`lex parser can only decode ${TYPE_TEXT} messages`);
     }
     const ctx = mustExist(msg.context);
-    return this.decodeBody(ctx, msg.body);
+    const cmds = await this.decodeBody(ctx, msg.body);
+    await this.bot.executeCommand(...cmds);
+    return {
+      data: {
+        body: [msg.body],
+      },
+    };
   }
 
   public async decodeBody(context: Context, body: string): Promise<Array<Command>> {
@@ -90,7 +95,7 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
           context,
         }, mustExist(post.slotToElicit), 'missing field', this)];
       case 'ReadyForFulfillment':
-        return this.createReply(context, response.noun, response.verb, dictToMap(response.data));
+        return this.createReply(context, response.noun, response.verb, makeMap(response.data));
       default:
         this.logger.warn({ post }, 'unsupported dialog state');
         return [];

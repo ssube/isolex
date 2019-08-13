@@ -10,7 +10,7 @@ import { mustExist } from 'src/utils';
 import { Clock } from 'src/utils/Clock';
 import { JsonPath } from 'src/utils/JsonPath';
 import { serviceLogger } from 'src/utils/logger';
-import { dictToMap } from 'src/utils/Map';
+import { makeMap } from 'src/utils/Map';
 import { MathFactory } from 'src/utils/Math';
 import { RequestFactory } from 'src/utils/Request';
 import { TemplateCompiler } from 'src/utils/TemplateCompiler';
@@ -61,7 +61,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
 
     this.id = uuid();
     this.kind = options.metadata.kind;
-    this.labels = dictToMap(options.metadata.labels);
+    this.labels = makeMap(options.metadata.labels);
     this.name = options.metadata.name;
 
     this.data = options.data;

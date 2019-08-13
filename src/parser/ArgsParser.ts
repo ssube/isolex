@@ -8,10 +8,10 @@ import { Context } from 'src/entity/Context';
 import { Fragment } from 'src/entity/Fragment';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { Parser, ParserData } from 'src/parser';
+import { Parser, ParserData, ParserOutput } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { mustExist } from 'src/utils';
-import { Dict, dictToMap, dictValuesToArrays, pushMergeMap } from 'src/utils/Map';
+import { dictValuesToArrays, makeMap, pushMergeMap } from 'src/utils/Map';
 import { TYPE_TEXT } from 'src/utils/Mime';
 
 export interface ArgsParserData extends ParserData {
@@ -36,7 +36,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
   public async complete(context: Context, fragment: Fragment, value: CommandDataValue): Promise<Array<Command>> {
     const args = await this.decodeBody(value.join(' '));
-    const data = pushMergeMap(fragment.data, dictToMap(args));
+    const data = pushMergeMap(fragment.data, makeMap(args.data));
 
     this.logger.debug({ args, fragment, value }, 'completing command fragment');
     return Promise.all([
@@ -44,24 +44,27 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
     ]);
   }
 
-  public async decode(msg: Message): Promise<Dict<Array<string>>> {
+  public async decode(msg: Message): Promise<ParserOutput> {
     if (msg.type !== TYPE_TEXT) {
       throw new MimeTypeError();
     }
 
-    return this.decodeBody(this.matcher.removeMatches(msg.body));
+    const matched = this.matcher.removeMatches(msg.body);
+    return this.decodeBody(matched);
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
     const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
     return Promise.all([
-      this.createReply(ctx, dictToMap(data)),
+      this.createReply(ctx, makeMap(data.data)),
     ]);
   }
 
-  protected async decodeBody(body: string): Promise<Dict<Array<string>>> {
-    return dictValuesToArrays<string>(yargs(body, this.data.args));
+  protected async decodeBody(body: string): Promise<ParserOutput> {
+    return {
+      data: dictValuesToArrays<string>(yargs(body, this.data.args)),
+    };
   }
 
   protected createReply(context: Context, data: Map<string, Array<string>>): Promise<Command> {

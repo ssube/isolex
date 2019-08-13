@@ -6,10 +6,10 @@ import { BotServiceOptions } from 'src/BotService';
 import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { MimeTypeError } from 'src/error/MimeTypeError';
-import { Parser, ParserData } from 'src/parser';
+import { Parser, ParserData, ParserOutput } from 'src/parser';
 import { BaseParser } from 'src/parser/BaseParser';
 import { mustExist } from 'src/utils';
-import { Dict, dictToMap } from 'src/utils/Map';
+import { makeMap } from 'src/utils/Map';
 import { TYPE_JSON, TYPE_YAML } from 'src/utils/Mime';
 import { TemplateScope } from 'src/utils/Template';
 
@@ -27,14 +27,14 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
 
     if (isObject(data)) {
       // TODO: this cast and conversion should not be necessary
-      const map = dictToMap(data as Dict<Array<string>>);
-      return [await this.createCommand(ctx, dictToMap(map))];
+      const map = makeMap(data.data);
+      return [await this.createCommand(ctx, map)];
     } else {
       return [];
     }
   }
 
-  public async decode(msg: Message): Promise<TemplateScope> {
+  public async decode(msg: Message): Promise<ParserOutput> {
     if (!YAML_TYPES.has(msg.type)) {
       throw new MimeTypeError(`body type (${msg.type}) must be one of ${YAML_TYPES.values()}`);
     }
@@ -44,6 +44,8 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
       throw new BaseError('parsed value must be an object');
     }
 
-    return parsed;
+    return {
+      data: parsed as TemplateScope,
+    };
   }
 }

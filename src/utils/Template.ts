@@ -1,8 +1,10 @@
+import { Dict } from 'src/utils/Map';
+
 export interface TemplateOptions {
   template: HandlebarsTemplateDelegate;
 }
 
-export type TemplateScope = object | string | Array<string>;
+export type TemplateScope = Dict<Array<string>>;
 
 export class Template {
   protected template: HandlebarsTemplateDelegate;
