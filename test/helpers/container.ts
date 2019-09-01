@@ -39,8 +39,9 @@ export class TestModule extends Module {
 export async function createContainer(...modules: Array<Module>): Promise<{ container: Container, module: Module }> {
   const module = new TestModule();
   const container = Container.from(module, ...modules);
-  container.logger = ConsoleLogger.global;
-  await container.configure();
+  await container.configure({
+    logger: ConsoleLogger.global,
+  });
   return { container, module };
 }
 
