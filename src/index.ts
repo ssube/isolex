@@ -1,4 +1,4 @@
-import { Container, Inject, Logger, Module } from 'noicejs';
+import { Container, Inject, Logger, Module, BaseOptions } from 'noicejs';
 import * as yargs from 'yargs-parser';
 
 import {
@@ -190,7 +190,7 @@ export async function main(argv: Array<string>): Promise<number> {
   logger.info('configuring container');
   await ctr.configure({ logger });
 
-  const bot = await ctr.create<Bot, ServiceDefinition<BotData>>(Bot, config);
+  const bot = await ctr.create<Bot, ServiceDefinition<BotData> & BaseOptions>(Bot, config);
   botModule.setBot(bot);
 
   logger.info('starting bot');

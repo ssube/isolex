@@ -17,7 +17,7 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Interval, IntervalData } from 'src/interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener';
-import { Locale, LocaleOptions } from 'src/locale';
+import { Locale, LocaleData } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
@@ -31,7 +31,7 @@ export interface BotData extends BaseServiceData {
   endpoints: Array<ServiceDefinition<EndpointData>>;
   intervals: Array<ServiceDefinition<IntervalData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
-  locale: LocaleOptions;
+  locale: LocaleData;
   logger: {
     level: LogLevel;
     name: string;
@@ -299,11 +299,15 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async startServices() {
     this.logger.info('starting localization');
-    this.locale = await this.container.create(Locale, this.data.locale);
+    this.locale = await this.container.create(Locale, {
+      data: this.data.locale,
+    });
     await this.locale.start();
 
     this.logger.info('starting storage');
-    this.storage = await this.container.create(Storage, this.data.storage);
+    this.storage = await this.container.create(Storage, {
+      data: this.data.storage,
+    });
     await this.storage.start();
 
     this.logger.info('setting up controllers');

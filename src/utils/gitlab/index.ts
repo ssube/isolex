@@ -160,7 +160,7 @@ export class GitlabClient {
 
   protected async makeRequest<T>(url: string, extraOptions: Partial<RequestOptions>): Promise<T> {
     try {
-      const request = await this.container.create<RequestFactory, unknown>('request');
+      const request = await this.container.create<RequestFactory, BaseOptions>('request');
       const options: RequestOptions = {
         ...extraOptions,
         uri: url,

@@ -34,6 +34,10 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
+    }
+
     const ctx = mustExist(msg.context);
     const data = await this.split(msg.body);
     this.logger.debug({ data }, 'splitting string');

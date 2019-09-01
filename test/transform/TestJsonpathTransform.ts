@@ -17,7 +17,7 @@ describeAsync('jsonpath transform', async () => {
 
     const data = { test: ['test_body'] };
     const queries = {
-      test: '$.data.test[*]',
+      test: '$.test[*]',
     };
 
     const transform = await createService(container, JsonpathTransform, {

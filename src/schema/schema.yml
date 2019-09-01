@@ -176,12 +176,7 @@ definitions:
         items:
           $ref: "#/definitions/service-definition"
       locale:
-        allOf:
-          - $ref: "#/definitions/service-definition"
-          - type: object
-            properties:
-              data:
-                $ref: "#/definitions/service-locale"
+        $ref: "#/definitions/service-locale"
       logger:
         type: object
         required: [level, name]
@@ -216,12 +211,7 @@ definitions:
           timeout:
             type: number
       storage:
-        allOf:
-          - $ref: "#/definitions/service-definition"
-          - type: object
-            properties:
-              data:
-                $ref: "#/definitions/service-storage"
+        $ref: "#/definitions/service-storage"
 
   service-locale:
     type: object

@@ -1,10 +1,10 @@
-import { Container, Module, ModuleOptions, Provides } from 'noicejs';
+import { Module, ModuleOptions, Provides } from 'noicejs';
 
 import { INJECT_LOGGER, INJECT_SERVICES } from 'src/BaseService';
 import { BotServiceData, BotServiceOptions } from 'src/BotService';
 import { NotFoundError } from 'src/error/NotFoundError';
 import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
-import { mustExist } from 'src/utils';
+import { doesExist, mustExist } from 'src/utils';
 import { timeout } from 'src/utils/Async';
 import { kindLogger } from 'src/utils/logger';
 import { mustGet } from 'src/utils/Map';
@@ -20,8 +20,6 @@ export interface ServiceModuleData {
 export class ServiceModule extends Module implements ServiceLifecycle {
   protected readonly data: ServiceModuleData;
   protected readonly services: Map<string, Service>;
-
-  protected container?: Container;
 
   constructor(data: ServiceModuleData) {
     super();
@@ -45,7 +43,9 @@ export class ServiceModule extends Module implements ServiceLifecycle {
       try {
         await timeout(this.data.timeout, svc.start());
       } catch (err) {
-        this.logger.error({ err }, 'error starting service');
+        if (doesExist(this.logger)) {
+          this.logger.error({ err }, 'error starting service');
+        }
       }
     }
   }
@@ -59,13 +59,18 @@ export class ServiceModule extends Module implements ServiceLifecycle {
 
   public async configure(options: ModuleOptions): Promise<void> {
     await super.configure(options);
-    this.container = options.container;
-    this.logger.debug({ options }, 'configuring service module');
+
+    if (doesExist(this.logger)) {
+      this.logger.debug({ options }, 'configuring service module');
+    }
   }
 
   @Provides(INJECT_SERVICES)
   public getServices() {
-    this.logger.debug('getting services from service module');
+    if (doesExist(this.logger)) {
+      this.logger.debug('getting services from service module');
+    }
+
     return this;
   }
 
@@ -74,7 +79,9 @@ export class ServiceModule extends Module implements ServiceLifecycle {
     const tag = `${kind}:${name}`;
 
     if (this.services.has(tag)) {
-      this.logger.warn({ tag }, 'adding duplicate service');
+      if (doesExist(this.logger)) {
+        this.logger.warn({ tag }, 'adding duplicate service');
+      }
     } else {
       this.services.set(tag, svc);
     }
@@ -90,18 +97,22 @@ export class ServiceModule extends Module implements ServiceLifecycle {
     const tag = `${kind}:${name}`;
 
     if (this.services.has(tag)) {
-      this.logger.info({ kind, tag }, 'fetching existing service');
+      if (doesExist(this.logger)) {
+        this.logger.info({ kind, tag }, 'fetching existing service');
+      }
       return mustGet(this.services, tag) as TService;
     }
-
-    this.logger.info({ kind, tag }, 'creating unknown service');
+    if (doesExist(this.logger)) {
+      this.logger.info({ kind, tag }, 'creating unknown service');
+    }
     const svc = await container.create<TService, BotServiceOptions<TData>>(kind, {
       ...conf,
-      [INJECT_LOGGER]: kindLogger(this.logger, kind),
+      [INJECT_LOGGER]: kindLogger(mustExist(this.logger), kind),
       [INJECT_SERVICES]: this,
     });
-
-    this.logger.debug({ id: svc.id, kind, tag }, 'service created');
+    if (doesExist(this.logger)) {
+      this.logger.debug({ id: svc.id, kind, tag }, 'service created');
+    }
     this.services.set(tag, svc);
 
     return svc;
@@ -113,13 +124,16 @@ export class ServiceModule extends Module implements ServiceLifecycle {
         return svc as TService;
       }
     }
-
-    this.logger.error({ metadata }, 'service not found');
+    if (doesExist(this.logger)) {
+      this.logger.error({ metadata }, 'service not found');
+    }
     throw new NotFoundError(`service not found`);
   }
 
   public listServices() {
-    this.logger.debug('listing services');
+    if (doesExist(this.logger)) {
+      this.logger.debug('listing services');
+    }
     return this.services;
   }
 }

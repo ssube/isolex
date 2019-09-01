@@ -63,7 +63,7 @@ describeAsync('args parser', async () => {
       reactions: [],
       type: TYPE_TEXT,
     }));
-    expect(data).to.deep.equal({
+    expect(data.data).to.deep.equal({
       _: [],
       bar: [2],
       foo: [1],

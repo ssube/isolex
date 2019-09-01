@@ -30,17 +30,12 @@ describeAsync('bot service', async () => {
       [INJECT_SCHEMA]: new Schema(),
       data: {
         controllers: [],
+        endpoints: [],
         filters: [],
         intervals: [],
         listeners: [],
         locale: {
-          data: {
-            lang: 'en-US',
-          },
-          metadata: {
-            kind: 'locale',
-            name: 'locale',
-          },
+          lang: 'en-US',
         },
         logger: {
           level: 'info',
@@ -57,16 +52,10 @@ describeAsync('bot service', async () => {
           timeout: 1000,
         },
         storage: {
-          data: {
-            migrate: false,
-            orm: {
-              database: '',
-              type: 'none',
-            },
-          },
-          metadata: {
-            kind: 'storage',
-            name: 'storage',
+          migrate: false,
+          orm: {
+            database: '',
+            type: 'sqlite',
           },
         },
       },

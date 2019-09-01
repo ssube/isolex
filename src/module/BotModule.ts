@@ -31,8 +31,6 @@ export interface BotModuleOptions {
 
 export class BotModule extends BaseModule {
   protected bot?: Bot;
-  protected container?: Container;
-  protected logger: Logger;
   protected metrics?: Registry;
   protected schema?: Schema;
 
@@ -76,7 +74,7 @@ export class BotModule extends BaseModule {
 
   @Provides(INJECT_LOGGER)
   public async getLogger(): Promise<Logger> {
-    return this.logger;
+    return mustExist(this.logger);
   }
 
   @Provides(INJECT_METRICS)

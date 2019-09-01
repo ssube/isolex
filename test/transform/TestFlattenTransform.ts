@@ -9,6 +9,7 @@ import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createService, createServiceContainer } from 'test/helpers/container';
+import { makeMap } from 'src/utils/Map';
 
 describeAsync('flatten transform', async () => {
   itAsync('should transform data', async () => {
@@ -33,7 +34,9 @@ describeAsync('flatten transform', async () => {
       },
     });
 
-    const output = await transform.transform(ineeda<Command>(), TYPE_JSON, data);
+    const output = await transform.transform(ineeda.instanceof(Command, {
+      data: makeMap(data),
+    }), TYPE_JSON, data);
     expect(output).to.equal('hello-world');
   });
 });

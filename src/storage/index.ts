@@ -1,4 +1,4 @@
-import { Container, Inject, Logger } from 'noicejs';
+import { Container, Inject, Logger, BaseOptions } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
 import { BaseService, BaseServiceOptions, INJECT_LOGGER } from 'src/BaseService';
@@ -35,8 +35,8 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
     const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
       logger: this.logger,
     });
-    const entities = await this.container.create<Array<Function>, unknown>('entities');
-    const migrations = await this.container.create<Array<Function>, unknown>('migrations');
+    const entities = await this.container.create<Array<Function>, BaseOptions>('entities');
+    const migrations = await this.container.create<Array<Function>, BaseOptions>('migrations');
 
     this.connection = await createConnection({
       ...this.data.orm,
