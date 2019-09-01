@@ -31,7 +31,7 @@ export interface BotModuleOptions {
 
 export class BotModule extends BaseModule {
   public container?: Container;
-  public logger?: Logger;
+  public logger: Logger;
 
   protected bot?: Bot;
   protected metrics?: Registry;
