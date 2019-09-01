@@ -24,6 +24,8 @@ export abstract class BaseTransform<TData extends TransformData> extends BotServ
 
   protected mergeScope(entity: FilterValue, data: TemplateScope): TemplateScope {
     const ed = entityData(entity);
+    console.log('===marker');
+    console.dir(ed);
     const map = pushMergeMap(ed, makeMap(data));
     return makeDict(map);
   }

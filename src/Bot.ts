@@ -17,11 +17,11 @@ import { Command } from 'src/entity/Command';
 import { Message } from 'src/entity/Message';
 import { Interval, IntervalData } from 'src/interval';
 import { ContextFetchOptions, Listener, ListenerData } from 'src/listener';
-import { Locale, LocaleData } from 'src/locale';
+import { Locale, LocaleOptions } from 'src/locale';
 import { ServiceModule } from 'src/module/ServiceModule';
 import { Parser, ParserData } from 'src/parser';
 import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
-import { Storage, StorageData } from 'src/storage';
+import { Storage, StorageOptions } from 'src/storage';
 import { filterNil, mustExist, mustFind } from 'src/utils';
 import { ExternalModule } from 'src/utils/ExternalModule';
 import { createServiceCounter, incrementServiceCounter } from 'src/utils/metrics';
@@ -31,7 +31,7 @@ export interface BotData extends BaseServiceData {
   endpoints: Array<ServiceDefinition<EndpointData>>;
   intervals: Array<ServiceDefinition<IntervalData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
-  locale: LocaleData;
+  locale: LocaleOptions;
   logger: {
     level: LogLevel;
     name: string;
@@ -46,7 +46,7 @@ export interface BotData extends BaseServiceData {
   services: {
     timeout: number;
   };
-  storage: StorageData;
+  storage: StorageOptions;
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
@@ -299,15 +299,11 @@ export class Bot extends BaseService<BotData> implements Service {
 
   protected async startServices() {
     this.logger.info('starting localization');
-    this.locale = await this.container.create(Locale, {
-      data: this.data.locale,
-    });
+    this.locale = await this.container.create(Locale, this.data.locale);
     await this.locale.start();
 
     this.logger.info('starting storage');
-    this.storage = await this.container.create(Storage, {
-      data: this.data.storage,
-    });
+    this.storage = await this.container.create(Storage, this.data.storage);
     await this.storage.start();
 
     this.logger.info('setting up controllers');

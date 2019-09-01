@@ -1,15 +1,13 @@
 import { expect } from 'chai';
-import { ineeda } from 'ineeda';
 
 import { INJECT_JSONPATH } from 'src/BaseService';
-import { Command } from 'src/entity/Command';
+import { Command, CommandVerb } from 'src/entity/Command';
 import { FlattenTransform } from 'src/transform/FlattenTransform';
 import { JsonPath } from 'src/utils/JsonPath';
 import { TYPE_JSON } from 'src/utils/Mime';
 
 import { describeAsync, itAsync } from 'test/helpers/async';
 import { createService, createServiceContainer } from 'test/helpers/container';
-import { makeMap } from 'src/utils/Map';
 
 describeAsync('flatten transform', async () => {
   itAsync('should transform data', async () => {
@@ -24,7 +22,7 @@ describeAsync('flatten transform', async () => {
         deep: true,
         filters: [],
         join: '-',
-        keys: ['$.data.foo', '$.data.bar'],
+        keys: ['$.foo', '$.bar'],
         strict: true,
       },
       [INJECT_JSONPATH]: new JsonPath(),
@@ -34,9 +32,13 @@ describeAsync('flatten transform', async () => {
       },
     });
 
-    const output = await transform.transform(ineeda.instanceof(Command, {
-      data: makeMap(data),
-    }), TYPE_JSON, data);
-    expect(output).to.equal('hello-world');
+    const cmd = new Command({
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Create,
+    });
+    const output = await transform.transform(cmd, TYPE_JSON, data);
+    expect(output['body']).to.deep.equal(['hello-world']);
   });
 });

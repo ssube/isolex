@@ -4,7 +4,7 @@ import { ConsoleLogger } from 'noicejs';
 import { Registry } from 'prom-client';
 import { spy } from 'sinon';
 
-import { INJECT_METRICS, INJECT_SCHEMA } from 'src/BaseService';
+import { INJECT_METRICS, INJECT_SCHEMA, INJECT_LOGGER } from 'src/BaseService';
 import { Bot } from 'src/Bot';
 import { BotModule } from 'src/module/BotModule';
 import { ServiceModule } from 'src/module/ServiceModule';
@@ -35,7 +35,15 @@ describeAsync('bot service', async () => {
         intervals: [],
         listeners: [],
         locale: {
-          lang: 'en-US',
+          container,
+          [INJECT_LOGGER]: ConsoleLogger.global,
+          metadata: {
+            kind: 'locale',
+            name: 'test-locale',
+          },
+          data: {
+            lang: 'en-US',
+          },
         },
         logger: {
           level: 'info',
@@ -52,10 +60,18 @@ describeAsync('bot service', async () => {
           timeout: 1000,
         },
         storage: {
-          migrate: false,
-          orm: {
-            database: '',
-            type: 'sqlite',
+          container,
+          [INJECT_LOGGER]: ConsoleLogger.global,
+          metadata: {
+            kind: 'storage',
+            name: 'test-storage',
+          },
+          data: {
+            migrate: false,
+            orm: {
+              database: '',
+              type: 'sqlite',
+            },
           },
         },
       },

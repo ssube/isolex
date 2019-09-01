@@ -53,7 +53,7 @@ data:
   locale:
     metadata:
       kind: locale
-      name: locale
+      name: default-locale
     data:
       lang: en
   logger:
@@ -83,7 +83,7 @@ data:
   storage:
     metadata:
       kind: storage
-      name: storage
+      name: local-storage
     data:
       migrate: true
       orm:
