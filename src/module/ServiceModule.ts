@@ -1,4 +1,4 @@
-import { Module, ModuleOptions, Provides } from 'noicejs';
+import { Container, Module, ModuleOptions, Provides } from 'noicejs';
 
 import { INJECT_LOGGER, INJECT_SERVICES } from '../BaseService';
 import { BotServiceData, BotServiceOptions } from '../BotService';
@@ -18,6 +18,8 @@ export interface ServiceModuleData {
  */
 
 export class ServiceModule extends Module implements ServiceLifecycle {
+  public container?: Container;
+
   protected readonly data: ServiceModuleData;
   protected readonly services: Map<string, Service>;
 
