@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 
-import { ArrayMapper } from 'src/utils/ArrayMapper';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { ArrayMapper } from '../../src/utils/ArrayMapper';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('utils', async () => {
   describeAsync('array mapper', async () => {

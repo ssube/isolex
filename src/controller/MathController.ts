@@ -1,15 +1,15 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { INJECT_MATH } from 'src/BaseService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { makeDict } from 'src/utils/Map';
-import { formatResult, ResultFormatOptions } from 'src/utils/Math';
-import { TemplateScope } from 'src/utils/Template';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_MATH } from '../BaseService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { mustExist } from '../utils';
+import { makeDict } from '../utils/Map';
+import { formatResult, ResultFormatOptions } from '../utils/Math';
+import { TemplateScope } from '../utils/Template';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_MATH = 'math';
 

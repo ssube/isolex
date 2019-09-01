@@ -1,7 +1,7 @@
-import { FilterValue } from 'src/filter';
-import { Transform, TransformInput, TransformOutput } from 'src/transform';
-import { makeDict, MapLike, setOrPush } from 'src/utils/Map';
-import { TemplateScope } from 'src/utils/Template';
+import { Transform, TransformInput, TransformOutput } from '.';
+import { FilterValue } from '../filter';
+import { makeDict, MapLike, setOrPush } from '../utils/Map';
+import { TemplateScope } from '../utils/Template';
 
 export async function applyTransforms(
   transforms: Array<Transform>,

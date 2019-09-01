@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 
-import { Schema } from 'src/schema';
-import { RuleValue } from 'src/utils/match';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { Schema } from '../../../src/schema';
+import { RuleValue } from '../../../src/utils/match';
+import { describeAsync, itAsync } from '../../helpers/async';
 
 describeAsync('json schema', async () => {
   describeAsync('regexp keyword', async () => {

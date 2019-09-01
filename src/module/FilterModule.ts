@@ -1,9 +1,9 @@
 import { ModuleOptions } from 'noicejs';
 
-import { CommandFilter } from 'src/filter/CommandFilter';
-import { MessageFilter } from 'src/filter/MessageFilter';
-import { UserFilter } from 'src/filter/UserFilter';
-import { BaseModule } from 'src/module/BaseModule';
+import { CommandFilter } from '../filter/CommandFilter';
+import { MessageFilter } from '../filter/MessageFilter';
+import { UserFilter } from '../filter/UserFilter';
+import { BaseModule } from '../module/BaseModule';
 
 export class FilterModule extends BaseModule {
   public async configure(options: ModuleOptions) {

@@ -2,20 +2,19 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { match, spy } from 'sinon';
 
-import { Bot } from 'src/Bot';
-import { INJECT_BOT } from 'src/BotService';
-import { EchoController, NOUN_ECHO } from 'src/controller/EchoController';
-import { User } from 'src/entity/auth/User';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { Listener } from 'src/listener';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { TransformModule } from 'src/module/TransformModule';
-import { Transform } from 'src/transform';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { Bot } from '../../src/Bot';
+import { INJECT_BOT } from '../../src/BotService';
+import { EchoController, NOUN_ECHO } from '../../src/controller/EchoController';
+import { User } from '../../src/entity/auth/User';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { Message } from '../../src/entity/Message';
+import { Listener } from '../../src/listener';
+import { ServiceModule } from '../../src/module/ServiceModule';
+import { TransformModule } from '../../src/module/TransformModule';
+import { Transform } from '../../src/transform';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_LISTENER = 'test-listener';
 

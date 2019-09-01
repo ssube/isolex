@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { INJECT_CLOCK } from 'src/BaseService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { Clock } from 'src/utils/Clock';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_CLOCK } from '../BaseService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { mustExist } from '../utils';
+import { Clock } from '../utils/Clock';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_TIME = 'time';
 

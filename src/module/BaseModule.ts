@@ -1,7 +1,7 @@
 import { kebabCase } from 'lodash';
 import { Constructor, Module } from 'noicejs';
 
-import { BotService, BotServiceData, BotServiceOptions } from 'src/BotService';
+import { BotService, BotServiceData, BotServiceOptions } from '../BotService';
 
 export abstract class BaseModule extends Module {
   protected bindService<

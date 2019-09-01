@@ -1,22 +1,21 @@
 import { isNil, isString } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 
-import { INJECT_SERVICES } from 'src/BaseService';
-import { BotService, BotServiceOptions, INJECT_LOCALE } from 'src/BotService';
-import { Controller, ControllerData, getHandlerOptions, HandlerOptions } from 'src/controller';
-import { User } from 'src/entity/auth/User';
-import { Command } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { Listener } from 'src/listener';
-import { Locale, TranslateOptions } from 'src/locale';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { ServiceDefinition } from 'src/Service';
-import { Transform, TransformData } from 'src/transform';
-import { applyTransforms } from 'src/transform/helpers';
-import { doesExist, getMethods, mustCoalesce, mustExist } from 'src/utils';
-import { TYPE_JSON, TYPE_TEXT } from 'src/utils/Mime';
-import { TemplateScope } from 'src/utils/Template';
+import { Controller, ControllerData, getHandlerOptions, HandlerOptions } from '.';
+import { INJECT_SERVICES } from '../BaseService';
+import { BotService, BotServiceOptions, INJECT_LOCALE } from '../BotService';
+import { User } from '../entity/auth/User';
+import { Command } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { Listener } from '../listener';
+import { Locale, TranslateOptions } from '../locale';
+import { ServiceModule } from '../module/ServiceModule';
+import { ServiceDefinition } from '../Service';
+import { Transform, TransformData } from '../transform';
+import { applyTransforms } from '../transform/helpers';
+import { doesExist, getMethods, mustCoalesce, mustExist } from '../utils';
+import { TYPE_JSON, TYPE_TEXT } from '../utils/Mime';
 
 export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command, ctx: Context) => Promise<void>;
 export type BaseControllerOptions<TData extends ControllerData> = BotServiceOptions<TData>;

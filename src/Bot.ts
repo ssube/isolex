@@ -10,21 +10,21 @@ import {
   INJECT_LOGGER,
   INJECT_METRICS,
   INJECT_SERVICES,
-} from 'src/BaseService';
-import { Controller, ControllerData } from 'src/controller';
-import { Endpoint, EndpointData } from 'src/endpoint';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { Interval, IntervalData } from 'src/interval';
-import { ContextFetchOptions, Listener, ListenerData } from 'src/listener';
-import { Locale, LocaleOptions } from 'src/locale';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Parser, ParserData } from 'src/parser';
-import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
-import { Storage, StorageOptions } from 'src/storage';
-import { filterNil, mustExist, mustFind } from 'src/utils';
-import { ExternalModule } from 'src/utils/ExternalModule';
-import { createServiceCounter, incrementServiceCounter } from 'src/utils/metrics';
+} from './BaseService';
+import { Controller, ControllerData } from './controller';
+import { Endpoint, EndpointData } from './endpoint';
+import { Command } from './entity/Command';
+import { Message } from './entity/Message';
+import { Interval, IntervalData } from './interval';
+import { ContextFetchOptions, Listener, ListenerData } from './listener';
+import { Locale, LocaleOptions } from './locale';
+import { ServiceModule } from './module/ServiceModule';
+import { Parser, ParserData } from './parser';
+import { Service, ServiceDefinition, ServiceEvent } from './Service';
+import { Storage, StorageOptions } from './storage';
+import { filterNil, mustExist, mustFind } from './utils';
+import { ExternalModule } from './utils/ExternalModule';
+import { createServiceCounter, incrementServiceCounter } from './utils/metrics';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;

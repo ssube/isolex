@@ -1,13 +1,12 @@
 import { expect } from 'chai';
 
-import { INJECT_JSONPATH } from 'src/BaseService';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { FlattenTransform } from 'src/transform/FlattenTransform';
-import { JsonPath } from 'src/utils/JsonPath';
-import { TYPE_JSON } from 'src/utils/Mime';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { INJECT_JSONPATH } from '../../src/BaseService';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { FlattenTransform } from '../../src/transform/FlattenTransform';
+import { JsonPath } from '../../src/utils/JsonPath';
+import { TYPE_JSON } from '../../src/utils/Mime';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 describeAsync('flatten transform', async () => {
   itAsync('should transform data', async () => {

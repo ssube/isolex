@@ -1,9 +1,9 @@
 import { Column } from 'typeorm';
 
-import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
-import { CommandVerb } from 'src/entity/Command';
-import { doesExist } from 'src/utils';
-import { Dict, getHeadOrDefault } from 'src/utils/Map';
+import { CommandVerb } from '../../entity/Command';
+import { doesExist } from '../../utils';
+import { Dict, getHeadOrDefault } from '../../utils/Map';
+import { DataEntity, DataEntityOptions } from '../base/DataEntity';
 
 export type CommandValue = Array<string>;
 export type CommandData = Dict<CommandValue>;

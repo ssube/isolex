@@ -1,8 +1,8 @@
-import { Context } from 'src/entity/Context';
-import { Tick } from 'src/entity/Tick';
-import { IntervalData } from 'src/interval';
-import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
-import { ServiceEvent, ServiceMetadata } from 'src/Service';
+import { IntervalData } from '.';
+import { Context } from '../entity/Context';
+import { Tick } from '../entity/Tick';
+import { ServiceEvent, ServiceMetadata } from '../Service';
+import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
 
 export interface EventIntervalData extends IntervalData {
   services: Array<ServiceMetadata>;

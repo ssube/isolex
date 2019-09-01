@@ -1,14 +1,14 @@
 import { isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
-import { Context } from 'src/entity/Context';
-import { Message, MessageEntityOptions } from 'src/entity/Message';
-import { Tick } from 'src/entity/Tick';
-import { IntervalData } from 'src/interval';
-import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
-import { ServiceDefinition } from 'src/Service';
-import { Transform, TransformData } from 'src/transform';
-import { applyTransforms } from 'src/transform/helpers';
+import { IntervalData } from '.';
+import { Context } from '../entity/Context';
+import { Message, MessageEntityOptions } from '../entity/Message';
+import { Tick } from '../entity/Tick';
+import { ServiceDefinition } from '../Service';
+import { Transform, TransformData } from '../transform';
+import { applyTransforms } from '../transform/helpers';
+import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
 
 export interface MessageIntervalData extends IntervalData {
   defaultMessage: MessageEntityOptions;

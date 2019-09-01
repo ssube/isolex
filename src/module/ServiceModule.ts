@@ -1,13 +1,13 @@
 import { Module, ModuleOptions, Provides } from 'noicejs';
 
-import { INJECT_LOGGER, INJECT_SERVICES } from 'src/BaseService';
-import { BotServiceData, BotServiceOptions } from 'src/BotService';
-import { NotFoundError } from 'src/error/NotFoundError';
-import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from 'src/Service';
-import { doesExist, mustExist } from 'src/utils';
-import { timeout } from 'src/utils/Async';
-import { kindLogger } from 'src/utils/logger';
-import { mustGet } from 'src/utils/Map';
+import { INJECT_LOGGER, INJECT_SERVICES } from '../BaseService';
+import { BotServiceData, BotServiceOptions } from '../BotService';
+import { NotFoundError } from '../error/NotFoundError';
+import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from '../Service';
+import { doesExist, mustExist } from '../utils';
+import { timeout } from '../utils/Async';
+import { kindLogger } from '../utils/logger';
+import { mustGet } from '../utils/Map';
 
 export interface ServiceModuleData {
   timeout: number;

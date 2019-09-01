@@ -1,9 +1,9 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { LabelEntity, LabelEntityOptions } from 'src/entity/base/LabelEntity';
-import { MissingKeyError } from 'src/error/MissingKeyError';
-import { doesExist } from 'src/utils';
-import { makeMap, getOrDefault, MapLike } from 'src/utils/Map';
+import { MissingKeyError } from '../../error/MissingKeyError';
+import { doesExist } from '../../utils';
+import { getOrDefault, makeMap, MapLike } from '../../utils/Map';
+import { LabelEntity, LabelEntityOptions } from '../base/LabelEntity';
 
 export interface DataEntityOptions<TVal> extends LabelEntityOptions {
   data: MapLike<TVal>;

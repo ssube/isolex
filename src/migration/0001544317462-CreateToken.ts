@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_TOKEN } from 'src/entity/auth/Token';
+import { TABLE_TOKEN } from '../entity/auth/Token';
 
 export class CreateToken0001544317462 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

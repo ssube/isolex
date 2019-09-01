@@ -2,17 +2,17 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { NotFoundError } from 'src/error/NotFoundError';
-import { Listener } from 'src/listener';
-import { Parser } from 'src/parser';
-import { ServiceMetadata } from 'src/Service';
-import { mustExist } from 'src/utils';
+import { INJECT_STORAGE } from '../BotService';
+import { CheckRBAC, Controller, ControllerData, Handler } from '../controller';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Fragment } from '../entity/Fragment';
+import { NotFoundError } from '../error/NotFoundError';
+import { Listener } from '../listener';
+import { Parser } from '../parser';
+import { ServiceMetadata } from '../Service';
+import { mustExist } from '../utils';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_FRAGMENT = 'fragment';
 

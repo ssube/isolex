@@ -1,12 +1,12 @@
 import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { Command, CommandOptions, CommandVerb } from 'src/entity/Command';
-import { Parser } from 'src/parser';
-import { Schema } from 'src/schema';
-import { mustExist } from 'src/utils';
-import { Dict, makeMap, makeDict } from 'src/utils/Map';
+import { Command, CommandOptions, CommandVerb } from '../entity/Command';
+import { Parser } from '../parser';
+import { Schema } from '../schema';
+import { mustExist } from '../utils';
+import { Dict, makeDict, makeMap } from '../utils/Map';
+import { NOUN_FRAGMENT } from './CompletionController';
 
 export function createCommandCompletion(cmd: Command, key: string, msg: string): Command {
   const ctx = mustExist(cmd.context);

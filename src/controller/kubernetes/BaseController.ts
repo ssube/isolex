@@ -1,9 +1,9 @@
 import * as k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
-import { Controller, ControllerData } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { doesExist } from 'src/utils';
+import { Controller, ControllerData } from '..';
+import { doesExist } from '../../utils';
+import { BaseController, BaseControllerOptions } from '../BaseController';
 
 export const NOUN_POD = 'kubernetes-pod';
 export const NOUN_SERVICE = 'kubernetes-service';

@@ -4,15 +4,14 @@ import { ConsoleLogger } from 'noicejs';
 import { Registry } from 'prom-client';
 import { spy } from 'sinon';
 
-import { INJECT_METRICS, INJECT_SCHEMA, INJECT_LOGGER } from 'src/BaseService';
-import { Bot } from 'src/Bot';
-import { BotModule } from 'src/module/BotModule';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Schema } from 'src/schema';
-import { ServiceEvent } from 'src/Service';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer } from 'test/helpers/container';
+import { INJECT_LOGGER, INJECT_METRICS, INJECT_SCHEMA } from '../src/BaseService';
+import { Bot } from '../src/Bot';
+import { BotModule } from '../src/module/BotModule';
+import { ServiceModule } from '../src/module/ServiceModule';
+import { Schema } from '../src/schema';
+import { ServiceEvent } from '../src/Service';
+import { describeAsync, itAsync } from './helpers/async';
+import { createContainer } from './helpers/container';
 
 describeAsync('bot service', async () => {
   itAsync('should reset metrics', async () => {

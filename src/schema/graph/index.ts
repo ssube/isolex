@@ -3,17 +3,17 @@ import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'gr
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
-import { INJECT_CLOCK, INJECT_SERVICES } from 'src/BaseService';
-import { BotService, BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_STORAGE } from 'src/BotService';
-import { Command, CommandVerb, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from 'src/entity/Command';
-import { Context, GRAPH_INPUT_CONTEXT } from 'src/entity/Context';
-import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from 'src/entity/Message';
-import { SessionRequiredError } from 'src/error/SessionRequiredError';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from 'src/Service';
-import { Storage } from 'src/storage';
-import { mustExist } from 'src/utils';
-import { pairsToMap } from 'src/utils/Map';
+import { INJECT_CLOCK, INJECT_SERVICES } from '../../BaseService';
+import { BotService, BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_STORAGE } from '../../BotService';
+import { Command, CommandVerb, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from '../../entity/Command';
+import { Context, GRAPH_INPUT_CONTEXT } from '../../entity/Context';
+import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from '../../entity/Message';
+import { SessionRequiredError } from '../../error/SessionRequiredError';
+import { ServiceModule } from '../../module/ServiceModule';
+import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from '../../Service';
+import { Storage } from '../../storage';
+import { mustExist } from '../../utils';
+import { pairsToMap } from '../../utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);

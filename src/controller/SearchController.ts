@@ -1,13 +1,13 @@
 import { Inject } from 'noicejs';
 
-import { INJECT_REQUEST, INJECT_TEMPLATE } from 'src/BaseService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { RequestFactory } from 'src/utils/Request';
-import { Template } from 'src/utils/Template';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_REQUEST, INJECT_TEMPLATE } from '../BaseService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { mustExist } from '../utils';
+import { RequestFactory } from '../utils/Request';
+import { Template } from '../utils/Template';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export interface SearchControllerData extends ControllerData {
   count: number;

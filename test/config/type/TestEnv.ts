@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 
-import { envType } from 'src/config/type/Env';
-import { NotFoundError } from 'src/error/NotFoundError';
-import { VERSION_INFO } from 'src/version';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { envType } from '../../../src/config/type/Env';
+import { NotFoundError } from '../../../src/error/NotFoundError';
+import { VERSION_INFO } from '../../../src/version';
+import { describeAsync, itAsync } from '../../helpers/async';
 
 describeAsync('env config type', async () => {
   itAsync('should throw on missing variables', async () => {

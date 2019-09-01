@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { BotService, BotServiceOptions } from 'src/BotService';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { FilterValue } from 'src/filter';
-import { Transform, TransformData } from 'src/transform';
-import { TemplateScope } from 'src/utils/Template';
-import { makeDict, pushMergeMap, makeMap } from 'src/utils/Map';
+import { Transform, TransformData } from '.';
+import { BotService, BotServiceOptions } from '../BotService';
+import { Command } from '../entity/Command';
+import { Message } from '../entity/Message';
+import { FilterValue } from '../filter';
+import { makeDict, makeMap, pushMergeMap } from '../utils/Map';
+import { TemplateScope } from '../utils/Template';
 
 export type BaseTransformOptions<TData extends TransformData> = BotServiceOptions<TData>;
 

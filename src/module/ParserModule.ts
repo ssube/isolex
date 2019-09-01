@@ -1,12 +1,12 @@
 import { ModuleOptions } from 'noicejs';
 
-import { BaseModule } from 'src/module/BaseModule';
-import { ArgsParser } from 'src/parser/ArgsParser';
-import { EchoParser } from 'src/parser/EchoParser';
-import { LexParser } from 'src/parser/LexParser';
-import { RegexParser } from 'src/parser/RegexParser';
-import { SplitParser } from 'src/parser/SplitParser';
-import { YamlParser } from 'src/parser/YamlParser';
+import { ArgsParser } from '../parser/ArgsParser';
+import { EchoParser } from '../parser/EchoParser';
+import { LexParser } from '../parser/LexParser';
+import { RegexParser } from '../parser/RegexParser';
+import { SplitParser } from '../parser/SplitParser';
+import { YamlParser } from '../parser/YamlParser';
+import { BaseModule } from './BaseModule';
 
 export class ParserModule extends BaseModule {
   public async configure(options: ModuleOptions) {

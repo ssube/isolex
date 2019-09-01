@@ -1,8 +1,8 @@
-import { BotServiceData } from 'src/BotService';
-import { BaseController } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Service, ServiceDefinition } from 'src/Service';
-import { TransformData } from 'src/transform';
+import { BotServiceData } from '../BotService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Service, ServiceDefinition } from '../Service';
+import { TransformData } from '../transform';
+import { BaseController } from './BaseController';
 
 export interface ControllerData extends BotServiceData {
   transforms: Array<ServiceDefinition<TransformData>>;

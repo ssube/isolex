@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_FRAGMENT } from 'src/entity/Fragment';
+import { TABLE_FRAGMENT } from '../entity/Fragment';
 
 export class CreateFragment0001544311954 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

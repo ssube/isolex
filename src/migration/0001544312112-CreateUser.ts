@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_USER } from 'src/entity/auth/User';
+import { TABLE_USER } from '../entity/auth/User';
 
 export class CreateUser0001544312112 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

@@ -2,18 +2,18 @@ import * as AWS from 'aws-sdk';
 import { isNil, isString, kebabCase } from 'lodash';
 import { MissingValueError } from 'noicejs';
 
-import { BotServiceOptions } from 'src/BotService';
-import { createCompletion } from 'src/controller/helpers';
-import { Command, CommandData, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { Parser, ParserData, ParserOutput } from 'src/parser';
-import { BaseParser } from 'src/parser/BaseParser';
-import { doesExist, leftPad, mustExist } from 'src/utils';
-import { makeMap } from 'src/utils/Map';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { Parser, ParserData, ParserOutput } from '.';
+import { BotServiceOptions } from '../BotService';
+import { createCompletion } from '../controller/helpers';
+import { Command, CommandData, CommandDataValue, CommandOptions, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Fragment } from '../entity/Fragment';
+import { Message } from '../entity/Message';
+import { InvalidArgumentError } from '../error/InvalidArgumentError';
+import { doesExist, leftPad, mustExist } from '../utils';
+import { makeMap } from '../utils/Map';
+import { TYPE_TEXT } from '../utils/Mime';
+import { BaseParser } from './BaseParser';
 
 export interface LexParserData extends ParserData {
   account: {

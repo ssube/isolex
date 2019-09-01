@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 
-import { Match, MatchRule, RuleOperator } from 'src/utils/match';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { Match, MatchRule, RuleOperator } from '../../../src/utils/match';
+import { describeAsync, itAsync } from '../../helpers/async';
 
 function createMatch(rule: Partial<MatchRule>): Match {
   return new Match({

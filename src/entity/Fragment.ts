@@ -1,10 +1,10 @@
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseCommand } from 'src/entity/base/BaseCommand';
-import { CommandOptions } from 'src/entity/Command';
-import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
-import { doesExist } from 'src/utils';
+import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
+import { doesExist } from '../utils';
+import { BaseCommand } from './base/BaseCommand';
+import { CommandOptions } from './Command';
 
 export const TABLE_FRAGMENT = 'fragment';
 

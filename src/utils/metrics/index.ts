@@ -1,6 +1,6 @@
 import { Counter, CounterConfiguration, Registry } from 'prom-client';
 
-import { Service } from 'src/Service';
+import { Service } from '../../Service';
 
 export function createServiceCounter(registry: Registry, config: Partial<CounterConfiguration>): Counter {
   const { labelNames = [] } = config;

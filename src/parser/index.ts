@@ -1,11 +1,11 @@
-import { BotServiceData } from 'src/BotService';
-import { CommandData } from 'src/entity/base/BaseCommand';
-import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
-import { Service } from 'src/Service';
-import { MatchData } from 'src/utils/match';
+import { BotServiceData } from '../BotService';
+import { CommandData } from '../entity/base/BaseCommand';
+import { Command, CommandDataValue, CommandOptions } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Fragment } from '../entity/Fragment';
+import { Message } from '../entity/Message';
+import { Service } from '../Service';
+import { MatchData } from '../utils/match';
 
 export interface ParserData extends BotServiceData {
   /**

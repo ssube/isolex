@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-import { TABLE_USER } from 'src/entity/auth/User';
+import { TABLE_USER } from '../entity/auth/User';
 
 const COLUMN_LOCALE = new TableColumn({
   default: '\'{}\'',

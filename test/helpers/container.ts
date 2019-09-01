@@ -10,16 +10,15 @@ import {
   INJECT_SCHEMA,
   INJECT_SERVICES,
   INJECT_TEMPLATE,
-} from 'src/BaseService';
-import { Bot } from 'src/Bot';
-import { BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from 'src/BotService';
-import { Locale } from 'src/locale';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Schema } from 'src/schema';
-import { ServiceDefinition } from 'src/Service';
-import { Clock } from 'src/utils/Clock';
-import { Template } from 'src/utils/Template';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+} from '../../src/BaseService';
+import { Bot } from '../../src/Bot';
+import { BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from '../../src/BotService';
+import { Locale } from '../../src/locale';
+import { ServiceModule } from '../../src/module/ServiceModule';
+import { Schema } from '../../src/schema';
+import { Clock } from '../../src/utils/Clock';
+import { Template } from '../../src/utils/Template';
+import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
 
 export class TestModule extends Module {
   public async configure(options: ModuleOptions) {

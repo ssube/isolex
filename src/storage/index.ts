@@ -1,11 +1,11 @@
-import { Container, Inject, Logger, BaseOptions } from 'noicejs';
+import { BaseOptions, Container, Inject, Logger } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
-import { BaseService, BaseServiceOptions, INJECT_LOGGER } from 'src/BaseService';
-import { ServiceLifecycle } from 'src/Service';
-import { mustExist } from 'src/utils';
-import { classLogger } from 'src/utils/logger';
-import { StorageLogger, StorageLoggerOptions } from 'src/utils/logger/StorageLogger';
+import { BaseService, BaseServiceOptions, INJECT_LOGGER } from '../BaseService';
+import { ServiceLifecycle } from '../Service';
+import { mustExist } from '../utils';
+import { classLogger } from '../utils/logger';
+import { StorageLogger, StorageLoggerOptions } from '../utils/logger/StorageLogger';
 
 export interface StorageData {
   migrate: boolean;

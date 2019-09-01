@@ -1,15 +1,15 @@
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
-import { Command, CommandDataValue, CommandOptions, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
-import { Parser, ParserData, ParserOutput } from 'src/parser';
-import { mustExist } from 'src/utils';
-import { getHeadOrDefault } from 'src/utils/Map';
-import { Match } from 'src/utils/match';
+import { Parser, ParserData, ParserOutput } from '.';
+import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
+import { Command, CommandDataValue, CommandOptions, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Fragment } from '../entity/Fragment';
+import { Message } from '../entity/Message';
+import { mustExist } from '../utils';
+import { getHeadOrDefault } from '../utils/Map';
+import { Match } from '../utils/match';
 
 @Inject(INJECT_STORAGE)
 export abstract class BaseParser<TData extends ParserData> extends BotService<TData> implements Parser {

@@ -1,11 +1,11 @@
 import i18next from 'i18next';
 import { Container, Inject, Logger } from 'noicejs';
 
-import { BaseService, BaseServiceOptions, INJECT_LOGGER } from 'src/BaseService';
-import { ServiceLifecycle } from 'src/Service';
-import { mustExist } from 'src/utils';
-import { classLogger } from 'src/utils/logger';
-import { LocaleLogger } from 'src/utils/logger/LocaleLogger';
+import { BaseService, BaseServiceOptions, INJECT_LOGGER } from '../BaseService';
+import { ServiceLifecycle } from '../Service';
+import { mustExist } from '../utils';
+import { classLogger } from '../utils/logger';
+import { LocaleLogger } from '../utils/logger/LocaleLogger';
 
 export interface LocaleData {
   lang: string;

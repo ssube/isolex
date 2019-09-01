@@ -22,6 +22,7 @@ export DEBUG_PORT  ?= 9229
 export MAKE_PATH	?= $(abspath $(lastword $(MAKEFILE_LIST)))
 export ROOT_PATH	?= $(dir $(MAKE_PATH))
 export CONFIG_PATH 	?= $(ROOT_PATH)/config
+export DOCS_PATH	?= $(ROOT_PATH)/docs
 export SCRIPT_PATH 	?= $(ROOT_PATH)/scripts
 export SOURCE_PATH 	?= $(ROOT_PATH)/src
 export TARGET_PATH	?= $(ROOT_PATH)/out
@@ -37,7 +38,6 @@ NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
 # Tool options
-BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
 COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statements 85 	# increase this every so often
 COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
 DOCKER_IMAGE ?= ssube/isolex:master
@@ -49,7 +49,6 @@ RELEASE_OPTS ?= --commit-all
 # Versions
 export NODE_VERSION		:= $(shell node -v)
 export RUNNER_VERSION  := $(CI_RUNNER_VERSION)
-export WEBPACK_VERSION := $(shell $(NODE_BIN)/webpack -v)
 
 all: build test run-terminal
 	@echo Success!
@@ -102,7 +101,8 @@ test: ## run mocha unit tests
 test: test-cover
 
 test-check: ## run mocha unit tests with coverage reports
-	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js
+	#$(NODE_BIN)/nyc $(COVER_OPTS) 
+	$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js
 
 test-cover: ## run mocha unit tests with coverage reports
 test-cover: test-check

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_KEYWORD } from 'src/entity/misc/Keyword';
+import { TABLE_KEYWORD } from '../entity/misc/Keyword';
 
 const OLD_TABLE = `${TABLE_KEYWORD}_old`;
 

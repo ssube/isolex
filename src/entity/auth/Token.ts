@@ -2,13 +2,13 @@ import { sign, verify } from 'jsonwebtoken';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from 'src/entity/auth/User';
-import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
-import { Session } from 'src/entity/Session';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { doesExist, mustExist } from 'src/utils';
-import { dateToSeconds } from 'src/utils/Clock';
-import { Dict, makeDict } from 'src/utils/Map';
+import { InvalidArgumentError } from '../../error/InvalidArgumentError';
+import { doesExist, mustExist } from '../../utils';
+import { dateToSeconds } from '../../utils/Clock';
+import { Dict, makeDict } from '../../utils/Map';
+import { DataEntity, DataEntityOptions } from '../base/DataEntity';
+import { Session } from '../Session';
+import { User } from './User';
 
 export interface JwtFields {
   aud: Array<string>;

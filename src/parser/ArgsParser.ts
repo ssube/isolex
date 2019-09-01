@@ -1,18 +1,18 @@
 import { Inject } from 'noicejs';
-import * as yargs from 'yargs-parser';
+import yargs from 'yargs-parser';
 
-import { BotServiceOptions } from 'src/BotService';
-import { createCompletion } from 'src/controller/helpers';
-import { Command, CommandDataValue } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
-import { MimeTypeError } from 'src/error/MimeTypeError';
-import { Parser, ParserData, ParserOutput } from 'src/parser';
-import { BaseParser } from 'src/parser/BaseParser';
-import { mustExist } from 'src/utils';
-import { dictValuesToArrays, makeMap, pushMergeMap } from 'src/utils/Map';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { Parser, ParserData, ParserOutput } from '.';
+import { BotServiceOptions } from '../BotService';
+import { createCompletion } from '../controller/helpers';
+import { Command, CommandDataValue } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Fragment } from '../entity/Fragment';
+import { Message } from '../entity/Message';
+import { MimeTypeError } from '../error/MimeTypeError';
+import { mustExist } from '../utils';
+import { dictValuesToArrays, makeMap, pushMergeMap } from '../utils/Map';
+import { TYPE_TEXT } from '../utils/Mime';
+import { BaseParser } from './BaseParser';
 
 export interface ArgsParserData extends ParserData {
   args: {

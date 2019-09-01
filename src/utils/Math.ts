@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 import * as mathjs from 'mathjs';
 
-import { TemplateScope } from 'src/utils/Template';
+import { TemplateScope } from './Template';
 
 export interface MathCreate {
   create(options: math.ConfigOptions): mathjs.MathJsStatic;

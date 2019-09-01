@@ -1,4 +1,4 @@
-import { User } from 'src/entity/auth/User';
+import { User } from './auth/User';
 
 export interface Session {
   createdAt: Date;

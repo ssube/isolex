@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 
-import { NotFoundError } from 'src/error/NotFoundError';
-import { countList, filterNil, leftPad, mustFind } from 'src/utils';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { NotFoundError } from '../../src/error/NotFoundError';
+import { countList, filterNil, leftPad, mustFind } from '../../src/utils';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('utils', async () => {
   describeAsync('left pad', async () => {

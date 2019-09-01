@@ -1,8 +1,8 @@
-import { Command } from 'src/entity/Command';
-import { FilterBehavior, FilterValue } from 'src/filter';
-import { BaseFilterOptions } from 'src/filter/BaseFilter';
-import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
-import { makeDict } from 'src/utils/Map';
+import { FilterBehavior, FilterValue } from '.';
+import { Command } from '../entity/Command';
+import { makeDict } from '../utils/Map';
+import { BaseFilterOptions } from './BaseFilter';
+import { RuleFilter, RuleFilterData } from './RuleFilter';
 
 export type CommandFilterData = RuleFilterData;
 

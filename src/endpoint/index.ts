@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { BotServiceData } from 'src/BotService';
-import { Service } from 'src/Service';
+import { BotServiceData } from '../BotService';
+import { Service } from '../Service';
 
 export type EndpointData = BotServiceData;
 

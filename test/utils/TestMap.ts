@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 
-import { NotFoundError } from 'src/error/NotFoundError';
-import { makeMap, getHead, getHeadOrDefault, mustGet } from 'src/utils/Map';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { NotFoundError } from '../../src/error/NotFoundError';
+import { getHead, getHeadOrDefault, makeMap, mustGet } from '../../src/utils/Map';
+import { describeAsync, itAsync } from '../helpers/async';
 
 const mapKey = 'key';
 const mapValue = 'value';

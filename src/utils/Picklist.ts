@@ -1,6 +1,6 @@
 import { random } from 'mathjs';
 
-import { NotFoundError } from 'src/error/NotFoundError';
+import { NotFoundError } from '../error/NotFoundError';
 
 export interface PickItem<T> {
   value: T;

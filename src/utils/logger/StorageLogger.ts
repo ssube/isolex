@@ -1,7 +1,7 @@
 import { BaseOptions, Logger, LogLevel, logWithLevel } from 'noicejs';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
-import { classLogger } from 'src/utils/logger';
+import { classLogger } from '.';
 
 export interface StorageLoggerOptions extends BaseOptions {
   logger: Logger;

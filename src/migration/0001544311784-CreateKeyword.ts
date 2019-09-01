@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_KEYWORD } from 'src/entity/misc/Keyword';
+import { TABLE_KEYWORD } from '../entity/misc/Keyword';
 
 export class CreateKeyword0001544311784 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

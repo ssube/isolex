@@ -1,4 +1,4 @@
-import { Dict } from 'src/utils/Map';
+import { Dict } from './Map';
 
 export interface TemplateOptions {
   template: HandlebarsTemplateDelegate;

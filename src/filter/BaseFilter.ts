@@ -1,5 +1,5 @@
-import { BotService, BotServiceOptions } from 'src/BotService';
-import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter';
+import { Filter, FilterBehavior, FilterData, FilterValue } from '.';
+import { BotService, BotServiceOptions } from '../BotService';
 
 export type BaseFilterOptions<TData extends FilterData> = BotServiceOptions<TData>;
 

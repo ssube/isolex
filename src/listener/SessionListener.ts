@@ -1,14 +1,14 @@
 import { Inject } from 'noicejs';
 
-import { INJECT_CLOCK } from 'src/BaseService';
-import { BotServiceOptions } from 'src/BotService';
-import { User } from 'src/entity/auth/User';
-import { Message } from 'src/entity/Message';
-import { Session } from 'src/entity/Session';
-import { FetchOptions, Listener, ListenerData } from 'src/listener';
-import { BaseListener } from 'src/listener/BaseListener';
-import { mustExist } from 'src/utils';
-import { Clock } from 'src/utils/Clock';
+import { FetchOptions, Listener, ListenerData } from '.';
+import { INJECT_CLOCK } from '../BaseService';
+import { BotServiceOptions } from '../BotService';
+import { User } from '../entity/auth/User';
+import { Message } from '../entity/Message';
+import { Session } from '../entity/Session';
+import { mustExist } from '../utils';
+import { Clock } from '../utils/Clock';
+import { BaseListener } from './BaseListener';
 
 /**
  * A listener that tracks sessions.

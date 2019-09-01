@@ -1,7 +1,7 @@
-import { BotServiceData } from 'src/BotService';
-import { FilterData, FilterValue } from 'src/filter';
-import { Service, ServiceDefinition } from 'src/Service';
-import { TemplateScope } from 'src/utils/Template';
+import { BotServiceData } from '../BotService';
+import { FilterData, FilterValue } from '../filter';
+import { Service, ServiceDefinition } from '../Service';
+import { TemplateScope } from '../utils/Template';
 
 // @TODO: fix these good
 export type TransformInput = object;

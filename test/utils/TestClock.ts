@@ -2,10 +2,9 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { Container } from 'noicejs';
 
-import { Clock } from 'src/utils/Clock';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer } from 'test/helpers/container';
+import { Clock } from '../../src/utils/Clock';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createContainer } from '../helpers/container';
 
 describeAsync('utils', async () => {
   describeAsync('clock', async () => {

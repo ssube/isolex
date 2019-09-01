@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('command', async () => {
   itAsync('should copy data', async () => {

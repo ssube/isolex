@@ -2,17 +2,17 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Equal, LessThan, Repository } from 'typeorm';
 
-import { INJECT_CLOCK } from 'src/BaseService';
-import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { createCommandCompletion } from 'src/controller/helpers';
-import { Token } from 'src/entity/auth/Token';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Storage } from 'src/storage';
-import { mustExist } from 'src/utils';
-import { Clock } from 'src/utils/Clock';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_CLOCK } from '../BaseService';
+import { INJECT_STORAGE } from '../BotService';
+import { Token } from '../entity/auth/Token';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Storage } from '../storage';
+import { mustExist } from '../utils';
+import { Clock } from '../utils/Clock';
+import { BaseController, BaseControllerOptions } from './BaseController';
+import { createCommandCompletion } from './helpers';
 
 export const NOUN_TOKEN = 'token';
 

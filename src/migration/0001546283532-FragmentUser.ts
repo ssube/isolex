@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-import { TABLE_FRAGMENT } from 'src/entity/Fragment';
+import { TABLE_FRAGMENT } from '../entity/Fragment';
 
 const COLUMN_USER = new TableColumn({
   name: 'userId',

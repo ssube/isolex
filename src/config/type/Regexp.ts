@@ -1,7 +1,7 @@
 import { Type as YamlType } from 'js-yaml';
 import { isNil } from 'lodash';
 
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
+import { InvalidArgumentError } from '../../error/InvalidArgumentError';
 
 export const REGEXP_REGEXP = /\/(.*)\/([gimuy]*)/;
 

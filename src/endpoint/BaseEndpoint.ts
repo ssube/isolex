@@ -2,15 +2,15 @@ import { Router } from 'express';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { INJECT_SERVICES } from 'src/BaseService';
-import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
-import { Endpoint, EndpointData } from 'src/endpoint';
-import { Context, ContextOptions } from 'src/entity/Context';
-import { BaseListenerOptions } from 'src/listener/BaseListener';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { ServiceDefinition } from 'src/Service';
-import { Transform, TransformData } from 'src/transform';
-import { mustExist } from 'src/utils';
+import { INJECT_SERVICES } from '../BaseService';
+import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
+import { Endpoint, EndpointData } from '../endpoint';
+import { Context, ContextOptions } from '../entity/Context';
+import { BaseListenerOptions } from '../listener/BaseListener';
+import { ServiceModule } from '../module/ServiceModule';
+import { ServiceDefinition } from '../Service';
+import { Transform, TransformData } from '../transform';
+import { mustExist } from '../utils';
 
 export type BaseEndpointOptions<TData extends EndpointData> = BotServiceOptions<TData>;
 

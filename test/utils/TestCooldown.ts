@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 import { ConsoleLogger, Container } from 'noicejs';
 
-import { BotModule } from 'src/module/BotModule';
-import { defer } from 'src/utils/Async';
-import { Cooldown, CooldownOptions } from 'src/utils/Cooldown';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { BotModule } from '../../src/module/BotModule';
+import { defer } from '../../src/utils/Async';
+import { Cooldown, CooldownOptions } from '../../src/utils/Cooldown';
+import { describeAsync, itAsync } from '../helpers/async';
 
 const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
 

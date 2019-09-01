@@ -4,12 +4,12 @@ import { isString } from 'lodash';
 import { join } from 'path';
 import { promisify } from 'util';
 
-import { BotDefinition } from 'src/Bot';
-import { envType } from 'src/config/type/Env';
-import { includeSchema, includeType } from 'src/config/type/Include';
-import { regexpType } from 'src/config/type/Regexp';
-import { NotFoundError } from 'src/error/NotFoundError';
-import { doesExist } from 'src/utils';
+import { BotDefinition } from '../Bot';
+import { NotFoundError } from '../error/NotFoundError';
+import { doesExist } from '../utils';
+import { envType } from './type/Env';
+import { includeSchema, includeType } from './type/Include';
+import { regexpType } from './type/Regexp';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [

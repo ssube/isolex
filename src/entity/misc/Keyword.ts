@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseCommand } from 'src/entity/base/BaseCommand';
-import { CommandOptions } from 'src/entity/Command';
-import { doesExist } from 'src/utils';
+import { doesExist } from '../../utils';
+import { BaseCommand } from '../base/BaseCommand';
+import { CommandOptions } from '../Command';
 
 export interface KeywordOptions extends CommandOptions {
   controllerId: string;

@@ -1,13 +1,12 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { FilterBehavior } from 'src/filter';
-import { CommandFilter, CommandFilterData } from 'src/filter/CommandFilter';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { FilterBehavior } from '../../src/filter';
+import { CommandFilter, CommandFilterData } from '../../src/filter/CommandFilter';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';

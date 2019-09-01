@@ -1,15 +1,14 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { INJECT_JSONPATH } from 'src/BaseService';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { JsonpathTransform } from 'src/transform/JsonpathTransform';
-import { JsonPath } from 'src/utils/JsonPath';
-import { TYPE_JSON } from 'src/utils/Mime';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { INJECT_JSONPATH } from '../../src/BaseService';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { JsonpathTransform } from '../../src/transform/JsonpathTransform';
+import { JsonPath } from '../../src/utils/JsonPath';
+import { TYPE_JSON } from '../../src/utils/Mime';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 describeAsync('jsonpath transform', async () => {
   itAsync('should transform data', async () => {

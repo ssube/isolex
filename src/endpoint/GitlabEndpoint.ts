@@ -1,16 +1,16 @@
 import { json as expressJSON, Request, Response, Router } from 'express';
 import { isString } from 'lodash';
 
-import { BotServiceOptions } from 'src/BotService';
-import { Endpoint, EndpointData } from 'src/endpoint';
-import { BaseEndpoint } from 'src/endpoint/BaseEndpoint';
-import { Command, CommandOptions } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { applyTransforms, scopeToData } from 'src/transform/helpers';
-import { mustExist } from 'src/utils';
-import { TYPE_JSON } from 'src/utils/Mime';
-import { TemplateScope } from 'src/utils/Template';
+import { Endpoint, EndpointData } from '.';
+import { BotServiceOptions } from '../BotService';
+import { Command, CommandOptions } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { applyTransforms, scopeToData } from '../transform/helpers';
+import { mustExist } from '../utils';
+import { TYPE_JSON } from '../utils/Mime';
+import { TemplateScope } from '../utils/Template';
+import { BaseEndpoint } from './BaseEndpoint';
 
 export interface GitlabBaseWebhook {
   object_kind: string;

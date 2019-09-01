@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 
-import { Schema } from 'src/schema';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { Schema } from '../../src/schema';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('json schema', async () => {
   itAsync('should validate objects', async () => {

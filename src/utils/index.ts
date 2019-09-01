@@ -1,6 +1,6 @@
 import { isFunction, isNil } from 'lodash';
 
-import { NotFoundError } from 'src/error/NotFoundError';
+import { NotFoundError } from '../error/NotFoundError';
 
 export function leftPad(val: string, min: number = 8, fill: string = '0'): string {
   if (val.length < min) {

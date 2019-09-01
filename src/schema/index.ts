@@ -1,7 +1,7 @@
 import * as Ajv from 'ajv';
 
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { SCHEMA_KEYWORD_REGEXP } from 'src/schema/keyword/Regexp';
+import { InvalidArgumentError } from '../error/InvalidArgumentError';
+import { SCHEMA_KEYWORD_REGEXP } from './keyword/Regexp';
 
 /* tslint:disable-next-line:no-var-requires */
 export const SCHEMA_GLOBAL = require('src/schema/schema.yml');

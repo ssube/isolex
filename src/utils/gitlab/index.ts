@@ -1,8 +1,8 @@
 import { isNil } from 'lodash';
 import { BaseError, BaseOptions, Container, Inject, Logger } from 'noicejs';
 
-import { classLogger } from 'src/utils/logger';
-import { RequestFactory, RequestOptions } from 'src/utils/Request';
+import { classLogger } from '../logger';
+import { RequestFactory, RequestOptions } from '../Request';
 
 export interface ProjectOptions {
   group: string;

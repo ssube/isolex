@@ -1,12 +1,12 @@
 import { GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { LabelEntity, LabelEntityOptions } from 'src/entity/base/LabelEntity';
-import { Context, GRAPH_OUTPUT_CONTEXT } from 'src/entity/Context';
-import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from 'src/schema/graph/input/Pairs';
-import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from 'src/schema/graph/output/Pairs';
-import { doesExist } from 'src/utils';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from '../schema/graph/input/Pairs';
+import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
+import { doesExist } from '../utils';
+import { TYPE_TEXT } from '../utils/Mime';
+import { LabelEntity, LabelEntityOptions } from './base/LabelEntity';
+import { Context, GRAPH_OUTPUT_CONTEXT } from './Context';
 
 export interface MessageEntityOptions extends LabelEntityOptions {
   body: string;

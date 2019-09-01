@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_CONTEXT } from 'src/entity/Context';
+import { TABLE_CONTEXT } from '../entity/Context';
 
 export class CreateContext0001544311178 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

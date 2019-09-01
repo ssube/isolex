@@ -1,7 +1,7 @@
-import { Filter, FilterBehavior, FilterData, FilterValue } from 'src/filter';
-import { BaseFilter, BaseFilterOptions } from 'src/filter/BaseFilter';
-import { mustExist } from 'src/utils';
-import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
+import { Filter, FilterBehavior, FilterData, FilterValue } from '.';
+import { mustExist } from '../utils';
+import { Checklist, ChecklistOptions } from '../utils/Checklist';
+import { BaseFilter, BaseFilterOptions } from './BaseFilter';
 
 export interface UserFilterData extends FilterData {
   users: ChecklistOptions<string>;

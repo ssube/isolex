@@ -1,12 +1,11 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { Role } from 'src/entity/auth/Role';
-import { LOCALE_DEFAULT, User } from 'src/entity/auth/User';
-import { Context } from 'src/entity/Context';
-import { Listener } from 'src/listener';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { Role } from '../../src/entity/auth/Role';
+import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
+import { Context } from '../../src/entity/Context';
+import { Listener } from '../../src/listener';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('context entity', async () => {
   itAsync('should allow matching permissions', async () => {

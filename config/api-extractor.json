@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  "projectFolder": "..",
+  "mainEntryPointFilePath": "<projectFolder>/out/src/index.d.ts",
+  "apiReport": {
+    "enabled": true,
+    "reportFolder": "<projectFolder>/out/",
+    "reportTempFolder": "<projectFolder>/out/tmp/"
+  },
+  "docModel": {
+    "enabled": true,
+    "apiJsonFilePath": "<projectFolder>/out/api/<unscopedPackageName>.api.json"
+  },
+
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "<projectFolder>/out/noicejs.d.ts",
+    "betaTrimmedFilePath": "<projectFolder>/out/noicejs-beta.d.ts",
+    "publicTrimmedFilePath": "<projectFolder>/out/noicejs-public.d.ts"
+  },
+
+  "tsdocMetadata": {
+  },
+
+  "messages": {
+    "compilerMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+
+    "extractorMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    }
+  }
+}

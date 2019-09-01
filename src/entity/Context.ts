@@ -4,12 +4,12 @@ import { MissingValueError } from 'noicejs';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Token } from 'src/entity/auth/Token';
-import { GRAPH_OUTPUT_USER, User } from 'src/entity/auth/User';
-import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
-import { Listener } from 'src/listener';
-import { Parser } from 'src/parser';
-import { doesExist } from 'src/utils';
+import { Listener } from '../listener';
+import { Parser } from '../parser';
+import { doesExist } from '../utils';
+import { Token } from './auth/Token';
+import { GRAPH_OUTPUT_USER, User } from './auth/User';
+import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
 
 export interface ChannelData {
   id: string;

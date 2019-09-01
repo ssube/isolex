@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_TICK } from 'src/entity/Tick';
+import { TABLE_TICK } from '../entity/Tick';
 
 export class CreateTick0001546063195 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

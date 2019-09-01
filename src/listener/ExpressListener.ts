@@ -1,27 +1,27 @@
-import * as express from 'express';
-import * as expressGraphQl from 'express-graphql';
-import * as http from 'http';
+import express from 'express';
+import expressGraphQl from 'express-graphql';
+import http from 'http';
 import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
-import * as passport from 'passport';
+import passport from 'passport';
 import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 import { Counter, Registry } from 'prom-client';
 import { Repository } from 'typeorm';
 
-import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from 'src/BaseService';
-import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
-import { Endpoint } from 'src/endpoint';
-import { JwtFields, Token } from 'src/entity/auth/Token';
-import { UserRepository } from 'src/entity/auth/UserRepository';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { Listener, ListenerData } from 'src/listener';
-import { SessionListener } from 'src/listener/SessionListener';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { GraphSchema, GraphSchemaData } from 'src/schema/graph';
-import { ServiceDefinition, ServiceMetadata } from 'src/Service';
-import { Storage } from 'src/storage';
-import { doesExist, mustExist } from 'src/utils';
+import { Listener, ListenerData } from '.';
+import { INJECT_CLOCK, INJECT_METRICS, INJECT_SERVICES } from '../BaseService';
+import { BotServiceOptions, INJECT_STORAGE } from '../BotService';
+import { Endpoint } from '../endpoint';
+import { JwtFields, Token } from '../entity/auth/Token';
+import { UserRepository } from '../entity/auth/UserRepository';
+import { Context } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { ServiceModule } from '../module/ServiceModule';
+import { GraphSchema, GraphSchemaData } from '../schema/graph';
+import { ServiceDefinition, ServiceMetadata } from '../Service';
+import { Storage } from '../storage';
+import { doesExist, mustExist } from '../utils';
+import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;

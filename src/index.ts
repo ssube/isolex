@@ -1,5 +1,5 @@
-import { Container, Inject, Logger, Module, BaseOptions } from 'noicejs';
-import * as yargs from 'yargs-parser';
+import { BaseOptions, Container, Inject, Logger, Module } from 'noicejs';
+import yargs from 'yargs-parser';
 
 import {
   BaseService,
@@ -12,36 +12,36 @@ import {
   INJECT_SCHEMA,
   INJECT_SERVICES,
   INJECT_TEMPLATE,
-} from 'src/BaseService';
-import { Bot, BotData, BotDefinition } from 'src/Bot';
-import { BotService } from 'src/BotService';
-import { loadConfig } from 'src/config';
-import { BaseController } from 'src/controller/BaseController';
-import { BaseEndpoint } from 'src/endpoint/BaseEndpoint';
-import { BaseFilter } from 'src/filter/BaseFilter';
-import { BaseInterval } from 'src/interval/BaseInterval';
-import { BaseListener } from 'src/listener/BaseListener';
-import { BaseModule } from 'src/module/BaseModule';
-import { BotModule } from 'src/module/BotModule';
-import { ControllerModule } from 'src/module/ControllerModule';
-import { EndpointModule } from 'src/module/EndpointModule';
-import { EntityModule } from 'src/module/EntityModule';
-import { FilterModule } from 'src/module/FilterModule';
-import { IntervalModule } from 'src/module/IntervalModule';
-import { ListenerModule } from 'src/module/ListenerModule';
-import { MigrationModule } from 'src/module/MigrationModule';
-import { ParserModule } from 'src/module/ParserModule';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { TransformModule } from 'src/module/TransformModule';
-import { BaseParser } from 'src/parser/BaseParser';
-import { Schema } from 'src/schema';
-import { ServiceDefinition, ServiceEvent } from 'src/Service';
-import { BaseTransform } from 'src/transform/BaseTransform';
-import { BunyanLogger } from 'src/utils/BunyanLogger';
-import { ModuleCtor } from 'src/utils/ExternalModule';
-import { removePid, writePid } from 'src/utils/PidFile';
-import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from 'src/utils/Signal';
-import { VERSION_INFO } from 'src/version';
+} from './BaseService';
+import { Bot, BotData, BotDefinition } from './Bot';
+import { BotService } from './BotService';
+import { loadConfig } from './config';
+import { BaseController } from './controller/BaseController';
+import { BaseEndpoint } from './endpoint/BaseEndpoint';
+import { BaseFilter } from './filter/BaseFilter';
+import { BaseInterval } from './interval/BaseInterval';
+import { BaseListener } from './listener/BaseListener';
+import { BaseModule } from './module/BaseModule';
+import { BotModule } from './module/BotModule';
+import { ControllerModule } from './module/ControllerModule';
+import { EndpointModule } from './module/EndpointModule';
+import { EntityModule } from './module/EntityModule';
+import { FilterModule } from './module/FilterModule';
+import { IntervalModule } from './module/IntervalModule';
+import { ListenerModule } from './module/ListenerModule';
+import { MigrationModule } from './module/MigrationModule';
+import { ParserModule } from './module/ParserModule';
+import { ServiceModule } from './module/ServiceModule';
+import { TransformModule } from './module/TransformModule';
+import { BaseParser } from './parser/BaseParser';
+import { Schema } from './schema';
+import { ServiceDefinition, ServiceEvent } from './Service';
+import { BaseTransform } from './transform/BaseTransform';
+import { BunyanLogger } from './utils/BunyanLogger';
+import { ModuleCtor } from './utils/ExternalModule';
+import { removePid, writePid } from './utils/PidFile';
+import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from './utils/Signal';
+import { VERSION_INFO } from './version';
 
 // re-exports
 export const base = {

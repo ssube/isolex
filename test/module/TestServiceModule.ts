@@ -2,11 +2,10 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { spy } from 'sinon';
 
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Service, ServiceEvent } from 'src/Service';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer } from 'test/helpers/container';
+import { ServiceModule } from '../../src/module/ServiceModule';
+import { Service, ServiceEvent } from '../../src/Service';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createContainer } from '../helpers/container';
 
 const TEST_SERVICE_NAME = 'test-service';
 

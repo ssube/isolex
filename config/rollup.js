@@ -11,11 +11,19 @@ const bundle = {
 	external: [
 		'async_hooks',
 	],
-	input: [
-		'src/index.ts',
-		'test/harness.ts',
-		'test/**/Test*.ts',
-	],
+	input: {
+		include: [
+			'src/index.ts',
+			'test/harness.ts',
+			'test/**/Test*.ts',
+		],
+		exclude: [
+			'node_modules/mongodb',
+			'node_modules/mysql',
+			'node_modules/mysql2',
+			'node_modules/oracledb',
+		],
+	},
 	manualChunks(id) {
 		if (id.includes('/test/') || id.includes('/node_modules/')) {
 			return 'test';
@@ -52,6 +60,15 @@ const bundle = {
 				NODE_VERSION: process.env['NODE_VERSION'],
 			},
 		}),
+		replace({
+			delimiters: ['from \'', '\''],
+			values: {
+				'mongodb': 'empty-module',
+				'mysql': 'empty-module',
+				'mysql2': 'empty-module',
+				'oracledb': 'empty-module',
+			},
+		}),
 		resolve({
 			preferBuiltins: true,
 		}),
@@ -61,16 +78,81 @@ const bundle = {
 					'expect',
 					'use',
 				],
+				'node_modules/cron/lib/cron.js': [
+					'CronJob',
+				],
 				'node_modules/lodash/lodash.js': [
+					'flatten',
+					'get',
+					'isBoolean',
+					'isEmpty',
 					'isFunction',
 					'isMap',
 					'isNil',
+					'isNumber',
+					'isObject',
 					'isString',
 					'kebabCase',
+					'trim',
+				],
+				'node_modules/mathjs/index.js': [
+					'max',
+					'min',
+					'random',
+					'randomInt',
+				],
+				'node_modules/express/index.js': [
+					'json',
+					'Request',
+					'Response',
+					'Router',
+				],
+				'node_modules/typeorm/index.js': [
+					'AfterLoad',
+					'BeforeInsert',
+					'BeforeUpdate',
+					'CreateDateColumn',
+					'Column',
+					'Entity',
+					'EntityRepository',
+					'Equal',
+					'FindManyOptions',
+					'In',
+					'JoinColumn',
+					'LessThan',
+					'ManyToOne',
+					'OneToOne',
+					'PrimaryColumn',
+					'PrimaryGeneratedColumn',
+					'Table',
+					'TableColumn',
+					'UpdateDateColumn',
+				],
+				/*
+				'': [
+					'GraphQLID',
+					'GraphQLInputObjectType',
+					'GraphQLList',
+					'GraphQLObjectType',
+					'GraphQLString',
+				],
+				*/
+				'node_modules/js-yaml/index.js': [
+					'DEFAULT_SAFE_SCHEMA',
+					'safeLoad',
+					'Schema',
+					'Type',
+				],
+				'node_modules/@slack/client/dist/index.js': [
+					'WebAPICallResult',
+					'WebClient',
+				],
+				'node_modules/node-emoji/index.js': [
+					'find',
 				],
 			},
 		}),
-    		typescript({
+		typescript({
 			cacheRoot: 'out/cache/rts2',
 			rollupCommonJSResolveHack: true,
 		}),
