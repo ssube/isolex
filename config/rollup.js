@@ -4,7 +4,11 @@ import multiEntry from 'rollup-plugin-multi-entry';
 import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
+import hypothetical from 'rollup-plugin-hypothetical';
 
+const emptyModule = `
+          export default {};
+        `
 const metadata = require('../package.json');
 
 const bundle = {
@@ -17,20 +21,18 @@ const bundle = {
 			'test/harness.ts',
 			'test/**/Test*.ts',
 		],
-		exclude: [
-			'node_modules/mongodb',
-			'node_modules/mysql',
-			'node_modules/mysql2',
-			'node_modules/oracledb',
-		],
 	},
 	manualChunks(id) {
-		if (id.includes('/test/') || id.includes('/node_modules/')) {
+		if (id.includes('/test/') || id.includes('/chai/')) {
 			return 'test';
 		}
 
 		if (id.includes('/src/')) {
 			return 'main';
+		}
+
+		if (id.includes('/node_modules/')) {
+			return 'vendor';
 		}
 
 		return 'index';
@@ -40,6 +42,9 @@ const bundle = {
 		chunkFileNames: '[name].js',
 		entryFileNames: 'entry-[name].js',
 		format: 'cjs',
+		globals: {
+
+		},
 		sourcemap: true,
 		banner: () => {
 			return '\n';
@@ -60,14 +65,16 @@ const bundle = {
 				NODE_VERSION: process.env['NODE_VERSION'],
 			},
 		}),
-		replace({
-			delimiters: ['from \'', '\''],
-			values: {
-				'mongodb': 'empty-module',
-				'mysql': 'empty-module',
-				'mysql2': 'empty-module',
-				'oracledb': 'empty-module',
+		hypothetical({
+			allowFallthrough: true,
+			files: {
+				'mongodb/': emptyModule,
+				'mysql/': emptyModule,
+				'mysql2/': emptyModule,
+				'mssql': emptyModule,
+				'oracledb': emptyModule,
 			},
+			leaveIdsAlone: true,
 		}),
 		resolve({
 			preferBuiltins: true,

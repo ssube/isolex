@@ -4150,6 +4150,21 @@ rollup-plugin-commonjs@^10.1.0:
     resolve "^1.11.0"
     rollup-pluginutils "^2.8.1"
 
+rollup-plugin-external-globals@^0.3.1:
+  version "0.3.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-external-globals/-/rollup-plugin-external-globals-0.3.1.tgz#de84d992c2a08dcbf6429e11e958ba99c12184c9"
+  integrity sha512-X0xIkLT/XOgYcGVVvrnHRdDfJUEXnDu7alCkf9g10LO243MOlxjHPuJ0YCd0YWSCtkb/VKg+s1/fNWoVGe/BDA==
+  dependencies:
+    estree-walker "^0.6.1"
+    is-reference "^1.1.2"
+    magic-string "^0.25.2"
+    rollup-pluginutils "^2.8.1"
+
+rollup-plugin-hypothetical@^2.1.0:
+  version "2.1.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-hypothetical/-/rollup-plugin-hypothetical-2.1.0.tgz#7fec9a865ed7d0eac14ca6ee2b2c4088acdb1955"
+  integrity sha512-MlxPQTkMtiRUtyhIJ7FpBvTzWtar8eFBA+V7/J6Deg9fSgIIHwL6bJKK1Wl1uWSWtOrWhOmtsMwb9F6aagP/Pg==
+
 rollup-plugin-ignore@^1.0.5:
   version "1.0.5"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-ignore/-/rollup-plugin-ignore-1.0.5.tgz#fc16b321b29d054d728dafde808a8a52ec39f024"
