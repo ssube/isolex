@@ -2,8 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": false,
-    "baseUrl": "../",
+    "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -17,7 +16,6 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "paths": {},
     "sourceMap": true,
     "strict": true,
     "strictBindCallApply": true,
@@ -38,7 +36,7 @@
     ]
   },
   "exclude": [
-    "node_modules"
+    "../node_modules"
   ],
   "include": [
     "../src/**/*",
