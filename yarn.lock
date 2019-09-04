@@ -3995,13 +3995,14 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-reflect-metadata@0.1.13, reflect-metadata@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-
 reflect-metadata@^0.1.12:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.12.tgz#311bf0c6b63cd782f228a81abe146a2bfa9c56f2"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerator-runtime@^0.12.0:
   version "0.12.1"
@@ -4183,6 +4184,11 @@ rollup-plugin-multi-entry@^2.1.0:
   integrity sha512-YVVsI15uvbxMKdeYS5NXQa5zbVr/DYdDBBwseC80+KAc7mqDUjM6Qe4wl+jFucVw1yvBDZFk0PPSBZqoLq8xUA==
   dependencies:
     matched "^1.0.2"
+
+rollup-plugin-node-externals@^2.0.0:
+  version "2.0.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-node-externals/-/rollup-plugin-node-externals-2.0.0.tgz#30146f8cfe7479ec26b0c5affec587f1746bdbec"
+  integrity sha512-LGaPL1j8TxxVk/uZRdJ/rB58RlN/2kz7CXDWoVQdaRbFtkaBx9OWEgMI+mMJy/mbfBtn7E6fdDGo3zj7nRtirg==
 
 rollup-plugin-node-resolve@^5.2.0:
   version "5.2.0"

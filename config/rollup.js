@@ -1,14 +1,13 @@
 import commonjs from 'rollup-plugin-commonjs';
+import externals from 'rollup-plugin-node-externals'
 import json from 'rollup-plugin-json';
 import multiEntry from 'rollup-plugin-multi-entry';
 import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
-import hypothetical from 'rollup-plugin-hypothetical';
 
-const emptyModule = `
-          export default {};
-        `
+const debug = process.env['DEBUG'] === 'TRUE';
+const passStub = 'require("pass-stub")'
 const metadata = require('../package.json');
 
 const bundle = {
@@ -23,16 +22,32 @@ const bundle = {
 		],
 	},
 	manualChunks(id) {
-		if (id.includes('/test/') || id.includes('/chai/')) {
+		if (id.includes('/test/')) { // || id.includes('/chai/') || id.includes('/mocha/') || id.includes('/sinon/')) {
 			return 'test';
-		}
-
-		if (id.includes('/src/')) {
-			return 'main';
 		}
 
 		if (id.includes('/node_modules/')) {
 			return 'vendor';
+		}
+
+		if (id.match(/commonjs/i) || id.match(/rollup/i) || id.includes('noicejs') || id.includes('pass-stub')) {
+			if (debug) {
+				console.log('==vendor', id);
+			}
+
+			return 'vendor';
+		}
+
+		if (id.includes('/src/')) {
+			if (debug) {
+				console.log('==main', id);
+			}
+
+			return 'main';
+		}
+
+		if (debug) {
+			console.log('==index', id);
 		}
 
 		return 'index';
@@ -53,6 +68,39 @@ const bundle = {
 	plugins: [
 		multiEntry(),
 		json(),
+		externals({
+			builtins: true,
+			deps: true,
+			devDeps: false,
+			peerDeps: false,
+		}),
+		replace({
+			delimiters: ['require("', '")'],
+			values: {
+				'ioredis': passStub,
+				'mongodb': passStub,
+				'mssql': passStub,
+				'mysql': passStub,
+				'mysql2': passStub,
+				'oracledb': passStub,
+				'pg': passStub,
+				'pg-native': passStub,
+				'pg-query-stream': passStub,
+				'react-native-sqlite-storage': passStub,
+				'redis': passStub,
+				'sql.js': passStub,
+			},
+		}),
+		replace({
+			delimiters: ['require(\'', '\')'],
+			values: {
+				'@discordjs/uws': passStub,
+				'erlpack': passStub,
+				'ffmpeg-binaries': passStub,
+				'node-opus': passStub,
+				'opusscript': passStub,
+			},
+		}),
 		replace({
 			delimiters: ['{{ ', ' }}'],
 			values: {
@@ -64,17 +112,6 @@ const bundle = {
 				GIT_COMMIT: process.env['CI_COMMIT_SHA'],
 				NODE_VERSION: process.env['NODE_VERSION'],
 			},
-		}),
-		hypothetical({
-			allowFallthrough: true,
-			files: {
-				'mongodb/': emptyModule,
-				'mysql/': emptyModule,
-				'mysql2/': emptyModule,
-				'mssql': emptyModule,
-				'oracledb': emptyModule,
-			},
-			leaveIdsAlone: true,
 		}),
 		resolve({
 			preferBuiltins: true,
