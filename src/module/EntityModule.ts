@@ -17,7 +17,7 @@ export class EntityModule extends Module {
   }
 
   @Provides('entities')
-  protected async createEntities(): Promise<Array<Function>> {
+  public async createEntities(): Promise<Array<Function>> {
     return [
       Command,
       Context,
