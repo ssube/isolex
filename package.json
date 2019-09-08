@@ -48,7 +48,7 @@
     "@types/uuid": "3.4.5",
     "@types/websocket": "0.0.40",
     "@types/ws": "6.0.1",
-    "@types/yargs-parser": "13.0.0",
+    "@types/yargs-parser": "13.1.0",
     "ajv": "6.10.2",
     "bufferutil": "4.0.1",
     "bunyan": "1.8.12",
@@ -107,7 +107,7 @@
     "utf-8-validate": "5.0.2",
     "uuid": "3.3.2",
     "ws": "7.1.0",
-    "yargs-parser": "13.1.1"
+    "yargs-parser": "14.0.0"
   },
   "resolutions": {
     "**/lodash": "4.17.15"
