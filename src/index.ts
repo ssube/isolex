@@ -112,14 +112,12 @@ function mainModules() {
   return modules;
 }
 
-declare function __non_webpack_require__(name: string): { [name: string]: ModuleCtor };
-
 async function loadModules(config: BotDefinition, logger: Logger) {
   const modules: Array<Module> = [];
 
   for (const p of config.data.modules) {
     try {
-      const nodeModule = __non_webpack_require__(/* webpackIgnore: true */ p.require);
+      const nodeModule = require(p.require);
       const moduleType = nodeModule[p.export];
 
       // TODO: verify this is a module constructor before instantiating

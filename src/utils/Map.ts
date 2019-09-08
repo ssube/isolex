@@ -1,4 +1,4 @@
-import { isMap, isNil } from 'lodash';
+import { isMap, isNil, isObject, isString } from 'lodash';
 
 import { doesExist, mergeList, mustExist } from '.';
 import { NotFoundError } from '../error/NotFoundError';
@@ -141,6 +141,21 @@ export function dictValuesToArrays<TVal>(map: MapLike<TVal>): Dict<Array<TVal>> 
       data[key] = value;
     } else {
       data[key] = [value];
+    }
+  }
+
+  return data;
+}
+
+export function normalizeMap(map: MapLike<any>): Dict<Array<string>> {
+  const data: Dict<Array<string>> = {};
+  for (const [key, value] of makeMap(map)) {
+    if (Array.isArray(value)) {
+      data[key] = value;
+    } else if (isString(value)) {
+      data[key] = [value];
+    } else if (isObject(value)) {
+      data[key] = [value.toString()];
     }
   }
 

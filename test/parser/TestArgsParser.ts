@@ -18,6 +18,7 @@ import { createService, createServiceContainer } from '../helpers/container';
 const TEST_CONFIG = {
   args: {
     required: ['foo', 'bar'],
+    string: ['foo', 'bar'],
   },
   defaultCommand: {
     data: {},
@@ -64,8 +65,8 @@ describeAsync('args parser', async () => {
     }));
     expect(data.data).to.deep.equal({
       _: [],
-      bar: [2],
-      foo: [1],
+      bar: ['2'],
+      foo: ['1'],
     });
   });
 
@@ -95,7 +96,7 @@ describeAsync('args parser', async () => {
 
     const [cmd] = commands;
     expect(cmd.noun).to.equal(NOUN_FRAGMENT);
-    expect(cmd.getHead('foo')).to.equal(1);
+    expect(cmd.getHead('foo')).to.equal('1');
   });
 
   itAsync('should complete a fragment', async () => {
@@ -129,7 +130,7 @@ describeAsync('args parser', async () => {
     const [cmd] = commands;
     expect(cmd.noun).to.equal('test');
     expect(cmd.getHead('foo')).to.equal('1');
-    expect(cmd.getHead('bar')).to.equal(2); // TODO: should convert to string
+    expect(cmd.getHead('bar')).to.equal('2');
   });
 
   itAsync('should reject messages with other types', async () => {

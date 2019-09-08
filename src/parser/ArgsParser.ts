@@ -10,7 +10,7 @@ import { Fragment } from '../entity/Fragment';
 import { Message } from '../entity/Message';
 import { MimeTypeError } from '../error/MimeTypeError';
 import { mustExist } from '../utils';
-import { dictValuesToArrays, makeMap, pushMergeMap } from '../utils/Map';
+import { makeMap, normalizeMap, pushMergeMap } from '../utils/Map';
 import { TYPE_TEXT } from '../utils/Mime';
 import { BaseParser } from './BaseParser';
 
@@ -63,7 +63,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
   protected async decodeBody(body: string): Promise<ParserOutput> {
     return {
-      data: dictValuesToArrays<string>(yargs(body, this.data.args)),
+      data: normalizeMap(yargs(body, this.data.args)),
     };
   }
 
