@@ -52,10 +52,12 @@ describeAsync('DI modules', async () => {
       await module.start();
       expect(start).to.have.callCount(1);
       expect(stop).to.have.callCount(0);
+      expect(module.size).to.equal(1);
 
       await module.stop();
       expect(start).to.have.callCount(1);
       expect(stop).to.have.callCount(1);
+      expect(module.size).to.equal(0);
 
       await defer(50);
     });
