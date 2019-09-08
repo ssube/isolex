@@ -4333,6 +4333,15 @@ shelljs@^0.8.2:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
+shelljs@^0.8.3:
+  version "0.8.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
+  integrity sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==
+  dependencies:
+    glob "^7.0.0"
+    interpret "^1.0.0"
+    rechoir "^0.6.2"
+
 shiro-trie@0.4.8:
   version "0.4.8"
   resolved "https://registry.yarnpkg.com/shiro-trie/-/shiro-trie-0.4.8.tgz#63b0dab00bd91c0003d09d5d7cabc0a1f38f4295"

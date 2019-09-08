@@ -14,4 +14,4 @@ WORKDIR /app
 # install native modules
 RUN yarn install --production
 
-ENTRYPOINT [ "/usr/bin/node", "/app/out/main-bundle.js" ]
+ENTRYPOINT [ "/usr/bin/node", "/app/out/index.js" ]
