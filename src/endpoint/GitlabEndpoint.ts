@@ -209,7 +209,7 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
   }
 
   protected async createHookMessage(req: Request, res: Response, data: GitlabBaseWebhook): Promise<Message> {
-    const msgCtx = mustExist<Context>(req.user);
+    const msgCtx = mustExist<Context>(req.user as any);
     // fake message for the transforms to check and filter
     return new Message({
       body: data.object_kind,

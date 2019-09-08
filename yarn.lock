@@ -259,10 +259,10 @@
     once "^1.4.0"
     universal-user-agent "^2.1.0"
 
-"@octokit/rest@16.28.4":
-  version "16.28.4"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.28.4.tgz#2f8ef08305033bc91256530d6a3c98eada700660"
-  integrity sha512-ZBsfD46t3VNkwealxm5zloVgQta8d8o4KYBR/hMAZ582IgjmSDKZdkjyv5w37IUCM3tcPZWKUT+kml9pEIC2GA==
+"@octokit/rest@16.28.9":
+  version "16.28.9"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@octokit/rest/-/rest-16.28.9.tgz#ac8c5f3ff305e9e0a0989a5245e4286f057a95d7"
+  integrity sha512-IKGnX+Tvzt7XHhs8f4ajqxyJvYAMNX5nWfoJm4CQj8LZToMiaJgutf5KxxpxoC3y5w7JTJpW5rnWnF4TsIvCLA==
   dependencies:
     "@octokit/request" "^5.0.0"
     "@octokit/request-error" "^1.0.2"
@@ -275,8 +275,7 @@
     lodash.uniq "^4.5.0"
     octokit-pagination-methods "^1.1.0"
     once "^1.4.0"
-    universal-user-agent "^3.0.0"
-    url-template "^2.0.8"
+    universal-user-agent "^4.0.0"
 
 "@phenomnomnominal/tsquery@^3.0.0":
   version "3.0.0"
@@ -334,16 +333,16 @@
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
 
-"@slack/client@5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@slack/client/-/client-5.0.1.tgz#57a5d4d977e3763f44a4dca321a7dbb73c6473af"
-  integrity sha512-rU3x3pVhKq+9gt2sDdQI6toYc9BmLCDU9UYpnGhlHWV+ebHXepftMLOuZqjt2inK9XLzz5XqJYKdsyfbCuwiJA==
+"@slack/client@5.0.2":
+  version "5.0.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@slack/client/-/client-5.0.2.tgz#75a45bdd86a9eb8eaba2febb0bbdfeb281cf02e1"
+  integrity sha512-HurKTUBZlwj/1cnZ6QOHpYR7k+G62WlL+13DgYD7onVRnQWggkIyCg+ymX1kQn6txzNdUyDEaixyCvBvmhH8tQ==
   dependencies:
     "@slack/logger" "^1.0.0"
-    "@slack/rtm-api" "^5.0.1"
-    "@slack/types" "^1.0.0"
-    "@slack/web-api" "^5.0.1"
-    "@slack/webhook" "^5.0.0"
+    "@slack/rtm-api" "^5.0.2"
+    "@slack/types" "^1.1.0"
+    "@slack/web-api" "^5.1.0"
+    "@slack/webhook" "^5.0.1"
 
 "@slack/logger@^1.0.0":
   version "1.0.0"
@@ -352,13 +351,13 @@
   dependencies:
     "@types/node" ">=8.9.0"
 
-"@slack/rtm-api@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@slack/rtm-api/-/rtm-api-5.0.1.tgz#7663f418336c86c9f081890f0d3b4ce8f521d2a3"
-  integrity sha512-M8qcWssFg9SmNUSkxDE230ahl+toRJKRG76PluGL6EqlPcbLqzJYpwPBTPLq6WADYo6yNd6WGGQ4Qtzw/b7rvw==
+"@slack/rtm-api@^5.0.2":
+  version "5.0.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@slack/rtm-api/-/rtm-api-5.0.2.tgz#b87c71635fa59d306ec78f9e2bc3dfd22b2c6cd5"
+  integrity sha512-eKQM3RD5TM4G0+nGsL9NJUT4g9khdI9ACJjbPjHO2cq+KsB1rClct1zNWdF40E8QtlpOL5F9/dSap+H4UHlcRA==
   dependencies:
     "@slack/logger" "^1.0.0"
-    "@slack/web-api" "^5.0.1"
+    "@slack/web-api" "^5.1.0"
     "@types/node" ">=8.9.0"
     "@types/p-queue" "^2.3.2"
     "@types/ws" "^5.1.1"
@@ -368,35 +367,34 @@
     p-queue "^2.4.2"
     ws "^5.2.0"
 
-"@slack/types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@slack/types/-/types-1.0.0.tgz#1dc7a63b293c4911e474197585c3feda012df17a"
-  integrity sha512-IktC4uD/CHfLQcSitKSmjmRu4a6+Nf/KzfS6dTgUlDzENhh26l8aESKAuIpvYD5VOOE6NxDDIAdPJOXBvUGxlg==
+"@slack/types@^1.1.0":
+  version "1.1.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@slack/types/-/types-1.1.0.tgz#64465b6c7e2db66498f335934335da81c15812e7"
+  integrity sha512-uak4Jbi8nlX8xmElkPt1ixxVQXMKdBRbzBayn5bRzZ9Yx3bQGlyJdFs6GjEKI+fvFP0ZTiGWKOzlJTH3Tm/9fg==
 
-"@slack/web-api@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-5.0.1.tgz#f46ecd2dd8b8104144082c079a4f53ec7737f327"
-  integrity sha512-L2Nc8P+NjXH1yqnsNhqxsrbpW3Qv+//9X5PQqcM3bctDmvmwTuhuM1X208RVD2avhnC89aghY5PssyaayWj5sA==
+"@slack/web-api@^5.1.0":
+  version "5.1.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@slack/web-api/-/web-api-5.1.0.tgz#ce04e0df08831d9ec5427df0abb3f461c3f8a2f5"
+  integrity sha512-bnzS1I8iOfNB4xSX0zQ/uRBnWTy7iPnAd0y+H/D8YRbEiXqAWaxlVQB8pio54hegSVcRRWRKFb2fyViSraMXqw==
   dependencies:
     "@slack/logger" "^1.0.0"
-    "@slack/types" "^1.0.0"
-    "@types/form-data" "^2.2.1"
+    "@slack/types" "^1.1.0"
     "@types/is-stream" "^1.1.0"
     "@types/node" ">=8.9.0"
     "@types/p-queue" "^2.3.2"
     axios "^0.18.0"
     eventemitter3 "^3.1.0"
-    form-data "^2.3.3"
+    form-data "^2.5.0"
     is-stream "^1.1.0"
     p-queue "^2.4.2"
     p-retry "^4.0.0"
 
-"@slack/webhook@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-5.0.0.tgz#0044a3940afc16cbc607c71acdffddb9e9d4f161"
-  integrity sha512-cDj3kz3x9z9271xPNzlwb90DpKTYybG2OWPJHigJL8FegR80rzQyD0v4bGuStGGkHbAYDKE2BMpJambR55hnSg==
+"@slack/webhook@^5.0.1":
+  version "5.0.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@slack/webhook/-/webhook-5.0.1.tgz#be50fca83fae98b7005ac1a13859a78a0386520b"
+  integrity sha512-cTp0xOdd28gbMAGR80IzcG2QtwDPO0oq7NopxbitCUiDYVC40r7syJB86MBkt9spABOl1uNjB26tA9Lhe3XBbQ==
   dependencies:
-    "@slack/types" "^1.0.0"
+    "@slack/types" "^1.1.0"
     "@types/node" ">=8.9.0"
     axios "^0.18.0"
 
@@ -502,7 +500,7 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
-"@types/form-data@*", "@types/form-data@^2.2.1":
+"@types/form-data@*":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-2.2.1.tgz#ee2b3b8eaa11c0938289953606b745b738c54b1e"
   dependencies:
@@ -554,10 +552,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/jsonwebtoken@8.3.2":
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.2.tgz#e3d5245197152346fae7ee87d5541aa5a92d0362"
-  integrity sha512-Mkjljd9DTpkPlrmGfTJvcP4aBU7yO2QmW7wNVhV4/6AEUxYoacqU7FJU/N0yFEHTsIrE4da3rUrjrR5ejicFmA==
+"@types/jsonwebtoken@8.3.3":
+  version "8.3.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/jsonwebtoken/-/jsonwebtoken-8.3.3.tgz#eafeea8239c74b02263d204c0e1175d5cd0bb85f"
+  integrity sha512-mofwpvFbm2AUxD5mg4iQPc2o/+ubM200R/L86kR17SeC99jM3gEnB9hy16ln3kZkxM5LnGpDJclxeUNEHhehng==
   dependencies:
     "@types/node" "*"
 
@@ -625,9 +623,16 @@
     "@types/express" "*"
     "@types/passport" "*"
 
-"@types/passport@*", "@types/passport@1.0.0":
+"@types/passport@*":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/passport/-/passport-1.0.0.tgz#747fa127a747a145ff279f3df3e07c425e5ff297"
+  dependencies:
+    "@types/express" "*"
+
+"@types/passport@1.0.1":
+  version "1.0.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/passport/-/passport-1.0.1.tgz#bf082e29497d09410e13c260903571a489bf9c2a"
+  integrity sha512-oK87JjN8i8kmqb0RN0sCUB/ZjrWf3b8U45eAzZVy1ssYYgBrMOuALmvoqp7MglsilXAjxum+LS29VQqeQx6ddA==
   dependencies:
     "@types/express" "*"
 
@@ -925,10 +930,10 @@ atob-lite@^2.0.0:
   resolved "https://registry.yarnpkg.com/atob-lite/-/atob-lite-2.0.0.tgz#0fef5ad46f1bd7a8502c65727f0367d5ee43d696"
   integrity sha1-D+9a1G8b16hQLGVyfwNn1e5D1pY=
 
-aws-sdk@2.493.0:
-  version "2.493.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.493.0.tgz#2526208efc0fff91529c41c1d9f5cd15cdfcc937"
-  integrity sha512-xLNpjiNgLZoXqwmLQ+czP3UQzeRgsutpG1KGfVUaj/3giqEElpn0wYkwhkJt4Glm9xf3jgzAdbFEDYM7u+Llxg==
+aws-sdk@2.524.0:
+  version "2.524.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/aws-sdk/-/aws-sdk-2.524.0.tgz#0acbd6a066cfb5b357b254b6ed273cca98ca6d5f"
+  integrity sha512-nCnKEExs1OqwNG6sIrRy+Lj8Zt2M6BTa6YlEMQ1gIpdwznaAN9XyTnm+MDc3iYsSl58MOBwiKpY8d6CONuxuDw==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -1464,10 +1469,10 @@ cp-file@^6.2.0:
     pify "^4.0.1"
     safe-buffer "^5.0.1"
 
-cron@1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/cron/-/cron-1.7.1.tgz#e85ee9df794d1bc6579896ee382053c3ce33778f"
-  integrity sha512-gmMB/pJcqUVs/NklR1sCGlNYM7TizEw+1gebz20BMc/8bTm/r7QUp3ZPSPlG8Z5XRlvb7qhjEjq/+bdIfUCL2A==
+cron@1.7.2:
+  version "1.7.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/cron/-/cron-1.7.2.tgz#2ea1f35c138a07edac2ac5af5084ed6fee5723db"
+  integrity sha512-+SaJ2OfeRvfQqwXQ2kgr0Y5pzBR/lijf5OpnnaruwWnmI799JfWr2jN2ItOV9s3A/+TFOt6mxvKzQq5F0Jp6VQ==
   dependencies:
     moment-timezone "^0.5.x"
 
@@ -2023,18 +2028,18 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
 
-form-data@^2.3.3, form-data@~2.3.2:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.3.tgz#dcce52c05f644f298c6a7ab936bd724ceffbf3a6"
+form-data@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.5.0.tgz#094ec359dc4b55e7d62e0db4acd76e89fe874d37"
+  integrity sha512-WXieX3G/8side6VIqx44ablyULoGruSde5PNTxoUyo5CeyAMX6nVWUd0rgist/EuX655cjhUhTo1Fo3tRYqbcA==
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-form-data@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.5.0.tgz#094ec359dc4b55e7d62e0db4acd76e89fe874d37"
-  integrity sha512-WXieX3G/8side6VIqx44ablyULoGruSde5PNTxoUyo5CeyAMX6nVWUd0rgist/EuX655cjhUhTo1Fo3tRYqbcA==
+form-data@~2.3.2:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.3.tgz#dcce52c05f644f298c6a7ab936bd724ceffbf3a6"
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
@@ -2254,7 +2259,18 @@ growl@1.10.5:
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
 
-handlebars@4.1.2, handlebars@^4.1.2:
+handlebars@4.2.0:
+  version "4.2.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/handlebars/-/handlebars-4.2.0.tgz#57ce8d2175b9bbb3d8b3cf3e4217b1aec8ddcb2e"
+  integrity sha512-Kb4xn5Qh1cxAKvQnzNWZ512DhABzyFNmsaJf3OAkWNa4NkaqWcNI8Tao8Tasi0/F4JD9oyG0YxuFyvyR57d+Gw==
+  dependencies:
+    neo-async "^2.6.0"
+    optimist "^0.6.1"
+    source-map "^0.6.1"
+  optionalDependencies:
+    uglify-js "^3.1.4"
+
+handlebars@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.1.2.tgz#b6b37c1ced0306b221e094fc7aca3ec23b131b67"
   integrity sha512-nvfrjqvt9xQ8Z/w0ijewdD/vvWDTOweBUm96NTr66Wfvo1mJenBLwcYmPs3TIBP5ruzYGD7Hx/DaM9RmhroGPw==
@@ -2983,6 +2999,11 @@ macos-release@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/macos-release/-/macos-release-2.0.0.tgz#7dddf4caf79001a851eb4fba7fb6034f251276ab"
 
+macos-release@^2.2.0:
+  version "2.3.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/macos-release/-/macos-release-2.3.0.tgz#eb1930b036c0800adebccd5f17bc4c12de8bb71f"
+  integrity sha512-OHhSbtcviqMPt7yfw5ef5aghS2jzFVKEFyCJndQt2YpSQ9qRVSEv2axSJI1paVThEu+FFGs584h/1YhxjVqajA==
+
 magic-string@^0.25.2:
   version "0.25.3"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.3.tgz#34b8d2a2c7fec9d9bdf9929a3fd81d271ef35be9"
@@ -3344,10 +3365,10 @@ node-pre-gyp@^0.11.0:
     semver "^5.3.0"
     tar "^4"
 
-noicejs@3.0.0-0:
-  version "3.0.0-0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/noicejs/-/noicejs-3.0.0-0.tgz#2ca7b8de2a3a49bccfe1467da35839525efa3db4"
-  integrity sha512-h73q9i7j5kLijNaEf/xj8+hKGDRR7rdTNblt7/9EwqhgPkiRTBaxrZnkemcX/S4A4vnhmGIaEhBW0aS1uHETwQ==
+noicejs@3.0.0-1:
+  version "3.0.0-1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/noicejs/-/noicejs-3.0.0-1.tgz#451c4007d2e29a3d382f723a1cd05ee29d0e5ba3"
+  integrity sha512-L4w3br7SI8CPbBo6Q1+DvknRSMTFM8GKjJ1cUfuZD5qJw0LfcEyQm18cKCJ+eCxD08W7m3w4uwYpDBhqxDM3pQ==
 
 nopt@^4.0.1:
   version "4.0.1"
@@ -3517,6 +3538,14 @@ os-name@^3.0.0:
   resolved "https://registry.yarnpkg.com/os-name/-/os-name-3.0.0.tgz#e1434dbfddb8e74b44c98b56797d951b7648a5d9"
   dependencies:
     macos-release "^2.0.0"
+    windows-release "^3.1.0"
+
+os-name@^3.1.0:
+  version "3.1.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/os-name/-/os-name-3.1.0.tgz#dec19d966296e1cd62d701a5a66ee1ddeae70801"
+  integrity sha512-h8L+8aNjNcMpo/mAIBPn5PXCM16iyPGjHNWo6U1YO8sJTMHtEtyczI6QJnLoplswm6goopQkqc7OAnjhWcugVg==
+  dependencies:
+    macos-release "^2.2.0"
     windows-release "^3.1.0"
 
 os-tmpdir@^1.0.0:
@@ -4234,10 +4263,10 @@ rxjs-tslint-rules@4.25.0:
     tsutils "^3.0.0"
     tsutils-etc "^1.1.0"
 
-rxjs@6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.2.tgz#2e35ce815cd46d84d02a209fb4e5921e051dbec7"
-  integrity sha512-HUb7j3kvb7p7eCUHE3FqjoDsC1xfZQ4AHFWfTKSpZ+sAhhz5X1WX0ZuUqWbzB2QhSLp3DoLUG+hMdEDKqWo2Zg==
+rxjs@6.5.3:
+  version "6.5.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
+  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
   dependencies:
     tslib "^1.9.0"
 
@@ -4920,12 +4949,12 @@ universal-user-agent@^2.1.0:
   dependencies:
     os-name "^3.0.0"
 
-universal-user-agent@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/universal-user-agent/-/universal-user-agent-3.0.0.tgz#4cc88d68097bffd7ac42e3b7c903e7481424b4b9"
-  integrity sha512-T3siHThqoj5X0benA5H0qcDnrKGXzU8TKoX15x/tQHw1hQBvIEBHjxQ2klizYsqBOO/Q+WuxoQUihadeeqDnoA==
+universal-user-agent@^4.0.0:
+  version "4.0.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/universal-user-agent/-/universal-user-agent-4.0.0.tgz#27da2ec87e32769619f68a14996465ea1cb9df16"
+  integrity sha512-eM8knLpev67iBDizr/YtqkJsF3GK8gzDc6st/WKzrTuPtcsOKW/0IdL4cnMBsU69pOx0otavLWBDGTwg+dB0aA==
   dependencies:
-    os-name "^3.0.0"
+    os-name "^3.1.0"
 
 universalify@^0.1.0:
   version "0.1.2"
@@ -4969,6 +4998,11 @@ utils-merge@1.0.1:
 uuid@3.3.2, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
+
+uuid@3.3.3:
+  version "3.3.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
+  integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
