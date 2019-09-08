@@ -1,6 +1,121 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [0.8.0](https://github.com/ssube/isolex/compare/v0.7.0...v0.8.0) (2019-09-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* locale and storage are proper services
+* the typeorm config moves to data.storage.orm within the
+bot def
+
+### Bug Fixes
+
+* **build:** add and use CI target ([590a7cf](https://github.com/ssube/isolex/commit/590a7cf))
+* **build:** add index chunk ([19b38fb](https://github.com/ssube/isolex/commit/19b38fb))
+* **build:** add yarn lock to dockerfile ([89ef3f3](https://github.com/ssube/isolex/commit/89ef3f3))
+* **build:** enable coverage ([99ef1c8](https://github.com/ssube/isolex/commit/99ef1c8))
+* **build:** exclude version info from hard-source cache ([11ae377](https://github.com/ssube/isolex/commit/11ae377))
+* **build:** mark externals as production deps ([5fe71f8](https://github.com/ssube/isolex/commit/5fe71f8))
+* **build:** run default make target ([f58c528](https://github.com/ssube/isolex/commit/f58c528))
+* **build:** split image build ([773177d](https://github.com/ssube/isolex/commit/773177d))
+* **build:** temporarily add yaml resources ([dc57625](https://github.com/ssube/isolex/commit/dc57625))
+* **build:** update run target entry point ([2fb3a12](https://github.com/ssube/isolex/commit/2fb3a12))
+* **build:** upgrade to rollup ([5fbe772](https://github.com/ssube/isolex/commit/5fbe772))
+* **build:** use consistent memory settings ([126f02a](https://github.com/ssube/isolex/commit/126f02a))
+* **build:** use relative paths, run api-extractor ([8ec8039](https://github.com/ssube/isolex/commit/8ec8039))
+* **controller/github:** mock just enough of navigator ([5d62c9e](https://github.com/ssube/isolex/commit/5d62c9e))
+* **controller/k8s:** update to camel-cased names and incorporate patch headers upstream fix ([6fad8e7](https://github.com/ssube/isolex/commit/6fad8e7))
+* **docs:** add fossa status badge ([8dac1f7](https://github.com/ssube/isolex/commit/8dac1f7))
+* **endpoint:** create a single router for each endpoint service and register with multiple paths ([d62aed9](https://github.com/ssube/isolex/commit/d62aed9))
+* **endpoint/gitlab:** hack up the scope/data helper to avoid dict/map issues, fix pipeline hook message ([b9a9fa5](https://github.com/ssube/isolex/commit/b9a9fa5))
+* **env:** add default slack channel ([aee52ff](https://github.com/ssube/isolex/commit/aee52ff))
+* **listener/slack:** improve slack logging ([7835394](https://github.com/ssube/isolex/commit/7835394))
+* **listener/slack:** log channel before sending message ([8bbdd28](https://github.com/ssube/isolex/commit/8bbdd28))
+* **listener/slack:** wrap logger to match slack API ([0e9421f](https://github.com/ssube/isolex/commit/0e9421f))
+* **module:** make entity list public ([c260c83](https://github.com/ssube/isolex/commit/c260c83))
+* **module/bot:** make logger required ([9718f51](https://github.com/ssube/isolex/commit/9718f51))
+* **module/service:** add container to service module ([893021f](https://github.com/ssube/isolex/commit/893021f))
+* **parser/args:** convert values to strings ([5dea140](https://github.com/ssube/isolex/commit/5dea140))
+* **test:** check active service count during lifecycle test ([09c80f1](https://github.com/ssube/isolex/commit/09c80f1))
+* **test:** get tests working again ([bd7b9f1](https://github.com/ssube/isolex/commit/bd7b9f1))
+* **test:** split up plain container and service module helpers ([8a45015](https://github.com/ssube/isolex/commit/8a45015))
+* **test:** test entity module ([0f0b5ac](https://github.com/ssube/isolex/commit/0f0b5ac))
+* **test/helpers:** bind console logger to helper container ([b0f67b0](https://github.com/ssube/isolex/commit/b0f67b0))
+* **tests:** fiddle with rollup chunks until tests work ([3d9ea24](https://github.com/ssube/isolex/commit/3d9ea24))
+* begin handling cmd data in a consistent manner ([fe47706](https://github.com/ssube/isolex/commit/fe47706))
+* circular dep with config index ([13a3484](https://github.com/ssube/isolex/commit/13a3484))
+* do not invoke fns returned from math ([58f29c5](https://github.com/ssube/isolex/commit/58f29c5))
+* express listener should load user roles after validating token ([78e0114](https://github.com/ssube/isolex/commit/78e0114))
+* filter bot controller templates ([bcf2803](https://github.com/ssube/isolex/commit/bcf2803))
+* move storage to service ([#114](https://github.com/ssube/isolex/issues/114)) ([1e70c04](https://github.com/ssube/isolex/commit/1e70c04))
+* propagate stricter DI types ([7ed022e](https://github.com/ssube/isolex/commit/7ed022e))
+* remove redundant type check ([58592e3](https://github.com/ssube/isolex/commit/58592e3))
+* remove source map support from main bundle ([b7c7329](https://github.com/ssube/isolex/commit/b7c7329))
+* set both commit title and msg when merging ([88cb709](https://github.com/ssube/isolex/commit/88cb709))
+* start locale and storage with other services ([48f4908](https://github.com/ssube/isolex/commit/48f4908))
+* swap octokit graphql for rest ([#133](https://github.com/ssube/isolex/issues/133)) ([1915492](https://github.com/ssube/isolex/commit/1915492))
+* type check yaml output better ([a476cb4](https://github.com/ssube/isolex/commit/a476cb4))
+* update github response format ([834797f](https://github.com/ssube/isolex/commit/834797f))
+* useful output for metrics ([3fdf9af](https://github.com/ssube/isolex/commit/3fdf9af))
+* wire up data and labels for graph/iql ([c2324bf](https://github.com/ssube/isolex/commit/c2324bf))
+* yaml parser should set logic for valid types ([a115056](https://github.com/ssube/isolex/commit/a115056))
+
+
+### Features
+
+* **bot:** load external modules ([93da867](https://github.com/ssube/isolex/commit/93da867))
+* **bot:** schema stubs and global exports for external services ([b6ba40e](https://github.com/ssube/isolex/commit/b6ba40e))
+* **bot:** use custom name and dynamic require for external services ([cc45660](https://github.com/ssube/isolex/commit/cc45660))
+* **build:** add hard source caching ([aee15da](https://github.com/ssube/isolex/commit/aee15da))
+* **build:** add targets to stop and reset based on pid file ([9f5aaa3](https://github.com/ssube/isolex/commit/9f5aaa3))
+* **build:** support overriding docker image to run version other than master ([1bf44aa](https://github.com/ssube/isolex/commit/1bf44aa))
+* **config:** add pid file ([1ea52ca](https://github.com/ssube/isolex/commit/1ea52ca))
+* **controller:** add argument to set context on transformed data ([fd8b8f4](https://github.com/ssube/isolex/commit/fd8b8f4))
+* **controller/echo:** add option to force message channel in config ([e5ffc1f](https://github.com/ssube/isolex/commit/e5ffc1f))
+* **endpoint:** add gitlab webhook endpoint ([300734c](https://github.com/ssube/isolex/commit/300734c))
+* **endpoint:** add stubs for gitlab note and pipeline ([3dc7c42](https://github.com/ssube/isolex/commit/3dc7c42))
+* **endpoint:** add transforms to base endpoint, echo push hooks ([6211c12](https://github.com/ssube/isolex/commit/6211c12))
+* **endpoint:** implement service endpoints ([#68](https://github.com/ssube/isolex/issues/68)) ([ceaa865](https://github.com/ssube/isolex/commit/ceaa865))
+* **endpoint/debug:** add debug endpoint for svc config ([#298](https://github.com/ssube/isolex/issues/298)) ([6ca7132](https://github.com/ssube/isolex/commit/6ca7132))
+* **endpoint/gitlab:** transform data and execute command ([fc79930](https://github.com/ssube/isolex/commit/fc79930))
+* **interval/cron:** implement cron schedules ([#93](https://github.com/ssube/isolex/issues/93)) ([aa89a44](https://github.com/ssube/isolex/commit/aa89a44))
+* **schema:** support sub-schemas added during runtime ([160c0be](https://github.com/ssube/isolex/commit/160c0be))
+* **template:** add key helper to fetch map entries ([949019a](https://github.com/ssube/isolex/commit/949019a))
+* **template:** add withMap helper ([5830ea6](https://github.com/ssube/isolex/commit/5830ea6))
+* **test:** test DI modules and debug ([436b800](https://github.com/ssube/isolex/commit/436b800))
+* **transform:** add scope/data helper ([7858f64](https://github.com/ssube/isolex/commit/7858f64))
+* **utils:** add coalesce or throw helper ([03033d2](https://github.com/ssube/isolex/commit/03033d2))
+* add bot ctrl, handle noun list ([#70](https://github.com/ssube/isolex/issues/70)) ([f779e60](https://github.com/ssube/isolex/commit/f779e60))
+* add command number helper ([ece9be6](https://github.com/ssube/isolex/commit/ece9be6))
+* add k8s apps ctrl, get deployments ([#32](https://github.com/ssube/isolex/issues/32)) ([e6956a4](https://github.com/ssube/isolex/commit/e6956a4))
+* add stub gh listener ([5172673](https://github.com/ssube/isolex/commit/5172673))
+* attach locale to logger ([#113](https://github.com/ssube/isolex/issues/113)) ([99d6ddc](https://github.com/ssube/isolex/commit/99d6ddc))
+* bot ctrl can get metrics ([#70](https://github.com/ssube/isolex/issues/70)) ([eacb4b6](https://github.com/ssube/isolex/commit/eacb4b6))
+* fetch recent gh comments, convert and send ([#14](https://github.com/ssube/isolex/issues/14)) ([3b393da](https://github.com/ssube/isolex/commit/3b393da))
+* github listener session support ([#14](https://github.com/ssube/isolex/issues/14)) ([f2516c4](https://github.com/ssube/isolex/commit/f2516c4))
+* handle lex confirm state ([edb194d](https://github.com/ssube/isolex/commit/edb194d))
+* list k8s daemon and stateful sets ([#32](https://github.com/ssube/isolex/issues/32)) ([5e012d6](https://github.com/ssube/isolex/commit/5e012d6))
+* locale logger class ([#113](https://github.com/ssube/isolex/issues/113)) ([1bd476d](https://github.com/ssube/isolex/commit/1bd476d))
+* logging helpers with common fields ([#113](https://github.com/ssube/isolex/issues/113)) ([e6a7136](https://github.com/ssube/isolex/commit/e6a7136))
+* make service timeout configurable ([3f0adca](https://github.com/ssube/isolex/commit/3f0adca))
+* merge saved keyword data with next field ([940d7d9](https://github.com/ssube/isolex/commit/940d7d9))
+* prefer user lang when translating ([#112](https://github.com/ssube/isolex/issues/112)) ([461594a](https://github.com/ssube/isolex/commit/461594a))
+* reaction ctrl matches many reactions, add to ref config ([ae7ed3e](https://github.com/ssube/isolex/commit/ae7ed3e))
+* replace github graphql client with rest ([1b9293d](https://github.com/ssube/isolex/commit/1b9293d))
+* scale k8s deploy and stateful, add templates ([#32](https://github.com/ssube/isolex/issues/32)) ([be87491](https://github.com/ssube/isolex/commit/be87491))
+* service list and version info from bot introspection ctrl ([#70](https://github.com/ssube/isolex/issues/70)), doc in getting-started ([#53](https://github.com/ssube/isolex/issues/53)) ([10f0188](https://github.com/ssube/isolex/commit/10f0188))
+* slack listener can fetch messages ([bfa73c4](https://github.com/ssube/isolex/commit/bfa73c4))
+* slack listener support for reactions, threads ([da07d53](https://github.com/ssube/isolex/commit/da07d53))
+* slack reactions, reaction ctrl ([e4f16b1](https://github.com/ssube/isolex/commit/e4f16b1))
+* timeout to prevent slow-starting services from blocking others ([#116](https://github.com/ssube/isolex/issues/116)) ([8ebbcbf](https://github.com/ssube/isolex/commit/8ebbcbf))
+* update user locale ([#112](https://github.com/ssube/isolex/issues/112)) ([54fc58a](https://github.com/ssube/isolex/commit/54fc58a))
+* user locale data ([#112](https://github.com/ssube/isolex/issues/112)) ([d131670](https://github.com/ssube/isolex/commit/d131670))
+
+
+* make storage a service ([c899aaa](https://github.com/ssube/isolex/commit/c899aaa))
 
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/ssube/isolex/compare/v0.6.0...v0.7.0) (2019-01-07)
