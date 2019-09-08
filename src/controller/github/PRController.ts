@@ -20,11 +20,11 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
   constructor(options: BaseControllerOptions<GithubPRControllerData>) {
     super(options, 'isolex#/definitions/service-controller-github-pr', [NOUN_PULL_REQUEST]);
 
+    (global as any).navigator = {};
     this.client = new Octokit({
-      headers: {
-        accept: 'application/vnd.github.ocelot-preview+json',
-        authorization: `token ${options.data.client.token}`,
-      },
+      auth: `token ${options.data.client.token}`,
+      previews: ['application/vnd.github.ocelot-preview+json'],
+      userAgent: 'isolex',
     });
   }
 
