@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';

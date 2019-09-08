@@ -5,6 +5,7 @@ import multiEntry from 'rollup-plugin-multi-entry';
 import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
+import yaml from 'rollup-plugin-yaml';
 
 const debug = process.env['DEBUG'] === 'TRUE';
 const passStub = 'require("pass-stub")'
@@ -13,6 +14,14 @@ const metadata = require('../package.json');
 const bundle = {
 	external: [
 		'async_hooks',
+		'aws-sdk',
+		'chai',
+		'discord.js',
+		'ecc-jsbn',
+		'shelljs',
+		'snekfetch',
+		'sshpk',
+		'xmlbuilder',
 	],
 	input: {
 		include: [
@@ -30,7 +39,7 @@ const bundle = {
 			return 'vendor';
 		}
 
-		if (id.match(/commonjs/i) || id.match(/rollup/i) || id.includes('noicejs') || id.includes('pass-stub')) {
+		if (id.match(/commonjs-external/i) || id.match(/commonjsHelpers/) || id.includes('noicejs') || id.includes('pass-stub')) {
 			if (debug) {
 				console.log('==vendor', id);
 			}
@@ -38,7 +47,7 @@ const bundle = {
 			return 'vendor';
 		}
 
-		if (id.includes('/src/')) {
+		if (id.includes('/isolex/src/') && !id.match(/src\/index.ts$/)) {
 			if (debug) {
 				console.log('==main', id);
 			}
@@ -68,6 +77,7 @@ const bundle = {
 	plugins: [
 		multiEntry(),
 		json(),
+		yaml(),
 		externals({
 			builtins: true,
 			deps: true,
@@ -120,7 +130,7 @@ const bundle = {
 			namedExports: {
 				'node_modules/chai/index.js': [
 					'expect',
-					'use',
+					//'use',
 				],
 				'node_modules/cron/lib/cron.js': [
 					'CronJob',

@@ -102,7 +102,7 @@ test: test-cover
 
 test-check: ## run mocha unit tests with coverage reports
 	#$(NODE_BIN)/nyc $(COVER_OPTS) 
-	$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js
+	ISOLEX_HOME=$(ROOT_PATH)/docs $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js
 
 test-cover: ## run mocha unit tests with coverage reports
 test-cover: test-check

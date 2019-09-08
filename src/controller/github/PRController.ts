@@ -1,4 +1,4 @@
-import * as Octokit from '@octokit/rest';
+import Octokit from '@octokit/rest';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';

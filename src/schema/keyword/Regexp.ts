@@ -1,4 +1,4 @@
-import * as Ajv from 'ajv';
+import Ajv from 'ajv';
 import { isBoolean } from 'lodash';
 
 export const SCHEMA_KEYWORD_REGEXP: Ajv.KeywordDefinition = {

@@ -1,4 +1,4 @@
-import * as jp from 'jsonpath';
+import jp from 'jsonpath';
 
 import { TemplateScope } from './Template';
 

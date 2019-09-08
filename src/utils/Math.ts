@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import * as mathjs from 'mathjs';
+import mathjs from 'mathjs';
 
 import { TemplateScope } from './Template';
 

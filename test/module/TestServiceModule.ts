@@ -4,6 +4,7 @@ import { spy } from 'sinon';
 
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Service, ServiceEvent } from '../../src/Service';
+import { defer } from '../../src/utils/Async';
 import { describeAsync, itAsync } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
@@ -17,7 +18,7 @@ async function createModule() {
   const testSvc = ineeda<Service>(metadata);
 
   const module = new ServiceModule({
-    timeout: 100,
+    timeout: 10,
   });
   module.bind(TEST_SERVICE_NAME).toInstance(testSvc);
 
@@ -55,6 +56,8 @@ describeAsync('DI modules', async () => {
       await module.stop();
       expect(start).to.have.callCount(1);
       expect(stop).to.have.callCount(1);
+
+      await defer(50);
     });
 
     itAsync('should create and save child services', async () => {

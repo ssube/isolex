@@ -1,4 +1,4 @@
-import * as Handlebars from 'handlebars';
+import Handlebars from 'handlebars';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { mustExist } from '.';

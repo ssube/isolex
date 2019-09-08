@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { isNil, isString, kebabCase } from 'lodash';
 import { MissingValueError } from 'noicejs';
 

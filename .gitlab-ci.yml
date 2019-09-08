@@ -1,4 +1,5 @@
 stages:
+  # @retain
   - status-pre
   - build
   - image
@@ -177,8 +178,10 @@ sonar-success:
   stage: status-post
   when: on_success
   dependencies:
+    # @retain
     - build-node
   script:
+    # @retain
     - make node_modules
     - sonar-scanner
         -Dsonar.projectKey=ssube_isolex

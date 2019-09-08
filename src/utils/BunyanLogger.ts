@@ -1,4 +1,4 @@
-import * as bunyan from 'bunyan';
+import bunyan from 'bunyan';
 import { Logger } from 'noicejs';
 
 import { prototypeName } from '.';
@@ -12,6 +12,7 @@ export class BunyanLogger {
       ...options,
       serializers: {
         ...bunyan.stdSerializers,
+        container: prototypeName,
         logger: prototypeName,
         module: prototypeName,
       },

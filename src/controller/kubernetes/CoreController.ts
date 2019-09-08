@@ -1,4 +1,4 @@
-import * as k8s from '@kubernetes/client-node';
+import k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, Handler } from '..';

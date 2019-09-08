@@ -1,6 +1,6 @@
 import { BaseOptions, Inject, Logger, MissingValueError } from 'noicejs';
 import { Registry } from 'prom-client';
-import * as uuid from 'uuid';
+import uuid from 'uuid';
 
 import { SchemaError } from './error/SchemaError';
 import { ServiceModule } from './module/ServiceModule';

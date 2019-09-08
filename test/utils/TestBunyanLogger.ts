@@ -1,4 +1,4 @@
-import * as bunyan from 'bunyan';
+import bunyan from 'bunyan';
 import { expect } from 'chai';
 
 import { BunyanLogger } from '../../src/utils/BunyanLogger';
