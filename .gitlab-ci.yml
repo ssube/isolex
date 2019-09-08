@@ -85,7 +85,7 @@ build-node:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
     - source docs/isolex.env
-    - make
+    - make ci
 
   artifacts:
     expire_in: 1 week

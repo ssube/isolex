@@ -53,6 +53,9 @@ export RUNNER_VERSION  := $(CI_RUNNER_VERSION)
 all: build test run-terminal
 	@echo Success!
 
+ci: build test
+	@echo Success!
+
 clean: ## clean up everything added by the default target
 clean: clean-deps clean-target
 
@@ -92,6 +95,7 @@ build: build-bundle build-docs
 
 build-bundle: node_modules
 	$(NODE_BIN)/rollup --config $(CONFIG_PATH)/rollup.js
+	ls -lha $(TARGET_PATH)
 
 build-docs: ## generate html docs
 	$(NODE_BIN)/api-extractor run --config $(CONFIG_PATH)/api-extractor.json --local -v
