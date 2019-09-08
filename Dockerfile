@@ -7,6 +7,8 @@ RUN apt-get update \
 
 # copy build output
 COPY package.json /app/package.json
+COPY src/schema/schema.yml /app/src/schema/schema.yml
+COPY src/locale/en.yml /app/src/locale/en.yml
 COPY out/ /app/out/
 
 WORKDIR /app
