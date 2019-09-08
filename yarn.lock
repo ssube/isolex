@@ -4325,15 +4325,7 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
-shelljs@^0.8.2:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
-  dependencies:
-    glob "^7.0.0"
-    interpret "^1.0.0"
-    rechoir "^0.6.2"
-
-shelljs@^0.8.3:
+shelljs@^0.8.2, shelljs@^0.8.3:
   version "0.8.3"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
   integrity sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==
@@ -4759,10 +4751,10 @@ tslint-consistent-codestyle@1.15.1:
     tslib "^1.7.1"
     tsutils "^2.29.0"
 
-tslint-etc@1.5.6:
-  version "1.5.6"
-  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.5.6.tgz#dcc8ecce95b75c897889a472ee5a470380787054"
-  integrity sha512-9C+QsAoWqJ1GcV/sNc+BZCNfi6j1jXJ00L3n+/Iq13YWHJwUz56NWrzOgoYmVUJBTjNsDGudK/YslE6UrKwQVQ==
+tslint-etc@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.6.0.tgz#99d1ddf79dc5eaefa14ddbd94742197d0ba0ff45"
+  integrity sha512-+7YkUcHhRowg3odIKV8V4FtrHyf2q/jlabSvn4KjMV+Uansncdq10s0MhFPFCYrSv6Eyhh0vUyu3+T/PcuDO/g==
   dependencies:
     "@phenomnomnominal/tsquery" "^3.0.0"
     tslib "^1.8.0"
