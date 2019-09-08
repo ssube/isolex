@@ -564,10 +564,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/lodash/-/lodash-4.14.138.tgz#34f52640d7358230308344e579c15b378d91989e"
   integrity sha512-A4uJgHz4hakwNBdHNPdxOTkYmXNgmUAKLbXZ7PKGslgeV0Mb8P3BlbYfPovExek1qnod4pDfRbxuzcVs3dlFLg==
 
-"@types/mathjs@5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@types/mathjs/-/mathjs-5.0.1.tgz#b98e163ea396b4f27bec20ee25ffb8fe9e656af8"
-  integrity sha512-EFBuueI+BRed9bnUO6/9my55b4FH+VQIvqMm58h9JGbtaGCkqr3YSDhnmVbM1SJjF//8SURERSypzNwejOk7lA==
+"@types/mathjs@6.0.2":
+  version "6.0.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mathjs/-/mathjs-6.0.2.tgz#fb77aff0adcd75cf9df358ae8891e239c7ca4203"
+  integrity sha512-VXRnT6ozA8k5i3xyv8WpwarNCsIwV6Z5Cuz5bPuj9pqr5jOo3rZk/tRWdHBCmC0KMchH8OBYPC72p4ftyMXK1Q==
   dependencies:
     decimal.js "^10.0.0"
 
@@ -3052,10 +3052,10 @@ matched@^1.0.2:
     is-valid-glob "^1.0.0"
     resolve-dir "^1.0.0"
 
-mathjs@5.10.3:
-  version "5.10.3"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.10.3.tgz#e998885f932ea8886db8b40f7f5b199f89b427f1"
-  integrity sha512-ySjg30BC3dYjQm73ILZtwcWzFJde0VU6otkXW/57IjjuYRa3Qaf0Kb8pydEuBZYtqW2OxreAtsricrAmOj3jIw==
+mathjs@6.2.1:
+  version "6.2.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.2.1.tgz#f51199fe56d42dfb7efd45d7c7a69b7a1628e820"
+  integrity sha512-ySs/G6/d4FWvsnFiN7pkwO4svWVSMJnCXa57JSsE/VRBOFqUhK9ylILD9zb6i4cf6HLxTAQ4kJhQydelIsnPMA==
   dependencies:
     complex.js "2.0.11"
     decimal.js "10.2.0"
@@ -3064,7 +3064,7 @@ mathjs@5.10.3:
     javascript-natural-sort "0.7.1"
     seed-random "2.2.0"
     tiny-emitter "2.1.0"
-    typed-function "1.1.0"
+    typed-function "1.1.1"
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -4894,9 +4894,10 @@ type-is@~1.6.17, type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typed-function@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/typed-function/-/typed-function-1.1.0.tgz#ea149706e0fb42aca1791c053a6d94ccd6c4fdcb"
+typed-function@1.1.1:
+  version "1.1.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/typed-function/-/typed-function-1.1.1.tgz#a1316187ec3628c9e219b91ca96918660a10138e"
+  integrity sha512-RbN7MaTQBZLJYzDENHPA0nUmWT0Ex80KHItprrgbTPufYhIlTePvCXZxyQK7wgn19FW5bnuaBIKcBb5mRWjB1Q==
 
 typedarray@^0.0.6:
   version "0.0.6"

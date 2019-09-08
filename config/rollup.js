@@ -69,7 +69,7 @@ const bundle = {
 		entryFileNames: 'entry-[name].js',
 		format: 'cjs',
 		globals: {
-
+			'navigator': '{}',
 		},
 		sourcemap: true,
 		banner: () => {
@@ -184,15 +184,6 @@ const bundle = {
 					'TableColumn',
 					'UpdateDateColumn',
 				],
-				/*
-				'': [
-					'GraphQLID',
-					'GraphQLInputObjectType',
-					'GraphQLList',
-					'GraphQLObjectType',
-					'GraphQLString',
-				],
-				*/
 				'node_modules/js-yaml/index.js': [
 					'DEFAULT_SAFE_SCHEMA',
 					'safeLoad',

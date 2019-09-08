@@ -56,7 +56,7 @@ export class MathController extends BaseController<MathControllerData> implement
 
   protected solve(ctx: Context, expr: string, scope: TemplateScope): string {
     try {
-      const body = this.math.eval(expr, scope);
+      const body = this.math.evaluate(expr, scope);
       this.logger.debug({ body, expr }, 'evaluated expression');
 
       return formatResult(body, scope, this.data.format);

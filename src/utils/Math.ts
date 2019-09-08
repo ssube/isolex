@@ -1,10 +1,19 @@
 import { isNil } from 'lodash';
-import mathjs from 'mathjs';
+import {
+  all as allFactories,
+  ConfigOptions,
+  create as createMath,
+  format as mathFormat,
+  FormatOptions,
+  MathJsStatic,
+  MathNode,
+  typeOf as mathTypeOf,
+} from 'mathjs';
 
 import { TemplateScope } from './Template';
 
 export interface MathCreate {
-  create(options: math.ConfigOptions): mathjs.MathJsStatic;
+  create(options: math.ConfigOptions): MathJsStatic;
 }
 
 export interface ResultSet {
@@ -15,7 +24,7 @@ export interface ResultFormatOptions {
   list: {
     join: string;
   };
-  number: mathjs.FormatOptions;
+  number: FormatOptions;
   node: {
     implicit: string;
     parenthesis: string;
@@ -27,7 +36,7 @@ export function formatResult(body: unknown, scope: TemplateScope, options: Resul
     return 'nil result';
   }
 
-  const type = mathjs.typeof(body);
+  const type = mathTypeOf(body);
   switch (type) {
     case 'boolean':
     case 'number':
@@ -47,7 +56,7 @@ export function formatResult(body: unknown, scope: TemplateScope, options: Resul
     case 'Matrix':
     case 'Range':
     case 'Unit':
-      return mathjs.format(body, options.number);
+      return mathFormat(body, options.number);
     case 'ResultSet':
       return formatResult((body as ResultSet).entries, scope, options);
     case 'AccessorNode':
@@ -64,7 +73,7 @@ export function formatResult(body: unknown, scope: TemplateScope, options: Resul
     case 'ParenthesisNode':
     case 'RangeNode':
     case 'SymbolNode':
-      return (body as mathjs.MathNode).toString(options.node);
+      return (body as MathNode).toString(options.node);
     default:
       return `unknown result type: ${JSON.stringify(body)}`;
   }
@@ -79,7 +88,7 @@ export function clamp(v: number, min: number, max: number) {
  * something (this).
  */
 export class MathFactory {
-  public create(options: mathjs.ConfigOptions): mathjs.MathJsStatic {
-    return ((mathjs as unknown) as MathCreate).create(options); // thanks mathjs types
+  public create(options: ConfigOptions): MathJsStatic {
+    return createMath(allFactories, options) as MathJsStatic;
   }
 }
