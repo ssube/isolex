@@ -29,6 +29,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Maintainability score](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/maintainability)](https://codeclimate.com/github/ssube/isolex/maintainability)
 [![Technical debt ratio](https://img.shields.io/codeclimate/tech-debt/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/trends/technical_debt)
 [![Quality issues](https://img.shields.io/codeclimate/issues/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/issues)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_shield)
 
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg?logo=lgtm)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
