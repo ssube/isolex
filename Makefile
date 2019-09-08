@@ -27,7 +27,7 @@ export SCRIPT_PATH 	?= $(ROOT_PATH)/scripts
 export SOURCE_PATH 	?= $(ROOT_PATH)/src
 export TARGET_PATH	?= $(ROOT_PATH)/out
 export TARGET_LOG	?= $(TARGET_PATH)/apex-reference.log
-export TARGET_MAIN 	?= $(TARGET_PATH)/main-bundle.js
+export TARGET_MAIN 	?= $(TARGET_PATH)/index.js
 export TEST_PATH	?= $(ROOT_PATH)/test
 export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 
@@ -156,14 +156,14 @@ upload-codecov:
 
 # run targets
 run-config-test: ## run the bot to test the config
-	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/index.js --test
 
 run-docker: ## run the bot inside a docker container
 	docker run --rm --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
 		$(DOCKER_IMAGE) --config-name 'isolex.yml' --config-path '/app/docs'
 
 run-terminal: ## run the bot in a terminal
-	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/index.js --config-name 'isolex.yml'
 
 run-bunyan: ## run the bot with bunyan logs
 	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
