@@ -1,13 +1,13 @@
 import { Inject } from 'noicejs';
 import { Registry } from 'prom-client';
 
-import { INJECT_METRICS } from 'src/BaseService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { VERSION_INFO } from 'src/version';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_METRICS } from '../BaseService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { mustExist } from '../utils';
+import { VERSION_INFO } from '../version';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_METRIC = 'bot-metric';
 export const NOUN_NOUN = 'bot-noun';

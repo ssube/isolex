@@ -9,23 +9,23 @@ import {
   TextChannel,
   User,
 } from 'discord.js';
-import * as escape from 'escape-html';
+import escape from 'escape-html';
 import { isNil } from 'lodash';
-import * as emoji from 'node-emoji';
+import emoji from 'node-emoji';
 import { Inject } from 'noicejs';
 import { Counter } from 'prom-client';
 
-import { INJECT_CLOCK, INJECT_METRICS } from 'src/BaseService';
-import { BotServiceOptions } from 'src/BotService';
-import { Context, ContextOptions } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { NotFoundError } from 'src/error/NotFoundError';
-import { FetchOptions, Listener, ListenerData } from 'src/listener';
-import { SessionListener } from 'src/listener/SessionListener';
-import { doesExist, mustExist } from 'src/utils';
-import { createServiceCounter } from 'src/utils/metrics';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { FetchOptions, Listener, ListenerData } from '.';
+import { INJECT_CLOCK, INJECT_METRICS } from '../BaseService';
+import { BotServiceOptions } from '../BotService';
+import { Context, ContextOptions } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { InvalidArgumentError } from '../error/InvalidArgumentError';
+import { NotFoundError } from '../error/NotFoundError';
+import { doesExist, mustExist } from '../utils';
+import { createServiceCounter } from '../utils/metrics';
+import { TYPE_TEXT } from '../utils/Mime';
+import { SessionListener } from './SessionListener';
 
 export interface DiscordListenerData extends ListenerData {
   presence?: PresenceData;

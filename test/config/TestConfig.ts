@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { join } from 'path';
 
-import { loadConfig } from 'src/config';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { loadConfig } from '../../src/config';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('config', async () => {
   itAsync('load existing config', async () => {

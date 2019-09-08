@@ -2,13 +2,13 @@ import { sign, verify } from 'jsonwebtoken';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from 'src/entity/auth/User';
-import { DataEntity, DataEntityOptions } from 'src/entity/base/DataEntity';
-import { Session } from 'src/entity/Session';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { doesExist, mustExist } from 'src/utils';
-import { dateToSeconds } from 'src/utils/Clock';
-import { Dict, mapToDict } from 'src/utils/Map';
+import { InvalidArgumentError } from '../../error/InvalidArgumentError';
+import { doesExist, mustExist } from '../../utils';
+import { dateToSeconds } from '../../utils/Clock';
+import { Dict, makeDict } from '../../utils/Map';
+import { DataEntity, DataEntityOptions } from '../base/DataEntity';
+import { Session } from '../Session';
+import { User } from './User';
 
 export interface JwtFields {
   aud: Array<string>;
@@ -157,7 +157,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   public toTokenJSON(): JwtFields {
     return {
       aud: this.audience,
-      data: mapToDict(this.data),
+      data: makeDict(this.data),
       exp: dateToSeconds(this.expiresAt),
       iat: dateToSeconds(this.createdAt),
       iss: this.issuer,

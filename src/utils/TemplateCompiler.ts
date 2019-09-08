@@ -1,12 +1,12 @@
-import * as Handlebars from 'handlebars';
+import Handlebars from 'handlebars';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
-import { INJECT_LOGGER } from 'src/BaseService';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { classLogger } from 'src/utils/logger';
-import { Dict } from 'src/utils/Map';
-import { Template } from 'src/utils/Template';
+import { mustExist } from '.';
+import { INJECT_LOGGER } from '../BaseService';
+import { Context } from '../entity/Context';
+import { classLogger } from './logger';
+import { Dict } from './Map';
+import { Template } from './Template';
 
 export interface TemplateCompilerOptions extends BaseOptions {
   [INJECT_LOGGER]: Logger;

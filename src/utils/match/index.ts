@@ -1,8 +1,7 @@
 import { get, isString } from 'lodash';
 
-import { doesExist } from 'src/utils';
-import { mapToDict } from 'src/utils/Map';
-import { TemplateScope } from 'src/utils/Template';
+import { doesExist } from '..';
+import { makeDict } from '../Map';
 
 export interface MatchData {
   rules: Array<MatchRule>;
@@ -50,7 +49,7 @@ export class Match {
     }
 
     // TODO: remove this conversion (#327)
-    const data = mapToDict<unknown>(val as any);
+    const data = makeDict<unknown>(val as any);
 
     for (const rule of this.rules) {
       const value = get(data, rule.key);

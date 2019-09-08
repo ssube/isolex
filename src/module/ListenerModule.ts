@@ -1,10 +1,10 @@
 import { ModuleOptions } from 'noicejs';
 
-import { DiscordListener } from 'src/listener/DiscordListener';
-import { ExpressListener } from 'src/listener/ExpressListener';
-import { GithubListener } from 'src/listener/GithubListener';
-import { SlackListener } from 'src/listener/SlackListener';
-import { BaseModule } from 'src/module/BaseModule';
+import { DiscordListener } from '../listener/DiscordListener';
+import { ExpressListener } from '../listener/ExpressListener';
+import { GithubListener } from '../listener/GithubListener';
+import { SlackListener } from '../listener/SlackListener';
+import { BaseModule } from './BaseModule';
 
 export class ListenerModule extends BaseModule {
   public async configure(options: ModuleOptions) {

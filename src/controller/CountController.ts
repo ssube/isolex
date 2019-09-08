@@ -2,14 +2,14 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Counter } from 'src/entity/misc/Counter';
-import { mustExist } from 'src/utils';
-import { clamp } from 'src/utils/Math';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_STORAGE } from '../BotService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Counter } from '../entity/misc/Counter';
+import { mustExist } from '../utils';
+import { clamp } from '../utils/Math';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_COUNTER = 'counter';
 

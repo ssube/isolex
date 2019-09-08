@@ -1,10 +1,10 @@
 import { BaseOptions, Inject } from 'noicejs';
 import { Observable, Subject } from 'rxjs';
 
-import { INJECT_CLOCK } from 'src/BaseService';
-import { ServiceLifecycle } from 'src/Service';
-import { doesExist } from 'src/utils';
-import { Clock, ClockHandler } from 'src/utils/Clock';
+import { doesExist } from '.';
+import { INJECT_CLOCK } from '../BaseService';
+import { ServiceLifecycle } from '../Service';
+import { Clock, ClockHandler } from './Clock';
 
 export const GROWTH_FACTOR = 2;
 export interface CooldownOptions extends BaseOptions {

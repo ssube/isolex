@@ -1,11 +1,11 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Checklist, ChecklistOptions } from 'src/utils/Checklist';
-import { Picklist } from 'src/utils/Picklist';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Checklist, ChecklistOptions } from '../utils/Checklist';
+import { Picklist } from '../utils/Picklist';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export interface PickControllerData extends ControllerData {
   check: ChecklistOptions<string>;

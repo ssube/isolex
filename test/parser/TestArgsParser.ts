@@ -2,19 +2,18 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { Repository } from 'typeorm';
 
-import { INJECT_STORAGE } from 'src/BotService';
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
-import { MimeTypeError } from 'src/error/MimeTypeError';
-import { ArgsParser } from 'src/parser/ArgsParser';
-import { Storage } from 'src/storage';
-import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { INJECT_STORAGE } from '../../src/BotService';
+import { NOUN_FRAGMENT } from '../../src/controller/CompletionController';
+import { CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { Fragment } from '../../src/entity/Fragment';
+import { Message } from '../../src/entity/Message';
+import { MimeTypeError } from '../../src/error/MimeTypeError';
+import { ArgsParser } from '../../src/parser/ArgsParser';
+import { Storage } from '../../src/storage';
+import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
   args: {
@@ -63,7 +62,7 @@ describeAsync('args parser', async () => {
       reactions: [],
       type: TYPE_TEXT,
     }));
-    expect(data).to.deep.equal({
+    expect(data.data).to.deep.equal({
       _: [],
       bar: [2],
       foo: [1],

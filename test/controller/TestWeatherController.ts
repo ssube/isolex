@@ -1,21 +1,20 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { INJECT_REQUEST } from 'src/BaseService';
-import { Bot } from 'src/Bot';
-import { INJECT_BOT } from 'src/BotService';
-import { NOUN_WEATHER, WeatherController } from 'src/controller/WeatherController';
-import { User } from 'src/entity/auth/User';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { TransformModule } from 'src/module/TransformModule';
-import { Transform } from 'src/transform';
-import { RequestFactory } from 'src/utils/Request';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { INJECT_REQUEST } from '../../src/BaseService';
+import { Bot } from '../../src/Bot';
+import { INJECT_BOT } from '../../src/BotService';
+import { NOUN_WEATHER, WeatherController } from '../../src/controller/WeatherController';
+import { User } from '../../src/entity/auth/User';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { Message } from '../../src/entity/Message';
+import { ServiceModule } from '../../src/module/ServiceModule';
+import { TransformModule } from '../../src/module/TransformModule';
+import { Transform } from '../../src/transform';
+import { RequestFactory } from '../../src/utils/Request';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 describeAsync('weather controller', async () => {
   itAsync('should send a message', async () => {

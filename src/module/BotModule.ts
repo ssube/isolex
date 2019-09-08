@@ -10,29 +10,30 @@ import {
   INJECT_REQUEST,
   INJECT_SCHEMA,
   INJECT_TEMPLATE,
-} from 'src/BaseService';
-import { Bot } from 'src/Bot';
-import { INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from 'src/BotService';
-import { Locale } from 'src/locale';
-import { BaseModule } from 'src/module/BaseModule';
-import { Schema } from 'src/schema';
-import { GraphSchema } from 'src/schema/graph';
-import { Storage } from 'src/storage';
-import { mustExist } from 'src/utils';
-import { Clock } from 'src/utils/Clock';
-import { JsonPath } from 'src/utils/JsonPath';
-import { MathFactory } from 'src/utils/Math';
-import { RequestFactory } from 'src/utils/Request';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+} from '../BaseService';
+import { Bot } from '../Bot';
+import { INJECT_BOT, INJECT_LOCALE, INJECT_STORAGE } from '../BotService';
+import { Locale } from '../locale';
+import { Schema } from '../schema';
+import { GraphSchema } from '../schema/graph';
+import { Storage } from '../storage';
+import { mustExist } from '../utils';
+import { Clock } from '../utils/Clock';
+import { JsonPath } from '../utils/JsonPath';
+import { MathFactory } from '../utils/Math';
+import { RequestFactory } from '../utils/Request';
+import { TemplateCompiler } from '../utils/TemplateCompiler';
+import { BaseModule } from './BaseModule';
 
 export interface BotModuleOptions {
   logger: Logger;
 }
 
 export class BotModule extends BaseModule {
+  public container?: Container;
+  public logger: Logger;
+
   protected bot?: Bot;
-  protected container?: Container;
-  protected logger: Logger;
   protected metrics?: Registry;
   protected schema?: Schema;
 
@@ -76,7 +77,7 @@ export class BotModule extends BaseModule {
 
   @Provides(INJECT_LOGGER)
   public async getLogger(): Promise<Logger> {
-    return this.logger;
+    return mustExist(this.logger);
   }
 
   @Provides(INJECT_METRICS)

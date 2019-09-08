@@ -1,12 +1,12 @@
-import { BotServiceOptions } from 'src/BotService';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { MimeTypeError } from 'src/error/MimeTypeError';
-import { Parser, ParserData } from 'src/parser';
-import { BaseParser } from 'src/parser/BaseParser';
-import { mustExist } from 'src/utils';
-import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { Parser, ParserData, ParserOutput } from '.';
+import { BotServiceOptions } from '../BotService';
+import { Command } from '../entity/Command';
+import { Message } from '../entity/Message';
+import { MimeTypeError } from '../error/MimeTypeError';
+import { mustExist } from '../utils';
+import { ArrayMapper, ArrayMapperOptions } from '../utils/ArrayMapper';
+import { TYPE_TEXT } from '../utils/Mime';
+import { BaseParser } from './BaseParser';
 
 export interface EchoParserData extends ParserData {
   dataMapper: ArrayMapperOptions;
@@ -27,15 +27,19 @@ export class EchoParser extends BaseParser<EchoParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
-    const cmd = await this.createCommand(ctx, this.mapper.map([data]));
+    const cmd = await this.createCommand(ctx, this.mapper.map(data.data.body));
     return [cmd];
   }
 
-  public async decode(msg: Message): Promise<string> {
+  public async decode(msg: Message): Promise<ParserOutput> {
     if (msg.type !== TYPE_TEXT) {
       throw new MimeTypeError();
     }
 
-    return msg.body;
+    return {
+      data: {
+        body: [msg.body],
+      },
+    };
   }
 }

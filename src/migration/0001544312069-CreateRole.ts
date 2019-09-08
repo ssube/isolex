@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_ROLE } from 'src/entity/auth/Role';
+import { TABLE_ROLE } from '../entity/auth/Role';
 
 export class CreateRole0001544312069 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

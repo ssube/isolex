@@ -1,13 +1,13 @@
 import { Inject } from 'noicejs';
 
-import { BaseService, BaseServiceData, BaseServiceOptions, INJECT_SERVICES } from 'src/BaseService';
-import { Bot } from 'src/Bot';
-import { Context } from 'src/entity/Context';
-import { checkFilter, Filter, FilterData, FilterValue } from 'src/filter';
-import { Locale } from 'src/locale';
-import { Service, ServiceDefinition } from 'src/Service';
-import { Storage } from 'src/storage';
-import { mustExist } from 'src/utils';
+import { BaseService, BaseServiceData, BaseServiceOptions, INJECT_SERVICES } from './BaseService';
+import { Bot } from './Bot';
+import { Context } from './entity/Context';
+import { checkFilter, Filter, FilterData, FilterValue } from './filter';
+import { Locale } from './locale';
+import { Service, ServiceDefinition } from './Service';
+import { Storage } from './storage';
+import { mustExist } from './utils';
 
 export interface BotServiceData extends BaseServiceData {
   filters: Array<ServiceDefinition<FilterData>>;

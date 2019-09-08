@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { INJECT_TEMPLATE } from 'src/BaseService';
-import { FilterValue } from 'src/filter';
-import { Transform, TransformData } from 'src/transform';
-import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
-import { mustExist } from 'src/utils';
-import { mapToDict } from 'src/utils/Map';
-import { Template, TemplateScope } from 'src/utils/Template';
+import { Transform, TransformData } from '.';
+import { INJECT_TEMPLATE } from '../BaseService';
+import { FilterValue } from '../filter';
+import { mustExist } from '../utils';
+import { makeDict } from '../utils/Map';
+import { Template, TemplateScope } from '../utils/Template';
+import { BaseTransform, BaseTransformOptions } from './BaseTransform';
 
 /**
  * Dictionary of templates to be compiled.
@@ -41,6 +41,6 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
       this.logger.debug({ key, result }, 'rendered template with scope');
       out.set(key, result);
     }
-    return mapToDict(out);
+    return makeDict(out);
   }
 }

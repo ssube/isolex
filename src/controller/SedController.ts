@@ -1,12 +1,12 @@
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { doesExist, mustExist } from 'src/utils';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { doesExist, mustExist } from '../utils';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export type SedControllerData = ControllerData;
 

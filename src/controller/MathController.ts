@@ -1,13 +1,15 @@
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
-import { INJECT_MATH } from 'src/BaseService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { formatResult, ResultFormatOptions } from 'src/utils/Math';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_MATH } from '../BaseService';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { mustExist } from '../utils';
+import { makeDict } from '../utils/Map';
+import { formatResult, ResultFormatOptions } from '../utils/Math';
+import { TemplateScope } from '../utils/Template';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_MATH = 'math';
 
@@ -42,7 +44,8 @@ export class MathController extends BaseController<MathControllerData> implement
     const expr = inputExpr.join(';\n');
     this.logger.debug({ expr }, 'evaluating expression');
 
-    const body = '`' + this.solve(ctx, expr, { cmd }) + '`';
+    const data = makeDict(cmd.data);
+    const body = '`' + this.solve(ctx, expr, data) + '`';
     return this.reply(ctx, body);
   }
 
@@ -51,7 +54,7 @@ export class MathController extends BaseController<MathControllerData> implement
     return this.reply(ctx, this.defaultHelp(cmd));
   }
 
-  protected solve(ctx: Context, expr: string, scope: object): string {
+  protected solve(ctx: Context, expr: string, scope: TemplateScope): string {
     try {
       const body = this.math.eval(expr, scope);
       this.logger.debug({ body, expr }, 'evaluated expression');

@@ -1,15 +1,16 @@
+import { LoggerModule } from 'i18next';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
-import { INJECT_LOGGER } from 'src/BaseService';
-import { classLogger } from 'src/utils/logger';
+import { classLogger } from '.';
+import { INJECT_LOGGER } from '../../BaseService';
 
 export interface LocaleLoggerOptions extends BaseOptions {
   logger: Logger;
 }
 
 @Inject(INJECT_LOGGER)
-export class LocaleLogger {
-  public static readonly type = 'logger';
+export class LocaleLogger implements LoggerModule {
+  public readonly type = 'logger';
 
   protected logger: Logger;
 

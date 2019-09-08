@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_COMMAND } from 'src/entity/Command';
+import { TABLE_COMMAND } from '../entity/Command';
 
 export class CreateCommand0001544311565 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

@@ -1,6 +1,6 @@
 import { Type as YamlType } from 'js-yaml';
 
-import { NotFoundError } from 'src/error/NotFoundError';
+import { NotFoundError } from '../../error/NotFoundError';
 
 export const envType = new YamlType('!env', {
   kind: 'scalar',

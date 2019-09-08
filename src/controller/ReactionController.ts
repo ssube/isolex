@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { Match, MatchData } from 'src/utils/match';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { Controller, ControllerData, Handler } from '.';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { Match, MatchData } from '../utils/match';
+import { TYPE_TEXT } from '../utils/Mime';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export interface ReactionChance {
   add: Array<string>;

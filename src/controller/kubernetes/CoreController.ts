@@ -1,11 +1,11 @@
-import * as k8s from '@kubernetes/client-node';
+import k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Controller, Handler } from 'src/controller';
-import { BaseControllerOptions } from 'src/controller/BaseController';
-import { KubernetesBaseController, KubernetesBaseControllerData } from 'src/controller/kubernetes/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { mustExist } from 'src/utils';
+import { CheckRBAC, Controller, Handler } from '..';
+import { Command, CommandVerb } from '../../entity/Command';
+import { mustExist } from '../../utils';
+import { BaseControllerOptions } from '../BaseController';
+import { KubernetesBaseController, KubernetesBaseControllerData } from './BaseController';
 
 export const NOUN_POD = 'kubernetes-pod';
 export const NOUN_SERVICE = 'kubernetes-service';

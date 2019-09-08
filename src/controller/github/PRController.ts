@@ -1,11 +1,11 @@
-import * as Octokit from '@octokit/rest';
+import Octokit from '@octokit/rest';
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { GithubClientData } from 'src/utils/github';
+import { CheckRBAC, Controller, ControllerData, Handler } from '..';
+import { Command, CommandVerb } from '../../entity/Command';
+import { Context } from '../../entity/Context';
+import { GithubClientData } from '../../utils/github';
+import { BaseController, BaseControllerOptions } from '../BaseController';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 

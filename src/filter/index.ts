@@ -1,7 +1,7 @@
-import { BotServiceData } from 'src/BotService';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { Service } from 'src/Service';
+import { BotServiceData } from '../BotService';
+import { Command } from '../entity/Command';
+import { Message } from '../entity/Message';
+import { Service } from '../Service';
 
 export enum FilterBehavior {
   /**

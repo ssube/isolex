@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { INJECT_JSONPATH } from 'src/BaseService';
-import { FilterValue } from 'src/filter';
-import { Transform, TransformData } from 'src/transform';
-import { BaseTransform, BaseTransformOptions } from 'src/transform/BaseTransform';
-import { mustExist } from 'src/utils';
-import { JsonPath } from 'src/utils/JsonPath';
-import { TemplateScope } from 'src/utils/Template';
+import { Transform, TransformData } from '.';
+import { INJECT_JSONPATH } from '../BaseService';
+import { FilterValue } from '../filter';
+import { mustExist } from '../utils';
+import { JsonPath } from '../utils/JsonPath';
+import { TemplateScope } from '../utils/Template';
+import { BaseTransform, BaseTransformOptions } from './BaseTransform';
 
 /**
  * Dictionary of templates to be compiled.
@@ -39,6 +39,8 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
       parts.push(...value);
     }
 
-    return parts.join(this.data.join);
+    return {
+      body: [parts.join(this.data.join)],
+    };
   }
 }

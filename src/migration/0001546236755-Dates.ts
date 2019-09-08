@@ -1,14 +1,14 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-import { TABLE_ROLE } from 'src/entity/auth/Role';
-import { TABLE_TOKEN } from 'src/entity/auth/Token';
-import { TABLE_USER } from 'src/entity/auth/User';
-import { TABLE_COMMAND } from 'src/entity/Command';
-import { TABLE_CONTEXT } from 'src/entity/Context';
-import { TABLE_FRAGMENT } from 'src/entity/Fragment';
-import { TABLE_MESSAGE } from 'src/entity/Message';
-import { TABLE_COUNTER } from 'src/entity/misc/Counter';
-import { TABLE_KEYWORD } from 'src/entity/misc/Keyword';
+import { TABLE_ROLE } from '../entity/auth/Role';
+import { TABLE_TOKEN } from '../entity/auth/Token';
+import { TABLE_USER } from '../entity/auth/User';
+import { TABLE_COMMAND } from '../entity/Command';
+import { TABLE_CONTEXT } from '../entity/Context';
+import { TABLE_FRAGMENT } from '../entity/Fragment';
+import { TABLE_MESSAGE } from '../entity/Message';
+import { TABLE_COUNTER } from '../entity/misc/Counter';
+import { TABLE_KEYWORD } from '../entity/misc/Keyword';
 
 // all entities except tick, which already has them
 const EFFECTED_TABLES = [

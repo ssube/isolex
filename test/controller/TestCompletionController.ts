@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 
-import { CompletionController } from 'src/controller/CompletionController';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { CompletionController } from '../../src/controller/CompletionController';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 describeAsync('completion controller', async () => {
   itAsync('should exist', async () => {

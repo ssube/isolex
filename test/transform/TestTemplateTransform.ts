@@ -1,23 +1,22 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { INJECT_TEMPLATE } from 'src/BaseService';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { TemplateTransform } from 'src/transform/TemplateTransform';
-import { TYPE_JSON } from 'src/utils/Mime';
-import { Template } from 'src/utils/Template';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { INJECT_TEMPLATE } from '../../src/BaseService';
+import { Command, CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { TemplateTransform } from '../../src/transform/TemplateTransform';
+import { TYPE_JSON } from '../../src/utils/Mime';
+import { Template } from '../../src/utils/Template';
+import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 describeAsync('template transform', async () => {
   itAsync('should transform data', async () => {
     const { container } = await createServiceContainer();
 
     const data = {
-      test: 1,
+      test: ['1'],
     };
     const templates = {
       body: 'test_body',

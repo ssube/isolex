@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_MESSAGE } from 'src/entity/Message';
+import { TABLE_MESSAGE } from '../entity/Message';
 
 export class CreateMessage0001544311687 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

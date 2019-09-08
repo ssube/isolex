@@ -1,8 +1,8 @@
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseEntity, BaseEntityOptions } from 'src/entity/base/BaseEntity';
-import { doesExist } from 'src/utils';
+import { doesExist } from '../../utils';
+import { BaseEntity, BaseEntityOptions } from '../base/BaseEntity';
 
 export interface RoleOptions extends BaseEntityOptions {
   grants: Array<string>;

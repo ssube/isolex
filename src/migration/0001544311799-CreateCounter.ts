@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-import { TABLE_COUNTER } from 'src/entity/misc/Counter';
+import { TABLE_COUNTER } from '../entity/misc/Counter';
 
 export class CreateCounter0001544311799 implements MigrationInterface {
   public async up(query: QueryRunner): Promise<void> {

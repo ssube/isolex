@@ -1,15 +1,15 @@
 import { isEmpty, trim } from 'lodash';
-import * as split from 'split-string';
+import split from 'split-string';
 
-import { BotServiceOptions } from 'src/BotService';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { MimeTypeError } from 'src/error/MimeTypeError';
-import { Parser, ParserData } from 'src/parser';
-import { BaseParser } from 'src/parser/BaseParser';
-import { mustExist } from 'src/utils';
-import { ArrayMapper, ArrayMapperOptions } from 'src/utils/ArrayMapper';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { Parser, ParserData, ParserOutput } from '.';
+import { BotServiceOptions } from '../BotService';
+import { Command } from '../entity/Command';
+import { Message } from '../entity/Message';
+import { MimeTypeError } from '../error/MimeTypeError';
+import { mustExist } from '../utils';
+import { ArrayMapper, ArrayMapperOptions } from '../utils/ArrayMapper';
+import { TYPE_TEXT } from '../utils/Mime';
+import { BaseParser } from './BaseParser';
 
 export interface SplitParserData extends ParserData {
   dataMapper: ArrayMapperOptions;
@@ -34,22 +34,35 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public async parse(msg: Message): Promise<Array<Command>> {
+    if (msg.type !== TYPE_TEXT) {
+      throw new MimeTypeError();
+    }
+
     const ctx = mustExist(msg.context);
-    const data = await this.decode(msg);
+    const data = await this.split(msg.body);
     this.logger.debug({ data }, 'splitting string');
-    return [await this.createCommand(ctx, this.mapper.map(data))];
+    const mapped = this.mapper.map(data);
+    return [await this.createCommand(ctx, mapped)];
   }
 
-  public async decode(msg: Message): Promise<Array<string>> {
+  public async decode(msg: Message): Promise<ParserOutput> {
     if (msg.type !== TYPE_TEXT) {
       throw new MimeTypeError();
     }
 
     const body = this.matcher.removeMatches(msg.body);
-    return this.split(body).map(trim).filter((it) => !isEmpty(it));
+    return {
+      data: {
+        body: this.split(body),
+      },
+    };
   }
 
-  public split(msg: string): Array<string> {
+  public split(msg: string) {
+    return this.splitBody(msg).map(trim).filter((it) => !isEmpty(it));
+  }
+
+  public splitBody(msg: string): Array<string> {
     if (this.data.every) {
       return msg.split('');
     } else {

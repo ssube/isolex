@@ -1,7 +1,7 @@
 import { isMap, isNil } from 'lodash';
 
-import { NotFoundError } from 'src/error/NotFoundError';
-import { doesExist, mergeList, mustExist } from 'src/utils';
+import { doesExist, mergeList, mustExist } from '.';
+import { NotFoundError } from '../error/NotFoundError';
 
 export interface Dict<TVal> {
   [key: string]: TVal;
@@ -85,7 +85,7 @@ export function pushMergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<T
 /**
  * Clone a map or map-like object into a new map.
  */
-export function dictToMap<TVal>(val: MapLike<TVal> | null | undefined): Map<string, TVal> {
+export function makeMap<TVal>(val: MapLike<TVal> | null | undefined): Map<string, TVal> {
   // nil: empty map
   if (isNil(val)) {
     return new Map();
@@ -103,7 +103,7 @@ export function dictToMap<TVal>(val: MapLike<TVal> | null | undefined): Map<stri
 /**
  * Turns a map or dict into a dict
  */
-export function mapToDict<TVal>(map: MapLike<TVal> | null | undefined): Dict<TVal> {
+export function makeDict<TVal>(map: MapLike<TVal> | null | undefined): Dict<TVal> {
   if (isNil(map)) {
     return {};
   }
@@ -136,7 +136,7 @@ export function pairsToMap<TVal>(pairs: Array<NameValuePair<TVal>> | undefined):
 
 export function dictValuesToArrays<TVal>(map: MapLike<TVal>): Dict<Array<TVal>> {
   const data: Dict<Array<TVal>> = {};
-  for (const [key, value] of dictToMap(map)) {
+  for (const [key, value] of makeMap(map)) {
     if (Array.isArray(value)) {
       data[key] = value;
     } else {

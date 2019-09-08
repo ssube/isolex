@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { doesExist } from 'src/utils';
+import { doesExist } from '../../utils';
 
 export interface CounterOptions {
   count: number;

@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { getLogInfo, Service } from 'src/Service';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { getLogInfo, Service } from '../src/Service';
+import { describeAsync, itAsync } from './helpers/async';
 
 describeAsync('service helpers', async () => {
   itAsync('should get log info', async () => {

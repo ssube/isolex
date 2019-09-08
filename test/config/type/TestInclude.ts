@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { join } from 'path';
 
-import { includeType } from 'src/config/type/Include';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { includeType } from '../../../src/config/type/Include';
+import { describeAsync, itAsync } from '../../helpers/async';
 
 const TEST_ROOT = '../test/config/type';
 

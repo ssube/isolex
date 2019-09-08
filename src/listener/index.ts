@@ -1,8 +1,8 @@
-import { BotServiceData } from 'src/BotService';
-import { User } from 'src/entity/auth/User';
-import { Message } from 'src/entity/Message';
-import { Session } from 'src/entity/Session';
-import { Service } from 'src/Service';
+import { BotServiceData } from '../BotService';
+import { User } from '../entity/auth/User';
+import { Message } from '../entity/Message';
+import { Session } from '../entity/Session';
+import { Service } from '../Service';
 
 export interface FetchOptions {
   after?: number;

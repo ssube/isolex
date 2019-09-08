@@ -22,11 +22,12 @@ export DEBUG_PORT  ?= 9229
 export MAKE_PATH	?= $(abspath $(lastword $(MAKEFILE_LIST)))
 export ROOT_PATH	?= $(dir $(MAKE_PATH))
 export CONFIG_PATH 	?= $(ROOT_PATH)/config
+export DOCS_PATH	?= $(ROOT_PATH)/docs
 export SCRIPT_PATH 	?= $(ROOT_PATH)/scripts
 export SOURCE_PATH 	?= $(ROOT_PATH)/src
 export TARGET_PATH	?= $(ROOT_PATH)/out
 export TARGET_LOG	?= $(TARGET_PATH)/apex-reference.log
-export TARGET_MAIN 	?= $(TARGET_PATH)/main-bundle.js
+export TARGET_MAIN 	?= $(TARGET_PATH)/index.js
 export TEST_PATH	?= $(ROOT_PATH)/test
 export VENDOR_PATH	?= $(ROOT_PATH)/vendor
 
@@ -37,7 +38,6 @@ NODE_DEBUG	?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
 # Tool options
-BUNDLE_OPTS	?= --config "$(CONFIG_PATH)/webpack.js" --display-optimization-bailout --display-error-details
 COVER_CHECK ?= --check-coverage --branches 70 --functions 85 --lines 85 --statements 85 	# increase this every so often
 COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
 DOCKER_IMAGE ?= ssube/isolex:master
@@ -49,12 +49,20 @@ RELEASE_OPTS ?= --commit-all
 # Versions
 export NODE_VERSION		:= $(shell node -v)
 export RUNNER_VERSION  := $(CI_RUNNER_VERSION)
-export WEBPACK_VERSION := $(shell $(NODE_BIN)/webpack -v)
 
-all: build run-terminal
+all: build test run-terminal
+	@echo Success!
 
-clean: ## clean up the target directory
+ci: clean-target build test
+	@echo Success!
+
+clean: ## clean up everything added by the default target
+clean: clean-deps clean-target
+
+clean-deps: ## clean up the node_modules directory
 	rm -rf node_modules
+
+clean-target: ## clean up the target directory
 	rm -rf $(TARGET_PATH)
 
 configure: ## create the target directory and other files not in git
@@ -81,57 +89,40 @@ todo:
 	@grep "as any" -r src/ test/ || true
 	@echo ""
 
-# build targets
+# Build targets
 build: ## builds, bundles, and tests the application
-build: build-fast
+build: build-bundle build-docs
 
-build-cover: ## builds, bundles, and tests the application with code coverage
-build-cover: configure node_modules bundle-fast test-cover
+build-bundle: node_modules
+	$(NODE_BIN)/rollup --config $(CONFIG_PATH)/rollup.js
+	ls -lha $(TARGET_PATH)
 
-build-fast: ## builds, bundles, and tests the application
-build-fast: configure node_modules bundle-fast test-fast
+build-docs: ## generate html docs
+	$(NODE_BIN)/api-extractor run --config $(CONFIG_PATH)/api-extractor.json --local -v
+	$(NODE_BIN)/api-documenter markdown -i $(TARGET_PATH)/api -o $(DOCS_PATH)/api
 
-build-strict: ## builds, bundles, and tests the application with type checks and extra warnings (slow)
-build-strict: configure node_modules bundle-strict test-cover
+test: ## run mocha unit tests
+test: test-cover
 
-# bundle targets
-bundle: bundle-fast ## build the distributable version of the application
-
-bundle-fast: ## bundle the application without type checking (faster)
-	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS)
-
-bundle-strict: ## bundle the application with full type checking (stricter)
-	TEST_CHECK=true $(NODE_BIN)/webpack $(BUNDLE_OPTS)
-
-bundle-stats: ## bundle the application and print statistics
-	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --json --profile |\
-		tee "$(TARGET_PATH)/webpack.json"
-
-bundle-watch: ## bundle the application and watch for changes
-	TEST_CHECK=false $(NODE_BIN)/webpack $(BUNDLE_OPTS) --watch
-
-bundle-docs: ## generate html docs
-	$(NODE_BIN)/typedoc $(DOCS_OPTS)
-
-# test targets
-test: test-fast ## run mocha unit tests
+test-check: ## run mocha unit tests with coverage reports
+	ISOLEX_HOME=$(ROOT_PATH)/docs \
+		$(NODE_BIN)/nyc $(COVER_OPTS) \
+		$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js
 
 test-cover: ## run mocha unit tests with coverage reports
-	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
+test-cover: test-check
 	sed -i $(TARGET_PATH)/coverage/lcov.info \
+		-e '/external ".*"$$/,/end_of_record/d' \
 		-e '/ sync$$/,/end_of_record/d' \
-		-e '/external /,/end_of_record/d' \
 		-e '/test sync/,/end_of_record/d' \
 		-e '/node_modules/,/end_of_record/d' \
-		-e '/bootstrap$$/,/end_of_record/d'
+		-e '/bootstrap$$/,/end_of_record/d' \
+		-e '/universalModuleDefinition/,/end_of_record/d'
 	sed -n '/^SF/,$$p' -i $(TARGET_PATH)/coverage/lcov.info
 	sed '1s;^;TN:\n;' -i $(TARGET_PATH)/coverage/lcov.info
 
-test-fast: ## run mocha unit tests with coverage reports
-	$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test-bundle.js
-
 test-watch:
-	$(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
+	$(NODE_BIN)/nyc $(COVER_OPTS) $(NODE_BIN)/mocha $(MOCHA_OPTS) --watch $(TARGET_PATH)/test-bundle.js
 
 yarn-install: ## install dependencies from package and lock file
 	yarn
@@ -169,14 +160,14 @@ upload-codecov:
 
 # run targets
 run-config-test: ## run the bot to test the config
-	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --test
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_MAIN) --test
 
 run-docker: ## run the bot inside a docker container
 	docker run --rm --env-file ${HOME}/.isolex.env -v $(ROOT_PATH)/docs:/app/docs:ro \
 		$(DOCKER_IMAGE) --config-name 'isolex.yml' --config-path '/app/docs'
 
 run-terminal: ## run the bot in a terminal
-	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_PATH)/main-bundle.js --config-name 'isolex.yml'
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_MAIN) --config-name 'isolex.yml'
 
 run-bunyan: ## run the bot with bunyan logs
 	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict

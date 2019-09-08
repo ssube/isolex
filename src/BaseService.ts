@@ -1,19 +1,19 @@
 import { BaseOptions, Inject, Logger, MissingValueError } from 'noicejs';
 import { Registry } from 'prom-client';
-import * as uuid from 'uuid/v4';
+import uuid from 'uuid';
 
-import { SchemaError } from 'src/error/SchemaError';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Schema } from 'src/schema';
-import { Service, ServiceDefinition, ServiceEvent } from 'src/Service';
-import { mustExist } from 'src/utils';
-import { Clock } from 'src/utils/Clock';
-import { JsonPath } from 'src/utils/JsonPath';
-import { serviceLogger } from 'src/utils/logger';
-import { dictToMap } from 'src/utils/Map';
-import { MathFactory } from 'src/utils/Math';
-import { RequestFactory } from 'src/utils/Request';
-import { TemplateCompiler } from 'src/utils/TemplateCompiler';
+import { SchemaError } from './error/SchemaError';
+import { ServiceModule } from './module/ServiceModule';
+import { Schema } from './schema';
+import { Service, ServiceDefinition, ServiceEvent } from './Service';
+import { mustExist } from './utils';
+import { Clock } from './utils/Clock';
+import { JsonPath } from './utils/JsonPath';
+import { serviceLogger } from './utils/logger';
+import { makeMap } from './utils/Map';
+import { MathFactory } from './utils/Math';
+import { RequestFactory } from './utils/Request';
+import { TemplateCompiler } from './utils/TemplateCompiler';
 
 export const INJECT_CLOCK = Symbol('inject-clock');
 export const INJECT_JSONPATH = Symbol('inject-jsonpath');
@@ -59,9 +59,9 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
       throw new MissingValueError('missing service name');
     }
 
-    this.id = uuid();
+    this.id = uuid.v4();
     this.kind = options.metadata.kind;
-    this.labels = dictToMap(options.metadata.labels);
+    this.labels = makeMap(options.metadata.labels);
     this.name = options.metadata.name;
 
     this.data = options.data;

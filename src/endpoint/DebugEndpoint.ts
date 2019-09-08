@@ -1,8 +1,8 @@
-import { IRoute, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 
-import { BotServiceOptions } from 'src/BotService';
-import { Endpoint, EndpointData } from 'src/endpoint';
-import { BaseEndpoint } from 'src/endpoint/BaseEndpoint';
+import { Endpoint, EndpointData } from '.';
+import { BotServiceOptions } from '../BotService';
+import { BaseEndpoint } from './BaseEndpoint';
 
 export class DebugEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
   constructor(options: BotServiceOptions<EndpointData>) {

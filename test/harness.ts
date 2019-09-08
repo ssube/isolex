@@ -1,17 +1,17 @@
-import * as chai from 'chai';
-import * as chaiAsPromised from 'chai-as-promised';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { ineeda } from 'ineeda';
-import * as sinonChai from 'sinon-chai';
-import * as sourceMapSupport from 'source-map-support';
+import sinonChai from 'sinon-chai';
+import sourceMapSupport from 'source-map-support';
 
-import { BotModule } from 'src/module/BotModule';
-import { EntityModule } from 'src/module/EntityModule';
-import { FilterModule } from 'src/module/FilterModule';
-import { IntervalModule } from 'src/module/IntervalModule';
-import { MigrationModule } from 'src/module/MigrationModule';
-import { ParserModule } from 'src/module/ParserModule';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { TransformModule } from 'src/module/TransformModule';
+import { BotModule } from '../src/module/BotModule';
+import { EntityModule } from '../src/module/EntityModule';
+import { FilterModule } from '../src/module/FilterModule';
+import { IntervalModule } from '../src/module/IntervalModule';
+import { MigrationModule } from '../src/module/MigrationModule';
+import { ParserModule } from '../src/module/ParserModule';
+import { ServiceModule } from '../src/module/ServiceModule';
+import { TransformModule } from '../src/module/TransformModule';
 
 sourceMapSupport.install({
   environment: 'node',
@@ -54,9 +54,3 @@ const modules = [
   ServiceModule,
   TransformModule,
 ];
-
-// tslint:disable-next-line:no-any
-const testContext = (require as any).context('../test', true, /Test.*$/);
-testContext.keys().forEach(testContext);
-// tslint:disable-next-line:no-default-export
-export default testContext;

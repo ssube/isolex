@@ -1,7 +1,7 @@
-import { BotServiceData } from 'src/BotService';
-import { Context, ContextOptions } from 'src/entity/Context';
-import { Tick } from 'src/entity/Tick';
-import { Service, ServiceMetadata } from 'src/Service';
+import { BotServiceData } from '../BotService';
+import { Context, ContextOptions } from '../entity/Context';
+import { Tick } from '../entity/Tick';
+import { Service, ServiceMetadata } from '../Service';
 
 export interface IntervalFrequency {
   cron?: string;

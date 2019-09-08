@@ -1,12 +1,12 @@
 import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
-import { GitlabClient, GitlabClientData, JobOptions, PipelineOptions, ProjectOptions } from 'src/utils/gitlab';
+import { CheckRBAC, Controller, ControllerData, Handler } from '..';
+import { Command, CommandVerb } from '../../entity/Command';
+import { Context } from '../../entity/Context';
+import { mustExist } from '../../utils';
+import { GitlabClient, GitlabClientData, JobOptions, PipelineOptions, ProjectOptions } from '../../utils/gitlab';
+import { BaseController, BaseControllerOptions } from '../BaseController';
 
 export interface GitlabCIControllerData extends ControllerData {
   client: GitlabClientData;

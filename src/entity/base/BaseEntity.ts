@@ -1,6 +1,6 @@
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-import { doesExist } from 'src/utils';
+import { doesExist } from '../../utils';
 
 export interface BaseEntityOptions {
   createdAt?: Date;

@@ -1,8 +1,8 @@
 import { isNil } from 'lodash';
 import { BaseError, BaseOptions, Container, Inject, Logger } from 'noicejs';
 
-import { classLogger } from 'src/utils/logger';
-import { RequestFactory, RequestOptions } from 'src/utils/Request';
+import { classLogger } from '../logger';
+import { RequestFactory, RequestOptions } from '../Request';
 
 export interface ProjectOptions {
   group: string;
@@ -160,7 +160,7 @@ export class GitlabClient {
 
   protected async makeRequest<T>(url: string, extraOptions: Partial<RequestOptions>): Promise<T> {
     try {
-      const request = await this.container.create<RequestFactory, unknown>('request');
+      const request = await this.container.create<RequestFactory, BaseOptions>('request');
       const options: RequestOptions = {
         ...extraOptions,
         uri: url,

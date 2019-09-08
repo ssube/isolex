@@ -1,11 +1,11 @@
-import { BotServiceData } from 'src/BotService';
-import { Command, CommandDataValue, CommandOptions } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Fragment } from 'src/entity/Fragment';
-import { Message } from 'src/entity/Message';
-import { Service } from 'src/Service';
-import { MatchData } from 'src/utils/match';
-import { TemplateScope } from 'src/utils/Template';
+import { BotServiceData } from '../BotService';
+import { CommandData } from '../entity/base/BaseCommand';
+import { Command, CommandDataValue, CommandOptions } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { Fragment } from '../entity/Fragment';
+import { Message } from '../entity/Message';
+import { Service } from '../Service';
+import { MatchData } from '../utils/match';
 
 export interface ParserData extends BotServiceData {
   /**
@@ -20,6 +20,11 @@ export interface ParserData extends BotServiceData {
    * Match only certain messages.
    */
   match: MatchData;
+}
+
+export interface ParserOutput {
+  data: CommandData;
+  options?: CommandOptions;
 }
 
 export type ParserValue = Buffer | string;
@@ -47,7 +52,7 @@ export interface Parser extends Service {
    *
    * This allows access to the parser's data for use by transforms.
    */
-  decode(msg: Message): Promise<TemplateScope>;
+  decode(msg: Message): Promise<ParserOutput>;
 
   /**
    * Complete a command from an existing fragment and new value.

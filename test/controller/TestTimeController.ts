@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 
-import { TimeController } from 'src/controller/TimeController';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { TimeController } from '../../src/controller/TimeController';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 describeAsync('time controller', async () => {
   itAsync('should exist', async () => {

@@ -1,10 +1,10 @@
 import { ModuleOptions } from 'noicejs';
 
-import { CommandInterval } from 'src/interval/CommandInterval';
-import { EventInterval } from 'src/interval/EventInterval';
-import { MessageInterval } from 'src/interval/MessageInterval';
-import { MetricsInterval } from 'src/interval/MetricsInterval';
-import { BaseModule } from 'src/module/BaseModule';
+import { CommandInterval } from '../interval/CommandInterval';
+import { EventInterval } from '../interval/EventInterval';
+import { MessageInterval } from '../interval/MessageInterval';
+import { MetricsInterval } from '../interval/MetricsInterval';
+import { BaseModule } from './BaseModule';
 
 export class IntervalModule extends BaseModule {
   public async configure(options: ModuleOptions) {

@@ -1,8 +1,8 @@
 import { kebabCase } from 'lodash';
 import { BaseOptions, Constructor, Logger } from 'noicejs';
 
-import { Service } from 'src/Service';
-import { getConstructor } from 'src/utils';
+import { getConstructor } from '..';
+import { Service } from '../../Service';
 
 export function classLogger<TClass, TOptions extends BaseOptions>(base: Logger, ctor: Constructor<TClass, TOptions>) {
   return kindLogger(base, getConstructor(ctor).name);

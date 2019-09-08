@@ -4,15 +4,14 @@ import { ConsoleLogger } from 'noicejs';
 import { Registry } from 'prom-client';
 import { spy } from 'sinon';
 
-import { INJECT_METRICS, INJECT_SCHEMA } from 'src/BaseService';
-import { Bot } from 'src/Bot';
-import { BotModule } from 'src/module/BotModule';
-import { ServiceModule } from 'src/module/ServiceModule';
-import { Schema } from 'src/schema';
-import { ServiceEvent } from 'src/Service';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createContainer } from 'test/helpers/container';
+import { INJECT_LOGGER, INJECT_METRICS, INJECT_SCHEMA } from '../src/BaseService';
+import { Bot } from '../src/Bot';
+import { BotModule } from '../src/module/BotModule';
+import { ServiceModule } from '../src/module/ServiceModule';
+import { Schema } from '../src/schema';
+import { ServiceEvent } from '../src/Service';
+import { describeAsync, itAsync } from './helpers/async';
+import { createContainer } from './helpers/container';
 
 describeAsync('bot service', async () => {
   itAsync('should reset metrics', async () => {
@@ -30,16 +29,19 @@ describeAsync('bot service', async () => {
       [INJECT_SCHEMA]: new Schema(),
       data: {
         controllers: [],
+        endpoints: [],
         filters: [],
         intervals: [],
         listeners: [],
         locale: {
+          [INJECT_LOGGER]: ConsoleLogger.global,
+          container,
           data: {
             lang: 'en-US',
           },
           metadata: {
             kind: 'locale',
-            name: 'locale',
+            name: 'test-locale',
           },
         },
         logger: {
@@ -57,16 +59,18 @@ describeAsync('bot service', async () => {
           timeout: 1000,
         },
         storage: {
+          [INJECT_LOGGER]: ConsoleLogger.global,
+          container,
           data: {
             migrate: false,
             orm: {
               database: '',
-              type: 'none',
+              type: 'sqlite',
             },
           },
           metadata: {
             kind: 'storage',
-            name: 'storage',
+            name: 'test-storage',
           },
         },
       },

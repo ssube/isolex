@@ -2,17 +2,16 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { Repository } from 'typeorm';
 
-import { INJECT_STORAGE } from 'src/BotService';
-import { CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { MimeTypeError } from 'src/error/MimeTypeError';
-import { RegexParser } from 'src/parser/RegexParser';
-import { Storage } from 'src/storage';
-import { TYPE_JPEG, TYPE_TEXT } from 'src/utils/Mime';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { INJECT_STORAGE } from '../../src/BotService';
+import { CommandVerb } from '../../src/entity/Command';
+import { Context } from '../../src/entity/Context';
+import { Message } from '../../src/entity/Message';
+import { MimeTypeError } from '../../src/error/MimeTypeError';
+import { RegexParser } from '../../src/parser/RegexParser';
+import { Storage } from '../../src/storage';
+import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
   dataMapper: {

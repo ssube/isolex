@@ -1,12 +1,12 @@
 import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
-import { NOUN_FRAGMENT } from 'src/controller/CompletionController';
-import { Command, CommandOptions, CommandVerb } from 'src/entity/Command';
-import { Parser } from 'src/parser';
-import { Schema } from 'src/schema';
-import { mustExist } from 'src/utils';
-import { Dict, dictToMap, mapToDict } from 'src/utils/Map';
+import { Command, CommandOptions, CommandVerb } from '../entity/Command';
+import { Parser } from '../parser';
+import { Schema } from '../schema';
+import { mustExist } from '../utils';
+import { Dict, makeDict, makeMap } from '../utils/Map';
+import { NOUN_FRAGMENT } from './CompletionController';
 
 export function createCommandCompletion(cmd: Command, key: string, msg: string): Command {
   const ctx = mustExist(cmd.context);
@@ -15,8 +15,8 @@ export function createCommandCompletion(cmd: Command, key: string, msg: string):
 }
 
 export function createCompletion(cmd: CommandOptions, key: string, msg: string, parser: Parser): Command {
-  const existingData = mapToDict(cmd.data);
-  const data = dictToMap({
+  const existingData = makeDict(cmd.data);
+  const data = makeMap({
       ...existingData,
       key: [key],
       msg: [msg],
@@ -80,7 +80,7 @@ export function collectOrComplete<TData extends Dict<CollectData>>(cmd: Command,
 
   return {
     complete: true,
-    data: mapToDict(results) as TData,
+    data: makeDict(results) as TData,
   };
 }
 

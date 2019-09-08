@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 import { MissingValueError } from 'noicejs';
 
-import { BaseService, BaseServiceData, BaseServiceOptions } from 'src/BaseService';
-import { ServiceEvent } from 'src/Service';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { BaseService, BaseServiceData, BaseServiceOptions } from '../src/BaseService';
+import { ServiceEvent } from '../src/Service';
+import { describeAsync, itAsync } from './helpers/async';
+import { createService, createServiceContainer } from './helpers/container';
 
 class StubService extends BaseService<BaseServiceData> {
   constructor(options: BaseServiceOptions<BaseServiceData>) {

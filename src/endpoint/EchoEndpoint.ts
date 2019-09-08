@@ -1,9 +1,9 @@
 import { Request, Response, Router } from 'express';
 
-import { BotServiceOptions } from 'src/BotService';
-import { Endpoint, EndpointData } from 'src/endpoint';
-import { BaseEndpoint } from 'src/endpoint/BaseEndpoint';
-import { User } from 'src/entity/auth/User';
+import { Endpoint, EndpointData } from '.';
+import { BotServiceOptions } from '../BotService';
+import { User } from '../entity/auth/User';
+import { BaseEndpoint } from './BaseEndpoint';
 
 export class EchoEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
   constructor(options: BotServiceOptions<EndpointData>) {

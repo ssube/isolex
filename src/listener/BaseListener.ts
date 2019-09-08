@@ -1,13 +1,13 @@
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { BotService, BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
-import { User } from 'src/entity/auth/User';
-import { Context, ContextOptions } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { Session } from 'src/entity/Session';
-import { FetchOptions, Listener, ListenerData } from 'src/listener';
-import { doesExist, mustExist } from 'src/utils';
+import { FetchOptions, Listener, ListenerData } from '.';
+import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
+import { User } from '../entity/auth/User';
+import { Context, ContextOptions } from '../entity/Context';
+import { Message } from '../entity/Message';
+import { Session } from '../entity/Session';
+import { doesExist, mustExist } from '../utils';
 
 export type BaseListenerOptions<TData extends ListenerData> = BotServiceOptions<TData>;
 

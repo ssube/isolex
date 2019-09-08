@@ -2,15 +2,15 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { In, Repository } from 'typeorm';
 
-import { INJECT_STORAGE } from 'src/BotService';
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Role } from 'src/entity/auth/Role';
-import { LOCALE_DEFAULT, User } from 'src/entity/auth/User';
-import { UserRepository } from 'src/entity/auth/UserRepository';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { Context } from 'src/entity/Context';
-import { mustExist } from 'src/utils';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { INJECT_STORAGE } from '../BotService';
+import { Role } from '../entity/auth/Role';
+import { LOCALE_DEFAULT, User } from '../entity/auth/User';
+import { UserRepository } from '../entity/auth/UserRepository';
+import { Command, CommandVerb } from '../entity/Command';
+import { Context } from '../entity/Context';
+import { mustExist } from '../utils';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_ROLE = 'role';
 export const NOUN_USER = 'user';

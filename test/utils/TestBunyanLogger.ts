@@ -1,9 +1,8 @@
-import * as bunyan from 'bunyan';
+import bunyan from 'bunyan';
 import { expect } from 'chai';
 
-import { BunyanLogger } from 'src/utils/BunyanLogger';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { BunyanLogger } from '../../src/utils/BunyanLogger';
+import { describeAsync, itAsync } from '../helpers/async';
 
 describeAsync('bunyan logger', async () => {
   itAsync('should create a logger', async () => {

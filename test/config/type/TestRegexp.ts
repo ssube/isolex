@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 
-import { regexpType } from 'src/config/type/Regexp';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { regexpType } from '../../../src/config/type/Regexp';
+import { describeAsync, itAsync } from '../../helpers/async';
 
 describeAsync('regexp config type', async () => {
   itAsync('match slashed strings', async () => {

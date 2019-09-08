@@ -2,13 +2,13 @@ import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { collectDefaultMetrics, Registry } from 'prom-client';
 
-import { INJECT_METRICS } from 'src/BaseService';
-import { Context } from 'src/entity/Context';
-import { Tick } from 'src/entity/Tick';
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { IntervalData } from 'src/interval';
-import { BaseInterval, BaseIntervalOptions } from 'src/interval/BaseInterval';
-import { mustExist } from 'src/utils';
+import { IntervalData } from '.';
+import { INJECT_METRICS } from '../BaseService';
+import { Context } from '../entity/Context';
+import { Tick } from '../entity/Tick';
+import { InvalidArgumentError } from '../error/InvalidArgumentError';
+import { mustExist } from '../utils';
+import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
 
 export type MetricsIntervalData = IntervalData;
 

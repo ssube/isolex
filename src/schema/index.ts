@@ -1,10 +1,16 @@
-import * as Ajv from 'ajv';
+import Ajv from 'ajv';
+import { readFileSync } from 'fs';
+import { safeLoad } from 'js-yaml';
+import { isNil } from 'lodash';
 
-import { InvalidArgumentError } from 'src/error/InvalidArgumentError';
-import { SCHEMA_KEYWORD_REGEXP } from 'src/schema/keyword/Regexp';
+import { InvalidArgumentError } from '../error/InvalidArgumentError';
+import { SCHEMA_KEYWORD_REGEXP } from './keyword/Regexp';
 
-/* tslint:disable-next-line:no-var-requires */
-export const SCHEMA_GLOBAL = require('src/schema/schema.yml');
+const SCHEMA_STRING = readFileSync('./src/schema/schema.yml', 'utf-8');
+if (isNil(SCHEMA_STRING)) {
+  throw new Error('unable to load schema from file');
+}
+const SCHEMA_GLOBAL = safeLoad(SCHEMA_STRING);
 
 export interface SchemaResult {
   errors: Array<string>;

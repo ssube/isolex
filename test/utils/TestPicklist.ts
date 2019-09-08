@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 
-import { Picklist } from 'src/utils/Picklist';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
+import { Picklist } from '../../src/utils/Picklist';
+import { describeAsync, itAsync } from '../helpers/async';
 
 const PICK_COUNT = 3;
 const PICK_REPS = 10_000;

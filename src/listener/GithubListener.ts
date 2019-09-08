@@ -1,17 +1,17 @@
-import * as Octokit from '@octokit/rest';
+import Octokit from '@octokit/rest';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
-import { BotServiceOptions, INJECT_STORAGE } from 'src/BotService';
-import { Message } from 'src/entity/Message';
-import { Tick } from 'src/entity/Tick';
-import { NotImplementedError } from 'src/error/NotImplementedError';
-import { FetchOptions, ListenerData } from 'src/listener';
-import { SessionListener } from 'src/listener/SessionListener';
-import { ServiceEvent } from 'src/Service';
-import { doesExist, mustExist } from 'src/utils';
-import { GithubClientData } from 'src/utils/github';
-import { TYPE_TEXT } from 'src/utils/Mime';
+import { FetchOptions, ListenerData } from '.';
+import { BotServiceOptions, INJECT_STORAGE } from '../BotService';
+import { Message } from '../entity/Message';
+import { Tick } from '../entity/Tick';
+import { NotImplementedError } from '../error/NotImplementedError';
+import { ServiceEvent } from '../Service';
+import { doesExist, mustExist } from '../utils';
+import { GithubClientData } from '../utils/github';
+import { TYPE_TEXT } from '../utils/Mime';
+import { SessionListener } from './SessionListener';
 
 export interface GithubRepoOptions {
   owner: string;

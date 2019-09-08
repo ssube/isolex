@@ -1,11 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { BotService, BotServiceOptions } from 'src/BotService';
-import { Command } from 'src/entity/Command';
-import { Message } from 'src/entity/Message';
-import { FilterValue } from 'src/filter';
-import { Transform, TransformData } from 'src/transform';
-import { TemplateScope } from 'src/utils/Template';
+import { Transform, TransformData } from '.';
+import { BotService, BotServiceOptions } from '../BotService';
+import { Command } from '../entity/Command';
+import { Message } from '../entity/Message';
+import { FilterValue } from '../filter';
+import { makeDict, makeMap, pushMergeMap } from '../utils/Map';
+import { TemplateScope } from '../utils/Template';
 
 export type BaseTransformOptions<TData extends TransformData> = BotServiceOptions<TData>;
 
@@ -22,14 +23,22 @@ export abstract class BaseTransform<TData extends TransformData> extends BotServ
   public abstract transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope>;
 
   protected mergeScope(entity: FilterValue, data: TemplateScope): TemplateScope {
-    if (Command.isCommand(entity)) {
-      return { cmd: entity, data };
-    }
-
-    if (Message.isMessage(entity)) {
-      return { data, msg: entity };
-    }
-
-    return { data };
+    const ed = entityData(entity);
+    const map = pushMergeMap(ed, makeMap(data));
+    return makeDict(map);
   }
+}
+
+export function entityData(entity: FilterValue): Map<string, Array<string>> {
+  if (Command.isCommand(entity)) {
+    return entity.data;
+  }
+
+  if (Message.isMessage(entity)) {
+    return makeMap({
+      body: [entity.body],
+    });
+  }
+
+  throw new Error();
 }

@@ -1,7 +1,7 @@
-import { Message } from 'src/entity/Message';
-import { FilterBehavior, FilterValue } from 'src/filter';
-import { BaseFilterOptions } from 'src/filter/BaseFilter';
-import { RuleFilter, RuleFilterData } from 'src/filter/RuleFilter';
+import { FilterBehavior, FilterValue } from '.';
+import { Message } from '../entity/Message';
+import { BaseFilterOptions } from './BaseFilter';
+import { RuleFilter, RuleFilterData } from './RuleFilter';
 
 export type MessageFilterData = RuleFilterData;
 

@@ -1,12 +1,12 @@
 import { Inject } from 'noicejs';
 
-import { CheckRBAC, Controller, ControllerData, Handler } from 'src/controller';
-import { BaseController, BaseControllerOptions } from 'src/controller/BaseController';
-import { Command, CommandVerb } from 'src/entity/Command';
-import { ChannelData, Context } from 'src/entity/Context';
-import { Listener } from 'src/listener';
-import { ServiceMetadata } from 'src/Service';
-import { mustCoalesce } from 'src/utils';
+import { CheckRBAC, Controller, ControllerData, Handler } from '.';
+import { Command, CommandVerb } from '../entity/Command';
+import { ChannelData, Context } from '../entity/Context';
+import { Listener } from '../listener';
+import { ServiceMetadata } from '../Service';
+import { mustCoalesce } from '../utils';
+import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_ECHO = 'echo';
 

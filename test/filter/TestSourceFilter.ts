@@ -1,14 +1,13 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
-import { Context } from 'src/entity/Context';
-import { Message } from 'src/entity/Message';
-import { FilterBehavior } from 'src/filter';
-import { SourceFilter, SourceFilterData } from 'src/filter/SourceFilter';
-import { TYPE_TEXT } from 'src/utils/Mime';
-
-import { describeAsync, itAsync } from 'test/helpers/async';
-import { createService, createServiceContainer } from 'test/helpers/container';
+import { Context } from '../../src/entity/Context';
+import { Message } from '../../src/entity/Message';
+import { FilterBehavior } from '../../src/filter';
+import { SourceFilter, SourceFilterData } from '../../src/filter/SourceFilter';
+import { TYPE_TEXT } from '../../src/utils/Mime';
+import { describeAsync, itAsync } from '../helpers/async';
+import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';
