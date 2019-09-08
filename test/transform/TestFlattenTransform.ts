@@ -13,8 +13,8 @@ describeAsync('flatten transform', async () => {
     const { container } = await createServiceContainer();
 
     const data = {
-      foo: ['hello'],
       bar: ['world'],
+      foo: ['hello'],
     };
     const transform = await createService(container, FlattenTransform, {
       data: {

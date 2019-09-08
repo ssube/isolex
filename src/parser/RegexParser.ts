@@ -42,7 +42,7 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<ParserOutput> {
-    const parts = await this.split(msg); 
+    const parts = await this.split(msg);
 
     return {
       data: {

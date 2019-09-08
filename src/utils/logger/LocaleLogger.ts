@@ -1,7 +1,7 @@
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
-import { INJECT_LOGGER } from '../../BaseService';
 import { classLogger } from '.';
+import { INJECT_LOGGER } from '../../BaseService';
 
 export interface LocaleLoggerOptions extends BaseOptions {
   logger: Logger;

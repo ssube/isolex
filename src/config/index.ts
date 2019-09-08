@@ -56,7 +56,6 @@ export async function loadConfig(name: string, ...extras: Array<string>): Promis
   const paths = completePaths(name, extras);
 
   for (const p of paths) {
-    console.log('reading config from', p);
     const data = await readConfig(p);
     if (doesExist(data)) {
       return safeLoad(data, {

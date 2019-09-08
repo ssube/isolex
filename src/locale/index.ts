@@ -1,5 +1,5 @@
-import i18next from 'i18next';
 import { readFileSync } from 'fs';
+import i18next from 'i18next';
 import { safeLoad } from 'js-yaml';
 import { isNil } from 'lodash';
 import { Container, Inject, Logger } from 'noicejs';

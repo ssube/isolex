@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { Container, ConsoleLogger } from 'noicejs';
+import { ConsoleLogger, Container } from 'noicejs';
 
 import { BotModule } from '../../src/module/BotModule';
 import { ControllerModule } from '../../src/module/ControllerModule';

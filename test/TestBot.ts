@@ -34,14 +34,14 @@ describeAsync('bot service', async () => {
         intervals: [],
         listeners: [],
         locale: {
-          container,
           [INJECT_LOGGER]: ConsoleLogger.global,
+          container,
+          data: {
+            lang: 'en-US',
+          },
           metadata: {
             kind: 'locale',
             name: 'test-locale',
-          },
-          data: {
-            lang: 'en-US',
           },
         },
         logger: {
@@ -59,18 +59,18 @@ describeAsync('bot service', async () => {
           timeout: 1000,
         },
         storage: {
-          container,
           [INJECT_LOGGER]: ConsoleLogger.global,
-          metadata: {
-            kind: 'storage',
-            name: 'test-storage',
-          },
+          container,
           data: {
             migrate: false,
             orm: {
               database: '',
               type: 'sqlite',
             },
+          },
+          metadata: {
+            kind: 'storage',
+            name: 'test-storage',
           },
         },
       },
