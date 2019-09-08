@@ -31,7 +31,7 @@ const bundle = {
 		],
 	},
 	manualChunks(id) {
-		if (id.includes('/test/')) { // || id.includes('/chai/') || id.includes('/mocha/') || id.includes('/sinon/')) {
+		if (id.includes('/test/')) { //} || id.includes('/chai/') || id.includes('/mocha/') || id.includes('/sinon/')) {
 			return 'test';
 		}
 
@@ -47,19 +47,21 @@ const bundle = {
 			return 'vendor';
 		}
 
-		if (id.includes('/isolex/src/') && !id.match(/src\/index.ts$/)) {
+		if (id.includes('/src/index')) {
+			if (debug) {
+				console.log('==index', id);
+			}
+
+			return 'index';
+		}
+
+		if (id.includes('/src/')) {
 			if (debug) {
 				console.log('==main', id);
 			}
 
 			return 'main';
 		}
-
-		if (debug) {
-			console.log('==index', id);
-		}
-
-		return 'index';
 	},
 	output: {
 		dir: 'out/',
