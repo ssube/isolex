@@ -162,27 +162,18 @@
     underscore "^1.9.1"
     ws "^6.1.0"
 
-"@microsoft/api-documenter@7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-documenter/-/api-documenter-7.4.0.tgz#640b8ad0a3e0aeb35a80c59d7fa5d75d26a044bc"
-  integrity sha512-lqL9cVykS9Jgh4VxRSDo2TyMPwoytAUovPbdBjNzwYdkUfWbDo/dHWtutDHjtCdPc3ETXD7keo20FbDWRq1VGQ==
+"@microsoft/api-documenter@7.4.2":
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-documenter/-/api-documenter-7.4.2.tgz#e55490521b97803c064f9bd005578ff9b69b39e4"
+  integrity sha512-KQj5dl8xE8CPZAsxneQEMn1YcajiH7orfdFWCZVDxvio7Kwjl0zwbBd6JpgKisu/AcDhFyUQE72AMrKTNNSJuQ==
   dependencies:
-    "@microsoft/api-extractor-model" "7.3.4"
-    "@microsoft/node-core-library" "3.14.1"
-    "@microsoft/ts-command-line" "4.2.7"
+    "@microsoft/api-extractor-model" "7.4.1"
+    "@microsoft/node-core-library" "3.14.2"
+    "@microsoft/ts-command-line" "4.2.8"
     "@microsoft/tsdoc" "0.12.14"
     colors "~1.2.1"
     js-yaml "~3.13.1"
     resolve "1.8.1"
-
-"@microsoft/api-extractor-model@7.3.4":
-  version "7.3.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.3.4.tgz#5c3efee4022cab856516d0d447d4ee7dca5336c5"
-  integrity sha512-a9gXhWG7PWcUNpJRtxGZ/Vepq1ke5ES2B6NnBH0M3zT//vGYXymf7aOQepCHfmY4p1cJvvmJoJNGMwtoC0eF5A==
-  dependencies:
-    "@microsoft/node-core-library" "3.14.1"
-    "@microsoft/tsdoc" "0.12.14"
-    "@types/node" "8.5.8"
 
 "@microsoft/api-extractor-model@7.4.1":
   version "7.4.1"
@@ -208,20 +199,6 @@
     source-map "~0.6.1"
     typescript "~3.5.3"
 
-"@microsoft/node-core-library@3.14.1":
-  version "3.14.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/node-core-library/-/node-core-library-3.14.1.tgz#3eaeede8f7dffc030c53895218a3ee925491dbcc"
-  integrity sha512-KVYef9kjK6lmGOOjYRctYFX3ymZ71xobweBftwP8hQS5JTBX+QqpAOvfiFQmlMgfJ7/TS7u3u3QjVzeztuz5cg==
-  dependencies:
-    "@types/fs-extra" "5.0.4"
-    "@types/jju" "~1.4.0"
-    "@types/node" "8.5.8"
-    "@types/z-schema" "3.16.31"
-    colors "~1.2.1"
-    fs-extra "~7.0.1"
-    jju "~1.4.0"
-    z-schema "~3.18.3"
-
 "@microsoft/node-core-library@3.14.2":
   version "3.14.2"
   resolved "https://registry.yarnpkg.com/@microsoft/node-core-library/-/node-core-library-3.14.2.tgz#255d421963f2d447a19f935e3c8eb3053e8e381b"
@@ -235,16 +212,6 @@
     fs-extra "~7.0.1"
     jju "~1.4.0"
     z-schema "~3.18.3"
-
-"@microsoft/ts-command-line@4.2.7":
-  version "4.2.7"
-  resolved "https://registry.yarnpkg.com/@microsoft/ts-command-line/-/ts-command-line-4.2.7.tgz#01e963c683ae782e57225c5c424aa65702a9732c"
-  integrity sha512-PwUMIIDl8oWyl64Y5DW5FAuoRk4KWTBZdk4FEh366KEm5xYFBQhCeatHGURIj8nEYm0Xb2coCrXF77dGDlp/Qw==
-  dependencies:
-    "@types/argparse" "1.0.33"
-    "@types/node" "8.5.8"
-    argparse "~1.0.9"
-    colors "~1.2.1"
 
 "@microsoft/ts-command-line@4.2.8":
   version "4.2.8"
