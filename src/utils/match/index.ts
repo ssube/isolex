@@ -1,7 +1,6 @@
 import { get, isString } from 'lodash';
 
 import { doesExist } from '..';
-import { makeDict } from '../Map';
 
 export interface MatchData {
   rules: Array<MatchRule>;
