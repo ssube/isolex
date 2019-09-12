@@ -88,7 +88,7 @@
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-replace": "2.2.0",
     "rollup-plugin-tslint": "0.2.2",
-    "rollup-plugin-typescript2": "0.24.1",
+    "rollup-plugin-typescript2": "0.24.2",
     "rollup-plugin-yaml": "1.1.0",
     "rxjs": "6.5.3",
     "rxjs-tslint-rules": "4.25.0",
