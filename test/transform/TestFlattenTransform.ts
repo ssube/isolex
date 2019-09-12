@@ -8,6 +8,8 @@ import { TYPE_JSON } from '../../src/utils/Mime';
 import { describeAsync, itAsync } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
+const OUTPUT_FIELD = 'body';
+
 describeAsync('flatten transform', async () => {
   itAsync('should transform data', async () => {
     const { container } = await createServiceContainer();
@@ -38,6 +40,6 @@ describeAsync('flatten transform', async () => {
       verb: CommandVerb.Create,
     });
     const output = await transform.transform(cmd, TYPE_JSON, data);
-    expect(output['body']).to.deep.equal(['hello-world']);
+    expect(output[OUTPUT_FIELD]).to.deep.equal(['hello-world']);
   });
 });

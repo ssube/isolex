@@ -39,7 +39,7 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
     }
 
     const ctx = mustExist(msg.context);
-    const data = await this.split(msg.body);
+    const data = this.split(msg.body);
     this.logger.debug({ data }, 'splitting string');
     const mapped = this.mapper.map(data);
     return [await this.createCommand(ctx, mapped)];
@@ -58,7 +58,7 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
     };
   }
 
-  public split(msg: string) {
+  public split(msg: string): Array<string> {
     return this.splitBody(msg).map(trim).filter((it) => !isEmpty(it));
   }
 

@@ -20,6 +20,8 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
   constructor(options: BaseControllerOptions<GithubPRControllerData>) {
     super(options, 'isolex#/definitions/service-controller-github-pr', [NOUN_PULL_REQUEST]);
 
+    // this is a total hack because octokit crashes otherwise
+    /* tslint:disable-next-line:no-any */
     (global as any).navigator = {};
     this.client = new Octokit({
       auth: `token ${options.data.client.token}`,

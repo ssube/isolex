@@ -48,11 +48,8 @@ export class Match {
       return results;
     }
 
-    // TODO: remove this conversion (#327)
-    const data = makeDict<unknown>(val as any);
-
     for (const rule of this.rules) {
-      const value = get(data, rule.key);
+      const value = get(val, rule.key);
       if (!isString(value)) {
         results.errors.push(rule.key);
         results.matched = false;

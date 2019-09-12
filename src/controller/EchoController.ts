@@ -5,7 +5,7 @@ import { Command, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Listener } from '../listener';
 import { ServiceMetadata } from '../Service';
-import { mustCoalesce } from '../utils';
+import { doesExist, mustCoalesce } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_ECHO = 'echo';
@@ -26,7 +26,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   public async start() {
     await super.start();
 
-    this.defaultTarget = await this.services.getService<Listener>(this.data.defaultTarget);
+    this.defaultTarget = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
   @Handler(NOUN_ECHO, CommandVerb.Create)
@@ -47,7 +47,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   protected ensureTarget(ctx: Context) {
     const channel = mustCoalesce(this.data.forceChannel, ctx.channel);
 
-    if (ctx.target) {
+    if (doesExist(ctx.target)) {
       return new Context({
         ...ctx,
         channel,

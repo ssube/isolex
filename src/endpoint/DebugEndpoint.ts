@@ -16,13 +16,12 @@ export class DebugEndpoint extends BaseEndpoint<EndpointData> implements Endpoin
     ];
   }
 
-  public createRouter(): Promise<Router> {
-    const router = Router();
-    router.route('/').get((req: Request, res: Response) => this.getIndex(req, res));
-    return Promise.resolve(router);
+  public async createRouter(): Promise<Router> {
+    this.router.route('/').get(this.nextRoute(this.getIndex.bind(this)));
+    return this.router;
   }
 
-  public getIndex(req: Request, res: Response) {
+  public async getIndex(req: Request, res: Response): Promise<void> {
     const svcs = [];
     for (const [key, svc] of this.services.listServices()) {
       svcs.push({

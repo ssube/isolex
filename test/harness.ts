@@ -32,7 +32,7 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 // TODO: replace ineeda with sinon mocks (#327)
-/* tslint:disable:no-null-keyword */
+/* tslint:disable:no-any no-null-keyword */
 ineeda.intercept({
   then: null as any,
   unsubscribe: null as any,

@@ -6,7 +6,7 @@
     "no-banned-terms": true,
     "no-delete-expression": true,
     "no-for-in": true,
-    "no-relative-imports": true,
+    "no-relative-imports": false,
     "no-small-switch": false
   }
 }

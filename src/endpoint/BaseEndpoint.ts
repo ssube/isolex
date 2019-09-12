@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
@@ -17,6 +17,7 @@ export type BaseEndpointOptions<TData extends EndpointData> = BotServiceOptions<
 @Inject(INJECT_STORAGE)
 export abstract class BaseEndpoint<TData extends EndpointData> extends BotService<TData> implements Endpoint {
   protected readonly contextRepository: Repository<Context>;
+  protected readonly router: Router;
   protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
@@ -24,6 +25,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     super(options, schemaPath);
 
     this.contextRepository = mustExist(options[INJECT_STORAGE]).getRepository(Context);
+    this.router = Router();
     this.services = mustExist(options[INJECT_SERVICES]);
     this.transforms = [];
   }
@@ -54,5 +56,16 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     }));
     this.logger.debug({ ctx }, 'endpoint saved new context');
     return ctx;
+  }
+
+  protected nextRoute(fn: (req: Request, res: Response) => Promise<void>) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      fn(req, res).then(() => {
+        next();
+      }).catch((err: Error) => {
+        this.logger.error(err, 'error invoking route');
+        next();
+      });
+    };
   }
 }
