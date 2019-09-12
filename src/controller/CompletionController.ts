@@ -112,6 +112,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
       const results = await this.fragmentRepository.find({
         order: {
           createdAt: 'DESC',
+          /* tslint:disable-next-line:no-any */
         } as any,
         take: 1,
         where: {

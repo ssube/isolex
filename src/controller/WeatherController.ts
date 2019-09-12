@@ -49,7 +49,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
 
   public async requestWeather(location: string): Promise<WeatherReply> {
     const query = this.getQuery(location);
-    this.logger.debug({ location, query, root: this.data.api.root }, 'requesting weather data from API');
+    this.logger.debug({ location, query, root: this.data.api.root }, 'requesting data from weather API');
 
     try {
       const reply = await this.request.create<WeatherReply>({
@@ -58,6 +58,7 @@ export class WeatherController extends BaseController<WeatherControllerData> imp
         qs: query,
         uri: `${this.data.api.root}/weather`,
       });
+      this.logger.debug({ reply }, 'response from weather API');
       return reply;
     } catch (err) {
       if (err.name === 'StatusCodeError') {

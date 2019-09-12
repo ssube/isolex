@@ -3,6 +3,7 @@ import { Request, Response, Router } from 'express';
 import { Endpoint, EndpointData } from '.';
 import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
+import { doesExist } from '../utils';
 import { BaseEndpoint } from './BaseEndpoint';
 
 export class EchoEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
@@ -17,15 +18,14 @@ export class EchoEndpoint extends BaseEndpoint<EndpointData> implements Endpoint
     ];
   }
 
-  public createRouter(): Promise<Router> {
-    const router = Router();
-    router.route('/').get((req: Request, res: Response) => this.getIndex(req, res));
-    return Promise.resolve(router);
+  public async createRouter(): Promise<Router> {
+    this.router.route('/').get(this.nextRoute(this.getIndex.bind(this)));
+    return this.router;
   }
 
-  public getIndex(req: Request, res: Response) {
+  public async getIndex(req: Request, res: Response): Promise<void> {
     this.logger.debug('echo endpoint get index');
-    if (req.user) {
+    if (doesExist(req.user)) {
       const user = req.user as User;
       res.send(`Hello ${user.name}!`);
     } else {

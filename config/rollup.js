@@ -4,6 +4,7 @@ import json from 'rollup-plugin-json';
 import multiEntry from 'rollup-plugin-multi-entry';
 import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
+import tslint from 'rollup-plugin-tslint';
 import typescript from 'rollup-plugin-typescript2';
 import yaml from 'rollup-plugin-yaml';
 
@@ -198,6 +199,11 @@ const bundle = {
 					'find',
 				],
 			},
+		}),
+		tslint({
+			configuration: './config/tslint.json',
+			throwOnError: true,
+			include: ['**/*.ts'],
 		}),
 		typescript({
 			cacheRoot: 'out/cache/rts2',

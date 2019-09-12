@@ -107,6 +107,7 @@ export class GithubListener extends SessionListener<GithubListenerData> {
     const lastTick = await this.tickRepository.findOne({
       order: {
         createdAt: 'DESC',
+        /* tslint:disable-next-line:no-any */
       } as any,
       where: {
         intervalId: this.id,

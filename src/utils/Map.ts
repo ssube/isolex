@@ -147,7 +147,7 @@ export function dictValuesToArrays<TVal>(map: MapLike<TVal>): Dict<Array<TVal>> 
   return data;
 }
 
-export function normalizeMap(map: MapLike<any>): Dict<Array<string>> {
+export function normalizeMap(map: MapLike<unknown>): Dict<Array<string>> {
   const data: Dict<Array<string>> = {};
   for (const [key, value] of makeMap(map)) {
     if (Array.isArray(value)) {

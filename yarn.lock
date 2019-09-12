@@ -4219,6 +4219,15 @@ rollup-plugin-replace@2.2.0:
     magic-string "^0.25.2"
     rollup-pluginutils "^2.6.0"
 
+rollup-plugin-tslint@^0.2.2:
+  version "0.2.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-tslint/-/rollup-plugin-tslint-0.2.2.tgz#be440f020bffcb6622e3dd8d1b15a5234df833a5"
+  integrity sha512-1yF7bnDALlqgReMIsNDCNXOYqzCw9A8Ur5AS4RzlY7IsRBKB0yb+wx8ZCh0zBcXCeJP5tx36oqec4aX2Pzzttw==
+  dependencies:
+    rollup-pluginutils "^2.0.1"
+    tslint "^5.9.1"
+    typescript "^3.0.0"
+
 rollup-plugin-typescript2@0.24.1:
   version "0.24.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.24.1.tgz#6b6bd4c4dcfc7575af68b16f921a13ad32f68f47"
@@ -4824,7 +4833,7 @@ tslint-sonarts@1.9.0:
   dependencies:
     immutable "^3.8.2"
 
-tslint@5.20.0:
+tslint@5.20.0, tslint@^5.9.1:
   version "5.20.0"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.20.0.tgz#fac93bfa79568a5a24e7be9cdde5e02b02d00ec1"
   integrity sha512-2vqIvkMHbnx8acMogAERQ/IuINOq6DFqgF8/VDvhEkBqQh/x6SP0Y+OHnKth9/ZcHQSroOZwUQSN18v8KKF0/g==
@@ -4937,7 +4946,7 @@ typeorm@0.2.18:
     yargonaut "^1.1.2"
     yargs "^13.2.1"
 
-typescript@3.6.3:
+typescript@3.6.3, typescript@^3.0.0:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.3.tgz#fea942fabb20f7e1ca7164ff626f1a9f3f70b4da"
   integrity sha512-N7bceJL1CtRQ2RiG0AQME13ksR7DiuQh/QehubYcghzv20tnh+MQnQIuJddTmsbqYj+dztchykemz0zFzlvdQw==

@@ -108,20 +108,20 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
   }
 
   public createRouter(): Promise<Router> {
-    const router = Router();
-    router.use(expressJSON());
-    router.route('/hook').post((req: Request, res: Response) => {
-      this.logger.debug({
-        req,
-        res,
-      }, 'gitlab endpoint got webhook');
+    this.router.use(expressJSON());
+    this.router.route('/hook').post(this.nextRoute(this.hookSwitch.bind(this)));
+    return Promise.resolve(this.router);
+  }
 
-      // authenticate & authorize
+  public async hookSwitch(req: Request, res: Response) {
+    this.logger.debug({
+      req,
+      res,
+    }, 'gitlab endpoint got webhook');
 
-      const hook: GitlabBaseWebhook = req.body;
-      return this.hookKind(req, res, hook);
-    });
-    return Promise.resolve(router);
+    // authenticate & authorize
+    const hook: GitlabBaseWebhook = req.body;
+    return this.hookKind(req, res, hook);
   }
 
   public async hookKind(req: Request, res: Response, data: GitlabBaseWebhook) {
@@ -209,6 +209,7 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
   }
 
   protected async createHookMessage(req: Request, res: Response, data: GitlabBaseWebhook): Promise<Message> {
+    /* tslint:disable-next-line:no-any */
     const msgCtx = mustExist<Context>(req.user as any);
     // fake message for the transforms to check and filter
     return new Message({

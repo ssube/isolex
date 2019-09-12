@@ -88,6 +88,7 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
       // typeorm requires an order for toString, which is not a column
       order: {
         updatedAt: 'DESC',
+      /* tslint:disable-next-line:no-any */
       } as any,
       take: 1,
       where: {
