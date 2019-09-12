@@ -1,16 +1,25 @@
 import { expect } from 'chai';
 
 import { NotFoundError } from '../../src/error/NotFoundError';
-import { getHead, getHeadOrDefault, makeMap, mustGet } from '../../src/utils/Map';
+import { getHead, getHeadOrDefault, getOrDefault, makeDict, makeMap, mustGet } from '../../src/utils/Map';
 import { describeAsync, itAsync } from '../helpers/async';
 
+const DEFAULT_VALUE = 'default';
 const mapKey = 'key';
 const mapValue = 'value';
 const singleItem = new Map([[mapKey, mapValue]]);
 const multiItem = new Map([[mapKey, [mapValue]]]);
 
 describeAsync('map utils', async () => {
-  describeAsync('dict to map', async () => {
+  describeAsync('make dict', async () => {
+    itAsync('should return an empty dict for nil values', async () => {
+      /* tslint:disable-next-line:no-null-keyword */
+      expect(makeDict(null)).to.deep.equal({});
+      expect(makeDict(undefined)).to.deep.equal({});
+    });
+  });
+
+  describeAsync('make map', async () => {
     itAsync('should convert objects to maps', async () => {
       const data = {
         bar: '2',
@@ -54,5 +63,20 @@ describeAsync('map utils', async () => {
     itAsync('should get the default for missing keys', async () => {
       expect(getHeadOrDefault(multiItem, 'nope', mapValue)).to.equal(mapValue);
     });
+
+    xit('should return the default for nil values');
+  });
+
+  describe('get or default helper', () => {
+    it('should get the item for existing keys', () => {
+      expect(getOrDefault(singleItem, mapKey, DEFAULT_VALUE)).to.equal(mapValue);
+    });
+
+    it('should get the item for missing keys', () => {
+      expect(getOrDefault(singleItem, 'missing', DEFAULT_VALUE)).to.equal(DEFAULT_VALUE);
+    });
+
+    xit('should return the default for nil values');
+    xit('should return falsy values for existing keys');
   });
 });
