@@ -118,7 +118,7 @@ async function loadModules(config: BotDefinition, logger: Logger) {
   for (const p of config.data.modules) {
     try {
       const nodeModule = require(p.require);
-      const moduleType = nodeModule[p.export];
+      const moduleType = nodeModule[p.export] as ModuleCtor;
 
       // TODO: verify this is a module constructor before instantiating
       const module = new moduleType(p.data);
