@@ -162,10 +162,10 @@
     underscore "^1.9.1"
     ws "^6.1.0"
 
-"@microsoft/api-documenter@7.4.3":
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-documenter/-/api-documenter-7.4.3.tgz#af5e69891c4b62e963a697127b69a25396d0123d"
-  integrity sha512-+RdqNNt9ssUCBAsLvKVPzbRD5RYd0HRgmnhRuEr+eZg2tj2tqfP9AhLWK5SBVn68CX5hyeWHEnQJ4HikDTZN8A==
+"@microsoft/api-documenter@7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-documenter/-/api-documenter-7.4.4.tgz#b3fdf5ca1787b90bf25d951fb1050daea2b299e2"
+  integrity sha512-3n15j070lhpcGTtm6hXLeH0Z9Ej2C4X3Ml26NbnsCdwgandHtLZyArRBKI9MIn1D/PqCjOpqnIwcVsVUThqtzQ==
   dependencies:
     "@microsoft/api-extractor-model" "7.4.1"
     "@microsoft/node-core-library" "3.14.2"
