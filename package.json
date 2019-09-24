@@ -65,7 +65,7 @@
     "js-yaml": "3.13.1",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",
-    "mathjs": "6.2.1",
+    "mathjs": "6.2.2",
     "mocha": "6.2.0",
     "node-emoji": "1.10.0",
     "noicejs": "3.0.0-4",
