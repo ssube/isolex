@@ -20,7 +20,7 @@
     "@kubernetes/client-node": "0.10.2",
     "@microsoft/api-documenter": "7.4.6",
     "@microsoft/api-extractor": "7.4.4",
-    "@octokit/rest": "16.30.0",
+    "@octokit/rest": "16.30.1",
     "@slack/client": "5.0.2",
     "@types/bunyan": "1.8.6",
     "@types/chai": "4.2.3",
