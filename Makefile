@@ -46,6 +46,8 @@ MOCHA_MULTI ?= --reporter mocha-multi --reporter-options json="$(TARGET_PATH)/mo
 MOCHA_OPTS  ?= --check-leaks --colors $(NODE_MEMORY) --sort --timeout 30000 --ui bdd
 RELEASE_OPTS ?= --commit-all
 
+SHELL := bash
+
 # Versions
 export NODE_VERSION		:= $(shell node -v)
 export RUNNER_VERSION  := $(CI_RUNNER_VERSION)
@@ -105,9 +107,10 @@ test: ## run mocha unit tests
 test: test-cover
 
 test-check: ## run mocha unit tests with coverage reports
-	ISOLEX_HOME=$(ROOT_PATH)/docs \
-		$(NODE_BIN)/nyc $(COVER_OPTS) \
-		$(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js
+	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
+	  source $${ISOLEX_HOME}/isolex.env; \
+	  $(NODE_BIN)/nyc $(COVER_OPTS) \
+	    $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js)
 
 test-cover: ## run mocha unit tests with coverage reports
 test-cover: test-check
@@ -173,10 +176,10 @@ run-bunyan: ## run the bot with bunyan logs
 	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
 
 pid-stop:
-	$(shell kill --signal TERM $(shell cat "$(TARGET_PATH)/isolex.pid"))
+	kill --signal TERM $(shell cat "$(TARGET_PATH)/isolex.pid")
 
 pid-reload:
-	$(shell kill --signal HUP $(shell cat "$(TARGET_PATH)/isolex.pid"))
+	kill --signal HUP $(shell cat "$(TARGET_PATH)/isolex.pid")
 
 pid-reset:
-	$(shell kill --signal INT $(shell cat "$(TARGET_PATH)/isolex.pid"))
+	kill --signal INT $(shell cat "$(TARGET_PATH)/isolex.pid")
