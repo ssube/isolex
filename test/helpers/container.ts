@@ -68,7 +68,7 @@ export async function createService<
   >(
     container: Container,
     type: Constructor<TService, TOptions>,
-    options: Partial<TOptions>,
+    options: Partial<TOptions>
 ): Promise<TService> {
   const schema = new Schema(); // tests use the real schema :D
   const locale = await container.create(Locale, {

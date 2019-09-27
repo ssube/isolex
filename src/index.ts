@@ -183,7 +183,7 @@ export async function main(argv: Array<string>): Promise<number> {
     botModule,
     svcModule,
     ...mainModules(),
-    ...extModules,
+    ...extModules
   );
   logger.info('configuring container');
   await ctr.configure({ logger });
