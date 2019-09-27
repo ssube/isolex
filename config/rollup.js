@@ -140,7 +140,6 @@ const bundle = {
 				],
 				'node_modules/lodash/lodash.js': [
 					'flatten',
-					'get',
 					'isBoolean',
 					'isEmpty',
 					'isFunction',

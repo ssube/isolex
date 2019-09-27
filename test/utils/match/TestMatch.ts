@@ -6,7 +6,7 @@ import { describeAsync, itAsync } from '../../helpers/async';
 function createMatch(rule: Partial<MatchRule>): Match {
   return new Match({
     rules: [{
-      key: 'foo',
+      key: '$.foo',
       operator: RuleOperator.Never,
       values: [],
       ...rule,

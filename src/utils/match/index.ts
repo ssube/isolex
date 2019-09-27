@@ -1,4 +1,5 @@
-import { get, isString } from 'lodash';
+import { JSONPath } from 'jsonpath-plus';
+import { isString } from 'lodash';
 
 import { doesExist } from '..';
 
@@ -48,17 +49,24 @@ export class Match {
     }
 
     for (const rule of this.rules) {
-      const value = get(val, rule.key);
-      if (!isString(value)) {
-        results.errors.push(rule.key);
-        results.matched = false;
-        continue;
-      }
+      const ruleValues = JSONPath({
+        /* tslint:disable-next-line:no-any */
+        json: val as any,
+        path: rule.key,
+      });
 
-      if (!this.matchRule(rule, value)) {
-        results.errors.push(rule.key);
-        results.matched = false;
-        continue;
+      for (const value of ruleValues) {
+        if (!isString(value)) {
+          results.errors.push(rule.key);
+          results.matched = false;
+          break;
+        }
+
+        if (!this.matchRule(rule, value)) {
+          results.errors.push(rule.key);
+          results.matched = false;
+          break;
+        }
       }
     }
 
