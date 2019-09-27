@@ -14,9 +14,9 @@
 
   "dtsRollup": {
     "enabled": true,
-    "untrimmedFilePath": "<projectFolder>/out/noicejs.d.ts",
-    "betaTrimmedFilePath": "<projectFolder>/out/noicejs-beta.d.ts",
-    "publicTrimmedFilePath": "<projectFolder>/out/noicejs-public.d.ts"
+    "untrimmedFilePath": "<projectFolder>/out/index.d.ts",
+    "betaTrimmedFilePath": "<projectFolder>/out/index-beta.d.ts",
+    "publicTrimmedFilePath": "<projectFolder>/out/index-public.d.ts"
   },
 
   "tsdocMetadata": {

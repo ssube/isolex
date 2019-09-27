@@ -33,7 +33,7 @@
       "never-prefix"
     ],
     "max-classes-per-file": [
-      true,
+      false,
       1
     ],
     "max-file-line-count": 250,
@@ -126,7 +126,12 @@
     "trailing-comma": [
       true,
       {
-        "multiline": "always",
+        "esSpecCompliant": true,
+        "multiline": {
+          "arrays": "always",
+          "functions": "never",
+          "object": "always"
+        },
         "singleline": "never"
       }
     ],

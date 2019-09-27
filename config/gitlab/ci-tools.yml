@@ -1,0 +1,61 @@
+.build-curl:
+  image: apextoaster/base:1.2
+  tags:
+    - platform:k8s
+    - runner:shared
+
+.build-climate:
+  image: apextoaster/code-climate:0.6
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+  variables:
+    CI_BRANCH: "${CI_COMMIT_REF_NAME}"
+    GIT_BRANCH: "${CI_COMMIT_REF_NAME}"
+    GIT_COMMIT_SHA: "${CI_COMMIT_SHA}"
+
+.build-codecov:
+  image: apextoaster/codecov:3.1
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
+.build-docker:
+  image: apextoaster/docker:18.09
+  services:
+    - apextoaster/docker-dind:18.09
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
+  before_script:
+    - mkdir ${HOME}/.docker
+    - echo "${DOCKER_SECRET}" | base64 -d > ${HOME}/.docker/config.json
+  script:
+    - ${CI_PROJECT_DIR}/scripts/docker-build.sh --push
+  after_script:
+    - rm -rfv ${HOME}/.docker
+
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+
+.build-node:
+  image: apextoaster/node:10.1
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false
+
+  before_script:
+    - echo "${NPM_SECRET}" | base64 -d > ${HOME}/.npmrc
+
+.build-sonar:
+  image: apextoaster/sonar-scanner:3.3
+  tags:
+    - platform:k8s
+    - runner:shared
+  allow_failure: false

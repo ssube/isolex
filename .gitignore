@@ -3,8 +3,12 @@
 .nyc_output/
 node_modules/
 out/
-yarn-error.log
+temp/
 
+# types
 *.bak
+*.d.ts
 *.swp
 *.tmp
+
+yarn-error.log
