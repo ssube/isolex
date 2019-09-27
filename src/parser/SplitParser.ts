@@ -39,9 +39,10 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
     }
 
     const ctx = mustExist(msg.context);
-    const data = this.split(msg.body);
-    this.logger.debug({ data }, 'splitting string');
-    const mapped = this.mapper.map(data);
+    const splitMsg = await this.decode(msg);
+    const mapped = this.mapper.map(splitMsg.data.body);
+    this.logger.debug({ splitMsg, mapped }, 'splitting string');
+
     return [await this.createCommand(ctx, mapped)];
   }
 

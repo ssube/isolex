@@ -9,6 +9,7 @@ import { Message } from '../../src/entity/Message';
 import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { SplitParser } from '../../src/parser/SplitParser';
 import { Storage } from '../../src/storage';
+import { RuleOperator } from '../../src/utils/match';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
 import { describeAsync, itAsync } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
@@ -138,5 +139,46 @@ describeAsync('split parser', async () => {
       type: TYPE_JPEG,
     });
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
+  });
+
+  itAsync('should remove prefixes', async () => {
+    const { container } = await createServiceContainer();
+    const svc = await createService(container, SplitParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: {
+        ...TEST_CONFIG,
+        match: {
+          rules: [{
+            key: 'body',
+            operator: RuleOperator.Every,
+            values: [{
+              string: '!!test',
+            }],
+          }],
+        },
+      },
+      metadata: {
+        kind: 'test',
+        name: 'test',
+      },
+    });
+
+    const msg = new Message({
+      body: '!!test foo bar',
+      context: ineeda<Context>({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        name: 'foo',
+        uid: 'bar',
+      }),
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    });
+
+    const [command] = await svc.parse(msg);
+    expect(command.get('foo')).to.deep.equal(['foo', 'bar']);
   });
 });
