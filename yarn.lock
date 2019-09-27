@@ -3338,10 +3338,10 @@ node-pre-gyp@^0.11.0:
     semver "^5.3.0"
     tar "^4"
 
-noicejs@3.0.0-5:
-  version "3.0.0-5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/noicejs/-/noicejs-3.0.0-5.tgz#fe8a350173328a31fc7afae4a2c6cd6af95863f5"
-  integrity sha512-n6myTHDvgDX9lFgfbkruiZpRsSl831SeCgSwLfmHtJL47WvWI91gC6DSBop5d3QC9/Sxc+kFQWt/xmZoB6vjYQ==
+noicejs@3.0.0-6:
+  version "3.0.0-6"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/noicejs/-/noicejs-3.0.0-6.tgz#cf2f6aefcec9ce7be4c48951847b60adc67171d5"
+  integrity sha512-P/0N+JHMqsV6D3t6AfkvbSswSR70D1JAueJFlG3Szbk1kblkspMBh0Pf3fouQkUkVLZI33QXYmPBeYX4ozY89w==
 
 nopt@^4.0.1:
   version "4.0.1"
