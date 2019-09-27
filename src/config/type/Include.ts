@@ -17,7 +17,7 @@ export const includeType = new YamlType('!include', {
     if (existsSync(canonical)) {
       return true;
     } else {
-      throw new NotFoundError('included file does not exist');
+      throw new NotFoundError(`included file does not exist: ${path}`);
     }
   },
   construct(path: string): unknown {
@@ -28,7 +28,7 @@ export const includeType = new YamlType('!include', {
         schema: includeSchema.schema,
       });
     } catch (err) {
-      throw new BaseError('error including file', err);
+      throw new BaseError(`error including file: ${path}`, err);
     }
   },
 });
