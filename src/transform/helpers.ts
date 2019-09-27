@@ -7,7 +7,7 @@ export async function applyTransforms(
   transforms: Array<Transform>,
   entity: FilterValue,
   type: string,
-  body: TransformInput,
+  body: TransformInput
 ): Promise<TransformOutput> {
   if (transforms.length === 0) {
     return {};
