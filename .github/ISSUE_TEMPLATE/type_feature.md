@@ -7,22 +7,26 @@ assignees: ''
 
 ---
 
-### Summary
+# Feature
+
+Something is missing!
+
+## Summary
 
 An elevator pitch of the feature and why it will be useful.
 
-### Scope
+## Scope
 
 - [ ] items to be implemented
   - [ ] additional details
 
-### Use Case
+## Use Case
 
 At least one concrete use case for the feature, ideally with step-by-step example.
 
 Bonus points if you can refer to another issue here.
 
-### Questions
+## Questions
 
 Outstanding questions, potential problems, and further research that might be needed.
 

@@ -1,0 +1,7 @@
+.nyc_output/
+docs/api/
+node_modules/
+out/api
+out/cache/
+out/coverage/
+out/tmp/

@@ -7,11 +7,15 @@ assignees: ''
 
 ---
 
-### Summary
+# Bug
+
+Something is broken!
+
+## Summary
 
 (quick summary of the issue)
 
-### Steps to Reproduce
+## Steps to Reproduce
 
 - install
 - configure
@@ -19,18 +23,18 @@ assignees: ''
 - ...
 - :(
 
-### Actual Behavior
+## Actual Behavior
 
 ```none
 example
 ```
 
-### Expected Behavior
+## Expected Behavior
 
 ```none
 example
 ```
 
-### Details
+## Details
 
 (detailed description of the expected behavior and what goes wrong)

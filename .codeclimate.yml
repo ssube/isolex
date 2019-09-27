@@ -1,6 +1,8 @@
 version: "2"
 
 exclude_patterns:
+  - CHANGELOG.md
+  - docs/api/
   - docs/dev/style.md
   - src/migration/
   - vendor/
@@ -11,7 +13,7 @@ plugins:
     config:
       languages:
         typescript:
-          mass_threshold: 225 # avoid increasing, increments of 5
+          mass_threshold: 225
   fixme:
     enabled: true
   markdownlint:
