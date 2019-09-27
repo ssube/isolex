@@ -60,7 +60,7 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public split(msg: string): Array<string> {
-    return this.splitBody(msg).map(trim).filter((it) => !isEmpty(it));
+    return this.splitBody(msg).map((it) => this.trim(it)).filter((it) => !isEmpty(it));
   }
 
   public splitBody(msg: string): Array<string> {
@@ -68,6 +68,14 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
       return msg.split('');
     } else {
       return split(msg, this.data.split);
+    }
+  }
+
+  public trim(item: string): string {
+    if (this.data.split.keepQuotes) {
+      return trim(item);
+    } else {
+      return trim(item, ' \'"');
     }
   }
 }
