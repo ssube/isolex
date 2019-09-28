@@ -1,5 +1,7 @@
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
+SHELL := bash
+
 ci: build test-env
 
 test-env:
