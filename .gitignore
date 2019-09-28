@@ -9,5 +9,5 @@ temp/
 *.bak
 *.swp
 *.tmp
-
+report*.json
 yarn-error.log
