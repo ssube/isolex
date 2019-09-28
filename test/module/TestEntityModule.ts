@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import { isConstructor } from 'noicejs';
 
 import { EntityModule } from '../../src/module/EntityModule';
-import { describeAsync } from '../helpers/async';
+import { describeLeaks } from '../helpers/async';
 
-describeAsync('DI modules', async () => {
-  describeAsync('entity module', async () => {
+describeLeaks('DI modules', async () => {
+  describeLeaks('entity module', async () => {
     it('should return list of entity types', async () => {
       const module = new EntityModule();
       const entities = await module.createEntities();

@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 
 import { Picklist } from '../../src/utils/Picklist';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 
 const PICK_COUNT = 3;
 const PICK_REPS = 10_000;
 
-describeAsync('pick list', async () => {
-  itAsync('should pick one random item', async () => {
+describeLeaks('pick list', async () => {
+  itLeaks('should pick one random item', async () => {
     const list = new Picklist({
       data: [{
         value: 'x',
@@ -23,7 +23,7 @@ describeAsync('pick list', async () => {
     }
   });
 
-  itAsync('should pick one weighted item', async () => {
+  itLeaks('should pick one weighted item', async () => {
     const list = new Picklist({
       data: [{
         value: 'x',
@@ -39,7 +39,7 @@ describeAsync('pick list', async () => {
     }
   });
 
-  itAsync('should pick some random items', async () => {
+  itLeaks('should pick some random items', async () => {
     const counter = {x: 0, y: 0};
     const list = new Picklist<keyof typeof counter>({
       data: [{
@@ -56,7 +56,7 @@ describeAsync('pick list', async () => {
     }
   });
 
-  itAsync('should pick some weighted items', async () => {
+  itLeaks('should pick some weighted items', async () => {
     const list = new Picklist({
       data: [{
         value: 'x',

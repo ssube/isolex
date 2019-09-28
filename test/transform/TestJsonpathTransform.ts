@@ -7,11 +7,11 @@ import { Context } from '../../src/entity/Context';
 import { JsonpathTransform } from '../../src/transform/JsonpathTransform';
 import { JsonPath } from '../../src/utils/JsonPath';
 import { TYPE_JSON } from '../../src/utils/Mime';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeAsync('jsonpath transform', async () => {
-  itAsync('should transform data', async () => {
+describeLeaks('jsonpath transform', async () => {
+  itLeaks('should transform data', async () => {
     const { container } = await createServiceContainer();
 
     const data = { test: ['test_body'] };

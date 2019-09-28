@@ -3,7 +3,7 @@ import { MissingValueError } from 'noicejs';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../src/BaseService';
 import { ServiceEvent } from '../src/Service';
-import { describeAsync, itAsync } from './helpers/async';
+import { describeLeaks, itLeaks } from './helpers/async';
 import { createService, createServiceContainer } from './helpers/container';
 
 class StubService extends BaseService<BaseServiceData> {
@@ -15,8 +15,8 @@ class StubService extends BaseService<BaseServiceData> {
   public async stop() { /* noop */ }
 }
 
-describeAsync('base service', async () => {
-  itAsync('should throw on missing name', async () => {
+describeLeaks('base service', async () => {
+  itLeaks('should throw on missing name', async () => {
     const { container } = await createServiceContainer();
     return expect(createService(container, StubService, {
       data: {
@@ -30,7 +30,7 @@ describeAsync('base service', async () => {
     })).to.eventually.be.rejectedWith(MissingValueError);
   });
 
-  itAsync('should log notifications', async () => {
+  itLeaks('should log notifications', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
@@ -45,7 +45,7 @@ describeAsync('base service', async () => {
     await svc.notify(ServiceEvent.Tick);
   });
 
-  itAsync('should get ephemeral ID as UUID', async () => {
+  itLeaks('should get ephemeral ID as UUID', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
@@ -60,7 +60,7 @@ describeAsync('base service', async () => {
     expect(svc.getId(false)).to.match(/[A-Za-z0-9-]{16}/);
   });
 
-  itAsync('should get stable ID as kind:name pair', async () => {
+  itLeaks('should get stable ID as kind:name pair', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {

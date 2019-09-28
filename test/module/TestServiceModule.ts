@@ -5,7 +5,7 @@ import { spy } from 'sinon';
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Service, ServiceEvent } from '../../src/Service';
 import { defer } from '../../src/utils/Async';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
 const TEST_SERVICE_NAME = 'test-service';
@@ -34,8 +34,8 @@ async function createModule() {
   return { container, metadata, module, svc };
 }
 
-describeAsync('DI modules', async () => {
-  describeAsync('service module', async () => {
+describeLeaks('DI modules', async () => {
+  describeLeaks('service module', async () => {
     it('should notify child services of events', async () => {
       const { module, svc } = await createModule();
       const notify = svc.notify = spy();
@@ -62,7 +62,7 @@ describeAsync('DI modules', async () => {
       await defer(50);
     });
 
-    itAsync('should create and save child services', async () => {
+    itLeaks('should create and save child services', async () => {
       const { metadata, module, svc } = await createModule();
       const next = module.getService(metadata);
 

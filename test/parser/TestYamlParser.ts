@@ -10,7 +10,7 @@ import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { YamlParser } from '../../src/parser/YamlParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_YAML } from '../../src/utils/Mime';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -38,8 +38,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeAsync('yaml parser', async () => {
-  itAsync('should parse the message body', async () => {
+describeLeaks('yaml parser', async () => {
+  itLeaks('should parse the message body', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, YamlParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -68,7 +68,7 @@ describeAsync('yaml parser', async () => {
     expect(cmd.getHead('bar')).to.equal('2', 'bar');
   });
 
-  itAsync('should reject messages with other types', async () => {
+  itLeaks('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, YamlParser, {
       [INJECT_STORAGE]: TEST_STORAGE,

@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
 import { Schema } from '../../src/schema';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeAsync('json schema', async () => {
-  itAsync('should validate objects', async () => {
+describeLeaks('json schema', async () => {
+  itLeaks('should validate objects', async () => {
     const schema = new Schema();
     const data = {
       data: {
@@ -21,7 +21,7 @@ describeAsync('json schema', async () => {
     expect(results.valid).to.equal(true, 'schema must validate object');
   });
 
-  itAsync('should set defaults', async () => {
+  itLeaks('should set defaults', async () => {
     const schema = new Schema();
     const data = {
       data: {
@@ -38,7 +38,7 @@ describeAsync('json schema', async () => {
     expect(data.data).to.have.ownProperty('strict').which.equals(true, 'schema should default to strict');
   });
 
-  itAsync('should return errors', async () => {
+  itLeaks('should return errors', async () => {
     const schema = new Schema();
     expect(schema.getErrors()).to.be.have.lengthOf(0, 'errors must start empty');
 

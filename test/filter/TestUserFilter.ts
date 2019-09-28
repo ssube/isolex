@@ -6,7 +6,7 @@ import { Context } from '../../src/entity/Context';
 import { FilterBehavior } from '../../src/filter';
 import { UserFilter, UserFilterData } from '../../src/filter/UserFilter';
 import { ChecklistMode } from '../../src/utils/Checklist';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
@@ -24,8 +24,8 @@ async function createUserFilter(data: UserFilterData) {
   return { container, filter };
 }
 
-describeAsync('user filter', async () => {
-  itAsync('should have a working helper', async () => {
+describeLeaks('user filter', async () => {
+  itLeaks('should have a working helper', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,
@@ -37,7 +37,7 @@ describeAsync('user filter', async () => {
     expect(filter).to.be.an.instanceof(UserFilter);
   });
 
-  itAsync('should allow commands from allowed users', async () => {
+  itLeaks('should allow commands from allowed users', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,
@@ -58,7 +58,7 @@ describeAsync('user filter', async () => {
     expect(behavior).to.equal(FilterBehavior.Allow);
   });
 
-  itAsync('should filter out commands from banned users', async () => {
+  itLeaks('should filter out commands from banned users', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,

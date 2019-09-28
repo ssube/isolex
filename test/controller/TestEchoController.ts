@@ -13,13 +13,13 @@ import { Listener } from '../../src/listener';
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { TransformModule } from '../../src/module/TransformModule';
 import { Transform } from '../../src/transform';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_LISTENER = 'test-listener';
 
-describeAsync('echo controller', async () => {
-  itAsync('should exist', async () => {
+describeLeaks('echo controller', async () => {
+  itLeaks('should exist', async () => {
     const { container } = await createServiceContainer();
 
     const controller = await createService(container, EchoController, {
@@ -40,7 +40,7 @@ describeAsync('echo controller', async () => {
     expect(controller).to.be.an.instanceOf(EchoController);
   });
 
-  itAsync('should handle commands', async () => {
+  itLeaks('should handle commands', async () => {
     const modules = [new ServiceModule({
       timeout: 100,
     }), new TransformModule()];

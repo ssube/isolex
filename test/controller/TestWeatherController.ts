@@ -13,11 +13,11 @@ import { ServiceModule } from '../../src/module/ServiceModule';
 import { TransformModule } from '../../src/module/TransformModule';
 import { Transform } from '../../src/transform';
 import { RequestFactory } from '../../src/utils/Request';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeAsync('weather controller', async () => {
-  itAsync('should send a message', async () => {
+describeLeaks('weather controller', async () => {
+  itLeaks('should send a message', async () => {
     const modules = [new ServiceModule({
       timeout: 100,
     }), new TransformModule()];

@@ -12,7 +12,7 @@ import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { ArgsParser } from '../../src/parser/ArgsParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -49,8 +49,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeAsync('args parser', async () => {
-  itAsync('should parse a message body', async () => {
+describeLeaks('args parser', async () => {
+  itLeaks('should parse a message body', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       data: TEST_CONFIG,
@@ -70,7 +70,7 @@ describeAsync('args parser', async () => {
     });
   });
 
-  itAsync('should prompt to complete missing fields', async () => {
+  itLeaks('should prompt to complete missing fields', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -99,7 +99,7 @@ describeAsync('args parser', async () => {
     expect(cmd.getHead('foo')).to.equal('1');
   });
 
-  itAsync('should complete a fragment', async () => {
+  itLeaks('should complete a fragment', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -133,7 +133,7 @@ describeAsync('args parser', async () => {
     expect(cmd.getHead('bar')).to.equal('2');
   });
 
-  itAsync('should reject messages with other types', async () => {
+  itLeaks('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,

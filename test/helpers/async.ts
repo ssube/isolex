@@ -1,9 +1,8 @@
 import { AsyncHook, createHook } from 'async_hooks';
-import { isNil, isString } from 'lodash';
 
 // this will pull Mocha internals out of the stacks
 // tslint:disable-next-line:no-var-requires
-const {stackTraceFilter} = require('mocha/lib/utils');
+const { stackTraceFilter } = require('mocha/lib/utils');
 const filterStack = stackTraceFilter();
 
 type AsyncMochaTest = (this: Mocha.Context | void) => Promise<void>;
@@ -19,6 +18,10 @@ function debugMode() {
   return Reflect.has(process.env, 'DEBUG');
 }
 
+function isNil<T>(val: T | null | undefined): val is null | undefined {
+  return val === null || val === undefined;
+}
+
 /**
  * Async resource tracker using  node's internal hooks.
  *
@@ -28,10 +31,10 @@ function debugMode() {
 export class Tracker {
   public static getStack(): string {
     const err = new Error();
-    if (isString(err.stack)) {
-      return filterStack(err.stack);
-    } else {
+    if (isNil(err.stack)) {
       return 'no stack trace available';
+    } else {
+      return filterStack(err.stack);
     }
   }
 
@@ -92,7 +95,7 @@ export class Tracker {
 /**
  * Describe a suite of async tests. This wraps mocha's describe to track async resources and report leaks.
  */
-export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.Suite {
+export function describeLeaks(description: string, cb: AsyncMochaSuite): Mocha.Suite {
   return describe(description, function trackSuite(this: Mocha.Suite) {
     const tracker = new Tracker();
 
@@ -134,18 +137,18 @@ export function describeAsync(description: string, cb: AsyncMochaSuite): Mocha.S
  *
  * This function may not have any direct test coverage. It is too simple to reasonably mock.
  */
-export function itAsync(expectation: string, cb?: AsyncMochaTest): Mocha.Test {
+export function itLeaks(expectation: string, cb?: AsyncMochaTest): Mocha.Test {
   if (isNil(cb)) {
     return it(expectation);
-  } else {
-    return it(expectation, function trackTest(this: Mocha.Context) {
-      return new Promise<unknown>((res, rej) => {
-        cb.call(this).then((value: unknown) => {
-          res(value);
-        }, (err: Error) => {
-          rej(err);
-        });
+  }
+
+  return it(expectation, function trackTest(this: Mocha.Context) {
+    return new Promise<unknown>((res, rej) => {
+      cb.call(this).then((value: unknown) => {
+        res(value);
+      }, (err: Error) => {
+        rej(err);
       });
     });
-  }
+  });
 }

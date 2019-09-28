@@ -1,5 +1,5 @@
 import { isEmpty, trim } from 'lodash';
-import split from 'split-string';
+import split, { Options as SplitOptions } from 'split-string';
 
 import { Parser, ParserData, ParserOutput } from '.';
 import { BotServiceOptions } from '../BotService';
@@ -21,7 +21,7 @@ export interface SplitParserData extends ParserData {
   /**
    * Split options for delimiters, brackets, etc.
    */
-  split: SplitString.SplitOptions;
+  split: SplitOptions;
 }
 
 export class SplitParser extends BaseParser<SplitParserData> implements Parser {
@@ -72,10 +72,6 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public trim(item: string): string {
-    if (this.data.split.keepQuotes) {
-      return trim(item);
-    } else {
-      return trim(item, ' \'"');
-    }
+    return trim(item, ' \'"');
   }
 }

@@ -3,10 +3,10 @@ import { ineeda } from 'ineeda';
 
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeAsync('command', async () => {
-  itAsync('should copy data', async () => {
+describeLeaks('command', async () => {
+  itLeaks('should copy data', async () => {
     const data = {
       test: ['1'],
     };
@@ -25,7 +25,7 @@ describeAsync('command', async () => {
     expect(cmd.get('test')).to.deep.equal(['1']);
   });
 
-  itAsync('should get args by name', async () => {
+  itLeaks('should get args by name', async () => {
     const data = {
       test: ['1'],
     };
