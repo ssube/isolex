@@ -1,5 +1,7 @@
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
+ci: build test-env
+
 test-env:
 	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
 	source $${ISOLEX_HOME}/isolex.env; \

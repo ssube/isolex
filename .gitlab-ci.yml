@@ -16,7 +16,7 @@ build-node:
     - .build-node
 
   script:
-    - make build test
+    - make ci
 
   artifacts:
     expire_in: 1 day
