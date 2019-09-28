@@ -13,18 +13,20 @@ export const includeSchema = {
 export const includeType = new YamlType('!include', {
   kind: 'scalar',
   resolve(path: string) {
-    const canonical = resolvePath(path);
-    if (existsSync(canonical)) {
-      return true;
-    } else {
-      throw new NotFoundError(`included file does not exist: ${path}`);
+    try {
+      const canonical = resolvePath(path);
+      return existsSync(canonical);
+    } catch (err) {
+      throw new NotFoundError(`included file does not exist: ${path}`, err);
     }
   },
   construct(path: string): unknown {
     try {
-      return safeLoad(readFileSync(resolvePath(path), {
+      const canonical = resolvePath(path);
+      const data = readFileSync(canonical, {
         encoding: 'utf-8',
-      }), {
+      });
+      return safeLoad(data, {
         schema: includeSchema.schema,
       });
     } catch (err) {

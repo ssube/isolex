@@ -35,7 +35,7 @@ export type ParserValue = Buffer | string;
 export interface Parser extends Service {
   /**
    * Check whether this parser can parse an event (has the correct type, tags, etc).
-   * @param msg the incoming message to be parsed
+   * @param msg - the incoming message to be parsed
    */
   match(msg: Message): Promise<boolean>;
 
