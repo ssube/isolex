@@ -7,7 +7,6 @@ temp/
 
 # types
 *.bak
-*.d.ts
 *.swp
 *.tmp
 

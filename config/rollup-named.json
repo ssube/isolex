@@ -1,0 +1,6 @@
+{
+  "node_modules/chai/index.js": [
+    "expect",
+    "use"
+  ]
+}

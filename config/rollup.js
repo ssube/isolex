@@ -1,3 +1,4 @@
+import { sep } from 'path';
 import commonjs from 'rollup-plugin-commonjs';
 import externals from 'rollup-plugin-node-externals'
 import json from 'rollup-plugin-json';
@@ -202,7 +203,13 @@ const bundle = {
 		tslint({
 			configuration: './config/tslint.json',
 			throwOnError: true,
-			include: ['**/*.ts'],
+			include: [`**${sep}*.ts`],
+			exclude: [
+				`node_modules${sep}**`,
+				`src${sep}resource`,
+				`src${sep}**${sep}*.json`,
+				`src${sep}**${sep}*.yml`,
+			],
 		}),
 		typescript({
 			cacheRoot: 'out/cache/rts2',
