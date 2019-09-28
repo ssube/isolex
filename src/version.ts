@@ -9,7 +9,7 @@ export const VERSION_INFO = {
     commit: '{{ GIT_COMMIT }}',
   },
   package: {
-    name: '{{ APP_NAME }}',
-    version: '{{ APP_VERSION }}',
+    name: '{{ PACKAGE_NAME }}',
+    version: '{{ PACKAGE_VERSION }}',
   },
 };

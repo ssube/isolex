@@ -1,6 +1,6 @@
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeAsync('test helpers', async () => {
-  itAsync('should wrap suites');
-  itAsync('should wrap tests');
+describeLeaks('test helpers', async () => {
+  itLeaks('should wrap suites');
+  itLeaks('should wrap tests');
 });

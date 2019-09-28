@@ -29,8 +29,7 @@
       "chai-as-promised",
       "mocha",
       "octokit-graphql",
-      "rollup-resources",
-      "string-split"
+      "rollup-resources"
     ],
     "typeRoots": [
       "../node_modules/@types",

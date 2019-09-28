@@ -6,7 +6,7 @@ import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
 import { SourceFilter, SourceFilterData } from '../../src/filter/SourceFilter';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
@@ -24,8 +24,8 @@ async function createFilter(data: SourceFilterData) {
   return { container, filter };
 }
 
-describeAsync('source filter', async () => {
-  itAsync('should drop messages with a different type', async () => {
+describeLeaks('source filter', async () => {
+  itLeaks('should drop messages with a different type', async () => {
     const { filter } = await createFilter({
       filters: [],
       strict: true,

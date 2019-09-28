@@ -5,7 +5,7 @@ import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { FilterBehavior } from '../../src/filter';
 import { CommandFilter, CommandFilterData } from '../../src/filter/CommandFilter';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
@@ -23,8 +23,8 @@ async function createFilter(data: CommandFilterData) {
   return { container, filter };
 }
 
-describeAsync('command filter', async () => {
-  itAsync('should allow matching commands', async () => {
+describeLeaks('command filter', async () => {
+  itLeaks('should allow matching commands', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {

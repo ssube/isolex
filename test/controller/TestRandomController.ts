@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 
 import { RandomController } from '../../src/controller/RandomController';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeAsync('random controller', async () => {
-  itAsync('should exist', async () => {
+describeLeaks('random controller', async () => {
+  itLeaks('should exist', async () => {
     const { container } = await createServiceContainer();
 
     const controller = await createService(container, RandomController, {

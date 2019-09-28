@@ -11,7 +11,7 @@ import { SplitParser } from '../../src/parser/SplitParser';
 import { Storage } from '../../src/storage';
 import { RuleOperator } from '../../src/utils/match';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -54,8 +54,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeAsync('split parser', async () => {
-  itAsync('should split on whitespace', async () => {
+describeLeaks('split parser', async () => {
+  itLeaks('should split on whitespace', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -86,7 +86,7 @@ describeAsync('split parser', async () => {
     ]);
   });
 
-  itAsync('should split respect parens', async () => {
+  itLeaks('should split respect parens', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -116,11 +116,11 @@ describeAsync('split parser', async () => {
       '(message group)',
       '[second group]',
       'bits',
-      '"third group"',
+      'third group',
     ]);
   });
 
-  itAsync('should reject messages with other types', async () => {
+  itLeaks('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -141,7 +141,7 @@ describeAsync('split parser', async () => {
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
   });
 
-  itAsync('should remove prefixes', async () => {
+  itLeaks('should remove prefixes', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,

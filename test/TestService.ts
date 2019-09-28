@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
 import { getLogInfo, Service } from '../src/Service';
-import { describeAsync, itAsync } from './helpers/async';
+import { describeLeaks, itLeaks } from './helpers/async';
 
-describeAsync('service helpers', async () => {
-  itAsync('should get log info', async () => {
+describeLeaks('service helpers', async () => {
+  itLeaks('should get log info', async () => {
     const svc = ineeda<Service>({
       id: 'test',
     });

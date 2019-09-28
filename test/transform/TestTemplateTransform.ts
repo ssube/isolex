@@ -8,11 +8,11 @@ import { TemplateTransform } from '../../src/transform/TemplateTransform';
 import { TYPE_JSON } from '../../src/utils/Mime';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeAsync('template transform', async () => {
-  itAsync('should transform data', async () => {
+describeLeaks('template transform', async () => {
+  itLeaks('should transform data', async () => {
     const { container } = await createServiceContainer();
 
     const data = {

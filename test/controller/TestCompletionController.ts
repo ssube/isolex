@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 
 import { CompletionController } from '../../src/controller/CompletionController';
-import { describeAsync, itAsync } from '../helpers/async';
+import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeAsync('completion controller', async () => {
-  itAsync('should exist', async () => {
+describeLeaks('completion controller', async () => {
+  itLeaks('should exist', async () => {
     const { container } = await createServiceContainer();
 
     const controller = await createService(container, CompletionController, {
