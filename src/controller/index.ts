@@ -16,7 +16,7 @@ export interface Controller extends Service {
 
   /**
    * Handle a command, sending any replies.
-   * @param cmd the command to be handled
+   * @param cmd - the command to be handled
    * @returns true if the command was handled
    */
   handle(cmd: Command): Promise<void>;
