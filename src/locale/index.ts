@@ -1,7 +1,4 @@
-import { readFileSync } from 'fs';
 import i18next from 'i18next';
-import { safeLoad } from 'js-yaml';
-import { isNil } from 'lodash';
 import { Container, Inject, Logger } from 'noicejs';
 
 import { BaseService, BaseServiceOptions, INJECT_LOGGER } from '../BaseService';
@@ -9,12 +6,7 @@ import { ServiceLifecycle } from '../Service';
 import { mustExist } from '../utils';
 import { classLogger } from '../utils/logger';
 import { LocaleLogger } from '../utils/logger/LocaleLogger';
-
-const LOCALE_STRING = readFileSync('./src/locale/en.yml', 'utf-8');
-if (isNil(LOCALE_STRING)) {
-  throw new Error('unable to load schema from file');
-}
-const LOCALE_GLOBAL = safeLoad(LOCALE_STRING);
+import * as LOCALE_GLOBAL from './en.yml';
 
 export interface LocaleData {
   lang: string;

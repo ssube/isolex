@@ -1,16 +1,8 @@
 import Ajv from 'ajv';
-import { readFileSync } from 'fs';
-import { safeLoad } from 'js-yaml';
-import { isNil } from 'lodash';
 
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { SCHEMA_KEYWORD_REGEXP } from './keyword/Regexp';
-
-const SCHEMA_STRING = readFileSync('./src/schema/schema.yml', 'utf-8');
-if (isNil(SCHEMA_STRING)) {
-  throw new Error('unable to load schema from file');
-}
-const SCHEMA_GLOBAL = safeLoad(SCHEMA_STRING);
+import * as SCHEMA_GLOBAL from './schema.yml';
 
 export interface SchemaResult {
   errors: Array<string>;
