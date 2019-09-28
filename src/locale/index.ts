@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next, { ResourceLanguage } from 'i18next';
 import { Container, Inject, Logger } from 'noicejs';
 
 import { BaseService, BaseServiceOptions, INJECT_LOGGER } from '../BaseService';
@@ -43,7 +43,7 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
       debug: true,
       lng: this.data.lang,
       resources: {
-        en: LOCALE_GLOBAL,
+        en: LOCALE_GLOBAL as ResourceLanguage,
       },
     });
   }
