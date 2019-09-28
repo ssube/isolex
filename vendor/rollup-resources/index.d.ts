@@ -1,7 +1,9 @@
 module "*.json" {
-  export default data = unknown;
+  export const data: unknown;
+  export default data;
 }
 
 module "*.yml" {
-  export default data = unknown;
+  export const data: unknown;
+  export default data;
 }
