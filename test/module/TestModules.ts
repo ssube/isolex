@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { ConsoleLogger, Container } from 'noicejs';
+import { Container } from 'noicejs';
 
 import { BotModule } from '../../src/module/BotModule';
 import { ControllerModule } from '../../src/module/ControllerModule';
@@ -12,6 +12,7 @@ import { MigrationModule } from '../../src/module/MigrationModule';
 import { ParserModule } from '../../src/module/ParserModule';
 import { TransformModule } from '../../src/module/TransformModule';
 import { describeLeaks, itLeaks } from '../helpers/async';
+import { getTestLogger } from '../helpers/logger';
 
 const MODULE_TYPES = [
   BotModule,
@@ -31,7 +32,7 @@ describeLeaks('DI modules', async () => {
     describeLeaks(kebabCase(moduleType.name), async () => {
       itLeaks('should be configurable', async () => {
         const options = {
-          logger: ConsoleLogger.global,
+          logger: getTestLogger(),
         };
         const container = Container.from(new moduleType(options));
         await container.configure(options);

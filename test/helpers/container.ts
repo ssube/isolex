@@ -1,5 +1,5 @@
 import { ineeda } from 'ineeda';
-import { ConsoleLogger, Constructor, Container, Logger, Module, ModuleOptions, Provides } from 'noicejs';
+import { Constructor, Container, Logger, Module, ModuleOptions, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 import { Connection, Repository } from 'typeorm';
 
@@ -19,6 +19,7 @@ import { Schema } from '../../src/schema';
 import { Clock } from '../../src/utils/Clock';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
+import { getTestLogger } from './logger';
 
 export class TestModule extends Module {
   public async configure(options: ModuleOptions) {
@@ -29,7 +30,7 @@ export class TestModule extends Module {
 
   @Provides(INJECT_LOGGER)
   public async getLogger(): Promise<Logger> {
-    return ConsoleLogger.global;
+    return getTestLogger();
   }
 }
 
@@ -40,7 +41,7 @@ export async function createContainer(...modules: Array<Module>): Promise<{ cont
   const module = new TestModule();
   const container = Container.from(module, ...modules);
   await container.configure({
-    logger: ConsoleLogger.global,
+    logger: getTestLogger(),
   });
   return { container, module };
 }
@@ -79,7 +80,7 @@ export async function createService<
       kind: 'locale',
       name: 'locale',
     },
-    [INJECT_LOGGER]: ConsoleLogger.global,
+    [INJECT_LOGGER]: getTestLogger(),
     [INJECT_SCHEMA]: schema,
   });
 
@@ -90,7 +91,7 @@ export async function createService<
       compile: () => ineeda<Template>(),
     }),
     [INJECT_LOCALE]: locale,
-    [INJECT_LOGGER]: ConsoleLogger.global,
+    [INJECT_LOGGER]: getTestLogger(),
     [INJECT_METRICS]: new Registry(),
     [INJECT_SCHEMA]: schema,
     [INJECT_STORAGE]: ineeda<Connection>({

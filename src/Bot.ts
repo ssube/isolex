@@ -17,11 +17,11 @@ import { Command } from './entity/Command';
 import { Message } from './entity/Message';
 import { Interval, IntervalData } from './interval';
 import { ContextFetchOptions, Listener, ListenerData } from './listener';
-import { Locale, LocaleOptions } from './locale';
+import { Locale, LocaleData } from './locale';
 import { ServiceModule } from './module/ServiceModule';
 import { Parser, ParserData } from './parser';
 import { Service, ServiceDefinition, ServiceEvent } from './Service';
-import { Storage, StorageOptions } from './storage';
+import { Storage, StorageData } from './storage';
 import { filterNil, mustExist, mustFind } from './utils';
 import { ExternalModule } from './utils/ExternalModule';
 import { createServiceCounter, incrementServiceCounter } from './utils/metrics';
@@ -31,7 +31,7 @@ export interface BotData extends BaseServiceData {
   endpoints: Array<ServiceDefinition<EndpointData>>;
   intervals: Array<ServiceDefinition<IntervalData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
-  locale: LocaleOptions;
+  locale: ServiceDefinition<LocaleData>;
   logger: {
     level: LogLevel;
     name: string;
@@ -46,7 +46,7 @@ export interface BotData extends BaseServiceData {
   services: {
     timeout: number;
   };
-  storage: StorageOptions;
+  storage: ServiceDefinition<StorageData>;
 }
 
 export type BotDefinition = ServiceDefinition<BotData>;
