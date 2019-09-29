@@ -118,13 +118,13 @@ const bundle = {
 		replace({
 			delimiters: ['{{ ', ' }}'],
 			values: {
-				APP_NAME: metadata.name,
-				APP_VERSION: metadata.version,
 				BUILD_JOB: process.env['CI_JOB_ID'],
 				BUILD_RUNNER: process.env['CI_RUNNER_DESCRIPTION'],
 				GIT_BRANCH: process.env['CI_COMMIT_REF_SLUG'],
 				GIT_COMMIT: process.env['CI_COMMIT_SHA'],
 				NODE_VERSION: process.env['NODE_VERSION'],
+				PACKAGE_NAME: metadata.name,
+				PACKAGE_VERSION: metadata.version,
 			},
 		}),
 		resolve({
