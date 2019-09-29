@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { defaultTo } from 'lodash';
 import { spy } from 'sinon';
 
-import { createBot, CreateOptions, ExitStatus, runBot } from '../src/app';
+import { createBot, CreateOptions, ExitStatus, main, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
 import { Service, ServiceEvent } from '../src/Service';
 import { defer } from '../src/utils/Async';
@@ -201,5 +202,26 @@ describeLeaks('app bot stuff', async () => {
       .and.been.calledWith(ServiceEvent.Reload)
       .and.been.calledWith(ServiceEvent.Stop);
 
+  });
+});
+
+describeLeaks('main', async () => {
+  itLeaks('should return exit status', async () => {
+    const pendingStatus = main([
+      '--config-name',
+      'isolex.yml',
+      '--config-path',
+      defaultTo(process.env.DOCS_PATH, __dirname),
+    ]);
+
+    await Promise.race([
+      pendingStatus,
+      defer(MAX_START_TIME * 10),
+    ]);
+
+    process.kill(process.pid, SIGNAL_STOP); // ask it to stop
+    const status = await pendingStatus;
+
+    expect(status).to.equal(ExitStatus.Success);
   });
 });

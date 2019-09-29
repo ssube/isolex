@@ -558,7 +558,17 @@ definitions:
                 type: string
 
   service-endpoint:
-    $ref: "#/definitions/service-data"
+    allOf:
+      - $ref: "#/definitions/service-data"
+      - type: object
+        additionalProperties: true
+        required: [transforms]
+        properties:
+          transforms:
+            type: array
+            default: []
+            items:
+              $ref: "#/definitions/service-definition"
 
   service-endpoint-debug:
     $ref: "#/definitions/service-endpoint"

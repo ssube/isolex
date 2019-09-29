@@ -115,7 +115,11 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   }
 
   public async stop() {
-    await mustExist(this.rtmClient).disconnect();
+    try {
+      await mustExist(this.rtmClient).disconnect();
+    } catch (err) {
+      this.logger.warn(err, 'error disconnecting slack client');
+    }
   }
 
   protected async sendReactions(msg: Message): Promise<void> {

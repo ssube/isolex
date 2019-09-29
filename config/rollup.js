@@ -140,6 +140,7 @@ const bundle = {
 					'CronJob',
 				],
 				'node_modules/lodash/lodash.js': [
+					'defaultTo',
 					'flatten',
 					'isBoolean',
 					'isEmpty',
