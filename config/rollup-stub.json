@@ -1,0 +1,21 @@
+{
+  "names": [
+    "@discordjs/uws",
+    "erlpack",
+    "ffmpeg-binaries",
+    "ioredis",
+    "mongodb",
+    "mssql",
+    "mysql",
+    "mysql2",
+    "node-opus",
+    "opusscript",
+    "oracledb",
+    "pg",
+    "pg-native",
+    "pg-query-stream",
+    "react-native-sqlite-storage",
+    "redis",
+    "sql.js"
+  ]
+}

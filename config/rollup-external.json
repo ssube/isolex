@@ -1,0 +1,13 @@
+{
+  "names": [
+    "async_hooks",
+    "aws-sdk",
+    "chai",
+    "discord.js",
+    "ecc-jsb",
+    "shelljs",
+    "snekfetch",
+    "sshpk",
+    "xmlbuilder"
+  ]
+}
