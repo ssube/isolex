@@ -1,13 +1,19 @@
 import { expect } from 'chai';
-import { ConsoleLogger } from 'noicejs';
+import { ineeda } from 'ineeda';
+import { spy } from 'sinon';
 
-import { createBot, ExitStatus, runBot } from '../src/app';
+import { createBot, CreateOptions, ExitStatus, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
+import { Service, ServiceEvent } from '../src/Service';
 import { defer } from '../src/utils/Async';
 import { SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '../src/utils/Signal';
 import { describeLeaks, itLeaks } from './helpers/async';
 import { getTestLogger } from './helpers/logger';
 
+const MAX_START_TIME = 250; // ms
+const MAX_SVC_TIME = 25;
+
+const TEST_SERVICE = 'test-service';
 const TEST_CONFIG: BotDefinition = {
   data: {
     controllers: [],
@@ -36,7 +42,7 @@ const TEST_CONFIG: BotDefinition = {
       },
     },
     services: {
-      timeout: 0,
+      timeout: MAX_SVC_TIME,
     },
     storage: {
       data: {
@@ -57,8 +63,6 @@ const TEST_CONFIG: BotDefinition = {
     name: 'test-bot',
   },
 };
-
-const MAX_START_TIME = 250; // ms
 
 describeLeaks('app bot stuff', async () => {
   itLeaks('should create a bot and container', async () => {
@@ -89,12 +93,38 @@ describeLeaks('app bot stuff', async () => {
     expect(status).to.equal(ExitStatus.Success);
   });
 
+  /* tslint:disable:no-identical-functions */
   itLeaks('should reset metrics while running', async () => {
-    const options = {
-      config: TEST_CONFIG,
+    const options: CreateOptions = {
+      config: {
+        data: {
+          ...TEST_CONFIG.data,
+          controllers: [{
+            data: {
+              filters: [],
+              strict: true,
+              transforms: [],
+            },
+            metadata: {
+              kind: TEST_SERVICE,
+              name: TEST_SERVICE,
+            },
+          }],
+        },
+        metadata: TEST_CONFIG.metadata,
+      },
       logger: getTestLogger(),
     };
-    const { bot } = await createBot(options);
+    const { bot, ctr } = await createBot(options);
+
+    const notify = spy();
+    const svc = ineeda<Service>({
+      notify,
+      stop: spy(),
+    });
+
+    const [ module ] = ctr.getModules();
+    module.bind(TEST_SERVICE).toInstance(svc);
 
     const pendingStatus = runBot(options, bot);
     await Promise.race([
@@ -112,13 +142,43 @@ describeLeaks('app bot stuff', async () => {
     const status = await pendingStatus;
 
     expect(status).to.equal(ExitStatus.Success);
+    expect(notify).to.have.callCount(3)
+      .and.been.calledWith(ServiceEvent.Start)
+      .and.been.calledWith(ServiceEvent.Reset)
+      .and.been.calledWith(ServiceEvent.Stop);
   });
+
   itLeaks('should reload config while running', async () => {
-    const options = {
-      config: TEST_CONFIG,
+    const options: CreateOptions = {
+      config: {
+        data: {
+          ...TEST_CONFIG.data,
+          controllers: [{
+            data: {
+              filters: [],
+              strict: true,
+              transforms: [],
+            },
+            metadata: {
+              kind: TEST_SERVICE,
+              name: TEST_SERVICE,
+            },
+          }],
+        },
+        metadata: TEST_CONFIG.metadata,
+      },
       logger: getTestLogger(),
     };
-    const { bot } = await createBot(options);
+    const { bot, ctr } = await createBot(options);
+
+    const notify = spy();
+    const svc = ineeda<Service>({
+      notify,
+      stop: spy(),
+    });
+
+    const [ module ] = ctr.getModules();
+    module.bind(TEST_SERVICE).toInstance(svc);
 
     const pendingStatus = runBot(options, bot);
     await Promise.race([
@@ -136,5 +196,10 @@ describeLeaks('app bot stuff', async () => {
     const status = await pendingStatus;
 
     expect(status).to.equal(ExitStatus.Success);
+    expect(notify).to.have.callCount(3)
+      .and.been.calledWith(ServiceEvent.Start)
+      .and.been.calledWith(ServiceEvent.Reload)
+      .and.been.calledWith(ServiceEvent.Stop);
+
   });
 });
