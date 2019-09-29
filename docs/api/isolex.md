@@ -4,17 +4,3 @@
 
 ## isolex package
 
-## Functions
-
-|  Function | Description |
-|  --- | --- |
-|  [main(argv)](./isolex.main.md) |  |
-
-## Variables
-
-|  Variable | Description |
-|  --- | --- |
-|  [base](./isolex.base.md) |  |
-|  [inject](./isolex.inject.md) |  |
-|  [noicejs](./isolex.noicejs.md) |  |
-
