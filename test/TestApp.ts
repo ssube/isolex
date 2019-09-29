@@ -11,8 +11,9 @@ import { SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '../src/utils/Signal';
 import { describeLeaks, itLeaks } from './helpers/async';
 import { getTestLogger } from './helpers/logger';
 
-const MAX_START_TIME = 250; // ms
-const MAX_SVC_TIME = 25;
+const MAIN_START_MULT = 10; // how much longer main takes vs normal start/signal tests
+const MAX_START_TIME = 500; // ms
+const MAX_SVC_TIME = 50;
 
 const TEST_SERVICE = 'test-service';
 const TEST_CONFIG: BotDefinition = {
@@ -216,7 +217,7 @@ describeLeaks('main', async () => {
 
     await Promise.race([
       pendingStatus,
-      defer(MAX_START_TIME * 10),
+      defer(MAX_START_TIME * MAIN_START_MULT),
     ]);
 
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
