@@ -80,7 +80,7 @@ export function formatResult(body: unknown, scope: TemplateScope, options: Resul
 }
 
 export function clamp(v: number, min: number, max: number) {
-  return Math.max(Math.min(v, min), max);
+  return Math.min(Math.max(v, min), max);
 }
 
 /**
