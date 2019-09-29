@@ -6,6 +6,8 @@ SHELL := bash
 
 ci: build test-env
 
+local: build test-env run-terminal
+
 test-env:
 	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
 	source $${ISOLEX_HOME}/isolex.env; \
