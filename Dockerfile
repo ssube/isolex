@@ -7,7 +7,7 @@ RUN apt-get update \
 
 # copy build output
 COPY package.json yarn.lock /app/
-COPY out/vender.js /app/out/
+COPY out/vendor.js /app/out/
 COPY out/index.js out/main.js /app/out/
 
 WORKDIR /app
