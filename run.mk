@@ -11,7 +11,7 @@ local: build test-env
 test-env:
 	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
 	source $${ISOLEX_HOME}/isolex.env; \
-	rm $(TARGET_PATH)/isolex.pid; \
+	rm $(TARGET_PATH)/{isolex,test}.pid; \
 	$(NODE_BIN)/nyc $(COVER_OPTS) \
 	  $(NODE_BIN)/mocha $(MOCHA_LONG_OPTS) $(TARGET_PATH)/test.js)
 
