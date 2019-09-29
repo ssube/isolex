@@ -1,6 +1,68 @@
 {
   "node_modules/chai/index.js": [
-    "expect",
-    "use"
+    "expect"
+  ],
+  "node_modules/cron/lib/cron.js": [
+    "CronJob"
+  ],
+  "node_modules/lodash/lodash.js": [
+    "defaultTo",
+    "flatten",
+    "isBoolean",
+    "isEmpty",
+    "isFunction",
+    "isMap",
+    "isNil",
+    "isNumber",
+    "isObject",
+    "isString",
+    "kebabCase",
+    "trim"
+  ],
+  "node_modules/mathjs/index.js": [
+    "max",
+    "min",
+    "random",
+    "randomInt"
+  ],
+  "node_modules/express/index.js": [
+    "json",
+    "Request",
+    "Response",
+    "Router"
+  ],
+  "node_modules/typeorm/index.js": [
+    "AfterLoad",
+    "BeforeInsert",
+    "BeforeUpdate",
+    "CreateDateColumn",
+    "Column",
+    "Entity",
+    "EntityRepository",
+    "Equal",
+    "FindManyOptions",
+    "In",
+    "JoinColumn",
+    "LessThan",
+    "ManyToOne",
+    "OneToOne",
+    "PrimaryColumn",
+    "PrimaryGeneratedColumn",
+    "Table",
+    "TableColumn",
+    "UpdateDateColumn"
+  ],
+  "node_modules/js-yaml/index.js": [
+    "DEFAULT_SAFE_SCHEMA",
+    "safeLoad",
+    "Schema",
+    "Type"
+  ],
+  "node_modules/@slack/client/dist/index.js": [
+    "WebAPICallResult",
+    "WebClient"
+  ],
+  "node_modules/node-emoji/index.js": [
+    "find"
   ]
 }

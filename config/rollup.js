@@ -1,6 +1,6 @@
-import { sep } from 'path';
+import { join, sep } from 'path';
 import commonjs from 'rollup-plugin-commonjs';
-import externals from 'rollup-plugin-node-externals'
+import externals from 'rollup-plugin-node-externals';
 import json from 'rollup-plugin-json';
 import multiEntry from 'rollup-plugin-multi-entry';
 import replace from 'rollup-plugin-replace';
@@ -10,73 +10,56 @@ import typescript from 'rollup-plugin-typescript2';
 import yaml from 'rollup-plugin-yaml';
 
 const debug = process.env['DEBUG'] === 'TRUE';
-const passStub = 'require("pass-stub")'
 const metadata = require('../package.json');
 
+const external = require('./rollup-external.json').names;
+const globals = require('./rollup-globals.json');
+const namedExports = require('./rollup-named.json');
+const stubNames = require('./rollup-stub.json').names;
+
+const passStub = 'require("pass-stub")';
+const stubs = stubNames.reduce((p, c) => (p[c] = passStub, p), {});
+
+const rootPath = process.env['ROOT_PATH'];
+const targetPath = process.env['TARGET_PATH'];
+
 const bundle = {
-	external: [
-		'async_hooks',
-		'aws-sdk',
-		'chai',
-		'discord.js',
-		'ecc-jsbn',
-		'shelljs',
-		'snekfetch',
-		'sshpk',
-		'xmlbuilder',
-	],
+	external,
 	input: {
 		include: [
-			'src/index.ts',
-			'test/harness.ts',
-			'test/**/Test*.ts',
+			join(rootPath, 'src', 'index.ts'),
+			join(rootPath, 'test', 'harness.ts'),
+			join(rootPath, 'test', '**', 'Test*.ts'),
 		],
 	},
 	manualChunks(id) {
-		if (id.includes('/test/')) { //} || id.includes('/chai/') || id.includes('/mocha/') || id.includes('/sinon/')) {
+		if (id.includes(`${sep}test${sep}`)) {
 			return 'test';
 		}
 
-		if (id.includes('/node_modules/')) {
+		if (id.match(/commonjs-external/i) || id.match(/commonjsHelpers/)) {
 			return 'vendor';
 		}
 
-		if (id.match(/commonjs-external/i) || id.match(/commonjsHelpers/) || id.includes('noicejs') || id.includes('pass-stub')) {
-			if (debug) {
-				console.log('==vendor', id);
-			}
-
+		if (id.includes(`${sep}node_modules${sep}`)) {
 			return 'vendor';
 		}
 
-		if (id.includes('/src/index')) {
-			if (debug) {
-				console.log('==index', id);
-			}
-
+		if (id.includes(`${sep}src${sep}index`)) {
 			return 'index';
 		}
 
-		if (id.includes('/src/')) {
-			if (debug) {
-				console.log('==main', id);
-			}
-
+		if (id.includes(`${sep}src${sep}`)) {
 			return 'main';
 		}
 	},
 	output: {
-		dir: 'out/',
+		dir: targetPath,
 		chunkFileNames: '[name].js',
 		entryFileNames: 'entry-[name].js',
 		format: 'cjs',
-		globals: {
-			'navigator': '{}',
-		},
+		globals,
 		sourcemap: true,
-		banner: () => {
-			return '\n';
-		},
 	},
 	plugins: [
 		multiEntry(),
@@ -90,30 +73,11 @@ const bundle = {
 		}),
 		replace({
 			delimiters: ['require("', '")'],
-			values: {
-				'ioredis': passStub,
-				'mongodb': passStub,
-				'mssql': passStub,
-				'mysql': passStub,
-				'mysql2': passStub,
-				'oracledb': passStub,
-				'pg': passStub,
-				'pg-native': passStub,
-				'pg-query-stream': passStub,
-				'react-native-sqlite-storage': passStub,
-				'redis': passStub,
-				'sql.js': passStub,
-			},
+			values: stubs,
 		}),
 		replace({
 			delimiters: ['require(\'', '\')'],
-			values: {
-				'@discordjs/uws': passStub,
-				'erlpack': passStub,
-				'ffmpeg-binaries': passStub,
-				'node-opus': passStub,
-				'opusscript': passStub,
-			},
+			values: stubs,
 		}),
 		replace({
 			delimiters: ['{{ ', ' }}'],
@@ -131,89 +95,23 @@ const bundle = {
 			preferBuiltins: true,
 		}),
 		commonjs({
-			namedExports: {
-				'node_modules/chai/index.js': [
-					'expect',
-					//'use',
-				],
-				'node_modules/cron/lib/cron.js': [
-					'CronJob',
-				],
-				'node_modules/lodash/lodash.js': [
-					'defaultTo',
-					'flatten',
-					'isBoolean',
-					'isEmpty',
-					'isFunction',
-					'isMap',
-					'isNil',
-					'isNumber',
-					'isObject',
-					'isString',
-					'kebabCase',
-					'trim',
-				],
-				'node_modules/mathjs/index.js': [
-					'max',
-					'min',
-					'random',
-					'randomInt',
-				],
-				'node_modules/express/index.js': [
-					'json',
-					'Request',
-					'Response',
-					'Router',
-				],
-				'node_modules/typeorm/index.js': [
-					'AfterLoad',
-					'BeforeInsert',
-					'BeforeUpdate',
-					'CreateDateColumn',
-					'Column',
-					'Entity',
-					'EntityRepository',
-					'Equal',
-					'FindManyOptions',
-					'In',
-					'JoinColumn',
-					'LessThan',
-					'ManyToOne',
-					'OneToOne',
-					'PrimaryColumn',
-					'PrimaryGeneratedColumn',
-					'Table',
-					'TableColumn',
-					'UpdateDateColumn',
-				],
-				'node_modules/js-yaml/index.js': [
-					'DEFAULT_SAFE_SCHEMA',
-					'safeLoad',
-					'Schema',
-					'Type',
-				],
-				'node_modules/@slack/client/dist/index.js': [
-					'WebAPICallResult',
-					'WebClient',
-				],
-				'node_modules/node-emoji/index.js': [
-					'find',
-				],
-			},
+			namedExports,
 		}),
 		tslint({
-			configuration: './config/tslint.json',
-			throwOnError: true,
-			include: [`**${sep}*.ts`],
+			configuration: join('.', 'config', 'tslint.json'),
 			exclude: [
-				`node_modules${sep}**`,
-				`src${sep}resource`,
-				`src${sep}**${sep}*.json`,
-				`src${sep}**${sep}*.yml`,
+				join('node_modules', '**'),
+				join('src', 'resource'),
+				join('src', '**', '*.json'),
+				join('src', '**', '*.yml'),
 			],
+			include: [
+				join('**', '*.ts'),
+			],
+			throwOnError: true,
 		}),
 		typescript({
-			cacheRoot: 'out/cache/rts2',
+			cacheRoot: join(targetPath, 'cache', 'rts2'),
 			rollupCommonJSResolveHack: true,
 		}),
 	],
