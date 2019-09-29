@@ -44,7 +44,7 @@
     DOCKER_HOST: tcp://localhost:2375
 
 .build-node:
-  image: apextoaster/node:10.1
+  image: apextoaster/node:11.15
   tags:
     - platform:k8s
     - runner:shared
