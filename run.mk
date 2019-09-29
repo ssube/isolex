@@ -6,7 +6,7 @@ SHELL := bash
 
 ci: build test-env
 
-local: build test-env run-terminal
+local: build test-env
 
 test-env:
 	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
@@ -15,6 +15,8 @@ test-env:
 	  $(NODE_BIN)/mocha $(MOCHA_LONG_OPTS) $(TARGET_PATH)/test.js)
 
 # run targets
+run: run-terminal
+
 run-config-test: ## run the bot to test the config
 	ISOLEX_HOME=$(ROOT_PATH)/docs node $(TARGET_MAIN) --test
 
@@ -29,12 +31,12 @@ run-bunyan: ## run the bot with bunyan logs
 	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
 
 pid-stop:
-	kill --signal TERM $(shell cat "$(TARGET_PATH)/isolex.pid")
+	kill -15 $(shell cat "$(TARGET_PATH)/isolex.pid")
 
 pid-reload:
-	kill --signal HUP $(shell cat "$(TARGET_PATH)/isolex.pid")
+	kill -1  $(shell cat "$(TARGET_PATH)/isolex.pid")
 
 pid-reset:
-	kill --signal INT $(shell cat "$(TARGET_PATH)/isolex.pid")
+	kill -2 $(shell cat "$(TARGET_PATH)/isolex.pid")
 
 
