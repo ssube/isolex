@@ -157,17 +157,13 @@ definitions:
 
   service-bot:
     type: object
-    required: [controllers, filters, listeners, locale, logger, modules, parsers, process, services, storage]
+    required: [controllers, listeners, locale, logger, modules, parsers, process, services, storage]
     properties:
       controllers:
         type: array
         items:
           $ref: "#/definitions/service-definition"
       endpoints:
-        type: array
-        items:
-          $ref: "#/definitions/service-definition"
-      filters:
         type: array
         items:
           $ref: "#/definitions/service-definition"
