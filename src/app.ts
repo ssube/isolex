@@ -1,16 +1,59 @@
 import { BaseOptions, Container, Logger } from 'noicejs';
+import yargs from 'yargs-parser';
 
 import { Bot, BotDefinition } from './Bot';
+import { loadConfig } from './config';
 import { loadModules, mainModules } from './module';
 import { BotModule } from './module/BotModule';
 import { ServiceModule } from './module/ServiceModule';
+import { Schema } from './schema';
 import { ServiceEvent } from './Service';
+import { BunyanLogger } from './utils/BunyanLogger';
 import { removePid, writePid } from './utils/PidFile';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from './utils/Signal';
+import { VERSION_INFO } from './version';
 
 export interface CreateOptions {
   config: BotDefinition;
   logger: Logger;
+}
+
+// main arguments
+const CONFIG_ARGS_NAME = 'config-name';
+const CONFIG_ARGS_PATH = 'config-path';
+const MAIN_ARGS: yargs.Options = {
+  array: [CONFIG_ARGS_PATH],
+  boolean: ['test'],
+  count: ['v'],
+  default: {
+    [CONFIG_ARGS_NAME]: '.isolex.yml',
+    [CONFIG_ARGS_PATH]: [],
+  },
+  envPrefix: 'isolex',
+};
+
+export async function main(argv: Array<string>): Promise<ExitStatus> {
+  const args = yargs(argv, MAIN_ARGS);
+  const config = await loadConfig(args[CONFIG_ARGS_NAME], ...args[CONFIG_ARGS_PATH]);
+
+  const logger = BunyanLogger.create(config.data.logger);
+  logger.info(VERSION_INFO, 'version info');
+  logger.info({ args }, 'main arguments');
+
+  const schema = new Schema();
+  const result = schema.match(config);
+  if (!result.valid) {
+    logger.error({ errors: result.errors }, 'config failed to validate');
+    return ExitStatus.Error;
+  }
+
+  if (args.test) {
+    logger.info('config is valid');
+    return ExitStatus.Success;
+  }
+
+  const { bot } = await createBot({ config, logger });
+  return runBot({ config, logger }, bot);
 }
 
 export async function createBot(options: CreateOptions) {
