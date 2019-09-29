@@ -60,7 +60,7 @@ Clone this repository:
 Within the project directory, make the bundle:
 
 ```shell
-> make
+> make local
 
 yarn install
 [1/4] Resolving packages...

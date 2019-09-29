@@ -67,7 +67,7 @@ In the project directory, run:
 
 ```shell
 > yarn
-> make
+> make local
 ```
 
 ### Signals

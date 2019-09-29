@@ -1,0 +1,34 @@
+---
+
+metadata:
+  kind: bot
+  name: isolex
+data:
+  filters: {}
+  controllers:
+    - {}
+  endpoints:
+  intervals:
+  listeners:
+  locale: []
+  logger:
+    level: debug
+    name: isolex
+  modules:
+    - require: isolex-oot-example
+      export: example-module
+  parsers: []
+  process:
+    pid:
+      file: ./out/isolex.pid
+  services:
+    timeout: 5000
+  storage:
+    metadata:
+      kind: storage
+      name: local-storage
+    data:
+      migrate: true
+      orm:
+        type: sqlite
+        database: "./out/isolex.db"
