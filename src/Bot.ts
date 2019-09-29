@@ -152,6 +152,9 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.debug('stopping storage');
     await this.getStorage().stop();
 
+    this.logger.debug('stopping locale');
+    await this.getLocale().stop();
+
     this.logger.info('bot has stopped');
   }
 
