@@ -1,5 +1,7 @@
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
+MOCHA_LONG_OPTS := $(MOCHA_OPTS) --timeout 5000
+
 SHELL := bash
 
 ci: build test-env
@@ -8,7 +10,7 @@ test-env:
 	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
 	source $${ISOLEX_HOME}/isolex.env; \
 	$(NODE_BIN)/nyc $(COVER_OPTS) \
-	  $(NODE_BIN)/mocha $(MOCHA_OPTS) $(TARGET_PATH)/test.js)
+	  $(NODE_BIN)/mocha $(MOCHA_LONG_OPTS) $(TARGET_PATH)/test.js)
 
 # run targets
 run-config-test: ## run the bot to test the config
