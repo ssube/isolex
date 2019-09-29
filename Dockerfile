@@ -1,4 +1,4 @@
-FROM apextoaster/node:10.1
+FROM apextoaster/node:11.15
 
 # install sqlite tools
 RUN apt-get update \
@@ -6,11 +6,9 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # copy build output
-COPY src/schema/schema.yml /app/src/schema/schema.yml
-COPY src/locale/en.yml /app/src/locale/en.yml
-COPY out/ /app/out/
-COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+COPY package.json yarn.lock /app/
+COPY out/vender.js /app/out/
+COPY out/index.js out/main.js /app/out/
 
 WORKDIR /app
 
