@@ -9,11 +9,9 @@ import tslint from 'rollup-plugin-tslint';
 import typescript from 'rollup-plugin-typescript2';
 import yaml from 'rollup-plugin-yaml';
 
-const debug = process.env['DEBUG'] === 'TRUE';
-const metadata = require('../package.json');
-
 const external = require('./rollup-external.json').names;
 const globals = require('./rollup-globals.json');
+const metadata = require('../package.json');
 const namedExports = require('./rollup-named.json');
 const stubNames = require('./rollup-stub.json').names;
 
