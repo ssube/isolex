@@ -1,6 +1,7 @@
-import { ineeda } from 'ineeda';
+import { DeepPartial, ineeda } from 'ineeda';
 import { Constructor, Container, Logger, Module, ModuleOptions, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
+import { spy } from 'sinon';
 import { Connection, Repository } from 'typeorm';
 
 import {
@@ -16,6 +17,7 @@ import { BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_LOCALE, INJECT_ST
 import { Locale } from '../../src/locale';
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Schema } from '../../src/schema';
+import { Service } from '../../src/Service';
 import { Clock } from '../../src/utils/Clock';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
@@ -70,7 +72,7 @@ export async function createService<
     container: Container,
     type: Constructor<TService, TOptions>,
     options: Partial<TOptions>
-): Promise<TService> {
+  ): Promise<TService> {
   const schema = new Schema(); // tests use the real schema :D
   const locale = await container.create(Locale, {
     data: {
@@ -104,4 +106,19 @@ export async function createService<
   };
 
   return container.create(type, fullOptions);
+}
+
+export async function serviceSpy(extra: DeepPartial<Service>) {
+  const spies = {
+    notify: spy(),
+    start: spy(),
+    stop: spy(),
+  };
+
+  const svc = ineeda<Service>({
+    ...extra,
+    ...spies,
+  });
+
+  return { svc, spies };
 }

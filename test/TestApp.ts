@@ -9,6 +9,7 @@ import { Service, ServiceEvent } from '../src/Service';
 import { defer, waitFor } from '../src/utils/Async';
 import { SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '../src/utils/Signal';
 import { describeLeaks, itLeaks } from './helpers/async';
+import { serviceSpy } from './helpers/container';
 import { getTestLogger } from './helpers/logger';
 
 const MAIN_START_MULT = 20; // how much longer main takes vs normal start/signal tests
@@ -134,12 +135,7 @@ describeLeaks('app bot stuff', async () => {
   /* tslint:disable:no-identical-functions */
   itLeaks('should reset metrics while running', async () => {
     const { bot, ctr } = await createBot(TEST_CONFIG_SERVICE);
-
-    const notify = spy();
-    const svc = ineeda<Service>({
-      notify,
-      stop: spy(),
-    });
+    const { svc, spies } = await serviceSpy({});
 
     const [module] = ctr.getModules();
     module.bind(TEST_SERVICE).toInstance(svc);
@@ -160,7 +156,7 @@ describeLeaks('app bot stuff', async () => {
     const status = await pendingStatus;
 
     expect(status).to.equal(ExitStatus.Success);
-    expect(notify).to.have.callCount(3)
+    expect(spies.notify).to.have.callCount(3)
       .and.been.calledWith(ServiceEvent.Start)
       .and.been.calledWith(ServiceEvent.Reset)
       .and.been.calledWith(ServiceEvent.Stop);
@@ -168,12 +164,7 @@ describeLeaks('app bot stuff', async () => {
 
   itLeaks('should reload config while running', async () => {
     const { bot, ctr } = await createBot(TEST_CONFIG_SERVICE);
-
-    const notify = spy();
-    const svc = ineeda<Service>({
-      notify,
-      stop: spy(),
-    });
+    const { svc, spies } = await serviceSpy({});
 
     const [module] = ctr.getModules();
     module.bind(TEST_SERVICE).toInstance(svc);
@@ -194,7 +185,7 @@ describeLeaks('app bot stuff', async () => {
     const status = await pendingStatus;
 
     expect(status).to.equal(ExitStatus.Success);
-    expect(notify).to.have.callCount(3)
+    expect(spies.notify).to.have.callCount(3)
       .and.been.calledWith(ServiceEvent.Start)
       .and.been.calledWith(ServiceEvent.Reload)
       .and.been.calledWith(ServiceEvent.Stop);
