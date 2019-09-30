@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 import { BaseOptions } from 'noicejs';
 
-const NOW_TO_SECONDS = 1000;
+export const NOW_TO_SECONDS = 1000;
 
 export type ClockHandler = () => void;
 
@@ -27,9 +27,9 @@ export class Clock {
 
   public getDate(seconds?: number): Date {
     if (isNil(seconds)) {
-      return new Date();
+      return new this.date();
     } else {
-      return new Date(seconds * NOW_TO_SECONDS);
+      return new this.date(seconds * NOW_TO_SECONDS);
     }
   }
 
