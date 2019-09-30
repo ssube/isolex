@@ -2225,10 +2225,10 @@ growl@1.10.5:
   version "1.10.5"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
 
-handlebars@4.3.3:
-  version "4.3.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/handlebars/-/handlebars-4.3.3.tgz#56dd05fe33d6bd8a7d797351c39a0cdcfd576be5"
-  integrity sha512-VupOxR91xcGojfINrzMqrvlyYbBs39sXIrWa7YdaQWeBudOlvKEGvCczMfJPgnuwHE/zyH1M6J+IUP6cgDVyxg==
+handlebars@4.4.0:
+  version "4.4.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/handlebars/-/handlebars-4.4.0.tgz#22e1a897c5d83023d39801f35f6b65cf97ed8b25"
+  integrity sha512-xkRtOt3/3DzTKMOt3xahj2M/EqNhY988T+imYSlMgs5fVhLN2fmKVVj0LtEGmb+3UUYV5Qmm1052Mm3dIQxOvw==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
