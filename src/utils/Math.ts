@@ -20,14 +20,16 @@ export interface ResultSet {
   entries: Array<string>;
 }
 
+export type ResultFormatBoolean = 'keep' | 'hide';
+
 export interface ResultFormatOptions {
   list: {
     join: string;
   };
   number: FormatOptions;
   node: {
-    implicit: string;
-    parenthesis: string;
+    implicit: ResultFormatBoolean;
+    parenthesis: ResultFormatBoolean;
   };
 }
 
