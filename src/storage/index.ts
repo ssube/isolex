@@ -5,7 +5,7 @@ import { BaseService, BaseServiceOptions, INJECT_LOGGER } from '../BaseService';
 import { ServiceLifecycle } from '../Service';
 import { mustExist } from '../utils';
 import { classLogger } from '../utils/logger';
-import { StorageLogger, StorageLoggerOptions } from '../utils/logger/StorageLogger';
+import { StorageLogger } from '../utils/logger/StorageLogger';
 
 export interface StorageData {
   migrate: boolean;
