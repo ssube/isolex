@@ -1,6 +1,6 @@
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
-MOCHA_LONG_OPTS := $(MOCHA_OPTS) --timeout 15000 --globals navigator
+MOCHA_LONG_OPTS := $(MOCHA_OPTS) --timeout 25000 --globals navigator --retries 3
 
 SHELL := bash
 
@@ -11,6 +11,7 @@ local: build test-env
 test-env:
 	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
 	source $${ISOLEX_HOME}/isolex.env; \
+	rm $(ROOT_PATH)/{isolex,test}.pid; \
 	rm $(TARGET_PATH)/{isolex,test}.pid; \
 	$(NODE_BIN)/nyc $(COVER_OPTS) \
 	  $(NODE_BIN)/mocha $(MOCHA_LONG_OPTS) $(TARGET_PATH)/test.js)

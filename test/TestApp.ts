@@ -12,10 +12,11 @@ import { describeLeaks, itLeaks } from './helpers/async';
 import { serviceSpy } from './helpers/container';
 import { getTestLogger } from './helpers/logger';
 
-const MAIN_START_MULT = 20; // how much longer main takes vs normal start/signal tests
+const MAIN_START_MULT = 10; // how much longer main takes vs normal start/signal tests
 const MAX_SIGNAL_TIME = 50; // ms
 const MAX_START_TIME = 250; // ms
 const MAX_SVC_TIME = 50; // ms
+const SIGNAL_URG = 23;
 
 const TEST_SERVICE = 'test-service';
 const TEST_CONFIG: BotDefinition = {
@@ -192,7 +193,7 @@ describeLeaks('app bot stuff', async () => {
 
   });
 
-  xit('should ignore unknown signals', async () => {
+  itLeaks('should ignore unknown signals', async () => {
     const { bot, ctr } = await createBot(TEST_CONFIG_SERVICE);
 
     const start = spy();
@@ -211,7 +212,7 @@ describeLeaks('app bot stuff', async () => {
       return start.callCount > 0;
     }, MAX_START_TIME, 1); // wait for the bot to start up
 
-    process.kill(process.pid, 1); // @TODO: figure out what signal to use
+    process.kill(process.pid, SIGNAL_URG);
     await defer(MAX_SIGNAL_TIME);
 
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
