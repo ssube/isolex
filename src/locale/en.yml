@@ -1,4 +1,5 @@
 translation:
+  test: hello world!
   service:
     account-controller:
       account-create:
