@@ -10,11 +10,11 @@ import { describeLeaks, itLeaks } from './helpers/async';
 import { serviceSpy } from './helpers/container';
 import { getTestLogger } from './helpers/logger';
 
-const MAIN_START_TIME = 500; // ms
 const MAX_SIGNAL_TIME = 50; // ms
 const MAX_START_TIME = 250; // ms
-const MAX_SVC_TIME = 50; // ms
-const MAX_STOP_TIME = 250;
+
+const MAIN_START_TIME = 2500; // ms
+const MAIN_STOP_TIME = 250;
 
 const TEST_SERVICE = 'test-service';
 const TEST_CONFIG: BotDefinition = {
@@ -45,7 +45,7 @@ const TEST_CONFIG: BotDefinition = {
       },
     },
     services: {
-      timeout: MAX_SVC_TIME,
+      timeout: MAX_SIGNAL_TIME,
     },
     storage: {
       data: {
@@ -199,7 +199,7 @@ describeLeaks('main', async () => {
     await defer(MAIN_START_TIME);
 
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
-    const timeout = defer(MAX_STOP_TIME);
+    const timeout = defer(MAIN_STOP_TIME);
     const status = await Promise.race([pendingStatus, timeout]);
 
     expect(status).to.equal(ExitStatus.Success, 'exit status should be set and successful');
