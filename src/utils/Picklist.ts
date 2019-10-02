@@ -31,6 +31,10 @@ export class Picklist<T> implements PicklistOptions<T> {
     this.sum = this.data.reduce((p, d) => p + d.weight, 0);
   }
 
+  get length() {
+    return this.data.length;
+  }
+
   public pick(n: number): Array<T> {
     return new Array(n).fill(0).map(() => this.pickOne());
   }

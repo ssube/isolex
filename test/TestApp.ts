@@ -1,12 +1,10 @@
 import { expect } from 'chai';
-import { ineeda } from 'ineeda';
 import { defaultTo } from 'lodash';
-import { spy } from 'sinon';
 
 import { createBot, CreateOptions, ExitStatus, main, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
-import { Service, ServiceEvent } from '../src/Service';
-import { defer, waitFor } from '../src/utils/Async';
+import { ServiceEvent } from '../src/Service';
+import { defer } from '../src/utils/Async';
 import { SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '../src/utils/Signal';
 import { describeLeaks, itLeaks } from './helpers/async';
 import { serviceSpy } from './helpers/container';
@@ -16,7 +14,6 @@ const MAIN_START_MULT = 10; // how much longer main takes vs normal start/signal
 const MAX_SIGNAL_TIME = 50; // ms
 const MAX_START_TIME = 250; // ms
 const MAX_SVC_TIME = 50; // ms
-const SIGNAL_URG = 23;
 
 const TEST_SERVICE = 'test-service';
 const TEST_CONFIG: BotDefinition = {
@@ -191,37 +188,6 @@ describeLeaks('app bot stuff', async () => {
       .and.been.calledWith(ServiceEvent.Reload)
       .and.been.calledWith(ServiceEvent.Stop);
 
-  });
-
-  itLeaks('should ignore unknown signals', async () => {
-    const { bot, ctr } = await createBot(TEST_CONFIG_SERVICE);
-
-    const start = spy();
-    const notify = spy();
-    const svc = ineeda<Service>({
-      notify,
-      start,
-      stop: spy(),
-    });
-
-    const [module] = ctr.getModules();
-    module.bind(TEST_SERVICE).toInstance(svc);
-
-    const pendingStatus = runBot(TEST_CONFIG_SERVICE, bot);
-    await waitFor(() => {
-      return start.callCount > 0;
-    }, MAX_START_TIME, 1); // wait for the bot to start up
-
-    process.kill(process.pid, SIGNAL_URG);
-    await defer(MAX_SIGNAL_TIME);
-
-    process.kill(process.pid, SIGNAL_STOP); // ask it to stop
-    const status = await pendingStatus;
-
-    expect(status).to.equal(ExitStatus.Success);
-    expect(notify).to.have.callCount(2)
-      .and.been.calledWith(ServiceEvent.Start)
-      .and.been.calledWith(ServiceEvent.Stop);
   });
 });
 

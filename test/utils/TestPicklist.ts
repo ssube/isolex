@@ -73,4 +73,9 @@ describeLeaks('pick list', async () => {
       expect(puck).to.deep.equal(['x', 'x', 'x']);
     }
   });
+
+  itLeaks('should convert a list', async () => {
+    const list = Picklist.create('x', 'y', 'z');
+    expect(list.length).to.equal(3);
+  });
 });
