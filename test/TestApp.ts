@@ -10,10 +10,11 @@ import { describeLeaks, itLeaks } from './helpers/async';
 import { serviceSpy } from './helpers/container';
 import { getTestLogger } from './helpers/logger';
 
-const MAIN_START_MULT = 10; // how much longer main takes vs normal start/signal tests
+const MAIN_START_TIME = 500; // ms
 const MAX_SIGNAL_TIME = 50; // ms
 const MAX_START_TIME = 250; // ms
 const MAX_SVC_TIME = 50; // ms
+const MAX_STOP_TIME = 250;
 
 const TEST_SERVICE = 'test-service';
 const TEST_CONFIG: BotDefinition = {
@@ -195,13 +196,13 @@ describeLeaks('app bot stuff', async () => {
 describeLeaks('main', async () => {
   itLeaks('should return exit status', async () => {
     const pendingStatus = main(TEST_ARGS_VALID);
-    await defer(MAX_START_TIME * MAIN_START_MULT);
+    await defer(MAIN_START_TIME);
 
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
-    const timeout = defer(MAX_SIGNAL_TIME * MAIN_START_MULT);
+    const timeout = defer(MAX_STOP_TIME);
     const status = await Promise.race([pendingStatus, timeout]);
 
-    expect(status).to.equal(ExitStatus.Success);
+    expect(status).to.equal(ExitStatus.Success, 'exit status should be set and successful');
   });
 
   itLeaks('should validate the config before starting', async () => {
