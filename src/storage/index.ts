@@ -32,9 +32,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
 
   public async start(): Promise<void> {
     this.logger.info('connecting to storage');
-    const storageLogger = await this.container.create<StorageLogger, StorageLoggerOptions>(StorageLogger, {
-      logger: this.logger,
-    });
+    const storageLogger = await this.container.create(StorageLogger);
     const entities = await this.container.create<Array<Function>, BaseOptions>('entities');
     const migrations = await this.container.create<Array<Function>, BaseOptions>('migrations');
 

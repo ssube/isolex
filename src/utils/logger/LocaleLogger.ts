@@ -2,10 +2,11 @@ import { LoggerModule } from 'i18next';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { classLogger } from '.';
+import { mustExist } from '..';
 import { INJECT_LOGGER } from '../../BaseService';
 
 export interface LocaleLoggerOptions extends BaseOptions {
-  logger: Logger;
+  [INJECT_LOGGER]: Logger;
 }
 
 @Inject(INJECT_LOGGER)
@@ -15,7 +16,7 @@ export class LocaleLogger implements LoggerModule {
   protected logger: Logger;
 
   constructor(options: LocaleLoggerOptions) {
-    this.logger = classLogger(options.logger, LocaleLogger);
+    this.logger = classLogger(mustExist(options[INJECT_LOGGER]), LocaleLogger);
   }
 
   public error(args: Array<unknown>) {

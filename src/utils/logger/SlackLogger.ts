@@ -1,14 +1,19 @@
-import { Logger, LogLevel } from 'noicejs';
+import { BaseOptions, Inject, Logger, LogLevel } from 'noicejs';
 
-export interface SlackLoggerOptions {
-  logger: Logger;
+import { classLogger } from '.';
+import { mustExist } from '..';
+import { INJECT_LOGGER } from '../../BaseService';
+
+export interface SlackLoggerOptions extends BaseOptions {
+  [INJECT_LOGGER]?: Logger;
 }
 
+@Inject(INJECT_LOGGER)
 export class SlackLogger {
   private readonly logger: Logger;
 
   constructor(options: SlackLoggerOptions) {
-    this.logger = options.logger;
+    this.logger = classLogger(mustExist(options[INJECT_LOGGER]), SlackLogger);
   }
 
   public debug(...msg: Array<string>) {

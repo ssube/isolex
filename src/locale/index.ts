@@ -36,9 +36,7 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
   }
 
   public async start() {
-    const logger = await this.container.create(LocaleLogger, {
-      logger: this.logger,
-    });
+    const logger = await this.container.create(LocaleLogger);
     this.translator = await i18next.use(logger).init({
       debug: true,
       lng: this.data.lang,

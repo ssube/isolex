@@ -2,7 +2,7 @@ import { RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import escape from 'escape-html';
 import { isNil } from 'lodash';
 import { find as findEmoji } from 'node-emoji';
-import { BaseError, Inject } from 'noicejs';
+import { BaseError, Container, Inject } from 'noicejs';
 
 import { FetchOptions, Listener, ListenerData } from '.';
 import { INJECT_CLOCK } from '../BaseService';
@@ -50,11 +50,14 @@ export interface SlackSearchResults extends WebAPICallResult {
 
 @Inject(INJECT_CLOCK)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
+  protected container: Container;
   protected rtmClient?: RTMClient;
   protected webClient?: WebClient;
 
   constructor(options: BotServiceOptions<SlackListenerData>) {
     super(options, 'isolex#/definitions/service-listener-slack');
+
+    this.container = options.container;
   }
 
   public async send(msg: Message): Promise<void> {
@@ -92,10 +95,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   public async start() {
     await super.start();
 
-    const logger = new SlackLogger({
-      logger: this.logger,
-    });
-
+    const logger = await this.container.create(SlackLogger);
     this.rtmClient = new RTMClient(this.data.token.bot, { logger });
     this.webClient = new WebClient(this.data.token.web, { logger });
 

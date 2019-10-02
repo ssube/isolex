@@ -1,17 +1,20 @@
-import { BaseOptions, Logger, LogLevel, logWithLevel } from 'noicejs';
+import { BaseOptions, Inject, Logger, LogLevel, logWithLevel } from 'noicejs';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
 import { classLogger } from '.';
+import { mustExist } from '..';
+import { INJECT_LOGGER } from '../../BaseService';
 
 export interface StorageLoggerOptions extends BaseOptions {
-  logger: Logger;
+  [INJECT_LOGGER]?: Logger;
 }
 
+@Inject(INJECT_LOGGER)
 export class StorageLogger implements OrmLogger {
   protected logger: Logger;
 
   constructor(options: StorageLoggerOptions) {
-    this.logger = classLogger(options.logger, StorageLogger);
+    this.logger = classLogger(mustExist(options[INJECT_LOGGER]), StorageLogger);
   }
 
   public log(level: string, message: string) {
