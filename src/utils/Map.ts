@@ -124,12 +124,10 @@ export interface NameValuePair<TVal> {
   value: TVal;
 }
 
-export function pairsToMap<TVal>(pairs: Array<NameValuePair<TVal>> | undefined): Map<string, TVal> {
+export function pairsToMap<TVal>(pairs: Array<NameValuePair<TVal>>): Map<string, TVal> {
   const map = new Map();
-  if (doesExist(pairs)) {
-    for (const p of pairs) {
-      map.set(p.name, p.value);
-    }
+  for (const p of pairs) {
+    map.set(p.name, p.value);
   }
   return map;
 }

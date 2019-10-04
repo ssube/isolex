@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { NotFoundError } from '../../src/error/NotFoundError';
-import { getHead, getHeadOrDefault, getOrDefault, makeDict, makeMap, mustGet } from '../../src/utils/Map';
+import { getHead, getHeadOrDefault, getOrDefault, makeDict, makeMap, mustGet, pairsToMap } from '../../src/utils/Map';
 import { describeLeaks, itLeaks } from '../helpers/async';
 
 const DEFAULT_VALUE = 'default';
@@ -78,5 +78,15 @@ describeLeaks('map utils', async () => {
 
     xit('should return the default for nil values');
     xit('should return falsy values for existing keys');
+  });
+
+  describe('pairs to map helper', () => {
+    it('should convert pairs', () => {
+      const result = pairsToMap([{
+        name: 'foo',
+        value: 3,
+      }]);
+      expect(result.get('foo')).to.equal(3);
+    });
   });
 });

@@ -27,8 +27,7 @@ export class MessageInterval extends BaseInterval<MessageIntervalData> {
   public async start() {
     await super.start();
 
-    const transforms: Array<ServiceDefinition<TransformData>> = this.data.transforms;
-    for (const def of transforms) {
+    for (const def of this.data.transforms) {
       const transform = await this.services.createService<Transform, TransformData>(def);
       this.transforms.push(transform);
     }
