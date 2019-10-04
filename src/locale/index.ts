@@ -50,7 +50,7 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
   }
 
   public translate(key: string, options: TranslateOptions = {}): string {
-    this.logger.debug({ key, options }, 'translating key');)
+    this.logger.debug({ key, options }, 'translating key');
     const t = mustExist(this.translator);
     return t(key, options);
   }
