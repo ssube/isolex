@@ -32,13 +32,21 @@ run-terminal: ## run the bot in a terminal
 run-bunyan: ## run the bot with bunyan logs
 	$(MAKE) run-terminal | $(NODE_BIN)/bunyan --strict
 
-pid-stop:
+# debug targets
+debug-terminal:  ## run the bot in a terminal and wait for a debugger
+	ISOLEX_HOME=$(ROOT_PATH)/docs node $(NODE_DEBUG) $(TARGET_MAIN) --config-name 'isolex.yml'
+
+debug-bunyan: ## run the bot with bunyan logs and wait for a debugger
+	$(MAKE) debug-terminal | $(NODE_BIN)/bunyan --strict
+
+# pid targets
+pid-stop: ## stop the bot at the target pid
 	kill -15 $(shell cat "$(TARGET_PATH)/isolex.pid")
 
-pid-reload:
+pid-reload: ## reload the bot at the target pid
 	kill -1  $(shell cat "$(TARGET_PATH)/isolex.pid")
 
-pid-reset:
+pid-reset: ## reset the bot at the target pid
 	kill -2 $(shell cat "$(TARGET_PATH)/isolex.pid")
 
 
