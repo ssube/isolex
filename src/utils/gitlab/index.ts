@@ -6,8 +6,11 @@ import { INJECT_LOGGER, INJECT_REQUEST } from '../../BaseService';
 import { classLogger } from '../logger';
 import { RequestFactory, RequestOptions } from '../Request';
 
-export interface ProjectOptions {
+export interface GroupOptions {
   group: string;
+}
+
+export interface ProjectOptions extends GroupOptions {
   project: string;
 }
 
@@ -78,7 +81,7 @@ export class GitlabClient {
   protected readonly request: RequestFactory;
 
   constructor(options: GitlabClientOptions) {
-    this.data = options.data;
+    this.data = mustExist(options.data);
     this.logger = classLogger(mustExist(options[INJECT_LOGGER]), GitlabClient);
     this.request = mustExist(options[INJECT_REQUEST]);
   }
@@ -133,6 +136,11 @@ export class GitlabClient {
     return this.makeRequest<Array<Array<PipelineResult>>>(`${projectURL}/pipelines`, this.getRequestOptions(options));
   }
 
+  public async listProjects(options: GroupOptions): Promise<Array<ProjectResult>> {
+    const groupURL = this.getGroupURL(options);
+    return this.makeRequest<Array<ProjectResult>>(`${groupURL}/projects`, this.getRequestOptions(options));
+  }
+
   public async retryJob(options: JobOptions): Promise<Array<JobResult>> {
     const projectURL = this.getProjectURL(options);
     return this.makeRequest<Array<JobResult>>(`${projectURL}/jobs/${options.job}/retry`, this.getRequestOptions(options, 'POST'));
@@ -143,12 +151,16 @@ export class GitlabClient {
     return this.makeRequest<Array<PipelineResult>>(`${projectURL}/pipelines/${options.pipeline}/retry`, this.getRequestOptions(options, 'POST'));
   }
 
+  protected getGroupURL(options: GroupOptions): string {
+    return this.getRequestUrl(`groups/${options.group}`);
+  }
+
   protected getProjectURL(options: ProjectOptions): string {
     const projectPath = encodeURIComponent(`${options.group}/${options.project}`);
     return this.getRequestUrl(`projects/${projectPath}`);
   }
 
-  protected getRequestOptions<TOptions extends ProjectOptions>(options: TOptions, method = 'GET'): Partial<RequestOptions> {
+  protected getRequestOptions<TOptions extends GroupOptions>(options: TOptions, method = 'GET'): Partial<RequestOptions> {
     return {
       headers: {
         'Private-Token': this.data.token,
