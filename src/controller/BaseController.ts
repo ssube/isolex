@@ -131,7 +131,8 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   protected async transformJSON(cmd: Command, data: object, ctx?: Context): Promise<void> {
     this.logger.debug({ data }, 'transforming json body');
 
-    const body = await applyTransforms(this.transforms, cmd, TYPE_JSON, data);
+    const result = await applyTransforms(this.transforms, cmd, TYPE_JSON, data);
+    const [body] = result.body;
 
     if (isString(body)) {
       return this.reply(mustCoalesce(ctx, cmd.context), body);

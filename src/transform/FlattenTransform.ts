@@ -39,8 +39,10 @@ export class FlattenTransform extends BaseTransform<FlattenTransformData> implem
       parts.push(...value);
     }
 
-    return {
+    const result = {
       body: [parts.join(this.data.join)],
     };
+    this.logger.debug({ parts, result }, 'finished flatten transform');
+    return result;
   }
 }

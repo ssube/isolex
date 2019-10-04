@@ -30,7 +30,6 @@ export class GitlabCIController extends BaseController<GitlabCIControllerData> i
 
     this.client = await this.container.create(GitlabClient, {
       data: this.data.client,
-      logger: this.logger,
     });
   }
 

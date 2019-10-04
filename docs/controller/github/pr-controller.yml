@@ -11,12 +11,14 @@ data:
       data:
         templates:
           body: >-
-            {{#each data }}
+            {{#entries this }}
+            {{#each value }}
               PR#{{ number }}: {{ title }} (by {{ user.login }})
-            {{/each}}
+            {{/each }}
+            {{/entries }}
     - metadata:
         kind: flatten-transform
         name: github-pr-body
       data:
         join: " "
-        keys: [$.data.body]
+        keys: [$.body]

@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars';
+import { Dictionary } from 'lodash';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { mustExist } from '.';
@@ -45,7 +46,7 @@ export class TemplateCompiler {
     this.logger.debug({ block, map, type: typeof map }, 'formatting map entries');
 
     const parts = [];
-    for (const [key, value] of map.entries()) {
+    for (const [key, value] of this.entriesOf(map)) {
       parts.push(block.fn({ key, value }));
     }
     return parts.join('');
@@ -86,5 +87,13 @@ export class TemplateCompiler {
       args[key] = val;
     }
     return options.fn(args);
+  }
+
+  protected entriesOf(map: Map<string, string> | Dictionary<string>) {
+    if (map instanceof Map) {
+      return map.entries();
+    } else {
+      return Object.entries(map);
+    }
   }
 }
