@@ -36,13 +36,16 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 
 ## Releases
 
-[![Github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
-[![Commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.7.0.svg)](https://github.com/ssube/isolex/compare/v0.7.0...master)
+[![github release link](https://img.shields.io/badge/github-release-blue?logo=github)](https://github.com/ssube/isolex/releases)
+[![github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
+[![github commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.7.0.svg)](https://github.com/ssube/isolex/compare/v0.7.0...master)
 
+[![npm package link](https://img.shields.io/badge/npm-package-blue?logo=npm)](https://www.npmjs.com/package/isolex)
 [![npm release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
 [![Typescript definitions](https://img.shields.io/npm/types/isolex.svg)](https://www.npmjs.com/package/isolex)
 
-[![Docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master)
+[![docker image link](https://img.shields.io/badge/docker-image-blue?logo=docker)](https://hub.docker.com/r/ssube/isolex)
+[![docker image size](https://images.microbadger.com/badges/image/ssube/isolex:master.svg)](https://microbadger.com/images/ssube/isolex:master)
 
 ## Build
 
@@ -53,7 +56,6 @@ Clone this repository:
 
 ```shell
 > git clone git@github.com:ssube/isolex.git
-
 > cd isolex
 ```
 
@@ -77,3 +79,31 @@ starting bot...
 
 An [example config file](./docs/isolex.yml) is provided in [the `docs/` directory](./docs). This enables most of the
 core features, but requires [some secrets](./docs/getting-started.md#secrets) to be defined in the environment.
+
+## Run
+
+### Deploy to Kubernetes
+
+To deploy the bot into a Kubernetes cluster:
+
+```shell
+> kubectl apply -f deploy/isolex-deploy.yml
+```
+
+### Locally in Docker
+
+To run the bot locally from the Docker image:
+
+```shell
+> docker run ssube/isolex:master
+```
+
+### Locally from bundle
+
+To run the bot locally from [the build bundle](#build):
+
+```shell
+> make run-bunyan
+```
+
+Logs will be piped through [bunyan](https://github.com/trentm/node-bunyan) and pretty-printed.
