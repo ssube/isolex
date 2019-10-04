@@ -132,8 +132,9 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     this.logger.debug({ data }, 'transforming json body');
 
     const result = await applyTransforms(this.transforms, cmd, TYPE_JSON, data);
-    const [body] = result.body;
+    this.logger.debug({ result }, 'transformed json results');
 
+    const [body] = result.body;
     if (isString(body)) {
       return this.reply(mustCoalesce(ctx, cmd.context), body);
     } else {

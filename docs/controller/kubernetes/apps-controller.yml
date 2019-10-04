@@ -58,7 +58,7 @@ data:
             {{/each}}
     - metadata:
         kind: flatten-transform
-        name: k8s_deployment_flatten
+        name: k8s-deployment-flatten
       data:
         join: ""
         keys: [$.data.body]

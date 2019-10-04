@@ -26,7 +26,7 @@ data:
             {{/each}}
     - metadata:
         kind: flatten-transform
-        name: flatten_body
+        name: search-mdn-flatten
       data:
         join: ""
         keys: [$.data.body]

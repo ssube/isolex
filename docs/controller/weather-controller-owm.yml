@@ -12,10 +12,11 @@ data:
       data: 
         templates:
           body: >-
-            {{data.name}} is {{data.main.temp}} with {{data.wind.speed}} wind
-            and {{#each data.weather}}{{this.description}}{{/each}}!
+            {{ this.name }} is {{ this.main.0.temp }} with {{ this.wind.0.speed }} wind
+            and {{#each this.weather }}{{ this.description }}{{/each }}!
     - metadata:
         kind: flatten-transform
-        name: flatten_body
+        name: owm-flatten
       data:
-        keys: [body]
+        join: " "
+        keys: [$.body]

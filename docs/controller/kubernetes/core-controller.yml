@@ -29,7 +29,7 @@ data:
             {{/each}}
     - metadata:
         kind: flatten-transform
-        name: k8s_body_flatten
+        name: k8s-body-flatten
       data:
         join: ""
         keys: [$.data.body]

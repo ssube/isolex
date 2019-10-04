@@ -13,7 +13,8 @@ export async function applyTransforms(
     return {};
   }
 
-  let result = body;
+  // @TODO: remove this cast
+  let result = body as TransformOutput;
   for (const transform of transforms) {
     const check = await transform.check(entity);
     if (check) {
@@ -21,8 +22,7 @@ export async function applyTransforms(
     }
   }
 
-  // @TODO: remove this cast
-  return result as TransformOutput;
+  return result;
 }
 
 /**
