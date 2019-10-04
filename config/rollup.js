@@ -31,16 +31,16 @@ const bundle = {
 		],
 	},
 	manualChunks(id) {
-		if (id.includes(`${sep}test${sep}`)) {
-			return 'test';
-		}
-
 		if (id.match(/commonjs-external/i) || id.match(/commonjsHelpers/)) {
 			return 'vendor';
 		}
 
-		if (id.includes(`${sep}node_modules${sep}`)) {
+		if (id.includes(`${sep}node_modules${sep}`) || id.includes(`${sep}noicejs${sep}`)) {
 			return 'vendor';
+		}
+
+		if (id.includes(`${sep}test${sep}`)) {
+			return 'test';
 		}
 
 		if (id.includes(`${sep}src${sep}index`)) {
@@ -50,6 +50,8 @@ const bundle = {
 		if (id.includes(`${sep}src${sep}`)) {
 			return 'main';
 		}
+
+		return 'nochunk';
 	},
 	output: {
 		dir: targetPath,
