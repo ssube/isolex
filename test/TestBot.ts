@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { ConsoleLogger } from 'noicejs';
+import { ConsoleLogger, LogLevel } from 'noicejs';
 import { Registry } from 'prom-client';
 import { spy } from 'sinon';
 
@@ -42,7 +42,7 @@ describeLeaks('bot service', async () => {
           },
         },
         logger: {
-          level: 'info',
+          level: LogLevel.Info,
           name: 'test',
         },
         modules: [],

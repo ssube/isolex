@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { defaultTo } from 'lodash';
+import { LogLevel } from 'noicejs';
 
 import { createBot, CreateOptions, ExitStatus, main, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
@@ -34,7 +35,7 @@ const TEST_CONFIG: BotDefinition = {
       },
     },
     logger: {
-      level: 'info',
+      level: LogLevel.Info,
       name: 'test-logger',
     },
     modules: [],
