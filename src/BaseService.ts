@@ -42,7 +42,7 @@ export type BaseServiceData = any;
 // tslint:disable-next-line:no-useless-intersection
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
-@Inject(INJECT_SCHEMA, INJECT_SERVICES)
+@Inject(INJECT_LOGGER, INJECT_SCHEMA, INJECT_SERVICES)
 export abstract class BaseService<TData extends BaseServiceData> implements Service {
   public readonly id: string;
   public readonly kind: string;

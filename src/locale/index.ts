@@ -1,10 +1,9 @@
 import i18next, { ResourceLanguage } from 'i18next';
-import { Container, Inject, Logger } from 'noicejs';
+import { Container, Logger } from 'noicejs';
 
-import { BaseService, BaseServiceOptions, INJECT_LOGGER } from '../BaseService';
+import { BaseService, BaseServiceOptions } from '../BaseService';
 import { ServiceLifecycle } from '../Service';
 import { mustExist } from '../utils';
-import { classLogger } from '../utils/logger';
 import { LocaleLogger } from '../utils/logger/LocaleLogger';
 import * as LOCALE_GLOBAL from './en.yml';
 
@@ -13,17 +12,14 @@ export interface LocaleData {
 }
 
 export interface LocaleOptions extends BaseServiceOptions<LocaleData> {
-  [INJECT_LOGGER]: Logger;
   data: LocaleData;
 }
 
 export type TranslateOptions = i18next.TOptions;
 
-@Inject(INJECT_LOGGER)
 export class Locale extends BaseService<LocaleData> implements ServiceLifecycle {
   protected readonly container: Container;
   protected readonly data: LocaleData;
-  protected readonly logger: Logger;
 
   protected translator?: i18next.TFunction;
 
@@ -32,7 +28,6 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
 
     this.container = options.container;
     this.data = options.data;
-    this.logger = classLogger(options[INJECT_LOGGER], Locale);
   }
 
   public async start() {
@@ -55,6 +50,7 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
   }
 
   public translate(key: string, options: TranslateOptions = {}): string {
+    this.logger.debug({ key, options }, 'translating key');)
     const t = mustExist(this.translator);
     return t(key, options);
   }

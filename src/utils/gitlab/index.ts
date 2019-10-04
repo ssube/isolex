@@ -1,5 +1,5 @@
 import { isNil } from 'lodash';
-import { BaseError, BaseOptions, Container, Inject, Logger } from 'noicejs';
+import { BaseError, BaseOptions, Inject, Logger } from 'noicejs';
 
 import { mustExist } from '..';
 import { INJECT_LOGGER, INJECT_REQUEST } from '../../BaseService';
