@@ -90,7 +90,7 @@ const TEST_CONFIG_SERVICE: CreateOptions = {
 
 const TEST_ARGS_VALID = [
   '--config-name',
-  'isolex.yml',
+  'test.yml',
   '--config-path',
   defaultTo(process.env.DOCS_PATH, __dirname),
 ];

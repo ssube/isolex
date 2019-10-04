@@ -25,6 +25,8 @@ describeLeaks('locale service', async () => {
         name: 'test-locale',
       },
     });
+    await locale.start();
+
     expect(locale.lang).to.equal('en');
   });
 

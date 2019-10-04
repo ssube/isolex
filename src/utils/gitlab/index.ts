@@ -1,6 +1,8 @@
 import { isNil } from 'lodash';
 import { BaseError, BaseOptions, Container, Inject, Logger } from 'noicejs';
 
+import { mustExist } from '..';
+import { INJECT_LOGGER, INJECT_REQUEST } from '../../BaseService';
 import { classLogger } from '../logger';
 import { RequestFactory, RequestOptions } from '../Request';
 
@@ -27,8 +29,9 @@ export interface GitlabClientData {
 }
 
 export interface GitlabClientOptions extends BaseOptions {
+  [INJECT_LOGGER]?: Logger;
+  [INJECT_REQUEST]?: RequestFactory;
   data: GitlabClientData;
-  logger: Logger;
 }
 
 export interface JobResult {
@@ -68,16 +71,16 @@ export interface ProjectResult {
   last_activity_at: string;
 }
 
-@Inject()
+@Inject(INJECT_LOGGER, INJECT_REQUEST)
 export class GitlabClient {
-  protected readonly container: Container;
   protected readonly logger: Logger;
   protected readonly data: GitlabClientData;
+  protected readonly request: RequestFactory;
 
   constructor(options: GitlabClientOptions) {
-    this.container = options.container;
     this.data = options.data;
-    this.logger = classLogger(options.logger, GitlabClient);
+    this.logger = classLogger(mustExist(options[INJECT_LOGGER]), GitlabClient);
+    this.request = mustExist(options[INJECT_REQUEST]);
   }
 
   public async cancelJob(options: JobOptions): Promise<Array<JobResult>> {
@@ -160,13 +163,12 @@ export class GitlabClient {
 
   protected async makeRequest<T>(url: string, extraOptions: Partial<RequestOptions>): Promise<T> {
     try {
-      const request = await this.container.create<RequestFactory, BaseOptions>('request');
       const options: RequestOptions = {
         ...extraOptions,
         uri: url,
         url,
       };
-      const response = await request.create<string>(options);
+      const response = await this.request.create<string>(options);
       this.logger.debug({ response }, 'got response from gitlab');
       return JSON.parse(response);
     } catch (err) {
