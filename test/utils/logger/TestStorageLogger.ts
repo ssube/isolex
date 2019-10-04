@@ -68,4 +68,16 @@ describeLeaks('storage logger', async () => {
     logger.logSchemaBuild('foo');
     expect(info).to.have.callCount(1);
   });
+
+  itLeaks('should log messages with passed level', async () => {
+    const { container, module } = await createContainer();
+    const info = spy();
+    module.bind(INJECT_LOGGER).toInstance(spyLogger({
+      info,
+    }));
+
+    const logger = await container.create(StorageLogger);
+    logger.log('info', 'foo');
+    expect(info).to.have.callCount(1);
+  });
 });
