@@ -54,7 +54,9 @@ describeLeaks('echo controller', async () => {
     const msg = 'hello world';
     module.bind('test-transform').toInstance(ineeda<Transform>({
       check: () => Promise.resolve(true),
-      transform: (c: Command, type: string, data: object) => Promise.resolve(msg),
+      transform: (c: Command, type: string, data: object) => Promise.resolve({
+        body: [msg],
+      }),
     }));
 
     const sendMessage = spy();

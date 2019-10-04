@@ -37,7 +37,9 @@ describeLeaks('weather controller', async () => {
     module.bind(INJECT_BOT).toInstance(bot);
     module.bind('test-transform').toInstance(ineeda<Transform>({
       check: () => Promise.resolve(true),
-      transform: (txCmd: Command, type: string, txData: typeof data) => Promise.resolve(txData.test),
+      transform: (txCmd: Command, type: string, txData: typeof data) => Promise.resolve({
+        body: [txData.test],
+      }),
     }));
 
     const controller = await createService(container, WeatherController, {
