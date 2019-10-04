@@ -68,5 +68,8 @@ describeLeaks('DI modules', async () => {
 
       expect(svc).to.equal(next);
     });
+
+    itLeaks('should list created services');
+    itLeaks('should warn when adding duplicate services');
   });
 });
