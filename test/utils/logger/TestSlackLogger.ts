@@ -1,3 +1,4 @@
+import { LogLevel } from '@slack/logger';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
@@ -57,5 +58,12 @@ describeLeaks('slack logger', async () => {
     const logger = await container.create(SlackLogger);
     logger.warn(...LOG_ARGS);
     expect(warn).to.have.callCount(1);
+  });
+
+  itLeaks('should store log level', async () => {
+    const { container } = await createContainer();
+    const logger = await container.create(SlackLogger);
+    logger.setLevel(LogLevel.WARN);
+    expect(logger.getLevel()).to.equal(LogLevel.WARN);
   });
 });
