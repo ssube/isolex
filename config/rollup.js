@@ -72,6 +72,12 @@ const bundle = {
 			peerDeps: false,
 		}),
 		replace({
+			include: join('node_modules/', 'universal-user-agent', '**'),
+			values: {
+				navigator: `{userAgent: "${metadata.name}"}`,
+			},
+		}),
+		replace({
 			delimiters: ['require("', '")'],
 			values: stubs,
 		}),

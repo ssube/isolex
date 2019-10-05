@@ -27,8 +27,6 @@ export class GithubClient {
   protected app: App;
 
   constructor(options: GithubClientOptions) {
-    // tslint:disable-next-line
-    (global as any).navigator = {};
 
     this.app = new App({
       id: options.data.app.id,

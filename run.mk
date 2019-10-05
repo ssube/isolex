@@ -1,6 +1,6 @@
 export NODE_OPTIONS ?= --max-old-space-size=5500
 
-MOCHA_LONG_OPTS := $(MOCHA_OPTS) --timeout 60000 --globals navigator --retries 3 --forbid-only
+MOCHA_LONG_OPTS := $(MOCHA_OPTS) --timeout 60000 --retries 3 --forbid-only
 
 SHELL := bash
 
