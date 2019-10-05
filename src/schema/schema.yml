@@ -28,11 +28,27 @@ definitions:
   client-github:
     type: object
     additionalProperties: false
-    required: [token]
+    required: [agent, app, installation]
     properties:
-      root:
+      agent:
         type: string
-      token:
+      app:
+        type: object
+        additionalProperties: false
+        required: [id, key]
+        properties:
+          id:
+            type: number
+          key:
+            type: string
+      installation:
+        type: object
+        additionalProperties: false
+        required: [id]
+        properties:
+          id:
+            type: number
+      root:
         type: string
 
   client-gitlab:

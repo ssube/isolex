@@ -3,7 +3,12 @@ metadata:
   name: test-github
 data:
   client:
-    token: !env ISOLEX_GITHUB_TOKEN
+    agent: ssube/isolex/listener/github
+    app:
+      id: !env ISOLEX_GITHUB_APP_ID
+      key: !env ISOLEX_GITHUB_APP_KEY
+    installation:
+      id: !env ISOLEX_GITHUB_APP_INSTALLATION
   repos:
     - owner: ssube
       repo: isolex

@@ -1,10 +1,10 @@
-import Octokit from '@octokit/rest';
-import { Inject } from 'noicejs';
+import { Container } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';
 import { Command, CommandVerb } from '../../entity/Command';
 import { Context } from '../../entity/Context';
-import { GithubClientData } from '../../utils/github';
+import { mustExist } from '../../utils';
+import { GithubClient, GithubClientData } from '../../utils/github';
 import { BaseController, BaseControllerOptions, ErrorReplyType } from '../BaseController';
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
@@ -13,26 +13,20 @@ export interface GithubPRControllerData extends ControllerData {
   client: GithubClientData;
 }
 
-export interface RequestOptions {
-  owner: string;
-  project: string;
-  pull_number: number;
-}
-
-@Inject()
 export class GithubPRController extends BaseController<GithubPRControllerData> implements Controller {
-  protected readonly client: Octokit;
+  protected client?: GithubClient;
+  protected readonly container: Container;
 
   constructor(options: BaseControllerOptions<GithubPRControllerData>) {
     super(options, 'isolex#/definitions/service-controller-github-pr', [NOUN_PULL_REQUEST]);
+    this.container = options.container;
+  }
 
-    // this is a total hack because octokit crashes otherwise
-    /* tslint:disable-next-line:no-any */
-    (global as any).navigator = {};
-    this.client = new Octokit({
-      auth: `token ${options.data.client.token}`,
-      previews: ['application/vnd.github.ocelot-preview+json'],
-      userAgent: 'isolex',
+  public async start() {
+    await super.start();
+
+    this.client = await this.container.create(GithubClient, {
+      data: this.data.client,
     });
   }
 
@@ -44,7 +38,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const requestNumber = cmd.getNumber('number');
 
     this.logger.debug({ owner, project, requestNumber }, 'closing pull request');
-    await this.client.pulls.update({
+    await mustExist(this.client).client.pulls.update({
       number: requestNumber,
       owner,
       repo: project,
@@ -61,7 +55,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const project = cmd.getHead('project');
     const requestNumber = cmd.getNumber('number');
 
-    const response = await this.client.pulls.get({
+    const response = await mustExist(this.client).client.pulls.get({
       number: requestNumber,
       owner,
       repo: project,
@@ -75,7 +69,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
     const project = cmd.getHead('project');
 
-    const response = await this.client.pulls.list({
+    const response = await mustExist(this.client).client.pulls.list({
       owner,
       repo: project,
     });
@@ -102,7 +96,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const requestNumber = cmd.getNumber('number');
 
     this.logger.debug({ owner, project, requestNumber }, 'merging pull request');
-    await this.client.pulls.merge({
+    await mustExist(this.client).client.pulls.merge({
       commit_message: message,
       commit_title: message,
       owner,
@@ -118,7 +112,7 @@ export class GithubPRController extends BaseController<GithubPRControllerData> i
     const requestNumber = cmd.getNumber('number');
 
     this.logger.debug({ owner, project, requestNumber }, 'approving pull request');
-    await this.client.pulls.createReview({
+    await mustExist(this.client).client.pulls.createReview({
       event: 'APPROVE',
       owner,
       pull_number: requestNumber,
