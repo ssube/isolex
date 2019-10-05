@@ -1,8 +1,10 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { BaseError } from 'noicejs';
 import { match, stub } from 'sinon';
 
 import { INJECT_REQUEST } from '../../../src/BaseService';
+import { InvalidArgumentError } from '../../../src/error/InvalidArgumentError';
 import { GitlabClient, GitlabClientData } from '../../../src/utils/gitlab';
 import { RequestFactory } from '../../../src/utils/Request';
 import { describeLeaks, itLeaks } from '../../helpers/async';
@@ -135,5 +137,21 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'POST'));
   });
 
-  itLeaks('should handle request errors');
+  itLeaks('should handle request errors', async () => {
+    const { container } = await createContainer();
+    const create = stub().throws(new InvalidArgumentError());
+    const request = ineeda<RequestFactory>({
+      create,
+    });
+    const client = await container.create(GitlabClient, {
+      [INJECT_REQUEST]: request,
+      data: TEST_DATA,
+    });
+
+    expect(client.getJob({
+      group: 'test',
+      job: '123',
+      project: 'test',
+    })).to.eventually.be.rejectedWith(BaseError);
+  });
 });
