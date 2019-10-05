@@ -43,9 +43,11 @@ data:
                       - string: bot-noun
         templates:
           body: >-
-            {{#each data}}
-              {{key}}: {{noun}}
-            {{/each}}
+            {{#entries this }}
+              {{#each this.value }}
+                {{ this.key }}:{{noun}}
+              {{/each}}
+            {{/entries}}
     - metadata:
         kind: template-transform
         name: default-bot-template-version
@@ -70,4 +72,4 @@ data:
       data:
         deep: false
         join: ''
-        keys: [$.data.body]
+        keys: [$.body]
