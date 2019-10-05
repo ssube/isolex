@@ -1,5 +1,5 @@
 import Octokit from '@octokit/rest';
-import { Inject } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { FetchOptions, ListenerData } from '.';
@@ -9,7 +9,7 @@ import { Tick } from '../entity/Tick';
 import { NotImplementedError } from '../error/NotImplementedError';
 import { ServiceEvent } from '../Service';
 import { doesExist, mustExist } from '../utils';
-import { GithubClientData } from '../utils/github';
+import { GithubClient, GithubClientData } from '../utils/github';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 
@@ -26,18 +26,20 @@ export interface GithubListenerData extends ListenerData {
 
 @Inject(INJECT_STORAGE)
 export class GithubListener extends SessionListener<GithubListenerData> {
-  protected readonly client: Octokit;
+  protected client?: GithubClient;
+  protected container: Container;
   protected readonly tickRepository: Repository<Tick>;
 
   constructor(options: BotServiceOptions<GithubListenerData>) {
     super(options, 'isolex#/definitions/service-listener-github');
-
-    this.client = new Octokit({
-      headers: {
-        authorization: `token ${options.data.client.token}`,
-      },
-    });
+    this.container = options.container;
     this.tickRepository = mustExist(options[INJECT_STORAGE]).getRepository(Tick);
+  }
+
+  public async start() {
+    this.client = await this.container.create(GithubClient, {
+      data: this.data.client,
+    });
   }
 
   public async notify(event: ServiceEvent): Promise<void> {
@@ -65,7 +67,7 @@ export class GithubListener extends SessionListener<GithubListenerData> {
 
     if (type === 'issues') {
       this.logger.debug(options, 'commenting on github issue');
-      await this.client.issues.createComment(options);
+      await mustExist(this.client).client.issues.createComment(options);
       return;
     } else {
       this.logger.warn({ issue, type }, 'unable to comment on github issue type');
@@ -88,7 +90,7 @@ export class GithubListener extends SessionListener<GithubListenerData> {
       };
       this.logger.debug(options, 'listing comments for repo');
 
-      const response = await this.client.issues.listCommentsForRepo(options);
+      const response = await mustExist(this.client).client.issues.listCommentsForRepo(options);
       const comments = response.data;
       this.logger.debug({ comments }, 'got github comments');
 
