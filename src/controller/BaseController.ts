@@ -100,24 +100,8 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   protected async invokeHandler(cmd: Command, options: HandlerOptions, handler: HandlerMethod): Promise<void> {
     const ctx = mustExist(cmd.context);
-    if (doesExist(options.rbac)) {
-      if (options.rbac.user === true && isNil(ctx.user)) {
-        return this.errorReply(ctx, ErrorReplyType.SessionMissing);
-      }
-
-      const grants = [];
-      if (Array.isArray(options.rbac.grants)) {
-        grants.push(...options.rbac.grants);
-      }
-
-      if (options.rbac.defaultGrant === true) {
-        grants.push(`${options.noun}:${options.verb}`);
-      }
-
-      this.logger.debug({ ctx, grants }, 'checking context for handler grants');
-      if (!ctx.checkGrants(grants)) {
-        return this.errorReply(ctx, ErrorReplyType.GrantMissing);
-      }
+    if (!await this.checkHandlerGrants(ctx, options)) {
+      return;
     }
 
     try {
@@ -126,6 +110,36 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       this.logger.error(err, 'error during handler method');
       return this.errorReply(ctx, ErrorReplyType.Unknown, err.message);
     }
+  }
+
+  protected async checkHandlerGrants(ctx: Context, options: HandlerOptions): Promise<boolean> {
+    if (isNil(options.rbac)) {
+      return true;
+    }
+
+    const { rbac } = options;
+
+    if (rbac.user === true && isNil(ctx.user)) {
+      await this.errorReply(ctx, ErrorReplyType.SessionMissing);
+      return false;
+    }
+
+    const grants = [];
+    if (Array.isArray(rbac.grants)) {
+      grants.push(...rbac.grants);
+    }
+
+    if (rbac.defaultGrant === true) {
+      grants.push(`${options.noun}:${options.verb}`);
+    }
+
+    this.logger.debug({ ctx, grants }, 'checking context for handler grants');
+    if (ctx.checkGrants(grants)) {
+      return true;
+    }
+
+    await this.errorReply(ctx, ErrorReplyType.GrantMissing);
+    return false;
   }
 
   protected async transformJSON(cmd: Command, data: object, ctx?: Context): Promise<void> {
