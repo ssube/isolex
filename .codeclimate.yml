@@ -2,6 +2,7 @@ version: "2"
 
 exclude_patterns:
   - CHANGELOG.md
+  - config/
   - docs/api/
   - docs/dev/style.md
   - src/migration/
