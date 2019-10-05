@@ -21,11 +21,13 @@ data:
                       - string: bot-metric
         templates:
           body: >-
-            {{#each data as |metric| }}
-              {{#each metric.hashMap as |entry| }}
-                {{ metric.name }}: {{ entry.value }}
+            {{#entries this }}
+              {{#each this.value }}
+                {{#entries hashMap }}
+                  {{ ../name }}:{{ this.key }}: {{ value.value }}
+                {{/entries}}
               {{/each }}
-            {{/each }}
+            {{/entries }}
     - metadata:
         kind: template-transform
         name: default-bot-template-noun
@@ -65,7 +67,7 @@ data:
                       - string: bot-version
         templates:
           body: >-
-            isolex version {{data.git.commit}} from {{data.git.branch}}, build {{data.build.job}} by {{data.build.runner}}
+            {{package.0.name}} v{{package.0.version}} on {{git.0.branch}} ({{ git.0.commit }}), build {{build.0.job}} by {{build.0.runner}}
     - metadata:
         kind: flatten-transform
         name: default-bot-flatten

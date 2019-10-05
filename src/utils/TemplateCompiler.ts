@@ -92,8 +92,10 @@ export class TemplateCompiler {
   protected entriesOf(map: Map<string, string> | Dictionary<string>) {
     if (map instanceof Map) {
       return map.entries();
-    } else {
+    } else if (map instanceof Object) {
       return Object.entries(map);
+    } else {
+      return [];
     }
   }
 }
