@@ -20,7 +20,10 @@ spec:
         - name: isolex-bot
           image: ssube/isolex:master
           imagePullPolicy: Always
-
+          resources:
+              limits:
+                cpu: 500m
+                memory: 2Gi
           volumeMounts:
             - name: config
               mountPath: "/root/.isolex.yml"
