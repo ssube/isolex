@@ -225,7 +225,7 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/tsdoc/-/tsdoc-0.12.14.tgz#0e0810a0a174e50e22dfe8edb30599840712f22d"
   integrity sha512-518yewjSga1jLdiLrcmpMFlaba5P+50b0TWNFUpC+SL9Yzf0kMi57qw+bMl+rQ08cGqH1vLx4eg9YFUbZXgZ0Q==
 
-"@octokit/app@^4.1.0":
+"@octokit/app@4.1.0":
   version "4.1.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@octokit/app/-/app-4.1.0.tgz#1fc147ca4278e4815cc33cf1d0c2867fe5a9feaf"
   integrity sha512-V8/JIviFsa1p2tWzOveJYJm42Mm7aELR+beXvx3EUZ3kCTQnNsM/FbQ3YV+I5UlBo0XmtmqNr31LrMoRj218qw==
