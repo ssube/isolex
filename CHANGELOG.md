@@ -2,6 +2,100 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/ssube/isolex/compare/v0.8.0...v0.9.0) (2019-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* rule keys are now jsonpath expressions, which are
+more flexible than the lodash get syntax. Each returned item is
+tested using the same rules as before. Simple `key` rules can be
+replaced with `$.key` and should behave as before.
+
+### Bug Fixes
+
+* **bot:** stop locale service ([ff7288c](https://github.com/ssube/isolex/commit/ff7288c))
+* **build:** add sonar job ([f4d566d](https://github.com/ssube/isolex/commit/f4d566d))
+* **build:** ensure tests do not end up in vendor chunk ([d83f00e](https://github.com/ssube/isolex/commit/d83f00e))
+* **build:** exclude rollup config from code climate ([b4f89d0](https://github.com/ssube/isolex/commit/b4f89d0))
+* **build:** remove test pid ([e896d7f](https://github.com/ssube/isolex/commit/e896d7f))
+* **deploy:** add resource limits ([9e727d7](https://github.com/ssube/isolex/commit/9e727d7))
+* **docs:** metrics template ([74a37ed](https://github.com/ssube/isolex/commit/74a37ed))
+* **docs:** noun help template ([0e1f4cb](https://github.com/ssube/isolex/commit/0e1f4cb))
+* **docs:** update weather template for API response with more arrays ([fe426a3](https://github.com/ssube/isolex/commit/fe426a3))
+* **lint:** inject logger in base service ([7a9e60c](https://github.com/ssube/isolex/commit/7a9e60c))
+* **lint:** tweak code climate method size thresholds ([8c86969](https://github.com/ssube/isolex/commit/8c86969))
+* **tests:** cover gitlab client ([ad452c5](https://github.com/ssube/isolex/commit/ad452c5))
+* log level enum ([6482756](https://github.com/ssube/isolex/commit/6482756))
+* **build:** disallow exclusive tests, bump timeout ([5839337](https://github.com/ssube/isolex/commit/5839337))
+* **module:** make logger required in service module ([ed66591](https://github.com/ssube/isolex/commit/ed66591))
+* **tests:** begin testing plugin loading, config errors ([6802d8d](https://github.com/ssube/isolex/commit/6802d8d))
+* **tests:** begin testing templates ([8656ab2](https://github.com/ssube/isolex/commit/8656ab2))
+* **tests:** cover assorted i18n/ORM loggers ([8e5ccc4](https://github.com/ssube/isolex/commit/8e5ccc4))
+* **tests:** cover clock dates, fix resulting issues ([d5d076a](https://github.com/ssube/isolex/commit/d5d076a))
+* **tests:** cover locale service ([4fac002](https://github.com/ssube/isolex/commit/4fac002))
+* **tests:** cover math result formatting ([c2e135c](https://github.com/ssube/isolex/commit/c2e135c))
+* **tests:** cover metrics ([9ca9834](https://github.com/ssube/isolex/commit/9ca9834))
+* **tests:** cover pairs to map helper ([f530266](https://github.com/ssube/isolex/commit/f530266))
+* **tests:** cover random selection of list items ([3ae1cf5](https://github.com/ssube/isolex/commit/3ae1cf5))
+* **tests:** cover template compiler ([9347054](https://github.com/ssube/isolex/commit/9347054))
+* **tests:** cover typeorm log adapter ([6a52c2b](https://github.com/ssube/isolex/commit/6a52c2b))
+* **tests:** disable slack in test config ([615dbb8](https://github.com/ssube/isolex/commit/615dbb8))
+* **tests:** ensure unknown signals are ignored ([b84e07b](https://github.com/ssube/isolex/commit/b84e07b))
+* **tests:** extract transformed data from body key ([6d5ed93](https://github.com/ssube/isolex/commit/6d5ed93))
+* **tests:** make test-specific config ([66d6f5f](https://github.com/ssube/isolex/commit/66d6f5f))
+* **tests:** simplify spying on services ([d81f54a](https://github.com/ssube/isolex/commit/d81f54a))
+* **tests:** split main and app stop timeouts ([5bab086](https://github.com/ssube/isolex/commit/5bab086))
+* typo ([bb5e766](https://github.com/ssube/isolex/commit/bb5e766))
+* **tests:** test math utils ([64ba7ae](https://github.com/ssube/isolex/commit/64ba7ae))
+* **tests:** test typed errors ([d4fa47d](https://github.com/ssube/isolex/commit/d4fa47d))
+* package entry point ([28c9ce5](https://github.com/ssube/isolex/commit/28c9ce5))
+* **build:** add ci target ([e228c56](https://github.com/ssube/isolex/commit/e228c56))
+* **build:** add tslint, fix issues ([44ae78c](https://github.com/ssube/isolex/commit/44ae78c))
+* **build:** always collect make target logs in CI ([b4f1417](https://github.com/ssube/isolex/commit/b4f1417))
+* **build:** bump test timeout to 5s ([e1b8bed](https://github.com/ssube/isolex/commit/e1b8bed))
+* **build:** bump timeout on main fn test ([da19205](https://github.com/ssube/isolex/commit/da19205))
+* **build:** copy tslint config from template, fix issues that exposed ([e2c440e](https://github.com/ssube/isolex/commit/e2c440e))
+* **build:** fix package name in bundle ([b762829](https://github.com/ssube/isolex/commit/b762829))
+* **build:** include yml in bundle (fixes [#396](https://github.com/ssube/isolex/issues/396)) ([07217f5](https://github.com/ssube/isolex/commit/07217f5))
+* **build:** mark bundle with package version ([80a44cd](https://github.com/ssube/isolex/commit/80a44cd))
+* **build:** run tests under bash for source command ([4cf21e6](https://github.com/ssube/isolex/commit/4cf21e6))
+* **build:** source example env before running tests ([fd85fa7](https://github.com/ssube/isolex/commit/fd85fa7))
+* **build:** use npm package mirror ([8bac000](https://github.com/ssube/isolex/commit/8bac000))
+* **build:** use template makefile ([51acbd4](https://github.com/ssube/isolex/commit/51acbd4))
+* **config:** add path to include errors ([328187a](https://github.com/ssube/isolex/commit/328187a))
+* **docs:** update api docs ([3c0fec0](https://github.com/ssube/isolex/commit/3c0fec0))
+* **docs:** update to local make target ([cbd7bbc](https://github.com/ssube/isolex/commit/cbd7bbc))
+* **parser/split:** implement keep quotes option (fixes [#468](https://github.com/ssube/isolex/issues/468)) ([8f1fe60](https://github.com/ssube/isolex/commit/8f1fe60))
+* **test:** more map helper tests ([b91374e](https://github.com/ssube/isolex/commit/b91374e))
+* **tests:** add tests for reload and reset signals ([4868194](https://github.com/ssube/isolex/commit/4868194))
+* **tests:** expect sequence of service events in reload/reset cases ([8f9123d](https://github.com/ssube/isolex/commit/8f9123d))
+* **tests:** finish moving code out of index, test main, fix resulting issues ([ce80ed5](https://github.com/ssube/isolex/commit/ce80ed5))
+* **tests:** improve yaml include tests ([92a134e](https://github.com/ssube/isolex/commit/92a134e))
+* **tests:** move modules from harness to modules test ([3eac4b4](https://github.com/ssube/isolex/commit/3eac4b4))
+* **tests:** test config validation mode flag ([60f0f6d](https://github.com/ssube/isolex/commit/60f0f6d))
+* git ignore pid files ([fbe44a0](https://github.com/ssube/isolex/commit/fbe44a0))
+* **tests:** test start and sigterm cycle ([7a5f6c8](https://github.com/ssube/isolex/commit/7a5f6c8))
+* json/yml typedefs ([1a60952](https://github.com/ssube/isolex/commit/1a60952))
+* locale type ([ab54c9b](https://github.com/ssube/isolex/commit/ab54c9b))
+* make exit status an enum, start moving testable code out of index ([849420e](https://github.com/ssube/isolex/commit/849420e))
+* **tests:** update to template helpers ([e0f39b7](https://github.com/ssube/isolex/commit/e0f39b7))
+* replace lodash get with jsonpath ([a7e2ee5](https://github.com/ssube/isolex/commit/a7e2ee5))
+* **parser/split:** map and remove prefixes correctly, add test coverage ([8fb6f0d](https://github.com/ssube/isolex/commit/8fb6f0d))
+* external modules create modules ([def32f7](https://github.com/ssube/isolex/commit/def32f7))
+
+
+### Features
+
+* **build:** add debug targets ([1afada8](https://github.com/ssube/isolex/commit/1afada8))
+* **build:** add local target, fix run entrypoint ([36305b6](https://github.com/ssube/isolex/commit/36305b6))
+* **build:** externalize rollup data ([c610131](https://github.com/ssube/isolex/commit/c610131))
+* **controller/github:** add MR approval action ([8556d30](https://github.com/ssube/isolex/commit/8556d30))
+* **docs:** add run section to readme ([bc219b1](https://github.com/ssube/isolex/commit/bc219b1))
+* **template:** entries helper iterates dicts as well ([ca4419d](https://github.com/ssube/isolex/commit/ca4419d))
+* **utils/github:** switch to app auth ([814a5d9](https://github.com/ssube/isolex/commit/814a5d9))
+* **utils/github:** switch to app auth (fixes [#502](https://github.com/ssube/isolex/issues/502)) ([ab241a9](https://github.com/ssube/isolex/commit/ab241a9))
+
 ## [0.8.0](https://github.com/ssube/isolex/compare/v0.7.0...v0.8.0) (2019-09-08)
 
 
