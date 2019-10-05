@@ -1,4 +1,5 @@
-import { BaseOptions, Inject, Logger, LogLevel } from 'noicejs';
+import { LogLevel as SlackLevel } from '@slack/logger';
+import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { classLogger } from '.';
 import { mustExist } from '..';
@@ -10,9 +11,11 @@ export interface SlackLoggerOptions extends BaseOptions {
 
 @Inject(INJECT_LOGGER)
 export class SlackLogger {
-  private readonly logger: Logger;
+  protected level: SlackLevel;
+  protected readonly logger: Logger;
 
   constructor(options: SlackLoggerOptions) {
+    this.level = SlackLevel.INFO;
     this.logger = classLogger(mustExist(options[INJECT_LOGGER]), SlackLogger);
   }
 
@@ -32,8 +35,12 @@ export class SlackLogger {
     this.logger.warn({ inner: msg }, 'slack client logged warn');
   }
 
-  public setLevel(level: LogLevel) {
-    /* noop */
+  public getLevel(): SlackLevel {
+    return this.level;
+  }
+
+  public setLevel(level: SlackLevel) {
+    this.level = level;
   }
 
   public setName(name: string) {

@@ -28,7 +28,6 @@
     "types": [
       "chai-as-promised",
       "mocha",
-      "octokit-graphql",
       "rollup-resources"
     ],
     "typeRoots": [
