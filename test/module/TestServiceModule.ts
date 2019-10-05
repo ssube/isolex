@@ -69,7 +69,13 @@ describeLeaks('DI modules', async () => {
       expect(svc).to.equal(next);
     });
 
-    itLeaks('should list created services');
+    itLeaks('should list created services', async () => {
+      const { metadata, module } = await createModule();
+      const tag = `${metadata.kind}:${metadata.name}`;
+      const existing = module.listServices();
+      expect(existing.has(tag)).to.equal(true);
+    });
+
     itLeaks('should warn when adding duplicate services');
   });
 });
