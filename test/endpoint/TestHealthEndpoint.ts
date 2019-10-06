@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Request, Response } from 'express';
 import { ineeda } from 'ineeda';
-import { match, spy } from 'sinon';
+import { spy } from 'sinon';
 import { Repository } from 'typeorm';
 
 import { Bot } from '../../src/Bot';
@@ -35,9 +35,6 @@ async function createEndpoint(botReady: boolean, storageReady: boolean): Promise
     },
   });
 
-  expect(storage.isConnected).to.equal(storageReady);
-  expect(bot.isConnected).to.equal(botReady);
-
   const { container } = await createServiceContainer();
   return createService(container, HealthEndpoint, {
     [INJECT_BOT]: bot,
@@ -62,7 +59,7 @@ describeLeaks('health endpoint', async () => {
   });
 
   describeLeaks('liveness route', async () => {
-    itLeaks('should success when bot is connected', async () => {
+    itLeaks('should succeed when bot is connected', async () => {
       const endpoint = await createEndpoint(true, true);
       const status = spy();
       await endpoint.getLiveness(ineeda<Request>({}), ineeda<Response>({
