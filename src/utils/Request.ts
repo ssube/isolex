@@ -1,3 +1,4 @@
+import { BaseOptions } from 'noicejs';
 import request from 'request-promise-native';
 
 export type RequestOptions = request.Options;
@@ -9,7 +10,13 @@ export type RequestOptions = request.Options;
  * something (this).
  */
 export class RequestFactory {
+  protected r: typeof request;
+
+  constructor(options: BaseOptions, r = request) {
+    this.r = r;
+  }
+
   public create<T>(options: RequestOptions): Promise<T> {
-    return request(options).promise();
+    return this.r(options).promise();
   }
 }

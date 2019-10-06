@@ -1,5 +1,5 @@
 import i18next, { ResourceLanguage } from 'i18next';
-import { Container, Logger } from 'noicejs';
+import { Container } from 'noicejs';
 
 import { BaseService, BaseServiceOptions } from '../BaseService';
 import { ServiceLifecycle } from '../Service';
