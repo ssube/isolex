@@ -87,7 +87,10 @@ core features, but requires [some secrets](./docs/getting-started.md#secrets) to
 To deploy the bot into a Kubernetes cluster:
 
 ```shell
-> kubectl apply -f deploy/isolex-deploy.yml
+> kubectl create namespace isolex
+> kubectl apply -n isolex -f deploy/deploy.yml
+> kubectl apply -n isolex -f deploy/service.yml
+> kubectl create secret generic isolex-config --dry-run --from-file docs/isolex.yml -o json | kubectl apply -n isolex -f -
 ```
 
 ### Locally in Docker

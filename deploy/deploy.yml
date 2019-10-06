@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: isolex
+  labels:
+    k8s-app: isolex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: isolex
+  template:
+    metadata:
+      labels:
+        k8s-app: isolex
+    spec:
+      containers:
+        - name: isolex-bot
+          image: ssube/isolex:master
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 4000
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2Gi
+          # config
+          envFrom:
+            - configMapRef:
+                name: config-secrets
+          args:
+            - --config-path
+            - /config
+            - --config-name
+            - isolex.yml
+          volumeMounts:
+            - name: config-base
+              mountPath: "/config/isolex.yml"
+              subPath: "isolex.yml"
+              readOnly: true
+            - name: config-controller
+              mountPath: /config/controller
+              readOnly: true
+            - name: config-endpoint
+              mountPath: /config/endpoint
+              readOnly: true
+            - name: config-interval
+              mountPath: /config/interval
+              readOnly: true
+            - name: config-listener
+              mountPath: /config/listener
+              readOnly: true
+            - name: config-parser
+              mountPath: /config/parser
+              readOnly: true
+            - name: data
+              mountPath: /data
+              readOnly: false
+
+      volumes:
+        - name: config-base
+          configMap:
+            name: config-base
+        - name: config-controller
+          configMap:
+            name: config-controller
+        - name: config-endpoint
+          configMap:
+            name: config-endpoint
+        - name: config-interval
+          configMap:
+            name: config-interval
+        - name: config-listener
+          configMap:
+            name: config-listener
+        - name: config-parser
+          configMap:
+            name: config-parser
+        - name: data
+          emptyDir:
+            medium: Memory
