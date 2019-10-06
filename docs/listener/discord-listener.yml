@@ -4,7 +4,7 @@ metadata:
 data:
   presence:
     game:
-      name: Global Thermonuclear Warfare
+      name: Global Thermonuclear War
   sessionProvider:
     kind: auth-controller
     name: default-auth

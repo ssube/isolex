@@ -17,9 +17,11 @@ data:
         templates:
           body: >-
             {{#entries this }}
-            {{#each value }}
-              PR#{{ number }}: {{ title }} (by {{ user.login }})
-            {{/each }}
+              {{#each value }}
+                {{#if title }}
+                  PR#{{ number }}: {{ title }} (by {{ user.login }})
+                {{/if }}
+              {{/each }}
             {{/entries }}
     - metadata:
         kind: flatten-transform
