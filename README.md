@@ -14,7 +14,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 
 [![Pipeline status](https://img.shields.io/gitlab/pipeline/ssube/isolex.svg?gitlab_url=https%3A%2F%2Fgit.apextoaster.com&logo=gitlab)](https://git.apextoaster.com/ssube/isolex/commits/master)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=ncloc)](https://sonarcloud.io/dashboard?id=ssube_isolex)
-[![Test coverage](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=coverage)](https://sonarcloud.io/dashboard?id=ssube_isolex)
+[![Test coverage](https://codecov.io/gh/ssube/isolex/branch/master/graph/badge.svg)](https://codecov.io/gh/ssube/isolex)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
 
 [![Open bug count](https://img.shields.io/github/issues-raw/ssube/isolex/type-bug.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue+label%3Atype%2Fbug)
