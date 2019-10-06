@@ -240,14 +240,14 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
     // sessions are saved when created and keyed by uid, so pass that
     auth.serializeUser((ctx: Context, done) => {
-      this.logger.debug({ ctx }, 'serializing auth user');
+      this.logger.debug({ ctx }, 'serializing request context');
       // tslint:disable-next-line:no-null-keyword
       done(null, ctx.uid);
     });
 
     // grab existing session
     auth.deserializeUser((ctx: Context, done) => {
-      this.logger.debug({ ctx }, 'deserializing auth user');
+      this.logger.debug({ ctx }, 'deserializing request context');
       // tslint:disable-next-line:no-null-keyword
       done(null, this.sessions.get(ctx.uid));
     });
