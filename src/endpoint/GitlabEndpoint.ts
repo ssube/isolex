@@ -6,6 +6,7 @@ import { BotServiceOptions } from '../BotService';
 import { Command, CommandOptions } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
+import { getRequestContext } from '../listener/ExpressListener';
 import { applyTransforms, scopeToData } from '../transform/helpers';
 import { mustExist } from '../utils';
 import { TYPE_JSON } from '../utils/Mime';
@@ -209,8 +210,7 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
   }
 
   protected async createHookMessage(req: Request, res: Response, data: GitlabBaseWebhook): Promise<Message> {
-    /* tslint:disable-next-line:no-any */
-    const msgCtx = mustExist<Context>(req.user as any);
+    const msgCtx = getRequestContext(req);
     // fake message for the transforms to check and filter
     return new Message({
       body: data.object_kind,

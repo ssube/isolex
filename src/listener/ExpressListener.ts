@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request } from 'express';
 import expressGraphQl from 'express-graphql';
 import http from 'http';
 import { isNil } from 'lodash';
@@ -122,7 +122,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public traceRequest(req: express.Request, res: express.Response, next: Function) {
-    const ctx = req.user as Context | undefined;
+    const ctx = getRequestContext(req);
     this.logger.debug({ ctx, req, res }, 'handling request');
     this.requestCounter.inc({
       requestClient: req.ip,
@@ -239,19 +239,24 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }));
 
     // sessions are saved when created and keyed by uid, so pass that
-    auth.serializeUser((user: Context, done) => {
-      this.logger.debug({ user }, 'serializing auth user');
+    auth.serializeUser((ctx: Context, done) => {
+      this.logger.debug({ ctx }, 'serializing auth user');
       // tslint:disable-next-line:no-null-keyword
-      done(null, user.uid);
+      done(null, ctx.uid);
     });
 
     // grab existing session
-    auth.deserializeUser((user: Context, done) => {
-      this.logger.debug({ user }, 'deserializing auth user');
+    auth.deserializeUser((ctx: Context, done) => {
+      this.logger.debug({ ctx }, 'deserializing auth user');
       // tslint:disable-next-line:no-null-keyword
-      done(null, this.sessions.get(user.uid));
+      done(null, this.sessions.get(ctx.uid));
     });
 
     return auth;
   }
+}
+
+export function getRequestContext(req: Request): Context {
+    /* tslint:disable-next-line:no-any */
+  return mustExist<Context>(req.user as any);
 }
