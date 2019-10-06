@@ -2980,10 +2980,10 @@ matched@^1.0.2:
     is-valid-glob "^1.0.0"
     resolve-dir "^1.0.0"
 
-mathjs@6.2.2:
-  version "6.2.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.2.2.tgz#353012b40e155521a2bbf78d0aac750d4289eb9b"
-  integrity sha512-l0qw0meh1rcGaFMh248wx6NE5RVWA2bleq+5xF44XAaPMHcou+cKq/0ASBnTDsp0zNAbUYm7tGkDEe6QHbzU8g==
+mathjs@6.2.3:
+  version "6.2.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.2.3.tgz#af0c799ba377c1564bee74ae88bc1a7d1a96fd6c"
+  integrity sha512-IEYTyz8tu7nslF4j2TtDs7C+9Emi2/iJTYXjc5WLoIKTJOLLtjp3Aglys0ZbV9KSiaJhpfGPLXm8Z5d7vEGN3w==
   dependencies:
     complex.js "2.0.11"
     decimal.js "10.2.0"
