@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Request, Response } from 'express';
 import { ineeda } from 'ineeda';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import { Repository } from 'typeorm';
 
 import { Bot } from '../../src/Bot';
@@ -45,6 +45,17 @@ async function createEndpoint(botReady: boolean, storageReady: boolean): Promise
   });
 }
 
+function createRequest() {
+  const send = spy();
+  const status = stub().returns({
+    send,
+  });
+  const response = ineeda<Response>({
+    status,
+  });
+  return { response, send, status };
+}
+
 // tslint:disable:no-identical-functions
 describeLeaks('health endpoint', async () => {
   itLeaks('should have paths', async () => {
@@ -56,19 +67,15 @@ describeLeaks('health endpoint', async () => {
   describeLeaks('liveness route', async () => {
     itLeaks('should succeed when bot is connected', async () => {
       const endpoint = await createEndpoint(true, true);
-      const status = spy();
-      await endpoint.getLiveness(ineeda<Request>({}), ineeda<Response>({
-        status,
-      }));
+      const { response, status } = createRequest();
+      await endpoint.getLiveness(ineeda<Request>({}), response);
       expect(status).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
     });
 
     itLeaks('should fail when bot is not connected', async () => {
       const endpoint = await createEndpoint(false, false);
-      const status = spy();
-      await endpoint.getLiveness(ineeda<Request>({}), ineeda<Response>({
-        status,
-      }));
+      const { response, status } = createRequest();
+      await endpoint.getLiveness(ineeda<Request>({}), response);
       expect(status).to.have.been.calledOnce.and.calledWithExactly(STATUS_ERROR);
     });
   });
@@ -76,19 +83,15 @@ describeLeaks('health endpoint', async () => {
   describeLeaks('readiness route', async () => {
     itLeaks('should succeed when storage is connected', async () => {
       const endpoint = await createEndpoint(true, true);
-      const status = spy();
-      await endpoint.getReadiness(ineeda<Request>({}), ineeda<Response>({
-        status,
-      }));
+      const { response, status } = createRequest();
+      await endpoint.getReadiness(ineeda<Request>({}), response);
       expect(status).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
     });
 
     itLeaks('should fail when storage is not connected', async () => {
       const endpoint = await createEndpoint(false, false);
-      const status = spy();
-      await endpoint.getReadiness(ineeda<Request>({}), ineeda<Response>({
-        status,
-      }));
+      const { response, status } = createRequest();
+      await endpoint.getReadiness(ineeda<Request>({}), response);
       expect(status).to.have.been.calledOnce.and.calledWithExactly(STATUS_ERROR);
     });
   });

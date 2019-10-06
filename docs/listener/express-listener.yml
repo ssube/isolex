@@ -7,12 +7,12 @@ data:
     name: test-discord
   expose:
     endpoints:
-      # kind: debug-endpoint
-      # name: test-debug-endpoint
       - kind: echo-endpoint
         name: test-echo-endpoint
       - kind: gitlab-endpoint
         name: test-gitlab-endpoint
+      - kind: health-endpoint
+        name: test-health-endpoint
     graph: true
     graphiql: true
     metrics: true
