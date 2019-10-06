@@ -16,9 +16,7 @@ async function createEndpoint(botReady: boolean, storageReady: boolean): Promise
     get isConnected() {
       return storageReady;
     },
-    set isConnected(val: boolean) {
-      /* noop */
-    },
+    set isConnected(val: boolean) { /* noop */ },
     getRepository() {
       return ineeda<Repository<{}>>();
     },
@@ -27,14 +25,11 @@ async function createEndpoint(botReady: boolean, storageReady: boolean): Promise
     get isConnected() {
       return botReady;
     },
-    set isConnected(val: boolean) {
-      /* noop */
-    },
+    set isConnected(val: boolean) { /* noop */ },
     getStorage() {
       return storage;
     },
   });
-
   const { container } = await createServiceContainer();
   return createService(container, HealthEndpoint, {
     [INJECT_BOT]: bot,
