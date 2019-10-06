@@ -602,6 +602,9 @@ definitions:
           defaultCommand:
             $ref: "#/definitions/entity-command"
 
+  service-endpoint-health:
+    $ref: "#/definitions/service-endpoint"
+
   service-filter:
     $ref: "#/definitions/service-data"
 

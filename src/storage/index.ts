@@ -56,4 +56,8 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
   public getCustomRepository<TRepo>(ctor: Function | (new () => TRepo)): TRepo {
     return mustExist(this.connection).getCustomRepository(ctor);
   }
+
+  public get isConnected(): boolean {
+    return mustExist(this.connection).isConnected;
+  }
 }
