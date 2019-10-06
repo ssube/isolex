@@ -10,6 +10,20 @@ The bot interacts through Discord and Slack, Github and Gitlab comments, and a G
 
 The [getting started guide](./docs/getting-started.md) has more information on using the bot.
 
+## Contents
+
+- [isolex](#isolex)
+  - [Getting Started](#getting-started)
+  - [Contents](#contents)
+  - [Status](#status)
+  - [Releases](#releases)
+  - [Build](#build)
+  - [Config](#config)
+  - [Run](#run)
+    - [Deploy to Kubernetes](#deploy-to-kubernetes)
+    - [Local in Docker](#local-in-docker)
+    - [Local from Bundle](#local-from-bundle)
+
 ## Status
 
 [![Pipeline status](https://img.shields.io/gitlab/pipeline/ssube/isolex.svg?gitlab_url=https%3A%2F%2Fgit.apextoaster.com&logo=gitlab)](https://git.apextoaster.com/ssube/isolex/commits/master)
@@ -93,7 +107,7 @@ To deploy the bot into a Kubernetes cluster:
 > kubectl create secret generic isolex-config --dry-run --from-file docs/isolex.yml -o json | kubectl apply -n isolex -f -
 ```
 
-### Locally in Docker
+### Local in Docker
 
 To run the bot locally from the Docker image:
 
@@ -101,11 +115,12 @@ To run the bot locally from the Docker image:
 > docker run ssube/isolex:master
 ```
 
-### Locally from bundle
+### Local from Bundle
 
 To run the bot locally from [the build bundle](#build):
 
 ```shell
+> source docs/isolex.env
 > make run-bunyan
 ```
 
