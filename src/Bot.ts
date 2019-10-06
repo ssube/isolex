@@ -56,6 +56,8 @@ export class Bot extends BaseService<BotData> implements Service {
   protected readonly container: Container;
   protected readonly metrics: Registry;
 
+  protected started: boolean;
+
   protected locale?: Locale;
   protected storage?: Storage;
 
@@ -80,6 +82,7 @@ export class Bot extends BaseService<BotData> implements Service {
     super(options, 'isolex#/definitions/service-bot');
 
     this.logger.info(options, 'creating bot');
+    this.started = false;
 
     this.container = options.container;
     this.metrics = mustExist(options[INJECT_METRICS]);
@@ -98,6 +101,10 @@ export class Bot extends BaseService<BotData> implements Service {
     this.outgoing = new Subject();
 
     this.startMetrics();
+  }
+
+  public get isConnected() {
+    return this.started;
   }
 
   public getLocale(): Locale {
@@ -137,6 +144,7 @@ export class Bot extends BaseService<BotData> implements Service {
 
     await this.startServices();
 
+    this.started = true;
     this.logger.info('bot started');
   }
 
@@ -155,6 +163,7 @@ export class Bot extends BaseService<BotData> implements Service {
     this.logger.debug('stopping locale');
     await this.getLocale().stop();
 
+    this.started = false;
     this.logger.info('bot has stopped');
   }
 

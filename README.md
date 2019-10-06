@@ -22,9 +22,9 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
 
 [![Renovate badge](https://badges.renovateapi.com/github/ssube/isolex)](https://renovatebot.com)
-[![Known vulnerabilities](https://snyk.io/test/github/ssube/isolex/badge.svg)](https://snyk.io/test/github/ssube/isolex)
 [![Dependency status](https://img.shields.io/david/ssube/isolex.svg)](https://david-dm.org/ssube/isolex)
 [![Dev dependency status](https://img.shields.io/david/dev/ssube/isolex.svg)](https://david-dm.org/ssube/isolex?type=dev)
+[![Known vulnerabilities](https://snyk.io/test/github/ssube/isolex/badge.svg)](https://snyk.io/test/github/ssube/isolex)
 
 [![Maintainability score](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/maintainability)](https://codeclimate.com/github/ssube/isolex/maintainability)
 [![Technical debt ratio](https://img.shields.io/codeclimate/tech-debt/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/trends/technical_debt)

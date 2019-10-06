@@ -1,0 +1,4 @@
+metadata:
+  kind: health-endpoint
+  name: test-health-endpoint
+data: {}
