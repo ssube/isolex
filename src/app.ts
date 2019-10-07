@@ -38,7 +38,7 @@ export async function main(argv: Array<string>): Promise<ExitStatus> {
 
   const logger = BunyanLogger.create(config.data.logger);
   logger.info(VERSION_INFO, 'version info');
-  logger.info({ args }, 'main arguments');
+  logger.info({ args }, 'main starting with arguments');
 
   const schema = new Schema();
   const result = schema.match(config);
@@ -53,7 +53,10 @@ export async function main(argv: Array<string>): Promise<ExitStatus> {
   }
 
   const { bot } = await createBot({ config, logger });
-  return runBot({ config, logger }, bot);
+  const status = await runBot({ config, logger }, bot);
+  logger.info({ status }, 'main exiting with status');
+
+  return status;
 }
 
 export async function createBot(options: CreateOptions) {

@@ -3,8 +3,10 @@ import { ineeda } from 'ineeda';
 
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
+import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
 import { CommandFilter, CommandFilterData } from '../../src/filter/CommandFilter';
+import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
@@ -43,5 +45,21 @@ describeLeaks('command filter', async () => {
   });
 
   xit('should drop other commands');
-  xit('should ignore other entities');
+  itLeaks('should ignore other entities', async () => {
+    const { filter } = await createFilter({
+      filters: [],
+      match: {
+        rules: [],
+      },
+      strict: true,
+    });
+    const result = await filter.check(new Message({
+      body: '',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    }));
+    expect(result).to.equal(FilterBehavior.Ignore);
+  });
 });

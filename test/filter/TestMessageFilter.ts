@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
+import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
@@ -44,5 +45,21 @@ describeLeaks('message filter', async () => {
   });
 
   xit('should drop other messages');
-  xit('should ignore other entities');
+  it('should ignore other entities', async () => {
+    const { filter } = await createFilter({
+      filters: [],
+      match: {
+        rules: [],
+      },
+      strict: true,
+    });
+    const result = await filter.check(new Command({
+      context: ineeda<Context>(),
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Delete,
+    }));
+    expect(result).to.equal(FilterBehavior.Ignore);
+  });
 });
