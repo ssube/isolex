@@ -7,6 +7,7 @@ import { Connection, Repository } from 'typeorm';
 import {
   INJECT_CLOCK,
   INJECT_LOGGER,
+  INJECT_MATH,
   INJECT_METRICS,
   INJECT_SCHEMA,
   INJECT_SERVICES,
@@ -19,6 +20,7 @@ import { ServiceModule } from '../../src/module/ServiceModule';
 import { Schema } from '../../src/schema';
 import { Service } from '../../src/Service';
 import { Clock } from '../../src/utils/Clock';
+import { MathFactory } from '../../src/utils/Math';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
 import { getTestLogger } from './logger';
@@ -94,6 +96,7 @@ export async function createService<
     }),
     [INJECT_LOCALE]: locale,
     [INJECT_LOGGER]: getTestLogger(),
+    [INJECT_MATH]: new MathFactory(),
     [INJECT_METRICS]: new Registry(),
     [INJECT_SCHEMA]: schema,
     [INJECT_STORAGE]: ineeda<Connection>({
