@@ -37,6 +37,7 @@ data:
   endpoints:
     # !include ../docs/endpoint/debug-endpoint.yml
     - !include ../docs/endpoint/echo-endpoint.yml
+    - !include ../docs/endpoint/github-endpoint.yml
     - !include ../docs/endpoint/gitlab-endpoint.yml
     - !include ../docs/endpoint/health-endpoint.yml
   intervals:
@@ -47,10 +48,10 @@ data:
     # !include ../docs/interval/message-interval.yml
     - !include ../docs/interval/metrics-interval.yml
   listeners:
-    - !include ../docs/listener/discord-listener.yml
+    # !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml
     - !include ../docs/listener/github-listener.yml
-    - !include ../docs/listener/slack-listener.yml
+    # !include ../docs/listener/slack-listener.yml
   locale:
     metadata:
       kind: locale

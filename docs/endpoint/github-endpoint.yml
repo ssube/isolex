@@ -1,0 +1,7 @@
+metadata:
+  kind: github-endpoint
+  name: test-github-endpoint
+data:
+  filters: []
+  strict: false
+  secret: 'test'

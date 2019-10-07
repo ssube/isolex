@@ -9,6 +9,8 @@ data:
     endpoints:
       - kind: echo-endpoint
         name: test-echo-endpoint
+      - kind: github-endpoint
+        name: test-github-endpoint
       - kind: gitlab-endpoint
         name: test-gitlab-endpoint
       - kind: health-endpoint
