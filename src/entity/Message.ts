@@ -118,6 +118,9 @@ export const GRAPH_INPUT_MESSAGE = new GraphQLInputObjectType({
     labels: {
       type: new GraphQLList(GRAPH_INPUT_NAME_VALUE_PAIR),
     },
+    reactions: {
+      type: new GraphQLList(GraphQLString),
+    },
     type: {
       type: GraphQLString,
     },
