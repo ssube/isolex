@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
 import { spy, stub } from 'sinon';
 import { Repository } from 'typeorm';
@@ -62,6 +62,12 @@ describeLeaks('health endpoint', async () => {
     const endpoint = await createEndpoint(false, false);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/health');
+  });
+
+  itLeaks('should have a router', async () => {
+    const endpoint = await createEndpoint(false, false);
+    const router = await endpoint.createRouter();
+    expect(router).to.be.an.instanceOf(Function);
   });
 
   describeLeaks('liveness route', async () => {

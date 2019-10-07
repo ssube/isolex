@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
 import { spy } from 'sinon';
 import { Repository } from 'typeorm';
@@ -47,6 +47,12 @@ describeLeaks('echo endpoint', async () => {
     expect(endpoint.paths).to.include('/echo');
   });
 
+  itLeaks('should have a router', async () => {
+    const endpoint = await createEndpoint(false, false);
+    const router = await endpoint.createRouter();
+    expect(router).to.be.an.instanceOf(Function);
+  });
+
   describeLeaks('index route', async () => {
     itLeaks('should print default message without user', async () => {
       const endpoint = await createEndpoint(true, true);
@@ -55,7 +61,7 @@ describeLeaks('echo endpoint', async () => {
         get user(): User | undefined {
           return undefined;
         },
-        set user(val: User | undefined) { /* noop */}
+        set user(val: User | undefined) { /* noop */ }
       }), ineeda<Response>({
         send,
       }));

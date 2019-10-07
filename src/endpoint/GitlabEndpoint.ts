@@ -110,7 +110,7 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
 
   public createRouter(): Promise<Router> {
     this.router.use(expressJSON());
-    this.router.route('/hook').post(this.nextRoute(this.hookSwitch.bind(this)));
+    this.router.route('/webhook').post(this.nextRoute(this.hookSwitch.bind(this)));
     return Promise.resolve(this.router);
   }
 

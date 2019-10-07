@@ -592,6 +592,16 @@ definitions:
   service-endpoint-echo:
     $ref: "#/definitions/service-endpoint"
 
+  service-endpoint-github:
+    allOf:
+      - $ref: "#/definitions/service-endpoint"
+      - type: object
+        additionalProperties: true
+        required: [secret]
+        properties:
+          secret:
+            type: string
+
   service-endpoint-gitlab:
     allOf:
       - $ref: "#/definitions/service-endpoint"
