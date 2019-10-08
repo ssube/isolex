@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import { EndpointData, Handler } from '.';
-import { BotServiceOptions } from '../BotService';
 import { CommandVerb } from '../entity/Command';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 import { STATUS_SUCCESS } from './HealthEndpoint';
@@ -13,7 +12,7 @@ export interface GithubEndpointData extends EndpointData {
 export type GithubEndpointOptions = BaseEndpointOptions<GithubEndpointData>;
 
 export class GithubEndpoint extends BaseEndpoint<GithubEndpointData> {
-  constructor(options: BotServiceOptions<GithubEndpointData>) {
+  constructor(options: BaseEndpointOptions<GithubEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-github');
   }
 

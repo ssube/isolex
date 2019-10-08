@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
+import passport from 'passport';
 import { spy, stub } from 'sinon';
 import { Repository } from 'typeorm';
 
@@ -64,10 +65,18 @@ describeLeaks('health endpoint', async () => {
     expect(endpoint.paths).to.include('/health');
   });
 
-  itLeaks('should have a router', async () => {
+  itLeaks('should configure a router', async () => {
     const endpoint = await createEndpoint(false, false);
-    const router = await endpoint.createRouter();
-    expect(router).to.be.an.instanceOf(Function);
+    const get = spy();
+    const router = ineeda<Router>({
+      get,
+    });
+    const result = await endpoint.createRouter({
+      passport: ineeda<passport.Authenticator>(),
+      router,
+    });
+    expect(result).to.equal(router, 'must return the passed router');
+    expect(get).to.have.callCount(2);
   });
 
   describeLeaks('liveness route', async () => {

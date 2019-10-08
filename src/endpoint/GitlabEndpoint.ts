@@ -1,8 +1,7 @@
 import { json as expressJSON, Request, Response, Router } from 'express';
 import { isString } from 'lodash';
 
-import { Endpoint, EndpointData, Handler } from '.';
-import { BotServiceOptions } from '../BotService';
+import { Endpoint, EndpointData, Handler, RouterOptions } from '.';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
@@ -11,7 +10,7 @@ import { applyTransforms, scopeToData } from '../transform/helpers';
 import { mustExist } from '../utils';
 import { TYPE_JSON } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';
-import { BaseEndpoint } from './BaseEndpoint';
+import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
 export interface GitlabBaseWebhook {
   object_kind: string;
@@ -97,7 +96,7 @@ const STATUS_ERROR = 500;
 const STATUS_UNKNOWN = 404;
 
 export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements Endpoint {
-  constructor(options: BotServiceOptions<GitlabEndpointData>) {
+  constructor(options: BaseEndpointOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');
   }
 
@@ -108,8 +107,8 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
     ];
   }
 
-  public async createRouter(): Promise<Router> {
-    const router = await super.createRouter();
+  public async createRouter(options: RouterOptions): Promise<Router> {
+    const router = await super.createRouter(options);
     return router.use(expressJSON());
   }
 

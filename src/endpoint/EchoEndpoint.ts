@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
 
 import { Endpoint, EndpointData, Handler } from '.';
-import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
 import { CommandVerb } from '../entity/Command';
 import { doesExist } from '../utils';
-import { BaseEndpoint } from './BaseEndpoint';
+import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
 export class EchoEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
-  constructor(options: BotServiceOptions<EndpointData>) {
+  constructor(options: BaseEndpointOptions<EndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-echo');
   }
 
