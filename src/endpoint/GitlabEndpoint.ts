@@ -1,9 +1,9 @@
 import { json as expressJSON, Request, Response, Router } from 'express';
 import { isString } from 'lodash';
 
-import { Endpoint, EndpointData } from '.';
+import { Endpoint, EndpointData, Handler } from '.';
 import { BotServiceOptions } from '../BotService';
-import { Command, CommandOptions } from '../entity/Command';
+import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { getRequestContext } from '../listener/ExpressListener';
@@ -108,12 +108,12 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
     ];
   }
 
-  public createRouter(): Promise<Router> {
-    this.router.use(expressJSON());
-    this.router.route('/webhook').post(this.nextRoute(this.hookSwitch.bind(this)));
-    return Promise.resolve(this.router);
+  public async createRouter(): Promise<Router> {
+    const router = await super.createRouter();
+    return router.use(expressJSON());
   }
 
+  @Handler(CommandVerb.Create, '/webhook')
   public async hookSwitch(req: Request, res: Response) {
     this.logger.debug({
       req,

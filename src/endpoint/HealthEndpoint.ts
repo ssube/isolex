@@ -1,7 +1,8 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
-import { Endpoint, EndpointData } from '.';
+import { Endpoint, EndpointData, Handler } from '.';
 import { BotServiceOptions } from '../BotService';
+import { CommandVerb } from '../entity/Command';
 import { BaseEndpoint } from './BaseEndpoint';
 
 export const BODY_SUCCESS = 'OK';
@@ -22,12 +23,7 @@ export class HealthEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
     ];
   }
 
-  public async createRouter(): Promise<Router> {
-    this.router.route('/liveness').get(this.nextRoute(this.getLiveness.bind(this)));
-    this.router.route('/readiness').get(this.nextRoute(this.getReadiness.bind(this)));
-    return this.router;
-  }
-
+  @Handler(CommandVerb.Get, '/liveness')
   public async getLiveness(req: Request, res: Response): Promise<void> {
     this.logger.debug('health endpoint get liveness');
     if (this.bot.isConnected) {
@@ -37,6 +33,7 @@ export class HealthEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
     }
   }
 
+  @Handler(CommandVerb.Get, '/readiness')
   public async getReadiness(req: Request, res: Response): Promise<void> {
     this.logger.debug('health endpoint get readiness');
     if (this.bot.getStorage().isConnected) {

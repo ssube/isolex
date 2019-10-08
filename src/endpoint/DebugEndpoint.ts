@@ -1,7 +1,8 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
-import { Endpoint, EndpointData } from '.';
+import { Endpoint, EndpointData, Handler } from '.';
 import { BotServiceOptions } from '../BotService';
+import { CommandVerb } from '../entity/Command';
 import { BaseEndpoint } from './BaseEndpoint';
 
 export class DebugEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
@@ -16,11 +17,7 @@ export class DebugEndpoint extends BaseEndpoint<EndpointData> implements Endpoin
     ];
   }
 
-  public async createRouter(): Promise<Router> {
-    this.router.route('/').get(this.nextRoute(this.getIndex.bind(this)));
-    return this.router;
-  }
-
+  @Handler(CommandVerb.Get, '/')
   public async getIndex(req: Request, res: Response): Promise<void> {
     const svcs = [];
     for (const [key, svc] of this.services.listServices()) {

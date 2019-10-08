@@ -1,8 +1,9 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
-import { Endpoint, EndpointData } from '.';
+import { Endpoint, EndpointData, Handler } from '.';
 import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
+import { CommandVerb } from '../entity/Command';
 import { doesExist } from '../utils';
 import { BaseEndpoint } from './BaseEndpoint';
 
@@ -18,11 +19,7 @@ export class EchoEndpoint extends BaseEndpoint<EndpointData> implements Endpoint
     ];
   }
 
-  public async createRouter(): Promise<Router> {
-    this.router.route('/').get(this.nextRoute(this.getIndex.bind(this)));
-    return this.router;
-  }
-
+  @Handler(CommandVerb.Get, '/')
   public async getIndex(req: Request, res: Response): Promise<void> {
     this.logger.debug('echo endpoint get index');
     if (doesExist(req.user)) {

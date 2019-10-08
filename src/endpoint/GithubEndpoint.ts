@@ -1,7 +1,8 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
-import { EndpointData } from '.';
+import { EndpointData, Handler } from '.';
 import { BotServiceOptions } from '../BotService';
+import { CommandVerb } from '../entity/Command';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 import { STATUS_SUCCESS } from './HealthEndpoint';
 
@@ -23,11 +24,7 @@ export class GithubEndpoint extends BaseEndpoint<GithubEndpointData> {
     ];
   }
 
-  public async createRouter(): Promise<Router> {
-    this.router.route('/webhook').get(this.nextRoute(this.postWebhook.bind(this)));
-    return this.router;
-  }
-
+  @Handler(CommandVerb.Create, '/webhook')
   public async postWebhook(req: Request, res: Response): Promise<void> {
     const eventType = req.header('X-GitHub-Event');
     const eventId = req.header('X-GitHub-Delivery');
