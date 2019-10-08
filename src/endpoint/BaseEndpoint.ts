@@ -7,7 +7,6 @@ import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
 import { Endpoint, EndpointData, getHandlerMetadata, Handler, HandlerMetadata, RouterOptions } from '../endpoint';
 import { CommandVerb } from '../entity/Command';
 import { Context, ContextOptions } from '../entity/Context';
-import { Listener } from '../listener';
 import { getRequestContext } from '../listener/ExpressListener';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
@@ -16,14 +15,11 @@ import { doesExist, getMethods, mustExist } from '../utils';
 
 export const STATUS_FORBIDDEN = 403;
 
-export interface BaseEndpointOptions<TData extends EndpointData> extends BotServiceOptions<TData> {
-  listener: Listener;
-}
+export type BaseEndpointOptions<TData extends EndpointData> = BotServiceOptions<TData>;
 
 @Inject(INJECT_STORAGE)
 export abstract class BaseEndpoint<TData extends EndpointData> extends BotService<TData> implements Endpoint {
   protected readonly contextRepository: Repository<Context>;
-  protected readonly listener: Listener;
   protected readonly services: ServiceModule;
   protected readonly transforms: Array<Transform>;
 
@@ -31,7 +27,6 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     super(options, schemaPath);
 
     this.contextRepository = mustExist(options[INJECT_STORAGE]).getRepository(Context);
-    this.listener = options.listener;
     this.services = mustExist(options[INJECT_SERVICES]);
     this.transforms = [];
   }
