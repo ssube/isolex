@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+import { isNil } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
@@ -11,7 +12,7 @@ import { getRequestContext } from '../listener/ExpressListener';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
 import { Transform, TransformData } from '../transform';
-import { doesExist, getMethods, mustExist } from '../utils';
+import { getMethods, mustExist } from '../utils';
 
 export const STATUS_FORBIDDEN = 403;
 
@@ -48,15 +49,16 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     for (const method of methods) {
       const metadata = getHandlerMetadata(method);
       this.logger.debug({ metadata, method: method.name }, 'checking method for handler metadata');
-      if (doesExist(metadata)) {
-        this.logger.debug({ metadata, method: method.name }, 'binding handler method');
-        const bound = this.nextRoute(method.bind(this), metadata);
-        if (metadata.grants.length > 0) {
-          registerHandlers(router, metadata, [passport.authenticate('jwt'), bound]);
-        } else {
-          registerHandlers(router, metadata, [bound]);
-        }
+      if (isNil(metadata)) {
+        continue;
       }
+
+      this.logger.debug({ metadata, method: method.name }, 'binding handler method');
+      const handlers = [this.bindHandler(method, metadata)];
+      if (metadata.grants.length > 0) {
+        handlers.unshift(passport.authenticate('jwt'));
+      }
+      registerHandlers(router, metadata, handlers);
     }
     return router;
   }
@@ -80,10 +82,11 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     return ctx;
   }
 
-  protected nextRoute(fn: (req: Request, res: Response) => Promise<void>, metadata: HandlerMetadata) {
+  protected bindHandler(fn: Handler, metadata: HandlerMetadata) {
+    const bound = fn.bind(this);
     return (req: Request, res: Response, next: NextFunction): void => {
       if (this.routeGrant(req, metadata)) {
-        fn(req, res).then(() => {
+        bound(req, res).then(() => {
           this.logger.debug('finished calling handler');
           next();
         }).catch((err: Error) => {

@@ -116,12 +116,12 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     return [];
   }
 
-  public getMetrics(req: express.Request, res: express.Response) {
+  public getMetrics(req: Request, res: Response) {
     res.set('Content-Type', this.metrics.contentType);
     res.end(this.metrics.metrics());
   }
 
-  public traceRequest(req: express.Request, res: express.Response, next: Function) {
+  public traceRequest(req: Request, res: Response, next: Function) {
     this.logger.debug({ req, res }, 'handling request');
     this.requestCounter.inc({
       requestHost: req.hostname,
