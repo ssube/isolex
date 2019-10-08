@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { BaseError } from 'noicejs';
+import passport from 'passport';
 
 import { BotServiceData } from '../BotService';
 import { CommandVerb } from '../entity/Command';
@@ -7,10 +8,15 @@ import { Service } from '../Service';
 
 export type EndpointData = BotServiceData;
 
+export interface RouterOptions {
+  passport: passport.Authenticator;
+  router?: Router;
+}
+
 export interface Endpoint extends Service {
   paths: Array<string>;
 
-  createRouter(): Promise<Router>;
+  createRouter(options: RouterOptions): Promise<Router>;
 }
 
 export enum HttpVerb {
@@ -35,18 +41,22 @@ export function commandVerbFor(verb: HttpVerb): CommandVerb {
 }
 
 export interface HandlerMetadata {
+  grants: Array<string>;
   path: string;
   verb: CommandVerb;
 }
 
 const HANDLER_KEY = Symbol('handler-metadata');
-export function Handler(verb: CommandVerb, path: string) {
+export function Handler(verb: CommandVerb, path: string, grants: Array<string> = []) {
+  // this variable type-checks the metadata to be set
+  const meta: HandlerMetadata = {
+    grants,
+    path,
+    verb,
+  };
   // tslint:disable-next-line:no-any
   return (target: any, key: string, desc?: PropertyDescriptor) => {
-    Reflect.set(target[key], HANDLER_KEY, {
-      path,
-      verb,
-    });
+    Reflect.set(target[key], HANDLER_KEY, meta);
   };
 }
 

@@ -1,4 +1,4 @@
-import express, { Request } from 'express';
+import express, { Request, Response } from 'express';
 import expressGraphQl from 'express-graphql';
 import http from 'http';
 import { isNil } from 'lodash';
@@ -122,10 +122,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   public traceRequest(req: express.Request, res: express.Response, next: Function) {
-    const ctx = getRequestContext(req);
-    this.logger.debug({ ctx, req, res }, 'handling request');
+    this.logger.debug({ req, res }, 'handling request');
     this.requestCounter.inc({
-      requestClient: req.ip,
       requestHost: req.hostname,
       requestPath: req.path,
       serviceId: this.id,
@@ -140,8 +138,8 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     const token = await this.tokenRepository.findOne({
       id: data.jti,
     }, {
-        relations: ['user'],
-      });
+      relations: ['user'],
+    });
 
     if (isNil(token)) {
       this.logger.warn('token not found');
@@ -183,7 +181,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
     if (doesExist(this.passport)) {
       app = app.use(this.passport.initialize());
-      app = app.use(this.passport.authenticate('jwt'));
     }
 
     if (this.data.expose.metrics) {
@@ -212,7 +209,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected async setupEndpoints(app: express.Express): Promise<express.Express> {
     for (const metadata of this.data.expose.endpoints) {
       const endpoint = this.services.getService<Endpoint>(metadata);
-      const router = await endpoint.createRouter();
+      const router = await endpoint.createRouter({
+        passport: mustExist(this.passport),
+      });
       for (const path of endpoint.paths) {
         this.logger.debug({
           endpoint: endpoint.name,
@@ -257,6 +256,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 }
 
 export function getRequestContext(req: Request): Context {
-    /* tslint:disable-next-line:no-any */
+  /* tslint:disable-next-line:no-any */
   return mustExist<Context>(req.user as any);
 }

@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 
 import { Endpoint, EndpointData, Handler } from '.';
-import { BotServiceOptions } from '../BotService';
 import { CommandVerb } from '../entity/Command';
-import { BaseEndpoint } from './BaseEndpoint';
+import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
 export const BODY_SUCCESS = 'OK';
 export const BODY_ERROR = 'ERROR';
@@ -12,7 +11,7 @@ export const STATUS_SUCCESS = 200;
 export const STATUS_ERROR = 500;
 
 export class HealthEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
-  constructor(options: BotServiceOptions<EndpointData>) {
+  constructor(options: BaseEndpointOptions<EndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-health');
   }
 

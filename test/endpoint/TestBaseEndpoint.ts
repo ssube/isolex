@@ -1,19 +1,19 @@
 import { expect } from 'chai';
 import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
+import passport from 'passport';
 import { match, spy } from 'sinon';
 
 import { EndpointData, Handler } from '../../src/endpoint';
-import { BaseEndpoint } from '../../src/endpoint/BaseEndpoint';
+import { BaseEndpoint, BaseEndpointOptions } from '../../src/endpoint/BaseEndpoint';
 import { CommandVerb } from '../../src/entity/Command';
-import { BaseListenerOptions } from '../../src/listener/BaseListener';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 describeLeaks('base endpoint', async () => {
   itLeaks('should bind handler methods', async () => {
     class SubEndpoint extends BaseEndpoint<EndpointData> {
-      constructor(options: BaseListenerOptions<EndpointData>) {
+      constructor(options: BaseEndpointOptions<EndpointData>) {
         super(options, 'isolex#/definitions/service-endpoint');
       }
 
@@ -36,9 +36,12 @@ describeLeaks('base endpoint', async () => {
     });
 
     const get = spy();
-    await endpoint.createRouter(ineeda<Router>({
-      get,
-    }));
+    await endpoint.createRouter({
+      passport: ineeda<passport.Authenticator>(),
+      router: ineeda<Router>({
+          get,
+        }),
+      });
 
     expect(get).to.have.been.calledOnce.and.calledWithExactly('/test', match.func);
   });

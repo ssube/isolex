@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
+import passport from 'passport';
 import { spy, stub } from 'sinon';
 import { Repository } from 'typeorm';
 
@@ -48,10 +49,18 @@ describeLeaks('github endpoint', async () => {
     expect(endpoint.paths).to.include('/github');
   });
 
-  itLeaks('should have a router', async () => {
+  itLeaks('should configure a router', async () => {
     const endpoint = await createEndpoint(false, false);
-    const router = await endpoint.createRouter();
-    expect(router).to.be.an.instanceOf(Function);
+    const post = spy();
+    const router = ineeda<Router>({
+      post,
+    });
+    const result = await endpoint.createRouter({
+      passport: ineeda<passport.Authenticator>(),
+      router,
+    });
+    expect(result).to.equal(router, 'must return the passed router');
+    expect(post).to.have.callCount(1);
   });
 
   describeLeaks('webhook route', async () => {
