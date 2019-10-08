@@ -179,14 +179,14 @@ export class GraphSchema extends BotService<GraphSchemaData> {
           type: GRAPH_OUTPUT_COMMAND,
         },
         message: {
-          fields: {
+          args: {
             id: { type: GraphQLString },
           },
           resolve: (_, args: any, req: express.Request) => this.getMessage(args, req),
           type: GRAPH_OUTPUT_MESSAGE,
         },
         service: {
-          fields: {
+          args: {
             id: { type: GraphQLString },
           },
           resolve: (_, args: any, req: express.Request) => this.getService(args, req),
