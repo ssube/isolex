@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
 import passport from 'passport';
-import { spy, stub } from 'sinon';
+import { spy } from 'sinon';
 import { Repository } from 'typeorm';
 
 import { Bot } from '../../src/Bot';
@@ -47,14 +47,11 @@ async function createEndpoint(botReady: boolean, storageReady: boolean): Promise
 }
 
 function createRequest() {
-  const send = spy();
-  const status = stub().returns({
-    send,
-  });
+  const status = spy();
   const response = ineeda<Response>({
-    status,
+    sendStatus: status,
   });
-  return { response, send, status };
+  return { response, status };
 }
 
 // tslint:disable:no-identical-functions
