@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 
 import { INJECT_SERVICES } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
-import { Endpoint, EndpointData, getHandlerMetadata, Handler, HandlerMetadata, RouterOptions } from '../endpoint';
+import { Endpoint, EndpointData, getHandlerMetadata, HandlerMetadata, HandlerMethod, RouterOptions } from '../endpoint';
 import { CommandVerb } from '../entity/Command';
 import { Context, ContextOptions } from '../entity/Context';
 import { getRequestContext } from '../listener/ExpressListener';
@@ -45,7 +45,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
       router = Router(),
     } = options;
 
-    const methods = getMethods(this) as Set<Handler>;
+    const methods = getMethods(this) as Set<HandlerMethod>;
     for (const method of methods) {
       const metadata = getHandlerMetadata(method);
       this.logger.debug({ metadata, method: method.name }, 'checking method for handler metadata');
@@ -82,7 +82,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     return ctx;
   }
 
-  protected bindHandler(fn: Handler, metadata: HandlerMetadata) {
+  protected bindHandler(fn: HandlerMethod, metadata: HandlerMetadata) {
     const bound = fn.bind(this);
     return (req: Request, res: Response, next: NextFunction): void => {
       if (this.routeGrant(req, metadata)) {
