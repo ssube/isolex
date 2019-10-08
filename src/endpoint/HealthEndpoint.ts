@@ -26,9 +26,9 @@ export class HealthEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
   public async getLiveness(req: Request, res: Response): Promise<void> {
     this.logger.debug('health endpoint get liveness');
     if (this.bot.isConnected) {
-      res.status(STATUS_SUCCESS).send(BODY_SUCCESS);
+      res.sendStatus(STATUS_SUCCESS);
     } else {
-      res.status(STATUS_ERROR).send(BODY_ERROR);
+      res.sendStatus(STATUS_ERROR);
     }
   }
 
@@ -36,9 +36,9 @@ export class HealthEndpoint extends BaseEndpoint<EndpointData> implements Endpoi
   public async getReadiness(req: Request, res: Response): Promise<void> {
     this.logger.debug('health endpoint get readiness');
     if (this.bot.getStorage().isConnected) {
-      res.status(STATUS_SUCCESS).send(BODY_SUCCESS);
+      res.sendStatus(STATUS_SUCCESS);
     } else {
-      res.status(STATUS_ERROR).send(BODY_ERROR);
+      res.sendStatus(STATUS_ERROR);
     }
   }
 }
