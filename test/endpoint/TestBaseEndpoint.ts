@@ -32,7 +32,7 @@ describeLeaks('base endpoint', async () => {
       metadata: {
         kind: 'sub-endpoint',
         name: 'test-endpoint',
-      }
+      },
     });
 
     const get = spy();
@@ -44,5 +44,29 @@ describeLeaks('base endpoint', async () => {
       });
 
     expect(get).to.have.been.calledOnce.and.calledWithExactly('/test', match.func);
+  });
+
+  itLeaks('should create a router if one is not provided', async () => {
+    class SubEndpoint extends BaseEndpoint<EndpointData> {
+      constructor(options: BaseEndpointOptions<EndpointData>) {
+        super(options, 'isolex#/definitions/service-endpoint');
+      }
+    }
+
+    const { container } = await createServiceContainer();
+    const endpoint = await createService(container, SubEndpoint, {
+      data: {
+        filters: [],
+        strict: false,
+      },
+      metadata: {
+        kind: 'sub-endpoint',
+        name: 'test-endpoint',
+      },
+    });
+    const router = await endpoint.createRouter({
+      passport: ineeda<passport.Authenticator>(),
+    });
+    expect(router).to.be.an.instanceOf(Function);
   });
 });

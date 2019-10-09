@@ -13,6 +13,16 @@ import { Storage } from '../../src/storage';
 import { createService, createServiceContainer } from '../helpers/container';
 import { getTestLogger } from './logger';
 
+const TEST_DATA = {
+  filters: [],
+  strict: false,
+};
+
+const TEST_METADATA = {
+  kind: 'test-endpoint',
+  name: 'test-endpoint',
+};
+
 export async function createEndpoint<
   TEndpoint extends BaseEndpoint<EndpointData>,
   TData extends EndpointData & object
@@ -51,15 +61,11 @@ export async function createEndpoint<
     [INJECT_BOT]: bot,
     [INJECT_STORAGE]: storage,
     data: {
-      filters: [],
-      strict: false,
+      ...TEST_DATA,
       ...data,
-    // tslint:disable-next-line:no-any
+      // tslint:disable-next-line:no-any
     } as any,
-    metadata: {
-      kind: 'test-endpoint',
-      name: 'test-endpoint',
-    },
+    metadata: TEST_METADATA,
   });
 }
 
