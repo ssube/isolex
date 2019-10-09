@@ -1,0 +1,10 @@
+metadata:
+  kind: graph-endpoint
+  name: test-graph-endpoint
+data:
+  graph:
+    metadata:
+      kind: graph-schema
+      name: test-express-graph
+    data: {}
+  graphiql: true

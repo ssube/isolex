@@ -6,7 +6,6 @@ import { spy } from 'sinon';
 
 import { INJECT_METRICS, INJECT_SCHEMA } from '../src/BaseService';
 import { Bot, BotData } from '../src/Bot';
-import { INJECT_STORAGE } from '../src/BotService';
 import { BotModule } from '../src/module/BotModule';
 import { ServiceModule } from '../src/module/ServiceModule';
 import { Schema } from '../src/schema';

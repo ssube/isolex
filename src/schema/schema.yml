@@ -612,7 +612,23 @@ definitions:
           defaultCommand:
             $ref: "#/definitions/entity-command"
 
+  service-endpoint-graph:
+    allOf:
+      - $ref: "#/definitions/service-endpoint"
+      - type: object
+        additionalProperties: true
+        required: [graph]
+        properties:
+          graph:
+            type: object
+            additionalProperties: true
+          graphiql:
+            type: boolean
+
   service-endpoint-health:
+    $ref: "#/definitions/service-endpoint"
+
+  service-endpoint-metrics:
     $ref: "#/definitions/service-endpoint"
 
   service-filter:
@@ -737,28 +753,14 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
-        required: [defaultTarget, expose, graph, listen, token]
+        required: [defaultTarget, endpoints, listen, token]
         properties:
           defaultTarget:
             $ref: "#/definitions/service-metadata"
-          expose:
-            type: object
-            required: [endpoints, graph]
-            properties:
-              endpoints:
-                type: array
-                items:
-                  $ref: "#/definitions/service-metadata"
-              graph:
-                type: boolean
-              graphiql:
-                type: boolean
-                default: false
-              metrics:
-                type: boolean
-                default: true
-          graph:
-            $ref: "#/definitions/service-definition"
+          endpoints:
+            type: array
+            items:
+              $ref: "#/definitions/service-metadata"
           listen:
             type: object
             properties:
@@ -1009,7 +1011,9 @@ definitions:
         $ref: "#/definitions/service-metadata"
 
   service-graph:
-    type: object
+    allOf:
+      - $ref: "#/definitions/service-data"
+      - type: object
 
   utils-cooldown:
     type: object

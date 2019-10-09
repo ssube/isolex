@@ -1,0 +1,4 @@
+metadata:
+  kind: metrics-endpoint
+  name: test-metrics-endpoint
+data: {}

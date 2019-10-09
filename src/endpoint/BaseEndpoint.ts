@@ -41,7 +41,6 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
 
   public async createRouter(options: RouterOptions): Promise<Router> {
     const {
-      passport,
       router = Router(),
     } = options;
 
@@ -54,10 +53,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
       }
 
       this.logger.debug({ metadata, method: method.name }, 'binding handler method');
-      const handlers = [this.bindHandler(method, metadata)];
-      if (metadata.grants.length > 0) {
-        handlers.unshift(passport.authenticate('jwt'));
-      }
+      const handlers = [...this.getHandlerMiddleware(metadata, options), this.bindHandler(method, metadata)];
       registerHandlers(router, metadata, handlers);
     }
     return router;
@@ -73,6 +69,21 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     }
   }
 
+  protected getHandlerMiddleware(metadata: HandlerMetadata, options: RouterOptions): Array<RequestHandler> {
+    const middleware = [];
+    if (metadata.grants.length > 0) {
+      middleware.push(options.passport.authenticate('jwt'));
+      middleware.push((req: Request, res: Response, next: NextFunction) => {
+        if (this.routeGrant(req, metadata)) {
+          next();
+        } else {
+          res.sendStatus(STATUS_FORBIDDEN);
+        }
+      });
+    }
+    return middleware;
+  }
+
   protected async createContext(options: ContextOptions): Promise<Context> {
     const ctx = await this.contextRepository.save(new Context({
       ...options,
@@ -85,17 +96,13 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
   protected bindHandler(fn: HandlerMethod, metadata: HandlerMetadata) {
     const bound = fn.bind(this);
     return (req: Request, res: Response, next: NextFunction): void => {
-      if (this.routeGrant(req, metadata)) {
-        bound(req, res).then(() => {
-          this.logger.debug('finished calling handler');
-          next();
-        }).catch((err: Error) => {
-          this.logger.error(err, 'error calling handler');
-          next(err);
-        });
-      } else {
-        res.sendStatus(STATUS_FORBIDDEN);
-      }
+      bound(req, res).then(() => {
+        this.logger.debug('finished calling handler');
+        next();
+      }).catch((err: Error) => {
+        this.logger.error(err, 'error calling handler');
+        next(err);
+      });
     };
   }
 

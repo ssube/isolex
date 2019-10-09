@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import expressGraphQl from 'express-graphql';
 import http from 'http';
 import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
@@ -17,21 +16,14 @@ import { UserRepository } from '../entity/auth/UserRepository';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { ServiceModule } from '../module/ServiceModule';
-import { GraphSchema, GraphSchemaData } from '../schema/graph';
-import { ServiceDefinition, ServiceMetadata } from '../Service';
+import { ServiceMetadata } from '../Service';
 import { Storage } from '../storage';
 import { doesExist, mustExist } from '../utils';
 import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData extends ListenerData {
   defaultTarget: ServiceMetadata;
-  expose: {
-    endpoints: Array<ServiceMetadata>;
-    graph: boolean;
-    graphiql: boolean;
-    metrics: boolean;
-  };
-  graph: ServiceDefinition<GraphSchemaData>;
+  endpoints: Array<ServiceMetadata>;
   listen: {
     address: string;
     port: number;
@@ -55,7 +47,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected readonly userRepository: UserRepository;
 
   protected express?: express.Express;
-  protected graph?: GraphSchema;
   protected passport?: passport.Authenticator;
   protected server?: http.Server;
   protected target?: Listener;
@@ -84,13 +75,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
     this.passport = await this.setupPassport();
     this.express = await this.setupExpress();
-    this.server = await new Promise<http.Server>((res, rej) => {
-      const app = mustExist(this.express);
-      let server: http.Server;
-      server = app.listen(this.data.listen.port, this.data.listen.address, () => {
-        res(server);
-      });
-    });
+    this.server = await this.createServer();
 
     this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
@@ -98,10 +83,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   public async stop() {
     if (doesExist(this.server)) {
       this.server.close();
-    }
-
-    if (doesExist(this.graph)) {
-      await this.graph.stop();
     }
 
     await super.stop();
@@ -116,11 +97,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     return [];
   }
 
-  public getMetrics(req: Request, res: Response) {
-    res.set('Content-Type', this.metrics.contentType);
-    res.end(this.metrics.metrics());
-  }
-
   public traceRequest(req: Request, res: Response, next: Function) {
     this.logger.debug({ req, res }, 'handling request');
     this.requestCounter.inc({
@@ -131,6 +107,16 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       serviceName: this.name,
     });
     next();
+  }
+
+  protected createServer(): Promise<http.Server> {
+    return new Promise<http.Server>((res, rej) => {
+      const app = mustExist(this.express);
+      let server: http.Server;
+      server = app.listen(this.data.listen.port, this.data.listen.address, () => {
+        res(server);
+      });
+    });
   }
 
   protected async createTokenSession(data: JwtFields, done: VerifiedCallback) {
@@ -183,23 +169,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
       app = app.use(this.passport.initialize());
     }
 
-    if (this.data.expose.metrics) {
-      app = app.use((req, res, next) => {
-        this.traceRequest(req, res, next);
-      });
-      app = app.get('/metrics', (req, res) => {
-        this.getMetrics(req, res);
-      });
-    }
-
-    if (this.data.expose.graph) {
-      this.graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
-
-      app = app.use('/graph', expressGraphQl({
-        graphiql: this.data.expose.graphiql,
-        schema: this.graph.schema,
-      }));
-    }
+    app = app.use((req, res, next) => {
+      this.traceRequest(req, res, next);
+    });
 
     app = await this.setupEndpoints(app);
 
@@ -207,7 +179,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   }
 
   protected async setupEndpoints(app: express.Express): Promise<express.Express> {
-    for (const metadata of this.data.expose.endpoints) {
+    for (const metadata of this.data.endpoints) {
       const endpoint = this.services.getService<Endpoint>(metadata);
       const router = await endpoint.createRouter({
         passport: mustExist(this.passport),

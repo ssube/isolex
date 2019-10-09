@@ -84,20 +84,20 @@ export class ServiceModule extends Module implements ServiceLifecycle {
   /**
    * These are all created the same way, so they should probably have a common base...
    */
-  public async createService<TService extends Service, TData extends BotServiceData>(conf: ServiceDefinition<TData>): Promise<TService> {
+  public async createService<TService extends Service, TData extends BotServiceData>(data: ServiceDefinition<TData>): Promise<TService> {
     const container = mustExist(this.container);
     const logger = mustExist(this.logger);
 
-    const { metadata: { kind, name } } = conf;
+    const { metadata: { kind, name } } = data;
     const tag = `${kind}:${name}`;
 
     if (this.services.has(tag)) {
       logger.info({ kind, tag }, 'fetching existing service');
       return mustGet(this.services, tag) as TService;
     }
-    logger.info({ kind, tag }, 'creating unknown service');
+    logger.info({ data, kind, tag }, 'creating unknown service');
     const svc = await container.create<TService, BotServiceOptions<TData>>(kind, {
-      ...conf,
+      ...data,
       [INJECT_LOGGER]: kindLogger(mustExist(this.logger), kind),
       [INJECT_SERVICES]: this,
     });
