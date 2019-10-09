@@ -1,5 +1,4 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { isNil } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
@@ -12,7 +11,7 @@ import { getRequestContext } from '../listener/ExpressListener';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
 import { Transform, TransformData } from '../transform';
-import { getMethods, mustExist } from '../utils';
+import { doesExist, getMethods, mustExist } from '../utils';
 
 export const STATUS_FORBIDDEN = 403;
 
@@ -48,14 +47,15 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     for (const method of methods) {
       const metadata = getHandlerMetadata(method);
       this.logger.debug({ metadata, method: method.name }, 'checking method for handler metadata');
-      if (isNil(metadata)) {
-        continue;
+      if (doesExist(metadata)) {
+        this.logger.debug({ metadata, method: method.name }, 'binding handler method');
+        registerHandlers(router, metadata, [
+          ...this.getHandlerMiddleware(metadata, options),
+          this.bindHandler(method, metadata),
+        ]);
       }
-
-      this.logger.debug({ metadata, method: method.name }, 'binding handler method');
-      const handlers = [...this.getHandlerMiddleware(metadata, options), this.bindHandler(method, metadata)];
-      registerHandlers(router, metadata, handlers);
     }
+
     return router;
   }
 
@@ -69,6 +69,10 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
     }
   }
 
+  /**
+   * This inserts RBAC middleware if needed, but can be overridden by the sub-endpoint
+   * to add custom middleware per-handler.
+   */
   protected getHandlerMiddleware(metadata: HandlerMetadata, options: RouterOptions): Array<RequestHandler> {
     const middleware = [];
     if (metadata.grants.length > 0) {
