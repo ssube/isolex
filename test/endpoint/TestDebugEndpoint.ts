@@ -3,60 +3,21 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
 import passport from 'passport';
 import { match, spy } from 'sinon';
-import { Repository } from 'typeorm';
 
-import { Bot } from '../../src/Bot';
-import { INJECT_BOT, INJECT_STORAGE } from '../../src/BotService';
 import { DebugEndpoint } from '../../src/endpoint/DebugEndpoint';
-import { Storage } from '../../src/storage';
 import { describeLeaks, itLeaks } from '../helpers/async';
-import { createService, createServiceContainer } from '../helpers/container';
-
-async function createEndpoint(botReady: boolean, storageReady: boolean): Promise<DebugEndpoint> {
-  const storage = ineeda<Storage>({
-    getRepository() {
-      return ineeda<Repository<{}>>();
-    },
-  });
-  const bot = ineeda<Bot>({
-    getStorage() {
-      return storage;
-    },
-  });
-
-  const { container } = await createServiceContainer();
-  return createService(container, DebugEndpoint, {
-    [INJECT_BOT]: bot,
-    [INJECT_STORAGE]: storage,
-    data: {
-      filters: [],
-      strict: false,
-    },
-    metadata: {
-      kind: 'debug-endpoint',
-      name: 'test-endpoint',
-    },
-  });
-}
-
-function createRequest() {
-  const json = spy();
-  const response = ineeda<Response>({
-    json,
-  });
-  return { json, response };
-}
+import { createEndpoint, createRequest } from '../helpers/request';
 
 // tslint:disable:no-identical-functions
 describeLeaks('debug endpoint', async () => {
   itLeaks('should have paths', async () => {
-    const endpoint = await createEndpoint(false, false);
+    const endpoint = await createEndpoint(DebugEndpoint, false, false);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/debug');
   });
 
   itLeaks('should configure a router', async () => {
-    const endpoint = await createEndpoint(false, false);
+    const endpoint = await createEndpoint(DebugEndpoint, false, false);
     const get = spy();
     const router = ineeda<Router>({
       get,
@@ -77,7 +38,7 @@ describeLeaks('debug endpoint', async () => {
 
   describeLeaks('index route', async () => {
     itLeaks('should return services', async () => {
-      const endpoint = await createEndpoint(true, true);
+      const endpoint = await createEndpoint(DebugEndpoint, true, true);
       const { json, response } = createRequest();
       await endpoint.getIndex(ineeda<Request>({}), response);
       expect(json).to.have.been.calledOnce.and.calledWithMatch(match.array);
