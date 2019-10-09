@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { NextFunction, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { ineeda } from 'ineeda';
 import passport from 'passport';
 import { match, spy } from 'sinon';
@@ -7,12 +7,14 @@ import { Repository } from 'typeorm';
 
 import { Bot } from '../../src/Bot';
 import { INJECT_BOT, INJECT_STORAGE } from '../../src/BotService';
-import { DebugEndpoint } from '../../src/endpoint/DebugEndpoint';
+import { MetricsEndpoint } from '../../src/endpoint/MetricsEndpoint';
+import { BotModule } from '../../src/module/BotModule';
 import { Storage } from '../../src/storage';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestLogger } from '../helpers/logger';
 
-async function createEndpoint(botReady: boolean, storageReady: boolean): Promise<DebugEndpoint> {
+async function createEndpoint(botReady: boolean, storageReady: boolean): Promise<MetricsEndpoint> {
   const storage = ineeda<Storage>({
     getRepository() {
       return ineeda<Repository<{}>>();
@@ -24,35 +26,40 @@ async function createEndpoint(botReady: boolean, storageReady: boolean): Promise
     },
   });
 
-  const { container } = await createServiceContainer();
-  return createService(container, DebugEndpoint, {
-    [INJECT_BOT]: bot,
-    [INJECT_STORAGE]: storage,
+  const { container, module } = await createServiceContainer(new BotModule({
+    logger: getTestLogger(),
+  }));
+  module.bind(INJECT_BOT).toInstance(bot);
+  module.bind(INJECT_STORAGE).toInstance(storage);
+
+  return createService(container, MetricsEndpoint, {
     data: {
       filters: [],
       strict: false,
     },
     metadata: {
-      kind: 'debug-endpoint',
+      kind: 'metrics-endpoint',
       name: 'test-endpoint',
     },
   });
 }
 
 function createRequest() {
-  const json = spy();
+  const end = spy();
+  const set = spy();
   const response = ineeda<Response>({
-    json,
+    end,
+    set,
   });
-  return { json, response };
+  return { end, response, set };
 }
 
 // tslint:disable:no-identical-functions
-describeLeaks('debug endpoint', async () => {
+describeLeaks('metrics endpoint', async () => {
   itLeaks('should have paths', async () => {
     const endpoint = await createEndpoint(false, false);
     expect(endpoint.paths.length).to.equal(3);
-    expect(endpoint.paths).to.include('/debug');
+    expect(endpoint.paths).to.include('/metrics');
   });
 
   itLeaks('should configure a router', async () => {
@@ -62,13 +69,7 @@ describeLeaks('debug endpoint', async () => {
       get,
     });
     const result = await endpoint.createRouter({
-      passport: ineeda<passport.Authenticator>({
-        authenticate(method: string) {
-          return (req: Request, res: Response, next: NextFunction) => {
-            next();
-          };
-        },
-      }),
+      passport: ineeda<passport.Authenticator>(),
       router,
     });
     expect(result).to.equal(router, 'must return the passed router');
@@ -76,11 +77,11 @@ describeLeaks('debug endpoint', async () => {
   });
 
   describeLeaks('index route', async () => {
-    itLeaks('should return services', async () => {
+    itLeaks('should return metrics', async () => {
       const endpoint = await createEndpoint(true, true);
-      const { json, response } = createRequest();
+      const { end, response } = createRequest();
       await endpoint.getIndex(ineeda<Request>({}), response);
-      expect(json).to.have.been.calledOnce.and.calledWithMatch(match.array);
+      expect(end).to.have.been.calledOnce.and.calledWithMatch(match.string);
     });
   });
 });
