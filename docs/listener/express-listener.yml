@@ -5,24 +5,21 @@ data:
   defaultTarget:
     kind: discord-listener
     name: test-discord
-  expose:
-    endpoints:
-      - kind: echo-endpoint
-        name: test-echo-endpoint
-      - kind: github-endpoint
-        name: test-github-endpoint
-      - kind: gitlab-endpoint
-        name: test-gitlab-endpoint
-      - kind: health-endpoint
-        name: test-health-endpoint
-    graph: true
-    graphiql: true
-    metrics: true
-  graph:
-    metadata:
-      kind: graph-schema
-      name: test-express-graph
-    data: {}
+  endpoints:
+    # kind: debug-endpoint
+    # name: test-debug-endpoint
+    - kind: echo-endpoint
+      name: test-echo-endpoint
+    - kind: github-endpoint
+      name: test-github-endpoint
+    - kind: gitlab-endpoint
+      name: test-gitlab-endpoint
+    - kind: graph-endpoint
+      name: test-graph-endpoint
+    - kind: health-endpoint
+      name: test-health-endpoint
+    - kind: metrics-endpoint
+      name: test-metrics-endpoint
   listen:
     port: 4000
     address: "0.0.0.0"

@@ -39,7 +39,9 @@ data:
     - !include ../docs/endpoint/echo-endpoint.yml
     - !include ../docs/endpoint/github-endpoint.yml
     - !include ../docs/endpoint/gitlab-endpoint.yml
+    - !include ../docs/endpoint/graph-endpoint.yml
     - !include ../docs/endpoint/health-endpoint.yml
+    - !include ../docs/endpoint/metrics-endpoint.yml
   intervals:
     # !include ../docs/interval/command-interval.yml
     # !include ../docs/interval/cron-interval.yml
