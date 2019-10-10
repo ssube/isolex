@@ -1,20 +1,16 @@
 import { json as expressJSON, Request, Response, Router } from 'express';
 import { isString } from 'lodash';
-import { Inject } from 'noicejs';
 
-import { Endpoint, EndpointData, Handler, RouterOptions } from '.';
-import { INJECT_STORAGE } from '../BotService';
-import { User } from '../entity/auth/User';
-import { UserRepository } from '../entity/auth/UserRepository';
+import { Endpoint, Handler, RouterOptions } from '.';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
-import { Storage } from '../storage';
 import { applyTransforms, scopeToData } from '../transform/helpers';
 import { mustExist } from '../utils';
 import { TYPE_JSON } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';
-import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
+import { BaseEndpointOptions } from './BaseEndpoint';
+import { HookEndpoint, HookEndpointData } from './HookEndpoint';
 
 export interface GitlabBaseWebhook {
   object_kind: string;
@@ -93,34 +89,17 @@ export interface GitlabPushWebhook extends GitlabBaseWebhook {
 
 export type GitlabWebhook = GitlabIssueWebhook | GitlabJobWebhook | GitlabNoteWebhook | GitlabPipelineWebhook | GitlabPushWebhook;
 
-export interface GitlabEndpointData extends EndpointData {
+export interface GitlabEndpointData extends HookEndpointData {
   defaultCommand: CommandOptions;
-  hookUser: string;
 }
 
 const STATUS_SUCCESS = 200;
 const STATUS_ERROR = 500;
 const STATUS_UNKNOWN = 404;
 
-@Inject(INJECT_STORAGE)
-export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements Endpoint {
-  protected readonly storage: Storage;
-  protected hookUser?: User;
-
+export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements Endpoint {
   constructor(options: BaseEndpointOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');
-
-    this.storage = mustExist(options[INJECT_STORAGE]);
-  }
-
-  public async start() {
-    await super.start();
-
-    const repository = this.storage.getCustomRepository(UserRepository);
-    const user = await repository.findOneOrFail({
-      id: this.data.hookUser,
-    });
-    this.hookUser = await repository.loadRoles(user);
   }
 
   public get paths(): Array<string> {
@@ -237,17 +216,6 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
     res.sendStatus(STATUS_SUCCESS);
   }
 
-  protected async createHookContext(data: GitlabWebhook) {
-    const user = mustExist(this.hookUser);
-    const channel = this.getHookChannel(data);
-    return this.createContext({
-      channel,
-      name: user.name,
-      uid: this.data.hookUser,
-      user,
-    });
-  }
-
   protected getHookChannel(data: GitlabWebhook): ChannelData {
     return {
       id: data.object_kind,
@@ -256,7 +224,8 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
   }
 
   protected async createHookMessage(req: Request, res: Response, data: GitlabWebhook): Promise<Message> {
-    const context = await this.createHookContext(data);
+    const channel = this.getHookChannel(data);
+    const context = await this.createHookContext(channel);
     // fake message for the transforms to check and filter
     return new Message({
       body: data.object_kind,

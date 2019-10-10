@@ -592,9 +592,19 @@ definitions:
   service-endpoint-echo:
     $ref: "#/definitions/service-endpoint"
 
-  service-endpoint-github:
+  service-endpoint-hook:
     allOf:
       - $ref: "#/definitions/service-endpoint"
+      - type: object
+        additionalProperties: true
+        required: [hookUser]
+        properties:
+          hookUser:
+            type: string
+
+  service-endpoint-github:
+    allOf:
+      - $ref: "#/definitions/service-endpoint-hook"
       - type: object
         additionalProperties: true
         required: [secret]
@@ -604,15 +614,13 @@ definitions:
 
   service-endpoint-gitlab:
     allOf:
-      - $ref: "#/definitions/service-endpoint"
+      - $ref: "#/definitions/service-endpoint-hook"
       - type: object
         additionalProperties: true
-        required: [defaultCommand, hookUser]
+        required: [defaultCommand]
         properties:
           defaultCommand:
             $ref: "#/definitions/entity-command"
-          hookUser:
-            type: string
 
   service-endpoint-graph:
     allOf:

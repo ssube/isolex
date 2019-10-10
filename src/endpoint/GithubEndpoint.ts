@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
+import { Inject } from 'noicejs';
 
-import { EndpointData, Handler } from '.';
+import { Handler } from '.';
+import { INJECT_STORAGE } from '../BotService';
 import { CommandVerb } from '../entity/Command';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 import { STATUS_SUCCESS } from './HealthEndpoint';
+import { HookEndpointData } from './HookEndpoint';
 
-export interface GithubEndpointData extends EndpointData {
+export interface GithubEndpointData extends HookEndpointData {
   secret: string;
 }
 
 export type GithubEndpointOptions = BaseEndpointOptions<GithubEndpointData>;
 
+@Inject(INJECT_STORAGE)
 export class GithubEndpoint extends BaseEndpoint<GithubEndpointData> {
   constructor(options: BaseEndpointOptions<GithubEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-github');

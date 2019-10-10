@@ -9,20 +9,21 @@ import { STATUS_SUCCESS } from '../../src/endpoint/HealthEndpoint';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
+const TEST_DATA = {
+  hookUser: '',
+  secret: '',
+};
+
 // tslint:disable:no-identical-functions
 describeLeaks('github endpoint', async () => {
   itLeaks('should have paths', async () => {
-    const endpoint = await createEndpoint(GithubEndpoint, false, false, {
-      secret: '',
-    });
+    const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/github');
   });
 
   itLeaks('should configure a router', async () => {
-    const endpoint = await createEndpoint(GithubEndpoint, false, false, {
-      secret: '',
-    });
+    const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
     const post = spy();
     const router = ineeda<Router>({
       post,
@@ -36,9 +37,7 @@ describeLeaks('github endpoint', async () => {
   });
 
   describeLeaks('webhook route', async () => {
-    const endpoint = await createEndpoint(GithubEndpoint, false, false, {
-      secret: '',
-    });
+    const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
     const sendStatus = spy();
     await endpoint.postWebhook(ineeda<Request>({
       header: stub().returns([]),

@@ -3,5 +3,6 @@ metadata:
   name: test-github-endpoint
 data:
   filters: []
+  hookUser: 3d6dd1a1-11cd-4ca7-8fa4-49c78c73040d
   strict: false
   secret: 'test'
