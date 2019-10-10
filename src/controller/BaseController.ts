@@ -100,7 +100,9 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
   protected async invokeHandler(cmd: Command, options: HandlerOptions, handler: HandlerMethod): Promise<void> {
     const ctx = mustExist(cmd.context);
-    if (!await this.checkHandlerGrants(ctx, options)) {
+    const allowed = await this.checkHandlerGrants(ctx, options);
+    if (!allowed) {
+      this.logger.warn({ cmd, options }, 'handler access denied');
       return;
     }
 
@@ -133,7 +135,8 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       grants.push(`${options.noun}:${options.verb}`);
     }
 
-    this.logger.debug({ ctx, grants }, 'checking context for handler grants');
+    const ctxGrants = ctx.getGrants();
+    this.logger.debug({ ctx, ctxGrants, grants }, 'checking context for handler grants');
     if (ctx.checkGrants(grants)) {
       return true;
     }

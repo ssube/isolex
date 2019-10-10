@@ -607,10 +607,12 @@ definitions:
       - $ref: "#/definitions/service-endpoint"
       - type: object
         additionalProperties: true
-        required: [defaultCommand]
+        required: [defaultCommand, hookUser]
         properties:
           defaultCommand:
             $ref: "#/definitions/entity-command"
+          hookUser:
+            type: string
 
   service-endpoint-graph:
     allOf:

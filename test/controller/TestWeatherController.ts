@@ -74,6 +74,7 @@ describeLeaks('weather controller', async () => {
     const cmd = new Command({
       context: ineeda<Context>({
         checkGrants: () => true,
+        getGrants: () => ['*:test'],
         user: ineeda<User>(),
       }),
       data: {

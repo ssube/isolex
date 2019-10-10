@@ -1,11 +1,15 @@
 import { json as expressJSON, Request, Response, Router } from 'express';
 import { isString } from 'lodash';
+import { Inject } from 'noicejs';
 
 import { Endpoint, EndpointData, Handler, RouterOptions } from '.';
+import { INJECT_STORAGE } from '../BotService';
+import { User } from '../entity/auth/User';
+import { UserRepository } from '../entity/auth/UserRepository';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
-import { Context } from '../entity/Context';
+import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
-import { getRequestContext } from '../listener/ExpressListener';
+import { Storage } from '../storage';
 import { applyTransforms, scopeToData } from '../transform/helpers';
 import { mustExist } from '../utils';
 import { TYPE_JSON } from '../utils/Mime';
@@ -87,17 +91,36 @@ export interface GitlabPushWebhook extends GitlabBaseWebhook {
 }
 // tslint:enable:no-any
 
+export type GitlabWebhook = GitlabIssueWebhook | GitlabJobWebhook | GitlabNoteWebhook | GitlabPipelineWebhook | GitlabPushWebhook;
+
 export interface GitlabEndpointData extends EndpointData {
   defaultCommand: CommandOptions;
+  hookUser: string;
 }
 
 const STATUS_SUCCESS = 200;
 const STATUS_ERROR = 500;
 const STATUS_UNKNOWN = 404;
 
+@Inject(INJECT_STORAGE)
 export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements Endpoint {
+  protected readonly storage: Storage;
+  protected hookUser?: User;
+
   constructor(options: BaseEndpointOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');
+
+    this.storage = mustExist(options[INJECT_STORAGE]);
+  }
+
+  public async start() {
+    await super.start();
+
+    const repository = this.storage.getCustomRepository(UserRepository);
+    const user = await repository.findOneOrFail({
+      id: this.data.hookUser,
+    });
+    this.hookUser = await repository.loadRoles(user);
   }
 
   public get paths(): Array<string> {
@@ -108,8 +131,14 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
   }
 
   public async createRouter(options: RouterOptions): Promise<Router> {
-    const router = await super.createRouter(options);
-    return router.use(expressJSON());
+    const {
+      passport,
+      router = Router(),
+    } = options;
+    return super.createRouter({
+      passport,
+      router: router.use(expressJSON()),
+    });
   }
 
   @Handler(CommandVerb.Create, '/webhook')
@@ -177,9 +206,9 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
       },
       name: data.user.name,
       uid: data.user.username,
-      user: mustExist(msg.context).user,
+      user: mustExist(this.hookUser),
     });
-    const cmd = await this.createHookCommand(msg, cmdCtx, txData, data.object_kind);
+    const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
     await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
   }
@@ -201,26 +230,44 @@ export class GitlabEndpoint extends BaseEndpoint<GitlabEndpointData> implements 
       },
       name: data.user_name,
       uid: data.user_username,
-      user: mustExist(msg.context).user,
+      user: mustExist(this.hookUser),
     });
-    const cmd = await this.createHookCommand(msg, cmdCtx, txData, data.object_kind);
+    const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
     await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
   }
 
-  protected async createHookMessage(req: Request, res: Response, data: GitlabBaseWebhook): Promise<Message> {
-    const msgCtx = getRequestContext(req);
+  protected async createHookContext(data: GitlabWebhook) {
+    const user = mustExist(this.hookUser);
+    const channel = this.getHookChannel(data);
+    return this.createContext({
+      channel,
+      name: user.name,
+      uid: this.data.hookUser,
+      user,
+    });
+  }
+
+  protected getHookChannel(data: GitlabWebhook): ChannelData {
+    return {
+      id: data.object_kind,
+      thread: '',
+    };
+  }
+
+  protected async createHookMessage(req: Request, res: Response, data: GitlabWebhook): Promise<Message> {
+    const context = await this.createHookContext(data);
     // fake message for the transforms to check and filter
     return new Message({
       body: data.object_kind,
-      context: msgCtx,
+      context,
       labels: this.labels,
       reactions: [],
       type: TYPE_JSON,
     });
   }
 
-  protected async createHookCommand(msg: Message, context: Context, data: TemplateScope, kind: string): Promise<Command> {
+  protected async createHookCommand(context: Context, data: TemplateScope, kind: string): Promise<Command> {
     const labels = new Map(this.labels);
     labels.set('hook', kind);
 

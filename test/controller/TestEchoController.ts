@@ -92,6 +92,7 @@ describeLeaks('echo controller', async () => {
     const cmd = new Command({
       context: ineeda<Context>({
         checkGrants: () => true,
+        getGrants: () => ['*:test'],
         name: 'test-user',
         uid: 'test-user',
         user: ineeda<User>(),

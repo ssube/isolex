@@ -27,7 +27,7 @@ data:
                       - string: push
         templates:
           body: >-
-            Push to {{ key cmd.data "ref" }} by {{ key cmd.data "user_name" }}.
+            Push to {{ ref }} by {{ user }}.
 
     - metadata:
         kind: template-transform
@@ -56,4 +56,4 @@ data:
         name: endpoint-push-flatten
       data:
         join: ""
-        keys: [$.data.body]
+        keys: [$.body]

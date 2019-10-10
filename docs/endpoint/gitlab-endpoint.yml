@@ -7,4 +7,15 @@ data:
   defaultCommand:
     noun: echo
     verb: create
-  transforms: []
+  hookUser: 2ae8ed6b-4103-42f3-bcc3-a28931d3b5b0
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: gitlab-webhook-template
+      data:
+        templates:
+          kind: "{{ object_kind }}"
+          ref: "{{ ref }}"
+          project: "{{ project.name }}"
+          user: "{{ user_name }}"
+
