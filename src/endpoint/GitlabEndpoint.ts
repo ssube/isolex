@@ -1,7 +1,7 @@
-import { json as expressJSON, Request, Response, Router } from 'express';
+import { json as expressJSON, Request, RequestHandler, Response } from 'express';
 import { isString } from 'lodash';
 
-import { Endpoint, Handler, RouterOptions } from '.';
+import { Endpoint, Handler, HandlerMetadata, RouterOptions } from '.';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
@@ -109,20 +109,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     ];
   }
 
-  public async createRouter(options: RouterOptions): Promise<Router> {
-    const {
-      passport,
-      router = Router(),
-    } = options;
-    return super.createRouter({
-      passport,
-      router: router.use(expressJSON()),
-    });
-  }
-
   @Handler(CommandVerb.Create, '/webhook')
   public async hookSwitch(req: Request, res: Response) {
     this.logger.debug({
+      body: req.body,
       req,
       res,
     }, 'gitlab endpoint got webhook');
@@ -214,6 +204,13 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
     await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
+  }
+
+  protected getHandlerMiddleware(metadata: HandlerMetadata, options: RouterOptions): Array<RequestHandler> {
+    return [
+      ...super.getHandlerMiddleware(metadata, options),
+      expressJSON(),
+    ];
   }
 
   protected getHookChannel(data: GitlabWebhook): ChannelData {
