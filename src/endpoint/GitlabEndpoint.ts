@@ -95,7 +95,7 @@ export interface GitlabEndpointData extends HookEndpointData {
 
 const STATUS_SUCCESS = 200;
 const STATUS_ERROR = 500;
-const STATUS_UNKNOWN = 404;
+export const STATUS_UNKNOWN = 404;
 
 export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements Endpoint {
   constructor(options: BaseEndpointOptions<GitlabEndpointData>) {

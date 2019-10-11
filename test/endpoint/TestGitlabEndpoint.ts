@@ -4,26 +4,32 @@ import { ineeda } from 'ineeda';
 import passport from 'passport';
 import { spy, stub } from 'sinon';
 
-import { GithubEndpoint } from '../../src/endpoint/GithubEndpoint';
-import { STATUS_SUCCESS } from '../../src/endpoint/HealthEndpoint';
+import { GitlabEndpoint, GitlabEndpointData, STATUS_UNKNOWN } from '../../src/endpoint/GitlabEndpoint';
+import { CommandVerb } from '../../src/entity/Command';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
-const TEST_DATA = {
+const TEST_DATA: GitlabEndpointData = {
+  defaultCommand: {
+    data: {},
+    labels: {},
+    noun: '',
+    verb: CommandVerb.Create,
+  },
+  filters: [],
   hookUser: '',
-  secret: '',
+  strict: false,
 };
 
-// tslint:disable:no-identical-functions
-describeLeaks('github endpoint', async () => {
+describeLeaks('gitlab endpoint', async () => {
   itLeaks('should have paths', async () => {
-    const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
+    const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
     expect(endpoint.paths.length).to.equal(3);
-    expect(endpoint.paths).to.include('/github');
+    expect(endpoint.paths).to.include('/gitlab');
   });
 
   itLeaks('should configure a router', async () => {
-    const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
+    const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
     const post = spy();
     const router = ineeda<Router>({
       post,
@@ -37,15 +43,15 @@ describeLeaks('github endpoint', async () => {
   });
 
   describeLeaks('webhook route', async () => {
-    itLeaks('should succeed', async () => {
-      const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
+    itLeaks('should fail without a body', async () => {
+      const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
       const sendStatus = spy();
-      await endpoint.postWebhook(ineeda<Request>({
+      await endpoint.hookSwitch(ineeda<Request>({
         header: stub().returns([]),
       }), ineeda<Response>({
         sendStatus,
       }));
-      expect(sendStatus).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
+      expect(sendStatus).to.have.been.calledOnce.and.calledWithExactly(STATUS_UNKNOWN);
     });
   });
 });
