@@ -49,13 +49,13 @@ export class MessageInterval extends BaseInterval<MessageIntervalData> {
       last,
       next,
     });
-    if (!isString(body)) {
+    if (!isString(body.body)) {
       throw new BaseError('final transform did not return a string');
     }
 
     await this.bot.sendMessage(new Message({
       ...initial,
-      body,
+      body: body.body,
     }));
     return 0;
   }
