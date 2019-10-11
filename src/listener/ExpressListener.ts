@@ -15,6 +15,7 @@ import { JwtFields, Token } from '../entity/auth/Token';
 import { UserRepository } from '../entity/auth/UserRepository';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
+import { SessionRequiredError } from '../error/SessionRequiredError';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceMetadata } from '../Service';
 import { Storage } from '../storage';
@@ -229,5 +230,10 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
 export function getRequestContext(req: Request): Context {
   /* tslint:disable-next-line:no-any */
-  return mustExist<Context>(req.user as any);
+  const user = req.user as any;
+  if (doesExist(user)) {
+    return user;
+  } else {
+    throw new SessionRequiredError();
+  }
 }

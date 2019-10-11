@@ -1,14 +1,13 @@
 import express from 'express';
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
-import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { INJECT_CLOCK, INJECT_SERVICES } from '../../BaseService';
 import { BotService, BotServiceData, BotServiceOptions, INJECT_BOT, INJECT_STORAGE } from '../../BotService';
 import { Command, CommandVerb, GRAPH_INPUT_COMMAND, GRAPH_OUTPUT_COMMAND } from '../../entity/Command';
-import { Context, GRAPH_INPUT_CONTEXT } from '../../entity/Context';
+import { GRAPH_INPUT_CONTEXT } from '../../entity/Context';
 import { GRAPH_INPUT_MESSAGE, GRAPH_OUTPUT_MESSAGE, Message } from '../../entity/Message';
-import { SessionRequiredError } from '../../error/SessionRequiredError';
+import { getRequestContext } from '../../listener/ExpressListener';
 import { ServiceModule } from '../../module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from '../../Service';
 import { Storage } from '../../storage';
@@ -74,12 +73,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
   }
 
   public async executeCommands(args: GraphCommandOptions, req: express.Request) {
-    const context = req.user as Context | undefined;
+    const context = getRequestContext(req);
     this.logger.debug({ args, context }, 'execute commands');
-
-    if (isNil(context)) {
-      throw new SessionRequiredError();
-    }
 
     const commands = [];
     for (const data of args.commands) {
@@ -97,12 +92,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
   }
 
   public async sendMessages(args: GraphMessageOptions, req: express.Request) {
-    const context = req.user as Context | undefined;
+    const context = getRequestContext(req);
     this.logger.debug({ args, context }, 'send messages');
-
-    if (isNil(context)) {
-      throw new SessionRequiredError();
-    }
 
     const messages = [];
     for (const data of args.messages) {
