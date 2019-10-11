@@ -27,7 +27,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(true);
     });
 
-    itLeaks('should never match a single string to many', async () => {
+    itLeaks('should reject a one:many match', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
@@ -36,6 +36,60 @@ describeLeaks('match utility', async () => {
         foo: 'bar',
       });
       expect(results.matched).to.equal(false);
+    });
+  });
+
+  describeLeaks('type checks', async () => {
+    itLeaks('should reject a single string', async () => {
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
+      });
+      const results = match.match('bar');
+      expect(results.matched).to.equal(false);
+    });
+
+    itLeaks('should reject matched values that are not strings', async () => {
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }, { string: 'foo' }],
+      });
+      const results = match.match({
+        bar: 3,
+        foo: true,
+      });
+      expect(results.matched).to.equal(false);
+    });
+
+    itLeaks('should match string values', async () => {
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }, { string: 'foo' }],
+      });
+      expect(match.matchValue({
+        string: 'bar',
+      }, 'bar')).to.equal(true);
+    });
+
+    itLeaks('should match regexp values', async () => {
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }, { string: 'foo' }],
+      });
+      expect(match.matchValue({
+        regexp: /bar/,
+      }, 'bar')).to.equal(true);
+    });
+
+    itLeaks('should reject unmatched values', async () => {
+      const match = createMatch({
+        operator: RuleOperator.Every,
+        values: [{ string: 'bar' }, { string: 'foo' }],
+      });
+      expect(match.matchValue({
+        number: 3,
+        // tslint:disable-next-line:no-any
+      } as any, 'bar')).to.equal(false);
     });
   });
 
@@ -107,5 +161,16 @@ describeLeaks('match utility', async () => {
       expect(removed).to.equal('1    12345');
     });
 
+    itLeaks('should only remove matches', async () => {
+      const match = createMatch({
+        operator: RuleOperator.Any,
+        // tslint:disable-next-line:no-any
+        values: [{ number: 3 } as any],
+      });
+
+      const input = Math.random().toString();
+      const removed = match.removeMatches(input);
+      expect(removed).to.equal(input);
+    });
   });
 });
