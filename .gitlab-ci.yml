@@ -29,6 +29,9 @@ build-node:
     policy: pull-push
     paths:
       - node_modules/
+      - out/api
+      - out/cache
+      - out/tmp
 
 build-image-branch:
   stage: image
