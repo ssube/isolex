@@ -13,7 +13,11 @@ import { ServiceDefinition } from '../Service';
 import { Transform, TransformData } from '../transform';
 import { doesExist, getMethods, mustExist } from '../utils';
 
+export const STATUS_ERROR = 500;
 export const STATUS_FORBIDDEN = 403;
+export const STATUS_NOTFOUND = 404;
+export const STATUS_SUCCESS = 200;
+export const STATUS_UNKNOWN = 404;
 
 export type BaseEndpointOptions<TData extends EndpointData> = BotServiceOptions<TData>;
 

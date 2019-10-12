@@ -4,8 +4,8 @@ import { ineeda } from 'ineeda';
 import passport from 'passport';
 import { spy, stub } from 'sinon';
 
+import { STATUS_SUCCESS } from '../../src/endpoint/BaseEndpoint';
 import { GithubEndpoint } from '../../src/endpoint/GithubEndpoint';
-import { STATUS_SUCCESS } from '../../src/endpoint/HealthEndpoint';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 

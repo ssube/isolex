@@ -1,7 +1,7 @@
-import { json as expressJSON, Request, RequestHandler, Response } from 'express';
+import { Request, Response } from 'express';
 import { isString } from 'lodash';
 
-import { Endpoint, Handler, HandlerMetadata, RouterOptions } from '.';
+import { Endpoint, Handler } from '.';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
@@ -9,7 +9,7 @@ import { applyTransforms, scopeToData } from '../transform/helpers';
 import { mustExist } from '../utils';
 import { TYPE_JSON } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';
-import { BaseEndpointOptions } from './BaseEndpoint';
+import { BaseEndpointOptions, STATUS_NOTFOUND, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpoint, HookEndpointData } from './HookEndpoint';
 
 export interface GitlabBaseWebhook {
@@ -93,10 +93,6 @@ export interface GitlabEndpointData extends HookEndpointData {
   defaultCommand: CommandOptions;
 }
 
-const STATUS_SUCCESS = 200;
-const STATUS_ERROR = 500;
-export const STATUS_UNKNOWN = 404;
-
 export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements Endpoint {
   constructor(options: BaseEndpointOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');
@@ -110,7 +106,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
   }
 
   @Handler(CommandVerb.Create, '/webhook')
-  public async hookSwitch(req: Request, res: Response) {
+  public async postHook(req: Request, res: Response) {
     this.logger.debug({
       body: req.body,
       req,
@@ -138,7 +134,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         this.logger.warn({
           kind: data.object_kind,
         }, 'unknown hook kind');
-        res.sendStatus(STATUS_UNKNOWN);
+        res.sendStatus(STATUS_NOTFOUND);
     }
   }
 
@@ -204,13 +200,6 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
     await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
-  }
-
-  protected getHandlerMiddleware(metadata: HandlerMetadata, options: RouterOptions): Array<RequestHandler> {
-    return [
-      ...super.getHandlerMiddleware(metadata, options),
-      expressJSON(),
-    ];
   }
 
   protected getHookChannel(data: GitlabWebhook): ChannelData {

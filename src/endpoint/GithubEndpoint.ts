@@ -4,8 +4,7 @@ import { Inject } from 'noicejs';
 import { Handler } from '.';
 import { INJECT_STORAGE } from '../BotService';
 import { CommandVerb } from '../entity/Command';
-import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
-import { STATUS_SUCCESS } from './HealthEndpoint';
+import { BaseEndpoint, BaseEndpointOptions, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpointData } from './HookEndpoint';
 
 export interface GithubEndpointData extends HookEndpointData {

@@ -8,6 +8,9 @@ import { Bot } from '../../src/Bot';
 import { INJECT_BOT, INJECT_STORAGE } from '../../src/BotService';
 import { EndpointData } from '../../src/endpoint';
 import { BaseEndpoint, BaseEndpointOptions } from '../../src/endpoint/BaseEndpoint';
+import { User } from '../../src/entity/auth/User';
+import { UserRepository } from '../../src/entity/auth/UserRepository';
+import { Context } from '../../src/entity/Context';
 import { BotModule } from '../../src/module/BotModule';
 import { Storage } from '../../src/storage';
 import { createService, createServiceContainer } from '../helpers/container';
@@ -37,8 +40,22 @@ export async function createEndpoint<
       return storageReady;
     },
     set isConnected(val: boolean) { /* noop */ },
+    getCustomRepository() {
+      return ineeda<UserRepository>({
+        async findOneOrFail() {
+          return ineeda<User>();
+        },
+        async loadRoles() {
+          return ineeda<User>();
+        },
+      });
+    },
     getRepository() {
-      return ineeda<Repository<{}>>();
+      return ineeda<Repository<{}>>({
+        async save() {
+          return ineeda<Context>();
+        },
+      });
     },
   });
   const bot = ineeda<Bot>({
@@ -46,9 +63,11 @@ export async function createEndpoint<
       return botReady;
     },
     set isConnected(val: boolean) { /* noop */ },
+    executeCommand: spy(),
     getStorage() {
       return storage;
     },
+    sendMessage: spy(),
   });
 
   const botModule = new BotModule({

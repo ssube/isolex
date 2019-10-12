@@ -2,13 +2,7 @@ import { Request, Response } from 'express';
 
 import { Endpoint, EndpointData, Handler } from '.';
 import { CommandVerb } from '../entity/Command';
-import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
-
-export const BODY_SUCCESS = 'OK';
-export const BODY_ERROR = 'ERROR';
-
-export const STATUS_SUCCESS = 200;
-export const STATUS_ERROR = 500;
+import { BaseEndpoint, BaseEndpointOptions, STATUS_ERROR, STATUS_SUCCESS } from './BaseEndpoint';
 
 export class HealthEndpoint extends BaseEndpoint<EndpointData> implements Endpoint {
   constructor(options: BaseEndpointOptions<EndpointData>) {

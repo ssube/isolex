@@ -1,6 +1,7 @@
+import { json, RequestHandler } from 'express';
 import { Inject } from 'noicejs';
 
-import { Endpoint } from '.';
+import { Endpoint, HandlerMetadata, RouterOptions } from '.';
 import { BotServiceData, INJECT_STORAGE } from '../BotService';
 import { User } from '../entity/auth/User';
 import { UserRepository } from '../entity/auth/UserRepository';
@@ -32,6 +33,13 @@ export class HookEndpoint<TData extends HookEndpointData> extends BaseEndpoint<T
       id: this.data.hookUser,
     });
     this.hookUser = await repository.loadRoles(user);
+  }
+
+  protected getHandlerMiddleware(metadata: HandlerMetadata, options: RouterOptions): Array<RequestHandler> {
+    return [
+      ...super.getHandlerMiddleware(metadata, options),
+      json(),
+    ];
   }
 
   protected async createHookContext(channel: ChannelData) {
