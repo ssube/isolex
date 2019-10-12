@@ -19,37 +19,20 @@ data:
     - !include ../docs/controller/bot-controller.yml
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/dice-controller.yml
-    - !include ../docs/controller/github/pr-controller.yml
-    - !include ../docs/controller/gitlab/ci-controller.yml
-    - !include ../docs/controller/gitlab/endpoint/push-controller.yml
-    - !include ../docs/controller/kubernetes/apps-controller.yml
-    - !include ../docs/controller/kubernetes/core-controller.yml
     - !include ../docs/controller/learn-controller.yml
     - !include ../docs/controller/math-controller.yml
     - !include ../docs/controller/random-controller.yml
     - !include ../docs/controller/reaction-controller.yml
-    - !include ../docs/controller/search-controller-mdn.yml
     - !include ../docs/controller/sed-controller.yml
     - !include ../docs/controller/time-controller.yml
     - !include ../docs/controller/token-controller.yml
     - !include ../docs/controller/user-controller.yml
-    - !include ../docs/controller/weather-controller-owm.yml
   endpoints:
-    # !include ../docs/endpoint/debug-endpoint.yml
     - !include ../docs/endpoint/echo-endpoint.yml
-    - !include ../docs/endpoint/gitlab-endpoint.yml
   intervals:
-    # !include ../docs/interval/command-interval.yml
-    # !include ../docs/interval/cron-interval.yml
-    # !include ../docs/interval/event-interval.yml
-    - !include ../docs/interval/github-listener-interval.yml
-    # !include ../docs/interval/message-interval.yml
     - !include ../docs/interval/metrics-interval.yml
   listeners:
-    # !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml
-    - !include ../docs/listener/github-listener.yml
-    # !include ../docs/listener/slack-listener.yml
   locale:
     metadata:
       kind: locale
@@ -57,29 +40,19 @@ data:
     data:
       lang: en
   logger:
-    level: debug
+    level: warn
     name: isolex
   modules:
     - require: isolex-oot-example
       export: example-module
   parsers:
     - !include ../docs/parser/args-parser.yml
-    - !include ../docs/parser/args-parser-complete.yml
-    - !include ../docs/parser/args-parser-join.yml
-    - !include ../docs/parser/args-parser-login.yml
-    - !include ../docs/parser/args-parser-k8s.yml
-    - !include ../docs/parser/echo-parser-react.yml
-    - !include ../docs/parser/lex-parser.yml
-    - !include ../docs/parser/split-parser-help.yml
-    - !include ../docs/parser/split-parser-learn.yml
-    - !include ../docs/parser/split-parser-math.yml
-    - !include ../docs/parser/split-parser-sed.yml
     - !include ../docs/parser/yaml-parser.yml
   process:
     pid:
       file: ./out/isolex.pid
   services:
-    timeout: 5000
+    timeout: 250
   storage:
     metadata:
       kind: storage

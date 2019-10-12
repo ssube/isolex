@@ -53,7 +53,7 @@ data:
     - !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml
     - !include ../docs/listener/github-listener.yml
-    # !include ../docs/listener/slack-listener.yml
+    - !include ../docs/listener/slack-listener.yml
   locale:
     metadata:
       kind: locale
@@ -61,7 +61,7 @@ data:
     data:
       lang: en
   logger:
-    level: info
+    level: debug
     name: isolex
   modules:
     - require: isolex-oot-example

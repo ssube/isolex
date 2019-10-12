@@ -91,14 +91,14 @@ const TEST_CONFIG_SERVICE: CreateOptions = {
 
 const TEST_ARGS_VALID = [
   '--config-name',
-  'test.yml',
+  'test-valid.yml',
   '--config-path',
   defaultTo(process.env.DOCS_PATH, __dirname),
 ];
 
 const TEST_ARGS_INVALID = [
   '--config-name',
-  'invalid.yml',
+  'test-invalid.yml',
   '--config-path',
   defaultTo(process.env.DOCS_PATH, __dirname),
 ];
