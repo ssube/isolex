@@ -66,6 +66,22 @@ export async function createServiceContainer(...modules: Array<Module>): Promise
   return { container, module, services };
 }
 
+const SVC_OPTIONS = {
+  [INJECT_BOT]: ineeda<Bot>(),
+  [INJECT_CLOCK]: ineeda<Clock>(),
+  [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
+    compile: () => ineeda<Template>(),
+  }),
+  [INJECT_LOGGER]: getTestLogger(),
+  [INJECT_MATH]: new MathFactory(),
+  [INJECT_METRICS]: new Registry(),
+  [INJECT_STORAGE]: ineeda<Connection>({
+    getRepository<T>(ctor: T) {
+      return ineeda<Repository<T>>();
+    },
+  }),
+};
+
 export async function createService<
   TService,
   TData extends BotServiceData,
@@ -89,21 +105,9 @@ export async function createService<
   });
 
   const fullOptions = {
-    [INJECT_BOT]: ineeda<Bot>(),
-    [INJECT_CLOCK]: ineeda<Clock>(),
-    [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
-      compile: () => ineeda<Template>(),
-    }),
+    ...SVC_OPTIONS,
     [INJECT_LOCALE]: locale,
-    [INJECT_LOGGER]: getTestLogger(),
-    [INJECT_MATH]: new MathFactory(),
-    [INJECT_METRICS]: new Registry(),
     [INJECT_SCHEMA]: schema,
-    [INJECT_STORAGE]: ineeda<Connection>({
-      getRepository<T>(ctor: T) {
-        return ineeda<Repository<T>>();
-      },
-    }),
     container,
     ...options,
   };
