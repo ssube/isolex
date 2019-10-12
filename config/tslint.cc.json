@@ -8,7 +8,7 @@
     ],
     "arrow-parens": true,
     "arrow-return-shorthand": true,
-    "await-promise": true,
+    "await-promise": [true, "PromiseLike"],
     "ban": [true, {
       "message": "use lodash isString",
       "name": ["util", "isString"]

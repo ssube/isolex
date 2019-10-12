@@ -8,6 +8,7 @@ import { Bot } from '../../src/Bot';
 import { INJECT_BOT } from '../../src/BotService';
 import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
+import { NotInitializedError } from '../../src/error/NotInitializedError';
 import { MessageInterval } from '../../src/interval/MessageInterval';
 import { TransformModule } from '../../src/module/TransformModule';
 import { Schema } from '../../src/schema';
@@ -123,5 +124,35 @@ describeLeaks('message interval', async () => {
 
     expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(BaseError);
     expect(sendMessage).to.have.callCount(0);
+  });
+
+  itLeaks('should throw if not started', async () => {
+    const sendMessage = spy();
+    const bot = ineeda<Bot>({
+      sendMessage,
+    });
+    const { container, services } = await createServiceContainer(new TransformModule());
+    services.bind(INJECT_SCHEMA).toInstance(new Schema());
+    services.bind(INJECT_BOT).toInstance(bot);
+    services.addService(ineeda<Service>({
+      kind: TEST_SVC2,
+      name: TEST_TARGET,
+    }));
+    const interval = await createService(container, MessageInterval, {
+      [INJECT_BOT]: bot,
+      [INJECT_CLOCK]: ineeda<Clock>({
+        setInterval() { /* noop */ },
+      }),
+      data: {
+        ...TEST_CONFIG.data,
+        transforms: [],
+      },
+      metadata: TEST_CONFIG.metadata,
+    });
+
+    await expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(NotInitializedError);
+    await interval.start();
+    await interval.stop();
+    await expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(NotInitializedError);
   });
 });

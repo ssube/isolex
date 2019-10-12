@@ -5,6 +5,7 @@ import { IntervalData } from '.';
 import { Context } from '../entity/Context';
 import { Message, MessageEntityOptions } from '../entity/Message';
 import { Tick } from '../entity/Tick';
+import { NotInitializedError } from '../error/NotInitializedError';
 import { ServiceDefinition } from '../Service';
 import { Transform, TransformData } from '../transform';
 import { applyTransforms } from '../transform/helpers';
@@ -16,11 +17,13 @@ export interface MessageIntervalData extends IntervalData {
 }
 
 export class MessageInterval extends BaseInterval<MessageIntervalData> {
+  protected started: boolean;
   protected readonly transforms: Array<Transform>;
 
   constructor(options: BaseIntervalOptions<MessageIntervalData>) {
     super(options, 'isolex#/definitions/service-interval-message');
 
+    this.started = false;
     this.transforms = [];
   }
 
@@ -31,15 +34,22 @@ export class MessageInterval extends BaseInterval<MessageIntervalData> {
       const transform = await this.services.createService<Transform, TransformData>(def);
       this.transforms.push(transform);
     }
+
+    this.started = true;
   }
 
   public async stop() {
+    this.started = false;
     this.transforms.length = 0;
 
     return super.stop();
   }
 
   public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
+    if (!this.started) {
+      throw new NotInitializedError('message interval has not been started');
+    }
+
     const initial = new Message({
       ...this.data.defaultMessage,
       context,
