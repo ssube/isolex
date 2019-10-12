@@ -26,27 +26,35 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
   }
 
   public async start(): Promise<void> {
-    this.logger.info('connecting to storage');
+    this.logger.debug(this.data, 'starting storage');
     const storageLogger = await this.container.create(StorageLogger);
     const entities = await this.container.create<Array<Function>, BaseOptions>('entities');
     const migrations = await this.container.create<Array<Function>, BaseOptions>('migrations');
 
-    this.connection = await createConnection({
-      ...this.data.orm,
-      entities,
-      logger: storageLogger,
-      migrations,
-    });
+    this.logger.info('connecting to storage');
 
-    if (this.data.migrate) {
-      this.logger.info('running pending database migrations');
-      await this.connection.runMigrations();
-      this.logger.info('database migrations complete');
+    try {
+      this.connection = await createConnection({
+        ...this.data.orm,
+        entities,
+        logger: storageLogger,
+        migrations,
+      });
+
+      if (this.data.migrate) {
+        this.logger.info('running pending database migrations');
+        await this.connection.runMigrations();
+        this.logger.info('database migrations complete');
+      } else {
+        this.logger.info('skipping database migrations');
+      }
+    } catch (err) {
+      this.logger.error(err, 'error connecting to storage');
     }
   }
 
   public async stop() {
-    return mustExist(this.connection).close();
+    await mustExist(this.connection).close();
   }
 
   public getRepository<TEntity>(ctor: Function | (new () => TEntity)): Repository<TEntity> {

@@ -75,7 +75,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
       this.logger.error({ data: options.data, errors: result.errors }, 'failed to validate config');
       throw new SchemaError('failed to validate config');
     } else {
-      this.logger.debug('validated config data');
+      this.logger.debug({ schemaPath }, 'validated config data');
     }
   }
 

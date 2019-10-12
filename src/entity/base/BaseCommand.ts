@@ -44,11 +44,12 @@ export abstract class BaseCommand extends DataEntity<CommandValue> {
 
   public getHeadOrNumber(key: string, defaultValue: number): number {
     if (this.has(key)) {
-      const value = Number(this.get(key));
-      if (isNaN(value)) {
+      const value = this.getHead(key);
+      // tslint:disable-next-line:no-any
+      if (isNaN(value as any)) {
         return defaultValue;
       } else {
-        return value;
+        return Number(value);
       }
     } else {
       return defaultValue;

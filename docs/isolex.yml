@@ -61,7 +61,7 @@ data:
     data:
       lang: en
   logger:
-    level: debug
+    level: info
     name: isolex
   modules:
     - require: isolex-oot-example

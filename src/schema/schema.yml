@@ -258,6 +258,8 @@ definitions:
         properties:
           database:
             type: string
+          name:
+            type: string
           type:
             type: string
 

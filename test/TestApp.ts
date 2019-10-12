@@ -35,7 +35,7 @@ const TEST_CONFIG: BotDefinition = {
       },
     },
     logger: {
-      level: LogLevel.Info,
+      level: LogLevel.Warn,
       name: 'test-logger',
     },
     modules: [],
