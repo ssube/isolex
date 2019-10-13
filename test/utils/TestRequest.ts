@@ -13,7 +13,8 @@ describeLeaks('request factory', async () => {
     });
     const { container } = await createContainer();
     const rf = await container.create(RequestFactory, {}, r);
-    expect(rf.create({
+
+    await expect(rf.create({
       url: 'https://example.com',
     })).to.eventually.equal(true);
     expect(promise).to.have.callCount(1);

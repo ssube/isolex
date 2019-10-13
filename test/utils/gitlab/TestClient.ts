@@ -148,7 +148,7 @@ describeLeaks('gitlab client', async () => {
       data: TEST_DATA,
     });
 
-    expect(client.getJob({
+    return expect(client.getJob({
       group: 'test',
       job: '123',
       project: 'test',

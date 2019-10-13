@@ -1,12 +1,16 @@
 import { Request, Response } from 'express';
 import { isString } from 'lodash';
+import { Inject } from 'noicejs';
+import { Counter } from 'prom-client';
 
 import { Endpoint, Handler } from '.';
+import { INJECT_METRICS } from '../BaseService';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { applyTransforms, scopeToData } from '../transform/helpers';
 import { mustExist } from '../utils';
+import { createServiceCounter, incrementServiceCounter } from '../utils/metrics';
 import { TYPE_JSON } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';
 import { BaseEndpointOptions, STATUS_NOTFOUND, STATUS_SUCCESS } from './BaseEndpoint';
@@ -93,9 +97,18 @@ export interface GitlabEndpointData extends HookEndpointData {
   defaultCommand: CommandOptions;
 }
 
+@Inject(INJECT_METRICS)
 export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements Endpoint {
+  protected readonly hookCounter: Counter;
+
   constructor(options: BaseEndpointOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');
+
+    this.hookCounter = createServiceCounter(mustExist(options[INJECT_METRICS]), {
+      help: 'webhook events received from gitlab',
+      labelNames: ['eventType'],
+      name: 'endpoint_gitlab_hook',
+    });
   }
 
   public get paths(): Array<string> {
@@ -107,18 +120,21 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
 
   @Handler(CommandVerb.Create, '/webhook')
   public async postHook(req: Request, res: Response) {
-    this.logger.debug({
-      body: req.body,
-      req,
-      res,
-    }, 'gitlab endpoint got webhook');
-
-    // authenticate & authorize
     const hook: GitlabBaseWebhook = req.body;
     return this.hookKind(req, res, hook);
   }
 
   public async hookKind(req: Request, res: Response, data: GitlabBaseWebhook) {
+    this.logger.debug({
+      body: req.body,
+      eventType: data.object_kind,
+      req,
+      res,
+    }, 'gitlab endpoint got webhook');
+    incrementServiceCounter(this, this.hookCounter, {
+      eventType: data.object_kind,
+    });
+
     switch (data.object_kind) {
       case 'issue':
         return this.issueHook(req, res, data as GitlabIssueWebhook);

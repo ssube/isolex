@@ -72,6 +72,6 @@ describeLeaks('metrics interval', async () => {
       },
       metadata: TEST_METADATA,
     });
-    expect(interval.startInterval()).to.eventually.be.rejectedWith(InvalidArgumentError);
+    return expect(interval.startInterval()).to.eventually.be.rejectedWith(InvalidArgumentError);
   });
 });

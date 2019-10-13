@@ -122,8 +122,8 @@ describeLeaks('message interval', async () => {
     });
     await interval.start();
 
-    expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(BaseError);
     expect(sendMessage).to.have.callCount(0);
+    return expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(BaseError);
   });
 
   itLeaks('should throw if not started', async () => {

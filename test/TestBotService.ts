@@ -14,7 +14,7 @@ class ConcreteBotService extends BotService<BotServiceData> {
 describeLeaks('bot service', async () => {
   itLeaks('should check for a bot', async () => {
     const { container } = await createContainer();
-    expect(container.create(ConcreteBotService)).to.eventually.be.rejectedWith(MissingValueError);
+    return expect(container.create(ConcreteBotService)).to.eventually.be.rejectedWith(MissingValueError);
   });
 
   itLeaks('should load filters');

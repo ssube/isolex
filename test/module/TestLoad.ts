@@ -36,7 +36,7 @@ describeLeaks('module helpers', async () => {
           require: 'isolex-oot-missing',
         }],
       };
-      expect(loadModules({
+      return expect(loadModules({
         data: data as BotData,
         metadata: {
           kind: '',

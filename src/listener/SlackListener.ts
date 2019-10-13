@@ -66,12 +66,12 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     this.onCounter = createServiceCounter(metrics, {
       help: 'events received from slack client',
       labelNames: ['eventKind'],
-      name: 'slack_event',
+      name: 'listener_slack_event',
     });
     this.sendCounter = createServiceCounter(metrics, {
       help: 'sends through slack client',
       labelNames: ['sendType'],
-      name: 'slack_send',
+      name: 'listener_slack_send',
     });
   }
 

@@ -54,12 +54,12 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     this.onCounter = createServiceCounter(metrics, {
       help: 'events received from discord client',
       labelNames: ['eventKind'],
-      name: 'discord_event',
+      name: 'listener_discord_event',
     });
     this.sendCounter = createServiceCounter(metrics, {
       help: 'events send from discord client',
       labelNames: ['sendType'],
-      name: 'discord_send',
+      name: 'listener_discord_send',
     });
   }
 

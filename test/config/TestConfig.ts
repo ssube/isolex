@@ -13,7 +13,7 @@ describeLeaks('config helpers', async () => {
     });
 
     itLeaks('should throw when config is missing', async () => {
-      expect(loadConfig('missing.yml', join(__dirname, '..', 'docs'))).to.eventually.be.rejectedWith(NotFoundError);
+      return expect(loadConfig('missing.yml', join(__dirname, '..', 'docs'))).to.eventually.be.rejectedWith(NotFoundError);
     });
   });
 });
