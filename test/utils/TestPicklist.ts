@@ -54,6 +54,9 @@ describeLeaks('pick list', async () => {
     for (let i = 0; i < PICK_REPS; i += 1) {
       counter[list.pickOne()] += 1;
     }
+
+    expect(counter.x).to.be.greaterThan(0);
+    expect(counter.y).to.be.greaterThan(0);
   });
 
   itLeaks('should pick some weighted items', async () => {

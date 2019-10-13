@@ -50,6 +50,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
       }
     } catch (err) {
       this.logger.error(err, 'error connecting to storage');
+      throw err;
     }
   }
 

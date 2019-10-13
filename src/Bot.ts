@@ -135,9 +135,7 @@ export class Bot extends BaseService<BotData> implements Service {
   public async start() {
     this.logger.info('starting bot');
 
-    const streamError = (err: Error) => {
-      this.logger.error(err, 'bot stream did not handle error');
-    };
+    const streamError = this.streamError.bind(this);
     this.commands.subscribe((next) => this.receiveCommand(next).catch(streamError));
     this.incoming.subscribe((next) => this.receive(next).catch(streamError));
     this.outgoing.subscribe((next) => this.receiveMessage(next).catch(streamError));
@@ -250,6 +248,10 @@ export class Bot extends BaseService<BotData> implements Service {
     } else {
       return this.sendMessageTarget(msg, context.target);
     }
+  }
+
+  protected streamError(err: Error) {
+    this.logger.error(err, 'bot stream did not handle error');
   }
 
   protected async findMessageTarget(msg: Message): Promise<void> {
