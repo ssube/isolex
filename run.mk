@@ -40,6 +40,16 @@ debug-terminal:  ## run the bot in a terminal and wait for a debugger
 debug-bunyan: ## run the bot with bunyan logs and wait for a debugger
 	$(MAKE) debug-terminal | $(NODE_BIN)/bunyan --strict
 
+debug-test:
+	( export ISOLEX_HOME=$(ROOT_PATH)/docs; \
+	source $${ISOLEX_HOME}/isolex.env; \
+	rm $(ROOT_PATH)/{isolex,test}.pid; \
+	rm $(TARGET_PATH)/test.pid; \
+	rm $(TARGET_PATH)/test.db; \
+	node $(NODE_DEBUG) \
+		$(NODE_BIN)/nyc $(COVER_OPTS) \
+		$(NODE_BIN)/mocha $(MOCHA_LONG_OPTS) $(TARGET_PATH)/test.js)
+
 # pid targets
 pid-stop: ## stop the bot at the target pid
 	kill -15 $(shell cat "$(TARGET_PATH)/isolex.pid")
