@@ -3,14 +3,16 @@ import escape from 'escape-html';
 import { isNil } from 'lodash';
 import { find as findEmoji } from 'node-emoji';
 import { BaseError, Container, Inject } from 'noicejs';
+import { Counter } from 'prom-client';
 
 import { FetchOptions, Listener, ListenerData } from '.';
-import { INJECT_CLOCK } from '../BaseService';
+import { INJECT_CLOCK, INJECT_METRICS } from '../BaseService';
 import { BotServiceOptions } from '../BotService';
 import { Message } from '../entity/Message';
 import { NotFoundError } from '../error/NotFoundError';
 import { doesExist, mustExist } from '../utils';
 import { SlackLogger } from '../utils/logger/SlackLogger';
+import { createServiceCounter, incrementServiceCounter } from '../utils/metrics';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 
@@ -48,9 +50,11 @@ export interface SlackSearchResults extends WebAPICallResult {
   messages: Array<SlackMessage>;
 }
 
-@Inject(INJECT_CLOCK)
+@Inject(INJECT_CLOCK, INJECT_METRICS)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
-  protected container: Container;
+  protected readonly container: Container;
+  protected readonly onCounter: Counter;
+  protected readonly sendCounter: Counter;
   protected rtmClient?: RTMClient;
   protected webClient?: WebClient;
 
@@ -58,6 +62,17 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     super(options, 'isolex#/definitions/service-listener-slack');
 
     this.container = options.container;
+    const metrics = mustExist(options[INJECT_METRICS]);
+    this.onCounter = createServiceCounter(metrics, {
+      help: 'events received from slack client',
+      labelNames: ['eventKind'],
+      name: 'slack_event',
+    });
+    this.sendCounter = createServiceCounter(metrics, {
+      help: 'sends through slack client',
+      labelNames: ['sendType'],
+      name: 'slack_send',
+    });
   }
 
   public async send(msg: Message): Promise<void> {
@@ -100,12 +115,14 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     this.webClient = new WebClient(this.data.token.web, { logger });
 
     this.rtmClient.on('message', (msg) => {
+      this.countEvent('message');
       this.convertMessage(msg).then((it) => this.bot.receive(it)).catch((err) => {
         this.logger.error(err, 'error receiving message');
       });
     });
 
     this.rtmClient.on('reaction_added', (reaction) => {
+      this.countEvent('reaction_added');
       this.convertReaction(reaction).then((msg) => this.bot.receive(msg)).catch((err) => {
         this.logger.error(err, 'error adding reaction');
       });
@@ -122,6 +139,12 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     }
   }
 
+  protected countEvent(eventKind: string) {
+    incrementServiceCounter(this, this.onCounter, {
+      eventKind,
+    });
+  }
+
   protected async sendReactions(msg: Message): Promise<void> {
     const ctx = mustExist(msg.context);
     const web = mustExist(this.webClient);
@@ -130,6 +153,11 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       const result = findEmoji(reaction);
 
       if (doesExist(result)) {
+        this.logger.debug({ channel: ctx.channel, reaction: result }, 'sending reaction to channel');
+        incrementServiceCounter(this, this.sendCounter, {
+          sendType: 'reaction',
+        });
+
         await web.reactions.add({
           channel: ctx.channel.id,
           name: result.key,
@@ -146,7 +174,11 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
     const rtm = mustExist(this.rtmClient);
 
     if (ctx.channel.id !== '') {
-      this.logger.debug({ channel: ctx.channel }, 'sending message to channel');
+      this.logger.debug({ channel: ctx.channel, text: msg.body }, 'sending message to channel');
+      incrementServiceCounter(this, this.sendCounter, {
+        sendType: 'text',
+      });
+
       const result = await rtm.sendMessage(escape(msg.body), ctx.channel.id);
       if (doesExist(result.error)) {
         const err = new BaseError(result.error.msg);

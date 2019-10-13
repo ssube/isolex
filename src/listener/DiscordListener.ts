@@ -23,7 +23,7 @@ import { Message } from '../entity/Message';
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { NotFoundError } from '../error/NotFoundError';
 import { doesExist, mustExist } from '../utils';
-import { createServiceCounter } from '../utils/metrics';
+import { createServiceCounter, incrementServiceCounter } from '../utils/metrics';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 
@@ -42,6 +42,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   protected readonly threads: Map<string, DiscordMessage>;
 
   protected readonly onCounter: Counter;
+  protected readonly sendCounter: Counter;
 
   constructor(options: BotServiceOptions<DiscordListenerData>) {
     super(options, 'isolex#/definitions/service-listener-discord');
@@ -54,6 +55,11 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       help: 'events received from discord client',
       labelNames: ['eventKind'],
       name: 'discord_event',
+    });
+    this.sendCounter = createServiceCounter(metrics, {
+      help: 'events send from discord client',
+      labelNames: ['sendType'],
+      name: 'discord_send',
     });
   }
 
@@ -142,11 +148,8 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   }
 
   protected countEvent(eventKind: string) {
-    this.onCounter.inc({
+    incrementServiceCounter(this, this.onCounter, {
       eventKind,
-      serviceId: this.id,
-      serviceKind: this.kind,
-      serviceName: this.name,
     });
   }
 
@@ -158,11 +161,18 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     }
 
     if (msg.body.length > 0) {
+      incrementServiceCounter(this, this.sendCounter, {
+        sendType: 'thread',
+      });
       await thread.reply(escape(msg.body));
     }
 
     const reactions = this.filterEmoji(msg.reactions);
     for (const reaction of reactions) {
+      incrementServiceCounter(this, this.sendCounter, {
+        sendType: 'reaction',
+      });
+
       this.logger.debug({ reaction }, 'adding reaction to thread');
       await thread.react(reaction);
     }
@@ -181,6 +191,10 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       this.logger.warn('channel is not a text channel');
       return;
     }
+
+    incrementServiceCounter(this, this.sendCounter, {
+      sendType: 'channel',
+    });
 
     await channel.send(escape(msg.body));
     return;
