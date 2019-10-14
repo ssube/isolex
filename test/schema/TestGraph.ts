@@ -7,11 +7,12 @@ import { Repository } from 'typeorm';
 import { Bot } from '../../src/Bot';
 import { INJECT_BOT, INJECT_STORAGE } from '../../src/BotService';
 import { User } from '../../src/entity/auth/User';
-import { Command } from '../../src/entity/Command';
+import { Command, CommandVerb } from '../../src/entity/Command';
 import { Message } from '../../src/entity/Message';
 import { GraphSchema } from '../../src/schema/graph';
 import { Service } from '../../src/Service';
 import { Storage } from '../../src/storage';
+import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
@@ -36,7 +37,12 @@ describeLeaks('graph schema', async () => {
       metadata: TEST_SCHEMA,
     });
     await graph.executeCommands({
-      commands: [],
+      commands: [{
+        data: [],
+        labels: [],
+        noun: 'test',
+        verb: CommandVerb.Create,
+      }],
     }, ineeda<Request>({
       user: ineeda<User>(),
     }));
@@ -57,7 +63,12 @@ describeLeaks('graph schema', async () => {
       metadata: TEST_SCHEMA,
     });
     await graph.sendMessages({
-      messages: [],
+      messages: [{
+        body: 'msg',
+        labels: [],
+        reactions: [],
+        type: TYPE_TEXT,
+      }],
     }, ineeda<Request>({
       user: ineeda<User>(),
     }));

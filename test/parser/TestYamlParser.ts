@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { BaseError } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from '../../src/BotService';
@@ -87,5 +88,26 @@ describeLeaks('yaml parser', async () => {
       type: TYPE_JPEG,
     });
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
+  });
+
+  it('should throw when the root value is not an object', async () => {
+    const { container } = await createServiceContainer();
+    const svc = await createService(container, YamlParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: {
+        kind: 'test',
+        name: 'test',
+      },
+    });
+
+    const msg = new Message({
+      body: '[]',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_JPEG,
+    });
+    return expect(svc.parse(msg)).to.eventually.be.rejectedWith(BaseError);
   });
 });

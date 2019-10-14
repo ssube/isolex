@@ -24,14 +24,8 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   public async parse(msg: Message): Promise<Array<Command>> {
     const ctx = mustExist(msg.context);
     const data = await this.decode(msg);
-
-    if (isObject(data)) {
-      // TODO: this cast and conversion should not be necessary
-      const map = makeMap(data.data);
-      return [await this.createCommand(ctx, map)];
-    } else {
-      return [];
-    }
+    const map = makeMap(data.data);
+    return [await this.createCommand(ctx, map)];
   }
 
   public async decode(msg: Message): Promise<ParserOutput> {

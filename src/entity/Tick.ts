@@ -36,6 +36,7 @@ export class Tick extends BaseEntity {
       createdAt: this.createdAt,
       id: this.id,
       intervalId: this.intervalId,
+      status: this.status,
       updatedAt: this.updatedAt,
     };
   }

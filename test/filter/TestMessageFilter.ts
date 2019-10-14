@@ -6,6 +6,7 @@ import { Context } from '../../src/entity/Context';
 import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
 import { MessageFilter, MessageFilterData } from '../../src/filter/MessageFilter';
+import { RuleOperator } from '../../src/utils/match';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
@@ -44,8 +45,7 @@ describeLeaks('message filter', async () => {
     expect(result).to.equal(FilterBehavior.Allow);
   });
 
-  xit('should drop other messages');
-  it('should ignore other entities', async () => {
+  itLeaks('should ignore other entities', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {
@@ -61,5 +61,29 @@ describeLeaks('message filter', async () => {
       verb: CommandVerb.Delete,
     }));
     expect(result).to.equal(FilterBehavior.Ignore);
+  });
+
+  it('should reject unmatched messages', async () => {
+    const { filter } = await createFilter({
+      filters: [],
+      match: {
+        rules: [{
+          key: '$.type',
+          operator: RuleOperator.Every,
+          values: [{
+            string: 'jpeg',
+          }],
+        }],
+      },
+      strict: true,
+    });
+    const result = await filter.check(new Message({
+      body: '',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    }));
+    expect(result).to.equal(FilterBehavior.Drop);
   });
 });
