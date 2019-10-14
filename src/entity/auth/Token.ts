@@ -115,7 +115,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * Check if a set of Shiro-style permissions have been granted to this token. This does not check the token's user,
    * only the token's grants.
    */
-  public permit(permissions: Array<string>): boolean {
+  public checkGrants(permissions: Array<string>): boolean {
     const trie = newTrie();
     trie.add(...this.grants);
     return permissions.every((p) => trie.check(p));

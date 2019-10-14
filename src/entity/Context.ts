@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
 import { flatten, isNil } from 'lodash';
 import { MissingValueError } from 'noicejs';
-import { newTrie } from 'shiro-trie';
+import { newTrie, ShiroTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Listener } from '../listener';
@@ -98,34 +98,29 @@ export class Context extends BaseEntity implements ContextOptions {
     }
   }
 
+  public buildTrie(): ShiroTrie {
+    const grants = this.getGrants();
+    const trie = newTrie();
+    trie.add(...grants);
+    return trie;
+  }
+
   /**
    * Check if a set of Shiro-style permissions have been granted to this context. This will check both the
    * token and user, if available, and grants must appear in both (so that the grants on a token restrict the
    * grants on a user).
    */
   public checkGrants(checks: Array<string>): boolean {
-    if (doesExist(this.token) && !this.token.permit(checks)) {
+    if (doesExist(this.token) && !this.token.checkGrants(checks)) {
       return false;
     }
 
-    const grants = this.getGrants();
-    if (grants.length === 0) {
-      return false;
-    }
-
-    const trie = newTrie();
-    trie.add(...grants);
+    const trie = this.buildTrie();
     return checks.every((p) => trie.check(p));
   }
 
   public listGrants(checks: Array<string>): Array<string> {
-    const grants = this.getGrants();
-    if (grants.length === 0) {
-      return [];
-    }
-
-    const trie = newTrie();
-    trie.add(...grants);
+    const trie = this.buildTrie();
     return flatten(checks.map((p) => trie.permissions(p)));
   }
 
@@ -151,13 +146,12 @@ export class Context extends BaseEntity implements ContextOptions {
   }
 
   public toJSON(): object {
-    const user = doesExist(this.user) ? this.user.toJSON() : {};
     return {
       channel: this.channel,
       id: this.id,
       name: this.name,
       uid: this.uid,
-      user,
+      user: this.user,
     };
   }
 }

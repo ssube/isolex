@@ -122,7 +122,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
         handlerGrants: metadata.grants,
         userGrants: ctx.getGrants(),
       }, 'checking context for handler grants');
-      return ctx.checkGrants(metadata.grants);
+      return this.checkGrants(ctx, ...metadata.grants);
     } else {
       return true;
     }

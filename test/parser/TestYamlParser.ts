@@ -102,11 +102,11 @@ describeLeaks('yaml parser', async () => {
     });
 
     const msg = new Message({
-      body: '[]',
+      body: '"test"',
       context: ineeda<Context>(),
       labels: {},
       reactions: [],
-      type: TYPE_JPEG,
+      type: TYPE_YAML,
     });
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(BaseError);
   });

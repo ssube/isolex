@@ -65,8 +65,8 @@ describeLeaks('token entity', async () => {
       labels: {},
       subject: 'test',
     });
-    expect(token.permit(['fail:foo'])).to.equal(false);
-    expect(token.permit(['test:foo'])).to.equal(true);
+    expect(token.checkGrants(['fail:foo'])).to.equal(false);
+    expect(token.checkGrants(['test:foo'])).to.equal(true);
   });
 
   itLeaks('should issue sessions with a user');

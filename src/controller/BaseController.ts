@@ -137,7 +137,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
 
     const ctxGrants = ctx.getGrants();
     this.logger.debug({ ctx, ctxGrants, grants }, 'checking context for handler grants');
-    if (ctx.checkGrants(grants)) {
+    if (this.checkGrants(ctx, ...grants)) {
       return true;
     }
 
