@@ -4,6 +4,10 @@ import { DataEntity } from '../../../src/entity/base/DataEntity';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 
 class TestEntity extends DataEntity<string> {
+  public getDataStr() {
+    return this.dataStr;
+  }
+
   public setDataStr(str: string) {
     this.dataStr = str;
     this.labelStr = str;
@@ -34,7 +38,8 @@ describeLeaks('base data entity', async () => {
       labels: {},
     });
     entity.syncStr();
-    expect(entity.get('foo')).to.equal('bar');
+    expect(entity.getDataStr()).to.include('foo');
+    expect(entity.getDataStr()).to.include('bar');
   });
 
   itLeaks('should check for key existence');
