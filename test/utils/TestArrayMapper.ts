@@ -28,5 +28,15 @@ describeLeaks('utils', async () => {
       expect(results, 'all keys should be present').to.have.all.keys('first', 'second', 'empty');
       expect(results.get('empty'), 'rest key should be empty').to.have.lengthOf(0);
     });
+
+    itLeaks('should skit initial args', async () => {
+      const mapper = new ArrayMapper({
+        rest: 'empty',
+        skip: 3,
+        take: ['first'],
+      });
+      const results = mapper.map(['1', '2', '3', '4']);
+      expect(results.get('first'), 'first key should take fourth element').to.deep.equal(['4']);
+    });
   });
 });

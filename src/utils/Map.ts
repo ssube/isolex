@@ -12,6 +12,8 @@ export interface Dict<TVal> {
  */
 export type MapLike<TVal> = Map<string, TVal> | Dict<TVal>;
 
+export type Optional<T> = T | null | undefined;
+
 /**
  * Get an element from a Map and guard against nil values.
  */
@@ -39,18 +41,22 @@ export function getHead<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey): TVa
   return value[0];
 }
 
-export function getHeadOrDefault<TKey, TVal>(map: Map<TKey, Array<TVal>>, key: TKey, defaultValue: TVal): TVal {
-  if (map.has(key)) {
-    const data = map.get(key);
-    if (isNil(data)) {
-      return defaultValue;
-    } else {
-      const [head = defaultValue] = data;
-      return head;
-    }
-  } else {
+export function getHeadOrDefault<TKey, TVal>(map: Map<TKey, Array<Optional<TVal>>>, key: TKey, defaultValue: TVal): TVal {
+  if (!map.has(key)) {
     return defaultValue;
   }
+
+  const data = map.get(key);
+  if (isNil(data)) {
+    return defaultValue;
+  }
+
+  const [head] = data;
+  if (isNil(head)) {
+    return defaultValue;
+  }
+
+  return head;
 }
 
 /**

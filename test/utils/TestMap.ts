@@ -8,7 +8,13 @@ const DEFAULT_VALUE = 'default';
 const mapKey = 'key';
 const mapValue = 'value';
 const singleItem = new Map([[mapKey, mapValue]]);
-const multiItem = new Map([[mapKey, [mapValue]]]);
+const multiItem = new Map([
+  [mapKey, [mapValue]],
+  // tslint:disable
+  ['nilKey', null as any],
+  ['nilValue', [null]],
+  // tslint:enable
+]);
 
 describeLeaks('map utils', async () => {
   describeLeaks('make dict', async () => {
@@ -16,6 +22,11 @@ describeLeaks('map utils', async () => {
       /* tslint:disable-next-line:no-null-keyword */
       expect(makeDict(null)).to.deep.equal({});
       expect(makeDict(undefined)).to.deep.equal({});
+    });
+
+    itLeaks('should return an existing dict', async () => {
+      const input = {};
+      expect(makeDict(input)).to.equal(input);
     });
   });
 
@@ -64,7 +75,13 @@ describeLeaks('map utils', async () => {
       expect(getHeadOrDefault(multiItem, 'nope', mapValue)).to.equal(mapValue);
     });
 
-    xit('should return the default for nil values');
+    itLeaks('should return the default value for nil values', async () => {
+      expect(getHeadOrDefault(multiItem, 'nilValue', mapValue)).to.equal(mapValue);
+    });
+
+    itLeaks('should return the default value for nil keys', async () => {
+      expect(getHeadOrDefault(multiItem, 'nilKey', mapValue)).to.equal(mapValue);
+    });
   });
 
   describe('get or default helper', () => {
