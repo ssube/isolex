@@ -1,27 +1,39 @@
-import { isFunction, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 import { NotFoundError } from '../error/NotFoundError';
 
+/**
+ * Unset value.
+ */
 export type Nil = null | undefined;
-export type Optional<T> = T | Nil;
-
-export function leftPad(val: string, min: number = 8, fill: string = '0'): string {
-  if (val.length < min) {
-    const len = min - val.length;
-    const pre = Array(len).fill(fill).join('').slice(0, len);
-    return `${pre}${val}`;
-  } else {
-    return val;
-  }
-}
 
 /**
- * Calculate the "length" of an array or single value.
- *
- * Arrays return their length, single values return 1, and missing values return 0. This counts the number
- * of elements that setOrPush would add.
+ * Value that may be nil.
  */
-export function countList(val: unknown): number {
+export type Optional<T> = T | Nil;
+
+/**
+ * Comparison (filter) predicate for a single value.
+ */
+export type PredicateC1<TVal> = (val: TVal, idx: number, list: Array<TVal>) => boolean;
+
+/**
+ * Comparison predicate for two values.
+ */
+export type PredicateC2<TVal> = (pval: TVal, nval: TVal, idx: number, list: Array<TVal>) => boolean;
+
+/**
+ * Reduction predicate for two values.
+ */
+export type PredicateR2<TVal> = (pval: TVal, nval: TVal, idx: number, list: Array<TVal>) => TVal;
+
+/**
+ * Calculate the "length" of an array or value.
+ *
+ * Arrays return their length, single values return 1, and nil values return 0.
+ * This counts the number of elements that setOrPush would add.
+ */
+export function countOf(val: unknown): number {
   if (Array.isArray(val)) {
     return val.length;
   }
@@ -43,7 +55,7 @@ export function filterNil<TItem>(list: ArrayLike<Optional<TItem>>): Array<TItem>
 /**
  * Merge arguments, which may or may not be arrays, into one return that is definitely an array.
  */
-export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Array<TVal>): Array<TItem> {
+export function mergeList<TItem>(...parts: Array<TItem | Array<TItem>>): Array<TItem> {
   const out = [];
 
   for (const part of parts) {
@@ -57,44 +69,27 @@ export function mergeList<TVal extends TItem | Array<TItem>, TItem>(...parts: Ar
   return out;
 }
 
-export function mustFind<TVal>(list: Array<TVal>, predicate: (val: TVal, idx: number, list: Array<TVal>) => boolean): TVal {
-  const val = list.find(predicate);
+/**
+ * Find a value matching the given predicate or throw.
+ */
+export function mustFind<TVal>(list: Array<Optional<TVal>>, predicate: PredicateC1<TVal>): TVal {
+  const val = filterNil(list).find(predicate);
   return mustExist(val);
 }
 
-export function getConstructor(val: object) {
-  return val.constructor;
+/**
+ * Check if a variable is not nil.
+ */
+export function doesExist<T>(val: Optional<T>): val is T {
+  return !isNil(val);
 }
 
-export function prototypeName(val: object) {
-  return getConstructor(Reflect.getPrototypeOf(val)).name;
-}
-
-export function getMethods<TValue extends object>(value: TValue): Set<Function> {
-  const methods = new Set<Function>();
-
-  for (const name of Object.getOwnPropertyNames(value)) {
-    const desc = Object.getOwnPropertyDescriptor(value, name);
-    if (isNil(desc)) {
-      continue;
-    }
-
-    const method = desc.value;
-    if (isFunction(method)) {
-      methods.add(method);
-    }
-  }
-
-  const proto = Reflect.getPrototypeOf(value);
-  if (proto !== value && doesExist(proto)) {
-    for (const m of getMethods(proto)) {
-      methods.add(m);
-    }
-  }
-
-  return methods;
-}
-
+/**
+ * Assert that a variable is not nil and return the value.
+ *
+ * @throws NotFoundError
+ * @returns val
+ */
 export function mustExist<T>(val: Optional<T>): T {
   if (isNil(val)) {
     throw new NotFoundError();
@@ -103,16 +98,9 @@ export function mustExist<T>(val: Optional<T>): T {
   return val;
 }
 
-export function doesExist<T>(val: Optional<T>): val is T {
-  return !isNil(val);
-}
-
-export function mustCoalesce<T>(...vals: Array<Optional<T>>): T {
-  for (const v of vals) {
-    if (doesExist(v)) {
-      return v;
-    }
-  }
-
-  throw new NotFoundError();
+/**
+ * Return the first value that is not nil.
+ */
+export function mustCoalesce<T>(...values: Array<Optional<T>>): T {
+  return mustFind(values, doesExist);
 }

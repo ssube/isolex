@@ -2,8 +2,8 @@ import { LogLevel as SlackLevel } from '@slack/logger';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { classLogger } from '.';
-import { mustExist } from '..';
-import { INJECT_LOGGER } from '../../BaseService';
+import { INJECT_LOGGER } from '../BaseService';
+import { mustExist } from '../utils';
 
 export interface SlackLoggerOptions extends BaseOptions {
   [INJECT_LOGGER]?: Logger;

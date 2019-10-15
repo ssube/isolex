@@ -6,6 +6,7 @@ import { Context } from '../../src/entity/Context';
 import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
 import { CommandFilter, CommandFilterData } from '../../src/filter/CommandFilter';
+import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
@@ -44,7 +45,6 @@ describeLeaks('command filter', async () => {
     expect(result).to.equal(FilterBehavior.Allow);
   });
 
-  xit('should drop other commands');
   itLeaks('should ignore other entities', async () => {
     const { filter } = await createFilter({
       filters: [],
@@ -61,5 +61,31 @@ describeLeaks('command filter', async () => {
       type: TYPE_TEXT,
     }));
     expect(result).to.equal(FilterBehavior.Ignore);
+  });
+
+  itLeaks('should drop other commands', async () => {
+    const { filter } = await createFilter({
+      filters: [],
+      match: {
+        rules: [{
+          key: '$.noun',
+          operator: RuleOperator.Every,
+          values: [{
+            string: 'false',
+          }, {
+            string: 'true',
+          }],
+        }],
+      },
+      strict: true,
+    });
+    const result = await filter.check(new Command({
+      context: ineeda<Context>(),
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Create,
+    }));
+    expect(result).to.equal(FilterBehavior.Drop);
   });
 });

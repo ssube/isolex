@@ -1,12 +1,11 @@
 import Handlebars from 'handlebars';
-import { Dictionary } from 'lodash';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { mustExist } from '.';
 import { INJECT_LOGGER } from '../BaseService';
 import { Context } from '../entity/Context';
-import { classLogger } from './logger';
-import { Dict } from './Map';
+import { classLogger } from '../logger';
+import { Dict, MapLike } from './Map';
 import { Template } from './Template';
 
 export interface TemplateCompilerOptions extends BaseOptions {
@@ -89,13 +88,15 @@ export class TemplateCompiler {
     return options.fn(args);
   }
 
-  protected entriesOf(map: Map<string, string> | Dictionary<string>) {
+  protected entriesOf(map: MapLike<string>): Array<[string, string]> {
     if (map instanceof Map) {
-      return map.entries();
-    } else if (map instanceof Object) {
-      return Object.entries(map);
-    } else {
-      return [];
+      return Array.from(map.entries());
     }
+
+    if (map instanceof Object) {
+      return Object.entries(map);
+    }
+
+    return [];
   }
 }

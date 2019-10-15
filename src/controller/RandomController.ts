@@ -5,7 +5,7 @@ import { Inject } from 'noicejs';
 import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { countList } from '../utils';
+import { countOf } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export type RandomControllerData = ControllerData;
@@ -77,7 +77,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
   private getPrecision(...values: Array<number>) {
     return values.map((value) => {
       const parts = value.toString().split('.');
-      return countList(parts[1]);
+      return countOf(parts[1]);
     }).reduce((previous, current) => {
       this.logger.debug({ previous, current }, 'calculating precision');
       return max(current, previous);

@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-import { INJECT_LOGGER } from '../../../src/BaseService';
-import { LocaleLogger } from '../../../src/utils/logger/LocaleLogger';
-import { describeLeaks, itLeaks } from '../../helpers/async';
-import { createContainer } from '../../helpers/container';
-import { spyLogger } from '../../helpers/logger';
+import { INJECT_LOGGER } from '../../src/BaseService';
+import { LocaleLogger } from '../../src/logger/LocaleLogger';
+import { describeLeaks, itLeaks } from '../helpers/async';
+import { createContainer } from '../helpers/container';
+import { spyLogger } from '../helpers/logger';
 
 /* tslint:disable:no-unbound-method */
 const LOG_ARGS = ['test'];

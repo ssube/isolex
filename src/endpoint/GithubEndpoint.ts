@@ -7,7 +7,7 @@ import { INJECT_METRICS } from '../BaseService';
 import { INJECT_STORAGE } from '../BotService';
 import { CommandVerb } from '../entity/Command';
 import { mustExist } from '../utils';
-import { createServiceCounter, incrementServiceCounter } from '../utils/metrics';
+import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
 import { BaseEndpoint, BaseEndpointOptions, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpointData } from './HookEndpoint';
 

@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
 import { Role } from '../../src/entity/auth/Role';
+import { Token } from '../../src/entity/auth/Token';
 import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
 import { Context } from '../../src/entity/Context';
 import { Listener } from '../../src/listener';
@@ -137,5 +138,48 @@ describeLeaks('context entity', async () => {
       uid: 'uid',
     });
     expect(context.getUserId()).to.equal('uid');
+  });
+
+  itLeaks('should get roles when no user exists', async () => {
+    const context = new Context({
+      channel: {
+        id: '',
+        thread: '',
+      },
+      name: 'test',
+      uid: 'uid',
+    });
+    expect(context.getGrants()).to.deep.equal([]);
+  });
+
+  itLeaks('should convert itself to JSON', async () => {
+    const context = new Context({
+      channel: {
+        id: '',
+        thread: '',
+      },
+      name: 'test',
+      uid: 'uid',
+    });
+    const json = context.toJSON();
+    expect(json).to.have.property('channel');
+    expect(json).to.have.property('id');
+    expect(json).to.have.property('name');
+    expect(json).to.have.property('uid');
+  });
+
+  itLeaks('should not permit grants when the token rejects them', async () => {
+    const context = new Context({
+      channel: {
+        id: '',
+        thread: '',
+      },
+      name: 'test',
+      uid: 'uid',
+    });
+    context.token = ineeda<Token>({
+      checkGrants: () => false,
+    });
+    expect(context.checkGrants(['test'])).to.equal(false);
   });
 });

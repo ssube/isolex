@@ -2,9 +2,9 @@ import { BaseOptions, Container } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
 import { BaseService, BaseServiceOptions } from '../BaseService';
+import { StorageLogger } from '../logger/StorageLogger';
 import { ServiceLifecycle } from '../Service';
 import { mustExist } from '../utils';
-import { StorageLogger } from '../utils/logger/StorageLogger';
 
 export interface StorageData {
   migrate: boolean;

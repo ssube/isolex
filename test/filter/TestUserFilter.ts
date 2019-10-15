@@ -12,6 +12,7 @@ import { createService, createServiceContainer } from '../helpers/container';
 const TEST_FILTER_KIND = 'user-filter';
 const TEST_FILTER_NAME = 'test-filter';
 
+// tslint:disable:no-identical-functions
 async function createUserFilter(data: UserFilterData) {
   const { container } = await createServiceContainer();
   const filter = await createService(container, UserFilter, {
@@ -58,19 +59,44 @@ describeLeaks('user filter', async () => {
     expect(behavior).to.equal(FilterBehavior.Allow);
   });
 
-  itLeaks('should filter out commands from banned users', async () => {
+  itLeaks('should filter out users by name', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,
       users: {
-        data: ['test'],
+        data: ['in'],
         mode: ChecklistMode.EXCLUDE,
       },
     });
 
     const cmd = new Command({
       context: ineeda<Context>({
-        name: 'test',
+        name: 'in',
+        uid: 'out',
+      }),
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Get,
+    });
+    const behavior = await filter.check(cmd);
+    expect(behavior).to.equal(FilterBehavior.Drop);
+  });
+
+  itLeaks('should filter out users by uid', async () => {
+    const { filter } = await createUserFilter({
+      filters: [],
+      strict: true,
+      users: {
+        data: ['in'],
+        mode: ChecklistMode.EXCLUDE,
+      },
+    });
+
+    const cmd = new Command({
+      context: ineeda<Context>({
+        name: 'out',
+        uid: 'in',
       }),
       data: {},
       labels: {},

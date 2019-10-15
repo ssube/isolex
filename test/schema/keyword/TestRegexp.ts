@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { Schema } from '../../../src/schema';
-import { RuleValue } from '../../../src/utils/match';
+import { RuleValue } from '../../../src/utils/MatchRules';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 
 describeLeaks('json schema', async () => {

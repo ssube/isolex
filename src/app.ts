@@ -3,12 +3,12 @@ import yargs from 'yargs-parser';
 
 import { Bot, BotDefinition } from './Bot';
 import { loadConfig } from './config';
+import { BunyanLogger } from './logger/BunyanLogger';
 import { loadModules, mainModules } from './module';
 import { BotModule } from './module/BotModule';
 import { ServiceModule } from './module/ServiceModule';
 import { Schema } from './schema';
 import { ServiceEvent } from './Service';
-import { BunyanLogger } from './utils/BunyanLogger';
 import { removePid, writePid } from './utils/PidFile';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from './utils/Signal';
 import { VERSION_INFO } from './version';

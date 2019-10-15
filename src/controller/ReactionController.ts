@@ -4,7 +4,7 @@ import { Controller, ControllerData, Handler } from '.';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
-import { Match, MatchData } from '../utils/match';
+import { MatchData, MatchRules } from '../utils/MatchRules';
 import { TYPE_TEXT } from '../utils/Mime';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
@@ -21,7 +21,7 @@ export interface ReactionControllerData extends ControllerData {
 export interface CompiledReaction {
   add: Array<string>;
   chance: number;
-  match: Match;
+  match: MatchRules;
 }
 
 export const NOUN_REACTION = 'reaction';
@@ -37,7 +37,7 @@ export class ReactionController extends BaseController<ReactionControllerData> i
       return {
         add: r.add,
         chance: r.chance,
-        match: new Match(r.match),
+        match: new MatchRules(r.match),
       };
     });
   }

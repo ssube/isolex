@@ -5,7 +5,7 @@ import { Context } from '../entity/Context';
 import { Fragment } from '../entity/Fragment';
 import { Message } from '../entity/Message';
 import { Service } from '../Service';
-import { MatchData } from '../utils/match';
+import { MatchData } from '../utils/MatchRules';
 
 export interface ParserData extends BotServiceData {
   /**

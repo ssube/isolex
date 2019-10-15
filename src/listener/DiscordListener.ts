@@ -23,7 +23,7 @@ import { Message } from '../entity/Message';
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { NotFoundError } from '../error/NotFoundError';
 import { doesExist, mustExist } from '../utils';
-import { createServiceCounter, incrementServiceCounter } from '../utils/metrics';
+import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 

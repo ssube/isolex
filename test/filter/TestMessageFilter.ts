@@ -6,7 +6,7 @@ import { Context } from '../../src/entity/Context';
 import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
 import { MessageFilter, MessageFilterData } from '../../src/filter/MessageFilter';
-import { RuleOperator } from '../../src/utils/match';
+import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';

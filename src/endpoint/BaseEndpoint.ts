@@ -11,7 +11,8 @@ import { getRequestContext } from '../listener/ExpressListener';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
 import { Transform, TransformData } from '../transform';
-import { doesExist, getMethods, mustExist } from '../utils';
+import { doesExist, mustExist } from '../utils';
+import { getMethods } from '../utils/Reflect';
 
 export const STATUS_ERROR = 500;
 export const STATUS_FORBIDDEN = 403;

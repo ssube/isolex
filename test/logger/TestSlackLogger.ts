@@ -2,11 +2,11 @@ import { LogLevel } from '@slack/logger';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-import { INJECT_LOGGER } from '../../../src/BaseService';
-import { SlackLogger } from '../../../src/utils/logger/SlackLogger';
-import { describeLeaks, itLeaks } from '../../helpers/async';
-import { createContainer } from '../../helpers/container';
-import { spyLogger } from '../../helpers/logger';
+import { INJECT_LOGGER } from '../../src/BaseService';
+import { SlackLogger } from '../../src/logger/SlackLogger';
+import { describeLeaks, itLeaks } from '../helpers/async';
+import { createContainer } from '../helpers/container';
+import { spyLogger } from '../helpers/logger';
 
 /* tslint:disable:no-unbound-method */
 const LOG_ARGS = ['test'];

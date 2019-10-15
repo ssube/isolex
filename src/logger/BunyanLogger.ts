@@ -1,7 +1,7 @@
 import bunyan from 'bunyan';
 import { Logger } from 'noicejs';
 
-import { prototypeName } from '.';
+import { constructorName } from '../utils/Reflect';
 
 /**
  * Attach bunyan to the Logger. Does very little, since bunyan matches the Logger interface.
@@ -12,9 +12,9 @@ export class BunyanLogger {
       ...options,
       serializers: {
         ...bunyan.stdSerializers,
-        container: prototypeName,
-        logger: prototypeName,
-        module: prototypeName,
+        container: constructorName,
+        logger: constructorName,
+        module: constructorName,
       },
     });
   }

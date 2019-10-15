@@ -10,9 +10,10 @@ import { Context } from '../entity/Context';
 import { Fragment } from '../entity/Fragment';
 import { Message } from '../entity/Message';
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
-import { doesExist, leftPad, mustExist } from '../utils';
+import { doesExist, mustExist } from '../utils';
 import { makeMap } from '../utils/Map';
 import { TYPE_TEXT } from '../utils/Mime';
+import { leftPad } from '../utils/String';
 import { BaseParser } from './BaseParser';
 
 export interface LexParserData extends ParserData {

@@ -9,7 +9,7 @@ import { Message } from '../../src/entity/Message';
 import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { SplitParser } from '../../src/parser/SplitParser';
 import { Storage } from '../../src/storage';
-import { RuleOperator } from '../../src/utils/match';
+import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';

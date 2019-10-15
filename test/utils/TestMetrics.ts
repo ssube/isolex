@@ -3,9 +3,9 @@ import { ineeda } from 'ineeda';
 import { Counter, Registry } from 'prom-client';
 import { match, spy } from 'sinon';
 
-import { Service } from '../../../src/Service';
-import { createServiceCounter, incrementServiceCounter } from '../../../src/utils/metrics';
-import { describeLeaks, itLeaks } from '../../helpers/async';
+import { Service } from '../../src/Service';
+import { createServiceCounter, incrementServiceCounter } from '../../src/utils/Metrics';
+import { describeLeaks, itLeaks } from '../helpers/async';
 
 describeLeaks('metrics utils', async () => {
   describeLeaks('create service counter helper', async () => {

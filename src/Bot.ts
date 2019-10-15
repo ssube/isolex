@@ -24,7 +24,7 @@ import { Service, ServiceDefinition, ServiceEvent } from './Service';
 import { Storage, StorageData } from './storage';
 import { filterNil, mustExist, mustFind } from './utils';
 import { ExternalModule } from './utils/ExternalModule';
-import { createServiceCounter, incrementServiceCounter } from './utils/metrics';
+import { createServiceCounter, incrementServiceCounter } from './utils/Metrics';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;

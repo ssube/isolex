@@ -12,10 +12,10 @@ import { Listener } from '../listener';
 import { Locale, TranslateOptions } from '../locale';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
-import { Transform, TransformData } from '../transform';
-import { applyTransforms } from '../transform/helpers';
-import { doesExist, getMethods, mustCoalesce, mustExist } from '../utils';
+import { applyTransforms, Transform, TransformData } from '../transform';
+import { doesExist, mustCoalesce, mustExist } from '../utils';
 import { TYPE_JSON, TYPE_TEXT } from '../utils/Mime';
+import { getMethods } from '../utils/Reflect';
 
 export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command, ctx: Context) => Promise<void>;
 export type BaseControllerOptions<TData extends ControllerData> = BotServiceOptions<TData>;

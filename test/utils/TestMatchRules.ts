@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
-import { Match, MatchRule, RuleOperator } from '../../../src/utils/match';
-import { describeLeaks, itLeaks } from '../../helpers/async';
+import { MatchRule, MatchRules, RuleOperator } from '../../src/utils/MatchRules';
+import { describeLeaks, itLeaks } from '../helpers/async';
 
-function createMatch(rule: Partial<MatchRule>): Match {
-  return new Match({
+function createMatch(rule: Partial<MatchRule>): MatchRules {
+  return new MatchRules({
     rules: [{
       key: '$.foo',
       operator: RuleOperator.Never,
@@ -129,7 +129,7 @@ describeLeaks('match utility', async () => {
     });
 
     itLeaks('should remove multiple string matches', async () => {
-      const match = new Match({
+      const match = new MatchRules({
         rules: [{
           key: 'foo',
           operator: RuleOperator.Any,

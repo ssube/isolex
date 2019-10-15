@@ -9,18 +9,18 @@ import { Fragment } from '../entity/Fragment';
 import { Message } from '../entity/Message';
 import { mustExist } from '../utils';
 import { getHeadOrDefault } from '../utils/Map';
-import { Match } from '../utils/match';
+import { MatchRules } from '../utils/MatchRules';
 
 @Inject(INJECT_STORAGE)
 export abstract class BaseParser<TData extends ParserData> extends BotService<TData> implements Parser {
   protected readonly contextRepository: Repository<Context>;
-  protected matcher: Match;
+  protected matcher: MatchRules;
 
   constructor(options: BotServiceOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.contextRepository = mustExist(options[INJECT_STORAGE]).getRepository(Context);
-    this.matcher = new Match(options.data.match);
+    this.matcher = new MatchRules(options.data.match);
   }
 
   public async match(msg: Message): Promise<boolean> {

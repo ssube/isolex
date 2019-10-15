@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
 import { Message } from '../../src/entity/Message';
-import { applyTransforms } from '../../src/transform/helpers';
+import { applyTransforms } from '../../src/transform';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 

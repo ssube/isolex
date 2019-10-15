@@ -2,8 +2,8 @@ import { LoggerModule } from 'i18next';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { classLogger } from '.';
-import { mustExist } from '..';
-import { INJECT_LOGGER } from '../../BaseService';
+import { INJECT_LOGGER } from '../BaseService';
+import { mustExist } from '../utils';
 
 export interface LocaleLoggerOptions extends BaseOptions {
   [INJECT_LOGGER]: Logger;

@@ -1,7 +1,7 @@
 import { JSONPath } from 'jsonpath-plus';
 import { isString } from 'lodash';
 
-import { doesExist } from '..';
+import { doesExist } from '.';
 
 export interface MatchData {
   rules: Array<MatchRule>;
@@ -30,7 +30,7 @@ export interface MatchResults {
   errors: Array<string>;
 }
 
-export class Match {
+export class MatchRules {
   protected rules: Array<MatchRule>;
 
   constructor(options: MatchData) {

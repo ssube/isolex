@@ -7,8 +7,7 @@ import { Message, MessageEntityOptions } from '../entity/Message';
 import { Tick } from '../entity/Tick';
 import { NotInitializedError } from '../error/NotInitializedError';
 import { ServiceDefinition } from '../Service';
-import { Transform, TransformData } from '../transform';
-import { applyTransforms } from '../transform/helpers';
+import { applyTransforms, Transform, TransformData } from '../transform';
 import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
 
 export interface MessageIntervalData extends IntervalData {

@@ -1,5 +1,5 @@
 import { Filter, FilterBehavior, FilterData, FilterValue } from '.';
-import { Match, MatchData } from '../utils/match';
+import { MatchData, MatchRules } from '../utils/MatchRules';
 import { BaseFilter, BaseFilterOptions } from './BaseFilter';
 
 export interface RuleFilterData extends FilterData {
@@ -7,12 +7,12 @@ export interface RuleFilterData extends FilterData {
 }
 
 export abstract class RuleFilter extends BaseFilter<RuleFilterData> implements Filter {
-  protected matcher: Match;
+  protected matcher: MatchRules;
 
   constructor(options: BaseFilterOptions<RuleFilterData>, schemaPath: string) {
     super(options, schemaPath);
 
-    this.matcher = new Match(options.data.match);
+    this.matcher = new MatchRules(options.data.match);
   }
 
   public abstract async check(value: FilterValue): Promise<FilterBehavior>;

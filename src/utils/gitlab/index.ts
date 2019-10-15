@@ -3,7 +3,7 @@ import { BaseError, BaseOptions, Inject, Logger } from 'noicejs';
 
 import { mustExist } from '..';
 import { INJECT_LOGGER, INJECT_REQUEST } from '../../BaseService';
-import { classLogger } from '../logger';
+import { classLogger } from '../../logger';
 import { RequestFactory, RequestOptions } from '../Request';
 
 export interface GroupOptions {

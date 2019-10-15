@@ -3,13 +3,13 @@ import { Registry } from 'prom-client';
 import uuid from 'uuid';
 
 import { SchemaError } from './error/SchemaError';
+import { serviceLogger } from './logger';
 import { ServiceModule } from './module/ServiceModule';
 import { Schema } from './schema';
 import { Service, ServiceDefinition, ServiceEvent } from './Service';
 import { mustExist } from './utils';
 import { Clock } from './utils/Clock';
 import { JsonPath } from './utils/JsonPath';
-import { serviceLogger } from './utils/logger';
 import { makeMap } from './utils/Map';
 import { MathFactory } from './utils/Math';
 import { RequestFactory } from './utils/Request';
