@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { BaseError } from 'noicejs';
 import { Repository } from 'typeorm';
 
 import { INJECT_STORAGE } from '../../src/BotService';
@@ -96,5 +97,49 @@ describeLeaks('regex parser', async () => {
       type: TYPE_JPEG,
     });
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
+  });
+
+  itLeaks('should throw when message does not match expression', async () => {
+    const { container } = await createServiceContainer();
+    const svc = await createService(container, RegexParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: {
+        kind: 'test',
+        name: 'test',
+      },
+    });
+
+    const msg = new Message({
+      body: 'abc 123',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    });
+    return expect(svc.parse(msg)).to.eventually.be.rejectedWith(BaseError);
+  });
+
+  itLeaks('should return matches in body', async () => {
+    const { container } = await createServiceContainer();
+    const svc = await createService(container, RegexParser, {
+      [INJECT_STORAGE]: TEST_STORAGE,
+      data: TEST_CONFIG,
+      metadata: {
+        kind: 'test',
+        name: 'test',
+      },
+    });
+
+    const msg = new Message({
+      body: '123 abc',
+      context: ineeda<Context>(),
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    });
+    const match = await svc.decode(msg);
+    expect(match.data).to.have.property('body');
+    expect(match.data.body).to.deep.equal(['123 abc', '123', 'abc']);
   });
 });

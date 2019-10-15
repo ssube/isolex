@@ -42,11 +42,11 @@ export class RegexParser extends BaseParser<RegexParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<ParserOutput> {
-    const parts = await this.split(msg);
+    const body = await this.split(msg);
 
     return {
       data: {
-        body: Array.from(parts),
+        body,
       },
     };
   }
