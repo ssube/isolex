@@ -1,6 +1,6 @@
 import { isMap, isNil, isObject, isString } from 'lodash';
 
-import { doesExist, mergeList, mustExist } from '.';
+import { doesExist, mergeList, mustExist, Optional } from '.';
 import { NotFoundError } from '../error/NotFoundError';
 
 export interface Dict<TVal> {
@@ -11,8 +11,6 @@ export interface Dict<TVal> {
  * A `Map` or dictionary object with string keys and `TVal` values.
  */
 export type MapLike<TVal> = Map<string, TVal> | Dict<TVal>;
-
-export type Optional<T> = T | null | undefined;
 
 /**
  * Get an element from a Map and guard against nil values.
@@ -91,7 +89,7 @@ export function pushMergeMap<TKey, TVal>(...args: Array<Map<TKey, TVal | Array<T
 /**
  * Clone a map or map-like object into a new map.
  */
-export function makeMap<TVal>(val: MapLike<TVal> | null | undefined): Map<string, TVal> {
+export function makeMap<TVal>(val: Optional<MapLike<TVal>>): Map<string, TVal> {
   // nil: empty map
   if (isNil(val)) {
     return new Map();
@@ -109,7 +107,7 @@ export function makeMap<TVal>(val: MapLike<TVal> | null | undefined): Map<string
 /**
  * Turns a map or dict into a dict
  */
-export function makeDict<TVal>(map: MapLike<TVal> | null | undefined): Dict<TVal> {
+export function makeDict<TVal>(map: Optional<MapLike<TVal>>): Dict<TVal> {
   if (isNil(map)) {
     return {};
   }

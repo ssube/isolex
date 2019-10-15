@@ -2,6 +2,9 @@ import { isFunction, isNil } from 'lodash';
 
 import { NotFoundError } from '../error/NotFoundError';
 
+export type Nil = null | undefined;
+export type Optional<T> = T | Nil;
+
 export function leftPad(val: string, min: number = 8, fill: string = '0'): string {
   if (val.length < min) {
     const len = min - val.length;
@@ -33,7 +36,7 @@ export function countList(val: unknown): number {
 /**
  * Remove any null or undefined items from the list.
  */
-export function filterNil<TItem>(list: ArrayLike<TItem | null | undefined>): Array<TItem> {
+export function filterNil<TItem>(list: ArrayLike<Optional<TItem>>): Array<TItem> {
   return Array.from(list).filter(doesExist);
 }
 
@@ -92,7 +95,7 @@ export function getMethods<TValue extends object>(value: TValue): Set<Function> 
   return methods;
 }
 
-export function mustExist<T>(val: T | null | undefined): T {
+export function mustExist<T>(val: Optional<T>): T {
   if (isNil(val)) {
     throw new NotFoundError();
   }
@@ -100,11 +103,11 @@ export function mustExist<T>(val: T | null | undefined): T {
   return val;
 }
 
-export function doesExist<T>(val: T | null | undefined): val is T {
+export function doesExist<T>(val: Optional<T>): val is T {
   return !isNil(val);
 }
 
-export function mustCoalesce<T>(...vals: Array<T | null | undefined>): T {
+export function mustCoalesce<T>(...vals: Array<Optional<T>>): T {
   for (const v of vals) {
     if (doesExist(v)) {
       return v;

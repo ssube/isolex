@@ -1,4 +1,5 @@
 import { AsyncHook, createHook } from 'async_hooks';
+import { isNil } from 'lodash';
 
 // this will pull Mocha internals out of the stacks
 // tslint:disable-next-line:no-var-requires
@@ -16,10 +17,6 @@ export interface TrackedResource {
 
 function debugMode() {
   return Reflect.has(process.env, 'DEBUG');
-}
-
-function isNil<T>(val: T | null | undefined): val is null | undefined {
-  return val === null || val === undefined;
 }
 
 /**
