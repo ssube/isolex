@@ -72,15 +72,6 @@ climate-pending:
   script:
     - cc-test-reporter before-build
 
-climate-failure:
-  stage: status-post
-  extends:
-    - .build-climate
-
-  when: on_failure
-  script:
-    - cc-test-reporter after-build --debug --exit-code 1
-
 climate-success:
   stage: status-post
   extends:
