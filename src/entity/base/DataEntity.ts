@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { MissingKeyError } from '../../error/MissingKeyError';
@@ -47,7 +48,7 @@ export abstract class DataEntity<TVal> extends LabelEntity {
    */
   public get(key: string): TVal {
     const value = this.data.get(key);
-    if (value === undefined) {
+    if (isNil(value)) {
       throw new MissingKeyError(`missing key: ${key}`);
     }
     return value;
