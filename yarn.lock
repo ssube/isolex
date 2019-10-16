@@ -652,12 +652,11 @@
   dependencies:
     "@types/node" "*"
 
-"@types/websocket@0.0.40":
-  version "0.0.40"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/websocket/-/websocket-0.0.40.tgz#887cd632a8b3d0d11da7b9d0d106af85997b358c"
-  integrity sha512-ldteZwWIgl9cOy7FyvYn+39Ah4+PfpVE72eYKw75iy2L0zTbhbcwvzeJ5IOu6DQP93bjfXq0NGHY6FYtmYoqFQ==
+"@types/websocket@1.0.0":
+  version "1.0.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/websocket/-/websocket-1.0.0.tgz#828c794b0a50949ad061aa311af1009934197e4b"
+  integrity sha512-MLr8hDM8y7vvdAdnoDEP5LotRoYJj7wgT6mWzCUQH/gHqzS4qcnOT/K4dhC0WimWIUiA3Arj9QAJGGKNRiRZKA==
   dependencies:
-    "@types/events" "*"
     "@types/node" "*"
 
 "@types/ws@6.0.3", "@types/ws@^6.0.1":
