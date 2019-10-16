@@ -7,7 +7,7 @@ data:
   defaultCommand:
     noun: echo
     verb: create
-  hookUser: 07689156-5395-480d-b135-1649656642f5
+  hookUser: 1b7b1e62-1753-4d10-9546-065e86376f4c
   transforms:
     - metadata:
         kind: template-transform
@@ -16,6 +16,6 @@ data:
         templates:
           kind: "{{ object_kind }}"
           ref: "{{ ref }}"
-          project: "{{ project.name }}"
+          project: "{{ project.[0].name }}"
           user: "{{ user_name }}"
 

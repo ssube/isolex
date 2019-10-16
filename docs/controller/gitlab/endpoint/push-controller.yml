@@ -27,7 +27,7 @@ data:
                       - string: push
         templates:
           body: >-
-            Push to {{ ref }} by {{ user }}.
+            {{ kind }} to {{ project }} {{ ref }} by {{ user }}.
 
     - metadata:
         kind: template-transform
