@@ -8,7 +8,7 @@ import { INJECT_METRICS } from '../BaseService';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
-import { applyTransforms, scopeToData } from '../transform';
+import { applyTransforms } from '../transform';
 import { mustExist } from '../utils';
 import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
 import { TYPE_JSON } from '../utils/Mime';
@@ -286,7 +286,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
 
     return new Command({
       context,
-      data: scopeToData(data),
+      data,
       labels,
       noun: this.data.defaultCommand.noun,
       verb: this.data.defaultCommand.verb,
