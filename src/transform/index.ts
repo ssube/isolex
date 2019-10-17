@@ -1,7 +1,7 @@
 import { BotServiceData } from '../BotService';
 import { FilterData, FilterValue } from '../filter';
 import { Service, ServiceDefinition } from '../Service';
-import { entriesOf, makeDict, MapLike, setOrPush } from '../utils/Map';
+import { entriesOf, makeDict } from '../utils/Map';
 import { TemplateScope } from '../utils/Template';
 
 // @TODO: fix these good
@@ -41,21 +41,4 @@ export async function applyTransforms(
   }
 
   return makeDict(output);
-}
-
-/**
- * Convert a template scope (before or after rendering) into suitable data for
- * a Command or Message.
- *
- * This helper exists to mask some Dict/Map inconsistencies that should be
- * resolved elsewhere.
- *
- * @TODO: remove this entirely
- */
-export function scopeToData(scope: TemplateScope): MapLike<Array<string>> {
-  const data = new Map();
-  for (const [key, value] of Object.entries(scope)) {
-    setOrPush(data, key, value);
-  }
-  return makeDict(data);
 }
