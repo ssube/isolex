@@ -1,7 +1,7 @@
 import { BotServiceData } from '../BotService';
 import { FilterData, FilterValue } from '../filter';
 import { Service, ServiceDefinition } from '../Service';
-import { makeDict, MapLike, setOrPush } from '../utils/Map';
+import { entriesOf, makeDict, MapLike, setOrPush } from '../utils/Map';
 import { TemplateScope } from '../utils/Template';
 
 // @TODO: fix these good
@@ -24,20 +24,23 @@ export async function applyTransforms(
   type: string,
   body: TransformInput
 ): Promise<TransformOutput> {
-  if (transforms.length === 0) {
-    return {};
-  }
+  const output = new Map();
 
-  // @TODO: remove this cast
-  let result = body as TransformOutput;
+  const [headTx] = transforms;
   for (const transform of transforms) {
     const check = await transform.check(entity);
     if (check) {
-      result = await transform.transform(entity, type, result);
+      const scope = transform === headTx ? body : makeDict(output);
+      const result = await transform.transform(entity, type, scope);
+      const entries = entriesOf(result);
+
+      for (const [k, v] of entries) {
+        output.set(k, v);
+      }
     }
   }
 
-  return result;
+  return makeDict(output);
 }
 
 /**

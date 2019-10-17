@@ -5,7 +5,7 @@ import { mustExist } from '.';
 import { INJECT_LOGGER } from '../BaseService';
 import { Context } from '../entity/Context';
 import { classLogger } from '../logger';
-import { Dict, MapLike } from './Map';
+import { Dict, entriesOf, MapLike } from './Map';
 import { Template } from './Template';
 
 export interface TemplateCompilerOptions extends BaseOptions {
@@ -89,14 +89,6 @@ export class TemplateCompiler {
   }
 
   protected entriesOf(map: MapLike<string>): Array<[string, string]> {
-    if (map instanceof Map) {
-      return Array.from(map.entries());
-    }
-
-    if (map instanceof Object) {
-      return Object.entries(map);
-    }
-
-    return [];
+    return entriesOf(map);
   }
 }
