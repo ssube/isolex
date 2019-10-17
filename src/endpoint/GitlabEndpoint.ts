@@ -33,8 +33,8 @@ export interface GitlabIssueWebhook extends GitlabBaseWebhook {
   changes: any;
 }
 
-export interface GitlabJobWebhook extends GitlabBaseWebhook {
-  object_kind: 'job';
+export interface GitlabBuildWebhook extends GitlabBaseWebhook {
+  object_kind: 'build';
   ref: string;
   tag: boolean;
   before_sha: string;
@@ -91,7 +91,7 @@ export interface GitlabPushWebhook extends GitlabBaseWebhook {
 }
 // tslint:enable:no-any
 
-export type GitlabWebhook = GitlabIssueWebhook | GitlabJobWebhook | GitlabNoteWebhook | GitlabPipelineWebhook | GitlabPushWebhook;
+export type GitlabWebhook = GitlabBuildWebhook | GitlabIssueWebhook | GitlabNoteWebhook | GitlabPipelineWebhook | GitlabPushWebhook;
 
 export interface GitlabEndpointData extends HookEndpointData {
   defaultCommand: CommandOptions;
@@ -136,10 +136,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     });
 
     switch (data.object_kind) {
+      case 'build':
+        return this.buildHook(req, res, data as GitlabBuildWebhook);
       case 'issue':
         return this.issueHook(req, res, data as GitlabIssueWebhook);
-      case 'job':
-        return this.jobHook(req, res, data as GitlabJobWebhook);
       case 'note':
         return this.noteHook(req, res, data as GitlabNoteWebhook);
       case 'pipeline':
@@ -154,13 +154,26 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     }
   }
 
-  public async issueHook(req: Request, res: Response, data: GitlabIssueWebhook) {
-    this.logger.debug(data, 'gitlab issue hook');
+  public async buildHook(req: Request, res: Response, data: GitlabBuildWebhook) {
+    this.logger.debug(data, 'gitlab job hook');
+    const txData = await this.transformData(req, res, data);
+    const user = mustExist(this.hookUser);
+    const cmdCtx = await this.createContext({
+      channel: {
+        id: data.project_name,
+        thread: data.ref,
+      },
+      name: user.name,
+      uid: this.data.hookUser,
+      user,
+    });
+    const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
+    await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
   }
 
-  public async jobHook(req: Request, res: Response, data: GitlabJobWebhook) {
-    this.logger.debug(data, 'gitlab job hook');
+  public async issueHook(req: Request, res: Response, data: GitlabIssueWebhook) {
+    this.logger.debug(data, 'gitlab issue hook');
     res.sendStatus(STATUS_SUCCESS);
   }
 
@@ -171,15 +184,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
 
   public async pipelineHook(req: Request, res: Response, data: GitlabPipelineWebhook) {
     this.logger.debug(data, 'gitlab pipeline hook');
-    const msg = await this.createHookMessage(req, res, data);
-
-    const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
-    this.logger.debug({ data, txData }, 'applied transforms');
-
-    if (Array.isArray(txData) || isString(txData)) {
-      this.logger.warn({ data: txData }, 'transforms did not return object');
-    }
-
+    const txData = await this.transformData(req, res, data);
     const cmdCtx = await this.createContext({
       channel: {
         id: data.project.web_url,
@@ -196,14 +201,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
 
   public async pushHook(req: Request, res: Response, data: GitlabPushWebhook) {
     this.logger.debug(data, 'gitlab push hook');
-    const msg = await this.createHookMessage(req, res, data);
-
-    const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
-    this.logger.debug({ data, txData }, 'applied transforms');
-    if (Array.isArray(txData) || isString(txData)) {
-      this.logger.warn({ data: txData }, 'transforms did not return object');
-    }
-
+    const txData = await this.transformData(req, res, data);
     const cmdCtx = await this.createContext({
       channel: {
         id: data.project.web_url,
@@ -218,6 +216,19 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     res.sendStatus(STATUS_SUCCESS);
   }
 
+  protected async transformData(req: Request, res: Response, data: GitlabWebhook) {
+    const msg = await this.createHookMessage(req, res, data);
+
+    const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
+    this.logger.debug({ data, txData }, 'applied transforms');
+
+    if (Array.isArray(txData) || isString(txData)) {
+      this.logger.warn({ data: txData }, 'transforms did not return object');
+    }
+
+    return txData;
+  }
+
   protected getHookChannel(data: GitlabWebhook): ChannelData {
     return {
       id: data.object_kind,
@@ -228,11 +239,14 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
   protected async createHookMessage(req: Request, res: Response, data: GitlabWebhook): Promise<Message> {
     const channel = this.getHookChannel(data);
     const context = await this.createHookContext(channel);
+    const labels = new Map(this.labels);
+    labels.set('hook', data.object_kind);
+
     // fake message for the transforms to check and filter
     return new Message({
       body: data.object_kind,
       context,
-      labels: this.labels,
+      labels,
       reactions: [],
       type: TYPE_JSON,
     });

@@ -1,5 +1,6 @@
 import { FilterBehavior, FilterValue } from '.';
 import { Message } from '../entity/Message';
+import { makeDict } from '../utils/Map';
 import { BaseFilterOptions } from './BaseFilter';
 import { RuleFilter, RuleFilterData } from './RuleFilter';
 
@@ -19,6 +20,7 @@ export class MessageFilter extends RuleFilter {
   public async check(value: FilterValue): Promise<FilterBehavior> {
     if (Message.isMessage(value)) {
       const result = this.matcher.match({
+        labels: makeDict(value.labels),
         type: value.type,
       });
 

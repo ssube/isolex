@@ -7,15 +7,47 @@ data:
   defaultCommand:
     noun: echo
     verb: create
-  hookUser: 1b7b1e62-1753-4d10-9546-065e86376f4c
+  hookUser: 960238d7-3220-4328-8c08-32389d317a22
   transforms:
     - metadata:
         kind: template-transform
-        name: gitlab-webhook-template
+        name: gitlab-webhook-push-template
       data:
+        filters:
+          - metadata:
+              kind: message-filter
+              name: gitlab-webhook-push-filter
+            data:
+              match:
+                rules:
+                  - key: labels.hook
+                    operator: any
+                    values:
+                      - string: push
+
         templates:
           kind: "{{ object_kind }}"
           ref: "{{ ref }}"
           project: "{{ project.[0].name }}"
           user: "{{ user_name }}"
-
+    - metadata:
+        kind: template-transform
+        name: gitlab-webhook-build-template
+      data:
+        filters:
+          - metadata:
+              kind: message-filter
+              name: gitlab-webhook-build-filter
+            data:
+              match:
+                rules:
+                  - key: labels.hook
+                    operator: any
+                    values:
+                      - string: build
+        templates:
+          kind: "{{ object_kind }}"
+          stage: "{{ build_stage }}"
+          job: "{{ build_name }}"
+          project: "{{ project_name }}"
+          status: "{{ build_status }}"

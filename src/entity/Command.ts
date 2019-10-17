@@ -54,6 +54,7 @@ export class Command extends BaseCommand implements CommandOptions {
       context,
       data: Array.from(this.data),
       id: this.id,
+      labels: Array.from(this.labels),
       noun: this.noun,
       verb: this.verb,
     };

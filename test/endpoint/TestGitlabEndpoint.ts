@@ -24,10 +24,10 @@ const TEST_DATA: GitlabEndpointData = {
 
 const TEST_EVENTS = [{
   data: {},
-  name: 'issue',
+  name: 'build',
 }, {
   data: {},
-  name: 'job',
+  name: 'issue',
 }, {
   data: {},
   name: 'note',

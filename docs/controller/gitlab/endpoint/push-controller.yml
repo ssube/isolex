@@ -31,6 +31,25 @@ data:
 
     - metadata:
         kind: template-transform
+        name: endpoint-build-template
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: endpoint-build-template-kind
+            data:
+              match:
+                rules:
+                  - key: labels.hook
+                    operator: any
+                    values:
+                      - string: build
+        templates:
+          body: >-
+            {{ kind }} {{ stage }}/{{ job }} for {{ project }} is {{ status }}
+
+    - metadata:
+        kind: template-transform
         name: endpoint-pipeline-template
       data:
         filters:

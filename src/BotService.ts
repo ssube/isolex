@@ -59,7 +59,7 @@ export abstract class BotService<TData extends BotServiceData> extends BaseServi
   protected async checkFilters(value: FilterValue, filters: Array<Filter>): Promise<boolean> {
     for (const filter of filters) {
       const result = await filter.check(value);
-      this.logger.debug({ result }, 'checked filter');
+      this.logger.debug({ filter: filter.name, result }, 'checked filter');
 
       if (!checkFilter(result, this.data.strict)) {
         return false;
