@@ -1,16 +1,19 @@
 import { Counter, CounterConfiguration, Registry } from 'prom-client';
 
+import { mustExist } from '.';
 import { Service } from '../Service';
 
 export function createServiceCounter(registry: Registry, config: Partial<CounterConfiguration>): Counter {
-  const { labelNames = [] } = config;
+  const { labelNames = [], name } = config;
   const combinedLabels = [...labelNames, 'serviceId', 'serviceKind', 'serviceName'];
+
+  const fullName = 'isolex_' + mustExist(name);
 
   return new Counter({
     help: 'default service counter',
-    name: 'change_me',
     ...config,
     labelNames: combinedLabels,
+    name: fullName,
     registers: [registry],
   });
 }

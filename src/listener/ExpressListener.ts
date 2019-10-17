@@ -20,6 +20,7 @@ import { ServiceModule } from '../module/ServiceModule';
 import { ServiceMetadata } from '../Service';
 import { Storage } from '../storage';
 import { doesExist, mustExist } from '../utils';
+import { createServiceCounter } from '../utils/Metrics';
 import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData extends ListenerData {
@@ -60,9 +61,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.services = mustExist(options[INJECT_SERVICES]);
     this.storage = mustExist(options[INJECT_STORAGE]);
 
-    this.requestCounter = new Counter({
+    this.requestCounter = createServiceCounter(this.metrics, {
       help: 'all requests through this express listener',
-      labelNames: ['serviceId', 'serviceKind', 'serviceName', 'requestClient', 'requestHost', 'requestPath'],
+      labelNames: ['requestClient', 'requestHost', 'requestPath'],
       name: 'express_request',
       registers: [this.metrics],
     });

@@ -15,7 +15,7 @@ describeLeaks('metrics utils', async () => {
           // ?
         },
       }), {
-        // ?
+        name: 'test',
       })).to.be.an.instanceOf(Counter);
     });
   });
