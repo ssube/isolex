@@ -30,6 +30,7 @@ data:
           ref: "{{ ref }}"
           project: "{{ project.[0].name }}"
           user: "{{ user_name }}"
+
     - metadata:
         kind: template-transform
         name: gitlab-webhook-build-template

@@ -163,3 +163,15 @@ export function normalizeMap(map: MapLike<unknown>): Dict<Array<string>> {
 
   return data;
 }
+
+export function entriesOf<TVal>(map: MapLike<TVal>): Array<[string, TVal]> {
+  if (map instanceof Map) {
+    return Array.from(map.entries());
+  }
+
+  if (map instanceof Object) {
+    return Object.entries(map);
+  }
+
+  return [];
+}
