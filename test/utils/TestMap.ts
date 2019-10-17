@@ -1,7 +1,16 @@
 import { expect } from 'chai';
 
 import { NotFoundError } from '../../src/error/NotFoundError';
-import { getHead, getHeadOrDefault, getOrDefault, makeDict, makeMap, mustGet, pairsToMap } from '../../src/utils/Map';
+import {
+  entriesOf,
+  getHead,
+  getHeadOrDefault,
+  getOrDefault,
+  makeDict,
+  makeMap,
+  mustGet,
+  pairsToMap,
+} from '../../src/utils/Map';
 import { describeLeaks, itLeaks } from '../helpers/async';
 
 const DEFAULT_VALUE = 'default';
@@ -104,6 +113,31 @@ describeLeaks('map utils', async () => {
         value: 3,
       }]);
       expect(result.get('foo')).to.equal(3);
+    });
+  });
+
+  describe('entries of helper', () => {
+    it('should return entries for maps', () => {
+      const input: Array<[string, number]> = [['foo', 1], ['bar', 3]];
+      const value = new Map(input);
+      const result = entriesOf(value);
+      expect(result.length).to.equal(2);
+      expect(result).to.deep.equal(input);
+    });
+
+    it('should return entries for objects', () => {
+      const result = entriesOf({
+        bar: 3,
+        foo: 1,
+      });
+      expect(result.length).to.equal(2);
+      expect(result[0][0]).to.equal('bar');
+    });
+
+    it('should return empty entries for nil values', () => {
+      // tslint:disable-next-line:no-null-keyword
+      expect(entriesOf(null)).to.deep.equal([]);
+      expect(entriesOf(undefined)).to.deep.equal([]);
     });
   });
 });

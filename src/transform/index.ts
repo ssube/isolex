@@ -50,7 +50,7 @@ export async function applyTransforms(
  * This helper exists to mask some Dict/Map inconsistencies that should be
  * resolved elsewhere.
  *
- * @TODO: handle strings, arrays, and nested objects differently
+ * @TODO: remove this entirely
  */
 export function scopeToData(scope: TemplateScope): MapLike<Array<string>> {
   const data = new Map();
