@@ -172,13 +172,41 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     res.sendStatus(STATUS_SUCCESS);
   }
 
+  // tslint:disable-next-line:no-identical-functions
   public async issueHook(req: Request, res: Response, data: GitlabIssueWebhook) {
     this.logger.debug(data, 'gitlab issue hook');
+    const txData = await this.transformData(req, res, data);
+    const user = mustExist(this.hookUser);
+    const cmdCtx = await this.createContext({
+      channel: {
+        id: data.project.id,
+        thread: data.object_attributes.id,
+      },
+      name: user.name,
+      uid: this.data.hookUser,
+      user,
+    });
+    const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
+    await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
   }
 
+  // tslint:disable-next-line:no-identical-functions
   public async noteHook(req: Request, res: Response, data: GitlabNoteWebhook) {
     this.logger.debug(data, 'gitlab note hook');
+    const txData = await this.transformData(req, res, data);
+    const user = mustExist(this.hookUser);
+    const cmdCtx = await this.createContext({
+      channel: {
+        id: data.project.id,
+        thread: data.object_attributes.id,
+      },
+      name: user.name,
+      uid: this.data.hookUser,
+      user,
+    });
+    const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
+    await this.bot.executeCommand(cmd);
     res.sendStatus(STATUS_SUCCESS);
   }
 

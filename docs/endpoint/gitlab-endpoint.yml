@@ -46,8 +46,9 @@ data:
                     values:
                       - string: build
         templates:
-          kind: "{{ object_kind }}"
-          stage: "{{ build_stage }}"
           job: "{{ build_name }}"
+          kind: "{{ object_kind }}"
           project: "{{ project_name }}"
+          ref: "{{ ref }}"
+          stage: "{{ build_stage }}"
           status: "{{ build_status }}"
