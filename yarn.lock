@@ -148,14 +148,14 @@
     underscore "^1.9.1"
     ws "^6.1.0"
 
-"@microsoft/api-documenter@7.5.0":
-  version "7.5.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.5.0.tgz#444265cf9080ca4574ea57e72216a0921b3ae377"
-  integrity sha512-jeLFI++McNAu9deF47AnPvlMnZIeSGRQwjo5GVIZ378nN7tOziZhUFnmKfwPW8gQqjVVylB5tudxI4LvzC6BUA==
+"@microsoft/api-documenter@7.5.1":
+  version "7.5.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.5.1.tgz#8713b2265c86ee4360b14f055d2110e838b25a96"
+  integrity sha512-iBW4iI7WLAcRFtFph9xgaNMqTnHy3XAbxhj0dIi92EVirqpLUqK0b9C5YiJGK3PcnCssS/Rvi+7O923pntda+Q==
   dependencies:
     "@microsoft/api-extractor-model" "7.5.1"
     "@microsoft/node-core-library" "3.15.1"
-    "@microsoft/ts-command-line" "4.3.2"
+    "@microsoft/ts-command-line" "4.3.3"
     "@microsoft/tsdoc" "0.12.14"
     colors "~1.2.1"
     js-yaml "~3.13.1"
@@ -199,6 +199,15 @@
   version "4.3.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/ts-command-line/-/ts-command-line-4.3.2.tgz#87341de2e24f279259297ebd38530300a9f97bc3"
   integrity sha512-2QeyilabCe6IpBylPXuY6dCA1S9ym3Ii0zakXVPpyfjSj1NesnyuUeuh6e8kyIqzqJ+3LYjfPG63XzUBtwGqqw==
+  dependencies:
+    "@types/argparse" "1.0.33"
+    argparse "~1.0.9"
+    colors "~1.2.1"
+
+"@microsoft/ts-command-line@4.3.3":
+  version "4.3.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/ts-command-line/-/ts-command-line-4.3.3.tgz#bcbebafedd2f8af7e40bc6b6c1d24018f821d3d6"
+  integrity sha512-dzAdHwmw0p0T2Nra91nPd5n57fw5bRQEWGPe5iZOsqoLpjU/NCgBpmBdbvx1Oy3+YRnrV4lSeSbN6C7sSniwmQ==
   dependencies:
     "@types/argparse" "1.0.33"
     argparse "~1.0.9"
