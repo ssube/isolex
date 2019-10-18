@@ -45,6 +45,14 @@ export function countOf(val: unknown): number {
   return 0;
 }
 
+export function defaultWhen<TVal>(condition: boolean, ...items: Array<TVal>): TVal {
+  if (condition) {
+    return items[0];
+  } else {
+    return items[1];
+  }
+}
+
 /**
  * Remove any null or undefined items from the list.
  */
