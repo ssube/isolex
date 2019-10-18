@@ -21,7 +21,7 @@
     "@istanbuljs/nyc-config-typescript": "0.1.3",
     "@kubernetes/client-node": "0.10.2",
     "@microsoft/api-documenter": "7.5.1",
-    "@microsoft/api-extractor": "7.5.0",
+    "@microsoft/api-extractor": "7.5.1",
     "@octokit/app": "4.1.0",
     "@octokit/rest": "16.33.1",
     "@slack/client": "5.0.2",
