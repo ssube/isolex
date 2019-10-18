@@ -25,17 +25,20 @@ export async function applyTransforms(
   type: string,
   body: TransformInput
 ): Promise<TransformOutput> {
-  const applicable = await Promise.all(transforms.filter((tx) => tx.check(entity)));
-  const [firstTx] = applicable;
+  let first = true;
 
   const output = new Map();
-  for (const transform of applicable) {
-    const scope = defaultWhen(transform === firstTx, body, makeDict(output));
-    const result = await transform.transform(entity, type, scope);
-    const entries = entriesOf(result);
+  for (const transform of transforms) {
+    if (await transform.check(entity)) {
+      const scope = defaultWhen(first, body, makeDict(output));
+      const result = await transform.transform(entity, type, scope);
+      const entries = entriesOf(result);
 
-    for (const [k, v] of entries) {
-      output.set(k, v);
+      for (const [k, v] of entries) {
+        output.set(k, v);
+      }
+
+      first = false;
     }
   }
 

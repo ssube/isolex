@@ -7,7 +7,7 @@ data:
   defaultCommand:
     noun: echo
     verb: create
-  hookUser: 960238d7-3220-4328-8c08-32389d317a22
+  hookUser: 2494fa9c-97fa-48b3-82d5-7cdbee62ee32
   transforms:
     - metadata:
         kind: template-transform
