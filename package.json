@@ -15,7 +15,7 @@
     "discord.js": "11.5.1",
     "shelljs": "^0.8.3",
     "sqlite3": "4.1.0",
-    "typeorm": "0.2.19"
+    "typeorm": "0.2.20"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "0.1.3",
