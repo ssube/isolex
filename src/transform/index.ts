@@ -2,7 +2,7 @@ import { BotServiceData } from '../BotService';
 import { FilterData, FilterValue } from '../filter';
 import { Service, ServiceDefinition } from '../Service';
 import { defaultWhen } from '../utils';
-import { entriesOf, makeDict } from '../utils/Map';
+import { entriesOf, makeDict, mergeMap } from '../utils/Map';
 import { TemplateScope } from '../utils/Template';
 
 // @TODO: fix these good
@@ -34,10 +34,7 @@ export async function applyTransforms(
       const result = await transform.transform(entity, type, scope);
       const entries = entriesOf(result);
 
-      for (const [k, v] of entries) {
-        output.set(k, v);
-      }
-
+      mergeMap(output, entries);
       first = false;
     }
   }
