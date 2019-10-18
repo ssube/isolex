@@ -8,3 +8,16 @@ export function leftPad(val: string, min: number = 8, fill: string = '0'): strin
     return val;
   }
 }
+
+export function trim(val: string, max: number, tail = '...'): string {
+  if (val.length <= max) {
+    return val;
+  }
+
+  if (max < tail.length) {
+    return val.substr(0, max);
+  }
+
+  const start = val.substr(0, max - tail.length);
+  return `${start}${tail}`;
+}

@@ -1,11 +1,11 @@
 import Handlebars from 'handlebars';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
-import { mustExist } from '.';
 import { INJECT_LOGGER } from '../BaseService';
 import { Context } from '../entity/Context';
 import { classLogger } from '../logger';
-import { Dict, entriesOf, MapLike } from './Map';
+import { Dict, entriesOf, MapLike, mustGet } from './Map';
+import { trim } from './String';
 import { Template } from './Template';
 
 export interface TemplateCompilerOptions extends BaseOptions {
@@ -60,29 +60,19 @@ export class TemplateCompiler {
    */
   public formatTrim(value: string, max: number = 10, tail = '...'): string {
     this.logger.debug({ max, tail, value }, 'trimming string');
-
-    if (value.length <= max) {
-      return value;
-    }
-
-    if (max < tail.length) {
-      return value.substr(0, max);
-    }
-
-    const start = value.substr(0, max - tail.length);
-    return `${start}${tail}`;
+    return trim(value, max, tail);
   }
 
   public getKey(map: Map<string, unknown>, key: string): unknown {
     this.logger.debug({ key, map }, 'getting key for template');
-    return mustExist(map.get(key));
+    return mustGet(map, key);
   }
 
   public withMap(context: Map<string, unknown>, options: Handlebars.HelperOptions): string {
     const args: Dict<unknown> = {};
     for (const [key, src] of Object.entries(options.hash as Dict<string>)) {
       this.logger.debug({ key, context }, 'getting key for template');
-      const val = mustExist(context.get(src));
+      const val = mustGet(context, src);
       args[key] = val;
     }
     return options.fn(args);
