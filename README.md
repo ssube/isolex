@@ -6,7 +6,7 @@ Listeners for common chat services, controllers for chat functions and devops to
 
 ## Getting Started
 
-The bot interacts through Discord and Slack, Github and Gitlab comments, and a GraphQL API.
+The bot interacts through Discord and Slack, Github and Gitlab comments and webhooks, and a GraphQL API.
 
 The [getting started guide](./docs/getting-started.md) has more information on using the bot.
 
@@ -30,6 +30,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=ncloc)](https://sonarcloud.io/dashboard?id=ssube_isolex)
 [![Test coverage](https://codecov.io/gh/ssube/isolex/branch/master/graph/badge.svg)](https://codecov.io/gh/ssube/isolex)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_shield)
 
 [![Open bug count](https://img.shields.io/github/issues-raw/ssube/isolex/type-bug.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue+label%3Atype%2Fbug)
 [![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
@@ -43,8 +44,6 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![Maintainability score](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/maintainability)](https://codeclimate.com/github/ssube/isolex/maintainability)
 [![Technical debt ratio](https://img.shields.io/codeclimate/tech-debt/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/trends/technical_debt)
 [![Quality issues](https://img.shields.io/codeclimate/issues/ssube/isolex.svg)](https://codeclimate.com/github/ssube/isolex/issues)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_shield)
-
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ssube/isolex.svg?logo=lgtm)](https://lgtm.com/projects/g/ssube/isolex/context:javascript)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/ssube/isolex.svg)](https://lgtm.com/projects/g/ssube/isolex/alerts/)
 
