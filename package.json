@@ -104,7 +104,7 @@
     "typescript": "3.6.4",
     "utf-8-validate": "5.0.2",
     "uuid": "3.3.3",
-    "ws": "7.1.2",
+    "ws": "7.2.0",
     "yargs-parser": "15.0.0"
   },
   "resolutions": {
