@@ -1,9 +1,9 @@
 import { ModuleOptions } from 'noicejs';
 
-import { CommandInterval } from '../interval/CommandInterval';
-import { EventInterval } from '../interval/EventInterval';
-import { MessageInterval } from '../interval/MessageInterval';
-import { MetricsInterval } from '../interval/MetricsInterval';
+import { CommandGenerator } from '../generator/CommandGenerator';
+import { EventGenerator } from '../generator/EventGenerator';
+import { MessageGenerator } from '../generator/MessageGenerator';
+import { MetricsGenerator } from '../generator/MetricsGenerator';
 import { BaseModule } from './BaseModule';
 
 export class IntervalModule extends BaseModule {
@@ -11,9 +11,9 @@ export class IntervalModule extends BaseModule {
     await super.configure(options);
 
     // intervals
-    this.bindService(CommandInterval);
-    this.bindService(EventInterval);
-    this.bindService(MessageInterval);
-    this.bindService(MetricsInterval);
+    this.bindService(CommandGenerator);
+    this.bindService(EventGenerator);
+    this.bindService(MessageGenerator);
+    this.bindService(MetricsGenerator);
   }
 }

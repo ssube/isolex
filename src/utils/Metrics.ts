@@ -1,7 +1,14 @@
-import { Counter, CounterConfiguration, Registry } from 'prom-client';
+import { Counter, CounterConfiguration, DefaultMetricsCollectorConfiguration, Registry } from 'prom-client';
 
 import { mustExist } from '.';
 import { Service } from '../Service';
+
+export interface CollectorOptions extends DefaultMetricsCollectorConfiguration {
+  timeout: number;
+  register: Registry;
+}
+
+export type Collector = (options: CollectorOptions) => ReturnType<typeof setInterval>;
 
 export function createServiceCounter(registry: Registry, config: Partial<CounterConfiguration>): Counter {
   const { labelNames = [], name } = config;

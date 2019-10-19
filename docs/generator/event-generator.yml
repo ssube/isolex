@@ -1,6 +1,6 @@
 metadata:
-  kind: event-interval
-  name: test-interval-event
+  kind: event-generator
+  name: test-generator-event
 data:
   defaultContext:
     channel:

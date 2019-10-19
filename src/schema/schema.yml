@@ -173,13 +173,17 @@ definitions:
 
   service-bot:
     type: object
-    required: [controllers, listeners, locale, logger, modules, parsers, process, services, storage]
+    required: [controllers, generators, listeners, locale, logger, modules, parsers, process, services, storage]
     properties:
       controllers:
         type: array
         items:
           $ref: "#/definitions/service-definition"
       endpoints:
+        type: array
+        items:
+          $ref: "#/definitions/service-definition"
+      generators:
         type: array
         items:
           $ref: "#/definitions/service-definition"
@@ -682,7 +686,7 @@ definitions:
           users:
             $ref: "#/definitions/checklist"
 
-  service-interval:
+  service-generator:
     allOf:
       - $ref: "#/definitions/service-data"
       - type: object
@@ -710,9 +714,9 @@ definitions:
             items:
               $ref: "#/definitions/service-definition"
  
-  service-interval-command:
+  service-generator-command:
     allOf:
-      - $ref: "#/definitions/service-interval"
+      - $ref: "#/definitions/service-generator"
       - type: object
         additionalProperties: true
         required: [defaultCommand]
@@ -720,9 +724,9 @@ definitions:
           defaultCommand:
             $ref: "#/definitions/entity-command"
     
-  service-interval-event:
+  service-generator-event:
     allOf:
-      - $ref: "#/definitions/service-interval"
+      - $ref: "#/definitions/service-generator"
       - type: object
         additionalProperties: true
         required: [services]
@@ -732,9 +736,9 @@ definitions:
             items:
               $ref: "#/definitions/service-metadata"
 
-  service-interval-message:
+  service-generator-message:
     allOf:
-      - $ref: "#/definitions/service-interval"
+      - $ref: "#/definitions/service-generator"
       - type: object
         additionalProperties: true
         required: [defaultMessage]
@@ -742,8 +746,8 @@ definitions:
           defaultMessage:
             $ref: "#/definitions/entity-message"
 
-  service-interval-metrics:
-    $ref: "#/definitions/service-interval"
+  service-generator-metrics:
+    $ref: "#/definitions/service-generator"
 
   service-listener:
     $ref: "#/definitions/service-data"

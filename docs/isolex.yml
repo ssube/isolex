@@ -42,13 +42,13 @@ data:
     - !include ../docs/endpoint/graph-endpoint.yml
     - !include ../docs/endpoint/health-endpoint.yml
     - !include ../docs/endpoint/metrics-endpoint.yml
-  intervals:
-    # !include ../docs/interval/command-interval.yml
-    # !include ../docs/interval/cron-interval.yml
-    # !include ../docs/interval/event-interval.yml
-    - !include ../docs/interval/github-listener-interval.yml
-    # !include ../docs/interval/message-interval.yml
-    - !include ../docs/interval/metrics-interval.yml
+  generators:
+    # !include ../docs/generator/command-generator.yml
+    # !include ../docs/generator/cron-generator.yml
+    # !include ../docs/generator/event-generator.yml
+    - !include ../docs/generator/github-listener-generator.yml
+    # !include ../docs/generator/message-generator.yml
+    - !include ../docs/generator/metrics-generator.yml
   listeners:
     - !include ../docs/listener/discord-listener.yml
     - !include ../docs/listener/express-listener.yml

@@ -1,6 +1,6 @@
 import { Inject } from 'noicejs';
 
-import { BaseService, BaseServiceData, BaseServiceOptions, INJECT_SERVICES } from './BaseService';
+import { BaseService, BaseServiceData, BaseServiceOptions } from './BaseService';
 import { Bot } from './Bot';
 import { Context } from './entity/Context';
 import { checkFilter, Filter, FilterData, FilterValue } from './filter';
@@ -31,7 +31,7 @@ export interface BotServiceOptions<TData extends BotServiceData> extends BaseSer
  * Services started by the bot, into which the bot is injected, and which rely on the bot for communication with
  * other services and the outside world.
  */
-@Inject(INJECT_BOT, INJECT_SERVICES)
+@Inject(INJECT_BOT)
 export abstract class BotService<TData extends BotServiceData> extends BaseService<TData> implements Service {
   protected readonly bot: Bot;
   protected readonly filters: Array<Filter>;

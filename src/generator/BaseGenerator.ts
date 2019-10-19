@@ -1,9 +1,8 @@
-import { CronJob } from 'cron';
 import { MathJsStatic } from 'mathjs';
-import { Inject } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
 
-import { Interval, IntervalData } from '.';
+import { Generator, GeneratorData } from '.';
 import { INJECT_CLOCK, INJECT_MATH } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
 import { Context } from '../entity/Context';
@@ -11,24 +10,28 @@ import { Tick } from '../entity/Tick';
 import { Listener } from '../listener';
 import { doesExist, mustExist } from '../utils';
 import { Clock } from '../utils/Clock';
+import { Interval as OtherInterval } from '../utils/interval';
+import { CronInterval } from '../utils/interval/CronInterval';
+import { TimeInterval } from '../utils/interval/TimeInterval';
 
-export type BaseIntervalOptions<TData extends IntervalData> = BotServiceOptions<TData>;
+export type BaseIntervalOptions<TData extends GeneratorData> = BotServiceOptions<TData>;
 
 @Inject(INJECT_CLOCK, INJECT_MATH, INJECT_STORAGE)
-export abstract class BaseInterval<TData extends IntervalData> extends BotService<TData> implements Interval {
+export abstract class BaseGenerator<TData extends GeneratorData> extends BotService<TData> implements Generator {
+  protected readonly container: Container;
   protected readonly clock: Clock;
   protected readonly math: MathJsStatic;
 
   protected readonly contextRepository: Repository<Context>;
   protected readonly tickRepository: Repository<Tick>;
 
-  protected interval?: NodeJS.Timeout;
-  protected job?: CronJob;
+  protected interval?: OtherInterval;
   protected target?: Listener;
 
   constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
+    this.container = mustExist(options.container);
     this.clock = mustExist(options[INJECT_CLOCK]);
     this.math = mustExist(options[INJECT_MATH]).create({});
 
@@ -39,56 +42,57 @@ export abstract class BaseInterval<TData extends IntervalData> extends BotServic
 
   public async start() {
     await super.start();
+    await this.startInterval();
+  }
 
+  public async startInterval() {
     this.logger.debug({ def: this.data.defaultTarget }, 'getting default target listener');
     this.target = this.services.getService<Listener>(this.data.defaultTarget);
-    return this.startInterval();
+
+    const fn = async () => {
+      this.nextTick().catch((err) => {
+        this.logger.error(err, 'error firing next tick');
+      });
+    };
+
+    if (doesExist(this.data.frequency.cron)) {
+      this.logger.debug({ cron: this.data.frequency.cron }, 'starting a cron interval');
+      this.interval = await this.container.create(CronInterval, {
+        fn,
+        freq: {
+          cron: this.data.frequency.cron,
+        },
+      });
+    }
+
+    if (doesExist(this.data.frequency.time)) {
+      const time = this.math.unit(this.data.frequency.time).toNumber('millisecond').toString();
+      this.logger.debug({ time }, 'starting a clock interval');
+      this.interval = await this.container.create(TimeInterval, {
+        fn,
+        freq: {
+          time,
+        },
+      });
+    }
   }
 
   public async stop() {
     await super.stop();
-    return this.stopInterval();
+
+    if (doesExist(this.interval)) {
+      await this.interval.stop();
+    }
   }
 
   public abstract tick(context: Context, next: Tick, last?: Tick): Promise<number>;
-
-  protected async startInterval() {
-    if (doesExist(this.data.frequency.cron)) {
-      this.logger.debug({ cron: this.data.frequency.cron }, 'starting a cron interval');
-      this.job = new CronJob(this.data.frequency.cron, () => {
-        this.nextTick().catch((err) => {
-          this.logger.error(err, 'error firing next tick');
-        });
-      }, () => {
-        /* on complete */
-      }, true);
-    }
-
-    if (doesExist(this.data.frequency.time)) {
-      const ms = this.math.unit(this.data.frequency.time).toNumber('millisecond');
-      this.logger.debug({ ms }, 'starting a clock interval');
-      this.interval = this.clock.setInterval(() => this.nextTick().catch((err) => {
-        this.logger.error(err, 'error firing next tick');
-      }), ms);
-    }
-  }
-
-  protected async stopInterval() {
-    if (doesExist(this.job)) {
-      this.job.stop();
-    }
-
-    if (doesExist(this.data.frequency.time) && doesExist(this.interval)) {
-      this.clock.clearInterval(this.interval);
-    }
-  }
 
   protected async nextTick() {
     const options: FindManyOptions<Tick> = {
       // typeorm requires an order for toString, which is not a column
       order: {
         updatedAt: 'DESC',
-      /* tslint:disable-next-line:no-any */
+        /* tslint:disable-next-line:no-any */
       } as any,
       take: 1,
       where: {

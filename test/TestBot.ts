@@ -21,7 +21,7 @@ import { getTestLogger } from './helpers/logger';
 const TEST_CONFIG: BotData = {
   controllers: [],
   endpoints: [],
-  intervals: [],
+  generators: [],
   listeners: [],
   locale: {
     data: {

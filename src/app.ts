@@ -113,9 +113,14 @@ export async function runBot(options: CreateOptions, bot: Bot): Promise<ExitStat
   const { config, logger } = options;
   logger.info('starting bot');
 
+  let status = ExitStatus.Success;
   await writePid(config.data.process.pid.file);
-  await handleSignals(bot, logger);
+  try {
+    await handleSignals(bot, logger);
+  } catch (err) {
+    logger.error(err, 'error running bot');
+    status = ExitStatus.Error;
+  }
   await removePid(config.data.process.pid.file);
-
-  return ExitStatus.Success;
+  return status;
 }

@@ -2,7 +2,7 @@
 
 The command interval creates and executes a new command with the given noun, verb, and data.
 
-An example command interval is defined in [this config fragment](./command-interval.yml).
+An example command interval is defined in [this config fragment](./command-generator.yml).
 
 ## Config
 

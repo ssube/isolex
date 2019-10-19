@@ -1,6 +1,6 @@
 metadata:
-  kind: event-interval
-  name: github-listener-interval
+  kind: event-generator
+  name: github-listener-generator
 data:
   defaultContext:
     channel:

@@ -1,6 +1,6 @@
 metadata:
-  kind: event-interval
-  name: test-cron-interval
+  kind: event-generator
+  name: test-cron-generator
 data:
   defaultContext:
     channel:
