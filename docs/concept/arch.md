@@ -9,7 +9,7 @@
   - [Services](#services)
     - [Controller](#controller)
     - [Filter](#filter)
-    - [Interval](#interval)
+    - [Generator](#generator)
     - [Listener](#listener)
     - [Parser](#parser)
     - [Transform](#transform)
@@ -83,10 +83,10 @@ Filters examine passing commands and messages, using fixed-function or rule-base
 
 Every service may have filters, including filters, which should allow for limited logic.
 
-### Interval
+### Generator
 
-Intervals occasionally emit a command, event, or message. Some operate on regular intervals, cron or time expressions,
-while others respond to external stimuli.
+Generators consume ticks from an interval and emit commands, events, or messages. Intervals can be driven by clock
+signals, cron jobs, or scripts.
 
 ### Listener
 
