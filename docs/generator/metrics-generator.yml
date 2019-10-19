@@ -1,10 +1,7 @@
 metadata:
-  kind: command-interval
-  name: test-interval-cmd
+  kind: metrics-generator
+  name: test-metrics
 data:
-  defaultCommand:
-    noun: time
-    verb: get
   defaultContext:
     channel:
       id: "440715367019446274"
@@ -15,4 +12,4 @@ data:
     kind: discord-listener
     name: test-discord
   frequency:
-    time: 30 seconds
+    time: 15 seconds

@@ -8,7 +8,7 @@ data:
   controllers:
     - {}
   endpoints:
-  intervals:
+  generators:
   listeners:
   locale: []
   logger:
@@ -20,7 +20,7 @@ data:
   parsers: []
   process:
     pid:
-      file: ./out/isolex.pid
+      file: ./out/test-invalid.pid
   services:
     timeout: 5000
   storage:

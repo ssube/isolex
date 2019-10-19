@@ -2,7 +2,7 @@
 
 The command interval creates and sends a new message with the given body and type.
 
-An example message interval is defined in [this config fragment](./message-interval.yml).
+An example message interval is defined in [this config fragment](./message-generator.yml).
 
 ## Config
 

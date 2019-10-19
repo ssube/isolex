@@ -29,8 +29,8 @@ data:
     - !include ../docs/controller/user-controller.yml
   endpoints:
     - !include ../docs/endpoint/echo-endpoint.yml
-  intervals:
-    - !include ../docs/interval/metrics-interval.yml
+  generators:
+    - !include ../docs/generator/metrics-generator.yml
   listeners:
     - !include ../docs/listener/express-listener.yml
   locale:
@@ -50,7 +50,7 @@ data:
     - !include ../docs/parser/yaml-parser.yml
   process:
     pid:
-      file: ./out/isolex.pid
+      file: ./out/test-valid.pid
   services:
     timeout: 250
   storage:

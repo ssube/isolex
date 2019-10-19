@@ -15,7 +15,7 @@ import { Controller, ControllerData } from './controller';
 import { Endpoint, EndpointData } from './endpoint';
 import { Command } from './entity/Command';
 import { Message } from './entity/Message';
-import { Interval, IntervalData } from './interval';
+import { Generator, GeneratorData } from './generator';
 import { ContextFetchOptions, Listener, ListenerData } from './listener';
 import { Locale, LocaleData } from './locale';
 import { ServiceModule } from './module/ServiceModule';
@@ -29,7 +29,7 @@ import { createServiceCounter, incrementServiceCounter } from './utils/Metrics';
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
   endpoints: Array<ServiceDefinition<EndpointData>>;
-  intervals: Array<ServiceDefinition<IntervalData>>;
+  generators: Array<ServiceDefinition<GeneratorData>>;
   listeners: Array<ServiceDefinition<ListenerData>>;
   locale: ServiceDefinition<LocaleData>;
   logger: {
@@ -68,7 +68,7 @@ export class Bot extends BaseService<BotData> implements Service {
   // services
   protected controllers: Array<Controller>;
   protected endpoints: Array<Endpoint>;
-  protected intervals: Array<Interval>;
+  protected generators: Array<Generator>;
   protected listeners: Array<Listener>;
   protected parsers: Array<Parser>;
   protected services: ServiceModule;
@@ -91,7 +91,7 @@ export class Bot extends BaseService<BotData> implements Service {
     // set up deps
     this.controllers = [];
     this.endpoints = [];
-    this.intervals = [];
+    this.generators = [];
     this.listeners = [];
     this.parsers = [];
 
@@ -330,9 +330,9 @@ export class Bot extends BaseService<BotData> implements Service {
       this.endpoints.push(await this.services.createService<Endpoint, EndpointData>(data));
     }
 
-    this.logger.info('setting up intervals');
-    for (const data of this.data.intervals) {
-      this.intervals.push(await this.services.createService<Interval, IntervalData>(data));
+    this.logger.info('setting up generators');
+    for (const data of this.data.generators) {
+      this.generators.push(await this.services.createService<Generator, GeneratorData>(data));
     }
 
     this.logger.info('setting up listeners');

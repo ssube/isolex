@@ -25,15 +25,7 @@ step, filters may drop events.
 
 That flow is:
 
-```none
-listener -> <message> -> parser -> <command> -> controller
-                                                    |
-                                                    v
-                                                side effects
-                                                    |
-                                                    |
-listener <------------------------ <message> <------/
-```
+![service relation and entity flow](./arch.svg)
 
 ## Incoming Messages
 

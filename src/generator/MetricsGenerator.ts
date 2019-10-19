@@ -1,25 +1,19 @@
 import { defaultTo, isNil } from 'lodash';
 import { Inject } from 'noicejs';
-import { collectDefaultMetrics, DefaultMetricsCollectorConfiguration, Registry } from 'prom-client';
+import { collectDefaultMetrics, Registry } from 'prom-client';
 
-import { IntervalData } from '.';
+import { GeneratorData } from '.';
 import { INJECT_METRICS } from '../BaseService';
 import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { mustExist } from '../utils';
-import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
+import { MetricsInterval } from '../utils/interval/MetricsInterval';
+import { Collector } from '../utils/Metrics';
+import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
 
-export type MetricsIntervalData = IntervalData;
-
-export interface CollectorOptions extends DefaultMetricsCollectorConfiguration {
-  timeout: number;
-  register: Registry;
-}
-
-export type Collector = (options: CollectorOptions) => ReturnType<typeof setInterval>;
-
-export interface MetricsIntervalOptions extends BaseIntervalOptions<MetricsIntervalData> {
+export type MetricsGeneratorData = GeneratorData;
+export interface MetricsIntervalOptions extends BaseIntervalOptions<MetricsGeneratorData> {
   collector?: Collector;
 }
 
@@ -27,12 +21,12 @@ export interface MetricsIntervalOptions extends BaseIntervalOptions<MetricsInter
  * This interval is responsible for starting collection of default metrics, clearing the registry, etc.
  */
 @Inject(INJECT_METRICS)
-export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
+export class MetricsGenerator extends BaseGenerator<MetricsGeneratorData> {
   protected readonly collector: Collector;
   protected readonly metrics: Registry;
 
   constructor(options: MetricsIntervalOptions) {
-    super(options, 'isolex#/definitions/service-interval-metrics');
+    super(options, 'isolex#/definitions/service-generator-metrics');
 
     // tslint:disable-next-line:deprecation
     this.collector = defaultTo(options.collector, collectDefaultMetrics);
@@ -44,11 +38,14 @@ export class MetricsInterval extends BaseInterval<MetricsIntervalData> {
       throw new InvalidArgumentError('metrics interval requires a time frequency');
     }
 
-    const timeout = this.math.unit(this.data.frequency.time).toNumber('millisecond');
-    this.logger.debug({ timeout }, 'starting default metrics interval');
-    this.interval = this.collector({
-      register: this.metrics,
-      timeout,
+    const time = this.math.unit(this.data.frequency.time).toNumber('millisecond').toString();
+    this.logger.debug({ time }, 'starting default metrics interval');
+    this.interval = await this.container.create(MetricsInterval, {
+      collector: this.collector,
+      freq: {
+        time,
+      },
+      registry: this.metrics,
     });
   }
 

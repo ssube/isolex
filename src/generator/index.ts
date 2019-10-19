@@ -2,19 +2,15 @@ import { BotServiceData } from '../BotService';
 import { Context, ContextOptions } from '../entity/Context';
 import { Tick } from '../entity/Tick';
 import { Service, ServiceMetadata } from '../Service';
+import { IntervalFrequency } from '../utils/interval';
 
-export interface IntervalFrequency {
-  cron?: string;
-  time?: string;
-}
-
-export interface IntervalData extends BotServiceData {
+export interface GeneratorData extends BotServiceData {
   defaultContext: ContextOptions;
   defaultTarget: ServiceMetadata;
   frequency: IntervalFrequency;
 }
 
-export interface Interval extends Service {
+export interface Generator extends Service {
   /**
    * Based on the results of the last job, run a new one.
    */

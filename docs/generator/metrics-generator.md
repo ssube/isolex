@@ -2,7 +2,7 @@
 
 The metrics interval collects Prometheus metrics about Node and the system, such as CPU time spent and memory pressure.
 
-An example metrics interval is defined in [this config fragment](./metrics-interval.yml).
+An example metrics interval is defined in [this config fragment](./metrics-generator.yml).
 
 ## Config
 

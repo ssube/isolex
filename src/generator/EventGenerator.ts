@@ -1,16 +1,16 @@
-import { IntervalData } from '.';
+import { GeneratorData } from '.';
 import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
 import { ServiceEvent, ServiceMetadata } from '../Service';
-import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
+import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
 
-export interface EventIntervalData extends IntervalData {
+export interface EventGeneratorData extends GeneratorData {
   services: Array<ServiceMetadata>;
 }
 
-export class EventInterval extends BaseInterval<EventIntervalData> {
-  constructor(options: BaseIntervalOptions<EventIntervalData>) {
-    super(options, 'isolex#/definitions/service-interval-event');
+export class EventGenerator extends BaseGenerator<EventGeneratorData> {
+  constructor(options: BaseIntervalOptions<EventGeneratorData>) {
+    super(options, 'isolex#/definitions/service-generator-event');
   }
 
   public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {

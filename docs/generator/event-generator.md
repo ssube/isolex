@@ -2,7 +2,7 @@
 
 The event interval notifies services of a tick event.
 
-An example event interval is defined in [this config fragment](./event-interval.yml).
+An example event interval is defined in [this config fragment](./event-generator.yml).
 
 ## Config
 

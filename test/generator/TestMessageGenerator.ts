@@ -3,20 +3,21 @@ import { ineeda } from 'ineeda';
 import { BaseError } from 'noicejs';
 import { spy } from 'sinon';
 
-import { INJECT_CLOCK, INJECT_SCHEMA } from '../../src/BaseService';
+import { INJECT_CLOCK } from '../../src/BaseService';
 import { Bot } from '../../src/Bot';
 import { INJECT_BOT } from '../../src/BotService';
 import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
 import { NotInitializedError } from '../../src/error/NotInitializedError';
-import { MessageInterval } from '../../src/interval/MessageInterval';
+import { MessageGenerator } from '../../src/generator/MessageGenerator';
+import { BotModule } from '../../src/module/BotModule';
 import { TransformModule } from '../../src/module/TransformModule';
-import { Schema } from '../../src/schema';
 import { Service } from '../../src/Service';
 import { Clock } from '../../src/utils/Clock';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestLogger } from '../helpers/logger';
 
 const TEST_SVC = 'some-service';
 const TEST_SVC2 = 'test-service';
@@ -71,20 +72,22 @@ const TEST_CONFIG = {
   },
 };
 
-describeLeaks('message interval', async () => {
+describeLeaks('message generator', async () => {
   itLeaks('should notify target services', async () => {
     const sendMessage = spy();
     const bot = ineeda<Bot>({
       sendMessage,
     });
-    const { container, services } = await createServiceContainer(new TransformModule());
-    services.bind(INJECT_SCHEMA).toInstance(new Schema());
-    services.bind(INJECT_BOT).toInstance(bot);
+    const botModule = new BotModule({
+      logger: getTestLogger(),
+    });
+    botModule.setBot(bot);
+    const { container, services } = await createServiceContainer(new TransformModule(), botModule);
     services.addService(ineeda<Service>({
       kind: TEST_SVC2,
       name: TEST_TARGET,
     }));
-    const interval = await createService(container, MessageInterval, {
+    const interval = await createService(container, MessageGenerator, {
       [INJECT_BOT]: bot,
       [INJECT_CLOCK]: ineeda<Clock>({
         setInterval() { /* noop */ },
@@ -93,6 +96,7 @@ describeLeaks('message interval', async () => {
     });
     await interval.start();
     const status = await interval.tick(ineeda<Context>(), ineeda<Tick>({}));
+    await interval.stop();
     expect(status).to.equal(0);
     expect(sendMessage).to.have.callCount(1);
   });
@@ -102,14 +106,16 @@ describeLeaks('message interval', async () => {
     const bot = ineeda<Bot>({
       sendMessage,
     });
-    const { container, services } = await createServiceContainer(new TransformModule());
-    services.bind(INJECT_SCHEMA).toInstance(new Schema());
-    services.bind(INJECT_BOT).toInstance(bot);
+    const botModule = new BotModule({
+      logger: getTestLogger(),
+    });
+    botModule.setBot(bot);
+    const { container, services } = await createServiceContainer(new TransformModule(), botModule);
     services.addService(ineeda<Service>({
       kind: TEST_SVC2,
       name: TEST_TARGET,
     }));
-    const interval = await createService(container, MessageInterval, {
+    const interval = await createService(container, MessageGenerator, {
       [INJECT_BOT]: bot,
       [INJECT_CLOCK]: ineeda<Clock>({
         setInterval() { /* noop */ },
@@ -123,7 +129,8 @@ describeLeaks('message interval', async () => {
     await interval.start();
 
     expect(sendMessage).to.have.callCount(0);
-    return expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(BaseError);
+    await expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(BaseError);
+    await interval.stop();
   });
 
   itLeaks('should throw if not started', async () => {
@@ -131,14 +138,16 @@ describeLeaks('message interval', async () => {
     const bot = ineeda<Bot>({
       sendMessage,
     });
-    const { container, services } = await createServiceContainer(new TransformModule());
-    services.bind(INJECT_SCHEMA).toInstance(new Schema());
-    services.bind(INJECT_BOT).toInstance(bot);
+    const botModule = new BotModule({
+      logger: getTestLogger(),
+    });
+    botModule.setBot(bot);
+    const { container, services } = await createServiceContainer(new TransformModule(), botModule);
     services.addService(ineeda<Service>({
       kind: TEST_SVC2,
       name: TEST_TARGET,
     }));
-    const interval = await createService(container, MessageInterval, {
+    const interval = await createService(container, MessageGenerator, {
       [INJECT_BOT]: bot,
       [INJECT_CLOCK]: ineeda<Clock>({
         setInterval() { /* noop */ },
@@ -153,6 +162,6 @@ describeLeaks('message interval', async () => {
     await expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(NotInitializedError);
     await interval.start();
     await interval.stop();
-    await expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(NotInitializedError);
+    return expect(interval.tick(ineeda<Context>(), ineeda<Tick>({}))).to.eventually.be.rejectedWith(NotInitializedError);
   });
 });

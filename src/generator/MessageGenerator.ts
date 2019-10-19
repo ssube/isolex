@@ -1,26 +1,26 @@
 import { isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
-import { IntervalData } from '.';
+import { GeneratorData } from '.';
 import { Context } from '../entity/Context';
 import { Message, MessageEntityOptions } from '../entity/Message';
 import { Tick } from '../entity/Tick';
 import { NotInitializedError } from '../error/NotInitializedError';
 import { ServiceDefinition } from '../Service';
 import { applyTransforms, Transform, TransformData } from '../transform';
-import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
+import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
 
-export interface MessageIntervalData extends IntervalData {
+export interface MessageGeneratorData extends GeneratorData {
   defaultMessage: MessageEntityOptions;
   transforms: Array<ServiceDefinition<TransformData>>;
 }
 
-export class MessageInterval extends BaseInterval<MessageIntervalData> {
+export class MessageGenerator extends BaseGenerator<MessageGeneratorData> {
   protected started: boolean;
   protected readonly transforms: Array<Transform>;
 
-  constructor(options: BaseIntervalOptions<MessageIntervalData>) {
-    super(options, 'isolex#/definitions/service-interval-message');
+  constructor(options: BaseIntervalOptions<MessageGeneratorData>) {
+    super(options, 'isolex#/definitions/service-generator-message');
 
     this.started = false;
     this.transforms = [];

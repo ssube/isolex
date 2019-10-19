@@ -46,7 +46,7 @@ spec:
             - name: config-endpoint
               mountPath: /config/endpoint
               readOnly: true
-            - name: config-interval
+            - name: config-generator
               mountPath: /config/interval
               readOnly: true
             - name: config-listener
@@ -69,9 +69,9 @@ spec:
         - name: config-endpoint
           configMap:
             name: config-endpoint
-        - name: config-interval
+        - name: config-generator
           configMap:
-            name: config-interval
+            name: config-generator
         - name: config-listener
           configMap:
             name: config-listener

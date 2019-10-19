@@ -1,6 +1,6 @@
 metadata:
-  kind: message-interval
-  name: test-interval-msg
+  kind: message-generator
+  name: test-generator-msg
 data:
   defaultContext:
     channel:
@@ -19,14 +19,14 @@ data:
   transforms:
     - metadata:
         kind: template-transform
-        name: test-interval-msg-template
+        name: test-generator-msg-template
       data:
         templates:
           body: >
             Hello from {{ data.next.createdAt }}!
     - metadata:
         kind: flatten-transform
-        name: test-interval-msg-flatten
+        name: test-generator-msg-flatten
       data:
         deep: false
         join: " "

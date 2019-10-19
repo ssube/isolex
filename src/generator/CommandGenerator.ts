@@ -1,16 +1,16 @@
-import { IntervalData } from '.';
+import { GeneratorData } from '.';
 import { Command, CommandOptions } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
-import { BaseInterval, BaseIntervalOptions } from './BaseInterval';
+import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
 
-export interface CommandIntervalData extends IntervalData {
+export interface CommandGeneratorData extends GeneratorData {
   defaultCommand: CommandOptions;
 }
 
-export class CommandInterval extends BaseInterval<CommandIntervalData> {
-  constructor(options: BaseIntervalOptions<CommandIntervalData>) {
-    super(options, 'isolex#/definitions/service-interval-command');
+export class CommandGenerator extends BaseGenerator<CommandGeneratorData> {
+  constructor(options: BaseIntervalOptions<CommandGeneratorData>) {
+    super(options, 'isolex#/definitions/service-generator-command');
   }
 
   public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {

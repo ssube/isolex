@@ -2,26 +2,32 @@ import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { spy } from 'sinon';
 
+import { Bot } from '../../src/Bot';
+import { INJECT_BOT } from '../../src/BotService';
+import { CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
-import { EventInterval } from '../../src/interval/EventInterval';
-import { Service } from '../../src/Service';
+import { CommandGenerator } from '../../src/generator/CommandGenerator';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_SVC = 'some-service';
 
-describeLeaks('event interval', async () => {
+describeLeaks('command generator', async () => {
   itLeaks('should notify target services', async () => {
-    const notify = spy();
-    const { container, services } = await createServiceContainer();
-    services.addService(ineeda<Service>({
-      kind: TEST_SVC,
-      name: TEST_SVC,
-      notify,
-    }));
-    const interval = await createService(container, EventInterval, {
+    const { container } = await createServiceContainer();
+    const executeCommand = spy();
+    const interval = await createService(container, CommandGenerator, {
+      [INJECT_BOT]: ineeda<Bot>({
+        executeCommand,
+      }),
       data: {
+        defaultCommand: {
+          data: {},
+          labels: {},
+          noun: 'test',
+          verb: CommandVerb.Create,
+        },
         defaultContext: {
           channel: {
             id: '',
@@ -45,12 +51,12 @@ describeLeaks('event interval', async () => {
         strict: false,
       },
       metadata: {
-        kind: 'event-endpoint',
+        kind: 'command-endpoint',
         name: 'test-endpoint'
       },
     });
     const status = await interval.tick(ineeda<Context>(), ineeda<Tick>({}));
     expect(status).to.equal(0);
-    expect(notify).to.have.callCount(1);
+    expect(executeCommand).to.have.callCount(1);
   });
 });
