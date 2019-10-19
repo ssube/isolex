@@ -6,7 +6,7 @@ import { MessageGenerator } from '../generator/MessageGenerator';
 import { MetricsGenerator } from '../generator/MetricsGenerator';
 import { BaseModule } from './BaseModule';
 
-export class IntervalModule extends BaseModule {
+export class GeneratorModule extends BaseModule {
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 

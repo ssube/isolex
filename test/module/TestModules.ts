@@ -6,7 +6,7 @@ import { ControllerModule } from '../../src/module/ControllerModule';
 import { EndpointModule } from '../../src/module/EndpointModule';
 import { EntityModule } from '../../src/module/EntityModule';
 import { FilterModule } from '../../src/module/FilterModule';
-import { IntervalModule } from '../../src/module/IntervalModule';
+import { GeneratorModule } from '../../src/module/GeneratorModule';
 import { ListenerModule } from '../../src/module/ListenerModule';
 import { MigrationModule } from '../../src/module/MigrationModule';
 import { ParserModule } from '../../src/module/ParserModule';
@@ -20,7 +20,7 @@ const MODULE_TYPES = [
   EndpointModule,
   EntityModule,
   FilterModule,
-  IntervalModule,
+  GeneratorModule,
   ListenerModule,
   MigrationModule,
   ParserModule,

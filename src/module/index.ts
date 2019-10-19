@@ -6,7 +6,7 @@ import { ControllerModule } from './ControllerModule';
 import { EndpointModule } from './EndpointModule';
 import { EntityModule } from './EntityModule';
 import { FilterModule } from './FilterModule';
-import { IntervalModule } from './IntervalModule';
+import { GeneratorModule } from './GeneratorModule';
 import { ListenerModule } from './ListenerModule';
 import { MigrationModule } from './MigrationModule';
 import { ParserModule } from './ParserModule';
@@ -17,7 +17,7 @@ const MAIN_MODULES = [
   EndpointModule,
   EntityModule,
   FilterModule,
-  IntervalModule,
+  GeneratorModule,
   ListenerModule,
   MigrationModule,
   ParserModule,
