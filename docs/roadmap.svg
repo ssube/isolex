@@ -425,7 +425,7 @@
         <text x="36" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">PR Controller&lt;br&gt;#72&lt;br&gt;</text>
       </switch>
     </g>
-    <rect x="800" y="160" width="120" height="60" fill="#a9c4eb" stroke="#000000" pointer-events="none"/>
+    <rect x="800" y="160" width="120" height="60" fill="#ffe599" stroke="#000000" pointer-events="none"/>
     <g transform="translate(838.5,169.5)">
       <switch>
         <foreignObject style="overflow:visible;" pointer-events="none" width="42" height="40" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
@@ -436,7 +436,7 @@
         <text x="21" y="26" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">[Not supported by viewer]</text>
       </switch>
     </g>
-    <rect x="800" y="240" width="120" height="60" fill="#ffe599" stroke="#000000" pointer-events="none"/>
+    <rect x="800" y="240" width="120" height="60" fill="#97d077" stroke="#000000" pointer-events="none"/>
     <g transform="translate(838.5,249.5)">
       <switch>
         <foreignObject style="overflow:visible;" pointer-events="none" width="42" height="40" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
@@ -624,14 +624,14 @@
       </switch>
     </g>
     <rect x="800" y="1120" width="120" height="60" fill="#a9c4eb" stroke="#000000" pointer-events="none"/>
-    <g transform="translate(816.5,1143.5)">
+    <g transform="translate(815.5,1136.5)">
       <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="86" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 88px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Script Controller</div>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="88" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 90px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Script Generator<br/>#554</div>
           </div>
         </foreignObject>
-        <text x="43" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Script Controller</text>
+        <text x="44" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Script Generator&lt;br&gt;#554</text>
       </switch>
     </g>
   </g>
