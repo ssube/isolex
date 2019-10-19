@@ -1,4 +1,7 @@
-import { BaseOptions } from 'noicejs';
+import { BaseOptions, Inject, Logger } from 'noicejs';
+
+import { mustExist } from '..';
+import { INJECT_LOGGER } from '../../BaseService';
 
 export type IntervalFn = () => Promise<void>;
 
@@ -8,21 +11,24 @@ export interface IntervalFrequency {
 }
 
 export interface IntervalOptions extends BaseOptions {
+  [INJECT_LOGGER]: Logger;
   fn: IntervalFn;
   freq: IntervalFrequency;
 }
 
+@Inject(INJECT_LOGGER)
 export abstract class Interval {
   protected readonly fn: IntervalFn;
+  protected readonly logger: Logger;
 
   constructor(options: IntervalOptions) {
     this.fn = options.fn;
+    this.logger = mustExist(options[INJECT_LOGGER]);
   }
 
   public tick(): void {
     this.fn().catch((err) => {
-      // tslint:disable-next-line:no-console
-      console.error(err, 'interval error, needs a logger');
+      this.logger.error(err, 'interval tick error');
     });
   }
 
