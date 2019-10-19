@@ -1,6 +1,8 @@
 import { expect } from 'chai';
+import { ineeda } from 'ineeda';
 import { defaultTo } from 'lodash';
-import { LogLevel } from 'noicejs';
+import { BaseError, LogLevel } from 'noicejs';
+import { stub } from 'sinon';
 
 import { createBot, CreateOptions, ExitStatus, main, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
@@ -189,7 +191,17 @@ describeLeaks('app bot stuff', async () => {
       .and.been.calledWith(ServiceEvent.Start)
       .and.been.calledWith(ServiceEvent.Reload)
       .and.been.calledWith(ServiceEvent.Stop);
+  });
 
+  itLeaks('should handle errors starting the bot', async () => {
+    const start = stub().throws(BaseError);
+    const bot = ineeda<Bot>({
+      start,
+    });
+    return expect(runBot({
+      config: TEST_CONFIG,
+      logger: getTestLogger(),
+    }, bot)).to.eventually.equal(ExitStatus.Error);
   });
 });
 
