@@ -111,58 +111,25 @@
     </g>
     <path d="M 220 500 L 220 533.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 220 538.88 L 216.5 531.88 L 220 533.63 L 223.5 531.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <path d="M 190 440 L 250 440 L 280 470 L 250 500 L 190 500 L 160 470 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(191.5,463.5)">
-      <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="56" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 56px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Command</div>
-          </div>
-        </foreignObject>
-        <text x="28" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Command</text>
-      </switch>
-    </g>
     <path d="M 380 500 L 380 533.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 380 538.88 L 376.5 531.88 L 380 533.63 L 383.5 531.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <path d="M 350 440 L 410 440 L 440 470 L 410 500 L 350 500 L 320 470 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(355.5,456.5)">
-      <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="48" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 50px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Incoming<br/>Message</div>
-          </div>
-        </foreignObject>
-        <text x="24" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Incoming&lt;br&gt;Message</text>
-      </switch>
-    </g>
     <path d="M 540 500 L 540 533.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 540 538.88 L 536.5 531.88 L 540 533.63 L 543.5 531.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <path d="M 510 440 L 570 440 L 600 470 L 570 500 L 510 500 L 480 470 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(515.5,456.5)">
-      <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="48" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 50px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Outgoing<br/>Message</div>
-          </div>
-        </foreignObject>
-        <text x="24" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Outgoing&lt;br&gt;Message</text>
-      </switch>
-    </g>
     <path d="M 380 400 L 380 420 L 220 420 L 220 433.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 220 438.88 L 216.5 431.88 L 220 433.63 L 223.5 431.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 380 400 L 380 433.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 380 438.88 L 376.5 431.88 L 380 433.63 L 383.5 431.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 380 400 L 380 420 L 540 420 L 540 433.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
     <path d="M 540 438.88 L 536.5 431.88 L 540 433.63 L 543.5 431.88 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <path d="M 380 340 L 410 370 L 380 400 L 350 370 Z" fill="#97d077" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(370.5,363.5)">
+    <path d="M 380 340 L 410 370 L 380 400 L 350 370 Z" fill="#97d077" stroke="#000000" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(369.5,363.5)">
       <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="18" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 20px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+        <foreignObject style="overflow:visible;" pointer-events="none" width="19" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 19px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
             <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Bot</div>
           </div>
         </foreignObject>
-        <text x="9" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Bot</text>
+        <text x="10" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Bot</text>
       </switch>
     </g>
     <path d="M 380 300 L 380 333.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
@@ -223,28 +190,6 @@
         <text x="27" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Transform</text>
       </switch>
     </g>
-    <path d="M 190 840 L 250 840 L 280 870 L 250 900 L 190 900 L 160 870 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(191.5,856.5)">
-      <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="56" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 56px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Command<br/>Message</div>
-          </div>
-        </foreignObject>
-        <text x="28" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Command&lt;br&gt;Message</text>
-      </switch>
-    </g>
-    <path d="M 350 840 L 410 840 L 440 870 L 410 900 L 350 900 L 320 870 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(351.5,863.5)">
-      <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="56" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 56px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Command</div>
-          </div>
-        </foreignObject>
-        <text x="28" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Command</text>
-      </switch>
-    </g>
     <ellipse cx="540" cy="870" rx="20" ry="20" fill="#f19c99" stroke="#000000" pointer-events="none"/>
     <g transform="translate(526.5,856.5)">
       <switch>
@@ -292,17 +237,6 @@
           </div>
         </foreignObject>
         <text x="17" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Config</text>
-      </switch>
-    </g>
-    <path d="M 190 0 L 250 0 L 280 30 L 250 60 L 190 60 L 160 30 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
-    <g transform="translate(204.5,23.5)">
-      <switch>
-        <foreignObject style="overflow:visible;" pointer-events="none" width="30" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 32px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Entity</div>
-          </div>
-        </foreignObject>
-        <text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Entity</text>
       </switch>
     </g>
     <rect x="320" y="0" width="120" height="60" fill="#ffe599" stroke="#000000" pointer-events="none"/>
@@ -364,6 +298,74 @@
           </div>
         </foreignObject>
         <text x="10" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">API</text>
+      </switch>
+    </g>
+    <path d="M 160 60 L 184 0 L 280 0 L 256 60 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(204.5,23.5)">
+      <switch>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="30" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 32px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">
+              <span style="white-space: normal">Entity</span>
+            </div>
+          </div>
+        </foreignObject>
+        <text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">[Not supported by viewer]</text>
+      </switch>
+    </g>
+    <path d="M 160 500 L 184 440 L 280 440 L 256 500 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(191.5,463.5)">
+      <switch>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="56" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 56px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Command</div>
+          </div>
+        </foreignObject>
+        <text x="28" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Command</text>
+      </switch>
+    </g>
+    <path d="M 320 500 L 344 440 L 440 440 L 416 500 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(355.5,456.5)">
+      <switch>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="48" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 50px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Incoming<br/>Message</div>
+          </div>
+        </foreignObject>
+        <text x="24" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Incoming&lt;br&gt;Message</text>
+      </switch>
+    </g>
+    <path d="M 480 500 L 504 440 L 600 440 L 576 500 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(515.5,456.5)">
+      <switch>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="48" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 50px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Outgoing<br/>Message</div>
+          </div>
+        </foreignObject>
+        <text x="24" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Outgoing&lt;br&gt;Message</text>
+      </switch>
+    </g>
+    <path d="M 160 900 L 184 840 L 280 840 L 256 900 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(191.5,856.5)">
+      <switch>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="56" height="26" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 56px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Command<br/>Message</div>
+          </div>
+        </foreignObject>
+        <text x="28" y="19" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Command&lt;br&gt;Message</text>
+      </switch>
+    </g>
+    <path d="M 320 900 L 344 840 L 440 840 L 416 900 Z" fill="#e1d5e7" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+    <g transform="translate(351.5,863.5)">
+      <switch>
+        <foreignObject style="overflow:visible;" pointer-events="none" width="56" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 56px; white-space: nowrap; overflow-wrap: normal; text-align: center;">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Command</div>
+          </div>
+        </foreignObject>
+        <text x="28" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Command</text>
       </switch>
     </g>
   </g>
