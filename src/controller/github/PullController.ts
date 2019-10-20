@@ -9,16 +9,16 @@ import { BaseController, BaseControllerOptions, ErrorReplyType } from '../BaseCo
 
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
-export interface GithubPRControllerData extends ControllerData {
+export interface GithubPullControllerData extends ControllerData {
   client: GithubClientData;
 }
 
-export class GithubPRController extends BaseController<GithubPRControllerData> implements Controller {
+export class GithubPullController extends BaseController<GithubPullControllerData> implements Controller {
   protected client?: GithubClient;
   protected readonly container: Container;
 
-  constructor(options: BaseControllerOptions<GithubPRControllerData>) {
-    super(options, 'isolex#/definitions/service-controller-github-pr', [NOUN_PULL_REQUEST]);
+  constructor(options: BaseControllerOptions<GithubPullControllerData>) {
+    super(options, 'isolex#/definitions/service-controller-github-pull', [NOUN_PULL_REQUEST]);
     this.container = options.container;
   }
 

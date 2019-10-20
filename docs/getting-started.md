@@ -173,7 +173,7 @@ To list available nouns and the controllers that might be able to handle them:
 > bot-controller:default-bot: bot-noun
 > completion-controller:default-completion: fragment
 > dice-controller:test-dice: roll
-> github-pr-controller:test-pr: github-pull-request
+> github-pull-controller:test-pull-controller: github-pull-request
 > gitlab-ci-controller:test-ci: gitlab-ci-job
 > gitlab-ci-controller:test-ci: gitlab-ci-pipeline
 > kubernetes-apps-controller:test-k8s-apps: kubernetes-daemonset

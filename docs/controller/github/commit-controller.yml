@@ -1,0 +1,14 @@
+metadata:
+  kind: github-commit-controller
+  name: test-commit-controller
+data:
+  client:
+    agent: ssube/isolex/controller/github/commit
+    app:
+      id: !env ISOLEX_GITHUB_APP_ID
+      key: !env ISOLEX_GITHUB_APP_KEY
+    installation:
+      id: !env ISOLEX_GITHUB_APP_INSTALLATION
+
+  filters: []
+  transforms: []
