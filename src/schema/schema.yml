@@ -333,6 +333,16 @@ definitions:
   service-controller-bot:
     $ref: "#/definitions/service-controller"
 
+  service-controller-command:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        additionalProperties: true
+        required: [defaultCommand]
+        properties:
+          defaultCommand:
+            $ref: "#/definitions/entity-command"
+
   service-controller-completion:
     allOf:
       - $ref: "#/definitions/service-controller"
