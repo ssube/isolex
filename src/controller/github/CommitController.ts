@@ -3,8 +3,10 @@ import { Container } from 'noicejs';
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';
 import { Command, CommandVerb } from '../../entity/Command';
 import { Context } from '../../entity/Context';
+import { applyTransforms, extractBody } from '../../transform';
 import { mustExist } from '../../utils';
 import { GithubClient, GithubClientData } from '../../utils/github';
+import { TYPE_JSON } from '../../utils/Mime';
 import { BaseController, BaseControllerOptions } from '../BaseController';
 
 export const NOUN_COMMIT = 'github-commit';
@@ -18,7 +20,7 @@ export class GithubCommitController extends BaseController<GithubCommitControlle
   protected readonly container: Container;
 
   constructor(options: BaseControllerOptions<GithubCommitControllerData>) {
-    super(options, 'isolex#/definitions/service-controller-github-commit', []);
+    super(options, 'isolex#/definitions/service-controller-github-commit', [NOUN_COMMIT]);
     this.container = options.container;
   }
 
@@ -50,10 +52,11 @@ export class GithubCommitController extends BaseController<GithubCommitControlle
     });
 
     const [checks, status] = await Promise.all([checkPromise, statusPromise]);
-    const txd = JSON.stringify({
-      checks,
-      status,
+    const txd = await applyTransforms(this.transforms, cmd, TYPE_JSON, {
+      checks: checks.data,
+      status: status.data,
     });
-    return this.reply(ctx, txd);
+    const body = extractBody(txd);
+    return this.reply(ctx, body);
   }
 }
