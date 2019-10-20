@@ -1,3 +1,6 @@
+import { isString } from 'lodash';
+import { BaseError } from 'noicejs';
+
 import { BotServiceData } from '../BotService';
 import { FilterData, FilterValue } from '../filter';
 import { Service, ServiceDefinition } from '../Service';
@@ -40,4 +43,17 @@ export async function applyTransforms(
   }
 
   return makeDict(output);
+}
+
+export function extractBody(data: TransformOutput): string {
+  if (!Array.isArray(data.body)) {
+    throw new BaseError('final transform did not return body array');
+  }
+
+  const [body] = data.body;
+  if (!isString(body)) {
+    throw new BaseError('final transform did not return a string');
+  }
+
+  return body;
 }

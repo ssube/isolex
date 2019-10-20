@@ -17,8 +17,10 @@ data:
   controllers:
     - !include ../docs/controller/account-controller.yml
     - !include ../docs/controller/bot-controller.yml
+    - !include ../docs/controller/command-controller.yml
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/dice-controller.yml
+    - !include ../docs/controller/echo-controller.yml
     - !include ../docs/controller/github/pr-controller.yml
     - !include ../docs/controller/gitlab/ci-controller.yml
     - !include ../docs/controller/gitlab/endpoint/push-controller.yml
@@ -35,7 +37,6 @@ data:
     - !include ../docs/controller/user-controller.yml
     - !include ../docs/controller/weather-controller-owm.yml
   endpoints:
-    # !include ../docs/endpoint/debug-endpoint.yml
     - !include ../docs/endpoint/echo-endpoint.yml
     - !include ../docs/endpoint/github-endpoint.yml
     - !include ../docs/endpoint/gitlab-endpoint.yml

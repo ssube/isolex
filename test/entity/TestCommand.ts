@@ -39,4 +39,41 @@ describeLeaks('command', async () => {
 
     expect(cmd.get('test')).to.deep.equal(['1']);
   });
+
+  itLeaks('should convert itself to JSON', async () => {
+    const cmd = new Command({
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Create,
+    });
+    const json = cmd.toJSON();
+
+    expect(json).to.have.property('data');
+    expect(json).to.have.property('labels');
+    expect(json).to.have.property('noun');
+    expect(json).to.have.property('verb');
+  });
+
+  itLeaks('should convert its context to JSON', async () => {
+    const cmd = new Command({
+      context: new Context({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        name: '',
+        uid: '',
+      }),
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Create,
+    });
+    const json = cmd.toJSON();
+
+    expect(json).to.have.property('context');
+    expect(json).to.have.deep.property('data', []);
+    expect(json).to.have.deep.property('labels', []);
+  });
 });

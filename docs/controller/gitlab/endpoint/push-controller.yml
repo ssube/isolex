@@ -9,6 +9,20 @@ data:
     id: !env ISOLEX_SLACK_CHANNEL_ID
     thread: ""
 
+  filters:
+    - metadata:
+        kind: command-filter
+        name: endpoint-push-kind
+      data:
+        match:
+          rules:
+            - key: $.labels.hook
+              operator: any
+              values:
+                - string: build
+                - string: pipeline
+                - string: push
+ 
   transforms:
     - metadata:
         kind: template-transform
@@ -21,7 +35,7 @@ data:
             data:
               match:
                 rules:
-                  - key: labels.hook
+                  - key: $.labels.hook
                     operator: any
                     values:
                       - string: push
@@ -40,7 +54,7 @@ data:
             data:
               match:
                 rules:
-                  - key: labels.hook
+                  - key: $.labels.hook
                     operator: any
                     values:
                       - string: build
@@ -59,7 +73,7 @@ data:
             data:
               match:
                 rules:
-                  - key: labels.hook
+                  - key: $.labels.hook
                     operator: any
                     values:
                       - string: pipeline

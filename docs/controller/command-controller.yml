@@ -1,0 +1,9 @@
+metadata:
+  kind: command-controller
+  name: test-command-controller
+data:
+  defaultCommand:
+    data: {}
+    labels: {}
+    noun: echo
+    verb: create
