@@ -77,19 +77,21 @@ export class MatchRules {
         continue;
       }
 
-      switch (rule.operator) {
-        case RuleOperator.Any:
-          match = match && this.matchRuleAny(rule, value);
-          break;
-        case RuleOperator.Every:
-          match = match && this.matchRuleEvery(rule, value);
-          break;
-        default:
-          match = false;
-      }
+      match = match && this.matchRuleOperator(rule, value);
     }
 
     return match;
+  }
+
+  public matchRuleOperator(rule: MatchRule, value: string): boolean {
+    switch (rule.operator) {
+      case RuleOperator.Any:
+        return this.matchRuleAny(rule, value);
+      case RuleOperator.Every:
+        return this.matchRuleEvery(rule, value);
+      default:
+        return false;
+    }
   }
 
   public matchRuleAny(rule: MatchRule, value: string): boolean {
