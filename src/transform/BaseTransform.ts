@@ -4,6 +4,7 @@ import { Transform, TransformData } from '.';
 import { BotService, BotServiceOptions } from '../BotService';
 import { Command } from '../entity/Command';
 import { Message } from '../entity/Message';
+import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { FilterValue } from '../filter';
 import { makeDict, makeMap, pushMergeMap } from '../utils/Map';
 import { TemplateScope } from '../utils/Template';
@@ -40,5 +41,5 @@ export function entityData(entity: FilterValue): Map<string, Array<string>> {
     });
   }
 
-  throw new Error();
+  throw new InvalidArgumentError('unknown entity type');
 }

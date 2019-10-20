@@ -10,6 +10,8 @@ import { RequestFactory } from '../../../src/utils/Request';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createContainer } from '../../helpers/container';
 
+// tslint:disable:no-identical-functions
+
 const TEST_DATA: GitlabClientData = {
   root: 'https://example.com',
   token: 'super-secret',
@@ -89,7 +91,17 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should list jobs', async () => {
+  itLeaks('should list jobs for a project', async () => {
+    const { client, create } = await createClient();
+    await client.listJobs({
+      group: 'test',
+      pipeline: '',
+      project: 'test',
+    });
+    expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
+  });
+
+  itLeaks('should list jobs for a pipeline', async () => {
     const { client, create } = await createClient();
     await client.listJobs({
       group: 'test',

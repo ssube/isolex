@@ -1,8 +1,11 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
+import { Command, CommandVerb } from '../../src/entity/Command';
 import { Message } from '../../src/entity/Message';
+import { InvalidArgumentError } from '../../src/error/InvalidArgumentError';
 import { applyTransforms, Transform } from '../../src/transform';
+import { entityData } from '../../src/transform/BaseTransform';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 
@@ -76,5 +79,35 @@ describeLeaks('apply transforms helper', async () => {
 
     expect(output).to.have.property('foo');
     expect(output).not.to.have.property('bar');
+  });
+});
+
+describeLeaks('entity data helper', async () => {
+  itLeaks('should return command data', async () => {
+    const data = entityData(new Command({
+      data: {
+        body: ['test'],
+      },
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Create,
+    }));
+    expect(data.has('body')).to.equal(true);
+  });
+
+  itLeaks('should return message body', async () => {
+    const data = entityData(new Message({
+      body: 'test',
+      labels: {},
+      reactions: [],
+      type: TYPE_TEXT,
+    }));
+    expect(data.has('body')).to.equal(true);
+  });
+
+  itLeaks('should throw on unknown entities', async () => {
+    // tslint:disable:no-any
+    expect(() => entityData(3 as any)).to.throw(InvalidArgumentError);
+    expect(() => entityData('test' as any)).to.throw(InvalidArgumentError);
   });
 });

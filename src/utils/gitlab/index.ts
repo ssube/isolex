@@ -1,4 +1,3 @@
-import { isNil } from 'lodash';
 import { BaseError, BaseOptions, Inject, Logger } from 'noicejs';
 
 import { mustExist } from '..';
@@ -124,7 +123,7 @@ export class GitlabClient {
   public async listJobs(options: PipelineOptions): Promise<Array<Array<JobResult>>> {
     const projectURL = this.getProjectURL(options);
     const reqOptions = this.getRequestOptions(options);
-    if (isNil(options.pipeline)) {
+    if (options.pipeline === '') {
       return this.makeRequest<Array<Array<JobResult>>>(`${projectURL}/jobs`, reqOptions);
     } else {
       return this.makeRequest<Array<Array<JobResult>>>(`${projectURL}/pipelines/${options.pipeline}/jobs`, reqOptions);
