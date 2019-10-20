@@ -1,0 +1,16 @@
+metadata:
+  kind: echo-controller
+  name: test-echo-controller
+data:
+  defaultTarget:
+    kind: slack-listener
+    name: slack-isolex
+
+  filters: []
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: test-echo-template
+      data:
+        templates:
+          body: "{{ json this }}"

@@ -1,4 +1,4 @@
-import { isNil, isString } from 'lodash';
+import { isNil } from 'lodash';
 import { Inject, MissingValueError } from 'noicejs';
 
 import { Controller, ControllerData, getHandlerOptions, HandlerOptions } from '.';
@@ -12,7 +12,7 @@ import { Listener } from '../listener';
 import { Locale, TranslateOptions } from '../locale';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
-import { applyTransforms, Transform, TransformData } from '../transform';
+import { applyTransforms, extractBody, Transform, TransformData } from '../transform';
 import { doesExist, mustCoalesce, mustExist } from '../utils';
 import { TYPE_JSON, TYPE_TEXT } from '../utils/Mime';
 import { getMethods } from '../utils/Reflect';
@@ -151,12 +151,8 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     const result = await applyTransforms(this.transforms, cmd, TYPE_JSON, data);
     this.logger.debug({ result }, 'transformed json results');
 
-    const [body] = result.body;
-    if (isString(body)) {
-      return this.reply(mustCoalesce(ctx, cmd.context), body);
-    } else {
-      this.logger.error({ body }, 'final transform did not return a string');
-    }
+    const body = extractBody(result);
+    return this.reply(mustCoalesce(ctx, cmd.context), body);
   }
 
   protected async errorReply(ctx: Context, errCode: ErrorReplyType, msg?: string): Promise<void> {

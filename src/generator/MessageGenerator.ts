@@ -1,13 +1,10 @@
-import { isString } from 'lodash';
-import { BaseError } from 'noicejs';
-
 import { GeneratorData } from '.';
 import { Context } from '../entity/Context';
 import { Message, MessageEntityOptions } from '../entity/Message';
 import { Tick } from '../entity/Tick';
 import { NotInitializedError } from '../error/NotInitializedError';
 import { ServiceDefinition } from '../Service';
-import { applyTransforms, Transform, TransformData } from '../transform';
+import { applyTransforms, extractBody, Transform, TransformData } from '../transform';
 import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
 
 export interface MessageGeneratorData extends GeneratorData {
@@ -54,17 +51,15 @@ export class MessageGenerator extends BaseGenerator<MessageGeneratorData> {
       context,
     });
 
-    const body = await applyTransforms(this.transforms, initial, this.data.defaultMessage.type, {
+    const result = await applyTransforms(this.transforms, initial, this.data.defaultMessage.type, {
       last,
       next,
     });
-    if (!isString(body.body)) {
-      throw new BaseError('final transform did not return a string');
-    }
 
+    const body = extractBody(result);
     await this.bot.sendMessage(new Message({
       ...initial,
-      body: body.body,
+      body,
     }));
     return 0;
   }

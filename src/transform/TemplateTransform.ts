@@ -39,7 +39,11 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
       this.logger.debug({ key, scope }, 'rendering template with scope');
       const result = template.render(scope);
       this.logger.debug({ key, result }, 'rendered template with scope');
-      out.set(key, result);
+      if (Array.isArray(result)) {
+        out.set(key, result);
+      } else {
+        out.set(key, [result]);
+      }
     }
     return makeDict(out);
   }

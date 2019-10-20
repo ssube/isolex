@@ -45,6 +45,8 @@ describeLeaks('template transform', async () => {
       verb: CommandVerb.Get,
     }), TYPE_JSON, data);
 
-    expect(output).to.deep.equal(templates);
+    expect(output).to.deep.equal({
+      body: [templates.body],
+    });
   });
 });
