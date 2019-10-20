@@ -11,4 +11,20 @@ data:
       id: !env ISOLEX_GITHUB_APP_INSTALLATION
 
   filters: []
-  transforms: []
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: test-commit-template
+      data:
+        templates:
+          checks_total: "total checks: {{ checks.[0].total_count }}"
+          status_combined: "combined state: {{ status.[0].state }}"
+          status_total: "total status: {{ status.[0].total_count }}"
+    - metadata:
+        kind: flatten-transform
+        name: test-commit-flatten
+      data:
+        join: "\n"
+        keys:
+          - $.checks_total
+          - $.status_total
