@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { BaseError } from 'noicejs';
 
 import { INJECT_TEMPLATE } from '../../src/BaseService';
 import { Command, CommandVerb } from '../../src/entity/Command';
@@ -48,5 +49,39 @@ describeLeaks('template transform', async () => {
     expect(output).to.deep.equal({
       body: [templates.body],
     });
+  });
+
+  itLeaks('should throw when template does not render a string', async () => {
+    const { container } = await createServiceContainer();
+
+    const data = {
+      test: ['1'],
+    };
+    const templates = {
+      body: 'test_body',
+    };
+    const transform = await createService(container, TemplateTransform, {
+      [INJECT_TEMPLATE]: ineeda<TemplateCompiler>({
+        compile: () => ineeda<Template>({
+          render: () => [],
+        }),
+      }),
+      data: {
+        filters: [],
+        strict: true,
+        templates,
+      },
+      metadata: {
+        kind: 'template-transform',
+        name: 'test_transform',
+      },
+    });
+    return expect(transform.transform(new Command({
+      context: ineeda<Context>(),
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Get,
+    }), TYPE_JSON, data)).to.eventually.be.rejectedWith(BaseError);
   });
 });

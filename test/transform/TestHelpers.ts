@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { BaseError } from 'noicejs';
 
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Message } from '../../src/entity/Message';
 import { InvalidArgumentError } from '../../src/error/InvalidArgumentError';
-import { applyTransforms, Transform } from '../../src/transform';
+import { applyTransforms, extractBody, Transform } from '../../src/transform';
 import { entityData } from '../../src/transform/BaseTransform';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
@@ -109,5 +110,26 @@ describeLeaks('entity data helper', async () => {
     // tslint:disable:no-any
     expect(() => entityData(3 as any)).to.throw(InvalidArgumentError);
     expect(() => entityData('test' as any)).to.throw(InvalidArgumentError);
+  });
+});
+
+describeLeaks('extract body helper', async () => {
+  /* tslint:disable:no-any */
+  itLeaks('should throw if body is not an array', async () => {
+    expect(() => extractBody({
+      body: 'test' as any,
+    })).to.throw(BaseError);
+  });
+
+  itLeaks('should throw if body values are not strings', async () => {
+    expect(() => extractBody({
+      body: [1, 2, 3] as any,
+    })).to.throw(BaseError);
+  });
+
+  itLeaks('should return the body', async () => {
+    expect(extractBody({
+      body: ['test'],
+    })).to.equal('test');
   });
 });

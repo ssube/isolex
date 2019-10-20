@@ -1,4 +1,5 @@
-import { Inject } from 'noicejs';
+import { isString } from 'lodash';
+import { BaseError, Inject } from 'noicejs';
 
 import { Transform, TransformData } from '.';
 import { INJECT_TEMPLATE } from '../BaseService';
@@ -39,11 +40,10 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
       this.logger.debug({ key, scope }, 'rendering template with scope');
       const result = template.render(scope);
       this.logger.debug({ key, result }, 'rendered template with scope');
-      if (Array.isArray(result)) {
-        out.set(key, result);
-      } else {
-        out.set(key, [result]);
+      if (!isString(result)) {
+        throw new BaseError('template did not return string');
       }
+      out.set(key, [result]);
     }
     return makeDict(out);
   }
