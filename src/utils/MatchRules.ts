@@ -37,58 +37,59 @@ export class MatchRules {
     this.rules = Array.from(options.rules);
   }
 
-  public match(val: unknown): MatchResults {
+  public match(data: unknown): MatchResults {
     const results: MatchResults = {
       errors: [],
       matched: true,
     };
 
-    if (isString(val)) {
+    if (isString(data)) {
       results.matched = false;
       return results;
     }
 
     for (const rule of this.rules) {
-      const ruleValues = JSONPath({
+      const values = JSONPath({
         /* tslint:disable-next-line:no-any */
-        json: val as any,
+        json: data as any,
         path: rule.key,
       });
 
-      // no matching values should fail (#561)
-      if (ruleValues.length === 0 && rule.values.length > 0) {
+      if (!this.matchRule(rule, values)) {
         results.errors.push(rule.key);
         results.matched = false;
-        break;
-      }
-
-      for (const value of ruleValues) {
-        if (!isString(value)) {
-          results.errors.push(rule.key);
-          results.matched = false;
-          break;
-        }
-
-        if (!this.matchRule(rule, value)) {
-          results.errors.push(rule.key);
-          results.matched = false;
-          break;
-        }
       }
     }
 
     return results;
   }
 
-  public matchRule(rule: MatchRule, value: string): boolean {
-    switch (rule.operator) {
-      case RuleOperator.Any:
-        return this.matchRuleAny(rule, value);
-      case RuleOperator.Every:
-        return this.matchRuleEvery(rule, value);
-      default:
-        return false;
+  public matchRule(rule: MatchRule, values: Array<string>): boolean {
+    // no matching values should fail (#561)
+    if (values.length === 0 && rule.values.length > 0) {
+      return false;
     }
+
+    let match = true;
+    for (const value of values) {
+      if (!isString(value)) {
+        match = false;
+        continue;
+      }
+
+      switch (rule.operator) {
+        case RuleOperator.Any:
+          match = match && this.matchRuleAny(rule, value);
+          break;
+        case RuleOperator.Every:
+          match = match && this.matchRuleEvery(rule, value);
+          break;
+        default:
+          match = false;
+      }
+    }
+
+    return match;
   }
 
   public matchRuleAny(rule: MatchRule, value: string): boolean {
