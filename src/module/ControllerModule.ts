@@ -7,7 +7,8 @@ import { CompletionController } from '../controller/CompletionController';
 import { CountController } from '../controller/CountController';
 import { DiceController } from '../controller/DiceController';
 import { EchoController } from '../controller/EchoController';
-import { GithubPRController } from '../controller/github/PRController';
+import { GithubCommitController } from '../controller/github/CommitController';
+import { GithubPullController } from '../controller/github/PullController';
 import { GitlabCIController } from '../controller/gitlab/CIController';
 import { KubernetesAppsController } from '../controller/kubernetes/AppsController';
 import { KubernetesCoreController } from '../controller/kubernetes/CoreController';
@@ -49,7 +50,8 @@ export class ControllerModule extends BaseModule {
     this.bindService(WeatherController);
 
     // github controllers
-    this.bindService(GithubPRController);
+    this.bindService(GithubCommitController);
+    this.bindService(GithubPullController);
 
     // gitlab controllers
     this.bindService(GitlabCIController);

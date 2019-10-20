@@ -397,7 +397,16 @@ definitions:
           forceChannel:
             $ref: "#/definitions/entity-context-channel"
 
-  service-controller-github-pr:
+  service-controller-github-commit:
+    allOf:
+      - $ref: "#/definitions/service-controller"
+      - type: object
+        required: [client]
+        properties:
+          client:
+            $ref: "#/definitions/client-github"
+
+  service-controller-github-pull:
     allOf:
       - $ref: "#/definitions/service-controller"
       - type: object
