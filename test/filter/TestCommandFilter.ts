@@ -88,4 +88,32 @@ describeLeaks('command filter', async () => {
     }));
     expect(result).to.equal(FilterBehavior.Drop);
   });
+
+  itLeaks('should check command labels (#561)', async () => {
+    const { filter } = await createFilter({
+      filters: [],
+      match: {
+        rules: [{
+          key: '$.labels.kind',
+          operator: RuleOperator.Any,
+          values: [{
+            string: 'build',
+          }, {
+            string: 'pipeline',
+          }, {
+            string: 'push',
+          }],
+        }],
+      },
+      strict: true,
+    });
+    const result = await filter.check(new Command({
+      context: ineeda<Context>(),
+      data: {},
+      labels: {},
+      noun: 'test',
+      verb: CommandVerb.Create,
+    }));
+    expect(result).to.equal(FilterBehavior.Drop);
+  });
 });

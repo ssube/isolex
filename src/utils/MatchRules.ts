@@ -55,6 +55,13 @@ export class MatchRules {
         path: rule.key,
       });
 
+      // no matching values should fail (#561)
+      if (ruleValues.length === 0 && rule.values.length > 0) {
+        results.errors.push(rule.key);
+        results.matched = false;
+        break;
+      }
+
       for (const value of ruleValues) {
         if (!isString(value)) {
           results.errors.push(rule.key);

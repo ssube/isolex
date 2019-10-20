@@ -10,6 +10,7 @@ export type CommandFilterData = RuleFilterData;
  * Simple filter for commands.
  *
  * Supports:
+ * - labels
  * - noun
  * - verb
  */
