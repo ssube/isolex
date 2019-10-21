@@ -1,8 +1,8 @@
 import { json, RequestHandler } from 'express';
 import { Inject } from 'noicejs';
 
-import { Endpoint, HandlerMetadata, RouterOptions } from '.';
-import { BotServiceData, INJECT_STORAGE } from '../BotService';
+import { Endpoint, EndpointData, HandlerMetadata, RouterOptions } from '.';
+import { INJECT_STORAGE } from '../BotService';
 import { User } from '../entity/auth/User';
 import { UserRepository } from '../entity/auth/UserRepository';
 import { ChannelData } from '../entity/Context';
@@ -10,7 +10,7 @@ import { Storage } from '../storage';
 import { mustExist } from '../utils';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
-export interface HookEndpointData extends BotServiceData {
+export interface HookEndpointData extends EndpointData {
   hookUser: string;
 }
 

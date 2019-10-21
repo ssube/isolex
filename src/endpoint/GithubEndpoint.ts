@@ -5,7 +5,7 @@ import { Counter } from 'prom-client';
 import { Handler } from '.';
 import { INJECT_METRICS } from '../BaseService';
 import { INJECT_STORAGE } from '../BotService';
-import { Command, CommandVerb } from '../entity/Command';
+import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { mustExist } from '../utils';
 import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
@@ -14,6 +14,7 @@ import { BaseEndpointOptions, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpoint, HookEndpointData } from './HookEndpoint';
 
 export interface GithubEndpointData extends HookEndpointData {
+  defaultCommand: CommandOptions;
   secret: string;
 }
 
