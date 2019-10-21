@@ -18,7 +18,7 @@ data:
       data:
         templates:
           checks_total: "total checks: {{ checks.[0].total_count }}"
-          status_combined: "combined state: {{ status.[0].state }}"
+          status_combined: "final status: {{ status.[0].state }}"
           status_total: "total status: {{ status.[0].total_count }}"
     - metadata:
         kind: flatten-transform
@@ -28,3 +28,4 @@ data:
         keys:
           - $.checks_total
           - $.status_total
+          - $.status_combined

@@ -14,9 +14,9 @@ import { serviceSpy } from './helpers/container';
 import { getTestLogger } from './helpers/logger';
 
 const MAX_SIGNAL_TIME = 100; // ms
-const MAX_START_TIME = 500; // ms
+const MAX_START_TIME = 750; // ms
 
-const MAIN_START_TIME = 2500; // ms
+const MAIN_START_TIME = 4000; // ms
 const MAIN_STOP_TIME = 500;
 
 const TEST_SERVICE = 'test-service';
