@@ -1,0 +1,72 @@
+metadata:
+  kind: echo-controller
+  name: github-endpoint-pull-controller
+data:
+  defaultTarget:
+    kind: slack-listener
+    name: slack-isolex
+  forceChannel:
+    id: !env ISOLEX_SLACK_CHANNEL_ID
+    thread: ""
+
+  filters:
+    - metadata:
+        kind: command-filter
+        name: endpoint-pull-kind
+      data:
+        match:
+          rules:
+            - key: $.labels.hook
+              operator: any
+              values:
+                - string: pull_request_review
+                - string: status
+
+  transforms:
+    - metadata:
+        kind: template-transform
+        name: github-endpoint-pull-review-template
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: endpoint-pull-review-filter
+            data:
+              match:
+                rules:
+                  - key: $.labels.hook
+                    operator: any
+                    values:
+                      - string: pull_request_review
+
+        templates:
+          action: "{{ action.[0] }}"
+          author: "{{ review.[0].user.login }}"
+          status: "{{ review.[0].status }}"
+          body: "pull {{ pull_request.[0].number }} was {{ review.[0].state }} by {{ review.[0].user.login }}"
+
+    - metadata:
+        kind: template-transform
+        name: github-endpoint-pull-status-template
+      data:
+        filters:
+          - metadata:
+              kind: command-filter
+              name: endpoint-pull-status-filter
+            data:
+              match:
+                rules:
+                  - key: $.labels.hook
+                    operator: any
+                    values:
+                      - string: status
+
+        templates:
+          body: "commit {{ trim sha.[0] 8 '' }} is {{ state.[0] }}"
+
+    - metadata:
+        kind: flatten-transform
+        name: github-endpoint-pull-flatten
+      data:
+        join: ""
+        keys: [$.body]

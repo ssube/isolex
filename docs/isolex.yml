@@ -20,9 +20,10 @@ data:
     - !include ../docs/controller/command-controller.yml
     - !include ../docs/controller/completion-controller.yml
     - !include ../docs/controller/dice-controller.yml
-    - !include ../docs/controller/echo-controller.yml
+    # !include ../docs/controller/echo-controller.yml
     - !include ../docs/controller/github/commit-controller.yml
     - !include ../docs/controller/github/pull-controller.yml
+    - !include ../docs/controller/github/endpoint/pull-controller.yml
     - !include ../docs/controller/gitlab/ci-controller.yml
     - !include ../docs/controller/gitlab/endpoint/push-controller.yml
     - !include ../docs/controller/kubernetes/apps-controller.yml

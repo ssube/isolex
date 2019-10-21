@@ -2,7 +2,10 @@ metadata:
   kind: github-endpoint
   name: test-github-endpoint
 data:
+  defaultCommand:
+    noun: echo
+    verb: create
   filters: []
-  hookUser: 3d6dd1a1-11cd-4ca7-8fa4-49c78c73040d
+  hookUser: 4bd6d56a-cb26-43e7-8348-6898dda529c1
   strict: false
   secret: 'test'
