@@ -40,23 +40,21 @@ export class GithubCommitController extends BaseController<GithubCommitControlle
     const repo = cmd.getHead('project');
     const ref = cmd.getHead('ref');
 
-    const checkPromise = client.checks.listForRef({
+    const options = {
       owner,
       ref,
       repo,
-    });
-    const statusPromise = client.repos.getCombinedStatusForRef({
-      owner,
-      ref,
-      repo,
-    });
-
+    };
+    const checkPromise = client.checks.listForRef(options);
+    const statusPromise = client.repos.getCombinedStatusForRef(options);
     const [checks, status] = await Promise.all([checkPromise, statusPromise]);
+
     const txd = await applyTransforms(this.transforms, cmd, TYPE_JSON, {
       checks: checks.data,
       status: status.data,
     });
     const body = extractBody(txd);
+
     return this.reply(ctx, body);
   }
 }
