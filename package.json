@@ -23,7 +23,7 @@
     "@microsoft/api-documenter": "7.5.3",
     "@microsoft/api-extractor": "7.5.2",
     "@octokit/app": "4.1.0",
-    "@octokit/rest": "16.33.1",
+    "@octokit/rest": "16.34.0",
     "@slack/client": "5.0.2",
     "@types/bunyan": "1.8.6",
     "@types/chai": "4.2.4",
