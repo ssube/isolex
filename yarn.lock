@@ -148,10 +148,10 @@
     underscore "^1.9.1"
     ws "^6.1.0"
 
-"@microsoft/api-documenter@7.5.3":
-  version "7.5.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.5.3.tgz#df0f091bf486966536deb88a43713d29d6b7e497"
-  integrity sha512-zo9mHZR9dusemfMWVxKHoWywfcZrAj5U8YEQect3nwkBYOFzfRbgJ+JZcYxXDiQ5sz11rX0ZCp0fczzvf8XD2w==
+"@microsoft/api-documenter@7.5.4":
+  version "7.5.4"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.5.4.tgz#4aaec26c010eea71c6d8a17955c3307c2e63aae4"
+  integrity sha512-N/mDVpf1V4g6UTbFlrsF9LT09SFTb362gm+ZnPUA1OAGV62SqBBe8ZJO7LPFyLo1UOYGUpfK+YgS6dlGKItxkg==
   dependencies:
     "@microsoft/api-extractor-model" "7.5.2"
     "@microsoft/node-core-library" "3.16.0"
