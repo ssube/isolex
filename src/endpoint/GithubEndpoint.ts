@@ -58,6 +58,10 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
     });
 
     switch (eventType) {
+      case 'check_run':
+        return this.checkRunHook(req, res, eventData);
+      case 'check_suite':
+        return this.checkSuiteHook(req, res, eventData);
       case 'pull_request_review':
         return this.pullReviewHook(req, res, eventData);
       case 'status':
@@ -68,6 +72,40 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         }, 'unknown hook kind');
         res.sendStatus(STATUS_SUCCESS);
     }
+  }
+
+  public async checkRunHook(req: Request, res: Response, data: any): Promise<void> {
+    this.logger.debug(data, 'github check run hook');
+    const user = mustExist(this.hookUser);
+    const ctx = await this.createContext({
+      channel: {
+        id: data.repository.full_name,
+        thread: data.check_run.head_sha,
+      },
+      name: data.sender.login,
+      uid: this.data.hookUser,
+      user,
+    });
+    const cmd = await this.createHookCommand(ctx, data, 'check_run');
+    await this.bot.executeCommand(cmd);
+    res.sendStatus(STATUS_SUCCESS);
+  }
+
+  public async checkSuiteHook(req: Request, res: Response, data: any): Promise<void> {
+    this.logger.debug(data, 'github check suite hook');
+    const user = mustExist(this.hookUser);
+    const ctx = await this.createContext({
+      channel: {
+        id: data.repository.full_name,
+        thread: data.check_suite.head_sha,
+      },
+      name: data.sender.login,
+      uid: this.data.hookUser,
+      user,
+    });
+    const cmd = await this.createHookCommand(ctx, data, 'check_suite');
+    await this.bot.executeCommand(cmd);
+    res.sendStatus(STATUS_SUCCESS);
   }
 
   public async pullReviewHook(req: Request, res: Response, data: any): Promise<void> {
