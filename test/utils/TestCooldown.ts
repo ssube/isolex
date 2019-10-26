@@ -59,5 +59,10 @@ describeLeaks('utils', async () => {
       await defer(50);
       expect(cd.getTicks()).to.equal(3);
     });
+
+    itLeaks('should always have a stream', async () => {
+      const cd = await createCooldown({});
+      expect(cd.getStream()).not.to.equal(undefined);
+    });
   });
 });

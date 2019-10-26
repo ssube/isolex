@@ -1,6 +1,9 @@
 import { expect } from 'chai';
+import { ineeda } from 'ineeda';
+import { BaseError } from 'noicejs';
 
 import { Token, TokenOptions } from '../../../src/entity/auth/Token';
+import { User } from '../../../src/entity/auth/User';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 
 describeLeaks('token entity', async () => {
@@ -69,6 +72,32 @@ describeLeaks('token entity', async () => {
     expect(token.checkGrants(['test:foo'])).to.equal(true);
   });
 
-  itLeaks('should issue sessions with a user');
-  itLeaks('should not issue sessions without a user');
+  itLeaks('should issue sessions with a user', async () => {
+    const user = ineeda<User>();
+    const token = new Token({
+      audience: [],
+      data: {},
+      expiresAt: new Date(),
+      grants: [],
+      issuer: '',
+      labels: {},
+      subject: '',
+      user,
+    });
+    const session = token.session();
+    expect(session.user).to.equal(user);
+  });
+
+  itLeaks('should not issue sessions without a user', async () => {
+    const token = new Token({
+      audience: [],
+      data: {},
+      expiresAt: new Date(),
+      grants: [],
+      issuer: '',
+      labels: {},
+      subject: '',
+    });
+    expect(() => token.session()).to.throw(BaseError);
+  });
 });
