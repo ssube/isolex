@@ -246,6 +246,7 @@ definitions:
       lang:
         default: en
         type: string
+        pattern: "[a-z]{2,3}(-[0-9A-Z]{2,3})?"
  
   service-storage:
     type: object

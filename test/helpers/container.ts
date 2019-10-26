@@ -2,7 +2,6 @@ import { DeepPartial, ineeda } from 'ineeda';
 import { Constructor, Container, Logger, Module, ModuleOptions, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 import { spy } from 'sinon';
-import { Connection, Repository } from 'typeorm';
 
 import {
   INJECT_CLOCK,
@@ -24,6 +23,7 @@ import { MathFactory } from '../../src/utils/Math';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
 import { getTestLogger } from './logger';
+import { createMockStorage } from './storage';
 
 export class TestModule extends Module {
   public async configure(options: ModuleOptions) {
@@ -76,11 +76,7 @@ function getConfig() {
     [INJECT_LOGGER]: getTestLogger(),
     [INJECT_MATH]: new MathFactory(),
     [INJECT_METRICS]: new Registry(),
-    [INJECT_STORAGE]: ineeda<Connection>({
-      getRepository<T>(ctor: T) {
-        return ineeda<Repository<T>>();
-      },
-    }),
+    [INJECT_STORAGE]: createMockStorage(),
   };
 }
 
@@ -105,6 +101,7 @@ export async function createService<
     [INJECT_LOGGER]: getTestLogger(),
     [INJECT_SCHEMA]: schema,
   });
+  await locale.start();
 
   const fullOptions = {
     ...getConfig(),
