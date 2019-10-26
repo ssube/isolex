@@ -1,12 +1,13 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { Logger } from 'noicejs';
 import { spy } from 'sinon';
 
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Service, ServiceEvent } from '../../src/Service';
 import { defer } from '../../src/utils/Async';
 import { describeLeaks, itLeaks } from '../helpers/async';
-import { createContainer } from '../helpers/container';
+import { createContainer, createServiceContainer } from '../helpers/container';
 
 const TEST_SERVICE_NAME = 'test-service';
 
@@ -76,6 +77,22 @@ describeLeaks('DI modules', async () => {
       expect(existing.has(tag)).to.equal(true);
     });
 
-    itLeaks('should warn when adding duplicate services');
+    itLeaks('should warn when adding duplicate services', async () => {
+      const { services } = await createServiceContainer();
+
+      const warn = spy();
+      services.logger = ineeda<Logger>({
+        warn,
+      });
+
+      const svc = ineeda<Service>({
+        kind: 'test',
+        name: 'service',
+      });
+      services.addService(svc);
+      services.addService(svc);
+
+      expect(warn).to.have.callCount(1);
+    });
   });
 });

@@ -33,6 +33,7 @@ describeLeaks('database migrations', async () => {
       },
     });
     await storage.start();
+    await storage.stop();
   });
 
   itLeaks('should run down');
