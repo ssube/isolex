@@ -11,6 +11,10 @@ describeLeaks('random controller', async () => {
     const controller = await createService(container, RandomController, {
       data: {
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {},
+        },
         strict: true,
         transforms: [],
       },

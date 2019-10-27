@@ -22,7 +22,7 @@ describeLeaks('event generator', async () => {
     }));
     const interval = await createService(container, EventGenerator, {
       data: {
-        defaultContext: {
+        context: {
           channel: {
             id: '',
             thread: '',
@@ -30,13 +30,21 @@ describeLeaks('event generator', async () => {
           name: '',
           uid: '',
         },
-        defaultTarget: {
-          kind: 'test-service',
-          name: 'test-target',
-        },
         filters: [],
         frequency: {
           time: '30s',
+        },
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: {
+                kind: 'test-service',
+                name: 'test-target',
+              },
+              source: false,
+            },
+          },
         },
         services: [{
           kind: TEST_SVC,

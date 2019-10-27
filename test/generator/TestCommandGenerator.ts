@@ -22,13 +22,7 @@ describeLeaks('command generator', async () => {
         executeCommand,
       }),
       data: {
-        defaultCommand: {
-          data: {},
-          labels: {},
-          noun: 'test',
-          verb: CommandVerb.Create,
-        },
-        defaultContext: {
+        context: {
           channel: {
             id: '',
             thread: '',
@@ -36,13 +30,27 @@ describeLeaks('command generator', async () => {
           name: '',
           uid: '',
         },
-        defaultTarget: {
-          kind: 'test-service',
-          name: 'test-target',
+        defaultCommand: {
+          data: {},
+          labels: {},
+          noun: 'test',
+          verb: CommandVerb.Create,
         },
         filters: [],
         frequency: {
           time: '30s',
+        },
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: {
+                kind: 'test-service',
+                name: 'test-target',
+              },
+              source: false,
+            },
+          },
         },
         services: [{
           kind: TEST_SVC,

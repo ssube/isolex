@@ -2,9 +2,6 @@ metadata:
   kind: express-listener
   name: test-express
 data:
-  defaultTarget:
-    kind: discord-listener
-    name: test-discord
   endpoints:
     # kind: debug-endpoint
     # name: test-debug-endpoint
@@ -23,6 +20,13 @@ data:
   listen:
     port: 4000
     address: "0.0.0.0"
+  redirect:
+    defaults:
+      target:
+        source: false
+        service:
+          kind: discord-listener
+          name: test-discord
   token:
     audience: test-audience
     issuer: !env ISOLEX_TOKEN_ISSUER

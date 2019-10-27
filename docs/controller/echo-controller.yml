@@ -2,11 +2,14 @@ metadata:
   kind: echo-controller
   name: test-echo-controller
 data:
-  defaultTarget:
-    kind: slack-listener
-    name: slack-isolex
+  redirect:
+    forces:
+      target:
+        source: false
+        service:
+          kind: slack-listener
+          name: slack-isolex
 
-  filters: []
   transforms:
     - metadata:
         kind: template-transform

@@ -2,14 +2,14 @@ import { GeneratorData } from '.';
 import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
 import { ServiceEvent, ServiceMetadata } from '../Service';
-import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
+import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 
 export interface EventGeneratorData extends GeneratorData {
   services: Array<ServiceMetadata>;
 }
 
 export class EventGenerator extends BaseGenerator<EventGeneratorData> {
-  constructor(options: BaseIntervalOptions<EventGeneratorData>) {
+  constructor(options: BaseGeneratorOptions<EventGeneratorData>) {
     super(options, 'isolex#/definitions/service-generator-event');
   }
 

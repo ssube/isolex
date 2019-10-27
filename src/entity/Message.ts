@@ -23,16 +23,6 @@ export class Message extends LabelEntity implements MessageEntityOptions {
     return it instanceof Message;
   }
 
-  public static reply(context: Context, type: string, body: string): Message {
-    return new Message({
-      body,
-      context,
-      labels: {},
-      reactions: [],
-      type,
-    });
-  }
-
   @Column()
   public body: string = '';
 

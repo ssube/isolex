@@ -50,6 +50,10 @@ describeLeaks('weather controller', async () => {
           root: 'https://api.openweathermap.org/data/2.5/',
         },
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {},
+        },
         strict: true,
         transforms: [{
           data: {

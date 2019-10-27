@@ -6,7 +6,7 @@ import { INJECT_SERVICES } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_LOCALE } from '../BotService';
 import { User } from '../entity/auth/User';
 import { Command } from '../entity/Command';
-import { Context } from '../entity/Context';
+import { Context, redirectContext } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { Listener } from '../listener';
 import { Locale, TranslateOptions } from '../locale';
@@ -169,8 +169,16 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     }
   }
 
-  protected async reply(ctx: Context, body: string): Promise<void> {
-    await this.bot.sendMessage(Message.reply(ctx, TYPE_TEXT, body));
+  protected async reply(sourceCtx: Context, body: string): Promise<void> {
+    const context = redirectContext(sourceCtx, this.data.redirect);
+    const msg = new Message({
+      body,
+      context,
+      labels: this.labels,
+      reactions: [],
+      type: TYPE_TEXT,
+    });
+    await this.bot.sendMessage(msg);
   }
 
   protected getSourceOrFail(ctx: Context): Listener {

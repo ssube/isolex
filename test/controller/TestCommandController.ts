@@ -29,6 +29,10 @@ describeLeaks('command controller', async () => {
           verb: CommandVerb.Create,
         },
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {},
+        },
         strict: true,
         transforms: [],
       },

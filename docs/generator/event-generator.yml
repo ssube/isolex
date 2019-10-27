@@ -2,16 +2,19 @@ metadata:
   kind: event-generator
   name: test-generator-event
 data:
-  defaultContext:
-    channel:
-      id: ""
-      thread: ""
-    name: svc
-    uid: svc
-  defaultTarget: &discord-metadata
-    kind: discord-listener
-    name: test-discord
   frequency:
     time: 30 seconds
+  redirect:
+    defaults:
+      channel:
+        id: ""
+        thread: ""
+      name: svc
+      uid: svc
+      target:
+        source: false
+        service: &discord-metadata
+          kind: discord-listener
+          name: test-discord
   services:
     - *discord-metadata

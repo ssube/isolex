@@ -4,6 +4,7 @@ metadata:
 data:
   count: 3
   field: args
+  redirect: {}
   request:
     method: GET
     url: https://developer.mozilla.org/en-US/search.json?q={{ data }}

@@ -10,11 +10,11 @@ describeLeaks('completion controller', async () => {
 
     const controller = await createService(container, CompletionController, {
       data: {
-        defaultTarget: {
-          kind: '',
-          name: '',
-        },
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {},
+        },
         strict: true,
         transforms: [],
       },

@@ -1,10 +1,12 @@
 import { BotServiceData } from '../BotService';
 import { Command, CommandVerb } from '../entity/Command';
+import { ContextRedirect } from '../entity/Context';
 import { Service, ServiceDefinition } from '../Service';
 import { TransformData } from '../transform';
 import { BaseController } from './BaseController';
 
 export interface ControllerData extends BotServiceData {
+  redirect: ContextRedirect;
   transforms: Array<ServiceDefinition<TransformData>>;
 }
 

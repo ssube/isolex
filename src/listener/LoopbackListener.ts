@@ -1,40 +1,28 @@
 import { FetchOptions, Listener, ListenerData } from '.';
 import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
+import { ContextRedirect, redirectContext } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { Session } from '../entity/Session';
 import { NotImplementedError } from '../error/NotImplementedError';
-import { ServiceMetadata } from '../Service';
 import { mustExist } from '../utils';
 import { BaseListener } from './BaseListener';
 
 export interface LoopbackListenerData extends ListenerData {
-  defaultTarget: ServiceMetadata;
+  redirect: ContextRedirect;
 }
 
 export class LoopbackListener extends BaseListener<LoopbackListenerData> implements Listener {
-  protected target?: Listener;
-
   constructor(options: BotServiceOptions<LoopbackListenerData>) {
     super(options, 'isolex#/definitions/service-listener-loopback');
   }
 
-  public async start() {
-    await super.start();
-
-    this.target = this.services.getService<Listener>(this.data.defaultTarget);
-  }
-
   public async send(msg: Message): Promise<void> {
     const ctx = mustExist(msg.context);
-    const target = mustExist(this.target);
 
     const outCtx = await this.createContext(ctx);
-    outCtx.source = target;
-    outCtx.target = target;
-
     const outMsg = new Message(msg);
-    outMsg.context = outCtx;
+    outMsg.context = redirectContext(outCtx, this.data.redirect);
 
     await this.bot.receive(outMsg);
   }

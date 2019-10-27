@@ -12,6 +12,10 @@ describeLeaks('time controller', async () => {
       data: {
         filters: [],
         locale: 'en-US',
+        redirect: {
+          defaults: {},
+          forces: {},
+        },
         strict: true,
         transforms: [],
         zone: 'UTC',

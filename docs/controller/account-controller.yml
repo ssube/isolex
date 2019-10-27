@@ -10,6 +10,7 @@ data:
       - session:create
     roles:
       - user
+  redirect: {}
   root:
     allow: true
     name: root

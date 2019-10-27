@@ -5,16 +5,15 @@ import { Equal, FindManyOptions, Repository } from 'typeorm';
 import { Generator, GeneratorData } from '.';
 import { INJECT_CLOCK, INJECT_MATH } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
-import { Context } from '../entity/Context';
+import { Context, redirectContext } from '../entity/Context';
 import { Tick } from '../entity/Tick';
-import { Listener } from '../listener';
 import { doesExist, mustExist } from '../utils';
 import { Clock } from '../utils/Clock';
-import { Interval as OtherInterval } from '../utils/interval';
+import { Interval } from '../utils/interval';
 import { CronInterval } from '../utils/interval/CronInterval';
 import { TimeInterval } from '../utils/interval/TimeInterval';
 
-export type BaseIntervalOptions<TData extends GeneratorData> = BotServiceOptions<TData>;
+export type BaseGeneratorOptions<TData extends GeneratorData> = BotServiceOptions<TData>;
 
 @Inject(INJECT_CLOCK, INJECT_MATH, INJECT_STORAGE)
 export abstract class BaseGenerator<TData extends GeneratorData> extends BotService<TData> implements Generator {
@@ -25,10 +24,9 @@ export abstract class BaseGenerator<TData extends GeneratorData> extends BotServ
   protected readonly contextRepository: Repository<Context>;
   protected readonly tickRepository: Repository<Tick>;
 
-  protected interval?: OtherInterval;
-  protected target?: Listener;
+  protected interval?: Interval;
 
-  constructor(options: BaseIntervalOptions<TData>, schemaPath: string) {
+  constructor(options: BaseGeneratorOptions<TData>, schemaPath: string) {
     super(options, schemaPath);
 
     this.container = mustExist(options.container);
@@ -46,9 +44,6 @@ export abstract class BaseGenerator<TData extends GeneratorData> extends BotServ
   }
 
   public async startInterval() {
-    this.logger.debug({ def: this.data.defaultTarget }, 'getting default target listener');
-    this.target = this.services.getService<Listener>(this.data.defaultTarget);
-
     const fn = async () => {
       this.nextTick().catch((err) => {
         this.logger.error(err, 'error firing next tick');
@@ -120,9 +115,8 @@ export abstract class BaseGenerator<TData extends GeneratorData> extends BotServ
    * This context entity will be persisted with the command, message, or event for which it has been created.
    */
   protected async createContext(): Promise<Context> {
-    return this.contextRepository.save(new Context({
-      ...this.data.defaultContext,
-      target: this.target,
-    }));
+    const base = new Context(this.data.context);
+    const ctx = redirectContext(base, this.data.redirect);
+    return this.contextRepository.save(ctx);
   }
 }

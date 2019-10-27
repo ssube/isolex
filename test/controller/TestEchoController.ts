@@ -24,11 +24,19 @@ describeLeaks('echo controller', async () => {
 
     const controller = await createService(container, EchoController, {
       data: {
-        defaultTarget: {
-          kind: TEST_LISTENER,
-          name: TEST_LISTENER,
-        },
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: {
+                kind: TEST_LISTENER,
+                name: TEST_LISTENER,
+              },
+              source: false,
+            },
+          },
+        },
         strict: true,
         transforms: [],
       },
@@ -65,11 +73,19 @@ describeLeaks('echo controller', async () => {
         sendMessage,
       }),
       data: {
-        defaultTarget: {
-          kind: TEST_LISTENER,
-          name: TEST_LISTENER,
-        },
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: {
+                kind: TEST_LISTENER,
+                name: TEST_LISTENER,
+              },
+              source: false,
+            },
+          },
+        },
         strict: true,
         transforms: [{
           data: {

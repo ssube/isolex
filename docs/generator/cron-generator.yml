@@ -2,16 +2,19 @@ metadata:
   kind: event-generator
   name: test-cron-generator
 data:
-  defaultContext:
-    channel:
-      id: ""
-      thread: ""
-    name: svc
-    uid: svc
-  defaultTarget: &target
-    kind: discord-listener
-    name: test-discord
   frequency:
     cron: '*/30 * * * * *'
+  redirect:
+    defaults:
+      channel:
+        id: ""
+        thread: ""
+      name: svc
+      uid: svc
+      target:
+        source: false
+        service: &target
+          kind: discord-listener
+          name: test-discord
   services:
     - *target

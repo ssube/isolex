@@ -37,8 +37,16 @@ describeLeaks('loopback listener', async () => {
         receive,
       }),
       data: {
-        defaultTarget: TEST_TARGET,
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: TEST_TARGET,
+              source: false,
+            }
+          }
+        },
         strict: false,
       },
       metadata: TEST_METADATA,
@@ -81,8 +89,16 @@ describeLeaks('loopback listener', async () => {
 
     const listener = await createService(container, LoopbackListener, {
       data: {
-        defaultTarget: TEST_TARGET,
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: TEST_TARGET,
+              source: false,
+            }
+          }
+        },
         strict: false,
       },
       metadata: TEST_METADATA,
@@ -102,8 +118,16 @@ describeLeaks('loopback listener', async () => {
 
     const listener = await createService(container, LoopbackListener, {
       data: {
-        defaultTarget: TEST_TARGET,
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: TEST_TARGET,
+              source: false,
+            }
+          }
+        },
         strict: false,
       },
       metadata: TEST_METADATA,
@@ -121,8 +145,16 @@ describeLeaks('loopback listener', async () => {
 
     const listener = await createService(container, LoopbackListener, {
       data: {
-        defaultTarget: TEST_TARGET,
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {
+            target: {
+              service: TEST_TARGET,
+              source: false,
+            }
+          }
+        },
         strict: false,
       },
       metadata: TEST_METADATA,

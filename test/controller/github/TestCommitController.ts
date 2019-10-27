@@ -87,6 +87,10 @@ describeLeaks('github commit controller', async () => {
           },
         },
         filters: [],
+        redirect: {
+          defaults: {},
+          forces: {},
+        },
         strict: false,
         transforms: [{
           data: {
@@ -108,7 +112,10 @@ describeLeaks('github commit controller', async () => {
     await ctrl.getCommit(ineeda<Command>({
       getHead: () => '',
       getHeadOrDefault: () => '',
-    }), ineeda<Context>());
+    }), ineeda<Context>({
+      name: 'test',
+      uid: 'test',
+    }));
 
     expect(sendMessage).to.have.callCount(1);
   });

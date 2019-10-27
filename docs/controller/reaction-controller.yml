@@ -11,3 +11,4 @@ data:
             values:
               - regexp: !regexp /maple/
       add: [":maple_leaf:"]
+  redirect: {}

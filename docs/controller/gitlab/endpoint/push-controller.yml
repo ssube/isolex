@@ -2,12 +2,17 @@ metadata:
   kind: echo-controller
   name: endpoint-push-controller
 data:
-  defaultTarget:
-    kind: slack-listener
-    name: slack-isolex
-  forceChannel:
-    id: !env ISOLEX_SLACK_CHANNEL_ID
-    thread: ""
+  redirect:
+    defaults:
+      target:
+        source: false
+        service:
+          kind: slack-listener
+          name: slack-isolex
+    forces:
+      channel:
+        id: !env ISOLEX_SLACK_CHANNEL_ID
+        thread: ""
 
   filters:
     - metadata:
