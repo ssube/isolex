@@ -23,12 +23,16 @@ export class TemplateCompiler {
     this.logger = classLogger(options[INJECT_LOGGER], TemplateCompiler);
     this.options = {};
 
+    // formatters
     this.compiler.registerHelper('entries', this.formatEntries.bind(this));
     this.compiler.registerHelper('json', this.formatJSON.bind(this));
     this.compiler.registerHelper('key', this.getKey.bind(this));
     this.compiler.registerHelper('reply', this.formatContext.bind(this));
     this.compiler.registerHelper('trim', this.formatTrim.bind(this));
     this.compiler.registerHelper('withMap', this.withMap.bind(this));
+
+    // test operators
+    this.compiler.registerHelper('eq', this.testEq.bind(this));
   }
 
   public compile(body: string): Template {
@@ -76,6 +80,14 @@ export class TemplateCompiler {
       args[key] = val;
     }
     return options.fn(args);
+  }
+
+  public testEq(lh: unknown, rh: unknown, block: Handlebars.HelperOptions): string {
+    if (lh === rh) {
+      return block.fn(block.data);
+    } else {
+      return '';
+    }
   }
 
   protected entriesOf(map: MapLike<string>): Array<[string, string]> {

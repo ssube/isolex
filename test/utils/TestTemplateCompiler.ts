@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { stub } from 'sinon';
 
 import { Context } from '../../src/entity/Context';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
@@ -51,6 +52,23 @@ describeLeaks('template compiler', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
       expect(compiler.formatTrim('hello world', 6, '!')).to.equal('hello!');
+    });
+  });
+
+  describeLeaks('test equality helper', async () => {
+    itLeaks('should call block when operands are exactly equal', async () => {
+      const test = 'test-value';
+      const data = {};
+      const fn = stub().returns(test);
+      const { container } = await createContainer();
+      const compiler = await container.create(TemplateCompiler);
+      expect(compiler.testEq(test, test, {
+        data,
+        fn,
+        hash: '',
+        inverse: () => '',
+      })).to.equal(test);
+      expect(fn).to.have.been.calledWithExactly(data);
     });
   });
 });
