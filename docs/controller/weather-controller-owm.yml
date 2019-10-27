@@ -5,6 +5,7 @@ data:
   api:
     key: !env ISOLEX_WEATHER_API_KEY
     root: https://api.openweathermap.org/data/2.5/
+  redirect: {}
   transforms:
     - metadata:
         kind: template-transform

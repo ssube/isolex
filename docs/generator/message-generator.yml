@@ -2,20 +2,23 @@ metadata:
   kind: message-generator
   name: test-generator-msg
 data:
-  defaultContext:
-    channel:
-      id: "440715367019446274"
-      thread: ""
-    name: svc
-    uid: svc
   defaultMessage:
     body: hello world
     type: text/plain
-  defaultTarget:
-    kind: discord-listener
-    name: test-discord
   frequency:
     time: 30 seconds
+  redirect:
+    defaults:
+      channel:
+        id: "440715367019446274"
+        thread: ""
+      name: svc
+      uid: svc
+      target:
+        source: false
+        service:
+          kind: discord-listener
+          name: test-discord
   transforms:
     - metadata:
         kind: template-transform

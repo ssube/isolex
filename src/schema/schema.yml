@@ -60,7 +60,8 @@ definitions:
         type: string
       token:
         type: string
- 
+
+
   entity-command:
     type: object
     additionalProperties: true
@@ -79,20 +80,38 @@ definitions:
         type: string
       thread:
         type: string
- 
-  entity-context:
+
+  entity-context-data:
     type: object
-    additionalProperties: false
-    required: [channel, name, uid]
+    additionalProperties: true
     properties:
       channel:
         $ref: "#/definitions/entity-context-channel"
       name:
         type: string
-      target:
-        $ref: "#/definitions/service-metadata"
       uid:
         type: string
+
+  entity-context:
+    allOf:
+      - $ref: "#/definitions/entity-context-data"
+      - type: object
+        additionalProperties: false
+        required: [channel, name, uid]
+        properties:
+          target:
+            $ref: "#/definitions/service-metadata"
+
+  entity-context-redirect:
+    type: object
+    additionalProperties: false
+    properties:
+      defaults:
+        allOf:
+          - $ref: "#/definitions/entity-context-data"
+      forces:
+        allOf:
+          - $ref: "#/definitions/entity-context-data"
 
   entity-message:
     type: object
@@ -273,8 +292,10 @@ definitions:
       - $ref: "#/definitions/service-data"
       - type: object
         additionalProperties: true
-        required: [transforms]
+        required: [redirect, transforms]
         properties:
+          redirect:
+            $ref: "#/definitions/entity-context-redirect"
           transforms:
             type: array
             default: []
@@ -345,14 +366,7 @@ definitions:
             $ref: "#/definitions/entity-command"
 
   service-controller-completion:
-    allOf:
-      - $ref: "#/definitions/service-controller"
-      - type: object
-        additionalProperties: true
-        required: [defaultTarget]
-        properties:
-          defaultTarget:
-            $ref: "#/definitions/service-metadata"
+    $ref: "#/definitions/service-controller"
 
   service-controller-count:
     allOf:
@@ -388,15 +402,7 @@ definitions:
     $ref: "#/definitions/service-controller"
 
   service-controller-echo:
-    allOf:
-      - $ref: "#/definitions/service-controller"
-      - type: object
-        additionalProperties: true
-        properties:
-          defaultTarget:
-            $ref: "#/definitions/service-metadata"
-          forceChannel:
-            $ref: "#/definitions/entity-context-channel"
+    $ref: "#/definitions/service-controller"
 
   service-controller-github-commit:
     allOf:
@@ -711,12 +717,8 @@ definitions:
       - $ref: "#/definitions/service-data"
       - type: object
         additionalProperties: true
-        required: [defaultContext, defaultTarget, frequency]
+        required: [frequency, redirect, transforms]
         properties:
-          defaultContext:
-            $ref: "#/definitions/entity-context"
-          defaultTarget:
-            $ref: "#/definitions/service-metadata"
           frequency:
             type: object
             additionalProperties: false
@@ -728,6 +730,8 @@ definitions:
                 type: string
               time:
                 type: string
+          redirect:
+            $ref: "#/definitions/entity-context-redirect"
           transforms:
             type: array
             default: []
@@ -789,10 +793,8 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
-        required: [defaultTarget, endpoints, listen, token]
+        required: [endpoints, listen, redirect, token]
         properties:
-          defaultTarget:
-            $ref: "#/definitions/service-metadata"
           endpoints:
             type: array
             items:
@@ -804,6 +806,8 @@ definitions:
                 type: string
               port:
                 type: number
+          redirect:
+            $ref: "#/definitions/entity-context-redirect"
           token:
             type: object
             properties:
@@ -844,9 +848,10 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
+        required: [redirect]
         properties:
-          defaultTarget:
-            $ref: "#/definitions/service-metadata"
+          redirect:
+            $ref: "#/definitions/entity-context-redirect"
 
   service-listener-slack:
     allOf:

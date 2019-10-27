@@ -24,7 +24,6 @@ import { createServiceCounter } from '../utils/Metrics';
 import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData extends ListenerData {
-  defaultTarget: ServiceMetadata;
   endpoints: Array<ServiceMetadata>;
   listen: {
     address: string;
@@ -51,7 +50,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected express?: express.Express;
   protected passport?: passport.Authenticator;
   protected server?: http.Server;
-  protected target?: Listener;
 
   constructor(options: BotServiceOptions<ExpressListenerData>) {
     super(options, 'isolex#/definitions/service-listener-express');
@@ -78,8 +76,6 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     this.passport = await this.setupPassport();
     this.express = await this.setupExpress();
     this.server = await this.createServer();
-
-    this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
   public async stop() {

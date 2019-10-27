@@ -2,5 +2,4 @@ metadata:
   kind: random-controller
   name: test-random
 data:
-  filters: []
-  transforms: []
+  redirect: {}

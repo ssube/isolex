@@ -2,16 +2,19 @@ metadata:
   kind: event-generator
   name: github-listener-generator
 data:
-  defaultContext:
-    channel:
-      id: ""
-      thread: ""
-    name: svc
-    uid: svc
-  defaultTarget: &github-metadata
-    kind: github-listener
-    name: test-github
   frequency:
     time: 60 seconds
+  redirect:
+    defaults:
+      channel:
+        id: ""
+        thread: ""
+      name: svc
+      uid: svc
+      target:
+        source: false
+        service: &github-metadata
+          kind: github-listener
+          name: test-github
   services:
     - *github-metadata

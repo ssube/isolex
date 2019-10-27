@@ -25,7 +25,7 @@ const TEST_TARGET = 'test-target';
 
 const TEST_CONFIG = {
   data: {
-    defaultContext: {
+    context: {
       channel: {
         id: '',
         thread: '',
@@ -39,13 +39,21 @@ const TEST_CONFIG = {
       reactions: [],
       type: TYPE_TEXT,
     },
-    defaultTarget: {
-      kind: TEST_SVC2,
-      name: TEST_TARGET,
-    },
     filters: [],
     frequency: {
       time: '30s',
+    },
+    redirect: {
+      defaults: {},
+      forces: {
+        target: {
+          service: {
+            kind: TEST_SVC2,
+            name: TEST_TARGET,
+          },
+          source: false,
+        },
+      },
     },
     services: [{
       kind: TEST_SVC,

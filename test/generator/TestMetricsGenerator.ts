@@ -15,7 +15,7 @@ import { createService, createServiceContainer } from '../helpers/container';
 const TEST_TARGET = 'test-target';
 const TEST_GENERATOR = 'metrics-generator';
 const TEST_DATA: MetricsGeneratorData = {
-  defaultContext: {
+  context: {
     channel: {
       id: '',
       thread: '',
@@ -23,13 +23,21 @@ const TEST_DATA: MetricsGeneratorData = {
     name: '',
     uid: '',
   },
-  defaultTarget: {
-    kind: TEST_TARGET,
-    name: TEST_TARGET,
-  },
   filters: [],
   frequency: {
     time: '100ms',
+  },
+  redirect: {
+    defaults: {},
+    forces: {
+      target: {
+        service: {
+          kind: TEST_TARGET,
+          name: TEST_TARGET,
+        },
+        source: false,
+      },
+    }
   },
   strict: false,
 };

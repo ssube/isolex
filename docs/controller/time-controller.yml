@@ -3,5 +3,5 @@ metadata:
   name: test-time
 data:
   locale: en-US
-  transforms: []
+  redirect: {}
   zone: America/Chicago

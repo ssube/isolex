@@ -77,6 +77,10 @@ const TEST_CONFIG_SERVICE: CreateOptions = {
       controllers: [{
         data: {
           filters: [],
+          redirect: {
+            defaults: {},
+            forces: {},
+          },
           strict: true,
           transforms: [],
         },

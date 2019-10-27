@@ -1,13 +1,13 @@
 import { BotServiceData } from '../BotService';
-import { Context, ContextOptions } from '../entity/Context';
+import { Context, ContextData, ContextRedirect } from '../entity/Context';
 import { Tick } from '../entity/Tick';
-import { Service, ServiceMetadata } from '../Service';
+import { Service } from '../Service';
 import { IntervalFrequency } from '../utils/interval';
 
 export interface GeneratorData extends BotServiceData {
-  defaultContext: ContextOptions;
-  defaultTarget: ServiceMetadata;
+  context: ContextData;
   frequency: IntervalFrequency;
+  redirect: ContextRedirect;
 }
 
 export interface Generator extends Service {

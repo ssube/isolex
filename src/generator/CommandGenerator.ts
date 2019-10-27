@@ -2,14 +2,14 @@ import { GeneratorData } from '.';
 import { Command, CommandOptions } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
-import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
+import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 
 export interface CommandGeneratorData extends GeneratorData {
   defaultCommand: CommandOptions;
 }
 
 export class CommandGenerator extends BaseGenerator<CommandGeneratorData> {
-  constructor(options: BaseIntervalOptions<CommandGeneratorData>) {
+  constructor(options: BaseGeneratorOptions<CommandGeneratorData>) {
     super(options, 'isolex#/definitions/service-generator-command');
   }
 

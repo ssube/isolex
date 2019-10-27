@@ -10,10 +10,10 @@ import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { mustExist } from '../utils';
 import { MetricsInterval } from '../utils/interval/MetricsInterval';
 import { Collector } from '../utils/Metrics';
-import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
+import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 
 export type MetricsGeneratorData = GeneratorData;
-export interface MetricsIntervalOptions extends BaseIntervalOptions<MetricsGeneratorData> {
+export interface MetricsGeneratorOptions extends BaseGeneratorOptions<MetricsGeneratorData> {
   collector?: Collector;
 }
 
@@ -25,7 +25,7 @@ export class MetricsGenerator extends BaseGenerator<MetricsGeneratorData> {
   protected readonly collector: Collector;
   protected readonly metrics: Registry;
 
-  constructor(options: MetricsIntervalOptions) {
+  constructor(options: MetricsGeneratorOptions) {
     super(options, 'isolex#/definitions/service-generator-metrics');
 
     // tslint:disable-next-line:deprecation

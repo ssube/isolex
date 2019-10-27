@@ -5,14 +5,17 @@ data:
   defaultCommand:
     noun: time
     verb: get
-  defaultContext:
-    channel:
-      id: "440715367019446274"
-      thread: ""
-    name: svc
-    uid: svc
-  defaultTarget:
-    kind: discord-listener
-    name: test-discord
   frequency:
     time: 30 seconds
+  redirect:
+    defaults:
+      channel:
+        id: "440715367019446274"
+        thread: ""
+      name: svc
+      uid: svc
+      target:
+        source: false
+        service:
+          kind: discord-listener
+          name: test-discord

@@ -6,7 +6,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Listener } from '../listener';
 import { Parser } from '../parser';
-import { doesExist } from '../utils';
+import { ServiceMetadata } from '../Service';
+import { doesExist, Optional } from '../utils';
 import { Token } from './auth/Token';
 import { GRAPH_OUTPUT_USER, User } from './auth/User';
 import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
@@ -16,7 +17,7 @@ export interface ChannelData {
   thread: string;
 }
 
-export interface ContextOptions extends BaseEntityOptions {
+export interface ContextData {
   channel: ChannelData;
 
   /**
@@ -24,6 +25,13 @@ export interface ContextOptions extends BaseEntityOptions {
    */
   name: string;
 
+  /**
+   * Unique ID for this user, only meaningful to/within the listener.
+   */
+  uid: string;
+}
+
+export interface ContextOptions extends BaseEntityOptions, ContextData {
   parser?: Parser;
 
   source?: Listener;
@@ -36,11 +44,21 @@ export interface ContextOptions extends BaseEntityOptions {
    * User authenticated with this context.
    */
   user?: User;
+}
 
-  /**
-   * Unique ID for this user, only meaningful to/within the listener.
-   */
-  uid: string;
+export interface ListenerRedirect {
+  source: boolean;
+  service?: ServiceMetadata;
+}
+
+export interface ContextRedirectStage extends ContextData {
+  source?: ListenerRedirect;
+  target?: ListenerRedirect;
+}
+
+export interface ContextRedirect {
+  defaults: Partial<ContextRedirectStage>;
+  forces: Partial<ContextRedirectStage>;
 }
 
 export const TABLE_CONTEXT = 'context';
@@ -154,6 +172,34 @@ export class Context extends BaseEntity implements ContextOptions {
       user: this.user,
     };
   }
+}
+
+export function extractRedirect(stage: Optional<Partial<ContextRedirectStage>>): Partial<ContextData> {
+  if (isNil(stage)) {
+    return {};
+  }
+
+  const {
+    channel,
+    name,
+    uid,
+  } = stage;
+
+  return {
+    channel,
+    name,
+    uid,
+  };
+}
+
+export function redirectContext(original: Context, redirect: ContextRedirect): Context {
+  // loop up source and target services, user
+
+  return new Context({
+    ...extractRedirect(redirect.defaults),
+    ...original,
+    ...extractRedirect(redirect.forces),
+  });
 }
 
 export const GRAPH_INPUT_CHANNEL = new GraphQLInputObjectType({

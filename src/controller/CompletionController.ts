@@ -5,36 +5,25 @@ import { Repository } from 'typeorm';
 import { INJECT_STORAGE } from '../BotService';
 import { CheckRBAC, Controller, ControllerData, Handler } from '../controller';
 import { Command, CommandVerb } from '../entity/Command';
-import { Context } from '../entity/Context';
+import { Context, redirectContext } from '../entity/Context';
 import { Fragment } from '../entity/Fragment';
 import { NotFoundError } from '../error/NotFoundError';
-import { Listener } from '../listener';
 import { Parser } from '../parser';
-import { ServiceMetadata } from '../Service';
 import { mustExist } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_FRAGMENT = 'fragment';
 
-export interface CompletionControllerData extends ControllerData {
-  defaultTarget: ServiceMetadata;
-}
+export type CompletionControllerData = ControllerData;
 
 @Inject(INJECT_STORAGE)
 export class CompletionController extends BaseController<CompletionControllerData> implements Controller {
   protected readonly fragmentRepository: Repository<Fragment>;
-  protected target?: Listener;
 
   constructor(options: BaseControllerOptions<CompletionControllerData>) {
     super(options, 'isolex#/definitions/service-controller-completion', [NOUN_FRAGMENT]);
 
     this.fragmentRepository = mustExist(options[INJECT_STORAGE]).getRepository(Fragment);
-  }
-
-  public async start() {
-    await super.start();
-
-    this.target = this.services.getService<Listener>(this.data.defaultTarget);
   }
 
   @Handler(NOUN_FRAGMENT, CommandVerb.Create)
@@ -96,14 +85,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
   protected async createContext(maybeCtx?: Context) {
     const ctx = mustExist(maybeCtx);
-    if (isNil(ctx.target)) {
-      return new Context({
-        ...ctx,
-        target: this.target,
-      });
-    } else {
-      return ctx;
-    }
+    return redirectContext(ctx, this.data.redirect);
   }
 
   protected async getFragment(ctx: Context, id: string): Promise<Fragment> {

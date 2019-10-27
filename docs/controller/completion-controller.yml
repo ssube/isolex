@@ -2,8 +2,13 @@ metadata:
   kind: completion-controller
   name: default-completion
 data:
-  defaultTarget:
-    kind: discord-listener
-    name: test-discord
+  redirect:
+    forces:
+      target:
+        source: false
+        service:
+          kind: discord-listener
+          name: test-discord
+
   filters: []
   transforms: []

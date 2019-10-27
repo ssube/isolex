@@ -2,4 +2,4 @@ metadata:
   kind: user-controller
   name: default-user
 data:
-  transforms: []
+  redirect: {}

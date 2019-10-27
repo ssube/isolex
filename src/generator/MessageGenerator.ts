@@ -5,7 +5,7 @@ import { Tick } from '../entity/Tick';
 import { NotInitializedError } from '../error/NotInitializedError';
 import { ServiceDefinition } from '../Service';
 import { applyTransforms, extractBody, Transform, TransformData } from '../transform';
-import { BaseGenerator, BaseIntervalOptions } from './BaseGenerator';
+import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 
 export interface MessageGeneratorData extends GeneratorData {
   defaultMessage: MessageEntityOptions;
@@ -16,7 +16,7 @@ export class MessageGenerator extends BaseGenerator<MessageGeneratorData> {
   protected started: boolean;
   protected readonly transforms: Array<Transform>;
 
-  constructor(options: BaseIntervalOptions<MessageGeneratorData>) {
+  constructor(options: BaseGeneratorOptions<MessageGeneratorData>) {
     super(options, 'isolex#/definitions/service-generator-message');
 
     this.started = false;

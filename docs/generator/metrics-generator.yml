@@ -2,14 +2,17 @@ metadata:
   kind: metrics-generator
   name: test-metrics
 data:
-  defaultContext:
-    channel:
-      id: "440715367019446274"
-      thread: ""
-    name: svc
-    uid: svc
-  defaultTarget:
-    kind: discord-listener
-    name: test-discord
   frequency:
     time: 15 seconds
+  redirect:
+    defaults:
+      channel:
+        id: "440715367019446274"
+        thread: ""
+      name: svc
+      uid: svc
+      target:
+        source: false
+        service:
+          kind: discord-listener
+          name: test-discord
