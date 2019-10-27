@@ -4,15 +4,39 @@ import { User } from '../entity/auth/User';
 import { Message } from '../entity/Message';
 import { Session } from '../entity/Session';
 import { NotImplementedError } from '../error/NotImplementedError';
+import { ServiceMetadata } from '../Service';
+import { mustExist } from '../utils';
 import { BaseListener } from './BaseListener';
 
-export class LoopbackListener extends BaseListener<ListenerData> implements Listener {
-  constructor(options: BotServiceOptions<ListenerData>) {
+export interface LoopbackListenerData extends ListenerData {
+  defaultTarget: ServiceMetadata;
+}
+
+export class LoopbackListener extends BaseListener<LoopbackListenerData> implements Listener {
+  protected target?: Listener;
+
+  constructor(options: BotServiceOptions<LoopbackListenerData>) {
     super(options, 'isolex#/definitions/service-listener-loopback');
   }
 
+  public async start() {
+    await super.start();
+
+    this.target = this.services.getService<Listener>(this.data.defaultTarget);
+  }
+
   public async send(msg: Message): Promise<void> {
-    await this.bot.receive(msg);
+    const target = mustExist(this.target);
+    const context = await this.createContext({
+      ...mustExist(msg.context),
+      source: target,
+      target,
+    });
+    const outMsg = new Message({
+      ...msg,
+      context,
+    });
+    await this.bot.receive(outMsg);
   }
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {

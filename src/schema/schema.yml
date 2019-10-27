@@ -840,7 +840,13 @@ definitions:
             type: string
  
   service-listener-loopback:
-    $ref: "#/definitions/service-listener"
+    allOf:
+      - $ref: "#/definitions/service-listener"
+      - type: object
+        additionalProperties: true
+        properties:
+          defaultTarget:
+            $ref: "#/definitions/service-metadata"
 
   service-listener-slack:
     allOf:
