@@ -170,7 +170,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   }
 
   protected async reply(sourceCtx: Context, body: string): Promise<void> {
-    const context = redirectContext(sourceCtx, this.data.redirect);
+    const context = redirectContext(sourceCtx, this.data.redirect, this.services);
     const msg = new Message({
       body,
       context,

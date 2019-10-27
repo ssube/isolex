@@ -22,7 +22,7 @@ export class LoopbackListener extends BaseListener<LoopbackListenerData> impleme
 
     const outCtx = await this.createContext(ctx);
     const outMsg = new Message(msg);
-    outMsg.context = redirectContext(outCtx, this.data.redirect);
+    outMsg.context = redirectContext(outCtx, this.data.redirect, this.services);
 
     await this.bot.receive(outMsg);
   }

@@ -116,7 +116,7 @@ export abstract class BaseGenerator<TData extends GeneratorData> extends BotServ
    */
   protected async createContext(): Promise<Context> {
     const base = new Context(this.data.context);
-    const ctx = redirectContext(base, this.data.redirect);
+    const ctx = redirectContext(base, this.data.redirect, this.services);
     return this.contextRepository.save(ctx);
   }
 }
