@@ -196,20 +196,29 @@ export function extractRedirect(stage: Optional<Partial<ContextRedirectStage>>):
   };
 }
 
+export function redirectServiceRoute(original: Context, route: ListenerRedirect, services: ServiceModule): Listener | undefined {
+  if (route.source === true) {
+    return mustExist(original.source);
+  }
+
+  if (route.target === true) {
+    return mustExist(original.target);
+  }
+
+  if (doesExist(route.service)) {
+    return services.getService<Listener>(route.service);
+  }
+
+  return undefined;
+}
+
 export function redirectService(original: Context, redirect: ContextRedirect, services: ServiceModule, key: 'source' | 'target'): Listener {
   // check forces
   const forces = redirect.forces[key];
   if (doesExist(forces)) {
-    if (forces.source === true) {
-      return mustExist(original.source);
-    }
-
-    if (forces.target === true) {
-      return mustExist(original.target);
-    }
-
-    if (doesExist(forces.service)) {
-      return services.getService(forces.service);
+    const forced = redirectServiceRoute(original, forces, services);
+    if (doesExist(forced)) {
+      return forced;
     }
   }
 
@@ -222,16 +231,9 @@ export function redirectService(original: Context, redirect: ContextRedirect, se
   // check defaults
   const defaults = redirect.defaults[key];
   if (doesExist(defaults)) {
-    if (defaults.source === true) {
-      return mustExist(original.source);
-    }
-
-    if (defaults.target === true) {
-      return mustExist(original.target);
-    }
-
-    if (doesExist(defaults.service)) {
-      return services.getService(defaults.service);
+    const defaulted = redirectServiceRoute(original, defaults, services);
+    if (doesExist(defaulted)) {
+      return defaulted;
     }
   }
 
