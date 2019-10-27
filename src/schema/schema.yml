@@ -839,6 +839,9 @@ definitions:
           start:
             type: string
  
+  service-listener-loopback:
+    $ref: "#/definitions/service-listener"
+
   service-listener-slack:
     allOf:
       - $ref: "#/definitions/service-listener"
