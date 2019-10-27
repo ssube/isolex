@@ -223,14 +223,22 @@ export class Bot extends BaseService<BotData> implements Service {
       commandVerb: cmd.verb,
     });
 
+    let handled = false;
+
     for (const h of this.controllers) {
-      if (await h.check(cmd)) {
-        await h.handle(cmd);
-        return;
+      try {
+        if (await h.check(cmd)) {
+          await h.handle(cmd);
+          handled = true;
+        }
+      } catch (err) {
+        this.logger.error(err, 'controller leaked error checking or handling message');
       }
     }
 
-    this.logger.warn({ cmd }, 'unhandled command');
+    if (!handled) {
+      this.logger.warn({ cmd }, 'command was rejected by every controller (unhandled command)');
+    }
   }
 
   /**
