@@ -85,7 +85,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
   protected async createContext(maybeCtx?: Context) {
     const ctx = mustExist(maybeCtx);
-    return redirectContext(ctx, this.data.redirect);
+    return redirectContext(ctx, this.data.redirect, this.services);
   }
 
   protected async getFragment(ctx: Context, id: string): Promise<Fragment> {

@@ -18,7 +18,7 @@ export class EchoController extends BaseController<EchoControllerData> implement
   @Handler(NOUN_ECHO, CommandVerb.Create)
   @CheckRBAC()
   public async createEcho(cmd: Command, ctx: Context): Promise<void> {
-    const targetCtx = redirectContext(ctx, this.data.redirect);
+    const targetCtx = redirectContext(ctx, this.data.redirect, this.services);
 
     this.logger.debug({ cmd, ctx, targetCtx }, 'echoing command');
 

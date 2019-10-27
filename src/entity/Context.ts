@@ -4,10 +4,12 @@ import { MissingValueError } from 'noicejs';
 import { newTrie, ShiroTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { NotFoundError } from '../error/NotFoundError';
 import { Listener } from '../listener';
+import { ServiceModule } from '../module/ServiceModule';
 import { Parser } from '../parser';
 import { ServiceMetadata } from '../Service';
-import { doesExist, mustCoalesce, Optional } from '../utils';
+import { doesExist, mustCoalesce, mustExist, Optional } from '../utils';
 import { Token } from './auth/Token';
 import { GRAPH_OUTPUT_USER, User } from './auth/User';
 import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
@@ -31,12 +33,13 @@ export interface ContextData {
   uid: string;
 }
 
-export interface ContextOptions extends BaseEntityOptions, ContextData {
-  parser?: Parser;
-
+export interface ContextRoute {
   source?: Listener;
-
   target?: Listener;
+}
+
+export interface ContextOptions extends BaseEntityOptions, ContextData, ContextRoute {
+  parser?: Parser;
 
   token?: Token;
 
@@ -47,8 +50,9 @@ export interface ContextOptions extends BaseEntityOptions, ContextData {
 }
 
 export interface ListenerRedirect {
-  source: boolean;
+  source?: boolean;
   service?: ServiceMetadata;
+  target?: boolean;
 }
 
 export interface ContextRedirectStage extends ContextData {
@@ -64,7 +68,7 @@ export interface ContextRedirect {
 export const TABLE_CONTEXT = 'context';
 
 @Entity(TABLE_CONTEXT)
-export class Context extends BaseEntity implements ContextOptions {
+export class Context extends BaseEntity implements ContextOptions, ContextRoute {
   @Column('simple-json')
   public channel: ChannelData;
 
@@ -192,13 +196,55 @@ export function extractRedirect(stage: Optional<Partial<ContextRedirectStage>>):
   };
 }
 
-export function redirectContext(original: Context, redirect: ContextRedirect): Context {
+export function redirectService(original: Context, redirect: ContextRedirect, services: ServiceModule, key: 'source' | 'target'): Listener {
+  // check forces
+  const forces = redirect.forces[key];
+  if (doesExist(forces)) {
+    if (forces.source === true) {
+      return mustExist(original.source);
+    }
+
+    if (forces.target === true) {
+      return mustExist(original.target);
+    }
+
+    if (doesExist(forces.service)) {
+      return services.getService(forces.service);
+    }
+  }
+
+  // check original
+  const originalListener = original[key];
+  if (doesExist(originalListener)) {
+    return originalListener;
+  }
+
+  // check defaults
+  const defaults = redirect.defaults[key];
+  if (doesExist(defaults)) {
+    if (defaults.source === true) {
+      return mustExist(original.source);
+    }
+
+    if (defaults.target === true) {
+      return mustExist(original.target);
+    }
+
+    if (doesExist(defaults.service)) {
+      return services.getService(defaults.service);
+    }
+  }
+
+  throw new NotFoundError();
+}
+
+export function redirectContext(original: Context, redirect: ContextRedirect, services: ServiceModule): Context {
   const channel = mustCoalesce(redirect.defaults.channel, original.channel, redirect.forces.channel);
   const name = mustCoalesce(redirect.defaults.name, original.name, redirect.forces.name);
   const uid = mustCoalesce(redirect.defaults.uid, original.uid, redirect.forces.uid);
   // loop up source and target services, user
-  const source = original.source;
-  const target = original.target;
+  const source = redirectService(original, redirect, services, 'source');
+  const target = redirectService(original, redirect, services, 'target');
 
   return new Context({
     channel,
