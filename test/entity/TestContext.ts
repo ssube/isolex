@@ -4,8 +4,10 @@ import { ineeda } from 'ineeda';
 import { Role } from '../../src/entity/auth/Role';
 import { Token } from '../../src/entity/auth/Token';
 import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
-import { Context } from '../../src/entity/Context';
+import { Context, redirectService, redirectServiceRoute } from '../../src/entity/Context';
+import { NotFoundError } from '../../src/error/NotFoundError';
 import { Listener } from '../../src/listener';
+import { ServiceModule } from '../../src/module/ServiceModule';
 import { describeLeaks, itLeaks } from '../helpers/async';
 
 describeLeaks('context entity', async () => {
@@ -181,5 +183,78 @@ describeLeaks('context entity', async () => {
       checkGrants: () => false,
     });
     expect(context.checkGrants(['test'])).to.equal(false);
+  });
+});
+
+describeLeaks('redirect helpers', async () => {
+  describeLeaks('redirect route', async () => {
+    itLeaks('should return the original source when source is set', async () => {
+      const original = ineeda<Context>({
+        source: ineeda<Listener>(),
+        target: ineeda<Listener>(),
+      });
+      const route = {
+        source: true,
+        target: false,
+      };
+      const sm = ineeda<ServiceModule>();
+      expect(redirectServiceRoute(original, route, sm)).to.equal(original.source);
+    });
+
+    itLeaks('should return the original target when target is set', async () => {
+      const original = ineeda<Context>({
+        source: ineeda<Listener>(),
+        target: ineeda<Listener>(),
+      });
+      const route = {
+        source: false,
+        target: true,
+      };
+      const sm = ineeda<ServiceModule>();
+      expect(redirectServiceRoute(original, route, sm)).to.equal(original.target);
+    });
+
+    itLeaks('should look up a service when service is set');
+
+    itLeaks('should return undefined when nothing is set', async () => {
+      expect(redirectServiceRoute(ineeda<Context>(), {}, ineeda<ServiceModule>())).to.equal(undefined);
+    });
+  });
+
+  describeLeaks('redirect service', async () => {
+    itLeaks('should return forced listener');
+
+    itLeaks('should return original listener', async () => {
+      const original = new Context({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        name: '',
+        source: ineeda<Listener>(),
+        uid: '',
+      });
+      expect(redirectService(original, {
+        defaults: {},
+        forces: {},
+      }, ineeda<ServiceModule>(), 'source')).to.equal(original.source);
+    });
+
+    itLeaks('should return default listener');
+
+    itLeaks('should throw when no listener is available', async () => {
+      const original = new Context({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        name: '',
+        uid: '',
+      });
+      expect(() => redirectService(original, {
+        defaults: {},
+        forces: {},
+      }, ineeda<ServiceModule>(), 'source')).to.throw(NotFoundError);
+    });
   });
 });
