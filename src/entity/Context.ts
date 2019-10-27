@@ -7,7 +7,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Listener } from '../listener';
 import { Parser } from '../parser';
 import { ServiceMetadata } from '../Service';
-import { doesExist, Optional } from '../utils';
+import { doesExist, mustCoalesce, Optional } from '../utils';
 import { Token } from './auth/Token';
 import { GRAPH_OUTPUT_USER, User } from './auth/User';
 import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
@@ -193,12 +193,19 @@ export function extractRedirect(stage: Optional<Partial<ContextRedirectStage>>):
 }
 
 export function redirectContext(original: Context, redirect: ContextRedirect): Context {
+  const channel = mustCoalesce(redirect.defaults.channel, original.channel, redirect.forces.channel);
+  const name = mustCoalesce(redirect.defaults.name, original.name, redirect.forces.name);
+  const uid = mustCoalesce(redirect.defaults.uid, original.uid, redirect.forces.uid);
   // loop up source and target services, user
+  const source = original.source;
+  const target = original.target;
 
   return new Context({
-    ...extractRedirect(redirect.defaults),
-    ...original,
-    ...extractRedirect(redirect.forces),
+    channel,
+    name,
+    source,
+    target,
+    uid,
   });
 }
 
