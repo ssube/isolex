@@ -26,16 +26,16 @@ export class LoopbackListener extends BaseListener<LoopbackListenerData> impleme
   }
 
   public async send(msg: Message): Promise<void> {
+    const ctx = mustExist(msg.context);
     const target = mustExist(this.target);
-    const context = await this.createContext({
-      ...mustExist(msg.context),
-      source: target,
-      target,
-    });
-    const outMsg = new Message({
-      ...msg,
-      context,
-    });
+
+    const outCtx = await this.createContext(ctx);
+    outCtx.source = target;
+    outCtx.target = target;
+
+    const outMsg = new Message(msg);
+    outMsg.context = outCtx;
+
     await this.bot.receive(outMsg);
   }
 

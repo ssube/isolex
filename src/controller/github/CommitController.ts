@@ -37,13 +37,13 @@ export class GithubCommitController extends BaseController<GithubCommitControlle
   public async getCommit(cmd: Command, ctx: Context): Promise<void> {
     const client = mustExist(this.client).client;
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
-    const repo = cmd.getHead('project');
+    const project = cmd.getHead('project');
     const ref = cmd.getHead('ref');
 
     const options = {
       owner,
       ref,
-      repo,
+      repo: project,
     };
     const checkPromise = client.checks.listForRef(options);
     const statusPromise = client.repos.getCombinedStatusForRef(options);
@@ -51,6 +51,9 @@ export class GithubCommitController extends BaseController<GithubCommitControlle
 
     const txd = await applyTransforms(this.transforms, cmd, TYPE_JSON, {
       checks: checks.data,
+      owner,
+      project,
+      ref,
       status: status.data,
     });
     const body = extractBody(txd);
