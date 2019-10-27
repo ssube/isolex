@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { stub } from 'sinon';
 
 import { Context } from '../../src/entity/Context';
-import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
+import { TemplateCompiler, testEq } from '../../src/utils/TemplateCompiler';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
@@ -60,9 +60,7 @@ describeLeaks('template compiler', async () => {
       const test = 'test-value';
       const data = {};
       const fn = stub().returns(test);
-      const { container } = await createContainer();
-      const compiler = await container.create(TemplateCompiler);
-      expect(compiler.testEq(test, test, {
+      expect(testEq.call(data, test, test, {
         data,
         fn,
         hash: '',

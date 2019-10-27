@@ -32,7 +32,7 @@ export class TemplateCompiler {
     this.compiler.registerHelper('withMap', this.withMap.bind(this));
 
     // test operators
-    this.compiler.registerHelper('eq', this.testEq.bind(this));
+    this.compiler.registerHelper('eq', testEq);
   }
 
   public compile(body: string): Template {
@@ -82,15 +82,15 @@ export class TemplateCompiler {
     return options.fn(args);
   }
 
-  public testEq(lh: unknown, rh: unknown, block: Handlebars.HelperOptions): string {
-    if (lh === rh) {
-      return block.fn(block.data);
-    } else {
-      return '';
-    }
-  }
-
   protected entriesOf(map: MapLike<string>): Array<[string, string]> {
     return entriesOf(map);
+  }
+}
+
+export function testEq(this: unknown, lh: unknown, rh: unknown, block: Handlebars.HelperOptions): string {
+  if (lh === rh) {
+    return block.fn(this);
+  } else {
+    return '';
   }
 }
