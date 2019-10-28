@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { stub } from 'sinon';
 
 import { Role } from '../../src/entity/auth/Role';
 import { Token } from '../../src/entity/auth/Token';
@@ -186,6 +187,16 @@ describeLeaks('context entity', async () => {
   });
 });
 
+const SOURCE_SERVICE = {
+  kind: 'test-source',
+  name: 'test-source',
+};
+
+const TARGET_SERVICE = {
+  kind: 'test-target',
+  name: 'test-target',
+};
+
 describeLeaks('redirect helpers', async () => {
   describeLeaks('redirect route', async () => {
     itLeaks('should return the original source when source is set', async () => {
@@ -222,7 +233,27 @@ describeLeaks('redirect helpers', async () => {
   });
 
   describeLeaks('redirect service', async () => {
-    itLeaks('should return forced listener');
+    itLeaks('should return forced listener', async () => {
+      const original = new Context({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        name: '',
+        source: ineeda<Listener>(),
+        target: ineeda<Listener>(),
+        uid: '',
+      });
+
+      expect(redirectService(original, {
+        defaults: {},
+        forces: {
+          source: {
+            target: true,
+          },
+        },
+      }, ineeda<ServiceModule>(), 'source')).to.equal(original.target);
+    });
 
     itLeaks('should return original listener', async () => {
       const original = new Context({
@@ -234,13 +265,36 @@ describeLeaks('redirect helpers', async () => {
         source: ineeda<Listener>(),
         uid: '',
       });
+
       expect(redirectService(original, {
         defaults: {},
         forces: {},
       }, ineeda<ServiceModule>(), 'source')).to.equal(original.source);
     });
 
-    itLeaks('should return default listener');
+    itLeaks('should return default listener', async () => {
+      const source = ineeda<Listener>();
+      const target = ineeda<Listener>();
+      const original = new Context({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        name: '',
+        uid: '',
+      });
+
+      expect(redirectService(original, {
+        defaults: {
+          source: {
+            service: TARGET_SERVICE,
+          },
+        },
+        forces: {},
+      }, ineeda<ServiceModule>({
+        getService: stub().withArgs(SOURCE_SERVICE).returns(source).withArgs(TARGET_SERVICE).returns(target),
+      }), 'source')).to.equal(target);
+    });
 
     itLeaks('should throw when no listener is available', async () => {
       const original = new Context({
@@ -251,6 +305,7 @@ describeLeaks('redirect helpers', async () => {
         name: '',
         uid: '',
       });
+
       expect(() => redirectService(original, {
         defaults: {},
         forces: {},
