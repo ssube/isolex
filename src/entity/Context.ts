@@ -95,8 +95,12 @@ export class Context extends BaseEntity implements ContextOptions, ContextRoute 
     super(options);
 
     if (doesExist(options)) {
-      if (isNil(options.name) || isNil(options.uid)) {
-        throw new MissingValueError('name and uid must be specified in context options');
+      if (isNil(options.name)) {
+        throw new MissingValueError('name must be specified in context options');
+      }
+
+      if (isNil(options.uid)) {
+        throw new MissingValueError('uid must be specified in context options');
       }
 
       this.channel = {
@@ -244,6 +248,7 @@ export function redirectContext(original: Context, redirect: ContextRedirect, se
   const channel = mustCoalesce(redirect.defaults.channel, original.channel, redirect.forces.channel);
   const name = mustCoalesce(redirect.defaults.name, original.name, redirect.forces.name);
   const uid = mustCoalesce(redirect.defaults.uid, original.uid, redirect.forces.uid);
+  const user = original.user;
   // loop up source and target services, user
   const source = redirectService(original, redirect, services, 'source');
   const target = redirectService(original, redirect, services, 'target');
@@ -254,6 +259,7 @@ export function redirectContext(original: Context, redirect: ContextRedirect, se
     source,
     target,
     uid,
+    user,
   });
 }
 
