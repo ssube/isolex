@@ -245,9 +245,9 @@ export function redirectService(original: Context, redirect: ContextRedirect, se
 }
 
 export function redirectContext(original: Context, redirect: ContextRedirect, services: ServiceModule): Context {
-  const channel = mustCoalesce(redirect.defaults.channel, original.channel, redirect.forces.channel);
-  const name = mustCoalesce(redirect.defaults.name, original.name, redirect.forces.name);
-  const uid = mustCoalesce(redirect.defaults.uid, original.uid, redirect.forces.uid);
+  const channel = mustCoalesce(redirect.forces.channel, original.channel, redirect.defaults.channel);
+  const name = mustCoalesce(redirect.forces.name, original.name, redirect.defaults.name);
+  const uid = mustCoalesce(redirect.forces.uid, original.uid, redirect.defaults.uid);
   const user = original.user;
   // loop up source and target services, user
   const source = redirectService(original, redirect, services, 'source');
