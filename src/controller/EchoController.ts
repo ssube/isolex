@@ -2,7 +2,7 @@ import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { Command, CommandVerb } from '../entity/Command';
-import { Context, redirectContext } from '../entity/Context';
+import { Context } from '../entity/Context';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_ECHO = 'echo';
@@ -18,11 +18,8 @@ export class EchoController extends BaseController<EchoControllerData> implement
   @Handler(NOUN_ECHO, CommandVerb.Create)
   @CheckRBAC()
   public async createEcho(cmd: Command, ctx: Context): Promise<void> {
-    const targetCtx = redirectContext(ctx, this.data.redirect, this.services);
-
-    this.logger.debug({ cmd, ctx, targetCtx }, 'echoing command');
-
-    return this.transformJSON(cmd, {}, targetCtx);
+    this.logger.debug({ cmd, ctx }, 'echoing command');
+    return this.transformJSON(cmd, {}, ctx);
   }
 
   @Handler(NOUN_ECHO, CommandVerb.Help)
