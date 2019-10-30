@@ -4130,10 +4130,10 @@ rollup-plugin-multi-entry@2.1.0:
   dependencies:
     matched "^1.0.2"
 
-rollup-plugin-node-externals@2.1.1:
-  version "2.1.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-node-externals/-/rollup-plugin-node-externals-2.1.1.tgz#fe7fd5304e6dea9cfb656d49d1d2c89d72f2e992"
-  integrity sha512-YCDa2LqsvpxraSsJB2p1GozP9CGrp25R3a57baFUcacJgpoI04UnBx18z4ucPCaCCnedvcgeh27BYr9fiEfyXg==
+rollup-plugin-node-externals@2.1.2:
+  version "2.1.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-node-externals/-/rollup-plugin-node-externals-2.1.2.tgz#13d15abad2a123b614bdd4908097e88753a98e54"
+  integrity sha512-8YhU16BuONV8aubHx59tYbLFgw/oP+pb4Tzdh2h62OaaBR16Kb0mXEpAmlBs7TNc8xtT0JzGaslUjxBzO03mgw==
 
 rollup-plugin-node-resolve@5.2.0:
   version "5.2.0"
