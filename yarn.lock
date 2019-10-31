@@ -4332,10 +4332,10 @@ shelljs@^0.8.2, shelljs@^0.8.3:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shiro-trie@0.4.8:
-  version "0.4.8"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/shiro-trie/-/shiro-trie-0.4.8.tgz#63b0dab00bd91c0003d09d5d7cabc0a1f38f4295"
-  integrity sha512-CtBcRIbueg6dnSE1XuFf03RX67GdSUFcb5+zhbTL+cESTd8Vjr42YvtHMKlOZvsLt0RmtbuLzslLix8E4nKFwg==
+shiro-trie@0.4.9:
+  version "0.4.9"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/shiro-trie/-/shiro-trie-0.4.9.tgz#854e89f40bf21b8f0e31987240aa6a5fdbbb4351"
+  integrity sha512-iNdNhhYLb9BsTOp242Wmk359ZiRZqAcGbMsxP0GQns0K8HMeO5zhOTFdnQE7ewgFGEPnmZaXPVHNU6zyhG+kYQ==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
