@@ -105,7 +105,7 @@
     "utf-8-validate": "5.0.2",
     "uuid": "3.3.3",
     "ws": "7.2.0",
-    "yargs-parser": "16.0.0"
+    "yargs-parser": "16.1.0"
   },
   "resolutions": {
     "**/lodash": "4.17.15"
