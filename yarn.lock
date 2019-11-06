@@ -148,13 +148,13 @@
     underscore "^1.9.1"
     ws "^6.1.0"
 
-"@microsoft/api-documenter@7.5.4":
-  version "7.5.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.5.4.tgz#4aaec26c010eea71c6d8a17955c3307c2e63aae4"
-  integrity sha512-N/mDVpf1V4g6UTbFlrsF9LT09SFTb362gm+ZnPUA1OAGV62SqBBe8ZJO7LPFyLo1UOYGUpfK+YgS6dlGKItxkg==
+"@microsoft/api-documenter@7.5.6":
+  version "7.5.6"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.5.6.tgz#b6f7688c6314347dc2dbcd63ea261d42dd8972a1"
+  integrity sha512-iyjjEipXJfshByE/wBJGdokGsdtOvUxC0/wd1efSByC5bkdcwXMu6+PvQxcSozYTXP7YK5FM8C5DeXe88mJDaw==
   dependencies:
-    "@microsoft/api-extractor-model" "7.5.2"
-    "@microsoft/node-core-library" "3.16.0"
+    "@microsoft/api-extractor-model" "7.5.4"
+    "@microsoft/node-core-library" "3.17.0"
     "@microsoft/ts-command-line" "4.3.4"
     "@microsoft/tsdoc" "0.12.14"
     colors "~1.2.1"
@@ -167,6 +167,14 @@
   integrity sha512-wDXQ6IvrVg7tp3iqA+7f7yrSzjUPQ2kVNKsrxD5AqbGeohsJYePbmWvz6V8yxxO7ZuM9W7V5zLY6pYh4epq8Dg==
   dependencies:
     "@microsoft/node-core-library" "3.16.0"
+    "@microsoft/tsdoc" "0.12.14"
+
+"@microsoft/api-extractor-model@7.5.4":
+  version "7.5.4"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.5.4.tgz#c5ad3823a59ee9c81b685e4f1a6f55e0e64218be"
+  integrity sha512-pzY1EVHw8dMCRBba8PDEV71vnsmvhOSgLUIXxB45Ts0Po69tz2H7YZQ4DsAetyv0aSLHG5QVXmGEn65A1DDvDQ==
+  dependencies:
+    "@microsoft/node-core-library" "3.17.0"
     "@microsoft/tsdoc" "0.12.14"
 
 "@microsoft/api-extractor@7.5.2":
@@ -193,6 +201,19 @@
     colors "~1.2.1"
     fs-extra "~7.0.1"
     jju "~1.4.0"
+    z-schema "~3.18.3"
+
+"@microsoft/node-core-library@3.17.0":
+  version "3.17.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/node-core-library/-/node-core-library-3.17.0.tgz#3576431711b65951b5059d564ac9dc0897f75743"
+  integrity sha512-i49LbZxPU35Vq50lV1oN331WPp+BmmhGs0Ee2PT/OAZR7qOm/UdQ3vpG70zhkLHymJNUyb0vUh0UU3ZHU6mgsg==
+  dependencies:
+    "@types/node" "8.10.54"
+    colors "~1.2.1"
+    fs-extra "~7.0.1"
+    jju "~1.4.0"
+    semver "~5.3.0"
+    timsort "~0.3.0"
     z-schema "~3.18.3"
 
 "@microsoft/ts-command-line@4.3.4":
@@ -4269,6 +4290,11 @@ semver@6.3.0, semver@^6.0.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
+semver@~5.3.0:
+  version "5.3.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
+  integrity sha1-myzl094C0XxgEq0yaqa00M9U+U8=
+
 send@0.17.1:
   version "0.17.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/send/-/send-0.17.1.tgz#c1d8b059f7900f7466dd4938bdc44e11ddb376c8"
@@ -4711,6 +4737,11 @@ through@2, "through@>=2.2.7 <3":
   version "2.3.8"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+timsort@~0.3.0:
+  version "0.3.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
+  integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
 tiny-emitter@2.1.0:
   version "2.1.0"
