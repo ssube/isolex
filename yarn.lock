@@ -891,10 +891,10 @@ atob-lite@^2.0.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/atob-lite/-/atob-lite-2.0.0.tgz#0fef5ad46f1bd7a8502c65727f0367d5ee43d696"
   integrity sha1-D+9a1G8b16hQLGVyfwNn1e5D1pY=
 
-aws-sdk@2.564.0:
-  version "2.564.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/aws-sdk/-/aws-sdk-2.564.0.tgz#d5fef5220436306c1c2f48487a3d631280a3d944"
-  integrity sha512-X5MbcebjQ3iPNBvZ27WZyMEVCleBLqot2hqVz2M9XvMDR4B8qqPuteWrtbLu+DVjENvVD7Oj0BOIjrYEVWacFA==
+aws-sdk@2.565.0:
+  version "2.565.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/aws-sdk/-/aws-sdk-2.565.0.tgz#dec20f3fb0d2ad56711cac57ef1ef0ffbecfe903"
+  integrity sha512-Vjoeo2ZZBsoWyBjGeMNOmeCez0v2COtpDYyNsHlxj1IPmAcSDGBRSOTOJh6CWjuPPe0r899byBW9lGaYTHcUBA==
   dependencies:
     buffer "^4.9.1"
     events "^1.1.1"
