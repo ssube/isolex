@@ -95,7 +95,7 @@
     "source-map-support": "0.5.16",
     "split-string": "6.1.0",
     "standard-version": "7.0.0",
-    "tslint": "5.20.0",
+    "tslint": "5.20.1",
     "tslint-clean-code": "0.2.10",
     "tslint-consistent-codestyle": "1.16.0",
     "tslint-etc": "1.9.1",
