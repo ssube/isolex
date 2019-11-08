@@ -557,10 +557,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/p-queue/-/p-queue-2.3.2.tgz#16bc5fece69ef85efaf2bce8b13f3ebe39c5a1c8"
   integrity sha512-eKAv5Ql6k78dh3ULCsSBxX6bFNuGjTmof5Q/T6PiECDq0Yf8IIn46jCyp3RJvCi8owaEmm3DZH1PEImjBMd/vQ==
 
-"@types/passport-jwt@3.0.2":
-  version "3.0.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/passport-jwt/-/passport-jwt-3.0.2.tgz#694bd88272472d6ec17c4eff6779e3716508995a"
-  integrity sha512-eUbpjmmLUbRKulDeR1y1G3t7uVfXRhTP3/TrtVS4F7s8AzvDPXr9DdHNWwQfx/KD2Mfos5UokqnpCjtp5Z/slg==
+"@types/passport-jwt@3.0.3":
+  version "3.0.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/passport-jwt/-/passport-jwt-3.0.3.tgz#47b6c43af668852d7c83e56a23ed9f4515dd1814"
+  integrity sha512-RlOCXiTitE8kazj9jZc6/BfGCSqnv2w/eYPDm3+3iNsquHn7ratu7oIUskZx9ZtnwMdpvdpy+Z/QYClocH5NvQ==
   dependencies:
     "@types/express" "*"
     "@types/jsonwebtoken" "*"
