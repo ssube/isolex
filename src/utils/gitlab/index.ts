@@ -5,6 +5,7 @@ import { INJECT_LOGGER, INJECT_REQUEST } from '../../BaseService';
 import { classLogger } from '../../logger';
 import { RequestFactory, RequestOptions } from '../Request';
 
+/* eslint-disable camelcase */
 export interface GroupOptions {
   group: string;
 }

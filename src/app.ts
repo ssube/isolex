@@ -47,7 +47,7 @@ export async function main(argv: Array<string>): Promise<ExitStatus> {
     return ExitStatus.Error;
   }
 
-  if (args.test) {
+  if (args.test === true) {
     logger.info('config is valid');
     return ExitStatus.Success;
   }

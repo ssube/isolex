@@ -34,7 +34,7 @@ export function Handler(verb: CommandVerb, path: string, grants: Array<string> =
     path,
     verb,
   };
-  // tslint:disable-next-line:no-any
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   return (target: any, key: string, desc?: PropertyDescriptor) => {
     Reflect.set(target[key], HANDLER_KEY, meta);
   };

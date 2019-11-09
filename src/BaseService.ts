@@ -37,9 +37,8 @@ export interface InjectedServiceOptions {
   [INJECT_TEMPLATE]?: TemplateCompiler;
 }
 
-// tslint:disable-next-line:no-any
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export type BaseServiceData = any;
-// tslint:disable-next-line:no-useless-intersection
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
 @Inject(INJECT_LOGGER, INJECT_SCHEMA, INJECT_SERVICES)
@@ -86,7 +85,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
   public abstract start(): Promise<void>;
   public abstract stop(): Promise<void>;
 
-  public getId(persistent: boolean = false): string {
+  public getId(persistent = false): string {
     if (persistent) {
       return `${this.kind}:${this.name}`;
     } else {

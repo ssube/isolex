@@ -64,13 +64,11 @@ describeLeaks('base parser', async () => {
     const { container } = await createServiceContainer();
     const parser = await createService(container, TestParser, {
       [INJECT_STORAGE]: ineeda<Storage>({
-        getRepository: () => {
-          return ineeda<Repository<Context>>({
-            save(ctx: Context) {
-              return ctx;
-            }
-          });
-        },
+        getRepository: () => ineeda<Repository<Context>>({
+          save(ctx: Context) {
+            return ctx;
+          }
+        }),
       }),
       data: {
         defaultCommand: {

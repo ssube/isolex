@@ -14,12 +14,12 @@ import { GithubClient } from '../../../src/utils/github';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createService, createServiceContainer } from '../../helpers/container';
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any, camelcase */
 const TEST_TRANSFORM = 'test-transform';
 
 interface ClientResponse<T> {
-  (params: any): Promise<Response<T>>;
   endpoint: any;
+  (params: any): Promise<Response<T>>;
 }
 
 describeLeaks('github commit controller', async () => {

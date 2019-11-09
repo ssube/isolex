@@ -19,7 +19,7 @@ export class Role extends BaseEntity implements RoleOptions {
   @Column({
     unique: true,
   })
-  public name: string = '';
+  public name = '';
 
   @Column('simple-json')
   public grants: Array<string> = [];

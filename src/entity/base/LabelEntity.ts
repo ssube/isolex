@@ -14,7 +14,7 @@ export abstract class LabelEntity extends BaseEntity {
   @Column({
     name: 'labels',
   })
-  protected labelStr: string = '';
+  protected labelStr = '';
 
   constructor(options: LabelEntityOptions) {
     super(options);

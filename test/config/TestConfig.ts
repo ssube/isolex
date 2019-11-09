@@ -11,7 +11,7 @@ describeLeaks('load config helper', async () => {
     expect(config.metadata.kind).to.equal('bot');
   });
 
-  itLeaks('should throw when config is missing', async () => {
-    return expect(loadConfig('missing.yml', join(__dirname, '..', 'docs'))).to.eventually.be.rejectedWith(NotFoundError);
-  });
+  itLeaks('should throw when config is missing', async () =>
+    expect(loadConfig('missing.yml', join(__dirname, '..', 'docs'))).to.eventually.be.rejectedWith(NotFoundError)
+  );
 });

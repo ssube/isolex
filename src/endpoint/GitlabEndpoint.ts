@@ -16,11 +16,11 @@ import { TemplateScope } from '../utils/Template';
 import { BaseEndpointOptions, STATUS_NOTFOUND, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpoint, HookEndpointData } from './HookEndpoint';
 
+/* eslint-disable @typescript-eslint/no-explicit-any, camelcase */
 export interface GitlabBaseWebhook {
   object_kind: string;
 }
 
-// tslint:disable:no-any
 export interface GitlabIssueWebhook extends GitlabBaseWebhook {
   object_kind: 'issue';
   user: any;
@@ -89,7 +89,7 @@ export interface GitlabPushWebhook extends GitlabBaseWebhook {
   commits: Array<any>;
   total_commits_count: number;
 }
-// tslint:enable:no-any
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export type GitlabWebhook = GitlabBuildWebhook | GitlabIssueWebhook | GitlabNoteWebhook | GitlabPipelineWebhook | GitlabPushWebhook;
 

@@ -80,8 +80,9 @@ describeLeaks('gitlab endpoint', async () => {
         await endpoint.postHook(ineeda<Request>({
           body: {
             ...eventData.data,
+            // eslint-disable-next-line camelcase
             object_kind: eventData.name,
-          // tslint:disable-next-line:no-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any,
         }), ineeda<Response>({
           sendStatus,

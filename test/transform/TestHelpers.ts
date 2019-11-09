@@ -10,7 +10,7 @@ import { entityData } from '../../src/transform/BaseTransform';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 
-// tslint:disable:no-identical-functions
+/* eslint-disable sonarjs/no-identical-functions, @typescript-eslint/no-explicit-any */
 describeLeaks('apply transforms helper', async () => {
   itLeaks('should return empty output with no transforms', async () => {
     const output = await applyTransforms([], ineeda<Message>({}), TYPE_TEXT, {});
@@ -43,12 +43,10 @@ describeLeaks('apply transforms helper', async () => {
       }),
       ineeda<Transform>({
         check: () => Promise.resolve(true),
-        transform: (entity: unknown, type: unknown, data: unknown) => {
-          return {
-            ...data,
-            bar: 9,
-          };
-        },
+        transform: (entity: unknown, type: unknown, data: any) => ({
+          ...data,
+          bar: 9,
+        }),
       }),
     ], ineeda<Message>({}), TYPE_TEXT, input);
 
@@ -60,21 +58,17 @@ describeLeaks('apply transforms helper', async () => {
     const output = await applyTransforms([
       ineeda<Transform>({
         check: () => Promise.resolve(true),
-        transform: (entity: unknown, type: unknown, data: unknown) => {
-          return {
-            ...data,
-            foo: 3,
-          };
-        },
+        transform: (entity: unknown, type: unknown, data: any) => ({
+          ...data,
+          foo: 3,
+        }),
       }),
       ineeda<Transform>({
         check: () => Promise.resolve(false),
-        transform: (entity: unknown, type: unknown, data: unknown) => {
-          return {
-            ...data,
-            bar: 9,
-          };
-        },
+        transform: (entity: unknown, type: unknown, data: any) => ({
+          ...data,
+          bar: 9,
+        }),
       }),
     ], ineeda<Message>({}), TYPE_TEXT, {});
 
@@ -107,14 +101,12 @@ describeLeaks('entity data helper', async () => {
   });
 
   itLeaks('should throw on unknown entities', async () => {
-    // tslint:disable:no-any
     expect(() => entityData(3 as any)).to.throw(InvalidArgumentError);
     expect(() => entityData('test' as any)).to.throw(InvalidArgumentError);
   });
 });
 
 describeLeaks('extract body helper', async () => {
-  /* tslint:disable:no-any */
   itLeaks('should throw if body is not an array', async () => {
     expect(() => extractBody({
       body: 'test' as any,

@@ -17,10 +17,10 @@ export class Tick extends BaseEntity {
   public id?: string;
 
   @Column()
-  public intervalId: string = '';
+  public intervalId = '';
 
   @Column()
-  public status: number = 0;
+  public status = 0;
 
   constructor(options: TickOptions) {
     super(options);

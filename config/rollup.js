@@ -1,11 +1,11 @@
 import { join, sep } from 'path';
 import commonjs from 'rollup-plugin-commonjs';
-import externals from 'rollup-plugin-node-externals';
+import { eslint } from 'rollup-plugin-eslint';
 import json from 'rollup-plugin-json';
 import multiEntry from 'rollup-plugin-multi-entry';
-import replace from 'rollup-plugin-replace';
+import externals from 'rollup-plugin-node-externals';
 import resolve from 'rollup-plugin-node-resolve';
-import tslint from 'rollup-plugin-tslint';
+import replace from 'rollup-plugin-replace';
 import typescript from 'rollup-plugin-typescript2';
 import yaml from 'rollup-plugin-yaml';
 
@@ -103,8 +103,8 @@ const bundle = {
 		commonjs({
 			namedExports,
 		}),
-		tslint({
-			configuration: join('.', 'config', 'tslint.json'),
+		eslint({
+			configFile: join('.', 'config', 'eslint.json'),
 			exclude: [
 				join('node_modules', '**'),
 				join('src', 'resource'),

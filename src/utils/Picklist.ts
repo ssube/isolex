@@ -14,12 +14,10 @@ export interface PicklistOptions<T> {
 export class Picklist<T> implements PicklistOptions<T> {
   public static create<T>(...items: Array<T>): Picklist<T> {
     return new Picklist({
-      data: items.map((it) => {
-        return {
-          value: it,
-          weight: 1,
-        };
-      }),
+      data: items.map((it) => ({
+        value: it,
+        weight: 1,
+      })),
     });
   }
 
@@ -31,7 +29,7 @@ export class Picklist<T> implements PicklistOptions<T> {
     this.sum = this.data.reduce((p, d) => p + d.weight, 0);
   }
 
-  get length() {
+  public get length() {
     return this.data.length;
   }
 

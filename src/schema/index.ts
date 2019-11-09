@@ -10,8 +10,6 @@ export interface SchemaResult {
 }
 
 export class Schema {
-  private readonly children: Map<string, object>;
-
   public static formatError(err: Ajv.ErrorObject): string {
     switch (err.keyword) {
       case 'additionalProperties':
@@ -23,6 +21,8 @@ export class Schema {
   }
 
   protected compiler: Ajv.Ajv;
+
+  private readonly children: Map<string, object>;
 
   constructor(schema: object = SCHEMA_GLOBAL) {
     this.children = new Map();
@@ -49,7 +49,7 @@ export class Schema {
     }
   }
 
-  public match(value: unknown, ref: string = 'isolex#'): SchemaResult {
+  public match(value: unknown, ref = 'isolex#'): SchemaResult {
     const valid = this.compiler.validate({ $ref: ref }, value);
     if (valid === true) {
       return {

@@ -39,9 +39,9 @@ describeLeaks('base endpoint', async () => {
     await endpoint.createRouter({
       passport: ineeda<passport.Authenticator>(),
       router: ineeda<Router>({
-          get,
-        }),
-      });
+        get,
+      }),
+    });
 
     expect(get).to.have.been.calledOnce.and.calledWithExactly('/test', match.func);
   });

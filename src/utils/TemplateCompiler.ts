@@ -62,7 +62,7 @@ export class TemplateCompiler {
   /**
    * Trim the value and add ellipsis if possible.
    */
-  public formatTrim(value: string, max: number = 10, tail = '...'): string {
+  public formatTrim(value: string, max = 10, tail = '...'): string {
     this.logger.debug({ max, tail, value }, 'trimming string');
     return trim(value, max, tail);
   }
@@ -87,6 +87,9 @@ export class TemplateCompiler {
   }
 }
 
+/**
+ * @this unknown
+ */
 export function testEq(this: unknown, lh: unknown, rh: unknown, block: Handlebars.HelperOptions): string {
   if (lh === rh) {
     return block.fn(this);

@@ -79,7 +79,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * listener identifier
    */
   @Column()
-  public issuer: string = '';
+  public issuer = '';
 
   /**
    * `sub` (Subject) claim
@@ -88,7 +88,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    * userName
    */
   @Column()
-  public subject: string = '';
+  public subject = '';
 
   @ManyToOne((type) => User, (user) => user.id, {
     cascade: true,

@@ -33,6 +33,7 @@ export interface ResultFormatOptions {
   };
 }
 
+/* eslint-disable complexity */
 export function formatResult(body: unknown, scope: TemplateScope, options: ResultFormatOptions): string {
   if (isNil(body)) {
     return 'nil result';

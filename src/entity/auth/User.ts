@@ -43,7 +43,7 @@ export class User extends BaseEntity implements UserOptions {
   @Column({
     unique: true,
   })
-  public name: string = '';
+  public name = '';
 
   @Column({
     name: 'roles',

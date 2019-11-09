@@ -41,7 +41,7 @@ export class TestModule extends Module {
 /**
  * Create a DI container for tests.
  */
-export async function createContainer(...modules: Array<Module>): Promise<{ container: Container, module: Module }> {
+export async function createContainer(...modules: Array<Module>): Promise<{ container: Container; module: Module }> {
   const module = new TestModule();
   const container = Container.from(module, ...modules);
   await container.configure({
@@ -54,9 +54,9 @@ export async function createContainer(...modules: Array<Module>): Promise<{ cont
  * Create a DI container for tests with a stub service module that will create, but not get, services.
  */
 export async function createServiceContainer(...modules: Array<Module>): Promise<{
-  container: Container,
-  module: Module,
-  services: ServiceModule,
+  container: Container;
+  module: Module;
+  services: ServiceModule;
 }> {
   const services = new ServiceModule({
     timeout: 100,
@@ -84,11 +84,11 @@ export async function createService<
   TService,
   TData extends BotServiceData,
   TOptions extends BotServiceOptions<TData> = BotServiceOptions<TData>,
-  >(
-    container: Container,
-    type: Constructor<TService, TOptions>,
-    options: Partial<TOptions>
-  ): Promise<TService> {
+>(
+  container: Container,
+  type: Constructor<TService, TOptions>,
+  options: Partial<TOptions>
+): Promise<TService> {
   const schema = new Schema(); // tests use the real schema :D
   const locale = await container.create(Locale, {
     data: {

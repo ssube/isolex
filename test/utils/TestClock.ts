@@ -31,7 +31,7 @@ describeLeaks('utils', async () => {
       expect(now).to.equal(Math.floor(now));
     });
 
-    /* tslint:disable:no-any */
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     itLeaks('should return the current date', async () => {
       const date = spy() as any;
       const { container } = await createContainer();

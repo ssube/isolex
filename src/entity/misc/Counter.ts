@@ -16,13 +16,13 @@ export class Counter implements CounterOptions {
   public id?: string;
 
   @Column()
-  public count: number = 0;
+  public count = 0;
 
   @Column()
-  public name: string = '';
+  public name = '';
 
   @Column()
-  public roomId: string = '';
+  public roomId = '';
 
   constructor(options: CounterOptions) {
     if (doesExist(options)) {

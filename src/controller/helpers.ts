@@ -17,12 +17,12 @@ export function createCommandCompletion(cmd: Command, key: string, msg: string):
 export function createCompletion(cmd: CommandOptions, key: string, msg: string, parser: Parser): Command {
   const existingData = makeDict(cmd.data);
   const data = makeMap({
-      ...existingData,
-      key: [key],
-      msg: [msg],
-      noun: [cmd.noun],
-      parser: [parser.id],
-      verb: [cmd.verb],
+    ...existingData,
+    key: [key],
+    msg: [msg],
+    noun: [cmd.noun],
+    parser: [parser.id],
+    verb: [cmd.verb],
   });
   return new Command({
     context: cmd.context,
