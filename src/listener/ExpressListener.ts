@@ -110,7 +110,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected createServer(): Promise<http.Server> {
     return new Promise<http.Server>((res, rej) => {
       const app = mustExist(this.express);
-      /* eslint-disable-next-line prefer-const */
+      /* eslint-disable prefer-const */
       let server: http.Server;
       server = app.listen(this.data.listen.port, this.data.listen.address, () => {
         res(server);
@@ -218,7 +218,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     // grab existing session
     auth.deserializeUser((ctx: Context, done) => {
       this.logger.debug({ ctx }, 'deserializing request context');
-      // tslint:disable-next-line:no-null-keyword
+      /* eslint-disable-next-line no-null/no-null */
       done(null, this.sessions.get(ctx.uid));
     });
 

@@ -20,6 +20,7 @@ export type KubernetesBaseControllerOptions<TData extends KubernetesBaseControll
 
 @Inject()
 export class KubernetesBaseController<TData extends KubernetesBaseControllerData> extends BaseController<TData> implements Controller {
+  /* eslint-disable-next-line no-useless-constructor */
   constructor(options: KubernetesBaseControllerOptions<TData>, schemaPath: string, nouns: Array<string>) {
     super(options, schemaPath, nouns);
   }

@@ -41,6 +41,7 @@ export class User extends BaseEntity implements UserOptions {
   public locale: UserLocale;
 
   @Column({
+    type: 'varchar',
     unique: true,
   })
   public name = '';

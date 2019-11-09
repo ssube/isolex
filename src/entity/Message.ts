@@ -23,7 +23,9 @@ export class Message extends LabelEntity implements MessageEntityOptions {
     return it instanceof Message;
   }
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public body = '';
 
   @OneToOne((type) => Context, (context) => context.id, {

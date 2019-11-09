@@ -17,13 +17,17 @@ export const TABLE_KEYWORD = 'keyword';
 
 @Entity(TABLE_KEYWORD)
 export class Keyword extends BaseCommand implements KeywordOptions {
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public controllerId = '';
 
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @PrimaryColumn()
+  @PrimaryColumn({
+    type: 'varchar',
+  })
   public key = '';
 
   constructor(options: KeywordOptions) {

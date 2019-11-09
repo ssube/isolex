@@ -59,16 +59,15 @@ export class GithubListener extends SessionListener<GithubListenerData> {
     const [owner, repo] = ctx.channel.id.split('/');
     const [type, issue] = ctx.channel.thread.split('/');
     const options = {
-        body: msg.body,
-        number: Number(issue),
-        owner,
-        repo,
-      };
+      body: msg.body,
+      number: Number(issue),
+      owner,
+      repo,
+    };
 
     if (type === 'issues') {
       this.logger.debug(options, 'commenting on github issue');
       await mustExist(this.client).client.issues.createComment(options);
-      return;
     } else {
       this.logger.warn({ issue, type }, 'unable to comment on github issue type');
     }
@@ -109,7 +108,7 @@ export class GithubListener extends SessionListener<GithubListenerData> {
     const lastTick = await this.tickRepository.findOne({
       order: {
         createdAt: 'DESC',
-        /* tslint:disable-next-line:no-any */
+        /* eslint-disable @typescript-eslint/no-explicit-any */
       } as any,
       where: {
         intervalId: this.id,

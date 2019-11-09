@@ -14,7 +14,9 @@ export interface BaseCommandOptions extends DataEntityOptions<CommandValue> {
 }
 
 export abstract class BaseCommand extends DataEntity<CommandValue> {
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public noun = '';
 
   @Column()

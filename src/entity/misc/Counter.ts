@@ -15,13 +15,19 @@ export class Counter implements CounterOptions {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @Column()
+  @Column({
+    type: 'int',
+  })
   public count = 0;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public name = '';
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public roomId = '';
 
   constructor(options: CounterOptions) {

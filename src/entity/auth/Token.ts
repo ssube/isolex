@@ -78,7 +78,9 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    *
    * listener identifier
    */
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public issuer = '';
 
   /**
@@ -87,7 +89,9 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
    *
    * userName
    */
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public subject = '';
 
   @ManyToOne((type) => User, (user) => user.id, {

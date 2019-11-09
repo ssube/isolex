@@ -87,7 +87,7 @@ export abstract class BaseGenerator<TData extends GeneratorData> extends BotServ
       // typeorm requires an order for toString, which is not a column
       order: {
         updatedAt: 'DESC',
-        /* tslint:disable-next-line:no-any */
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } as any,
       take: 1,
       where: {
