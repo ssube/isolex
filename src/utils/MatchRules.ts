@@ -50,7 +50,7 @@ export class MatchRules {
 
     for (const rule of this.rules) {
       const values = JSONPath({
-        /* tslint:disable-next-line:no-any */
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         json: data as any,
         path: rule.key,
       });
@@ -123,6 +123,7 @@ export class MatchRules {
   }
 
   public removeMatches(original: string): string {
+    /* eslint-disable-next-line arrow-body-style */
     return this.rules.reduce((prev, rule) => {
       return rule.values.reduce((innerPrev, value) => {
         if (doesExist(value.regexp)) {

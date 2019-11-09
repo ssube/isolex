@@ -110,7 +110,6 @@ export class LearnController extends BaseController<LearnControllerData> impleme
 
     this.logger.debug({ cmd, keyword, merged }, 'executing keyword command');
     await this.bot.executeCommand(merged);
-    return;
   }
 
   @Handler(NOUN_KEYWORD, CommandVerb.Help)

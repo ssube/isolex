@@ -88,7 +88,7 @@ describeLeaks('match utility', async () => {
       });
       expect(match.matchValue({
         number: 3,
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any, 'bar')).to.equal(false);
     });
   });
@@ -164,7 +164,7 @@ describeLeaks('match utility', async () => {
     itLeaks('should only remove matches', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         values: [{ number: 3 } as any],
       });
 

@@ -129,6 +129,7 @@ export interface WeatherReply {
     temp: number;
     humidity: number;
     pressure: number;
+    /* eslint-disable camelcase */
     temp_min: number;
     temp_max: number;
   };

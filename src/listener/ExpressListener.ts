@@ -110,6 +110,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
   protected createServer(): Promise<http.Server> {
     return new Promise<http.Server>((res, rej) => {
       const app = mustExist(this.express);
+      /* eslint-disable-next-line prefer-const */
       let server: http.Server;
       server = app.listen(this.data.listen.port, this.data.listen.address, () => {
         res(server);
@@ -210,7 +211,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     // sessions are saved when created and keyed by uid, so pass that
     auth.serializeUser((ctx: Context, done) => {
       this.logger.debug({ ctx }, 'serializing request context');
-      // tslint:disable-next-line:no-null-keyword
+      /* eslint-disable-next-line no-null/no-null */
       done(null, ctx.uid);
     });
 
@@ -226,7 +227,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 }
 
 export function getRequestContext(req: Request): Context {
-  /* tslint:disable-next-line:no-any */
+  /* eslint-disable-next-line no-null/no-null, @typescript-eslint/no-explicit-any */
   const user = req.user as any;
   if (doesExist(user)) {
     return user;

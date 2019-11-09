@@ -82,7 +82,7 @@ export async function createEndpoint<
     data: {
       ...TEST_DATA,
       ...data,
-      // tslint:disable-next-line:no-any
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     } as any,
     metadata: TEST_METADATA,
   });

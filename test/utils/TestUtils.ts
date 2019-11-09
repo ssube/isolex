@@ -19,14 +19,14 @@ describeLeaks('utils', async () => {
 
     itLeaks('should count an unknown argument as 0', async () => {
       expect(countOf(undefined)).to.equal(0, 'undefined');
-      // tslint:disable-next-line:no-null-keyword
+      // eslint-disable-next-line no-null/no-null
       expect(countOf(null)).to.equal(0, 'null');
     });
   });
 
   describeLeaks('filter nil', async () => {
     itLeaks('should remove nil items', async () => {
-      // tslint:disable-next-line:no-null-keyword
+      // eslint-disable-next-line no-null/no-null
       expect(filterNil([1, undefined, 2, null, 3])).to.deep.equal([1, 2, 3]);
     });
   });

@@ -39,6 +39,7 @@ export async function loadModules(config: BotDefinition, logger: Logger) {
 
   for (const p of config.data.modules) {
     try {
+      /* eslint-disable-next-line @typescript-eslint/no-var-requires */
       const nodeModule = require(p.require);
       const moduleType = nodeModule[p.export] as ModuleCtor;
 

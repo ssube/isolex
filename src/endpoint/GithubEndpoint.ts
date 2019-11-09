@@ -20,7 +20,7 @@ export interface GithubEndpointData extends HookEndpointData {
 
 export type GithubEndpointOptions = BaseEndpointOptions<GithubEndpointData>;
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 @Inject(INJECT_METRICS, INJECT_STORAGE)
 export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
   protected readonly hookCounter: Counter;

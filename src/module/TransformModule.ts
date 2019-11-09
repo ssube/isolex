@@ -12,5 +12,5 @@ export class TransformModule extends BaseModule {
     this.bindService(FlattenTransform);
     this.bindService(JsonpathTransform);
     this.bindService(TemplateTransform);
- }
+  }
 }

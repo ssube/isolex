@@ -27,13 +27,13 @@ export class Fragment extends BaseCommand implements FragmentOptions {
   public id?: string;
 
   @Column()
-  public key: string = '';
+  public key = '';
 
   @Column()
-  public parserId: string = '';
+  public parserId = '';
 
   @Column()
-  public userId: string = '';
+  public userId = '';
 
   constructor(options: FragmentOptions) {
     super(options);

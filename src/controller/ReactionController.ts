@@ -33,13 +33,11 @@ export class ReactionController extends BaseController<ReactionControllerData> i
   constructor(options: BaseControllerOptions<ReactionControllerData>) {
     super(options, 'isolex#/definitions/service-controller-reaction', [NOUN_REACTION]);
 
-    this.reactions = options.data.reactions.map((r) => {
-      return {
-        add: r.add,
-        chance: r.chance,
-        match: new MatchRules(r.match),
-      };
-    });
+    this.reactions = options.data.reactions.map((r) => ({
+      add: r.add,
+      chance: r.chance,
+      match: new MatchRules(r.match),
+    }));
   }
 
   @Handler(NOUN_REACTION, CommandVerb.Create)

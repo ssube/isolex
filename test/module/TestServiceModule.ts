@@ -35,6 +35,7 @@ async function createModule() {
   return { container, metadata, module, svc };
 }
 
+/* eslint-disable @typescript-eslint/unbound-method */
 describeLeaks('DI modules', async () => {
   describeLeaks('service module', async () => {
     it('should notify child services of events', async () => {

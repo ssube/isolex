@@ -36,7 +36,7 @@ describe('math utils', () => {
 
   describe('format result', () => {
     it('should format nil results', () => {
-      /* tslint:disable-next-line:no-null-keyword */
+      /* eslint-disable-next-line no-null/no-null */
       expect(formatResult(null, TEST_SCOPE, TEST_OPTIONS)).to.equal(NIL_RESULT);
       expect(formatResult(undefined, TEST_SCOPE, TEST_OPTIONS)).to.equal(NIL_RESULT);
     });

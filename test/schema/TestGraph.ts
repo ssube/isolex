@@ -21,7 +21,7 @@ const TEST_SCHEMA = {
   name: 'test-schema',
 };
 
-// tslint:disable:no-identical-functions
+/* eslint-disable sonarjs/no-identical-functions */
 describeLeaks('graph schema', async () => {
   itLeaks('should execute commands', async () => {
     const { container } = await createServiceContainer();
@@ -83,13 +83,11 @@ describeLeaks('graph schema', async () => {
         sendMessage,
       }),
       [INJECT_STORAGE]: ineeda<Storage>({
-        getRepository: () => {
-          return ineeda<Repository<Command>>({
-            async findOne(id: string) {
-              return ineeda.instanceof(Command);
-            }
-          });
-        },
+        getRepository: () => ineeda<Repository<Command>>({
+          async findOne(id: string) {
+            return ineeda.instanceof(Command);
+          }
+        }),
       }),
       data: {
         filters: [],
@@ -113,13 +111,11 @@ describeLeaks('graph schema', async () => {
         sendMessage,
       }),
       [INJECT_STORAGE]: ineeda<Storage>({
-        getRepository: () => {
-          return ineeda<Repository<Message>>({
-            async findOne(id: string) {
-              return ineeda.instanceof(Message);
-            }
-          });
-        },
+        getRepository: () => ineeda<Repository<Message>>({
+          async findOne(id: string) {
+            return ineeda.instanceof(Message);
+          }
+        }),
       }),
       data: {
         filters: [],
@@ -143,13 +139,11 @@ describeLeaks('graph schema', async () => {
         sendMessage,
       }),
       [INJECT_STORAGE]: ineeda<Storage>({
-        getRepository: () => {
-          return ineeda<Repository<Message>>({
-            async findOne(id: string) {
-              return ineeda.instanceof(Message);
-            }
-          });
-        },
+        getRepository: () => ineeda<Repository<Message>>({
+          async findOne(id: string) {
+            return ineeda.instanceof(Message);
+          }
+        }),
       }),
       data: {
         filters: [],
@@ -177,13 +171,11 @@ describeLeaks('graph schema', async () => {
         sendMessage,
       }),
       [INJECT_STORAGE]: ineeda<Storage>({
-        getRepository: () => {
-          return ineeda<Repository<Message>>({
-            async findOne(id: string) {
-              return ineeda.instanceof(Message);
-            }
-          });
-        },
+        getRepository: () => ineeda<Repository<Message>>({
+          async findOne(id: string) {
+            return ineeda.instanceof(Message);
+          }
+        }),
       }),
       data: {
         filters: [],

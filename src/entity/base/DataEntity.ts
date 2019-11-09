@@ -16,7 +16,7 @@ export abstract class DataEntity<TVal> extends LabelEntity {
   @Column({
     name: 'data',
   })
-  protected dataStr: string = '';
+  protected dataStr = '';
 
   constructor(options: DataEntityOptions<TVal>) {
     super(options);

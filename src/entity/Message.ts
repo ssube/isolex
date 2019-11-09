@@ -24,7 +24,7 @@ export class Message extends LabelEntity implements MessageEntityOptions {
   }
 
   @Column()
-  public body: string = '';
+  public body = '';
 
   @OneToOne((type) => Context, (context) => context.id, {
     cascade: true,

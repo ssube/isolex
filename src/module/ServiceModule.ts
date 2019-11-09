@@ -114,7 +114,7 @@ export class ServiceModule extends Module implements ServiceLifecycle {
       }
     }
     mustExist(this.logger).error({ metadata }, 'service not found');
-    throw new NotFoundError(`service not found`);
+    throw new NotFoundError('service not found');
   }
 
   public listServices() {

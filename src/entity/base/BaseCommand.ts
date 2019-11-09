@@ -15,7 +15,7 @@ export interface BaseCommandOptions extends DataEntityOptions<CommandValue> {
 
 export abstract class BaseCommand extends DataEntity<CommandValue> {
   @Column()
-  public noun: string = '';
+  public noun = '';
 
   @Column()
   public verb: CommandVerb = CommandVerb.Help;
@@ -45,7 +45,7 @@ export abstract class BaseCommand extends DataEntity<CommandValue> {
   public getHeadOrNumber(key: string, defaultValue: number): number {
     if (this.has(key)) {
       const value = this.getHead(key);
-      // tslint:disable-next-line:no-any
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       if (isNaN(value as any)) {
         return defaultValue;
       } else {

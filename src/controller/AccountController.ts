@@ -62,9 +62,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   @CheckRBAC()
   public async getGrant(cmd: Command, ctx: Context): Promise<void> {
     const grants = cmd.get('grants');
-    const results = grants.map((p) => {
-      return `\`${p}: ${ctx.checkGrants([p])}\``;
-    }).join('\n');
+    const results = grants.map((p) => `*${p}*: ${ctx.checkGrants([p])}`).join('\n');
     return this.reply(ctx, results);
   }
 
@@ -72,9 +70,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   @CheckRBAC()
   public async listGrants(cmd: Command, ctx: Context): Promise<void> {
     const grants = cmd.get('grants');
-    const results = grants.map((p) => {
-      return `\`${p}: ${ctx.listGrants([p])}\``;
-    }).join('\n');
+    const results = grants.map((p) => `*${p}*: ${ctx.listGrants([p])}`).join('\n');
     return this.reply(ctx, results);
   }
 

@@ -3,6 +3,7 @@ import { Command } from '../entity/Command';
 import { Message } from '../entity/Message';
 import { Service } from '../Service';
 
+/* eslint-disable no-magic-numbers */
 export enum FilterBehavior {
   /**
    * Drop the entity and skip any further processing.

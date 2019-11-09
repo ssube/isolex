@@ -19,16 +19,16 @@ const mapValue = 'value';
 const singleItem = new Map([[mapKey, mapValue]]);
 const multiItem = new Map([
   [mapKey, [mapValue]],
-  // tslint:disable
+  /* eslint-disable */
   ['nilKey', null as any],
   ['nilValue', [null]],
-  // tslint:enable
+  /* eslint-enable */
 ]);
 
 describeLeaks('map utils', async () => {
   describeLeaks('make dict', async () => {
     itLeaks('should return an empty dict for nil values', async () => {
-      /* tslint:disable-next-line:no-null-keyword */
+      /* eslint-disable-next-line no-null/no-null */
       expect(makeDict(null)).to.deep.equal({});
       expect(makeDict(undefined)).to.deep.equal({});
     });
@@ -135,7 +135,7 @@ describeLeaks('map utils', async () => {
     });
 
     it('should return empty entries for nil values', () => {
-      // tslint:disable-next-line:no-null-keyword
+      /* eslint-disable-next-line no-null/no-null */
       expect(entriesOf(null)).to.deep.equal([]);
       expect(entriesOf(undefined)).to.deep.equal([]);
     });

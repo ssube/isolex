@@ -20,7 +20,7 @@ const TEST_DATA = {
   },
 };
 
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 describeLeaks('github client', async () => {
   itLeaks('should poll for new tokens', async () => {
     const getInstallationAccessToken = stub().returns('test');
