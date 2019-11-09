@@ -23,12 +23,13 @@ plugins:
       languages:
         typescript:
           mass_threshold: 225
+  eslint:
+    enabled: true
+    config:
+      config: config/eslint.json
   fixme:
     enabled: true
   markdownlint:
     enabled: true
   shellcheck:
     enabled: true
-  tslint:
-    enabled: true
-    config: config/tslint.cc.json
