@@ -176,8 +176,6 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       this.logger.debug({ reaction }, 'adding reaction to thread');
       await thread.react(reaction);
     }
-
-    return;
   }
 
   protected async replyToChannel(msg: Message, ctx: Context) {
@@ -197,7 +195,6 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     });
 
     await channel.send(escape(msg.body));
-    return;
   }
 
   protected filterEmoji(names: Array<string>): Array<string> {

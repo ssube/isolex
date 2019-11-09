@@ -13,6 +13,7 @@ export abstract class LabelEntity extends BaseEntity {
 
   @Column({
     name: 'labels',
+    type: 'varchar',
   })
   protected labelStr = '';
 

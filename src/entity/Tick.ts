@@ -16,10 +16,14 @@ export class Tick extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public intervalId = '';
 
-  @Column()
+  @Column({
+    type: 'int',
+  })
   public status = 0;
 
   constructor(options: TickOptions) {

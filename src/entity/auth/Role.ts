@@ -17,6 +17,7 @@ export class Role extends BaseEntity implements RoleOptions {
   public id?: string;
 
   @Column({
+    type: 'varchar',
     unique: true,
   })
   public name = '';

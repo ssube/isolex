@@ -15,6 +15,7 @@ export abstract class DataEntity<TVal> extends LabelEntity {
 
   @Column({
     name: 'data',
+    type: 'varchar',
   })
   protected dataStr = '';
 

@@ -26,13 +26,19 @@ export class Fragment extends BaseCommand implements FragmentOptions {
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public key = '';
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public parserId = '';
 
-  @Column()
+  @Column({
+    type: 'varchar',
+  })
   public userId = '';
 
   constructor(options: FragmentOptions) {

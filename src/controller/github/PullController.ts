@@ -97,6 +97,7 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
 
     this.logger.debug({ owner, project, requestNumber }, 'merging pull request');
     await mustExist(this.client).client.pulls.merge({
+      /* eslint-disable camelcase */
       commit_message: message,
       commit_title: message,
       owner,
