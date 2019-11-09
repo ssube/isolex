@@ -1,4 +1,4 @@
-import i18next, { ResourceLanguage } from 'i18next';
+import i18n, { ResourceLanguage, TFunction, TOptions } from 'i18next';
 import { Container } from 'noicejs';
 
 import { BaseService, BaseServiceOptions } from '../BaseService';
@@ -15,13 +15,13 @@ export interface LocaleOptions extends BaseServiceOptions<LocaleData> {
   data: LocaleData;
 }
 
-export type TranslateOptions = i18next.TOptions;
+export type TranslateOptions = TOptions;
 
 export class Locale extends BaseService<LocaleData> implements ServiceLifecycle {
   protected readonly container: Container;
   protected readonly data: LocaleData;
 
-  protected translator?: i18next.TFunction;
+  protected translator?: TFunction;
 
   constructor(options: LocaleOptions) {
     super(options, 'isolex#/definitions/service-locale');
@@ -32,7 +32,7 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
 
   public async start() {
     const logger = await this.container.create(LocaleLogger);
-    this.translator = await i18next.use(logger).init({
+    this.translator = await i18n.use(logger).init({
       debug: true,
       lng: this.data.lang,
       resources: {
