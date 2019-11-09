@@ -33,7 +33,7 @@
     "@types/express": "4.17.2",
     "@types/js-yaml": "3.12.1",
     "@types/jsonwebtoken": "8.3.5",
-    "@types/lodash": "4.14.145",
+    "@types/lodash": "4.14.146",
     "@types/mathjs": "6.0.2",
     "@types/mocha": "5.2.7",
     "@types/node-emoji": "1.8.1",
