@@ -686,7 +686,7 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/yargs-parser/-/yargs-parser-13.1.0.tgz#c563aa192f39350a1d18da36c5a8da382bbd8228"
   integrity sha512-gCubfBUZ6KxzoibJ+SCUc/57Ms1jz5NjHe4+dI2krNmU5zCPAphyLJYyTOg06ueIyfj+SaCUqmzun7ImlxDcKg==
 
-"@typescript-eslint/eslint-plugin-tslint@^2.6.1":
+"@typescript-eslint/eslint-plugin-tslint@2.6.1":
   version "2.6.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@typescript-eslint/eslint-plugin-tslint/-/eslint-plugin-tslint-2.6.1.tgz#07eb962e0903e3d2c233a09205767159c40dace1"
   integrity sha512-1m9cHIDKEyef22sfmTDLMXOHW2cYGsIIgx3JOFsM5mb6/WX1xJya87jphYfX4yNmMw2MqzUsph1WNgnVIIUHhA==
@@ -694,7 +694,7 @@
     "@typescript-eslint/experimental-utils" "2.6.1"
     lodash.memoize "^4.1.2"
 
-"@typescript-eslint/eslint-plugin@^2.6.1":
+"@typescript-eslint/eslint-plugin@2.6.1":
   version "2.6.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.6.1.tgz#e34972a24f8aba0861f9ccf7130acd74fd11e079"
   integrity sha512-Z0rddsGqioKbvqfohg7BwkFC3PuNLsB+GE9QkFza7tiDzuHoy0y823Y+oGNDzxNZrYyLjqkZtCTl4vCqOmEN4g==
@@ -714,7 +714,7 @@
     "@typescript-eslint/typescript-estree" "2.6.1"
     eslint-scope "^5.0.0"
 
-"@typescript-eslint/parser@^2.6.1":
+"@typescript-eslint/parser@2.6.1":
   version "2.6.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@typescript-eslint/parser/-/parser-2.6.1.tgz#3c00116baa0d696bc334ca18ac5286b34793993c"
   integrity sha512-PDPkUkZ4c7yA+FWqigjwf3ngPUgoLaGjMlFh6TRtbjhqxFBnkElDfckSjm98q9cMr4xRzZ15VrS/xKm6QHYf0w==
@@ -1894,22 +1894,22 @@ eslint-module-utils@^2.4.0:
     debug "^2.6.8"
     pkg-dir "^2.0.0"
 
-eslint-plugin-chai-expect-keywords@^1.0.0:
+eslint-plugin-chai-expect-keywords@1.0.0:
   version "1.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect-keywords/-/eslint-plugin-chai-expect-keywords-1.0.0.tgz#bea3decb56a63c057dc33b03d102b6bd8347c311"
   integrity sha1-vqPey1amPAV9wzsD0QK2vYNHwxE=
 
-eslint-plugin-chai-expect@^2.0.1:
+eslint-plugin-chai-expect@2.0.1:
   version "2.0.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect/-/eslint-plugin-chai-expect-2.0.1.tgz#0f9267745feafa723b8ec1bb151c073df5558f60"
   integrity sha512-HiFoh9F9grVdVQEIwADwPA7SlcGZcsm9gdzZGDoH2SeUoUmYrUuq1cQmfjyOfqRpFOL6qlhcz5nZW2ppTH9ZlQ==
 
-eslint-plugin-chai@^0.0.1:
+eslint-plugin-chai@0.0.1:
   version "0.0.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai/-/eslint-plugin-chai-0.0.1.tgz#9a1dea58b335c31242219d059b37ffb14309f6e1"
   integrity sha1-mh3qWLM1wxJCIZ0Fmzf/sUMJ9uE=
 
-eslint-plugin-import@^2.18.2:
+eslint-plugin-import@2.18.2:
   version "2.18.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-import/-/eslint-plugin-import-2.18.2.tgz#02f1180b90b077b33d447a17a2326ceb400aceb6"
   integrity sha512-5ohpsHAiUBRNaBWAF08izwUGlbrJoJJ+W9/TBwsGoR1MnlgfwMIKrFeSjWbt6moabiXW9xNvtFz+97KHRfI4HQ==
@@ -1926,19 +1926,19 @@ eslint-plugin-import@^2.18.2:
     read-pkg-up "^2.0.0"
     resolve "^1.11.0"
 
-eslint-plugin-mocha@^6.2.1:
+eslint-plugin-mocha@6.2.1:
   version "6.2.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-mocha/-/eslint-plugin-mocha-6.2.1.tgz#f2ae6d82511291949e440a34b57df773cb4b5ede"
   integrity sha512-o3Ibhpczi5MjUVpnlnrpC/+oJYGoHKB5m4bQdRnaAOeFCN3HRkqBisQ2/h0hEuCR4lPxyHP1Qzyjpna8MsOdlA==
   dependencies:
     ramda "^0.26.1"
 
-eslint-plugin-no-null@^1.0.2:
+eslint-plugin-no-null@1.0.2:
   version "1.0.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-no-null/-/eslint-plugin-no-null-1.0.2.tgz#1236a812391390a1877ad4007c26e745341c951f"
   integrity sha1-EjaoEjkTkKGHetQAfCbnRTQclR8=
 
-eslint-plugin-sonarjs@^0.5.0:
+eslint-plugin-sonarjs@0.5.0:
   version "0.5.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-sonarjs/-/eslint-plugin-sonarjs-0.5.0.tgz#ce17b2daba65a874c2862213a9e38e8986ad7d7d"
   integrity sha512-XW5MnzlRjhXpIdbULC/qAdJYHWw3rRLws/DyawdlPU/IdVr9AmRK1r2LaCvabwKOAW2XYYSo3kDX58E4MrB7PQ==
@@ -4653,7 +4653,7 @@ rollup-plugin-commonjs@10.1.0:
     resolve "^1.11.0"
     rollup-pluginutils "^2.8.1"
 
-rollup-plugin-eslint@^7.0.0:
+rollup-plugin-eslint@7.0.0:
   version "7.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-eslint/-/rollup-plugin-eslint-7.0.0.tgz#a6dbcbc14699a7a02155697c0c3dfa26cca59a9b"
   integrity sha512-u35kXiY11ULeNQGTlRkYx7uGJ/hS/Dx3wj8f9YVC3oMLTGU9fOqQJsAKYtBFZU3gJ8Vt3gu8ppB1vnKl+7gatQ==
@@ -5364,7 +5364,7 @@ tslib@1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
-tslint@^5.20.1:
+tslint@5.20.1:
   version "5.20.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/tslint/-/tslint-5.20.1.tgz#e401e8aeda0152bc44dd07e614034f3f80c67b7d"
   integrity sha512-EcMxhzCFt8k+/UP5r8waCf/lzmeSyVlqxqMEDQE7rWYiQky8KpIBz1JAoYXfROHrPZ1XXd43q8yQnULOLiBRQg==
