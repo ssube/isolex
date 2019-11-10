@@ -6,6 +6,7 @@
   "repository": "https://github.com/ssube/isolex",
   "author": "ssube",
   "license": "MIT",
+  "keywords": ["bot", "chatbot", "chatops", "slack-bot", "discord-bot", "github", "gitlab", "kubernetes", "lex"],
   "private": false,
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
