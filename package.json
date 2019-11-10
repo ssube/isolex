@@ -1,12 +1,22 @@
 {
   "name": "isolex",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "isolex chat bot",
   "main": "out/main.js",
   "repository": "https://github.com/ssube/isolex",
   "author": "ssube",
   "license": "MIT",
-  "keywords": ["bot", "chatbot", "chatops", "slack-bot", "discord-bot", "github", "gitlab", "kubernetes", "lex"],
+  "keywords": [
+    "bot",
+    "chatbot",
+    "chatops",
+    "slack-bot",
+    "discord-bot",
+    "github",
+    "gitlab",
+    "kubernetes",
+    "lex"
+  ],
   "private": false,
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
