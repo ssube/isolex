@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { Constructor, Module } from 'noicejs';
+import { Constructor, Module, ProviderType } from 'noicejs';
 
 import { BotService, BotServiceData, BotServiceOptions } from '../BotService';
 
@@ -8,6 +8,6 @@ export abstract class BaseModule extends Module {
     TData extends BotServiceData,
     TService extends BotService<TData>
   >(svc: Constructor<TService, BotServiceOptions<TData>>) {
-    return this.bind(kebabCase(svc.name)).toConstructor(svc);
+    return this.bindTo(kebabCase(svc.name), ProviderType.Constructor, svc);
   }
 }

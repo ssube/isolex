@@ -1,4 +1,4 @@
-import { Container, Logger, ModuleOptions, Provides } from 'noicejs';
+import { Container, Logger, ModuleOptions, ProviderType, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 
 import {
@@ -53,7 +53,7 @@ export class BotModule extends BaseModule {
     this.bindService(GraphSchema);
 
     // utils
-    this.bind(INJECT_TEMPLATE).toConstructor(TemplateCompiler);
+    this.bindTo(INJECT_TEMPLATE, ProviderType.Constructor, TemplateCompiler);
     this.bind(INJECT_CLOCK).toConstructor(Clock);
     this.bind(INJECT_JSONPATH).toConstructor(JsonPath);
     this.bind(INJECT_MATH).toConstructor(MathFactory);

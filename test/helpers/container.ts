@@ -1,5 +1,5 @@
 import { DeepPartial, ineeda } from 'ineeda';
-import { Constructor, Container, Logger, Module, ModuleOptions, Provides } from 'noicejs';
+import { Constructor, Container, Logger, Module, ModuleOptions, ProviderType, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 import { spy } from 'sinon';
 
@@ -29,7 +29,7 @@ export class TestModule extends Module {
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
-    this.bind(INJECT_TEMPLATE).toConstructor(TemplateCompiler);
+    this.bindTo(INJECT_TEMPLATE, ProviderType.Constructor, TemplateCompiler);
   }
 
   @Provides(INJECT_LOGGER)
