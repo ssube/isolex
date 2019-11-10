@@ -1,0 +1,16 @@
+FROM node:11-alpine
+
+# install sqlite tools
+RUN apk add sqlite
+
+# copy build output
+COPY package.json yarn.lock /app/
+COPY out/vendor.js /app/out/
+COPY out/index.js out/main.js /app/out/
+
+WORKDIR /app
+
+# install native modules
+RUN yarn install --production
+
+ENTRYPOINT [ "/usr/bin/node", "/app/out/index.js" ]

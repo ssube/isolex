@@ -33,23 +33,48 @@ build-node:
       - out/cache
       - out/tmp
 
-build-image-branch:
+build-image-alpine-branch:
+  extends:
+    - .build-docker
+  stage: image
+  except:
+    - tags
+  script:
+    - ./scripts/docker-build.sh --push --default
+  variables:
+    IMAGE_ARCH: alpine
+
+build-image-alpine-tag:
+  extends:
+    - .build-docker
+  stage: image
+  only:
+    - tags
+  script:
+    - ./scripts/docker-build.sh --push --default
+  variables:
+    IMAGE_ARCH: alpine
+
+build-image-stretch-branch:
+  stage: image
+  extends: [.build-docker]
+  except:
+    - tags
+  script:
+    - ./scripts/docker-build.sh --push
+  variables:
+    IMAGE_ARCH: stretch
+
+build-image-stretch-tag:
   stage: image
   extends:
     - .build-docker
-    - .deploy-branches
-
-  dependencies:
-    - build-node
-
-build-image-tag:
-  stage: image
-  extends:
-    - .build-docker
-    - .deploy-tags
-
-  dependencies:
-    - build-node
+  only:
+    - tags
+  script:
+    - ./scripts/docker-build.sh --push
+  variables:
+    IMAGE_ARCH: stretch
 
 # publish jobs
 publish-npm:
@@ -97,33 +122,31 @@ github-pending:
   stage: status-pre
   extends:
     - .build-curl
-
   script:
-    - ${CI_PROJECT_DIR}/scripts/github-status.sh pending
+    - ./scripts/github-status.sh pending
 
 github-failure:
   stage: status-post
   extends:
     - .build-curl
-
   when: on_failure
   script:
-    - ${CI_PROJECT_DIR}/scripts/github-status.sh failure
+    - ./scripts/github-status.sh failure
 
 github-success:
   stage: status-post
   extends:
     - .build-curl
-
   when: on_success
   script:
-    - ${CI_PROJECT_DIR}/scripts/github-status.sh success
+    - ./scripts/github-status.sh success
 
 sonar-success:
   stage: status-post
   extends:
     - .build-sonar
 
+  when: on_success
   script:
     - make node_modules
     - sonar-scanner
