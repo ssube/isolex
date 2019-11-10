@@ -13,22 +13,22 @@
       "es2017",
       "esnext.asynciterable"
     ],
-    "module": "esnext",
+    "module": "es6",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "outDir": "../out",
     "sourceMap": true,
     "strict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": true,
     "target": "es2017",
     "types": [
       "chai-as-promised",
       "mocha",
-      "rollup-resources"
+      "node",
+      "rollup-resources",
+      "sinon-chai"
     ],
     "typeRoots": [
       "../node_modules/@types",

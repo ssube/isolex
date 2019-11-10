@@ -10,5 +10,6 @@ temp/
 *.pid
 *.swp
 *.tmp
-report*.json
+
+package-lock.json
 yarn-error.log
