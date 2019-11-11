@@ -51,7 +51,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 
 [![github release link](https://img.shields.io/badge/github-release-blue?logo=github)](https://github.com/ssube/isolex/releases)
 [![github release version](https://img.shields.io/github/tag/ssube/isolex.svg)](https://github.com/ssube/isolex/releases)
-[![github commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.9.1.svg)](https://github.com/ssube/isolex/compare/v0.9.1...master)
+[![github commits since release](https://img.shields.io/github/commits-since/ssube/isolex/v0.10.0.svg)](https://github.com/ssube/isolex/compare/v0.10.0...master)
 
 [![npm package link](https://img.shields.io/badge/npm-package-blue?logo=npm)](https://www.npmjs.com/package/isolex)
 [![npm release version](https://img.shields.io/npm/v/isolex.svg)](https://www.npmjs.com/package/isolex)
