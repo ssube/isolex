@@ -23,6 +23,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
     - [Deploy to Kubernetes](#deploy-to-kubernetes)
     - [Local in Docker](#local-in-docker)
     - [Local from Bundle](#local-from-bundle)
+  - [License](#license)
 
 ## Status
 
@@ -124,3 +125,7 @@ To run the bot locally from [the build bundle](#build):
 ```
 
 Logs will be piped through [bunyan](https://github.com/trentm/node-bunyan) and pretty-printed.
+
+## License
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_large)
