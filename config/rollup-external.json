@@ -5,6 +5,7 @@
     "chai",
     "discord.js",
     "ecc-jsb",
+    "got",
     "shelljs",
     "sinon",
     "snekfetch",
