@@ -5025,10 +5025,10 @@ run-async@^2.2.0:
   dependencies:
     is-promise "^2.1.0"
 
-rxjs-tslint-rules@4.26.1:
-  version "4.26.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rxjs-tslint-rules/-/rxjs-tslint-rules-4.26.1.tgz#47ea8ba89f21a0e1261414ab86384f56d679c397"
-  integrity sha512-MmfRLdXkHt14J4fI14i7Yl2MKyiePpzeZTXzfUOaYnrCakWJOKMBre8WbtKpN3LqTAxFAnZRAHdSefwjYd+24w==
+rxjs-tslint-rules@4.26.2:
+  version "4.26.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rxjs-tslint-rules/-/rxjs-tslint-rules-4.26.2.tgz#697d016c92a1cfebc338cd96599dbb0e31022883"
+  integrity sha512-xgaQTw19BL1HPumCk6YaJA0fHmwz4dJtD1fKHnyg8eW2EQ7jb+QMmPr2pR4/PAhCBl0O8ogMrSJlXVBuI6vIcg==
   dependencies:
     "@phenomnomnominal/tsquery" "^4.0.0"
     decamelize "^3.0.0"

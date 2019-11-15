@@ -109,7 +109,7 @@
     "rollup-plugin-typescript2": "0.25.2",
     "rollup-plugin-yaml": "2.0.0",
     "rxjs": "6.5.3",
-    "rxjs-tslint-rules": "4.26.1",
+    "rxjs-tslint-rules": "4.26.2",
     "shiro-trie": "0.4.9",
     "sinon": "7.5.0",
     "sinon-chai": "3.3.0",
