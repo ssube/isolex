@@ -56,14 +56,6 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@babel/parser/-/parser-7.6.2.tgz#205e9c95e16ba3b8b96090677a67c9d6075b70a1"
   integrity sha512-mdFqWrSPCmikBoaBYMuBulzTIKuXVPtEISFbRRVNwMWpCms/hmE2kRq0bblUHaNRKrjRlmVbx1sDHmjmRgD2Xg==
 
-"@babel/runtime-corejs2@^7.2.0":
-  version "7.6.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@babel/runtime-corejs2/-/runtime-corejs2-7.6.2.tgz#062f8e31f3df30fc1a3dea68aa1bd854e06e9ba6"
-  integrity sha512-wdyVKnTv9Be4YlwF/7pByYNfcl23qC21aAQ0aIaZOo2ZOvhFEyJdBLJClYZ9i+Pmrz7sUQgg/MwbJa2RZTkygg==
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.2"
-
 "@babel/runtime@^7.3.1":
   version "7.6.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@babel/runtime/-/runtime-7.6.2.tgz#c3d6e41b304ef10dcf13777a33e7694ec4a9a6dd"
@@ -262,13 +254,6 @@
     octokit-pagination-methods "^1.1.0"
     once "^1.4.0"
     universal-user-agent "^4.0.0"
-
-"@phenomnomnominal/tsquery@^4.0.0":
-  version "4.0.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@phenomnomnominal/tsquery/-/tsquery-4.0.0.tgz#610e8ac968137e4a0f98c842c919bb8ad0e85718"
-  integrity sha512-s2Yet/MCj9Jh6nR6GfldrUPT6Y+aM1jIAdiKcOKEzmeKALT0Tc7SFIkYP3KvzjzbkKK5W7BiJ3cWy2UOa4ITbw==
-  dependencies:
-    esquery "^1.0.1"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -1558,11 +1543,6 @@ cookie@0.4.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
   integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
 
-core-js@^2.6.5:
-  version "2.6.9"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/core-js/-/core-js-2.6.9.tgz#6b4b214620c834152e179323727fc19741b084f2"
-  integrity sha512-HOpZf6eXmnl7la+cUdMnLvUxKNqLUzJvgIziQ0DiF3JwSImNphIqdGqzj6hIKyX04MmV0poclQ7+wjWvxQyR2A==
-
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -1671,13 +1651,6 @@ decamelize@^1.1.0, decamelize@^1.1.2, decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
-
-decamelize@^3.0.0:
-  version "3.2.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/decamelize/-/decamelize-3.2.0.tgz#84b8e8f4f8c579f938e35e2cc7024907e0090851"
-  integrity sha512-4TgkVUsmmu7oCSyGBm5FvfMoACuoh9EOidm7V5/J2X2djAwwt57qb3F2KMP2ITqODTCSwb+YRV+0Zqrv18k/hw==
-  dependencies:
-    xregexp "^4.2.4"
 
 decimal.js@10.2.0, decimal.js@^10.0.0:
   version "10.2.0"
@@ -4862,7 +4835,7 @@ resolve-from@^4.0.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/resolve-from/-/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
   integrity sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==
 
-resolve@1.12.0, resolve@^1.1.6, resolve@^1.10.0, resolve@^1.11.0, resolve@^1.11.1, resolve@^1.3.2, resolve@^1.4.0, resolve@^1.5.0:
+resolve@1.12.0, resolve@^1.1.6, resolve@^1.10.0, resolve@^1.11.0, resolve@^1.11.1, resolve@^1.3.2, resolve@^1.5.0:
   version "1.12.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/resolve/-/resolve-1.12.0.tgz#3fc644a35c84a48554609ff26ec52b66fa577df6"
   integrity sha512-B/dOmuoAik5bKcD6s6nXDCjzUKnaDvdkRyAk6rsmsKLipWj4797iothd7jmmUhWTfinVMU+wc56rYKsit2Qy4w==
@@ -5024,19 +4997,6 @@ run-async@^2.2.0:
   integrity sha1-A3GrSuC91yDUFm19/aZP96RFpsA=
   dependencies:
     is-promise "^2.1.0"
-
-rxjs-tslint-rules@4.26.1:
-  version "4.26.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rxjs-tslint-rules/-/rxjs-tslint-rules-4.26.1.tgz#47ea8ba89f21a0e1261414ab86384f56d679c397"
-  integrity sha512-MmfRLdXkHt14J4fI14i7Yl2MKyiePpzeZTXzfUOaYnrCakWJOKMBre8WbtKpN3LqTAxFAnZRAHdSefwjYd+24w==
-  dependencies:
-    "@phenomnomnominal/tsquery" "^4.0.0"
-    decamelize "^3.0.0"
-    resolve "^1.4.0"
-    semver "^6.0.0"
-    tslib "^1.8.0"
-    tsutils "^3.0.0"
-    tsutils-etc "^1.1.0"
 
 rxjs@6.5.3, rxjs@^6.4.0:
   version "6.5.3"
@@ -5675,11 +5635,6 @@ tslint@5.20.1:
     tslib "^1.8.0"
     tsutils "^2.29.0"
 
-tsutils-etc@^1.1.0:
-  version "1.1.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/tsutils-etc/-/tsutils-etc-1.1.0.tgz#82ce1c92da29e07d3cde95692d5c5e8dbdc92fd0"
-  integrity sha512-pJlLtLmQPUyGHqY/Pq6EGnpGmQCnnTDZetQ7eWkeQ5xaw4GtfcR1Zt7HMKFHGDDp53HzQfbqQ+7ps6iJbfa9Hw==
-
 tsutils@^2.29.0:
   version "2.29.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
@@ -5687,7 +5642,7 @@ tsutils@^2.29.0:
   dependencies:
     tslib "^1.8.1"
 
-tsutils@^3.0.0, tsutils@^3.17.1:
+tsutils@^3.17.1:
   version "3.17.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/tsutils/-/tsutils-3.17.1.tgz#ed719917f11ca0dee586272b2ac49e015a2dd759"
   integrity sha512-kzeQ5B8H3w60nFY2g8cJIuH7JDpsALXySGtwGJ0p2LSjLgay3NdIpqq5SoOBe46bKDW2iq25irHCr8wjomUS2g==
@@ -5990,13 +5945,6 @@ xmlbuilder@~11.0.0:
   version "11.0.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/xmlbuilder/-/xmlbuilder-11.0.1.tgz#be9bae1c8a046e76b31127726347d0ad7002beb3"
   integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
-
-xregexp@^4.2.4:
-  version "4.2.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/xregexp/-/xregexp-4.2.4.tgz#02a4aea056d65a42632c02f0233eab8e4d7e57ed"
-  integrity sha512-sO0bYdYeJAJBcJA8g7MJJX7UrOZIfJPd8U2SC7B2Dd/J24U0aQNoGp33shCaBSWeb0rD5rh6VBUIXOkGal1TZA==
-  dependencies:
-    "@babel/runtime-corejs2" "^7.2.0"
 
 xtend@~4.0.1:
   version "4.0.2"
