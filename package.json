@@ -22,7 +22,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "aws-sdk": "2.577.0",
+    "aws-sdk": "2.578.0",
     "discord.js": "11.5.1",
     "shelljs": "^0.8.3",
     "sqlite3": "4.1.0",
