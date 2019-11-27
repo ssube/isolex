@@ -665,10 +665,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ws@6.0.3", "@types/ws@^6.0.1":
-  version "6.0.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/ws/-/ws-6.0.3.tgz#b772375ba59d79066561c8d87500144d674ba6b3"
-  integrity sha512-yBTM0P05Tx9iXGq00BbJPo37ox68R5vaGTXivs6RGh/BQ6QP5zqZDGWdAO6JbRE/iR1l80xeGAwCQS2nMV9S/w==
+"@types/ws@6.0.4":
+  version "6.0.4"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/ws/-/ws-6.0.4.tgz#7797707c8acce8f76d8c34b370d4645b70421ff1"
+  integrity sha512-PpPrX7SZW9re6+Ha8ojZG4Se8AZXgf0GK6zmfqEuCsY49LFDNXO3SByp44X3dFEqtB73lkCDAdUazhAjVPiNwg==
   dependencies:
     "@types/node" "*"
 
@@ -678,6 +678,13 @@
   integrity sha512-NkTXUKTYdXdnPE2aUUbGOXE1XfMK527SCvU/9bj86kyFF6kZ9ZnOQ3mK5jADn98Y2vEUD/7wKDgZa7Qst2wYOg==
   dependencies:
     "@types/events" "*"
+    "@types/node" "*"
+
+"@types/ws@^6.0.1":
+  version "6.0.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/ws/-/ws-6.0.3.tgz#b772375ba59d79066561c8d87500144d674ba6b3"
+  integrity sha512-yBTM0P05Tx9iXGq00BbJPo37ox68R5vaGTXivs6RGh/BQ6QP5zqZDGWdAO6JbRE/iR1l80xeGAwCQS2nMV9S/w==
+  dependencies:
     "@types/node" "*"
 
 "@types/yargs-parser@13.1.0":
