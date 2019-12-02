@@ -98,7 +98,7 @@
     "request": "2.88.0",
     "request-promise": "4.2.5",
     "request-promise-native": "1.0.8",
-    "rollup": "1.27.6",
+    "rollup": "1.27.8",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-eslint": "7.0.0",
     "rollup-plugin-json": "4.0.0",
