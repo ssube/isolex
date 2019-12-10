@@ -91,7 +91,7 @@
     "node-emoji": "1.10.0",
     "noicejs": "3.0.0",
     "nyc": "14.1.1",
-    "passport": "0.4.0",
+    "passport": "0.4.1",
     "passport-jwt": "4.0.0",
     "prom-client": "11.5.3",
     "reflect-metadata": "0.1.13",
