@@ -50,7 +50,7 @@
     "@types/node-emoji": "1.8.1",
     "@types/passport": "1.0.2",
     "@types/passport-jwt": "3.0.3",
-    "@types/request": "2.48.3",
+    "@types/request": "2.48.4",
     "@types/request-promise": "4.1.45",
     "@types/request-promise-native": "1.0.17",
     "@types/sinon-chai": "3.2.3",
