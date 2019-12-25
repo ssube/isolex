@@ -1,0 +1,537 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20191224.095214.17058.0.001.json",
+    "dumpEventTime": "2019-12-24T09:52:14Z",
+    "dumpEventTimeStamp": "1577202734386",
+    "processId": 17058,
+    "cwd": "/home/ssube/code/ssube/isolex",
+    "commandLine": [
+      "node",
+      "/home/ssube/code/ssube/isolex//node_modules/.bin/mocha",
+      "--check-leaks",
+      "--colors",
+      "--sort",
+      "--ui",
+      "bdd",
+      "--timeout",
+      "60000",
+      "--retries",
+      "3",
+      "--forbid-only",
+      "/home/ssube/code/ssube/isolex//out/test.js"
+    ],
+    "nodejsVersion": "v12.13.1",
+    "glibcVersionRuntime": "2.27",
+    "glibcVersionCompiler": "2.17",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "12.13.1",
+      "v8": "7.7.299.13-node.16",
+      "uv": "1.33.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "5",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.13.1/node-v12.13.1-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.13.1/node-v12.13.1.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "5.0.0-37-generic",
+    "osVersion": "#40~18.04.1-Ubuntu SMP Thu Nov 14 12:06:39 UTC 2019",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4317,
+        "user": 15655800,
+        "nice": 8981600,
+        "sys": 19291100,
+        "idle": 457959400,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4321,
+        "user": 16030500,
+        "nice": 9400600,
+        "sys": 19470500,
+        "idle": 463769700,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4322,
+        "user": 16085000,
+        "nice": 9506800,
+        "sys": 19492500,
+        "idle": 465167000,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4316,
+        "user": 16148700,
+        "nice": 9881100,
+        "sys": 19492500,
+        "idle": 464668800,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4317,
+        "user": 17499900,
+        "nice": 7441800,
+        "sys": 22281200,
+        "idle": 456141800,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4323,
+        "user": 15923100,
+        "nice": 10422600,
+        "sys": 19812300,
+        "idle": 464136500,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4323,
+        "user": 16597800,
+        "nice": 8072900,
+        "sys": 18458100,
+        "idle": 461293400,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4333,
+        "user": 16708400,
+        "nice": 8375200,
+        "sys": 18515800,
+        "idle": 465485000,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4322,
+        "user": 15928300,
+        "nice": 8519000,
+        "sys": 18935500,
+        "idle": 466243600,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4332,
+        "user": 16471400,
+        "nice": 9085100,
+        "sys": 20387800,
+        "idle": 464070400,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4332,
+        "user": 17224000,
+        "nice": 7869500,
+        "sys": 23572500,
+        "idle": 460747300,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz",
+        "speed": 4320,
+        "user": 15742900,
+        "nice": 9966100,
+        "sys": 19792000,
+        "idle": 464576400,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "enp5s0",
+        "internal": false,
+        "mac": "00:17:b6:00:6e:66",
+        "address": "10.2.1.193",
+        "netmask": "255.255.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "tunl0",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "10.5.2.1",
+        "netmask": "255.255.255.255",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "enp5s0",
+        "internal": false,
+        "mac": "00:17:b6:00:6e:66",
+        "address": "fe80::b26e:eee6:4fec:f4df",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 3
+      }
+    ],
+    "host": "cerberus"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x0000000000b04935",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::string const&, v8::Local<v8::String>) [node]"
+    },
+    {
+      "pc": "0x00000000009db9e3",
+      "symbol": "node::OnFatalError(char const*, char const*) [node]"
+    },
+    {
+      "pc": "0x0000000000b39f1e",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [node]"
+    },
+    {
+      "pc": "0x0000000000b3a299",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [node]"
+    },
+    {
+      "pc": "0x0000000000ce5635",
+      "symbol": " [node]"
+    },
+    {
+      "pc": "0x0000000000ce5cc6",
+      "symbol": "v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [node]"
+    },
+    {
+      "pc": "0x0000000000cf1b5a",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [node]"
+    },
+    {
+      "pc": "0x0000000000cf2a65",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [node]"
+    },
+    {
+      "pc": "0x0000000000cf5478",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [node]"
+    },
+    {
+      "pc": "0x0000000000cbbda7",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationType) [node]"
+    },
+    {
+      "pc": "0x0000000000ff1e0b",
+      "symbol": "v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [node]"
+    },
+    {
+      "pc": "0x0000000001374fd9",
+      "symbol": " [node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 6299238400,
+    "totalCommittedMemory": 6297282576,
+    "usedMemory": 6271922656,
+    "availableMemory": 45620848,
+    "memoryLimit": 6341787648,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 32568,
+        "capacity": 261872,
+        "used": 32296,
+        "available": 229576
+      },
+      "new_space": {
+        "memorySize": 2097152,
+        "committedMemory": 1224520,
+        "capacity": 1047488,
+        "used": 193256,
+        "available": 854232
+      },
+      "old_space": {
+        "memorySize": 6098628608,
+        "committedMemory": 6098149264,
+        "capacity": 6075326200,
+        "used": 6074385896,
+        "available": 940304
+      },
+      "code_space": {
+        "memorySize": 950272,
+        "committedMemory": 794304,
+        "capacity": 750752,
+        "used": 750752,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 1314816,
+        "committedMemory": 1096512,
+        "capacity": 833440,
+        "used": 833440,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 195936256,
+        "committedMemory": 195936256,
+        "capacity": 195723464,
+        "used": 195723464,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 3552,
+        "used": 3552,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 1047488,
+        "used": 0,
+        "available": 1047488
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 358.567,
+    "kernelCpuSeconds": 5.96127,
+    "cpuConsumptionPercent": 175.254,
+    "maxRss": 6552887296,
+    "pageFaults": {
+      "IORequired": 0,
+      "IONotRequired": 3465778
+    },
+    "fsActivity": {
+      "reads": 0,
+      "writes": 16
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 176.189,
+    "kernelCpuSeconds": 3.12946,
+    "cpuConsumptionPercent": 86.2108,
+    "fsActivity": {
+      "reads": 0,
+      "writes": 16
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:",
+    "GIT_TAG": "",
+    "ISOLEX_SLACK_TOKEN_BOT": "xoxb-",
+    "GIT_COMMIT": "01a0b72dbb2cdcb8af372fde19d740d64f992177",
+    "LESSCLOSE": "/usr/bin/lesspipe %s %s",
+    "XDG_MENU_PREFIX": "xfce-",
+    "ISOLEX_TOKEN_SECRET": "",
+    "TARGET_PATH": "/home/ssube/code/ssube/isolex//out",
+    "ISOLEX_GITHUB_APP_ID": "0",
+    "ISOLEX_LEX_ACCOUNT_SECRET_KEY": "",
+    "LANG": "en_US.UTF-8",
+    "DISPLAY": ":1.0",
+    "NODE_OPTIONS": "--max-old-space-size=6000 --require /home/ssube/code/ssube/isolex/node_modules/node-preload/preload-path/node-preload.js",
+    "OLDPWD": "/home/ssube/code/ssube/promviz",
+    "EDITOR": "vim",
+    "CI_COMMIT_SHA": "01a0b72dbb2cdcb8af372fde19d740d64f992177",
+    "ISOLEX_SLACK_CHANNEL_ID": "CEA8362AJ",
+    "COLORTERM": "truecolor",
+    "PERL_MB_OPT": "--install_base \"/home/ssube/perl5\"",
+    "MAKE_TERMOUT": "/dev/pts/14",
+    "USERNAME": "ssube",
+    "ISOLEX_WEATHER_API_KEY": "",
+    "ISOLEX_DISCORD_TOKEN": "",
+    "XDG_VTNR": "2",
+    "SSH_AUTH_SOCK": "/run/user/1000/gnupg/S.gpg-agent.ssh",
+    "MFLAGS": "",
+    "CI_COMMIT_REF_SLUG": "update/nyc-15.x",
+    "MANDATORY_PATH": "/usr/share/gconf/xfce.mandatory.path",
+    "CI_RUNNER_VERSION": "0.0.0",
+    "TMUX_PLUGIN_MANAGER_PATH": "/home/ssube/.tmux/plugins/",
+    "ISOLEX_GITHUB_APP_INSTALLATION": "0",
+    "GLADE_CATALOG_PATH": ":",
+    "XDG_SESSION_ID": "2",
+    "USER": "ssube",
+    "GLADE_MODULE_PATH": ":",
+    "DESKTOP_SESSION": "xfce",
+    "VENDOR_PATH": "/home/ssube/code/ssube/isolex//vendor",
+    "GOPATH": "/home/ssube/go",
+    "TEXTDOMAINDIR": "/usr/share/locale/",
+    "DOCS_PATH": "/home/ssube/code/ssube/isolex//docs",
+    "SOURCE_PATH": "/home/ssube/code/ssube/isolex//src",
+    "GNOME_TERMINAL_SCREEN": "/org/gnome/Terminal/screen/9fe0d9a0_e384_4f33_9992_0ef8ced6757f",
+    "ROOT_PATH": "/home/ssube/code/ssube/isolex/",
+    "DEFAULTS_PATH": "/usr/share/gconf/xfce.default.path",
+    "PWD": "/home/ssube/code/ssube/isolex",
+    "HOME": "/home/ssube",
+    "GSM_SKIP_SSH_AGENT_WORKAROUND": "true",
+    "TEXTDOMAIN": "im-config",
+    "SSH_AGENT_PID": "10208",
+    "CLICOLOR": "1",
+    "QT_ACCESSIBILITY": "1",
+    "LIBVIRT_DEFAULT_URI": "qemu:///system",
+    "TMUX": "/tmp/tmux-1000/default,12713,4",
+    "XDG_SESSION_TYPE": "x11",
+    "XDG_DATA_DIRS": "/usr/share/xfce4:/usr/share/xfce:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop:/usr/share",
+    "GIT_REMOTES": "github\tgit@github.com:ssube/isolex.git (fetch) github\tgit@github.com:ssube/isolex.git (push) gitlab\tgit@git.apextoaster.com:ssube/isolex.git (fetch) gitlab\tgit@git.apextoaster.com:ssube/isolex.git (push) origin\tgit@github.com:ssube/isolex.git (fetch) origin\tgit@github.com:ssube/isolex.git (push)",
+    "XDG_SESSION_DESKTOP": "xfce",
+    "PERL_MM_OPT": "INSTALL_BASE=/home/ssube/perl5",
+    "NODE_VERSION": "v12.13.1",
+    "CI_RUNNER_ID": "cerberus",
+    "CI_ENVIRONMENT_SLUG": "local",
+    "ISOLEX_LEX_ACCOUNT_ACCESS_KEY": "",
+    "DEBUG_PORT": "9229",
+    "CONFIG_PATH": "/home/ssube/code/ssube/isolex//config",
+    "PERL_LOCAL_LIB_ROOT": "/home/ssube/perl5",
+    "CI_JOB_ID": "0",
+    "GLADE_PIXMAP_PATH": ":",
+    "GTK_MODULES": "gail:atk-bridge",
+    "DOTFILE_PLATFORM": "nix",
+    "VISUAL": "vim",
+    "ISOLEX_HOME": "/home/ssube/code/ssube/isolex//docs",
+    "WINDOWPATH": "2",
+    "TERM": "screen",
+    "VTE_VERSION": "5202",
+    "SHELL": "/bin/bash",
+    "TARGET_MAIN": "/home/ssube/code/ssube/isolex//out/index.js",
+    "ISOLEX_DISCORD_USER_ID": "@",
+    "BASH_EXTS": "/home/ssube/.bash.d",
+    "IM_CONFIG_PHASE": "2",
+    "ISOLEX_GITHUB_APP_KEY": "",
+    "XDG_CURRENT_DESKTOP": "XFCE",
+    "TEST_PATH": "/home/ssube/code/ssube/isolex//test",
+    "PERL5LIB": "/home/ssube/perl5/lib/perl5",
+    "GNOME_TERMINAL_SERVICE": ":1.74",
+    "MAKELEVEL": "1",
+    "GIT_OPTIONS": "",
+    "ISOLEX_TOKEN_ISSUER": "",
+    "TMUX_PANE": "%14",
+    "SHLVL": "3",
+    "XDG_SEAT": "seat0",
+    "GIT_BRANCH": "update/nyc-15.x",
+    "MAKE_TERMERR": "/dev/pts/14",
+    "PROMPT_COMMAND": "PS1=\"[$(begin_color 12)\\t$(close_color)] $(begin_color 5)\\u@\\h$(close_color) $(begin_color 11)\\w$(close_color) $(git_stamp)> \"",
+    "CI_RUNNER_DESCRIPTION": "cerberus",
+    "CI_COMMIT_TAG": "",
+    "SCRIPT_PATH": "/home/ssube/code/ssube/isolex//scripts",
+    "ISOLEX_SLACK_TOKEN_WEB": "xoxp-",
+    "CI_PROJECT_PATH": "ssube/isolex",
+    "GDMSESSION": "xfce",
+    "LOGNAME": "ssube",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
+    "TARGET_LOG": "/home/ssube/code/ssube/isolex//out/make.log",
+    "MAKE_PATH": "/home/ssube/code/ssube/isolex/run.mk",
+    "XDG_RUNTIME_DIR": "/run/user/1000",
+    "RUNNER_VERSION": "0.0.0",
+    "XAUTHORITY": "/run/user/1000/gdm/Xauthority",
+    "DEBUG_BIND": "127.0.0.1",
+    "XDG_CONFIG_DIRS": "/etc/xdg/xdg-xfce:/etc/xdg:/etc/xdg",
+    "PATH": "/home/ssube/perl5/bin:/home/ssube/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin",
+    "ISOLEX_GITLAB_TOKEN": "",
+    "MAKEFLAGS": "",
+    "ISOLEX_GITLAB_URL": "https://",
+    "SESSION_MANAGER": "local/cerberus:@/tmp/.ICE-unix/10190,unix/cerberus:/tmp/.ICE-unix/10190",
+    "LESSOPEN": "| /usr/bin/lesspipe %s",
+    "_": "/home/ssube/code/ssube/isolex//node_modules/.bin/nyc",
+    "BABEL_DISABLE_CACHE": "1",
+    "NYC_CONFIG": "{\"_\":[\"/home/ssube/code/ssube/isolex//node_modules/.bin/mocha\"],\"reporter\":[\"lcov\",\"text-summary\",\"html\"],\"r\":[\"lcov\",\"text-summary\",\"html\"],\"report-dir\":\"/home/ssube/code/ssube/isolex//out/coverage\",\"reportDir\":\"/home/ssube/code/ssube/isolex//out/coverage\",\"exclude-after-remap\":true,\"excludeAfterRemap\":true,\"check-leaks\":true,\"checkLeaks\":true,\"colors\":true,\"sort\":true,\"ui\":\"bdd\",\"timeout\":60000,\"retries\":3,\"forbid-only\":\"/home/ssube/code/ssube/isolex//out/test.js\",\"forbidOnly\":\"/home/ssube/code/ssube/isolex//out/test.js\",\"cwd\":\"/home/ssube/code/ssube/isolex\",\"cache\":false,\"c\":false,\"extension\":[\".ts\",\".tsx\"],\"e\":[\".ts\",\".tsx\"],\"exclude\":[\"**/*.d.ts\",\"coverage/**\",\"packages/*/test/**\",\"test/**\",\"test{,-*}.ts\",\"**/*{.,-}{test,spec}.ts\",\"**/__tests__/**\",\"**/node_modules/**\"],\"x\":[\"**/*.d.ts\",\"coverage/**\",\"packages/*/test/**\",\"test/**\",\"test{,-*}.ts\",\"**/*{.,-}{test,spec}.ts\",\"**/__tests__/**\",\"**/node_modules/**\"],\"temp-dir\":\"./.nyc_output\",\"t\":\"./.nyc_output\",\"tempDir\":\"./.nyc_output\",\"exclude-node-modules\":true,\"excludeNodeModules\":true,\"include\":[],\"n\":[],\"ignore-class-methods\":[],\"ignoreClassMethods\":[],\"auto-wrap\":true,\"autoWrap\":true,\"es-modules\":true,\"esModules\":true,\"parser-plugins\":[\"asyncGenerators\",\"bigInt\",\"classProperties\",\"classPrivateProperties\",\"dynamicImport\",\"importMeta\",\"objectRestSpread\",\"optionalCatchBinding\"],\"parserPlugins\":[\"asyncGenerators\",\"bigInt\",\"classProperties\",\"classPrivateProperties\",\"dynamicImport\",\"importMeta\",\"objectRestSpread\",\"optionalCatchBinding\"],\"compact\":true,\"preserve-comments\":true,\"preserveComments\":true,\"produce-source-map\":true,\"produceSourceMap\":true,\"source-map\":true,\"sourceMap\":true,\"require\":[],\"i\":[],\"instrument\":true,\"branches\":0,\"functions\":0,\"lines\":90,\"statements\":0,\"per-file\":false,\"perFile\":false,\"check-coverage\":false,\"checkCoverage\":false,\"show-process-tree\":false,\"showProcessTree\":false,\"skip-empty\":false,\"skipEmpty\":false,\"skip-full\":false,\"skipFull\":false,\"silent\":false,\"s\":false,\"all\":false,\"a\":false,\"eager\":false,\"babel-cache\":false,\"babelCache\":false,\"use-spawn-wrap\":false,\"useSpawnWrap\":false,\"hook-require\":true,\"hookRequire\":true,\"hook-run-in-context\":false,\"hookRunInContext\":false,\"hook-run-in-this-context\":false,\"hookRunInThisContext\":false,\"clean\":true,\"in-place\":false,\"inPlace\":false,\"exit-on-error\":false,\"exitOnError\":false,\"delete\":false,\"complete-copy\":false,\"completeCopy\":false,\"$0\":\"node_modules/.bin/nyc\",\"instrumenter\":\"./lib/instrumenters/istanbul\"}",
+    "NYC_CWD": "/home/ssube/code/ssube/isolex",
+    "NODE_PRELOAD_8c52c24f1b538679b0bc6bfb91aac5447880da25": "/home/ssube/code/ssube/isolex/node_modules/nyc/lib/register-env.js:/home/ssube/code/ssube/isolex/node_modules/nyc/lib/wrap.js",
+    "NYC_PROCESS_ID": "4f09e84d-b0cd-477f-852d-9bc7135ebc22"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 16777216,
+      "hard": 16777216
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 4096,
+      "hard": 4096
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 174733,
+      "hard": 174733
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "linux-vdso.so.1",
+    "/lib/x86_64-linux-gnu/libdl.so.2",
+    "/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "/lib/x86_64-linux-gnu/libm.so.6",
+    "/lib/x86_64-linux-gnu/libgcc_s.so.1",
+    "/lib/x86_64-linux-gnu/libpthread.so.0",
+    "/lib/x86_64-linux-gnu/libc.so.6",
+    "/lib64/ld-linux-x86-64.so.2"
+  ]
+}
