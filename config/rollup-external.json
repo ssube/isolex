@@ -4,10 +4,12 @@
     "async_hooks",
     "aws-sdk",
     "chai",
+    "chai-as-promised",
     "discord.js",
     "ecc-jsb",
     "shelljs",
     "sinon",
+    "sinon-chai",
     "snekfetch",
     "sshpk",
     "xmlbuilder"
