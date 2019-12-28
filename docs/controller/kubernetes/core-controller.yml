@@ -17,6 +17,9 @@ data:
               operator: any
               values:
                 - string: test
+  redirect:
+    defaults: {}
+    forces: {}
   transforms:
     - metadata:
         kind: template-transform

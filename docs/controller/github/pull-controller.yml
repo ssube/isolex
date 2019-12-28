@@ -11,4 +11,7 @@ data:
       id: !env ISOLEX_GITHUB_APP_INSTALLATION
 
   filters: []
+  redirect:
+    defaults: {}
+    forces: {}
   transforms: []

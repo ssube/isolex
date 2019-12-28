@@ -5,6 +5,9 @@ data:
   client:
     root: https://git.apextoaster.com
     token: !env ISOLEX_GITLAB_TOKEN
+  redirect:
+    defaults: {}
+    forces: {}
   transforms:
     - metadata:
         kind: template-transform
