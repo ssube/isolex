@@ -61,7 +61,6 @@ definitions:
       token:
         type: string
 
-
   entity-command:
     type: object
     additionalProperties: true
@@ -217,6 +216,15 @@ definitions:
     errors:
       type: array
       items:
+        type: string
+
+  name-value-pair:
+    type: object
+    required: [name, value]
+    properties:
+      name:
+        type: string
+      value:
         type: string
 
   service-bot:
@@ -740,10 +748,9 @@ definitions:
                 type: string
                 default: ~
               env:
-                type: object
-                # type: array
-                # items:
-                #   $ref: "#/definitions/name-value-pair"
+                type: array
+                items:
+                  $ref: "#/definitions/name-value-pair"
               timeout:
                 type: number
                 default: 0
