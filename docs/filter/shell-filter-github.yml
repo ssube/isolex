@@ -5,7 +5,7 @@ data:
   filters: []
   strict: true
   # shell command
-  command: './scripts/test-shell-filter.sh'
+  command: './scripts/filter/test-shell.sh'
   options:
     cwd: ~
     env: []
