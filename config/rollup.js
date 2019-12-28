@@ -15,7 +15,7 @@ const metadata = require('../package.json');
 const namedExports = require('./rollup-named.json');
 const stubNames = require('./rollup-stub.json').names;
 
-const passStub = 'require("pass-stub")';
+const passStub = 'undefined';
 const stubs = stubNames.reduce((p, c) => (p[c] = passStub, p), {});
 
 const rootPath = process.env['ROOT_PATH'];
@@ -72,9 +72,16 @@ const bundle = {
 			peerDeps: false,
 		}),
 		replace({
-			include: join('node_modules/', 'universal-user-agent', '**'),
+			include: join('node_modules', 'universal-user-agent', '**'),
 			values: {
 				navigator: `{userAgent: "${metadata.name}"}`,
+			},
+		}),
+		replace({
+			delimiters: ['', ''],
+			include: join('node_modules', 'openid-client', '**'),
+			values: {
+				'Issuer.useGot()': '/* do not use got */',
 			},
 		}),
 		replace({

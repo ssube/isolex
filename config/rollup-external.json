@@ -1,11 +1,11 @@
 {
   "names": [
+    "@kubernetes/client-node",
     "async_hooks",
     "aws-sdk",
     "chai",
     "discord.js",
     "ecc-jsb",
-    "got",
     "shelljs",
     "sinon",
     "snekfetch",

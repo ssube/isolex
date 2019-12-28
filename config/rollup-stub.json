@@ -1,6 +1,7 @@
 {
   "names": [
     "@discordjs/uws",
+    "electron",
     "erlpack",
     "ffmpeg-binaries",
     "ioredis",
