@@ -721,6 +721,33 @@ definitions:
           match:
             $ref: "#/definitions/match-data"
 
+  service-filter-shell:
+    allOf:
+      - $ref: "#/definitions/service-filter"
+      - type: object
+        additionalProperties: true
+        required:
+          - command
+          - options
+        properties:
+          command:
+            type: string
+          options:
+            type: object
+            additionalProperties: true
+            properties:
+              cwd:
+                type: string
+                default: ~
+              env:
+                type: object
+                # type: array
+                # items:
+                #   $ref: "#/definitions/name-value-pair"
+              timeout:
+                type: number
+                default: 0
+
   service-filter-source:
     allOf:
       - $ref: "#/definitions/service-filter"

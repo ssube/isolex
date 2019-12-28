@@ -10,6 +10,9 @@ data:
           kind: slack-listener
           name: slack-isolex
 
+  filters:
+    - !include ../docs/filter/shell-filter-github.yml
+
   transforms:
     - metadata:
         kind: template-transform

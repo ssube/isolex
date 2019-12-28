@@ -1,0 +1,11 @@
+metadata:
+  kind: shell-filter
+  name: test-shell-github
+data:
+  filters: []
+  strict: true
+  # shell command
+  command: '/home/ssube/code/ssube/isolex/scripts/test-shell-filter.sh'
+  options:
+    cwd: ~
+    env: {}
