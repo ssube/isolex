@@ -12,9 +12,9 @@ URL_BASE="https://api.github.com/repos/${GITHUB_PROJECT}"
 URL_COMMIT_STATUS="${URL_BASE}/commits/${GITHUB_COMMIT}/statuses"
 
 COMMIT_STATUS_DATA="$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" "${URL_COMMIT_STATUS}")"
-COMMIT_STATUS_PENDING="$(echo "${COMMIT_STATUS_DATA}" | jq -r '.[] | select(.state == "pending") | .context' | sort | uniq)"
+# COMMIT_STATUS_FAILURE="$(echo "${COMMIT_STATUS_DATA}" | jq -r '.[] | select(.state == "failure") | .context' | sort | uniq)"
+# COMMIT_STATUS_PENDING="$(echo "${COMMIT_STATUS_DATA}" | jq -r '.[] | select(.state == "pending") | .context' | sort | uniq)"
 COMMIT_STATUS_SUCCESS="$(echo "${COMMIT_STATUS_DATA}" | jq -r '.[] | select(.state == "success") | .context' | sort | uniq)"
-COMMIT_STATUS_FAILURE="$(echo "${COMMIT_STATUS_DATA}" | jq -r '.[] | select(.state == "failure") | .context' | sort | uniq)"
 
 STATUS_PASSED=""
 
