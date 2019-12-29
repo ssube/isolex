@@ -62,22 +62,29 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
 
     // write value to stdin if possible
     if (doesExist(child.child.stdin)) {
+      this.logger.debug('writing filter value to shell command');
       await this.writeValue(child.child.stdin, value);
     } else {
-      this.logger.warn('no stdin stream to write filter value');
+      this.logger.warn('shell command has no input stream, cannot write filter value');
     }
 
-    // TODO: try/catch
-    // this will be rejected (and throw) if the child exits > 0
-    const results = await child;
-    this.logger.debug(results, 'executed shell command and collected results');
+    try {
+      this.logger.debug({
+        child: child.child,
+      }, 'waiting for shell command to exit');
+      const results = await child;
+      this.logger.debug(results, 'executed shell command and collected results');
 
-    if (results.stderr.length > 0) {
-      this.logger.warn(results, 'error from shell command');
+      if (results.stderr.length > 0) {
+        this.logger.warn(results, 'shell command exited with error output');
+        return FilterBehavior.Drop;
+      }
+
+      return FilterBehavior.Allow;
+    } catch (err) {
+      this.logger.warn(err, 'shell command exited with error status');
       return FilterBehavior.Drop;
     }
-
-    return FilterBehavior.Allow;
   }
 
   public writeValue(stream: Writable, value: FilterValue): Promise<boolean> {
