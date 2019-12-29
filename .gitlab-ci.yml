@@ -156,4 +156,4 @@ sonar-success:
         -Dsonar.sources=src/,test/
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.login=${SONAR_SECRET}
-        -Dsonar.typescript.lcov.reportPaths=out/coverage/lcov.info
+        -Dsonar.javascript.lcov.reportPaths=out/coverage/lcov.info
