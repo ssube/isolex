@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import { ChildProcessError } from '../../src/error/ChildProcessError';
 import { InvalidArgumentError } from '../../src/error/InvalidArgumentError';
 import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { MissingKeyError } from '../../src/error/MissingKeyError';
@@ -11,6 +12,7 @@ import { SessionRequiredError } from '../../src/error/SessionRequiredError';
 import { TimeoutError } from '../../src/error/TimeoutError';
 
 const errors = [
+  ChildProcessError,
   InvalidArgumentError,
   MimeTypeError,
   MissingKeyError,

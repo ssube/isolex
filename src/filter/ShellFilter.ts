@@ -5,6 +5,7 @@ import { Writable } from 'stream';
 
 import { FilterBehavior, FilterData, FilterValue } from '.';
 import { INJECT_CLOCK } from '../BaseService';
+import { ChildProcessError } from '../error/ChildProcessError';
 import { doesExist, mustExist, Optional } from '../utils';
 import { appendBuffers } from '../utils/Buffer';
 import { Clock } from '../utils/Clock';
@@ -98,11 +99,15 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
 
       child.on('close', (status: number) => {
         this.logger.debug({ status }, 'child exited with status');
-        res({
-          status,
-          stderr: appendBuffers(stderr).toString('utf-8'),
-          stdout: appendBuffers(stdout).toString('utf-8'),
-        });
+        if (status === 0) {
+          res({
+            status,
+            stderr: appendBuffers(stderr).toString('utf-8'),
+            stdout: appendBuffers(stdout).toString('utf-8'),
+          });
+        } else {
+          rej(new ChildProcessError(`child process exited with error status: ${status}`));
+        }
       });
     });
   }
