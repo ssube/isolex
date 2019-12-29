@@ -1,27 +1,23 @@
-import { exec, ExecOptions, PromiseWithChild } from 'child_process';
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { defaultTo } from 'lodash';
 import { Inject } from 'noicejs';
 import { Writable } from 'stream';
-import { promisify } from 'util';
 
 import { FilterBehavior, FilterData, FilterValue } from '.';
 import { INJECT_CLOCK } from '../BaseService';
 import { doesExist, mustExist, Optional } from '../utils';
+import { appendBuffers } from '../utils/Buffer';
 import { Clock } from '../utils/Clock';
 import { makeDict, NameValuePair, pairsToMap } from '../utils/Map';
 import { BaseFilter, BaseFilterOptions } from './BaseFilter';
 
-export interface ChildStreams {
+export interface ChildResult {
+  status: number;
   stderr: string;
   stdout: string;
 }
 
-export type ExecCallback = (
-  command: string,
-  options: ExecOptions
-) => PromiseWithChild<ChildStreams>;
-
-const execPromise: ExecCallback = promisify(exec);
+export type ExecCallback = typeof spawn;
 
 export interface ShellFilterData extends FilterData {
   command: string;
@@ -33,19 +29,19 @@ export interface ShellFilterData extends FilterData {
 }
 
 export interface ShellFilterOptions extends BaseFilterOptions<ShellFilterData> {
-  exec?: ExecCallback;
+  exec?: typeof spawn;
 }
 
 @Inject(INJECT_CLOCK)
 export class ShellFilter extends BaseFilter<ShellFilterData> {
   protected clock: Clock;
-  protected exec: typeof execPromise;
+  protected exec: typeof spawn;
 
   constructor(options: ShellFilterOptions) {
     super(options, 'isolex#/definitions/service-filter-shell');
 
     this.clock = mustExist(options[INJECT_CLOCK]);
-    this.exec = defaultTo(options.exec, execPromise);
+    this.exec = defaultTo(options.exec, spawn);
   }
 
   public async check(value: FilterValue): Promise<FilterBehavior> {
@@ -55,28 +51,28 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       env,
     }, 'executing shell command with environment');
 
-    const child = this.exec(this.data.command, {
+    const child = this.exec(this.data.command, [], {
       cwd: this.data.options.cwd,
       env,
     });
 
     // write value to stdin if possible
-    if (doesExist(child.child.stdin)) {
+    if (doesExist(child.stdin)) {
       this.logger.debug('writing filter value to shell command');
-      await this.writeValue(child.child.stdin, value);
+      await this.writeValue(child.stdin, value);
     } else {
       this.logger.warn('shell command has no input stream, cannot write filter value');
     }
 
     try {
       this.logger.debug({
-        child: child.child,
+        child,
       }, 'waiting for shell command to exit');
-      const results = await child;
-      this.logger.debug(results, 'executed shell command and collected results');
+      const result = await this.waitForChild(child);
+      this.logger.debug(result, 'executed shell command and collected results');
 
-      if (results.stderr.length > 0) {
-        this.logger.warn(results, 'shell command exited with error output');
+      if (result.stderr.length > 0) {
+        this.logger.warn(result, 'shell command exited with error output');
         return FilterBehavior.Drop;
       }
 
@@ -85,6 +81,30 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       this.logger.warn(err, 'shell command exited with error status');
       return FilterBehavior.Drop;
     }
+  }
+
+  public waitForChild(child: ChildProcessWithoutNullStreams): Promise<ChildResult> {
+    return new Promise((res, rej) => {
+      const stderr: Array<Buffer> = [];
+      const stdout: Array<Buffer> = [];
+
+      child.stderr.on('data', (chunk) => {
+        stderr.push(chunk);
+      });
+
+      child.stdout.on('data', (chunk) => {
+        stdout.push(chunk);
+      });
+
+      child.on('close', (status: number) => {
+        this.logger.debug({ status }, 'child exited with status');
+        res({
+          status,
+          stderr: appendBuffers(stderr).toString('utf-8'),
+          stdout: appendBuffers(stdout).toString('utf-8'),
+        });
+      });
+    });
   }
 
   public writeValue(stream: Writable, value: FilterValue): Promise<boolean> {
