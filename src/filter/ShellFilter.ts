@@ -109,6 +109,6 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       time: this.clock.getSeconds(),
     });
     const data = JSON.stringify(value);
-    return `{"metadata": ${meta}, "data": ${data}}`;
+    return `{"metadata": ${meta}, "data": ${data}}\n`;
   }
 }
