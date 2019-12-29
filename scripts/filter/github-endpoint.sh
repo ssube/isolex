@@ -4,7 +4,7 @@
 
 LOG_FILE="/tmp/github-endpoint.log"
 
-echo "$(date)" >> "${LOG_FILE}"
+date >> "${LOG_FILE}"
 
 DATA="$(cat -)"
 LABELS="$(echo "${DATA}" | jq '.data.labels[]')"
@@ -17,10 +17,12 @@ then
   exit 0
 fi
 
-export GITHUB_COMMIT="$(echo "${DATA}" | jq -r '.data.data[] | select(.[0] == "sha") | .[1]')"
+GITHUB_COMMIT="$(echo "${DATA}" | jq -r '.data.data[] | select(.[0] == "sha") | .[1]')"
+export GITHUB_COMMIT
 echo "commit: ${GITHUB_COMMIT}" >> "${LOG_FILE}"
 
-export GITHUB_PROJECT="$(echo "${DATA}" | jq -r '.data.context.channel.id')"
+GITHUB_PROJECT="$(echo "${DATA}" | jq -r '.data.context.channel.id')"
+export GITHUB_PROJECT
 echo "project: ${GITHUB_PROJECT}" >> "${LOG_FILE}"
 
 bash /data/filter/github-status.sh >> "${LOG_FILE}"
