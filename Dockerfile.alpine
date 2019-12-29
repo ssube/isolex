@@ -1,7 +1,7 @@
 FROM node:11-alpine
 
-# install sqlite tools
-RUN apk add sqlite
+# install jq, sqlite cli
+RUN apk add bash curl jq sqlite
 
 # copy build output
 COPY package.json yarn.lock /app/
