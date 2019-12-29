@@ -18,9 +18,9 @@ export type Optional<T> = T | Nil;
 export type PredicateC1<TVal> = (val: TVal, idx: number, list: Array<TVal>) => boolean;
 
 /**
- * Comparison predicate for two values.
+ * Comparison (sort) predicate for two values.
  */
-export type PredicateC2<TVal> = (pval: TVal, nval: TVal, idx: number, list: Array<TVal>) => boolean;
+export type PredicateC2<TVal> = (pval: TVal, nval: TVal, idx: number, list: Array<TVal>) => number;
 
 /**
  * Reduction predicate for two values.
