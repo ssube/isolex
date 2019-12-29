@@ -15,11 +15,105 @@ import { getTestLogger } from '../helpers/logger';
 
 const TEST_FILTER = 'test-filter';
 
+function createChild(status: number) {
+  const end = stub().yields();
+  const write = stub().yields();
+  const stdin = ineeda<Writable>({
+    end,
+    write,
+  });
+
+  const stdout = ineeda<Readable>({
+    on: stub(),
+  });
+  const child = ineeda<ChildProcessWithoutNullStreams>({
+    on: stub().withArgs('close').yields(status),
+    stderr: stdout,
+    stdin,
+    stdout,
+  });
+
+  return {
+    child,
+    end,
+    stderr: stdout,
+    stdin,
+    stdout,
+    write,
+  };
+}
+
 describeLeaks('shell filter', async () => {
   itLeaks('should execute the given command', async () => {
     const { container } = await createServiceContainer();
+    const { child, end, write } = createChild(0);
 
-    /* set up the child with stdin stream */
+    /* service in test */
+    const exec = stub().returns(child);
+    const filter = await createService(container, ShellFilter, {
+      [INJECT_CLOCK]: await container.create(Clock),
+      data: {
+        command: 'cat -',
+        filters: [],
+        options: {
+          cwd: '',
+          env: [],
+          timeout: 0,
+        },
+        strict: false,
+      },
+      exec,
+      metadata: {
+        kind: TEST_FILTER,
+        name: TEST_FILTER,
+      },
+    });
+
+    const result = await filter.check(ineeda.instanceof(Message));
+    /* should have successfully called exec */
+    expect(exec).to.have.callCount(1);
+    expect(result).to.equal(FilterBehavior.Allow);
+    /* and written the payload */
+    expect(end).to.have.callCount(1);
+    expect(write).to.have.callCount(1);
+    expect(write).to.have.been.calledBefore(end);
+  });
+
+  itLeaks('should reject the value when command exits with error', async () => {
+    const { container } = await createServiceContainer();
+    const { child } = createChild(1);
+
+    /* service in test */
+    const exec = stub().returns(child);
+    const filter = await createService(container, ShellFilter, {
+      [INJECT_CLOCK]: await container.create(Clock),
+      [INJECT_LOGGER]: getTestLogger(true),
+      data: {
+        command: 'cat -',
+        filters: [],
+        options: {
+          cwd: '',
+          env: [],
+          timeout: 0,
+        },
+        strict: false,
+      },
+      exec,
+      metadata: {
+        kind: TEST_FILTER,
+        name: TEST_FILTER,
+      },
+    });
+
+    const result = await filter.check(ineeda.instanceof(Message));
+    /* should have unsuccessfully called exec */
+    expect(exec).to.have.callCount(1);
+    expect(result).to.equal(FilterBehavior.Drop);
+  });
+
+  itLeaks('should reject the value when command writes an error', async () => {
+    const { container } = await createServiceContainer();
+
     const end = stub().yields();
     const write = stub().yields();
     const stdin = ineeda<Writable>({
@@ -27,12 +121,15 @@ describeLeaks('shell filter', async () => {
       write,
     });
 
+    const stderr = ineeda<Readable>({
+      on: stub().withArgs('data').yields(Buffer.from('this is an error')),
+    });
     const stdout = ineeda<Readable>({
       on: stub(),
     });
     const child = ineeda<ChildProcessWithoutNullStreams>({
       on: stub().withArgs('close').yields(0),
-      stderr: stdout,
+      stderr,
       stdin,
       stdout,
     });
@@ -60,12 +157,8 @@ describeLeaks('shell filter', async () => {
     });
 
     const result = await filter.check(ineeda.instanceof(Message));
-    /* should have successfully called exec */
-    expect(result).to.equal(FilterBehavior.Allow);
+    /* should have unsuccessfully called exec */
     expect(exec).to.have.callCount(1);
-    /* and written the payload */
-    expect(end).to.have.callCount(1);
-    expect(write).to.have.callCount(1);
-    expect(write).to.have.been.calledBefore(end);
+    expect(result).to.equal(FilterBehavior.Drop);
   });
 });
