@@ -12,15 +12,16 @@ import { Clock } from '../../src/utils/Clock';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 import { getTestLogger } from '../helpers/logger';
+import { waitForChild } from '../../src/utils/Child';
 
 const TEST_CONFIG: ShellFilterData = {
-  command: 'cat -',
-  filters: [],
-  options: {
+  child: {
+    command: 'cat -',
     cwd: '',
     env: [],
     timeout: 0,
   },
+  filters: [],
   strict: false,
 };
 const TEST_FILTER = 'test-filter';
@@ -181,7 +182,6 @@ describeLeaks('shell filter', async () => {
   });
 
   itLeaks('should collect output from child', async () => {
-    const { container } = await createServiceContainer();
     const { stderr, stdin } = createChild(0);
 
     const TEST_OUTPUT = 'hello world';
@@ -195,19 +195,7 @@ describeLeaks('shell filter', async () => {
     });
 
     /* service in test */
-    const exec = stub().returns(child);
-    const filter = await createService(container, ShellFilter, {
-      [INJECT_CLOCK]: await container.create(Clock),
-      [INJECT_LOGGER]: getTestLogger(true),
-      data: TEST_CONFIG,
-      exec,
-      metadata: {
-        kind: TEST_FILTER,
-        name: TEST_FILTER,
-      },
-    });
-
-    const result = await filter.waitForChild(child);
+    const result = await waitForChild(child);
     expect(result.stdout).to.equal(TEST_OUTPUT);
   });
 });

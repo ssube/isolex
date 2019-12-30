@@ -25,6 +25,28 @@ definitions:
       mode:
         enum: [exclude, include]
 
+  child:
+    type: object
+    additionalProperties: false
+    required:
+      - command
+      - cwd
+      - env
+      - timeout
+    properties:
+      command:
+        type: string
+        default: ~
+      cwd:
+        type: string
+      env:
+        type: array
+        items:
+          $ref: "#/definitions/name-value-pair"
+      timeout:
+        type: number
+        default: 0
+
   client-github:
     type: object
     additionalProperties: false
@@ -735,25 +757,10 @@ definitions:
       - type: object
         additionalProperties: true
         required:
-          - command
-          - options
+          - child
         properties:
-          command:
-            type: string
-          options:
-            type: object
-            additionalProperties: true
-            properties:
-              cwd:
-                type: string
-                default: ~
-              env:
-                type: array
-                items:
-                  $ref: "#/definitions/name-value-pair"
-              timeout:
-                type: number
-                default: 0
+          child:
+            $ref: "#/definitions/child"
 
   service-filter-source:
     allOf:
@@ -1077,6 +1084,16 @@ definitions:
             type: object
             additionalProperties:
               type: string
+
+  service-transform-shell:
+    allOf:
+      - $ref: "#/definitions/service-transform"
+      - type: object
+        additionalProperties: true
+        required: [child]
+        properties:
+          child:
+            $ref: "#/definitions/child"
 
   service-transform-template:
     allOf:

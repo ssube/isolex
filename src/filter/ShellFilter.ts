@@ -1,42 +1,27 @@
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import { defaultTo } from 'lodash';
-import { Inject, BaseError } from 'noicejs';
-import { Writable } from 'stream';
+import { Inject } from 'noicejs';
 
 import { FilterBehavior, FilterData, FilterValue } from '.';
 import { INJECT_CLOCK } from '../BaseService';
-import { ChildProcessError } from '../error/ChildProcessError';
-import { doesExist, mustExist, Optional } from '../utils';
-import { encode } from '../utils/Buffer';
+import { doesExist, mustExist } from '../utils';
+import { ChildOptions, waitForChild, writeValue, ChildSpawner } from '../utils/Child';
 import { Clock } from '../utils/Clock';
-import { makeDict, NameValuePair, pairsToMap } from '../utils/Map';
+import { makeDict, pairsToMap } from '../utils/Map';
 import { BaseFilter, BaseFilterOptions } from './BaseFilter';
 
-export interface ChildResult {
-  status: number;
-  stderr: string;
-  stdout: string;
-}
-
-export type ExecCallback = typeof spawn;
-
 export interface ShellFilterData extends FilterData {
-  command: string;
-  options: {
-    cwd: string;
-    env: Array<NameValuePair<string>>;
-    timeout: number;
-  };
+  child: ChildOptions;
 }
 
 export interface ShellFilterOptions extends BaseFilterOptions<ShellFilterData> {
-  exec?: typeof spawn;
+  exec?: ChildSpawner;
 }
 
 @Inject(INJECT_CLOCK)
 export class ShellFilter extends BaseFilter<ShellFilterData> {
   protected clock: Clock;
-  protected exec: typeof spawn;
+  protected exec: ChildSpawner;
 
   constructor(options: ShellFilterOptions) {
     super(options, 'isolex#/definitions/service-filter-shell');
@@ -46,21 +31,22 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
   }
 
   public async check(value: FilterValue): Promise<FilterBehavior> {
-    const env = makeDict(pairsToMap(this.data.options.env));
+    const env = makeDict(pairsToMap(this.data.child.env));
     this.logger.debug({
-      command: this.data.command,
+      command: this.data.child.command,
       env,
     }, 'executing shell command with environment');
 
     const child = this.exec(this.data.command, [], {
-      cwd: this.data.options.cwd,
+      cwd: this.data.child.cwd,
       env,
+      timeout: this.data.child.timeout,
     });
 
     // write value to stdin if possible
     if (doesExist(child.stdin)) {
       this.logger.debug('writing filter value to shell command');
-      await this.writeValue(child.stdin, value);
+      await writeValue(child.stdin, this.serializeValue(value));
     } else {
       this.logger.warn('shell command has no input stream, cannot write filter value');
     }
@@ -69,7 +55,7 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       this.logger.debug({
         child,
       }, 'waiting for shell command to exit');
-      const result = await this.waitForChild(child);
+      const result = await waitForChild(child);
       this.logger.debug(result, 'executed shell command and collected results');
 
       return FilterBehavior.Allow;
@@ -77,62 +63,6 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       this.logger.warn(err, 'shell command exited with error, dropping value');
       return FilterBehavior.Drop;
     }
-  }
-
-  public waitForChild(child: ChildProcessWithoutNullStreams): Promise<ChildResult> {
-    return new Promise((res, rej) => {
-      const stderr: Array<Buffer> = [];
-      const stdout: Array<Buffer> = [];
-
-      child.stderr.on('data', (chunk) => {
-        stderr.push(chunk);
-      });
-
-      child.stdout.on('data', (chunk) => {
-        stdout.push(chunk);
-      });
-
-      child.on('close', (status: number) => {
-        this.logger.debug({ status }, 'child exited with status');
-        const errors = encode(stderr, 'utf-8');
-        if (status > 0) {
-          rej(new ChildProcessError(
-            `child process exited with error status: ${status}`,
-            new BaseError(errors)
-          ));
-          return;
-        }
-
-        if (errors.length > 0) {
-          rej(new ChildProcessError(
-            'child process exited with error output',
-            new BaseError(errors)
-          ));
-          return;
-        }
-
-        res({
-          status,
-          stderr: errors,
-          stdout: encode(stdout, 'utf-8'),
-        });
-      });
-    });
-  }
-
-  public writeValue(stream: Writable, value: FilterValue): Promise<boolean> {
-    return new Promise<boolean>((res, rej) => {
-      const payload = this.serializeValue(value);
-      stream.write(payload, (err: Optional<Error>) => {
-        if (doesExist(err)) {
-          rej(err);
-        } else {
-          stream.end(() => {
-            res(true);
-          });
-        }
-      });
-    });
   }
 
   protected serializeValue(value: FilterValue): string {
