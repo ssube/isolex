@@ -1,13 +1,13 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { defaultTo } from 'lodash';
-import { Inject } from 'noicejs';
+import { Inject, BaseError } from 'noicejs';
 import { Writable } from 'stream';
 
 import { FilterBehavior, FilterData, FilterValue } from '.';
 import { INJECT_CLOCK } from '../BaseService';
 import { ChildProcessError } from '../error/ChildProcessError';
 import { doesExist, mustExist, Optional } from '../utils';
-import { appendBuffers } from '../utils/Buffer';
+import { encode } from '../utils/Buffer';
 import { Clock } from '../utils/Clock';
 import { makeDict, NameValuePair, pairsToMap } from '../utils/Map';
 import { BaseFilter, BaseFilterOptions } from './BaseFilter';
@@ -102,11 +102,15 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
         if (status === 0) {
           res({
             status,
-            stderr: appendBuffers(stderr).toString('utf-8'),
-            stdout: appendBuffers(stdout).toString('utf-8'),
+            stderr: encode(stderr, 'utf-8'),
+            stdout: encode(stdout, 'utf-8'),
           });
         } else {
-          rej(new ChildProcessError(`child process exited with error status: ${status}`));
+          const inner = encode(stderr, 'utf-8');
+          rej(new ChildProcessError(
+            `child process exited with error status: ${status}`,
+            new BaseError(inner)
+          ));
         }
       });
     });
