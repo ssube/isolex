@@ -1,4 +1,4 @@
-import { BaseOptions, Inject, Logger, MissingValueError } from 'noicejs';
+import { BaseOptions, Inject, Logger, MissingValueError, LogLevel } from 'noicejs';
 import { Registry } from 'prom-client';
 import uuid from 'uuid';
 
@@ -37,8 +37,12 @@ export interface InjectedServiceOptions {
   [INJECT_TEMPLATE]?: TemplateCompiler;
 }
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-export type BaseServiceData = any;
+export interface BaseServiceData {
+  logger?: {
+    level: LogLevel;
+  };
+}
+
 export type BaseServiceOptions<TData extends BaseServiceData> = BaseOptions & ServiceDefinition<TData> & InjectedServiceOptions;
 
 @Inject(INJECT_LOGGER, INJECT_SCHEMA, INJECT_SERVICES)

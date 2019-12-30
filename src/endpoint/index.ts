@@ -3,9 +3,12 @@ import passport from 'passport';
 
 import { BotServiceData } from '../BotService';
 import { CommandVerb } from '../entity/Command';
-import { Service } from '../Service';
+import { Service, ServiceDefinition } from '../Service';
+import { TransformData } from '../transform';
 
-export type EndpointData = BotServiceData;
+export interface EndpointData extends BotServiceData {
+  transforms: Array<ServiceDefinition<TransformData>>;
+}
 
 export interface RouterOptions {
   passport: passport.Authenticator;

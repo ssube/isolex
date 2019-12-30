@@ -28,6 +28,7 @@ describeLeaks('base endpoint', async () => {
       data: {
         filters: [],
         strict: false,
+        transforms: [],
       },
       metadata: {
         kind: 'sub-endpoint',
@@ -58,6 +59,7 @@ describeLeaks('base endpoint', async () => {
       data: {
         filters: [],
         strict: false,
+        transforms: [],
       },
       metadata: {
         kind: 'sub-endpoint',

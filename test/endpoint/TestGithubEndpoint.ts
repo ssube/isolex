@@ -5,13 +5,12 @@ import passport from 'passport';
 import { spy, stub } from 'sinon';
 
 import { STATUS_SUCCESS } from '../../src/endpoint/BaseEndpoint';
-import { GithubEndpoint } from '../../src/endpoint/GithubEndpoint';
-import { GitlabEndpointData } from '../../src/endpoint/GitlabEndpoint';
+import { GithubEndpoint, GithubEndpointData } from '../../src/endpoint/GithubEndpoint';
 import { CommandVerb } from '../../src/entity/Command';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
-const TEST_DATA: GitlabEndpointData = {
+const TEST_DATA: GithubEndpointData = {
   defaultCommand: {
     data: {},
     labels: {},
@@ -22,6 +21,7 @@ const TEST_DATA: GitlabEndpointData = {
   hookUser: '',
   secret: '',
   strict: false,
+  transforms: [],
 };
 
 // tslint:disable:no-identical-functions

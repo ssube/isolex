@@ -52,10 +52,6 @@ describeLeaks('command generator', async () => {
             },
           },
         },
-        services: [{
-          kind: TEST_SVC,
-          name: TEST_SVC,
-        }],
         strict: false,
       },
       metadata: {

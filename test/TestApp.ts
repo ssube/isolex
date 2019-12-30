@@ -24,7 +24,6 @@ const TEST_CONFIG: BotDefinition = {
   data: {
     controllers: [],
     endpoints: [],
-    filters: [],
     generators: [],
     listeners: [],
     locale: {

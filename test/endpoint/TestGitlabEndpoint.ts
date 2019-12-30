@@ -20,6 +20,7 @@ const TEST_DATA: GitlabEndpointData = {
   filters: [],
   hookUser: '',
   strict: false,
+  transforms: [],
 };
 
 const TEST_EVENTS = [{

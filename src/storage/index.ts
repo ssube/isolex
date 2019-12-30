@@ -1,12 +1,12 @@
 import { BaseOptions, Container } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
-import { BaseService, BaseServiceOptions } from '../BaseService';
+import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
 import { StorageLogger } from '../logger/StorageLogger';
 import { ServiceLifecycle } from '../Service';
 import { mustExist } from '../utils';
 
-export interface StorageData {
+export interface StorageData extends BaseServiceData {
   migrate: boolean;
   orm: ConnectionOptions;
 }
