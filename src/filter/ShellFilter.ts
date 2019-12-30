@@ -37,7 +37,7 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       env,
     }, 'executing shell command with environment');
 
-    const child = this.exec(this.data.command, [], {
+    const child = this.exec(this.data.child.command, [], {
       cwd: this.data.child.cwd,
       env,
       timeout: this.data.child.timeout,
