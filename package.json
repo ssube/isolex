@@ -30,7 +30,7 @@
     "typeorm": "0.2.22"
   },
   "devDependencies": {
-    "@istanbuljs/nyc-config-typescript": "1.0.0",
+    "@istanbuljs/nyc-config-typescript": "1.0.1",
     "@microsoft/api-documenter": "7.7.2",
     "@microsoft/api-extractor": "7.7.0",
     "@octokit/app": "4.1.1",
