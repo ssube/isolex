@@ -72,14 +72,9 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
       const result = await this.waitForChild(child);
       this.logger.debug(result, 'executed shell command and collected results');
 
-      if (result.stderr.length > 0) {
-        this.logger.warn(result, 'shell command exited with error output');
-        return FilterBehavior.Drop;
-      }
-
       return FilterBehavior.Allow;
     } catch (err) {
-      this.logger.warn(err, 'shell command exited with error status');
+      this.logger.warn(err, 'shell command exited with error, dropping value');
       return FilterBehavior.Drop;
     }
   }
@@ -99,19 +94,28 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
 
       child.on('close', (status: number) => {
         this.logger.debug({ status }, 'child exited with status');
-        if (status === 0) {
-          res({
-            status,
-            stderr: encode(stderr, 'utf-8'),
-            stdout: encode(stdout, 'utf-8'),
-          });
-        } else {
-          const inner = encode(stderr, 'utf-8');
+        const errors = encode(stderr, 'utf-8');
+        if (status > 0) {
           rej(new ChildProcessError(
             `child process exited with error status: ${status}`,
-            new BaseError(inner)
+            new BaseError(errors)
           ));
+          return;
         }
+
+        if (errors.length > 0) {
+          rej(new ChildProcessError(
+            'child process exited with error output',
+            new BaseError(errors)
+          ));
+          return;
+        }
+
+        res({
+          status,
+          stderr: errors,
+          stdout: encode(stdout, 'utf-8'),
+        });
       });
     });
   }

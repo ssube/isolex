@@ -145,16 +145,11 @@ describeLeaks('shell filter', async () => {
 
   itLeaks('should gracefully handle missing stdin', async () => {
     const { container } = await createServiceContainer();
+    const { stdout } = createChild(0);
 
-    const stderr = ineeda<Readable>({
-      on: stub(),
-    });
-    const stdout = ineeda<Readable>({
-      on: stub(),
-    });
     const child = ineeda<ChildProcessByStdio<null, Readable, Readable>>({
       on: stub().withArgs('close').yields(0),
-      stderr,
+      stderr: stdout,
       /* getter/setter pair shouldn't be required for proper sinon mock */
       get stdin() {
         /* eslint-disable-next-line no-null/no-null */
@@ -183,5 +178,36 @@ describeLeaks('shell filter', async () => {
     /* should have unsuccessfully called exec */
     expect(exec).to.have.callCount(1);
     expect(result).to.equal(FilterBehavior.Allow);
+  });
+
+  itLeaks('should collect output from child', async () => {
+    const { container } = await createServiceContainer();
+    const { stderr, stdin } = createChild(0);
+
+    const TEST_OUTPUT = 'hello world';
+    const child = ineeda<ChildProcessWithoutNullStreams>({
+      on: stub().withArgs('close').yields(0),
+      stderr,
+      stdin,
+      stdout: ineeda<Readable>({
+        on: stub().withArgs('data').yields(Buffer.from(TEST_OUTPUT)),
+      }),
+    });
+
+    /* service in test */
+    const exec = stub().returns(child);
+    const filter = await createService(container, ShellFilter, {
+      [INJECT_CLOCK]: await container.create(Clock),
+      [INJECT_LOGGER]: getTestLogger(true),
+      data: TEST_CONFIG,
+      exec,
+      metadata: {
+        kind: TEST_FILTER,
+        name: TEST_FILTER,
+      },
+    });
+
+    const result = await filter.waitForChild(child);
+    expect(result.stdout).to.equal(TEST_OUTPUT);
   });
 });
