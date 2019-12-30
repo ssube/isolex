@@ -52,9 +52,6 @@ export class ShellFilter extends BaseFilter<ShellFilterData> {
     }
 
     try {
-      this.logger.debug({
-        child,
-      }, 'waiting for shell command to exit');
       const result = await waitForChild(child);
       this.logger.debug(result, 'executed shell command and collected results');
 
