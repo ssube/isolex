@@ -8,6 +8,7 @@ import { encode } from './Buffer';
 import { NameValuePair } from './Map';
 
 export interface ChildOptions {
+  args: Array<string>;
   command: string;
   cwd: string;
   env: Array<NameValuePair<string>>;

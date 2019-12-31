@@ -7,6 +7,7 @@ import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from '
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
 import { doesExist } from '../utils';
 import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
+import { Dict } from '../utils/Map';
 
 export enum CommandVerb {
   Create = 'create',
@@ -49,15 +50,22 @@ export class Command extends BaseCommand implements CommandOptions {
   }
 
   public toJSON(): object {
-    const context = isNil(this.context) ? {} : this.context.toJSON();
-    return {
-      context,
+    const result: Dict<unknown> = {
       data: Array.from(this.data),
-      id: this.id,
       labels: Array.from(this.labels),
       noun: this.noun,
       verb: this.verb,
     };
+
+    if (doesExist(this.context)) {
+      result.context = this.context.toJSON();
+    }
+
+    if (doesExist(this.id)) {
+      result.id = this.id;
+    }
+
+    return result;
   }
 }
 

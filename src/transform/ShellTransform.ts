@@ -24,20 +24,20 @@ export class ShellTransform extends BaseTransform<ShellTransformData> implements
     this.exec = defaultTo(options.exec, spawn);
   }
 
-  public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {
+  public async transform(value: FilterValue, type: string, scope: TemplateScope): Promise<TemplateScope> {
     // execute command and collect stdout
     this.logger.debug({ child: this.data.child }, 'executing shell command');
-    const child = this.exec(this.data.child.command, {
+    const child = this.exec(this.data.child.command, this.data.child.args, {
       timeout: this.data.child.timeout,
     });
 
-    // turn body into env
-    const scope = this.mergeScope(entity, body);
-
-    // turn value into string
-    const value = JSON.stringify(entity);
+    // merge value and body, send to child
+    const payload = JSON.stringify({
+      scope,
+      value,
+    });
     this.logger.debug({ value }, 'writing value to shell command');
-    await writeValue(child.stdin, value);
+    await writeValue(child.stdin, payload);
 
     // abort on errors
     const results = await waitForChild(child);
