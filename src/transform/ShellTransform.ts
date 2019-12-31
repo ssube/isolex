@@ -26,6 +26,7 @@ export class ShellTransform extends BaseTransform<ShellTransformData> implements
 
   public async transform(entity: FilterValue, type: string, body: TemplateScope): Promise<TemplateScope> {
     // execute command and collect stdout
+    this.logger.debug({ child: this.data.child }, 'executing shell command');
     const child = this.exec(this.data.child.command, {
       timeout: this.data.child.timeout,
     });
@@ -35,10 +36,12 @@ export class ShellTransform extends BaseTransform<ShellTransformData> implements
 
     // turn value into string
     const value = JSON.stringify(entity);
+    this.logger.debug({ value }, 'writing value to shell command');
     await writeValue(child.stdin, value);
 
     // abort on errors
     const results = await waitForChild(child);
+    this.logger.debug(results, 'collected results from shell command');
 
     // parse stdout into output scope
     return JSON.parse(results.stdout);
