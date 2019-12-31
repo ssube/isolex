@@ -1,12 +1,14 @@
 import { expect } from 'chai';
+import { stub } from 'sinon';
 
 import { Command, CommandOptions, CommandVerb } from '../../src/entity/Command';
+import { ServiceModule } from '../../src/module/ServiceModule';
 import { ServiceMetadata } from '../../src/Service';
 import { ShellTransform } from '../../src/transform/ShellTransform';
 import { TYPE_JSON } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
+import { createChild } from '../helpers/child';
 import { createContainer, createService } from '../helpers/container';
-import { ServiceModule } from '../../src/module/ServiceModule';
 
 const TEST_METADATA: ServiceMetadata = {
   kind: 'test-transform',
@@ -56,12 +58,14 @@ describeLeaks('shell transform', async () => {
     const { container } = await createContainer(new ServiceModule({
       timeout: 0,
     }));
+
+    const { child } = createChild(0, undefined, Buffer.from('{"test": "hello world!"}'));
+    const exec = stub().returns(child);
     const transform = await createService(container, ShellTransform, {
       data: {
         child: {
-          // TODO: use a mock spawn rather than an inline shell script
-          args: ['-c', 'cat - > /dev/null; echo \'{"test": "hello world!"}\''],
-          command: '/bin/sh',
+          args: [],
+          command: 'no',
           cwd: '',
           env: [],
           timeout: CHILD_TIMEOUT,
@@ -69,6 +73,7 @@ describeLeaks('shell transform', async () => {
         filters: [],
         strict: false,
       },
+      exec,
       metadata: TEST_METADATA,
     });
 

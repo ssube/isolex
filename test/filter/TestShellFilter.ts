@@ -3,7 +3,7 @@ import { ChildProcessByStdio, ChildProcessWithoutNullStreams } from 'child_proce
 import { ineeda } from 'ineeda';
 import { BaseError } from 'noicejs';
 import { match, stub } from 'sinon';
-import { Readable, Writable } from 'stream';
+import { Readable } from 'stream';
 
 import { INJECT_CLOCK } from '../../src/BaseService';
 import { Message } from '../../src/entity/Message';
@@ -13,6 +13,7 @@ import { ShellFilter, ShellFilterData } from '../../src/filter/ShellFilter';
 import { waitForChild } from '../../src/utils/Child';
 import { Clock } from '../../src/utils/Clock';
 import { describeLeaks, itLeaks } from '../helpers/async';
+import { createChild } from '../helpers/child';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG: ShellFilterData = {
@@ -27,37 +28,6 @@ const TEST_CONFIG: ShellFilterData = {
   strict: false,
 };
 const TEST_FILTER = 'test-filter';
-
-function createChild(status: number) {
-  const end = stub().yields();
-  const write = stub().yields();
-  const stdin = ineeda<Writable>({
-    end,
-    write,
-  });
-
-  const stderr = ineeda<Readable>({
-    on: stub(),
-  });
-  const stdout = ineeda<Readable>({
-    on: stub(),
-  });
-  const child = ineeda<ChildProcessWithoutNullStreams>({
-    on: stub().withArgs('close', match.func).yields(status),
-    stderr: stdout,
-    stdin,
-    stdout,
-  });
-
-  return {
-    child,
-    end,
-    stderr,
-    stdin,
-    stdout,
-    write,
-  };
-}
 
 describeLeaks('shell filter', async () => {
   itLeaks('should execute the given command', async () => {
@@ -110,26 +80,7 @@ describeLeaks('shell filter', async () => {
 
   itLeaks('should reject the value when command writes an error', async () => {
     const { container } = await createServiceContainer();
-
-    const end = stub().yields();
-    const write = stub().yields();
-    const stdin = ineeda<Writable>({
-      end,
-      write,
-    });
-
-    const stderr = ineeda<Readable>({
-      on: stub().withArgs('data', match.func).yields(Buffer.from('this is an error')),
-    });
-    const stdout = ineeda<Readable>({
-      on: stub(),
-    });
-    const child = ineeda<ChildProcessWithoutNullStreams>({
-      on: stub().withArgs('close', match.func).yields(0),
-      stderr,
-      stdin,
-      stdout,
-    });
+    const child = createChild(0, Buffer.from('this is an error'));
 
     /* service in test */
     const exec = stub().returns(child);

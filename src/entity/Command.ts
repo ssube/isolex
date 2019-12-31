@@ -1,13 +1,12 @@
 import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
-import { isNil } from 'lodash';
 import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Context, GRAPH_OUTPUT_CONTEXT } from '../entity/Context';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from '../schema/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
 import { doesExist } from '../utils';
-import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
 import { Dict } from '../utils/Map';
+import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
 
 export enum CommandVerb {
   Create = 'create',
