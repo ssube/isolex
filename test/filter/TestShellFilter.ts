@@ -1,18 +1,20 @@
 import { expect } from 'chai';
 import { ChildProcessByStdio, ChildProcessWithoutNullStreams } from 'child_process';
 import { ineeda } from 'ineeda';
-import { stub } from 'sinon';
+import { BaseError } from 'noicejs';
+import { match, stub } from 'sinon';
 import { Readable, Writable } from 'stream';
 
 import { INJECT_CLOCK, INJECT_LOGGER } from '../../src/BaseService';
 import { Message } from '../../src/entity/Message';
+import { ChildProcessError } from '../../src/error/ChildProcessError';
 import { FilterBehavior } from '../../src/filter';
 import { ShellFilter, ShellFilterData } from '../../src/filter/ShellFilter';
+import { waitForChild } from '../../src/utils/Child';
 import { Clock } from '../../src/utils/Clock';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 import { getTestLogger } from '../helpers/logger';
-import { waitForChild } from '../../src/utils/Child';
 
 const TEST_CONFIG: ShellFilterData = {
   child: {
@@ -38,7 +40,7 @@ function createChild(status: number) {
     on: stub(),
   });
   const child = ineeda<ChildProcessWithoutNullStreams>({
-    on: stub().withArgs('close').yields(status),
+    on: stub().withArgs('close', match.func).yields(status),
     stderr: stdout,
     stdin,
     stdout,
@@ -114,13 +116,13 @@ describeLeaks('shell filter', async () => {
     });
 
     const stderr = ineeda<Readable>({
-      on: stub().withArgs('data').yields(Buffer.from('this is an error')),
+      on: stub().withArgs('data', match.func).yields(Buffer.from('this is an error')),
     });
     const stdout = ineeda<Readable>({
       on: stub(),
     });
     const child = ineeda<ChildProcessWithoutNullStreams>({
-      on: stub().withArgs('close').yields(0),
+      on: stub().withArgs('close', match.func).yields(0),
       stderr,
       stdin,
       stdout,
@@ -149,7 +151,7 @@ describeLeaks('shell filter', async () => {
     const { stdout } = createChild(0);
 
     const child = ineeda<ChildProcessByStdio<null, Readable, Readable>>({
-      on: stub().withArgs('close').yields(0),
+      on: stub().withArgs('close', match.func).yields(0),
       stderr: stdout,
       /* getter/setter pair shouldn't be required for proper sinon mock */
       get stdin() {
@@ -176,7 +178,6 @@ describeLeaks('shell filter', async () => {
     });
 
     const result = await filter.check(ineeda.instanceof(Message));
-    /* should have unsuccessfully called exec */
     expect(exec).to.have.callCount(1);
     expect(result).to.equal(FilterBehavior.Allow);
   });
@@ -186,16 +187,46 @@ describeLeaks('shell filter', async () => {
 
     const TEST_OUTPUT = 'hello world';
     const child = ineeda<ChildProcessWithoutNullStreams>({
-      on: stub().withArgs('close').yields(0),
+      on: stub().withArgs('close', match.func).yields(0),
       stderr,
       stdin,
       stdout: ineeda<Readable>({
-        on: stub().withArgs('data').yields(Buffer.from(TEST_OUTPUT)),
+        on: stub().withArgs('data', match.func).yields(Buffer.from(TEST_OUTPUT)),
       }),
     });
 
-    /* service in test */
     const result = await waitForChild(child);
     expect(result.stdout).to.equal(TEST_OUTPUT);
+  });
+
+  itLeaks('should handle error events from child', async () => {
+    const { stderr, stdin, stdout } = createChild(0);
+
+    const child = ineeda<ChildProcessWithoutNullStreams>({
+      on: stub()
+        .withArgs('close', match.func).yields(0)
+        .withArgs('error', match.func).yields(new BaseError('child process broke')),
+      stderr,
+      stdin,
+      stdout,
+    });
+
+    return expect(waitForChild(child)).to.eventually.be.rejectedWith(ChildProcessError);
+  });
+
+  itLeaks('should ignore exit status passed as error event', async () => {
+    const { stderr, stdin, stdout } = createChild(0);
+
+    const child = ineeda<ChildProcessWithoutNullStreams>({
+      on: stub()
+        .withArgs('close', match.func).yields(0)
+        .withArgs('error', match.func).yields(0),
+      stderr,
+      stdin,
+      stdout,
+    });
+
+    const result = await waitForChild(child);
+    expect(result.status).to.equal(0);
   });
 });

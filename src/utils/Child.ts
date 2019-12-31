@@ -22,6 +22,11 @@ export interface ChildResult {
 
 export type ChildSpawner = typeof spawn;
 
+const CHILD_ENCODING = 'utf-8';
+const CHILD_EVENT = 'child process emitted error event';
+const CHILD_STATUS = 'child process exited with error status';
+const CHILD_OUTPUT = 'child process emitted error output';
+
 export function waitForChild(child: ChildProcessWithoutNullStreams): Promise<ChildResult> {
   return new Promise((res, rej) => {
     const stderr: Array<Buffer> = [];
@@ -35,28 +40,29 @@ export function waitForChild(child: ChildProcessWithoutNullStreams): Promise<Chi
       stdout.push(chunk);
     });
 
+    child.on('error', (err: Error | number) => {
+      if (err instanceof Error) {
+        rej(new ChildProcessError(CHILD_EVENT, err));
+      }
+    });
+
     child.on('close', (status: number) => {
-      const errors = encode(stderr, 'utf-8');
+      const errors = encode(stderr, CHILD_ENCODING);
       if (status > 0) {
-        rej(new ChildProcessError(
-          `child process exited with error status: ${status}`,
-          new BaseError(errors)
-        ));
+        const msg = `${CHILD_STATUS}: ${status}`;
+        rej(new ChildProcessError(msg, new BaseError(errors)));
         return;
       }
 
       if (errors.length > 0) {
-        rej(new ChildProcessError(
-          'child process exited with error output',
-          new BaseError(errors)
-        ));
+        rej(new ChildProcessError(CHILD_OUTPUT, new BaseError(errors)));
         return;
       }
 
       res({
         status,
         stderr: errors,
-        stdout: encode(stdout, 'utf-8'),
+        stdout: encode(stdout, CHILD_ENCODING),
       });
     });
   });
