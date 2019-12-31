@@ -5,7 +5,7 @@ import { BaseError } from 'noicejs';
 import { match, stub } from 'sinon';
 import { Readable, Writable } from 'stream';
 
-import { INJECT_CLOCK, INJECT_LOGGER } from '../../src/BaseService';
+import { INJECT_CLOCK } from '../../src/BaseService';
 import { Message } from '../../src/entity/Message';
 import { ChildProcessError } from '../../src/error/ChildProcessError';
 import { FilterBehavior } from '../../src/filter';
@@ -14,11 +14,11 @@ import { waitForChild } from '../../src/utils/Child';
 import { Clock } from '../../src/utils/Clock';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
-import { getTestLogger } from '../helpers/logger';
 
 const TEST_CONFIG: ShellFilterData = {
   child: {
-    command: 'cat -',
+    args: ['-'],
+    command: '/bin/cat',
     cwd: '',
     env: [],
     timeout: 0,
@@ -36,6 +36,9 @@ function createChild(status: number) {
     write,
   });
 
+  const stderr = ineeda<Readable>({
+    on: stub(),
+  });
   const stdout = ineeda<Readable>({
     on: stub(),
   });
@@ -49,7 +52,7 @@ function createChild(status: number) {
   return {
     child,
     end,
-    stderr: stdout,
+    stderr,
     stdin,
     stdout,
     write,
@@ -168,7 +171,6 @@ describeLeaks('shell filter', async () => {
     const exec = stub().returns(child);
     const filter = await createService(container, ShellFilter, {
       [INJECT_CLOCK]: await container.create(Clock),
-      [INJECT_LOGGER]: getTestLogger(true),
       data: TEST_CONFIG,
       exec,
       metadata: {
