@@ -3823,10 +3823,10 @@ matched@^1.0.2:
     is-valid-glob "^1.0.0"
     resolve-dir "^1.0.0"
 
-mathjs@6.2.5:
-  version "6.2.5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.2.5.tgz#8e7f5717a4083100fcfcc72087887aa94d4b29df"
-  integrity sha512-PT3YHsXvKGkSu4GdvniaPx/e4WygEchWZn5FuOowboNGNnEmZ+kASN9ldRVPFPNhyf5MQkzbFNvMuBxkcPD6CQ==
+mathjs@6.3.0:
+  version "6.3.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.3.0.tgz#e9c62df7fd6a57ea709b6cceba06a3c858628b80"
+  integrity sha512-mpqedpl11jmbHA17lt2rPex2SOgDs4xNrSRtwklH1qTyah7bXuL/IEtlv6mDGNczRMcSp/1l/zLvykpLDDzKOA==
   dependencies:
     complex.js "2.0.11"
     decimal.js "10.2.0"
