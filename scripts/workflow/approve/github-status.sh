@@ -6,10 +6,12 @@ source common.sh
 
 DATA="$(cat -)"
 
-export GITHUB_COMMIT="$(echo "${DATA}" | jq -r '.data.context.channel.thread')"
+GITHUB_COMMIT="$(echo "${DATA}" | jq -r '.data.context.channel.thread')"
+export GITHUB_COMMIT
 echo_trace "commit: ${GITHUB_COMMIT}"
 
-export GITHUB_PROJECT="$(echo "${DATA}" | jq -r '.data.context.channel.id')"
+GITHUB_PROJECT="$(echo "${DATA}" | jq -r '.data.context.channel.id')"
+export GITHUB_PROJECT
 echo_trace "project: ${GITHUB_PROJECT}"
 
 URL_BASE="https://api.github.com/repos/${GITHUB_PROJECT}"
@@ -31,7 +33,8 @@ do
     if [[ "${GITHUB_HEAD}" == "${GITHUB_COMMIT}" ]];
     then
       echo_trace "commit is head for PR#${GITHUB_NUMS}, checking status"
-      export GITHUB_PR_ID="${GITHUB_NUMS}"
+      GITHUB_PR_ID="${GITHUB_NUMS}"
+      export GITHUB_PR_ID
       bash /data/filter/github-approve.sh
     else
       echo_trace "commit is not head for PR#${GITHUB_NUMS}"

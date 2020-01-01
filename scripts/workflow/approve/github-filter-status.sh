@@ -2,7 +2,7 @@
 
 LOG_FILE=/tmp/github-status-trace.log
 
-echo "$(date)" >> ${LOG_FILE}
+date >> ${LOG_FILE}
 
 DATA="$(cat -)"
 LABELS="$(echo "${DATA}" | jq '.data.labels[]')"
