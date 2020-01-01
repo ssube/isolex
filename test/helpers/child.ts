@@ -1,8 +1,8 @@
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import { ineeda } from 'ineeda';
-import { stub, match } from 'sinon';
+import { match, stub } from 'sinon';
 import { Readable, Writable } from 'stream';
-import { isNil } from 'lodash';
+
 import { doesExist } from '../../src/utils';
 
 export function createSilentReadable(): Readable {

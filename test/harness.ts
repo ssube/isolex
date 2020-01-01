@@ -26,5 +26,4 @@ chai.use(sinonChai);
 /* eslint-disable */
 ineeda.intercept({
   then: null as any,
-  unsubscribe: null as any,
 });
