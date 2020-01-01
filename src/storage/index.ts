@@ -1,21 +1,25 @@
-import { BaseOptions, Container } from 'noicejs';
+import { defaultTo } from 'lodash';
+import { BaseError, BaseOptions, Container } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
 import { StorageLogger } from '../logger/StorageLogger';
 import { ServiceLifecycle } from '../Service';
-import { mustExist } from '../utils';
+import { doesExist, mustExist } from '../utils';
 
 export interface StorageData extends BaseServiceData {
   migrate: boolean;
   orm: ConnectionOptions;
 }
 
+export type ConnectCallback = typeof createConnection;
+
 export interface StorageOptions extends BaseServiceOptions<StorageData> {
-  data: StorageData;
+  connect?: ConnectCallback;
 }
 
 export class Storage extends BaseService<StorageData> implements ServiceLifecycle {
+  protected connect: ConnectCallback;
   protected connection?: Connection;
   protected container: Container;
 
@@ -23,6 +27,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
     super(options, 'isolex#/definitions/service-storage');
 
     this.container = options.container;
+    this.connect = defaultTo(options.connect, createConnection);
   }
 
   public async start(): Promise<void> {
@@ -34,7 +39,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
     this.logger.info('connecting to storage');
 
     try {
-      this.connection = await createConnection({
+      this.connection = await this.connect({
         ...this.data.orm,
         entities,
         logger: storageLogger,
@@ -50,7 +55,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
       }
     } catch (err) {
       this.logger.error(err, 'error connecting to storage');
-      throw err;
+      throw new BaseError('error connecting to storage', err);
     }
   }
 
@@ -67,6 +72,9 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
   }
 
   public get isConnected(): boolean {
-    return mustExist(this.connection).isConnected;
+    if (doesExist(this.connection)) {
+      return this.connection.isConnected;
+    }
+    return false;
   }
 }

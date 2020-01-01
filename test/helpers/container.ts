@@ -66,7 +66,7 @@ export async function createServiceContainer(...modules: Array<Module>): Promise
   return { container, module, services };
 }
 
-function getConfig() {
+export function createTestOptions() {
   return {
     [INJECT_BOT]: ineeda<Bot>(),
     [INJECT_CLOCK]: ineeda<Clock>(),
@@ -76,6 +76,7 @@ function getConfig() {
     [INJECT_LOGGER]: getTestLogger(),
     [INJECT_MATH]: new MathFactory(),
     [INJECT_METRICS]: new Registry(),
+    [INJECT_SCHEMA]: new Schema(), // tests use the real schema :D
     [INJECT_STORAGE]: createMockStorage(),
   };
 }
@@ -89,7 +90,7 @@ export async function createService<
   type: Constructor<TService, TOptions>,
   options: Partial<TOptions>
 ): Promise<TService> {
-  const schema = new Schema(); // tests use the real schema :D
+  const testOptions = createTestOptions();
   const locale = await container.create(Locale, {
     data: {
       lang: 'en',
@@ -99,14 +100,13 @@ export async function createService<
       name: 'locale',
     },
     [INJECT_LOGGER]: getTestLogger(),
-    [INJECT_SCHEMA]: schema,
+    [INJECT_SCHEMA]: testOptions[INJECT_SCHEMA],
   });
   await locale.start();
 
   const fullOptions = {
-    ...getConfig(),
+    ...testOptions,
     [INJECT_LOCALE]: locale,
-    [INJECT_SCHEMA]: schema,
     container,
     ...options,
   };
