@@ -33,9 +33,9 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_shield)
 
-[![Open bug count](https://img.shields.io/github/issues-raw/ssube/isolex/type-bug.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue+label%3Atype%2Fbug)
+[![Open bug count](https://img.shields.io/github/issues-raw/ssube/isolex/type-bug?color=red&label=open+bugs)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue+label%3Atype%2Fbug)
 [![Open issue count](https://img.shields.io/github/issues-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aopen+is%3Aissue)
-[![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex.svg)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
+[![Closed issue count](https://img.shields.io/github/issues-closed-raw/ssube/isolex?color=brightgreen)](https://github.com/ssube/isolex/issues?q=is%3Aissue+is%3Aclosed)
 
 [![Renovate badge](https://badges.renovateapi.com/github/ssube/isolex)](https://renovatebot.com)
 [![Dependency status](https://img.shields.io/david/ssube/isolex.svg)](https://david-dm.org/ssube/isolex)
