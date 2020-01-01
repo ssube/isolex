@@ -1,5 +1,6 @@
-import { mustExist } from '@apextoaster/js-utils';
-import { Container, Inject } from 'noicejs';
+import { doesExist, mustExist } from '@apextoaster/js-utils';
+import { defaultTo } from 'lodash';
+import { BaseError, Container, Inject } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
@@ -18,11 +19,14 @@ export interface StorageData extends BaseServiceData {
   orm: ConnectionOptions;
 }
 
+export type ConnectCallback = typeof createConnection;
+
 export interface StorageOptions extends BaseServiceOptions<StorageData> {
-  data: StorageData;
   [INJECT_ENTITIES]?: Array<Function>;
   [INJECT_MIGRATIONS]?: Array<Function>;
   [INJECT_STORAGE_LOGGER]?: StorageLogger;
+  connect?: ConnectCallback;
+  data: StorageData;
 }
 
 /**
@@ -37,6 +41,7 @@ export type EntityBase<T> = Function | (new () => T);
   name: INJECT_STORAGE_LOGGER,
 })
 export class Storage extends BaseService<StorageData> implements ServiceLifecycle {
+  protected connect: ConnectCallback;
   protected connection?: Connection;
   protected container: Container;
   protected entities: Array<Function>;
@@ -47,6 +52,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
     super(options, 'isolex#/definitions/service-storage');
 
     this.container = options.container;
+    this.connect = defaultTo(options.connect, createConnection);
     this.entities = mustExist(options[INJECT_ENTITIES]);
     this.migrations = mustExist(options[INJECT_MIGRATIONS]);
     this.storageLogger = mustExist(options[INJECT_STORAGE_LOGGER]);
@@ -57,7 +63,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
     this.logger.info('connecting to storage');
 
     try {
-      this.connection = await createConnection({
+      this.connection = await this.connect({
         ...this.data.orm,
         entities: this.entities,
         logger: this.storageLogger,
@@ -73,7 +79,7 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
       }
     } catch (err) {
       this.logger.error(err, 'error connecting to storage');
-      throw err;
+      throw new BaseError('error connecting to storage', err);
     }
   }
 
@@ -90,6 +96,9 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
   }
 
   public get isConnected(): boolean {
-    return mustExist(this.connection).isConnected;
+    if (doesExist(this.connection)) {
+      return this.connection.isConnected;
+    }
+    return false;
   }
 }
