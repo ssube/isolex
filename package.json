@@ -88,7 +88,7 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",
     "mathjs": "6.3.0",
-    "mocha": "6.2.2",
+    "mocha": "7.0.0",
     "node-emoji": "1.10.0",
     "noicejs": "3.0.0",
     "nyc": "15.0.0",
