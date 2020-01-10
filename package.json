@@ -81,7 +81,7 @@
     "express-graphql": "0.9.0",
     "graphql": "14.5.8",
     "handlebars": "4.6.0",
-    "i18next": "19.0.2",
+    "i18next": "19.0.3",
     "ineeda": "0.12.0-alpha.0",
     "js-yaml": "3.13.1",
     "jsonpath-plus": "2.0.0",
