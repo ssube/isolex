@@ -58,7 +58,7 @@
     "@types/uuid": "3.4.6",
     "@types/websocket": "1.0.0",
     "@types/ws": "6.0.4",
-    "@types/yargs-parser": "13.1.0",
+    "@types/yargs-parser": "15.0.0",
     "@typescript-eslint/eslint-plugin": "2.16.0",
     "@typescript-eslint/eslint-plugin-tslint": "2.16.0",
     "@typescript-eslint/parser": "2.16.0",
