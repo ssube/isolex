@@ -84,7 +84,7 @@
     "i18next": "19.0.3",
     "ineeda": "0.12.0-alpha.0",
     "js-yaml": "3.13.1",
-    "jsonpath-plus": "2.0.0",
+    "jsonpath-plus": "3.0.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",
     "mathjs": "6.5.0",
