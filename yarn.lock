@@ -1796,10 +1796,10 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cron@1.8.1:
-  version "1.8.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/cron/-/cron-1.8.1.tgz#258bc8a08a44a621e7366c05846a4f83ca91f808"
-  integrity sha512-T60noGxx/2h4FDRBf6449FrINbitSCwIZEcDIwbIPX+mkNkNH0t/4yw0RBGpOiA5yveM4koNHcAuIFopp7vbuA==
+cron@1.8.2:
+  version "1.8.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/cron/-/cron-1.8.2.tgz#4ac5e3c55ba8c163d84f3407bde94632da8370ce"
+  integrity sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==
   dependencies:
     moment-timezone "^0.5.x"
 
