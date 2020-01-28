@@ -169,13 +169,13 @@
     underscore "^1.9.1"
     ws "^6.1.0"
 
-"@microsoft/api-documenter@7.7.11":
-  version "7.7.11"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.7.11.tgz#26be1610eacb9213bbb39e41e47ba00a94f0e8fb"
-  integrity sha512-MQ3a05jQmQunptqy0uQ4SpM+JDQI1bhOwX8fZAptcZ1TeevyXv9ypXAg48tmtwPDLh6jKpix23HtHOnfeZc95A==
+"@microsoft/api-documenter@7.7.12":
+  version "7.7.12"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.7.12.tgz#e355cd24caefbf831686b684c09918906894ff5c"
+  integrity sha512-FVd0c+DEz+HntBmtRsTTslVvBagx0FqGC+rzF8jnVDJbiW6xkwjwfTj/VKqNNdz821sEPp+eAJgGh7s0Nyx3Iw==
   dependencies:
-    "@microsoft/api-extractor-model" "7.7.6"
-    "@microsoft/node-core-library" "3.19.2"
+    "@microsoft/api-extractor-model" "7.7.7"
+    "@microsoft/node-core-library" "3.19.3"
     "@microsoft/ts-command-line" "4.3.10"
     "@microsoft/tsdoc" "0.12.14"
     colors "~1.2.1"
@@ -188,6 +188,14 @@
   integrity sha512-tcVC1OD7aEJkAOnGMrIk5heRTBhqWv7pOu9fCksEUo+kyvK0Q26xOFFSS1Rz6MwFvkzBsCxC+C6AyhDTxUUJeQ==
   dependencies:
     "@microsoft/node-core-library" "3.19.2"
+    "@microsoft/tsdoc" "0.12.14"
+
+"@microsoft/api-extractor-model@7.7.7":
+  version "7.7.7"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.7.7.tgz#1d15eae7a19b72abbfca9053f200fe79b6f9d755"
+  integrity sha512-822kyHMEx2sl+KnBioEiFoTIXuz/4pYBo94nQ4AMqb9BFvY9I1AZUPtC4HFh2zcXQqpFLpKKC55s/o8UOze2wQ==
+  dependencies:
+    "@microsoft/node-core-library" "3.19.3"
     "@microsoft/tsdoc" "0.12.14"
 
 "@microsoft/api-extractor@7.7.7":
@@ -209,6 +217,19 @@
   version "3.19.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/node-core-library/-/node-core-library-3.19.2.tgz#57a564969ce93c7b352d157f70057e605f04ba0e"
   integrity sha512-jySSnueZqXNvIsnt/3hsi7tjwhKFVFFDg8Cbx8z50UI9oPWy5xYBE88SXmxfIXO6OOmxPMWzvGoo78WlMfNsyQ==
+  dependencies:
+    "@types/node" "10.17.13"
+    colors "~1.2.1"
+    fs-extra "~7.0.1"
+    jju "~1.4.0"
+    semver "~5.3.0"
+    timsort "~0.3.0"
+    z-schema "~3.18.3"
+
+"@microsoft/node-core-library@3.19.3":
+  version "3.19.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/node-core-library/-/node-core-library-3.19.3.tgz#cf09ddb2905a29b32956d4a88f9d035a00637be9"
+  integrity sha512-rJ+hT6+XK5AESbhn31YBnHKpZSFKCmqHCRZyK9+jyWwav1HXv0qzuXnFvnyrO0MZyJ6rH0seWOZVWbU5KGv1tg==
   dependencies:
     "@types/node" "10.17.13"
     colors "~1.2.1"
