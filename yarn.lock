@@ -2221,10 +2221,10 @@ eslint-plugin-chai@0.0.1:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai/-/eslint-plugin-chai-0.0.1.tgz#9a1dea58b335c31242219d059b37ffb14309f6e1"
   integrity sha1-mh3qWLM1wxJCIZ0Fmzf/sUMJ9uE=
 
-eslint-plugin-import@2.20.0:
-  version "2.20.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-import/-/eslint-plugin-import-2.20.0.tgz#d749a7263fb6c29980def8e960d380a6aa6aecaa"
-  integrity sha512-NK42oA0mUc8Ngn4kONOPsPB1XhbUvNHqF+g307dPV28aknPoiNnKLFd9em4nkswwepdF5ouieqv5Th/63U7YJQ==
+eslint-plugin-import@2.20.1:
+  version "2.20.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-import/-/eslint-plugin-import-2.20.1.tgz#802423196dcb11d9ce8435a5fc02a6d3b46939b3"
+  integrity sha512-qQHgFOTjguR+LnYRoToeZWT62XM55MBVXObHM6SKFd1VzDcX/vqT1kAz8ssqigh5eMj8qXcRoXXGZpPP6RfdCw==
   dependencies:
     array-includes "^3.0.3"
     array.prototype.flat "^1.2.1"
