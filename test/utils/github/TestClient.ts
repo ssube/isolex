@@ -1,5 +1,5 @@
 import { App } from '@octokit/app';
-import Octokit from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { match, spy, stub } from 'sinon';

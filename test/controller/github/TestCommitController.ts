@@ -1,4 +1,4 @@
-import { ChecksListForRefResponse, ReposGetCombinedStatusForRefResponse, Response } from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { spy } from 'sinon';
@@ -19,7 +19,7 @@ const TEST_TRANSFORM = 'test-transform';
 
 interface ClientResponse<T> {
   endpoint: any;
-  (params: any): Promise<Response<T>>;
+  (params: any): Promise<Octokit.Response<T>>;
 }
 
 describeLeaks('github commit controller', async () => {
@@ -32,7 +32,7 @@ describeLeaks('github commit controller', async () => {
       }),
     }));
 
-    const listForRef: ClientResponse<ChecksListForRefResponse> = (params: any) => Promise.resolve({
+    const listForRef: ClientResponse<Octokit.ChecksListForRefResponse> = (params: any) => Promise.resolve({
       [Symbol.iterator]: undefined as any,
       data: {
         check_runs: [],
@@ -43,7 +43,7 @@ describeLeaks('github commit controller', async () => {
     });
     listForRef.endpoint = undefined;
 
-    const getCombinedStatusForRef: ClientResponse<ReposGetCombinedStatusForRefResponse> = (params: any) => Promise.resolve({
+    const getCombinedStatusForRef: ClientResponse<Octokit.ReposGetCombinedStatusForRefResponse> = (params: any) => Promise.resolve({
       [Symbol.iterator]: undefined as any,
       data: {
         commit_url: '',

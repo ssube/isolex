@@ -64,5 +64,8 @@
   ],
   "node_modules/node-emoji/index.js": [
     "find"
+  ],
+  "node_modules/@octokit/rest/index.js": [
+    "Octokit"
   ]
 }

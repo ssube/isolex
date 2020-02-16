@@ -1,4 +1,4 @@
-import Octokit from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 import { Container, Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
