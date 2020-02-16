@@ -96,7 +96,7 @@
     "passport-jwt": "4.0.0",
     "prom-client": "11.5.3",
     "reflect-metadata": "0.1.13",
-    "request": "2.88.0",
+    "request": "2.88.2",
     "request-promise": "4.2.5",
     "request-promise-native": "1.0.8",
     "rollup": "1.31.1",
