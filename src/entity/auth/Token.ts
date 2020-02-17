@@ -1,4 +1,4 @@
-import { sign, verify } from 'jsonwebtoken';
+import { sign, verify, Algorithm } from 'jsonwebtoken';
 import { newTrie } from 'shiro-trie';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -140,7 +140,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
   /**
    * Produce a JWT from this token.
    */
-  public sign(secret: string, algorithm = 'HS256') {
+  public sign(secret: string, algorithm: Algorithm = 'HS256') {
     return sign(this.toTokenJSON(), secret, {
       algorithm,
     });
