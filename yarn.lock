@@ -233,10 +233,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/tsdoc/-/tsdoc-0.12.14.tgz#0e0810a0a174e50e22dfe8edb30599840712f22d"
   integrity sha512-518yewjSga1jLdiLrcmpMFlaba5P+50b0TWNFUpC+SL9Yzf0kMi57qw+bMl+rQ08cGqH1vLx4eg9YFUbZXgZ0Q==
 
-"@octokit/app@4.1.1":
-  version "4.1.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@octokit/app/-/app-4.1.1.tgz#be0bc44d0ccabea5a5b1eceb2944e61b8491544e"
-  integrity sha512-voLgODx6nDCLosHFQzU66owAw1jkqKBWToRZ8x82BYrg79pYWHIzBKx1wctjRCTvVcuTwMde9af8TFdgkiG9Wg==
+"@octokit/app@4.2.0":
+  version "4.2.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@octokit/app/-/app-4.2.0.tgz#7e84e81d82a5983119379da2286585617d2eb735"
+  integrity sha512-gPoVRQFhx/b5n2vc6p+FHOknXo3g2w38k3MxBfxxrULAN/XtIUllVe7h8f2J0Z4bMu0BGGcyWKyGd4T7w108mg==
   dependencies:
     "@octokit/request" "^5.0.0"
     jsonwebtoken "^8.3.0"
