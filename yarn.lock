@@ -2221,10 +2221,10 @@ eslint-module-utils@^2.4.1:
     debug "^2.6.9"
     pkg-dir "^2.0.0"
 
-eslint-plugin-chai-expect-keywords@2.0.0:
-  version "2.0.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect-keywords/-/eslint-plugin-chai-expect-keywords-2.0.0.tgz#9c86f4835bce85f96871f4dc36515ae2fb6a0c6f"
-  integrity sha512-AOqrLOAd+cwVQuVE+o/eyTKRNWswCTOpTsdU0mVHX4WwhVsIw7AwK9i7AelEShWEXFe2uuMEO0lYHzQpzQd2bg==
+eslint-plugin-chai-expect-keywords@2.0.1:
+  version "2.0.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect-keywords/-/eslint-plugin-chai-expect-keywords-2.0.1.tgz#f64978abaeec4e81246730316c1803dc52c2eb08"
+  integrity sha512-FemUdTwTKoyZoayxJsgQ+i0iqld1l9davDIjIqZJ6Ord972AI5uBVknAJKKCRnZ+Xo/5CImZNWuZ0WNOIoZ6LQ==
 
 eslint-plugin-chai-expect@2.1.0:
   version "2.1.0"
