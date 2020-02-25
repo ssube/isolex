@@ -13,7 +13,6 @@ import escape from 'escape-html';
 import { isNil } from 'lodash';
 import emoji from 'node-emoji';
 import { Inject } from 'noicejs';
-import { Counter } from 'prom-client';
 
 import { FetchOptions, Listener, ListenerData } from '.';
 import { INJECT_CLOCK, INJECT_METRICS } from '../BaseService';
@@ -23,7 +22,7 @@ import { Message } from '../entity/Message';
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { NotFoundError } from '../error/NotFoundError';
 import { doesExist, mustExist } from '../utils';
-import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
+import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 
@@ -41,8 +40,8 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
   protected readonly client: Client;
   protected readonly threads: Map<string, DiscordMessage>;
 
-  protected readonly onCounter: Counter;
-  protected readonly sendCounter: Counter;
+  protected readonly onCounter: StringCounter;
+  protected readonly sendCounter: StringCounter;
 
   constructor(options: BotServiceOptions<DiscordListenerData>) {
     super(options, 'isolex#/definitions/service-listener-discord');

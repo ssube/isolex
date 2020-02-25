@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { isString } from 'lodash';
 import { Inject } from 'noicejs';
-import { Counter } from 'prom-client';
 
 import { Endpoint, Handler } from '.';
 import { INJECT_METRICS } from '../BaseService';
@@ -10,7 +9,7 @@ import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { applyTransforms } from '../transform';
 import { mustExist } from '../utils';
-import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
+import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TYPE_JSON } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';
 import { BaseEndpointOptions, STATUS_NOTFOUND, STATUS_SUCCESS } from './BaseEndpoint';
@@ -99,7 +98,7 @@ export interface GitlabEndpointData extends HookEndpointData {
 
 @Inject(INJECT_METRICS)
 export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements Endpoint {
-  protected readonly hookCounter: Counter;
+  protected readonly hookCounter: StringCounter;
 
   constructor(options: BaseEndpointOptions<GitlabEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-gitlab');

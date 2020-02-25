@@ -8,9 +8,11 @@ export interface CollectorOptions extends DefaultMetricsCollectorConfiguration {
   register: Registry;
 }
 
-export type Collector = (options: CollectorOptions) => ReturnType<typeof setInterval>;
+export type Collector = (options: CollectorOptions | undefined) => void;
 
-export function createServiceCounter(registry: Registry, config: Partial<CounterConfiguration>): Counter {
+export type StringCounter = Counter<string>;
+
+export function createServiceCounter(registry: Registry, config: Partial<CounterConfiguration<string>>): StringCounter {
   const { labelNames = [], name } = config;
   const combinedLabels = [...labelNames, 'serviceId', 'serviceKind', 'serviceName'];
 
@@ -25,7 +27,7 @@ export function createServiceCounter(registry: Registry, config: Partial<Counter
   });
 }
 
-export function incrementServiceCounter(svc: Service, counter: Counter, data: object) {
+export function incrementServiceCounter(svc: Service, counter: StringCounter, data: object) {
   counter.inc({
     ...data,
     serviceId: svc.id,
