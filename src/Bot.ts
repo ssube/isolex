@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 import { Container, Inject, LogLevel } from 'noicejs';
-import { Counter, Registry } from 'prom-client';
+import { Registry } from 'prom-client';
 import { Subject } from 'rxjs';
 
 import {
@@ -24,7 +24,7 @@ import { Service, ServiceDefinition, ServiceEvent } from './Service';
 import { Storage, StorageData } from './storage';
 import { filterNil, mustExist, mustFind } from './utils';
 import { ExternalModule } from './utils/ExternalModule';
-import { createServiceCounter, incrementServiceCounter } from './utils/Metrics';
+import { createServiceCounter, incrementServiceCounter, StringCounter } from './utils/Metrics';
 
 export interface BotData extends BaseServiceData {
   controllers: Array<ServiceDefinition<ControllerData>>;
@@ -62,8 +62,8 @@ export class Bot extends BaseService<BotData> implements Service {
   protected storage?: Storage;
 
   // counters
-  protected cmdCounter?: Counter;
-  protected msgCounter?: Counter;
+  protected cmdCounter?: StringCounter;
+  protected msgCounter?: StringCounter;
 
   // services
   protected controllers: Array<Controller>;

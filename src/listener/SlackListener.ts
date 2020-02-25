@@ -3,7 +3,6 @@ import escape from 'escape-html';
 import { isNil } from 'lodash';
 import { find as findEmoji } from 'node-emoji';
 import { BaseError, Container, Inject } from 'noicejs';
-import { Counter } from 'prom-client';
 
 import { FetchOptions, Listener, ListenerData } from '.';
 import { INJECT_CLOCK, INJECT_METRICS } from '../BaseService';
@@ -12,7 +11,7 @@ import { Message } from '../entity/Message';
 import { NotFoundError } from '../error/NotFoundError';
 import { SlackLogger } from '../logger/SlackLogger';
 import { doesExist, mustExist } from '../utils';
-import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
+import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 
@@ -53,8 +52,8 @@ export interface SlackSearchResults extends WebAPICallResult {
 @Inject(INJECT_CLOCK, INJECT_METRICS)
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected readonly container: Container;
-  protected readonly onCounter: Counter;
-  protected readonly sendCounter: Counter;
+  protected readonly onCounter: StringCounter;
+  protected readonly sendCounter: StringCounter;
   protected rtmClient?: RTMClient;
   protected webClient?: WebClient;
 

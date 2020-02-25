@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Inject } from 'noicejs';
-import { Counter } from 'prom-client';
 
 import { Handler } from '.';
 import { INJECT_METRICS } from '../BaseService';
@@ -8,7 +7,7 @@ import { INJECT_STORAGE } from '../BotService';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { mustExist } from '../utils';
-import { createServiceCounter, incrementServiceCounter } from '../utils/Metrics';
+import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TemplateScope } from '../utils/Template';
 import { BaseEndpointOptions, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpoint, HookEndpointData } from './HookEndpoint';
@@ -23,7 +22,7 @@ export type GithubEndpointOptions = BaseEndpointOptions<GithubEndpointData>;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 @Inject(INJECT_METRICS, INJECT_STORAGE)
 export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
-  protected readonly hookCounter: Counter;
+  protected readonly hookCounter: StringCounter;
 
   constructor(options: BaseEndpointOptions<GithubEndpointData>) {
     super(options, 'isolex#/definitions/service-endpoint-github');

@@ -8,7 +8,6 @@ import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
 import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { mustExist } from '../utils';
-import { MetricsInterval } from '../utils/interval/MetricsInterval';
 import { Collector } from '../utils/Metrics';
 import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 
@@ -40,12 +39,9 @@ export class MetricsGenerator extends BaseGenerator<MetricsGeneratorData> {
 
     const time = this.math.unit(this.data.frequency.time).toNumber('millisecond').toString();
     this.logger.debug({ time }, 'starting default metrics interval');
-    this.interval = await this.container.create(MetricsInterval, {
-      collector: this.collector,
-      freq: {
-        time,
-      },
-      registry: this.metrics,
+    this.collector({
+      register: this.metrics,
+      timeout: 10,
     });
   }
 

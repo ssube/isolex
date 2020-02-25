@@ -23,7 +23,7 @@ describeLeaks('metrics utils', async () => {
   describeLeaks('increment service counter helper', async () => {
     itLeaks('should increment a counter with labels', async () => {
       const inc = spy();
-      const counter = ineeda<Counter>({
+      const counter = ineeda<Counter<string>>({
         inc,
       });
       const labels = {

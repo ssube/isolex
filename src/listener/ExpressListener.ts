@@ -4,7 +4,7 @@ import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 import passport from 'passport';
 import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
-import { Counter, Registry } from 'prom-client';
+import { Registry } from 'prom-client';
 import { Repository } from 'typeorm';
 
 import { Listener, ListenerData } from '.';
@@ -20,7 +20,7 @@ import { ServiceModule } from '../module/ServiceModule';
 import { ServiceMetadata } from '../Service';
 import { Storage } from '../storage';
 import { doesExist, mustExist } from '../utils';
-import { createServiceCounter } from '../utils/Metrics';
+import { createServiceCounter, StringCounter } from '../utils/Metrics';
 import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData extends ListenerData {
@@ -41,7 +41,7 @@ export interface ExpressListenerData extends ListenerData {
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
   protected readonly container: Container;
   protected readonly metrics: Registry;
-  protected readonly requestCounter: Counter;
+  protected readonly requestCounter: StringCounter;
   protected readonly services: ServiceModule;
   protected readonly storage: Storage;
   protected readonly tokenRepository: Repository<Token>;
