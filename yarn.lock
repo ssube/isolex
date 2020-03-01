@@ -2007,13 +2007,13 @@ diff@^4.0.2:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
-discord.js@11.5.1:
-  version "11.5.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/discord.js/-/discord.js-11.5.1.tgz#910fb9f6410328581093e044cafb661783a4d9e8"
-  integrity sha512-tGhV5xaZXE3Z+4uXJb3hYM6gQ1NmnSxp9PClcsSAYFVRzH6AJH74040mO3afPDMWEAlj8XsoPXXTJHTxesqcGw==
+discord.js@11.6.1:
+  version "11.6.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/discord.js/-/discord.js-11.6.1.tgz#be5a0e0fc8f91fa46d9cd265261268948bcf8dc5"
+  integrity sha512-UV7rMQL2xtHtbHAaGwRlAhEepHjz3V0UEEoWd89QbLMu3MV0D7+xkYCaAhlxnvuJWbhPO8p49Anx8qJ/SrcdwQ==
   dependencies:
     long "^4.0.0"
-    prism-media "^0.0.3"
+    prism-media "^0.0.4"
     snekfetch "^3.6.4"
     tweetnacl "^1.0.0"
     ws "^6.0.0"
@@ -4885,10 +4885,10 @@ prepend-http@^2.0.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prism-media@^0.0.3:
-  version "0.0.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/prism-media/-/prism-media-0.0.3.tgz#8842d4fae804f099d3b48a9a38e3c2bab6f4855b"
-  integrity sha512-c9KkNifSMU/iXT8FFTaBwBMr+rdVcN+H/uNv1o+CuFeTThNZNTOrQ+RgXA1yL/DeLk098duAeRPP3QNPNbhxYQ==
+prism-media@^0.0.4:
+  version "0.0.4"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/prism-media/-/prism-media-0.0.4.tgz#df5ddc6463670c97ff0e9cbac3c3e0db18df326f"
+  integrity sha512-dG2w7WtovUa4SiYTdWn9H8Bd4JNdei2djtkP/Bk9fXq81j5Q15ZPHYSwhUVvBRbp5zMkGtu0Yk62HuMcly0pRw==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
