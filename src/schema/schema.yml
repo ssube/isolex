@@ -844,7 +844,14 @@ definitions:
             $ref: "#/definitions/entity-message"
 
   service-generator-metrics:
-    $ref: "#/definitions/service-generator"
+    allOf:
+      - $ref: "#/definitions/service-generator"
+      - type: object
+        additionalProperties: true
+        required: [timeout]
+        properties:
+          timeout:
+            type: string
 
   service-listener:
     $ref: "#/definitions/service-data"

@@ -40,6 +40,7 @@ const TEST_DATA: MetricsGeneratorData = {
     }
   },
   strict: false,
+  timeout: '100ms',
 };
 const TEST_METADATA = {
   kind: TEST_GENERATOR,
