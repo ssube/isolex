@@ -33,7 +33,7 @@ export function createCompletion(cmd: CommandOptions, key: string, msg: string, 
   });
 }
 
-type CollectData = number | string | Array<string>;
+type CollectValue = number | string | Array<string>;
 
 interface CollectKey<TData> {
   default: TData;
@@ -41,7 +41,10 @@ interface CollectKey<TData> {
   required: boolean;
 }
 
-type CollectInput<TData extends Dict<CollectData>> = {
+type CollectData = Dict<CollectValue>;
+type CollectAny = CollectKey<CollectValue>;
+
+type CollectInput<TData extends Dict<CollectValue>> = {
   [K in keyof TData]: CollectKey<TData[K]>;
 };
 
@@ -57,9 +60,9 @@ interface IncompleteCollectResult {
 
 export type CollectResult<TData> = CompleteCollectResult<TData> | IncompleteCollectResult;
 
-export function collectOrComplete<TData extends Dict<CollectData>>(cmd: Command, fields: CollectInput<TData>): CollectResult<TData> {
-  const results = new Map<string, CollectData>();
-  for (const [key, def] of Object.entries(fields)) {
+export function collectOrComplete<TData extends CollectData>(cmd: Command, fields: CollectInput<TData>): CollectResult<TData> {
+  const results = new Map<string, CollectValue>();
+  for (const [key, def] of Object.entries<CollectAny>(fields)) {
     const exists = cmd.has(key);
 
     if (exists) {
@@ -84,7 +87,7 @@ export function collectOrComplete<TData extends Dict<CollectData>>(cmd: Command,
   };
 }
 
-export function collectValue(value: CollectData, defaultValue: CollectData): CollectData {
+export function collectValue(value: CollectValue, defaultValue: CollectValue): CollectValue {
   const schema = new Schema({
     properties: {
       value: buildValueSchema(defaultValue),
@@ -102,7 +105,7 @@ export function collectValue(value: CollectData, defaultValue: CollectData): Col
   }
 }
 
-export function buildValueSchema(defaultValue: CollectData) {
+export function buildValueSchema(defaultValue: CollectValue) {
   if (Array.isArray(defaultValue)) {
     return {
       items: {
