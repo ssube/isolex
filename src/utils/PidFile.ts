@@ -1,9 +1,9 @@
 import { open, unlink, write } from 'fs';
 import { pid } from 'process';
 
-import { doesExist } from '.';
+import { doesExist, Optional } from '.';
 
-type OptionalErrno = NodeJS.ErrnoException | null;
+type OptionalErrno = Optional<NodeJS.ErrnoException>;
 
 export async function writePid(path: string): Promise<void> {
   return new Promise((res, rej) => {

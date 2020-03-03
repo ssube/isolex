@@ -5,6 +5,7 @@ import { NotFoundError } from '../error/NotFoundError';
 /**
  * Unset value.
  */
+/* eslint-disable-next-line @typescript-eslint/ban-types */
 export type Nil = null | undefined;
 
 /**

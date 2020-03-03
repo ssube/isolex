@@ -2,6 +2,7 @@ import { BaseOptions, Container } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
+import { BaseEntity } from '../entity/base/BaseEntity';
 import { StorageLogger } from '../logger/StorageLogger';
 import { ServiceLifecycle } from '../Service';
 import { mustExist } from '../utils';
@@ -14,6 +15,13 @@ export interface StorageData extends BaseServiceData {
 export interface StorageOptions extends BaseServiceOptions<StorageData> {
   data: StorageData;
 }
+
+/**
+ * @typescript-eslint/tslint/config and @typescript-eslint/type-annotation-spacing disagree on the space
+ * between `()` and `=>`, so prefer the spaced version
+ */
+/* eslint-disable-next-line @typescript-eslint/type-annotation-spacing */
+export type EntityBase<T> = Function | (new () => T);
 
 export class Storage extends BaseService<StorageData> implements ServiceLifecycle {
   protected connection?: Connection;
@@ -58,11 +66,11 @@ export class Storage extends BaseService<StorageData> implements ServiceLifecycl
     await mustExist(this.connection).close();
   }
 
-  public getRepository<TEntity>(ctor: Function | (new () => TEntity)): Repository<TEntity> {
+  public getRepository<TEntity>(ctor: EntityBase<TEntity>): Repository<TEntity> {
     return mustExist(this.connection).getRepository(ctor);
   }
 
-  public getCustomRepository<TRepo>(ctor: Function | (new () => TRepo)): TRepo {
+  public getCustomRepository<TRepo extends Repository<TEntity>, TEntity extends BaseEntity>(ctor: EntityBase<TRepo>): TRepo {
     return mustExist(this.connection).getCustomRepository(ctor);
   }
 
