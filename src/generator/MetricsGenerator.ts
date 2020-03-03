@@ -11,7 +11,10 @@ import { mustExist } from '../utils';
 import { Collector } from '../utils/Metrics';
 import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 
-export type MetricsGeneratorData = GeneratorData;
+export interface MetricsGeneratorData extends GeneratorData {
+  timeout: string;
+}
+
 export interface MetricsGeneratorOptions extends BaseGeneratorOptions<MetricsGeneratorData> {
   collector?: Collector;
 }
@@ -37,11 +40,11 @@ export class MetricsGenerator extends BaseGenerator<MetricsGeneratorData> {
       throw new InvalidArgumentError('metrics interval requires a time frequency');
     }
 
-    const time = this.math.unit(this.data.frequency.time).toNumber('millisecond').toString();
-    this.logger.debug({ time }, 'starting default metrics interval');
+    const timeout = this.math.unit(this.data.timeout).toNumber('millisecond');
+    this.logger.debug({ timeout }, 'starting default metrics interval');
     this.collector({
       register: this.metrics,
-      timeout: 10,
+      timeout,
     });
   }
 
