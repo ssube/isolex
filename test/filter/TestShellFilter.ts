@@ -104,6 +104,7 @@ describeLeaks('shell filter', async () => {
     const { container } = await createServiceContainer();
     const { stdout } = createChild(0);
 
+    /* eslint-disable-next-line @typescript-eslint/ban-types */
     const child = ineeda<ChildProcessByStdio<null, Readable, Readable>>({
       on: stub().withArgs('close', match.func).yields(0),
       stderr: stdout,
@@ -112,6 +113,7 @@ describeLeaks('shell filter', async () => {
         /* eslint-disable-next-line no-null/no-null */
         return null;
       },
+      /* eslint-disable-next-line @typescript-eslint/ban-types */
       set stdin(stream: null) {
         /* noop */
       },
