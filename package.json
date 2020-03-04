@@ -46,7 +46,7 @@
     "@types/jsonwebtoken": "8.3.8",
     "@types/lodash": "4.14.149",
     "@types/mathjs": "6.0.4",
-    "@types/mocha": "7.0.1",
+    "@types/mocha": "7.0.2",
     "@types/node-emoji": "1.8.1",
     "@types/passport": "1.0.2",
     "@types/passport-jwt": "3.0.3",
