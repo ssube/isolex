@@ -55,7 +55,7 @@
     "@types/request-promise-native": "1.0.17",
     "@types/sinon-chai": "3.2.3",
     "@types/source-map-support": "0.5.1",
-    "@types/uuid": "3.4.8",
+    "@types/uuid": "7.0.0",
     "@types/websocket": "1.0.0",
     "@types/ws": "7.2.2",
     "@types/yargs-parser": "15.0.0",
@@ -119,7 +119,7 @@
     "tslint": "5.20.1",
     "typescript": "3.8.3",
     "utf-8-validate": "5.0.2",
-    "uuid": "3.4.0",
+    "uuid": "7.0.2",
     "ws": "7.2.1",
     "yargs-parser": "18.0.0"
   },
