@@ -1,6 +1,6 @@
 import { BaseOptions, Inject, Logger, MissingValueError, LogLevel } from 'noicejs';
 import { Registry } from 'prom-client';
-import uuid from 'uuid';
+import { v4 } from 'uuid';
 
 import { SchemaError } from './error/SchemaError';
 import { serviceLogger } from './logger';
@@ -62,7 +62,7 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
       throw new MissingValueError('missing service name');
     }
 
-    this.id = uuid.v4();
+    this.id = v4();
     this.kind = options.metadata.kind;
     this.labels = makeMap(options.metadata.labels);
     this.name = options.metadata.name;
