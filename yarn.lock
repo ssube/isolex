@@ -2007,10 +2007,10 @@ diff@^4.0.2:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
-discord.js@11.6.1:
-  version "11.6.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/discord.js/-/discord.js-11.6.1.tgz#be5a0e0fc8f91fa46d9cd265261268948bcf8dc5"
-  integrity sha512-UV7rMQL2xtHtbHAaGwRlAhEepHjz3V0UEEoWd89QbLMu3MV0D7+xkYCaAhlxnvuJWbhPO8p49Anx8qJ/SrcdwQ==
+discord.js@11.6.2:
+  version "11.6.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/discord.js/-/discord.js-11.6.2.tgz#75fe9c311194e45e04a0ba57c1672570e868ea2b"
+  integrity sha512-QwN7RBb705qqvxletW41aw8ScZJh4LUVWtGNdLA1/N4od1pf8pueDWdnKLqw9pAud6cg9AADcCkm8os1YHWESg==
   dependencies:
     long "^4.0.0"
     prism-media "^0.0.4"
