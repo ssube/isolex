@@ -4303,10 +4303,10 @@ node-preload@^0.2.0:
   dependencies:
     process-on-spawn "^1.0.0"
 
-noicejs@3.0.0:
-  version "3.0.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/noicejs/-/noicejs-3.0.0.tgz#7fca4008c6c9c78ee4ca4b04bb179b424c23cb4c"
-  integrity sha512-DZFqSAgsh3nxDfHi/ncgLFtN2G2iWTJdOZQU6LQILAVcs7RX57OSR1+FS0WVL8FAZfd47WC4xhN8EGrNzKuSvQ==
+noicejs@3.0.1:
+  version "3.0.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/noicejs/-/noicejs-3.0.1.tgz#7e48547f0db5025f291074867016f760b502bb82"
+  integrity sha512-7qABkA6Xi0EXauRDirZSRP7WRBY7AVwm2ajMybNxRPWQP6ZBL7jk4s7RqN+VzF6w+kdaX1mdTuCdWeHGzEpXoQ==
 
 nopt@^4.0.1:
   version "4.0.1"
