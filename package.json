@@ -32,7 +32,7 @@
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "1.0.1",
     "@microsoft/api-documenter": "7.7.14",
-    "@microsoft/api-extractor": "7.7.8",
+    "@microsoft/api-extractor": "7.7.10",
     "@octokit/app": "4.2.0",
     "@octokit/rest": "16.43.1",
     "@slack/client": "5.0.2",
