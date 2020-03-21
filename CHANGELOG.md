@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.1](https://github.com/ssube/isolex/compare/v0.10.0...v0.10.1) (2020-03-21)
+
+
+### Features
+
+* **generator:** make metrics timeout configurable ([d1b15ea](https://github.com/ssube/isolex/commit/d1b15ea6b96ad9704f70ebd6f47aa45284737204))
+* add command args to shell filter and transform ([7ab9377](https://github.com/ssube/isolex/commit/7ab937744aa6ae390f2144682b9390e6b6e33fff))
+* **filter:** add shell exec filter ([6260946](https://github.com/ssube/isolex/commit/62609469338ad13814861d6f79413667b7852f6b))
+* **scripts:** add github status check script for shell filter ([36a7e20](https://github.com/ssube/isolex/commit/36a7e203f68bbf58734d30a630dde1d06c69cc89))
+* **scripts:** add github status event filter script ([f8e2059](https://github.com/ssube/isolex/commit/f8e205951a26f46cbe3b664cd5efbede42a24404))
+* **transform:** add shell transform ([4d1701f](https://github.com/ssube/isolex/commit/4d1701fc9ba8c1137f96a6871c9c6e62a7b35f3e))
+
+
+### Bug Fixes
+
+* uuid lib import ([507fe0a](https://github.com/ssube/isolex/commit/507fe0a95ee32f60a75e5abeac62fc7b6f782a73))
+* **controller:** make collected value type explicit ([300048b](https://github.com/ssube/isolex/commit/300048b2bbec7707e85020d879a03be9afe8d61a))
+* scoped github client imports ([d6002bc](https://github.com/ssube/isolex/commit/d6002bc164d60f04642f50b642a61607da4abd85))
+* specialize counters to string, remove metrics interval ([9db18f5](https://github.com/ssube/isolex/commit/9db18f5be2821eae2322d7212880f9b78afed9c2))
+* **build:** add eslint peer dep ([822308b](https://github.com/ssube/isolex/commit/822308b037e1e2b644e150fac59a4c0d342b4546))
+* **build:** bump nyc memory limit to 8GB ([c4d6444](https://github.com/ssube/isolex/commit/c4d644483e6a76d92ea07ca8c72d5f150ac6cb1f))
+* **build:** make got package external to fix electron dep ([1c62de1](https://github.com/ssube/isolex/commit/1c62de1d56d7f09fcbee161366d3e5e0c3d7f81c))
+* **build:** make kubernetes client external ([4cd81b1](https://github.com/ssube/isolex/commit/4cd81b1bad69bee4744e6edb57462032ce75b1de))
+* **build:** update sonarcloud coverage options ([04cb5d4](https://github.com/ssube/isolex/commit/04cb5d48f9a8a3c8f218002fa8d57c988a42f51d))
+* **container:** add bash and jq for shell scripts ([318901e](https://github.com/ssube/isolex/commit/318901e2c3d612c93bb947a0de76bd17d4711166))
+* **docs:** explain shell filter ([7e4dd64](https://github.com/ssube/isolex/commit/7e4dd64ca876834de6966d43c3d63a6bd9446a9c))
+* **filter:** drop value when child emits error message ([b5ff736](https://github.com/ssube/isolex/commit/b5ff736d9ed847da535768f85bf5800bb6a123cd))
+* **filter:** end line after shell payload ([0975d08](https://github.com/ssube/isolex/commit/0975d080259686003254c529c2105eddc54c6858))
+* **filter:** improve logging in shell filter ([0419d5b](https://github.com/ssube/isolex/commit/0419d5b042e4d233ad27b51bb812c590b454027f))
+* **filter:** reject value when child exits non-0 ([5f88aeb](https://github.com/ssube/isolex/commit/5f88aebad75f211fdabd6de058db241d7f292adc))
+* **filter:** switch to spawn for shell commands ([3945ec6](https://github.com/ssube/isolex/commit/3945ec6f10dc6ad1c9fdcc2bc10e8f6fb2c29229))
+* **filter:** use command option from child config stanza ([8205feb](https://github.com/ssube/isolex/commit/8205febf6d7769d83fb4b273a852c5472d02bcdd))
+* **filter:** use error output from child process as inner error ([607df08](https://github.com/ssube/isolex/commit/607df08b2a5a32663e8e81f3329662dd5769b23d))
+* **filter:** use name/value pairs for env, begin testing ([7fd5de3](https://github.com/ssube/isolex/commit/7fd5de36d3839d8ccec1ad5efd179a58a548333f))
+* **scripts:** filter PR approval by author ([21020aa](https://github.com/ssube/isolex/commit/21020aa6969a41cbc165c5b90813694ec7904cd3))
+* **test:** cover error exit status and output ([050cc6f](https://github.com/ssube/isolex/commit/050cc6fe39658ba8343ab313198aa3fd67009d68))
+* **test:** cover missing stdin for shell filter ([e7d4b56](https://github.com/ssube/isolex/commit/e7d4b56cc6fb4a97e3accd7def7b4821198dc1d1))
+* **test:** cover shell transform, edge cases in shell filter ([b2900c8](https://github.com/ssube/isolex/commit/b2900c8dd3f97a1d6f949aebe4d483f06aff9ff1))
+* **utils:** handle error events from child processes ([d32abb1](https://github.com/ssube/isolex/commit/d32abb17f068cea29afb5dd1391ebc87aef3717f))
+* add redirects to example controllers ([40ce4ad](https://github.com/ssube/isolex/commit/40ce4add70fc21249f3af069857b05498a2ed0f3))
+
 ## [0.10.0](https://github.com/ssube/isolex/compare/v0.9.1...v0.10.0) (2019-11-10)
 
 
