@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Equal, LessThan, Repository } from 'typeorm';
@@ -9,7 +10,6 @@ import { Token } from '../entity/auth/Token';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Storage } from '../storage';
-import { mustExist } from '../utils';
 import { Clock } from '../utils/Clock';
 import { BaseController, BaseControllerOptions } from './BaseController';
 import { createCommandCompletion } from './helpers';

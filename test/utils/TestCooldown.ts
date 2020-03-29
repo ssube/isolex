@@ -1,8 +1,8 @@
+import { defer } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ConsoleLogger, Container } from 'noicejs';
 
 import { BotModule } from '../../src/module/BotModule';
-import { defer } from '../../src/utils/Async';
 import { Cooldown, CooldownOptions } from '../../src/utils/Cooldown';
 import { describeLeaks, itLeaks } from '../helpers/async';
 

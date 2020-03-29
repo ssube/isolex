@@ -1,11 +1,10 @@
+import { Dict, makeDict, makeMap, mustExist } from '@apextoaster/js-utils';
 import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Parser } from '../parser';
 import { Schema } from '../schema';
-import { mustExist } from '../utils';
-import { Dict, makeDict, makeMap } from '../utils/Map';
 import { NOUN_FRAGMENT } from './CompletionController';
 
 export function createCommandCompletion(cmd: Command, key: string, msg: string): Command {

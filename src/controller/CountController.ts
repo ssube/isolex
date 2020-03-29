@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
@@ -7,7 +8,6 @@ import { INJECT_STORAGE } from '../BotService';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Counter } from '../entity/misc/Counter';
-import { mustExist } from '../utils';
 import { clamp } from '../utils/Math';
 import { BaseController, BaseControllerOptions } from './BaseController';
 

@@ -1,3 +1,10 @@
+import {
+  defer,
+  getTestLogger,
+  SIGNAL_RELOAD,
+  SIGNAL_RESET,
+  SIGNAL_STOP,
+} from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { defaultTo } from 'lodash';
@@ -7,11 +14,8 @@ import { stub } from 'sinon';
 import { createBot, CreateOptions, ExitStatus, main, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
 import { ServiceEvent } from '../src/Service';
-import { defer } from '../src/utils/Async';
-import { SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '../src/utils/Signal';
 import { describeLeaks, itLeaks } from './helpers/async';
 import { serviceSpy } from './helpers/container';
-import { getTestLogger } from './helpers/logger';
 
 const MAX_SIGNAL_TIME = 100; // ms
 const MAX_START_TIME = 750; // ms

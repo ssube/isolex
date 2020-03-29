@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { In, Repository } from 'typeorm';
@@ -9,7 +10,6 @@ import { LOCALE_DEFAULT, User } from '../entity/auth/User';
 import { UserRepository } from '../entity/auth/UserRepository';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { mustExist } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_ROLE = 'role';

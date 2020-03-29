@@ -1,8 +1,7 @@
+import { Dict, doesExist, getHeadOrDefault } from '@apextoaster/js-utils';
 import { Column } from 'typeorm';
 
 import { CommandVerb } from '../../entity/Command';
-import { doesExist } from '../../utils';
-import { Dict, getHeadOrDefault } from '../../utils/Map';
 import { DataEntity, DataEntityOptions } from '../base/DataEntity';
 
 export type CommandValue = Array<string>;

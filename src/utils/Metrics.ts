@@ -1,6 +1,6 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Counter, CounterConfiguration, DefaultMetricsCollectorConfiguration, Registry } from 'prom-client';
 
-import { mustExist } from '.';
 import { Service } from '../Service';
 
 export interface CollectorOptions extends DefaultMetricsCollectorConfiguration {

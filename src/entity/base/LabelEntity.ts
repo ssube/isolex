@@ -1,7 +1,6 @@
+import { doesExist, makeMap, MapLike } from '@apextoaster/js-utils';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { doesExist } from '../../utils';
-import { makeMap, MapLike } from '../../utils/Map';
 import { BaseEntity, BaseEntityOptions } from '../base/BaseEntity';
 
 export interface LabelEntityOptions extends BaseEntityOptions {

@@ -1,3 +1,4 @@
+import { NotFoundError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { stub } from 'sinon';
@@ -6,7 +7,6 @@ import { Role } from '../../src/entity/auth/Role';
 import { Token } from '../../src/entity/auth/Token';
 import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
 import { Context, redirectService, redirectServiceRoute } from '../../src/entity/Context';
-import { NotFoundError } from '../../src/error/NotFoundError';
 import { Listener } from '../../src/listener';
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { describeLeaks, itLeaks } from '../helpers/async';

@@ -1,7 +1,7 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 
 import { Interval, IntervalOptions } from '.';
-import { mustExist } from '..';
 import { INJECT_CLOCK } from '../../BaseService';
 import { Clock } from '../Clock';
 

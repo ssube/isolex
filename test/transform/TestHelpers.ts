@@ -1,10 +1,10 @@
+import { InvalidArgumentError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { BaseError } from 'noicejs';
 
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Message } from '../../src/entity/Message';
-import { InvalidArgumentError } from '../../src/error/InvalidArgumentError';
 import { applyTransforms, extractBody, Transform } from '../../src/transform';
 import { entityData } from '../../src/transform/BaseTransform';
 import { TYPE_TEXT } from '../../src/utils/Mime';

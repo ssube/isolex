@@ -1,3 +1,4 @@
+import { Checklist, ChecklistOptions, mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
@@ -7,8 +8,6 @@ import { INJECT_STORAGE } from '../BotService';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Keyword } from '../entity/misc/Keyword';
-import { mustExist } from '../utils';
-import { Checklist, ChecklistOptions } from '../utils/Checklist';
 import { BaseController, BaseControllerOptions, ErrorReplyType } from './BaseController';
 
 export const NOUN_KEYWORD = 'keyword';

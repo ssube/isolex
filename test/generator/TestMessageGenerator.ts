@@ -1,3 +1,4 @@
+import { getTestLogger } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { BaseError } from 'noicejs';
@@ -17,7 +18,6 @@ import { Clock } from '../../src/utils/Clock';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
-import { getTestLogger } from '../helpers/logger';
 
 const TEST_SVC = 'some-service';
 const TEST_SVC2 = 'test-service';

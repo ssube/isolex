@@ -1,3 +1,4 @@
+import { spyLogger } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
@@ -5,7 +6,6 @@ import { INJECT_LOGGER } from '../../src/BaseService';
 import { StorageLogger } from '../../src/logger/StorageLogger';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
-import { spyLogger } from '../helpers/logger';
 
 /* tslint:disable:no-unbound-method no-identical-functions */
 describeLeaks('storage logger', async () => {

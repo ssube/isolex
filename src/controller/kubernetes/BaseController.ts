@@ -1,8 +1,8 @@
+import { doesExist } from '@apextoaster/js-utils';
 import k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
 import { Controller, ControllerData } from '..';
-import { doesExist } from '../../utils';
 import { BaseController, BaseControllerOptions } from '../BaseController';
 
 export const NOUN_POD = 'kubernetes-pod';

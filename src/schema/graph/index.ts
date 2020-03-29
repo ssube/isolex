@@ -1,3 +1,4 @@
+import { mustExist, pairsToMap } from '@apextoaster/js-utils';
 import express from 'express';
 import { GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { Inject } from 'noicejs';
@@ -11,8 +12,6 @@ import { getRequestContext } from '../../listener/ExpressListener';
 import { ServiceModule } from '../../module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from '../../Service';
 import { Storage } from '../../storage';
-import { mustExist } from '../../utils';
-import { pairsToMap } from '../../utils/Map';
 
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);

@@ -1,7 +1,7 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { CronJob } from 'cron';
 
 import { Interval, IntervalOptions } from '.';
-import { mustExist } from '..';
 
 export class CronInterval extends Interval {
   protected readonly job: CronJob;

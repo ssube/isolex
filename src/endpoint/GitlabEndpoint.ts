@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Request, Response } from 'express';
 import { isString } from 'lodash';
 import { Inject } from 'noicejs';
@@ -8,7 +9,6 @@ import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { ChannelData, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { applyTransforms } from '../transform';
-import { mustExist } from '../utils';
 import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TYPE_JSON } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';

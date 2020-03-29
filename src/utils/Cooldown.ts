@@ -1,7 +1,7 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { BaseOptions, Inject } from 'noicejs';
 import { Observable, Subject } from 'rxjs';
 
-import { doesExist } from '.';
 import { INJECT_CLOCK } from '../BaseService';
 import { ServiceLifecycle } from '../Service';
 import { Clock, ClockHandler } from './Clock';

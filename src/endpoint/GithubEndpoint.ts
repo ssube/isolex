@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Request, Response } from 'express';
 import { Inject } from 'noicejs';
 
@@ -6,7 +7,6 @@ import { INJECT_METRICS } from '../BaseService';
 import { INJECT_STORAGE } from '../BotService';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { mustExist } from '../utils';
 import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TemplateScope } from '../utils/Template';
 import { BaseEndpointOptions, STATUS_SUCCESS } from './BaseEndpoint';

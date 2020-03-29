@@ -1,9 +1,7 @@
+import { doesExist, getOrDefault, makeMap, MapLike, MissingKeyError } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
-import { MissingKeyError } from '../../error/MissingKeyError';
-import { doesExist } from '../../utils';
-import { getOrDefault, makeMap, MapLike } from '../../utils/Map';
 import { LabelEntity, LabelEntityOptions } from '../base/LabelEntity';
 
 export interface DataEntityOptions<TVal> extends LabelEntityOptions {

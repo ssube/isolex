@@ -1,6 +1,6 @@
+import { InvalidArgumentError } from '@apextoaster/js-utils';
 import Ajv from 'ajv';
 
-import { InvalidArgumentError } from '../error/InvalidArgumentError';
 import { SCHEMA_KEYWORD_REGEXP } from './keyword/Regexp';
 import * as SCHEMA_GLOBAL from './schema.yml';
 

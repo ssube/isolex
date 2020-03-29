@@ -1,3 +1,4 @@
+import { defer, InvalidArgumentError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { match, spy } from 'sinon';
@@ -5,9 +6,7 @@ import { match, spy } from 'sinon';
 import { INJECT_CLOCK } from '../../src/BaseService';
 import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
-import { InvalidArgumentError } from '../../src/error/InvalidArgumentError';
 import { MetricsGenerator, MetricsGeneratorData } from '../../src/generator/MetricsGenerator';
-import { defer } from '../../src/utils/Async';
 import { Clock } from '../../src/utils/Clock';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';

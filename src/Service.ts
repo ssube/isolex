@@ -1,7 +1,7 @@
+import { MapLike } from '@apextoaster/js-utils';
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
 import { GRAPH_OUTPUT_NAME_VALUE_PAIR } from './schema/graph/output/Pairs';
-import { MapLike } from './utils/Map';
 
 export interface ServiceDefinition<TData = unknown> {
   metadata: ServiceMetadata;

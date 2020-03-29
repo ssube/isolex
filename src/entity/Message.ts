@@ -1,9 +1,9 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { GraphQLInputObjectType, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from '../schema/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
-import { doesExist } from '../utils';
 import { TYPE_TEXT } from '../utils/Mime';
 import { LabelEntity, LabelEntityOptions } from './base/LabelEntity';
 import { Context, GRAPH_OUTPUT_CONTEXT } from './Context';

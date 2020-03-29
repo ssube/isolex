@@ -1,6 +1,6 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-import { doesExist } from '../../utils';
 import { BaseCommand } from '../base/BaseCommand';
 import { CommandOptions } from '../Command';
 

@@ -1,3 +1,4 @@
+import { ExternalModule, filterNil, mustExist, mustFind } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Container, Inject, LogLevel } from 'noicejs';
 import { Registry } from 'prom-client';
@@ -22,8 +23,6 @@ import { ServiceModule } from './module/ServiceModule';
 import { Parser, ParserData } from './parser';
 import { Service, ServiceDefinition, ServiceEvent } from './Service';
 import { Storage, StorageData } from './storage';
-import { filterNil, mustExist, mustFind } from './utils';
-import { ExternalModule } from './utils/ExternalModule';
 import { createServiceCounter, incrementServiceCounter, StringCounter } from './utils/Metrics';
 
 export interface BotData extends BaseServiceData {

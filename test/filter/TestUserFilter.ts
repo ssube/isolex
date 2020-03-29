@@ -1,3 +1,4 @@
+import { ChecklistMode } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 
@@ -5,7 +6,6 @@ import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { FilterBehavior } from '../../src/filter';
 import { UserFilter, UserFilterData } from '../../src/filter/UserFilter';
-import { ChecklistMode } from '../../src/utils/Checklist';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 

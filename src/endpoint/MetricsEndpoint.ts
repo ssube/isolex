@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Request, Response } from 'express';
 import { Inject } from 'noicejs';
 import { Registry } from 'prom-client';
@@ -5,7 +6,6 @@ import { Registry } from 'prom-client';
 import { EndpointData, Handler } from '.';
 import { INJECT_METRICS } from '../BaseService';
 import { CommandVerb } from '../entity/Command';
-import { mustExist } from '../utils';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
 export type MetricsEndpointData = EndpointData;

@@ -1,3 +1,4 @@
+import { getTestLogger } from '@apextoaster/js-utils';
 import { DeepPartial, ineeda } from 'ineeda';
 import { Constructor, Container, Logger, Module, ModuleOptions, ProviderType, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
@@ -22,10 +23,17 @@ import { Clock } from '../../src/utils/Clock';
 import { MathFactory } from '../../src/utils/Math';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
-import { getTestLogger } from './logger';
 import { createMockStorage } from './storage';
 
 export class TestModule extends Module {
+  private readonly schema: Schema;
+
+  constructor() {
+    super();
+
+    this.schema = new Schema();
+  }
+
   public async configure(options: ModuleOptions) {
     await super.configure(options);
 
@@ -35,6 +43,11 @@ export class TestModule extends Module {
   @Provides(INJECT_LOGGER)
   public async getLogger(): Promise<Logger> {
     return getTestLogger();
+  }
+
+  @Provides(INJECT_SCHEMA)
+  public async getSchema(): Promise<Schema> {
+    return this.schema;
   }
 }
 

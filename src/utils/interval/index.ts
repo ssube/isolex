@@ -1,6 +1,6 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
-import { mustExist } from '..';
 import { INJECT_LOGGER } from '../../BaseService';
 
 export type IntervalFn = () => Promise<void>;

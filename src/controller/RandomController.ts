@@ -1,3 +1,4 @@
+import { countOf } from '@apextoaster/js-utils';
 import { isNil, isNumber } from 'lodash';
 import { max, min, random, randomInt } from 'mathjs';
 import { Inject } from 'noicejs';
@@ -5,7 +6,6 @@ import { Inject } from 'noicejs';
 import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { countOf } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export type RandomControllerData = ControllerData;

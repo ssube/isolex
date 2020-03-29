@@ -1,3 +1,4 @@
+import { getTestLogger } from '@apextoaster/js-utils';
 import { kebabCase } from 'lodash';
 import { Container } from 'noicejs';
 
@@ -12,7 +13,6 @@ import { MigrationModule } from '../../src/module/MigrationModule';
 import { ParserModule } from '../../src/module/ParserModule';
 import { TransformModule } from '../../src/module/TransformModule';
 import { describeLeaks, itLeaks } from '../helpers/async';
-import { getTestLogger } from '../helpers/logger';
 
 const MODULE_TYPES = [
   BotModule,

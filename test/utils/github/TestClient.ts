@@ -1,10 +1,10 @@
+import { defer } from '@apextoaster/js-utils';
 import { App } from '@octokit/app';
 import { Octokit } from '@octokit/rest';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { match, spy, stub } from 'sinon';
 
-import { defer } from '../../../src/utils/Async';
 import { GithubClient } from '../../../src/utils/github';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createServiceContainer } from '../../helpers/container';

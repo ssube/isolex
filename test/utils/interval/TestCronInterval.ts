@@ -1,7 +1,7 @@
+import { defer } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { stub } from 'sinon';
 
-import { defer } from '../../../src/utils/Async';
 import { CronInterval } from '../../../src/utils/interval/CronInterval';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createServiceContainer } from '../../helpers/container';

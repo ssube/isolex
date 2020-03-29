@@ -1,6 +1,5 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-import { doesExist } from '../../utils';
 
 export interface CounterOptions {
   count: number;

@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@apextoaster/js-utils@^0.1.4":
+  version "0.1.4"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@apextoaster/js-utils/-/js-utils-0.1.4.tgz#c955230aa4350bb74b91e5e6a42dff7b3ece338b"
+  integrity sha512-LF0EzXtejJCuzahaRWLz7eDFeoyvHQaSNZS32HwLFYbhFN2UzpIwxtF891zryMViMJCON9P4cSaOljKrIfPRvA==
+
+"@apextoaster/js-yaml-schema@^0.2.0":
+  version "0.2.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@apextoaster/js-yaml-schema/-/js-yaml-schema-0.2.0.tgz#af69f7782ceb7b909e598f0a360fdada06d6693d"
+  integrity sha512-qIqIb6tsY0acv/LZqkWNyB1kooq2mwf7AS3Acs568zvSG6bN82UwBXf8r3yJh6F/0Yjeqp/UZyxTvNPsLizh/w==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.5.5":
   version "7.5.5"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"

@@ -1,3 +1,4 @@
+import { defer } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { Logger } from 'noicejs';
@@ -5,7 +6,6 @@ import { spy } from 'sinon';
 
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Service, ServiceEvent } from '../../src/Service';
-import { defer } from '../../src/utils/Async';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer, createServiceContainer } from '../helpers/container';
 

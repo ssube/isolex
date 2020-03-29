@@ -1,10 +1,10 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Container } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';
 import { Command, CommandVerb } from '../../entity/Command';
 import { Context } from '../../entity/Context';
 import { applyTransforms, extractBody } from '../../transform';
-import { mustExist } from '../../utils';
 import { GithubClient, GithubClientData } from '../../utils/github';
 import { TYPE_JSON } from '../../utils/Mime';
 import { BaseController, BaseControllerOptions } from '../BaseController';

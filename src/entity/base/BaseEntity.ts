@@ -1,6 +1,5 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
-import { doesExist } from '../../utils';
 
 export interface BaseEntityOptions {
   createdAt?: Date;

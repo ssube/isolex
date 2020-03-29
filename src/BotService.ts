@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from './BaseService';
@@ -7,7 +8,6 @@ import { checkFilter, Filter, FilterData, FilterValue } from './filter';
 import { Locale } from './locale';
 import { Service, ServiceDefinition } from './Service';
 import { Storage } from './storage';
-import { mustExist } from './utils';
 
 export interface BotServiceData extends BaseServiceData {
   filters: Array<ServiceDefinition<FilterData>>;

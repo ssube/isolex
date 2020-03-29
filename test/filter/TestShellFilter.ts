@@ -1,3 +1,4 @@
+import { ChildProcessError, waitForChild } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ChildProcessByStdio, ChildProcessWithoutNullStreams } from 'child_process';
 import { ineeda } from 'ineeda';
@@ -7,10 +8,8 @@ import { Readable } from 'stream';
 
 import { INJECT_CLOCK } from '../../src/BaseService';
 import { Message } from '../../src/entity/Message';
-import { ChildProcessError } from '../../src/error/ChildProcessError';
 import { FilterBehavior } from '../../src/filter';
 import { ShellFilter, ShellFilterData } from '../../src/filter/ShellFilter';
-import { waitForChild } from '../../src/utils/Child';
 import { Clock } from '../../src/utils/Clock';
 import { describeLeaks, itLeaks } from '../helpers/async';
 import { createChild } from '../helpers/child';

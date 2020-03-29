@@ -1,11 +1,11 @@
+import { mustExist, NotImplementedError } from '@apextoaster/js-utils';
+
 import { FetchOptions, Listener, ListenerData } from '.';
 import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
 import { ContextRedirect, redirectContext } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { Session } from '../entity/Session';
-import { NotImplementedError } from '../error/NotImplementedError';
-import { mustExist } from '../utils';
 import { BaseListener } from './BaseListener';
 
 export interface LoopbackListenerData extends ListenerData {

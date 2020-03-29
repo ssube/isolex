@@ -1,11 +1,10 @@
+import { defaultWhen, entriesOf, makeDict, mergeMap } from '@apextoaster/js-utils';
 import { isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { BotServiceData } from '../BotService';
 import { FilterData, FilterValue } from '../filter';
 import { Service, ServiceDefinition } from '../Service';
-import { defaultWhen } from '../utils';
-import { entriesOf, makeDict, mergeMap } from '../utils/Map';
 import { TemplateScope } from '../utils/Template';
 
 // @TODO: fix these good

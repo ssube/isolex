@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { BaseOptions, Container } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
@@ -5,7 +6,6 @@ import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService
 import { BaseEntity } from '../entity/base/BaseEntity';
 import { StorageLogger } from '../logger/StorageLogger';
 import { ServiceLifecycle } from '../Service';
-import { mustExist } from '../utils';
 
 export interface StorageData extends BaseServiceData {
   migrate: boolean;

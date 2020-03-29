@@ -1,3 +1,4 @@
+import { doesExist, mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Inject } from 'noicejs';
 
@@ -5,7 +6,6 @@ import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
-import { doesExist, mustExist } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export type SedControllerData = ControllerData;

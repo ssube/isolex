@@ -1,7 +1,6 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { JSONPath } from 'jsonpath-plus';
 import { isString } from 'lodash';
-
-import { doesExist } from '.';
 
 export interface MatchData {
   rules: Array<MatchRule>;

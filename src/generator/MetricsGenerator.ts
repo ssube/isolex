@@ -1,3 +1,4 @@
+import { InvalidArgumentError, mustExist } from '@apextoaster/js-utils';
 import { defaultTo, isNil } from 'lodash';
 import { Inject } from 'noicejs';
 import { collectDefaultMetrics, Registry } from 'prom-client';
@@ -6,8 +7,6 @@ import { GeneratorData } from '.';
 import { INJECT_METRICS } from '../BaseService';
 import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
-import { InvalidArgumentError } from '../error/InvalidArgumentError';
-import { mustExist } from '../utils';
 import { Collector } from '../utils/Metrics';
 import { BaseGenerator, BaseGeneratorOptions } from './BaseGenerator';
 

@@ -1,6 +1,5 @@
+import { NotFoundError } from '@apextoaster/js-utils';
 import { random } from 'mathjs';
-
-import { NotFoundError } from '../error/NotFoundError';
 
 export interface PickItem<T> {
   value: T;

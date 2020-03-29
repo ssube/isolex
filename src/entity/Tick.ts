@@ -1,7 +1,7 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { doesExist } from '../utils';
 import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
 
 export const TABLE_TICK = 'tick';

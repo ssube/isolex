@@ -1,3 +1,4 @@
+import { doesExist, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
@@ -7,7 +8,6 @@ import { User } from '../entity/auth/User';
 import { Context, ContextOptions } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { Session } from '../entity/Session';
-import { doesExist, mustExist } from '../utils';
 
 export type BaseListenerOptions<TData extends ListenerData> = BotServiceOptions<TData>;
 

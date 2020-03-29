@@ -1,3 +1,4 @@
+import { doesExist, mustExist } from '@apextoaster/js-utils';
 import { MathJsStatic } from 'mathjs';
 import { Container, Inject } from 'noicejs';
 import { Equal, FindManyOptions, Repository } from 'typeorm';
@@ -7,7 +8,6 @@ import { INJECT_CLOCK, INJECT_MATH } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
 import { Context, redirectContext } from '../entity/Context';
 import { Tick } from '../entity/Tick';
-import { doesExist, mustExist } from '../utils';
 import { Clock } from '../utils/Clock';
 import { Interval } from '../utils/interval';
 import { CronInterval } from '../utils/interval/CronInterval';

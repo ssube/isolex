@@ -1,9 +1,9 @@
+import { getTestLogger } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 
 import { BotData } from '../../src/Bot';
 import { loadModules } from '../../src/module';
 import { describeLeaks, itLeaks } from '../helpers/async';
-import { getTestLogger } from '../helpers/logger';
 
 describeLeaks('main module helper', async () => {
   itLeaks('should instatiate preset modules');
@@ -24,7 +24,7 @@ describeLeaks('load plugin module helper', async () => {
         kind: '',
         name: '',
       },
-    }, getTestLogger(true));
+    }, getTestLogger());
     expect(modules.length).to.equal(1);
   });
 

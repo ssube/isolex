@@ -1,3 +1,4 @@
+import { makeDict, mustExist } from '@apextoaster/js-utils';
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
@@ -5,8 +6,6 @@ import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { INJECT_MATH } from '../BaseService';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { mustExist } from '../utils';
-import { makeDict } from '../utils/Map';
 import { formatResult, ResultFormatOptions } from '../utils/Math';
 import { TemplateScope } from '../utils/Template';
 import { BaseController, BaseControllerOptions } from './BaseController';

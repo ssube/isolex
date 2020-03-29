@@ -1,8 +1,8 @@
+import { NotFoundError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { join } from 'path';
 
 import { loadConfig } from '../../src/config';
-import { NotFoundError } from '../../src/error/NotFoundError';
 import { describeLeaks, itLeaks } from '../helpers/async';
 
 describeLeaks('load config helper', async () => {

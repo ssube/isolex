@@ -1,22 +1,14 @@
+import { doesExist, NotFoundError } from '@apextoaster/js-utils';
+import { CONFIG_SCHEMA, includeSchema } from '@apextoaster/js-yaml-schema';
 import { readFile } from 'fs';
-import { DEFAULT_SAFE_SCHEMA, safeLoad, Schema } from 'js-yaml';
+import { safeLoad } from 'js-yaml';
 import { isString } from 'lodash';
 import { join } from 'path';
 import { promisify } from 'util';
 
 import { BotDefinition } from '../Bot';
-import { NotFoundError } from '../error/NotFoundError';
-import { doesExist } from '../utils';
-import { envType } from './type/Env';
-import { includeSchema, includeType } from './type/Include';
-import { regexpType } from './type/Regexp';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
-export const CONFIG_SCHEMA = Schema.create([DEFAULT_SAFE_SCHEMA], [
-  envType,
-  includeType,
-  regexpType,
-]);
 
 includeSchema.schema = CONFIG_SCHEMA;
 

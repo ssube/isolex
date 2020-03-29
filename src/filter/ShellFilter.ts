@@ -1,13 +1,20 @@
+import {
+  ChildOptions,
+  ChildSpawner,
+  doesExist,
+  makeDict,
+  mustExist,
+  pairsToMap,
+  waitForChild,
+  writeValue,
+} from '@apextoaster/js-utils';
 import { spawn } from 'child_process';
 import { defaultTo } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { FilterBehavior, FilterData, FilterValue } from '.';
 import { INJECT_CLOCK } from '../BaseService';
-import { doesExist, mustExist } from '../utils';
-import { ChildOptions, waitForChild, writeValue, ChildSpawner } from '../utils/Child';
 import { Clock } from '../utils/Clock';
-import { makeDict, pairsToMap } from '../utils/Map';
 import { BaseFilter, BaseFilterOptions } from './BaseFilter';
 
 export interface ShellFilterData extends FilterData {

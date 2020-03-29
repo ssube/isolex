@@ -1,10 +1,10 @@
+import { mustExist } from '@apextoaster/js-utils';
 import i18n, { ResourceLanguage, TFunction, TOptions } from 'i18next';
 import { Container } from 'noicejs';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
 import { LocaleLogger } from '../logger/LocaleLogger';
 import { ServiceLifecycle } from '../Service';
-import { mustExist } from '../utils';
 import * as LOCALE_GLOBAL from './en.yml';
 
 export interface LocaleData extends BaseServiceData {

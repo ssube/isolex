@@ -1,8 +1,8 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
-import { doesExist } from '../utils';
 import { BaseCommand } from './base/BaseCommand';
 import { CommandOptions } from './Command';
 

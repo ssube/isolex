@@ -1,11 +1,10 @@
+import { Dict, entriesOf, MapLike, mustGet, trim } from '@apextoaster/js-utils';
 import Handlebars from 'handlebars';
 import { BaseOptions, Inject, Logger } from 'noicejs';
 
 import { INJECT_LOGGER } from '../BaseService';
 import { Context } from '../entity/Context';
 import { classLogger } from '../logger';
-import { Dict, entriesOf, MapLike, mustGet } from './Map';
-import { trim } from './String';
 import { Template } from './Template';
 
 export interface TemplateCompilerOptions extends BaseOptions {

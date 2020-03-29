@@ -1,3 +1,4 @@
+import { doesExist, mustExist, NotImplementedError } from '@apextoaster/js-utils';
 import { Octokit } from '@octokit/rest';
 import { Container, Inject } from 'noicejs';
 import { Repository } from 'typeorm';
@@ -6,9 +7,7 @@ import { FetchOptions, ListenerData } from '.';
 import { BotServiceOptions, INJECT_STORAGE } from '../BotService';
 import { Message } from '../entity/Message';
 import { Tick } from '../entity/Tick';
-import { NotImplementedError } from '../error/NotImplementedError';
 import { ServiceEvent } from '../Service';
-import { doesExist, mustExist } from '../utils';
 import { GithubClient, GithubClientData } from '../utils/github';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';

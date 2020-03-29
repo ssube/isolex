@@ -1,3 +1,4 @@
+import { getTestLogger } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 
 import { User } from '../../../src/entity/auth/User';
@@ -8,7 +9,6 @@ import { MigrationModule } from '../../../src/module/MigrationModule';
 import { Storage } from '../../../src/storage';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createServiceContainer } from '../../helpers/container';
-import { getTestLogger } from '../../helpers/logger';
 
 describeLeaks('user repository', async () => {
   itLeaks('should populate roles', async () => {

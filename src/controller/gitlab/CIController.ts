@@ -1,10 +1,10 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';
 import { Command, CommandVerb } from '../../entity/Command';
 import { Context } from '../../entity/Context';
-import { mustExist } from '../../utils';
 import { GitlabClient, GitlabClientData, JobOptions, PipelineOptions, ProjectOptions } from '../../utils/gitlab';
 import { BaseController, BaseControllerOptions } from '../BaseController';
 

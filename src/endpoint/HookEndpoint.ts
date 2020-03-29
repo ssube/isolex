@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { json, RequestHandler } from 'express';
 import { Inject } from 'noicejs';
 
@@ -7,7 +8,6 @@ import { User } from '../entity/auth/User';
 import { UserRepository } from '../entity/auth/UserRepository';
 import { ChannelData } from '../entity/Context';
 import { Storage } from '../storage';
-import { mustExist } from '../utils';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
 export interface HookEndpointData extends EndpointData {

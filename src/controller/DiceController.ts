@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { MathJsStatic } from 'mathjs';
 import { Inject } from 'noicejs';
 
@@ -5,7 +6,6 @@ import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { INJECT_MATH } from '../BaseService';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { mustExist } from '../utils';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 const DICE_MINIMUM = 1;

@@ -1,7 +1,7 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { doesExist } from '../../utils';
 import { BaseEntity, BaseEntityOptions } from '../base/BaseEntity';
 
 export interface RoleOptions extends BaseEntityOptions {

@@ -1,9 +1,9 @@
+import { mustExist } from '@apextoaster/js-utils';
 import k8s from '@kubernetes/client-node';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, Handler } from '..';
 import { Command, CommandVerb } from '../../entity/Command';
-import { mustExist } from '../../utils';
 import { BaseControllerOptions } from '../BaseController';
 import { KubernetesBaseController, KubernetesBaseControllerData } from './BaseController';
 

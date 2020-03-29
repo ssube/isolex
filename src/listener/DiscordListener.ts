@@ -1,3 +1,4 @@
+import { doesExist, InvalidArgumentError, mustExist, NotFoundError } from '@apextoaster/js-utils';
 import {
   Channel,
   ChannelLogsQueryOptions,
@@ -19,9 +20,6 @@ import { INJECT_CLOCK, INJECT_METRICS } from '../BaseService';
 import { BotServiceOptions } from '../BotService';
 import { Context, ContextOptions } from '../entity/Context';
 import { Message } from '../entity/Message';
-import { InvalidArgumentError } from '../error/InvalidArgumentError';
-import { NotFoundError } from '../error/NotFoundError';
-import { doesExist, mustExist } from '../utils';
 import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';

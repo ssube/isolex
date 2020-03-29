@@ -1,4 +1,4 @@
-import { Dict } from './Map';
+import { Dict } from '@apextoaster/js-utils';
 
 export interface TemplateOptions {
   template: HandlebarsTemplateDelegate;

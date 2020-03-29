@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 
 import { FetchOptions, Listener, ListenerData } from '.';
@@ -6,7 +7,6 @@ import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
 import { Message } from '../entity/Message';
 import { Session } from '../entity/Session';
-import { mustExist } from '../utils';
 import { Clock } from '../utils/Clock';
 import { BaseListener } from './BaseListener';
 

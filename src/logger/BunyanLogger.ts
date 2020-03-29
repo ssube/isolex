@@ -1,7 +1,6 @@
+import { constructorName } from '@apextoaster/js-utils';
 import bunyan from 'bunyan';
 import { Logger } from 'noicejs';
-
-import { constructorName } from '../utils/Reflect';
 
 /**
  * Attach bunyan to the Logger. Does very little, since bunyan matches the Logger interface.

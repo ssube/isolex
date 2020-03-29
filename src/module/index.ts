@@ -1,7 +1,7 @@
+import { ModuleCtor } from '@apextoaster/js-utils';
 import { Logger, Module } from 'noicejs';
 
 import { BotDefinition } from '../Bot';
-import { ModuleCtor } from '../utils/ExternalModule';
 import { ControllerModule } from './ControllerModule';
 import { EndpointModule } from './EndpointModule';
 import { EntityModule } from './EntityModule';

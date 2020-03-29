@@ -1,3 +1,4 @@
+import { NotImplementedError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { match, spy } from 'sinon';
@@ -7,7 +8,6 @@ import { INJECT_BOT } from '../../src/BotService';
 import { User } from '../../src/entity/auth/User';
 import { Context } from '../../src/entity/Context';
 import { Message } from '../../src/entity/Message';
-import { NotImplementedError } from '../../src/error/NotImplementedError';
 import { LoopbackListener } from '../../src/listener/LoopbackListener';
 import { Service } from '../../src/Service';
 import { TYPE_TEXT } from '../../src/utils/Mime';

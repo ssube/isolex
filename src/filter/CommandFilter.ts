@@ -1,6 +1,7 @@
+import { makeDict } from '@apextoaster/js-utils';
+
 import { FilterBehavior, FilterValue } from '.';
 import { Command } from '../entity/Command';
-import { makeDict } from '../utils/Map';
 import { BaseFilterOptions } from './BaseFilter';
 import { RuleFilter, RuleFilterData } from './RuleFilter';
 

@@ -1,9 +1,9 @@
+import { defer } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { BaseError } from 'noicejs';
 import { stub } from 'sinon';
 
 import { INJECT_CLOCK } from '../../../src/BaseService';
-import { defer } from '../../../src/utils/Async';
 import { Clock } from '../../../src/utils/Clock';
 import { TimeInterval } from '../../../src/utils/interval/TimeInterval';
 import { describeLeaks, itLeaks } from '../../helpers/async';

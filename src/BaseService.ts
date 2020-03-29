@@ -1,4 +1,5 @@
-import { BaseOptions, Inject, Logger, MissingValueError, LogLevel } from 'noicejs';
+import { makeMap, mustExist } from '@apextoaster/js-utils';
+import { BaseOptions, Inject, Logger, LogLevel, MissingValueError } from 'noicejs';
 import { Registry } from 'prom-client';
 import { v4 } from 'uuid';
 
@@ -7,10 +8,8 @@ import { serviceLogger } from './logger';
 import { ServiceModule } from './module/ServiceModule';
 import { Schema } from './schema';
 import { Service, ServiceDefinition, ServiceEvent } from './Service';
-import { mustExist } from './utils';
 import { Clock } from './utils/Clock';
 import { JsonPath } from './utils/JsonPath';
-import { makeMap } from './utils/Map';
 import { MathFactory } from './utils/Math';
 import { RequestFactory } from './utils/Request';
 import { TemplateCompiler } from './utils/TemplateCompiler';

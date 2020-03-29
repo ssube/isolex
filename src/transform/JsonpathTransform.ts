@@ -1,11 +1,10 @@
+import { makeDict, makeMap, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 
 import { Transform, TransformData } from '.';
 import { INJECT_JSONPATH } from '../BaseService';
 import { FilterValue } from '../filter';
-import { mustExist } from '../utils';
 import { JsonPath } from '../utils/JsonPath';
-import { makeDict, makeMap } from '../utils/Map';
 import { TemplateScope } from '../utils/Template';
 import { BaseTransform, BaseTransformOptions } from './BaseTransform';
 

@@ -1,9 +1,9 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { BaseOptions, Inject, Logger, LogLevel, logWithLevel } from 'noicejs';
 import { Logger as OrmLogger } from 'typeorm/logger/Logger';
 
 import { classLogger } from '.';
 import { INJECT_LOGGER } from '../BaseService';
-import { mustExist } from '../utils';
 
 export interface StorageLoggerOptions extends BaseOptions {
   [INJECT_LOGGER]?: Logger;

@@ -67,5 +67,9 @@
   ],
   "node_modules/@octokit/rest/index.js": [
     "Octokit"
+  ],
+  "node_modules/@apextoaster/js-utils/out/main.js": [
+    "Nil",
+    "Optional"
   ]
 }

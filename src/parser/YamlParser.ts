@@ -1,3 +1,4 @@
+import { makeMap, mustExist } from '@apextoaster/js-utils';
 import { safeLoad } from 'js-yaml';
 import { isObject } from 'lodash';
 import { BaseError } from 'noicejs';
@@ -7,8 +8,6 @@ import { BotServiceOptions } from '../BotService';
 import { Command } from '../entity/Command';
 import { Message } from '../entity/Message';
 import { MimeTypeError } from '../error/MimeTypeError';
-import { mustExist } from '../utils';
-import { makeMap } from '../utils/Map';
 import { TYPE_JSON, TYPE_YAML } from '../utils/Mime';
 import { TemplateScope } from '../utils/Template';
 import { BaseParser } from './BaseParser';

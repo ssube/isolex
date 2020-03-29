@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Container, Logger, ModuleOptions, ProviderType, Provides } from 'noicejs';
 import { Registry } from 'prom-client';
 
@@ -17,7 +18,6 @@ import { Locale } from '../locale';
 import { Schema } from '../schema';
 import { GraphSchema } from '../schema/graph';
 import { Storage } from '../storage';
-import { mustExist } from '../utils';
 import { Clock } from '../utils/Clock';
 import { JsonPath } from '../utils/JsonPath';
 import { MathFactory } from '../utils/Math';

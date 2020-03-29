@@ -1,9 +1,9 @@
+import { Checklist, ChecklistOptions } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { Checklist, ChecklistOptions } from '../utils/Checklist';
 import { Picklist } from '../utils/Picklist';
 import { BaseController, BaseControllerOptions } from './BaseController';
 

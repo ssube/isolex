@@ -1,10 +1,10 @@
+import { InvalidArgumentError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { BaseError } from 'noicejs';
 import { match, stub } from 'sinon';
 
 import { INJECT_REQUEST } from '../../../src/BaseService';
-import { InvalidArgumentError } from '../../../src/error/InvalidArgumentError';
 import { GitlabClient, GitlabClientData } from '../../../src/utils/gitlab';
 import { RequestFactory } from '../../../src/utils/Request';
 import { describeLeaks, itLeaks } from '../../helpers/async';

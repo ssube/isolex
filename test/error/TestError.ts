@@ -1,27 +1,15 @@
 import { expect } from 'chai';
 
-import { ChildProcessError } from '../../src/error/ChildProcessError';
-import { InvalidArgumentError } from '../../src/error/InvalidArgumentError';
 import { MimeTypeError } from '../../src/error/MimeTypeError';
-import { MissingKeyError } from '../../src/error/MissingKeyError';
-import { NotFoundError } from '../../src/error/NotFoundError';
-import { NotImplementedError } from '../../src/error/NotImplementedError';
 import { NotInitializedError } from '../../src/error/NotInitializedError';
 import { SchemaError } from '../../src/error/SchemaError';
 import { SessionRequiredError } from '../../src/error/SessionRequiredError';
-import { TimeoutError } from '../../src/error/TimeoutError';
 
 const errors = [
-  ChildProcessError,
-  InvalidArgumentError,
   MimeTypeError,
-  MissingKeyError,
-  NotFoundError,
-  NotImplementedError,
   NotInitializedError,
   SchemaError,
   SessionRequiredError,
-  TimeoutError,
 ];
 
 describe('errors', () => {

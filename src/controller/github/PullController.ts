@@ -1,9 +1,9 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Container } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';
 import { Command, CommandVerb } from '../../entity/Command';
 import { Context } from '../../entity/Context';
-import { mustExist } from '../../utils';
 import { GithubClient, GithubClientData } from '../../utils/github';
 import { BaseController, BaseControllerOptions, ErrorReplyType } from '../BaseController';
 

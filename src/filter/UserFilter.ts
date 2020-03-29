@@ -1,6 +1,6 @@
+import { Checklist, ChecklistOptions, mustExist } from '@apextoaster/js-utils';
+
 import { Filter, FilterBehavior, FilterData, FilterValue } from '.';
-import { mustExist } from '../utils';
-import { Checklist, ChecklistOptions } from '../utils/Checklist';
 import { BaseFilter, BaseFilterOptions } from './BaseFilter';
 
 export interface UserFilterData extends FilterData {

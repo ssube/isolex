@@ -1,9 +1,8 @@
+import { doesExist } from '@apextoaster/js-utils';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import { ineeda } from 'ineeda';
 import { match, stub } from 'sinon';
 import { Readable, Writable } from 'stream';
-
-import { doesExist } from '../../src/utils';
 
 export function createSilentReadable(): Readable {
   return ineeda<Readable>({

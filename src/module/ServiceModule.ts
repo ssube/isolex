@@ -1,13 +1,10 @@
+import { mustExist, mustGet, NotFoundError, timeout } from '@apextoaster/js-utils';
 import { Container, Module, ModuleOptions, Provides } from 'noicejs';
 
 import { INJECT_LOGGER, INJECT_SERVICES } from '../BaseService';
 import { BotServiceData, BotServiceOptions } from '../BotService';
-import { NotFoundError } from '../error/NotFoundError';
 import { kindLogger } from '../logger';
 import { Service, ServiceDefinition, ServiceEvent, ServiceLifecycle, ServiceMetadata } from '../Service';
-import { mustExist } from '../utils';
-import { timeout } from '../utils/Async';
-import { mustGet } from '../utils/Map';
 
 export interface ServiceModuleData {
   timeout: number;

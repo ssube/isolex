@@ -1,3 +1,4 @@
+import { getHeadOrDefault, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
@@ -7,8 +8,6 @@ import { Command, CommandDataValue, CommandOptions, CommandVerb } from '../entit
 import { Context } from '../entity/Context';
 import { Fragment } from '../entity/Fragment';
 import { Message } from '../entity/Message';
-import { mustExist } from '../utils';
-import { getHeadOrDefault } from '../utils/Map';
 import { MatchRules } from '../utils/MatchRules';
 
 @Inject(INJECT_STORAGE)

@@ -1,3 +1,4 @@
+import { mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import { Registry } from 'prom-client';
 
@@ -5,7 +6,6 @@ import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { INJECT_METRICS } from '../BaseService';
 import { Command, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
-import { mustExist } from '../utils';
 import { VERSION_INFO } from '../version';
 import { BaseController, BaseControllerOptions } from './BaseController';
 

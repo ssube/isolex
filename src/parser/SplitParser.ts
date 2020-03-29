@@ -1,3 +1,4 @@
+import { ArrayMapper, ArrayMapperOptions, mustExist } from '@apextoaster/js-utils';
 import { isEmpty, trim } from 'lodash';
 import split, { Options as SplitOptions } from 'split-string';
 
@@ -6,8 +7,6 @@ import { BotServiceOptions } from '../BotService';
 import { Command } from '../entity/Command';
 import { Message } from '../entity/Message';
 import { MimeTypeError } from '../error/MimeTypeError';
-import { mustExist } from '../utils';
-import { ArrayMapper, ArrayMapperOptions } from '../utils/ArrayMapper';
 import { TYPE_TEXT } from '../utils/Mime';
 import { BaseParser } from './BaseParser';
 

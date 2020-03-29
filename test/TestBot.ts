@@ -1,3 +1,4 @@
+import { defer, getTestLogger } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { LogLevel } from 'noicejs';
@@ -13,10 +14,8 @@ import { MigrationModule } from '../src/module/MigrationModule';
 import { ServiceModule } from '../src/module/ServiceModule';
 import { Schema } from '../src/schema';
 import { ServiceEvent } from '../src/Service';
-import { defer } from '../src/utils/Async';
 import { describeLeaks, itLeaks } from './helpers/async';
 import { createContainer } from './helpers/container';
-import { getTestLogger } from './helpers/logger';
 
 const TEST_CONFIG: BotData = {
   controllers: [],

@@ -1,3 +1,4 @@
+import { makeMap, mustExist, normalizeMap, pushMergeMap } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import yargs from 'yargs-parser';
 
@@ -9,8 +10,6 @@ import { Context } from '../entity/Context';
 import { Fragment } from '../entity/Fragment';
 import { Message } from '../entity/Message';
 import { MimeTypeError } from '../error/MimeTypeError';
-import { mustExist } from '../utils';
-import { makeMap, normalizeMap, pushMergeMap } from '../utils/Map';
 import { TYPE_TEXT } from '../utils/Mime';
 import { BaseParser } from './BaseParser';
 

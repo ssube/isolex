@@ -1,3 +1,4 @@
+import { getTestLogger } from '@apextoaster/js-utils';
 import { Response } from 'express';
 import { ineeda } from 'ineeda';
 import { Constructor } from 'noicejs';
@@ -14,7 +15,6 @@ import { Context } from '../../src/entity/Context';
 import { BotModule } from '../../src/module/BotModule';
 import { Storage } from '../../src/storage';
 import { createService, createServiceContainer } from '../helpers/container';
-import { getTestLogger } from './logger';
 
 const TEST_DATA = {
   filters: [],

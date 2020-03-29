@@ -1,11 +1,10 @@
+import { makeDict, mustExist } from '@apextoaster/js-utils';
 import { isString } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
 
 import { Transform, TransformData } from '.';
 import { INJECT_TEMPLATE } from '../BaseService';
 import { FilterValue } from '../filter';
-import { mustExist } from '../utils';
-import { makeDict } from '../utils/Map';
 import { Template, TemplateScope } from '../utils/Template';
 import { BaseTransform, BaseTransformOptions } from './BaseTransform';
 

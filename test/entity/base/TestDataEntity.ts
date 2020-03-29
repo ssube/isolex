@@ -1,7 +1,7 @@
+import { MissingKeyError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 
 import { DataEntity } from '../../../src/entity/base/DataEntity';
-import { MissingKeyError } from '../../../src/error/MissingKeyError';
 import { describeLeaks, itLeaks } from '../../helpers/async';
 
 class TestEntity extends DataEntity<string> {
