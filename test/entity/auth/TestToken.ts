@@ -1,6 +1,6 @@
+import { NotFoundError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { BaseError } from 'noicejs';
 
 import { Token, TokenOptions } from '../../../src/entity/auth/Token';
 import { User } from '../../../src/entity/auth/User';
@@ -98,6 +98,6 @@ describeLeaks('token entity', async () => {
       labels: {},
       subject: '',
     });
-    expect(() => token.session()).to.throw(BaseError);
+    expect(() => token.session()).to.throw(NotFoundError);
   });
 });
