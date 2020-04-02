@@ -80,7 +80,7 @@
     "express": "4.17.1",
     "express-graphql": "0.9.0",
     "graphql": "14.6.0",
-    "handlebars": "4.7.4",
+    "handlebars": "4.7.5",
     "i18next": "19.3.4",
     "ineeda": "0.12.0-alpha.0",
     "js-yaml": "3.13.1",
