@@ -5,14 +5,13 @@ import { spy } from 'sinon';
 
 import { INJECT_LOGGER } from '../../src/BaseService';
 import { SlackLogger } from '../../src/logger/SlackLogger';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
 /* tslint:disable:no-unbound-method */
 const LOG_ARGS = ['test'];
 
-describeLeaks('slack logger', async () => {
-  itLeaks('should forward debug messages', async () => {
+describe('slack logger', async () => {
+  it('should forward debug messages', async () => {
     const { container, module } = await createContainer();
     const debug = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({
@@ -24,7 +23,7 @@ describeLeaks('slack logger', async () => {
     expect(debug).to.have.callCount(1);
   });
 
-  itLeaks('should forward error messages', async () => {
+  it('should forward error messages', async () => {
     const { container, module } = await createContainer();
     const error = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({
@@ -36,7 +35,7 @@ describeLeaks('slack logger', async () => {
     expect(error).to.have.callCount(1);
   });
 
-  itLeaks('should forward info messages', async () => {
+  it('should forward info messages', async () => {
     const { container, module } = await createContainer();
     const info = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({
@@ -48,7 +47,7 @@ describeLeaks('slack logger', async () => {
     expect(info).to.have.callCount(1);
   });
 
-  itLeaks('should forward warn messages', async () => {
+  it('should forward warn messages', async () => {
     const { container, module } = await createContainer();
     const warn = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({
@@ -60,7 +59,7 @@ describeLeaks('slack logger', async () => {
     expect(warn).to.have.callCount(1);
   });
 
-  itLeaks('should store log level', async () => {
+  it('should store log level', async () => {
     const { container } = await createContainer();
     const logger = await container.create(SlackLogger);
     logger.setLevel(LogLevel.WARN);

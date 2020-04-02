@@ -12,7 +12,6 @@ import { ListenerModule } from '../../src/module/ListenerModule';
 import { MigrationModule } from '../../src/module/MigrationModule';
 import { ParserModule } from '../../src/module/ParserModule';
 import { TransformModule } from '../../src/module/TransformModule';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
 const MODULE_TYPES = [
   BotModule,
@@ -27,10 +26,10 @@ const MODULE_TYPES = [
   TransformModule,
 ];
 
-describeLeaks('DI modules', async () => {
+describe('DI modules', async () => {
   for (const moduleType of MODULE_TYPES) {
-    describeLeaks(kebabCase(moduleType.name), async () => {
-      itLeaks('should be configurable', async () => {
+    describe(kebabCase(moduleType.name), async () => {
+      it('should be configurable', async () => {
         const options = {
           logger: getTestLogger(),
         };

@@ -9,11 +9,10 @@ import { TemplateTransform } from '../../src/transform/TemplateTransform';
 import { TYPE_JSON } from '../../src/utils/Mime';
 import { Template } from '../../src/utils/Template';
 import { TemplateCompiler } from '../../src/utils/TemplateCompiler';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeLeaks('template transform', async () => {
-  itLeaks('should transform data', async () => {
+describe('template transform', async () => {
+  it('should transform data', async () => {
     const { container } = await createServiceContainer();
 
     const data = {
@@ -51,7 +50,7 @@ describeLeaks('template transform', async () => {
     });
   });
 
-  itLeaks('should throw when template does not render a string', async () => {
+  it('should throw when template does not render a string', async () => {
     const { container } = await createServiceContainer();
 
     const data = {

@@ -14,7 +14,6 @@ import { stub } from 'sinon';
 import { createBot, CreateOptions, ExitStatus, main, runBot } from '../src/app';
 import { Bot, BotDefinition } from '../src/Bot';
 import { ServiceEvent } from '../src/Service';
-import { describeLeaks, itLeaks } from './helpers/async';
 import { serviceSpy } from './helpers/container';
 
 const MAX_SIGNAL_TIME = 100; // ms
@@ -112,8 +111,8 @@ const TEST_ARGS_INVALID = [
   defaultTo(process.env.DOCS_PATH, __dirname),
 ];
 
-describeLeaks('app bot stuff', async () => {
-  itLeaks('should create a bot and container', async () => {
+describe('app bot stuff', async () => {
+  it('should create a bot and container', async () => {
     const { bot } = await createBot({
       config: TEST_CONFIG,
       logger: getTestLogger(),
@@ -122,7 +121,7 @@ describeLeaks('app bot stuff', async () => {
     expect(bot).to.be.an.instanceOf(Bot);
   });
 
-  itLeaks('should run a bot', async () => {
+  it('should run a bot', async () => {
     const options = {
       config: TEST_CONFIG,
       logger: getTestLogger(),
@@ -142,7 +141,7 @@ describeLeaks('app bot stuff', async () => {
   });
 
   /* tslint:disable:no-identical-functions */
-  itLeaks('should reset metrics while running', async () => {
+  it('should reset metrics while running', async () => {
     const { bot, ctr } = await createBot(TEST_CONFIG_SERVICE);
     const { svc, spies } = await serviceSpy({});
 
@@ -171,7 +170,7 @@ describeLeaks('app bot stuff', async () => {
       .and.been.calledWith(ServiceEvent.Stop);
   });
 
-  itLeaks('should reload config while running', async () => {
+  it('should reload config while running', async () => {
     const { bot, ctr } = await createBot(TEST_CONFIG_SERVICE);
     const { svc, spies } = await serviceSpy({});
 
@@ -200,7 +199,7 @@ describeLeaks('app bot stuff', async () => {
       .and.been.calledWith(ServiceEvent.Stop);
   });
 
-  itLeaks('should handle errors starting the bot', async () => {
+  it('should handle errors starting the bot', async () => {
     const start = stub().throws(BaseError);
     const bot = ineeda<Bot>({
       start,
@@ -213,8 +212,8 @@ describeLeaks('app bot stuff', async () => {
 });
 
 /* tslint:disable:no-unbound-method */
-describeLeaks('main', async () => {
-  itLeaks('should return exit status', async () => {
+describe('main', async () => {
+  it('should return exit status', async () => {
     const pendingStatus = main(TEST_ARGS_VALID);
     await defer(MAIN_START_TIME);
 
@@ -225,13 +224,13 @@ describeLeaks('main', async () => {
     expect(status).to.equal(ExitStatus.Success, 'exit status should be set and successful');
   });
 
-  itLeaks('should validate the config before starting', async () => {
+  it('should validate the config before starting', async () => {
     const status = await main(TEST_ARGS_INVALID);
 
     expect(status).to.equal(ExitStatus.Error);
   });
 
-  itLeaks('should test config without starting', async () => {
+  it('should test config without starting', async () => {
     const status = await main([
       ...TEST_ARGS_VALID,
       '--test',
@@ -240,7 +239,7 @@ describeLeaks('main', async () => {
     expect(status).to.equal(ExitStatus.Success);
   });
 
-  itLeaks('should fail when testing invalid config', async () => {
+  it('should fail when testing invalid config', async () => {
     const status = await main([
       ...TEST_ARGS_INVALID,
       '--test',

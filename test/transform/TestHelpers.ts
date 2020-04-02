@@ -8,16 +8,15 @@ import { Message } from '../../src/entity/Message';
 import { applyTransforms, extractBody, Transform } from '../../src/transform';
 import { entityData } from '../../src/transform/BaseTransform';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
 /* eslint-disable sonarjs/no-identical-functions, @typescript-eslint/no-explicit-any */
-describeLeaks('apply transforms helper', async () => {
-  itLeaks('should return empty output with no transforms', async () => {
+describe('apply transforms helper', async () => {
+  it('should return empty output with no transforms', async () => {
     const output = await applyTransforms([], ineeda<Message>({}), TYPE_TEXT, {});
     expect(output).to.deep.equal({});
   });
 
-  itLeaks('should return transform data', async () => {
+  it('should return transform data', async () => {
     const input = {
       bar: 3,
       foo: 'str',
@@ -31,7 +30,7 @@ describeLeaks('apply transforms helper', async () => {
     expect(output).to.deep.equal(input);
   });
 
-  itLeaks('should replace keys from previous transforms', async () => {
+  it('should replace keys from previous transforms', async () => {
     const input = {
       bar: 3,
       foo: 'str',
@@ -54,7 +53,7 @@ describeLeaks('apply transforms helper', async () => {
     expect(output.foo).to.equal(input.foo, 'must retain foo');
   });
 
-  itLeaks('should skip transforms based on filter', async () => {
+  it('should skip transforms based on filter', async () => {
     const output = await applyTransforms([
       ineeda<Transform>({
         check: () => Promise.resolve(true),
@@ -77,8 +76,8 @@ describeLeaks('apply transforms helper', async () => {
   });
 });
 
-describeLeaks('entity data helper', async () => {
-  itLeaks('should return command data', async () => {
+describe('entity data helper', async () => {
+  it('should return command data', async () => {
     const data = entityData(new Command({
       data: {
         body: ['test'],
@@ -90,7 +89,7 @@ describeLeaks('entity data helper', async () => {
     expect(data.has('body')).to.equal(true);
   });
 
-  itLeaks('should return message body', async () => {
+  it('should return message body', async () => {
     const data = entityData(new Message({
       body: 'test',
       labels: {},
@@ -100,26 +99,26 @@ describeLeaks('entity data helper', async () => {
     expect(data.has('body')).to.equal(true);
   });
 
-  itLeaks('should throw on unknown entities', async () => {
+  it('should throw on unknown entities', async () => {
     expect(() => entityData(3 as any)).to.throw(InvalidArgumentError);
     expect(() => entityData('test' as any)).to.throw(InvalidArgumentError);
   });
 });
 
-describeLeaks('extract body helper', async () => {
-  itLeaks('should throw if body is not an array', async () => {
+describe('extract body helper', async () => {
+  it('should throw if body is not an array', async () => {
     expect(() => extractBody({
       body: 'test' as any,
     })).to.throw(BaseError);
   });
 
-  itLeaks('should throw if body values are not strings', async () => {
+  it('should throw if body values are not strings', async () => {
     expect(() => extractBody({
       body: [1, 2, 3] as any,
     })).to.throw(BaseError);
   });
 
-  itLeaks('should return the body', async () => {
+  it('should return the body', async () => {
     expect(extractBody({
       body: ['test'],
     })).to.equal('test');

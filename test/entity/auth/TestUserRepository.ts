@@ -7,11 +7,10 @@ import { BotModule } from '../../../src/module/BotModule';
 import { EntityModule } from '../../../src/module/EntityModule';
 import { MigrationModule } from '../../../src/module/MigrationModule';
 import { Storage } from '../../../src/storage';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createServiceContainer } from '../../helpers/container';
 
-describeLeaks('user repository', async () => {
-  itLeaks('should populate roles', async () => {
+describe('user repository', async () => {
+  it('should populate roles', async () => {
     const { container } = await createServiceContainer(new BotModule({
       logger: getTestLogger(),
     }), new EntityModule(), new MigrationModule());

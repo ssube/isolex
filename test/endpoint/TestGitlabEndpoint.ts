@@ -7,7 +7,6 @@ import { spy, stub } from 'sinon';
 import { STATUS_SUCCESS, STATUS_UNKNOWN } from '../../src/endpoint/BaseEndpoint';
 import { GitlabEndpoint, GitlabEndpointData } from '../../src/endpoint/GitlabEndpoint';
 import { CommandVerb } from '../../src/entity/Command';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
 const TEST_DATA: GitlabEndpointData = {
@@ -40,14 +39,14 @@ const TEST_EVENTS = [{
   name: 'push',
 }];
 
-describeLeaks('gitlab endpoint', async () => {
-  itLeaks('should have paths', async () => {
+describe('gitlab endpoint', async () => {
+  it('should have paths', async () => {
     const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/gitlab');
   });
 
-  itLeaks('should configure a router', async () => {
+  it('should configure a router', async () => {
     const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
     const post = spy();
     const router = ineeda<Router>({
@@ -61,8 +60,8 @@ describeLeaks('gitlab endpoint', async () => {
     expect(post).to.have.callCount(1);
   });
 
-  describeLeaks('webhook route', async () => {
-    itLeaks('should fail without a body', async () => {
+  describe('webhook route', async () => {
+    it('should fail without a body', async () => {
       const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
       const sendStatus = spy();
       await endpoint.postHook(ineeda<Request>({
@@ -74,7 +73,7 @@ describeLeaks('gitlab endpoint', async () => {
     });
 
     for (const eventData of TEST_EVENTS) {
-      itLeaks(`should succeed on ${eventData.name} events`, async () => {
+      it(`should succeed on ${eventData.name} events`, async () => {
         const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
         await endpoint.start();
         const sendStatus = spy();

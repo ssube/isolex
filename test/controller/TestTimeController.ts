@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 
 import { TimeController } from '../../src/controller/TimeController';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeLeaks('time controller', async () => {
-  itLeaks('should exist', async () => {
+describe('time controller', async () => {
+  it('should exist', async () => {
     const { container } = await createServiceContainer();
 
     const controller = await createService(container, TimeController, {

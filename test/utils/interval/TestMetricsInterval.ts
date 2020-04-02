@@ -1,6 +1,4 @@
-import { describeLeaks, itLeaks } from '../../helpers/async';
-
-describeLeaks('metrics interval', async () => {
-  itLeaks('should call the tick function');
-  itLeaks('should set and clear a collector interval');
+describe('metrics interval', async () => {
+  it('should call the tick function');
+  it('should set and clear a collector interval');
 });

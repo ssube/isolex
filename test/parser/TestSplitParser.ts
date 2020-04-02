@@ -11,7 +11,6 @@ import { SplitParser } from '../../src/parser/SplitParser';
 import { Storage } from '../../src/storage';
 import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -54,8 +53,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeLeaks('split parser', async () => {
-  itLeaks('should split on whitespace', async () => {
+describe('split parser', async () => {
+  it('should split on whitespace', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -86,7 +85,7 @@ describeLeaks('split parser', async () => {
     ]);
   });
 
-  itLeaks('should split respect parens', async () => {
+  it('should split respect parens', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -120,7 +119,7 @@ describeLeaks('split parser', async () => {
     ]);
   });
 
-  itLeaks('should reject messages with other types', async () => {
+  it('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -141,7 +140,7 @@ describeLeaks('split parser', async () => {
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
   });
 
-  itLeaks('should remove prefixes', async () => {
+  it('should remove prefixes', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, SplitParser, {
       [INJECT_STORAGE]: TEST_STORAGE,

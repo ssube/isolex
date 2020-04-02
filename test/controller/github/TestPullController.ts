@@ -1,9 +1,7 @@
-import { describeLeaks, itLeaks } from '../../helpers/async';
-
-describeLeaks('github pull controller', async () => {
-  itLeaks('should close pull requests');
-  itLeaks('should get pull request data');
-  itLeaks('should list pull requests');
-  itLeaks('should approve merge requests');
-  itLeaks('should merge merge requests');
+describe('github pull controller', async () => {
+  it('should close pull requests');
+  it('should get pull request data');
+  it('should list pull requests');
+  it('should approve merge requests');
+  it('should merge merge requests');
 });

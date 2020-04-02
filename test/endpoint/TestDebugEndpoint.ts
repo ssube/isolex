@@ -5,18 +5,17 @@ import passport from 'passport';
 import { match, spy } from 'sinon';
 
 import { DebugEndpoint } from '../../src/endpoint/DebugEndpoint';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint, createRequest } from '../helpers/request';
 
 // tslint:disable:no-identical-functions
-describeLeaks('debug endpoint', async () => {
-  itLeaks('should have paths', async () => {
+describe('debug endpoint', async () => {
+  it('should have paths', async () => {
     const endpoint = await createEndpoint(DebugEndpoint, false, false);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/debug');
   });
 
-  itLeaks('should configure a router', async () => {
+  it('should configure a router', async () => {
     const endpoint = await createEndpoint(DebugEndpoint, false, false);
     const get = spy();
     const router = ineeda<Router>({
@@ -36,8 +35,8 @@ describeLeaks('debug endpoint', async () => {
     expect(get).to.have.callCount(1);
   });
 
-  describeLeaks('index route', async () => {
-    itLeaks('should return services', async () => {
+  describe('index route', async () => {
+    it('should return services', async () => {
       const endpoint = await createEndpoint(DebugEndpoint, true, true);
       const { json, response } = createRequest();
       await endpoint.getIndex(ineeda<Request>({}), response);

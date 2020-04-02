@@ -11,7 +11,6 @@ import { Message } from '../../src/entity/Message';
 import { ParserData, ParserOutput } from '../../src/parser';
 import { BaseParser } from '../../src/parser/BaseParser';
 import { Storage } from '../../src/storage';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_PARSER = 'test-parser';
@@ -32,8 +31,8 @@ class TestParser extends BaseParser<ParserData> {
   }
 }
 
-describeLeaks('base parser', async () => {
-  itLeaks('should match messages', async () => {
+describe('base parser', async () => {
+  it('should match messages', async () => {
     const { container } = await createServiceContainer();
     const parser = await createService(container, TestParser, {
       data: {
@@ -60,7 +59,7 @@ describeLeaks('base parser', async () => {
     }))).to.equal(true);
   });
 
-  itLeaks('should complete fragments', async () => {
+  it('should complete fragments', async () => {
     const { container } = await createServiceContainer();
     const parser = await createService(container, TestParser, {
       [INJECT_STORAGE]: ineeda<Storage>({
@@ -109,6 +108,6 @@ describeLeaks('base parser', async () => {
     expect(results.length).to.be.greaterThan(0);
   });
 
-  itLeaks('should prefer the data command');
-  itLeaks('should prefer the command');
+  it('should prefer the data command');
+  it('should prefer the command');
 });

@@ -3,7 +3,6 @@ import { MissingValueError } from 'noicejs';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../src/BaseService';
 import { ServiceEvent } from '../src/Service';
-import { describeLeaks, itLeaks } from './helpers/async';
 import { createService, createServiceContainer } from './helpers/container';
 
 class StubService extends BaseService<BaseServiceData> {
@@ -15,8 +14,8 @@ class StubService extends BaseService<BaseServiceData> {
   public async stop() { /* noop */ }
 }
 
-describeLeaks('base service', async () => {
-  itLeaks('should throw on missing name', async () => {
+describe('base service', async () => {
+  it('should throw on missing name', async () => {
     const { container } = await createServiceContainer();
     return expect(createService(container, StubService, {
       data: {
@@ -30,7 +29,7 @@ describeLeaks('base service', async () => {
     })).to.eventually.be.rejectedWith(MissingValueError);
   });
 
-  itLeaks('should log notifications', async () => {
+  it('should log notifications', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
@@ -45,7 +44,7 @@ describeLeaks('base service', async () => {
     await svc.notify(ServiceEvent.Tick);
   });
 
-  itLeaks('should get ephemeral ID as UUID', async () => {
+  it('should get ephemeral ID as UUID', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {
@@ -60,7 +59,7 @@ describeLeaks('base service', async () => {
     expect(svc.getId(false)).to.match(/[A-Za-z0-9-]{16}/);
   });
 
-  itLeaks('should get stable ID as kind:name pair', async () => {
+  it('should get stable ID as kind:name pair', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, StubService, {
       data: {

@@ -6,7 +6,6 @@ import { ineeda } from 'ineeda';
 import { match, spy, stub } from 'sinon';
 
 import { GithubClient } from '../../../src/utils/github';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createServiceContainer } from '../../helpers/container';
 
 const TEST_DATA = {
@@ -21,8 +20,8 @@ const TEST_DATA = {
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-describeLeaks('github client', async () => {
-  itLeaks('should poll for new tokens', async () => {
+describe('github client', async () => {
+  it('should poll for new tokens', async () => {
     const getInstallationAccessToken = stub().returns('test');
     const app = stub().returns(ineeda<App>({
       getInstallationAccessToken,
@@ -38,7 +37,7 @@ describeLeaks('github client', async () => {
     expect(token).to.equal('token test');
   });
 
-  itLeaks('should poll for new tokens', async () => {
+  it('should poll for new tokens', async () => {
     const getInstallationAccessToken = stub().returns('test');
     const app = stub().returns(ineeda<App>({
       getInstallationAccessToken,

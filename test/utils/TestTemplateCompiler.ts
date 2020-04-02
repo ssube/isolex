@@ -3,12 +3,11 @@ import { stub } from 'sinon';
 
 import { Context } from '../../src/entity/Context';
 import { TemplateCompiler, testEq } from '../../src/utils/TemplateCompiler';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
-describeLeaks('template compiler', async () => {
-  describeLeaks('format context helper', async () => {
-    itLeaks('should prefix a name', async () => {
+describe('template compiler', async () => {
+  describe('format context helper', async () => {
+    it('should prefix a name', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
       const ctx = new Context({
@@ -23,8 +22,8 @@ describeLeaks('template compiler', async () => {
     });
   });
 
-  describeLeaks('format entries helper', async () => {
-    itLeaks('should format a map', async () => {
+  describe('format entries helper', async () => {
+    it('should format a map', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
       const data = new Map([
@@ -39,24 +38,24 @@ describeLeaks('template compiler', async () => {
     });
   });
 
-  describeLeaks('format json helper', async () => {
-    itLeaks('should flatten objects', async () => {
+  describe('format json helper', async () => {
+    it('should flatten objects', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
       expect(compiler.formatJSON({}).toString()).to.equal('{}');
     });
   });
 
-  describeLeaks('format trim helper', async () => {
-    itLeaks('should trim strings to length', async () => {
+  describe('format trim helper', async () => {
+    it('should trim strings to length', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
       expect(compiler.formatTrim('hello world', 6, '!')).to.equal('hello!');
     });
   });
 
-  describeLeaks('test equality helper', async () => {
-    itLeaks('should call block when operands are exactly equal', async () => {
+  describe('test equality helper', async () => {
+    it('should call block when operands are exactly equal', async () => {
       const test = 'test-value';
       const data = {};
       const fn = stub().returns(test);

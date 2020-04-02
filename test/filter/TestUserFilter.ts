@@ -6,7 +6,6 @@ import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { FilterBehavior } from '../../src/filter';
 import { UserFilter, UserFilterData } from '../../src/filter/UserFilter';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
@@ -25,8 +24,8 @@ async function createUserFilter(data: UserFilterData) {
   return { container, filter };
 }
 
-describeLeaks('user filter', async () => {
-  itLeaks('should have a working helper', async () => {
+describe('user filter', async () => {
+  it('should have a working helper', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,
@@ -38,7 +37,7 @@ describeLeaks('user filter', async () => {
     expect(filter).to.be.an.instanceof(UserFilter);
   });
 
-  itLeaks('should allow commands from allowed users', async () => {
+  it('should allow commands from allowed users', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,
@@ -59,7 +58,7 @@ describeLeaks('user filter', async () => {
     expect(behavior).to.equal(FilterBehavior.Allow);
   });
 
-  itLeaks('should filter out users by name', async () => {
+  it('should filter out users by name', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,
@@ -83,7 +82,7 @@ describeLeaks('user filter', async () => {
     expect(behavior).to.equal(FilterBehavior.Drop);
   });
 
-  itLeaks('should filter out users by uid', async () => {
+  it('should filter out users by uid', async () => {
     const { filter } = await createUserFilter({
       filters: [],
       strict: true,

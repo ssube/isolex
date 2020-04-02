@@ -2,10 +2,9 @@ import bunyan from 'bunyan';
 import { expect } from 'chai';
 
 import { BunyanLogger } from '../../src/logger/BunyanLogger';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeLeaks('bunyan logger', async () => {
-  itLeaks('should create a logger', async () => {
+describe('bunyan logger', async () => {
+  it('should create a logger', async () => {
     const logger = BunyanLogger.create({
       name: 'test-logger',
     });

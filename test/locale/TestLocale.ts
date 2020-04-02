@@ -2,11 +2,10 @@ import { expect } from 'chai';
 
 import { Locale } from '../../src/locale';
 import { ServiceModule } from '../../src/module/ServiceModule';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
-describeLeaks('locale service', async () => {
-  itLeaks('should load a default locale', async () => {
+describe('locale service', async () => {
+  it('should load a default locale', async () => {
     const { container } = await createContainer(new ServiceModule({
       timeout: 10,
     }));
@@ -25,7 +24,7 @@ describeLeaks('locale service', async () => {
     expect(locale.lang).to.equal('en');
   });
 
-  itLeaks('should translate a test key', async () => {
+  it('should translate a test key', async () => {
     const { container } = await createContainer(new ServiceModule({
       timeout: 10,
     }));

@@ -5,11 +5,10 @@ import { collectOrComplete } from '../../src/controller/helpers';
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { Parser } from '../../src/parser';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeLeaks('completion helper', async () => {
-  describeLeaks('collect or complete', async () => {
-    itLeaks('should collect specified fields', async () => {
+describe('completion helper', async () => {
+  describe('collect or complete', async () => {
+    it('should collect specified fields', async () => {
       const data = {
         bar: ['b'],
         foo: ['a'],
@@ -36,7 +35,7 @@ describeLeaks('completion helper', async () => {
       }
     });
 
-    itLeaks('should complete missing fields', async () => {
+    it('should complete missing fields', async () => {
       const data = {
         bar: ['b'],
         foo: ['a'],
@@ -68,7 +67,7 @@ describeLeaks('completion helper', async () => {
       }
     });
 
-    itLeaks('should coerce values', async () => {
+    it('should coerce values', async () => {
       const data = {
         bar: ['a'],
         foo: ['10'],

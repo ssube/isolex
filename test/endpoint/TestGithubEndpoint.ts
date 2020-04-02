@@ -7,7 +7,6 @@ import { spy, stub } from 'sinon';
 import { STATUS_SUCCESS } from '../../src/endpoint/BaseEndpoint';
 import { GithubEndpoint, GithubEndpointData } from '../../src/endpoint/GithubEndpoint';
 import { CommandVerb } from '../../src/entity/Command';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
 const TEST_DATA: GithubEndpointData = {
@@ -25,14 +24,14 @@ const TEST_DATA: GithubEndpointData = {
 };
 
 // tslint:disable:no-identical-functions
-describeLeaks('github endpoint', async () => {
-  itLeaks('should have paths', async () => {
+describe('github endpoint', async () => {
+  it('should have paths', async () => {
     const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/github');
   });
 
-  itLeaks('should configure a router', async () => {
+  it('should configure a router', async () => {
     const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
     await endpoint.start();
 
@@ -49,8 +48,8 @@ describeLeaks('github endpoint', async () => {
     expect(post).to.have.callCount(1);
   });
 
-  describeLeaks('webhook route', async () => {
-    itLeaks('should succeed on unknown hooks', async () => {
+  describe('webhook route', async () => {
+    it('should succeed on unknown hooks', async () => {
       const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
       await endpoint.start();
 
@@ -64,7 +63,7 @@ describeLeaks('github endpoint', async () => {
       expect(sendStatus).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
     });
 
-    itLeaks('should handle pull review hooks', async () => {
+    it('should handle pull review hooks', async () => {
       const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
       await endpoint.start();
 
@@ -78,7 +77,7 @@ describeLeaks('github endpoint', async () => {
       expect(sendStatus).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
     });
 
-    itLeaks('should handle commit status hooks', async () => {
+    it('should handle commit status hooks', async () => {
       const endpoint = await createEndpoint(GithubEndpoint, false, false, TEST_DATA);
       await endpoint.start();
 

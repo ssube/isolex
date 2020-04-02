@@ -6,7 +6,6 @@ import { ServiceModule } from '../../src/module/ServiceModule';
 import { ServiceMetadata } from '../../src/Service';
 import { ShellTransform } from '../../src/transform/ShellTransform';
 import { TYPE_JSON } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createChild } from '../helpers/child';
 import { createContainer, createService } from '../helpers/container';
 
@@ -24,8 +23,8 @@ const TEST_COMMAND: CommandOptions = {
 
 const CHILD_TIMEOUT = 150;
 
-describeLeaks('shell transform', async () => {
-  itLeaks('should write merged value and scope to child', async () => {
+describe('shell transform', async () => {
+  it('should write merged value and scope to child', async () => {
     const { container } = await createContainer(new ServiceModule({
       timeout: 0,
     }));
@@ -54,7 +53,7 @@ describeLeaks('shell transform', async () => {
     });
   });
 
-  itLeaks('should parse output from child', async () => {
+  it('should parse output from child', async () => {
     const { container } = await createContainer(new ServiceModule({
       timeout: 0,
     }));

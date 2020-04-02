@@ -7,7 +7,6 @@ import { spy } from 'sinon';
 import { GraphEndpoint } from '../../src/endpoint/GraphEndpoint';
 import { GraphSchemaData } from '../../src/schema/graph';
 import { ServiceDefinition } from '../../src/Service';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
 const TEST_SCHEMA: ServiceDefinition<GraphSchemaData> = {
@@ -22,8 +21,8 @@ const TEST_SCHEMA: ServiceDefinition<GraphSchemaData> = {
 };
 
 // tslint:disable:no-identical-functions
-describeLeaks('graph endpoint', async () => {
-  itLeaks('should have paths', async () => {
+describe('graph endpoint', async () => {
+  it('should have paths', async () => {
     const endpoint = await createEndpoint(GraphEndpoint, false, false, {
       graph: TEST_SCHEMA,
       graphiql: true,
@@ -32,7 +31,7 @@ describeLeaks('graph endpoint', async () => {
     expect(endpoint.paths).to.include('/graph');
   });
 
-  itLeaks('should configure a router', async () => {
+  it('should configure a router', async () => {
     const endpoint = await createEndpoint(GraphEndpoint, false, false, {
       graph: TEST_SCHEMA,
       graphiql: true,

@@ -5,11 +5,10 @@ import { match, spy } from 'sinon';
 
 import { Service } from '../../src/Service';
 import { createServiceCounter, incrementServiceCounter } from '../../src/utils/Metrics';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeLeaks('metrics utils', async () => {
-  describeLeaks('create service counter helper', async () => {
-    itLeaks('should create a counter with labels', async () => {
+describe('metrics utils', async () => {
+  describe('create service counter helper', async () => {
+    it('should create a counter with labels', async () => {
       expect(createServiceCounter(ineeda<Registry>({
         registerMetric() {
           // ?
@@ -20,8 +19,8 @@ describeLeaks('metrics utils', async () => {
     });
   });
 
-  describeLeaks('increment service counter helper', async () => {
-    itLeaks('should increment a counter with labels', async () => {
+  describe('increment service counter helper', async () => {
+    it('should increment a counter with labels', async () => {
       const inc = spy();
       const counter = ineeda<Counter<string>>({
         inc,

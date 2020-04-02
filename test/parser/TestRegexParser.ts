@@ -11,7 +11,6 @@ import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { RegexParser } from '../../src/parser/RegexParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -45,8 +44,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeLeaks('regex parser', async () => {
-  itLeaks('should split the message body into groups', async () => {
+describe('regex parser', async () => {
+  it('should split the message body into groups', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, RegexParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -78,7 +77,7 @@ describeLeaks('regex parser', async () => {
     expect(cmd.getHead('letters')).to.equal('abcdefghij');
   });
 
-  itLeaks('should reject messages with other types', async () => {
+  it('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, RegexParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -99,7 +98,7 @@ describeLeaks('regex parser', async () => {
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(MimeTypeError);
   });
 
-  itLeaks('should throw when message does not match expression', async () => {
+  it('should throw when message does not match expression', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, RegexParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -120,7 +119,7 @@ describeLeaks('regex parser', async () => {
     return expect(svc.parse(msg)).to.eventually.be.rejectedWith(BaseError);
   });
 
-  itLeaks('should return matches in body', async () => {
+  it('should return matches in body', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, RegexParser, {
       [INJECT_STORAGE]: TEST_STORAGE,

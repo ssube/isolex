@@ -10,7 +10,6 @@ import { Command } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { Locale } from '../../src/locale';
 import { Schema } from '../../src/schema';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_DATA = {
@@ -44,8 +43,8 @@ const TEST_METADATA = {
   name: 'test-ctrl',
 };
 
-describeLeaks('account controller', async () => {
-  itLeaks('should check grants against current context', async () => {
+describe('account controller', async () => {
+  it('should check grants against current context', async () => {
     const sendMessage = stub().returns(Promise.resolve());
     const { container } = await createServiceContainer();
     const ctrl = await createService(container, AccountController, {
@@ -70,7 +69,7 @@ describeLeaks('account controller', async () => {
     expect(sendMessage).to.have.callCount(1);
   });
 
-  itLeaks('should list grants in current context', async () => {
+  it('should list grants in current context', async () => {
     const sendMessage = stub().returns(Promise.resolve());
     const { container } = await createServiceContainer();
     const ctrl = await createService(container, AccountController, {
@@ -95,7 +94,7 @@ describeLeaks('account controller', async () => {
     expect(sendMessage).to.have.callCount(1);
   });
 
-  itLeaks('should print help about grants', async () => {
+  it('should print help about grants', async () => {
     const sendMessage = stub().returns(Promise.resolve());
     const { container, services } = await createServiceContainer();
     services.bind(INJECT_SCHEMA).toInstance(new Schema());

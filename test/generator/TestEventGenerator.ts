@@ -6,13 +6,12 @@ import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
 import { EventGenerator } from '../../src/generator/EventGenerator';
 import { Service } from '../../src/Service';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_SVC = 'some-service';
 
-describeLeaks('event generator', async () => {
-  itLeaks('should notify target services', async () => {
+describe('event generator', async () => {
+  it('should notify target services', async () => {
     const notify = spy();
     const { container, services } = await createServiceContainer();
     services.addService(ineeda<Service>({

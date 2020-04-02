@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 
 import { Counter } from '../../../src/entity/misc/Counter';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
-describeLeaks('counter entity', async () => {
-  itLeaks('should convert itself to json', async () => {
+describe('counter entity', async () => {
+  it('should convert itself to json', async () => {
     const counter = new Counter({
       count: 0,
       name: '',

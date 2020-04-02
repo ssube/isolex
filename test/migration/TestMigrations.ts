@@ -4,10 +4,9 @@ import { MigrationModule } from '../../src/module/MigrationModule';
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Schema } from '../../src/schema';
 import { Storage } from '../../src/storage';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
-describeLeaks('database migrations', async () => {
+describe('database migrations', async () => {
   xit('should run up', async () => {
     const modules = [
       new EntityModule(),
@@ -36,5 +35,5 @@ describeLeaks('database migrations', async () => {
     await storage.stop();
   });
 
-  itLeaks('should run down');
+  it('should run down');
 });
