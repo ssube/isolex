@@ -20,4 +20,13 @@ describeLeaks('request factory', async () => {
     expect(promise).to.have.callCount(1);
     expect(r).to.have.callCount(1);
   });
+
+  itLeaks('should default to network requests', async () => {
+    const { container } = await createContainer();
+    const rf = await container.create(RequestFactory, {});
+
+    await expect(rf.create({
+      url: 'https://google.com',
+    })).to.eventually.contain('About Google');
+  });
 });
