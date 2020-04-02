@@ -37,6 +37,22 @@ describeLeaks('match utility', async () => {
       });
       expect(results.matched).to.equal(false);
     });
+
+    itLeaks('should reject a single string when negated', async () => {
+      const match = createMatch({
+        negate: true,
+        operator: RuleOperator.Every,
+        values: [{
+          string: 'bar',
+        }, {
+          string: 'foo',
+        }],
+      });
+      const results = match.match({
+        foo: 'bar',
+      });
+      expect(results.matched).to.equal(false);
+    });
   });
 
   describeLeaks('type checks', async () => {
@@ -109,6 +125,22 @@ describeLeaks('match utility', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
         values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
+      });
+      const results = match.match({
+        foo: 'bar',
+      });
+      expect(results.matched).to.equal(true);
+    });
+
+    itLeaks('should match a single string to any when negated', async () => {
+      const match = createMatch({
+        negate: true,
+        operator: RuleOperator.Any,
+        values: [{
+          string: 'bar',
+        }, {
+          string: 'foo',
+        }],
       });
       const results = match.match({
         foo: 'bar',

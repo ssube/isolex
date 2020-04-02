@@ -60,6 +60,10 @@ describe('math utils', () => {
       }
     });
 
+    it('should format symbol results as unknown', () => {
+      expect(formatResult(Symbol(), TEST_SCOPE, TEST_OPTIONS)).to.contain('unknown result type');
+    });
+
     it('should format date results', () => {
       const d = new Date();
       expect(formatResult(d, TEST_SCOPE, TEST_OPTIONS)).to.include(d.getFullYear());
