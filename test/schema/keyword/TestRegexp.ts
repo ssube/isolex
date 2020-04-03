@@ -2,11 +2,10 @@ import { expect } from 'chai';
 
 import { Schema } from '../../../src/schema';
 import { RuleValue } from '../../../src/utils/MatchRules';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
-describeLeaks('json schema', async () => {
-  describeLeaks('regexp keyword', async () => {
-    itLeaks('should match regexp instances', async () => {
+describe('json schema', async () => {
+  describe('regexp keyword', async () => {
+    it('should match regexp instances', async () => {
       const schema = new Schema();
       const rule: RuleValue = {
         regexp: /foo/,
@@ -15,7 +14,7 @@ describeLeaks('json schema', async () => {
       expect(result.valid).to.equal(true);
     });
 
-    itLeaks('should negate matching regexp instances', async () => {
+    it('should negate matching regexp instances', async () => {
       const schema = new Schema({
         properties: {
           regexp: {
@@ -30,7 +29,7 @@ describeLeaks('json schema', async () => {
       expect(result.valid).to.equal(false);
     });
 
-    itLeaks('should match regexp flags', async () => {
+    it('should match regexp flags', async () => {
       const schema = new Schema({
         properties: {
           regexp: {
@@ -48,7 +47,7 @@ describeLeaks('json schema', async () => {
       expect(result.valid).to.equal(true);
     });
 
-    itLeaks('should not match other things', async () => {
+    it('should not match other things', async () => {
       const schema = new Schema();
       const rule = {
         regexp: 'foo',

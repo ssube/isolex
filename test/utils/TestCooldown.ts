@@ -4,7 +4,6 @@ import { ConsoleLogger, Container } from 'noicejs';
 
 import { BotModule } from '../../src/module/BotModule';
 import { Cooldown, CooldownOptions } from '../../src/utils/Cooldown';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
 const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
 
@@ -17,9 +16,9 @@ async function createCooldown(options: Partial<CooldownOptions>) {
   return ctr.create(Cooldown, options);
 }
 
-describeLeaks('utils', async () => {
-  describeLeaks('cooldown', async () => {
-    itLeaks('should change the rate by the growth', async () => {
+describe('utils', async () => {
+  describe('cooldown', async () => {
+    it('should change the rate by the growth', async () => {
       const cd = await createCooldown({
         base: 10,
         grow: 2,
@@ -35,7 +34,7 @@ describeLeaks('utils', async () => {
       expect(cd.getRate()).to.equal(COOLDOWN_STEPS[0]);
     });
 
-    itLeaks('should stop a pending timer', async () => {
+    it('should stop a pending timer', async () => {
       const cd = await createCooldown({
         base: 5000,
         grow: 0,
@@ -45,7 +44,7 @@ describeLeaks('utils', async () => {
       await cd.stop();
     });
 
-    itLeaks('should track ticks', async () => {
+    it('should track ticks', async () => {
       const cd = await createCooldown({
         base: 20,
         grow: 0,
@@ -60,7 +59,7 @@ describeLeaks('utils', async () => {
       expect(cd.getTicks()).to.equal(3);
     });
 
-    itLeaks('should always have a stream', async () => {
+    it('should always have a stream', async () => {
       const cd = await createCooldown({});
       expect(cd.getStream()).not.to.equal(undefined);
     });

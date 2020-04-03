@@ -8,7 +8,6 @@ import { FilterBehavior } from '../../src/filter';
 import { MessageFilter, MessageFilterData } from '../../src/filter/MessageFilter';
 import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
@@ -26,8 +25,8 @@ async function createFilter(data: MessageFilterData) {
   return { container, filter };
 }
 
-describeLeaks('message filter', async () => {
-  itLeaks('should allow matching messages', async () => {
+describe('message filter', async () => {
+  it('should allow matching messages', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {
@@ -45,7 +44,7 @@ describeLeaks('message filter', async () => {
     expect(result).to.equal(FilterBehavior.Allow);
   });
 
-  itLeaks('should ignore other entities', async () => {
+  it('should ignore other entities', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {

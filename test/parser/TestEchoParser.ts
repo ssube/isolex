@@ -10,7 +10,6 @@ import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { EchoParser } from '../../src/parser/EchoParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -48,8 +47,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeLeaks('echo parser', async () => {
-  itLeaks('should parse the message body as-is', async () => {
+describe('echo parser', async () => {
+  it('should parse the message body as-is', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, EchoParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -77,7 +76,7 @@ describeLeaks('echo parser', async () => {
     expect(cmd.getHead('foo')).to.equal('test message');
   });
 
-  itLeaks('should reject messages with other types', async () => {
+  it('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, EchoParser, {
       [INJECT_STORAGE]: TEST_STORAGE,

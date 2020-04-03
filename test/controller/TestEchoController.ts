@@ -15,7 +15,6 @@ import { Listener } from '../../src/listener';
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { TransformModule } from '../../src/module/TransformModule';
 import { Transform } from '../../src/transform';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_LISTENER = 'test-listener';
@@ -61,8 +60,8 @@ class StubController extends EchoController {
   }
 }
 
-describeLeaks('echo controller', async () => {
-  itLeaks('should exist', async () => {
+describe('echo controller', async () => {
+  it('should exist', async () => {
     const { container } = await createServiceContainer();
 
     const controller = await createService(container, EchoController, {
@@ -72,7 +71,7 @@ describeLeaks('echo controller', async () => {
     expect(controller).to.be.an.instanceOf(EchoController);
   });
 
-  itLeaks('should handle commands', async () => {
+  it('should handle commands', async () => {
     const modules = [new ServiceModule({
       timeout: 100,
     }), new TransformModule()];
@@ -148,7 +147,7 @@ describeLeaks('echo controller', async () => {
     expect(sendMessage).to.have.been.calledWithMatch(match.instanceOf(Message));
   });
 
-  itLeaks('should handle echo noun', async () => {
+  it('should handle echo noun', async () => {
     const { container } = await createServiceContainer();
     const controller = await createService(container, EchoController, {
       data: TEST_DATA,
@@ -157,7 +156,7 @@ describeLeaks('echo controller', async () => {
     expect(controller.getNouns()).to.include(NOUN_ECHO);
   });
 
-  itLeaks('should throw when context has no source', async () => {
+  it('should throw when context has no source', async () => {
     const { container } = await createServiceContainer();
     const controller = await createService(container, StubController, {
       data: TEST_DATA,
@@ -174,7 +173,7 @@ describeLeaks('echo controller', async () => {
     }))).to.throw(MissingValueError);
   });
 
-  itLeaks('should throw when context has no user', async () => {
+  it('should throw when context has no user', async () => {
     const { container } = await createServiceContainer();
     const controller = await createService(container, StubController, {
       data: TEST_DATA,
@@ -191,7 +190,7 @@ describeLeaks('echo controller', async () => {
     }))).to.throw(MissingValueError);
   });
 
-  itLeaks('should format a missing grant error', async () => {
+  it('should format a missing grant error', async () => {
     const { container } = await createServiceContainer();
     const controller = await createService(container, StubController, {
       data: TEST_DATA,
@@ -205,7 +204,7 @@ describeLeaks('echo controller', async () => {
     expect(reply).to.have.been.calledWith(ctx, match(/permission denied/));
   });
 
-  itLeaks('should format a missing session error', async () => {
+  it('should format a missing session error', async () => {
     const { container } = await createServiceContainer();
     const controller = await createService(container, StubController, {
       data: TEST_DATA,

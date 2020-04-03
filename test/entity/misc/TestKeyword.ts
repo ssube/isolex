@@ -2,10 +2,9 @@ import { expect } from 'chai';
 
 import { CommandVerb } from '../../../src/entity/Command';
 import { Keyword } from '../../../src/entity/misc/Keyword';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
-describeLeaks('keyword entity', async () => {
-  itLeaks('should convert itself to JSON', async () => {
+describe('keyword entity', async () => {
+  it('should convert itself to JSON', async () => {
     const keyword = new Keyword({
       controllerId: '',
       data: {},

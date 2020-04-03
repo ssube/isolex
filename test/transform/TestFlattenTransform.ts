@@ -5,13 +5,12 @@ import { Command, CommandVerb } from '../../src/entity/Command';
 import { FlattenTransform } from '../../src/transform/FlattenTransform';
 import { JsonPath } from '../../src/utils/JsonPath';
 import { TYPE_JSON } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const OUTPUT_FIELD = 'body';
 
-describeLeaks('flatten transform', async () => {
-  itLeaks('should transform data', async () => {
+describe('flatten transform', async () => {
+  it('should transform data', async () => {
     const { container } = await createServiceContainer();
 
     const data = {

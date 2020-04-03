@@ -6,7 +6,6 @@ import { spy } from 'sinon';
 
 import { STATUS_ERROR, STATUS_SUCCESS } from '../../src/endpoint/BaseEndpoint';
 import { HealthEndpoint } from '../../src/endpoint/HealthEndpoint';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createEndpoint } from '../helpers/request';
 
 function createRequest() {
@@ -18,14 +17,14 @@ function createRequest() {
 }
 
 // tslint:disable:no-identical-functions
-describeLeaks('health endpoint', async () => {
-  itLeaks('should have paths', async () => {
+describe('health endpoint', async () => {
+  it('should have paths', async () => {
     const endpoint = await createEndpoint(HealthEndpoint, false, false);
     expect(endpoint.paths.length).to.equal(3);
     expect(endpoint.paths).to.include('/health');
   });
 
-  itLeaks('should configure a router', async () => {
+  it('should configure a router', async () => {
     const endpoint = await createEndpoint(HealthEndpoint, false, false);
     const get = spy();
     const router = ineeda<Router>({
@@ -39,15 +38,15 @@ describeLeaks('health endpoint', async () => {
     expect(get).to.have.callCount(2);
   });
 
-  describeLeaks('liveness route', async () => {
-    itLeaks('should succeed when bot is connected', async () => {
+  describe('liveness route', async () => {
+    it('should succeed when bot is connected', async () => {
       const endpoint = await createEndpoint(HealthEndpoint, true, true);
       const { response, status } = createRequest();
       await endpoint.getLiveness(ineeda<Request>({}), response);
       expect(status).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
     });
 
-    itLeaks('should fail when bot is not connected', async () => {
+    it('should fail when bot is not connected', async () => {
       const endpoint = await createEndpoint(HealthEndpoint, false, false);
       const { response, status } = createRequest();
       await endpoint.getLiveness(ineeda<Request>({}), response);
@@ -55,15 +54,15 @@ describeLeaks('health endpoint', async () => {
     });
   });
 
-  describeLeaks('readiness route', async () => {
-    itLeaks('should succeed when storage is connected', async () => {
+  describe('readiness route', async () => {
+    it('should succeed when storage is connected', async () => {
       const endpoint = await createEndpoint(HealthEndpoint, true, true);
       const { response, status } = createRequest();
       await endpoint.getReadiness(ineeda<Request>({}), response);
       expect(status).to.have.been.calledOnce.and.calledWithExactly(STATUS_SUCCESS);
     });
 
-    itLeaks('should fail when storage is not connected', async () => {
+    it('should fail when storage is not connected', async () => {
       const endpoint = await createEndpoint(HealthEndpoint, false, false);
       const { response, status } = createRequest();
       await endpoint.getReadiness(ineeda<Request>({}), response);

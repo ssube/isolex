@@ -13,7 +13,6 @@ import { GraphSchema } from '../../src/schema/graph';
 import { Service } from '../../src/Service';
 import { Storage } from '../../src/storage';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_SCHEMA = {
@@ -22,8 +21,8 @@ const TEST_SCHEMA = {
 };
 
 /* eslint-disable sonarjs/no-identical-functions */
-describeLeaks('graph schema', async () => {
-  itLeaks('should execute commands', async () => {
+describe('graph schema', async () => {
+  it('should execute commands', async () => {
     const { container } = await createServiceContainer();
     const executeCommand = spy();
     const graph = await createService(container, GraphSchema, {
@@ -49,7 +48,7 @@ describeLeaks('graph schema', async () => {
     expect(executeCommand).to.have.callCount(1);
   });
 
-  itLeaks('should send messages', async () => {
+  it('should send messages', async () => {
     const { container } = await createServiceContainer();
     const sendMessage = spy();
     const graph = await createService(container, GraphSchema, {
@@ -75,7 +74,7 @@ describeLeaks('graph schema', async () => {
     expect(sendMessage).to.have.callCount(1);
   });
 
-  itLeaks('should get past commands', async () => {
+  it('should get past commands', async () => {
     const { container } = await createServiceContainer();
     const sendMessage = spy();
     const graph = await createService(container, GraphSchema, {
@@ -103,7 +102,7 @@ describeLeaks('graph schema', async () => {
     expect(Command.isCommand(command)).to.equal(true);
   });
 
-  itLeaks('should get past messages', async () => {
+  it('should get past messages', async () => {
     const { container } = await createServiceContainer();
     const sendMessage = spy();
     const graph = await createService(container, GraphSchema, {
@@ -131,7 +130,7 @@ describeLeaks('graph schema', async () => {
     expect(Message.isMessage(message)).to.equal(true);
   });
 
-  itLeaks('should get existing services', async () => {
+  it('should get existing services', async () => {
     const { container } = await createServiceContainer();
     const sendMessage = spy();
     const graph = await createService(container, GraphSchema, {
@@ -157,7 +156,7 @@ describeLeaks('graph schema', async () => {
     expect(svcs.size).to.equal(0);
   });
 
-  itLeaks('should get a single service', async () => {
+  it('should get a single service', async () => {
     const SVC_METADATA = {
       kind: 'test-service',
       name: 'test-service',

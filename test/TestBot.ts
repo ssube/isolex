@@ -14,7 +14,6 @@ import { MigrationModule } from '../src/module/MigrationModule';
 import { ServiceModule } from '../src/module/ServiceModule';
 import { Schema } from '../src/schema';
 import { ServiceEvent } from '../src/Service';
-import { describeLeaks, itLeaks } from './helpers/async';
 import { createContainer } from './helpers/container';
 
 const TEST_CONFIG: BotData = {
@@ -60,8 +59,25 @@ const TEST_CONFIG: BotData = {
   },
 };
 
-describeLeaks('bot service', async () => {
-  itLeaks('should reset metrics', async () => {
+async function createBot() {
+  const { container } = await createContainer(new BotModule({
+    logger: getTestLogger(),
+  }), new ServiceModule({
+    timeout: 1000,
+  }), new EntityModule(), new MigrationModule());
+  const bot = await container.create(Bot, {
+    [INJECT_SCHEMA]: new Schema(),
+    data: TEST_CONFIG,
+    metadata: {
+      kind: 'bot',
+      name: 'test-bot',
+    },
+  });
+  return { bot, container };
+}
+
+describe('bot service', async () => {
+  it('should reset metrics', async () => {
     const { container } = await createContainer(new BotModule({
       logger: getTestLogger(),
     }), new ServiceModule({
@@ -84,7 +100,7 @@ describeLeaks('bot service', async () => {
     expect(resetMetrics).to.have.callCount(1);
   });
 
-  itLeaks('should have connection status', async () => {
+  it('should have connection status', async () => {
     const { container } = await createContainer(new BotModule({
       logger: getTestLogger(),
     }), new ServiceModule({
@@ -143,14 +159,17 @@ describeLeaks('bot service', async () => {
       },
     });
     await bot.start();
-    const results = await bot.sendMessage(/* new Message({
-      body: 'test',
-      labels: {},
-      reactions: [],
-      type: TYPE_TEXT,
-    }) */);
+    const results = await bot.sendMessage();
     await defer(50);
     await bot.stop();
     expect(results.length).to.equal(0);
+  });
+
+  xit('should execute commands', async () => {
+    const { bot } = await createBot();
+    await bot.start();
+
+    const cmd = await bot.executeCommand(ineeda<Command>());
+    expect(cmd).to.equal(true);
   });
 });

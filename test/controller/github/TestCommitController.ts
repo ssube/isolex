@@ -11,7 +11,6 @@ import { Command } from '../../../src/entity/Command';
 import { Context } from '../../../src/entity/Context';
 import { Transform } from '../../../src/transform';
 import { GithubClient } from '../../../src/utils/github';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createService, createServiceContainer } from '../../helpers/container';
 
 /* eslint-disable @typescript-eslint/no-explicit-any, camelcase */
@@ -22,8 +21,8 @@ interface ClientResponse<T> {
   (params: any): Promise<Octokit.Response<T>>;
 }
 
-describeLeaks('github commit controller', async () => {
-  itLeaks('should fetch commit status data', async () => {
+describe('github commit controller', async () => {
+  it('should fetch commit status data', async () => {
     const { container, services } = await createServiceContainer();
     services.bind(TEST_TRANSFORM).toInstance(ineeda<Transform>({
       check: () => Promise.resolve(true),

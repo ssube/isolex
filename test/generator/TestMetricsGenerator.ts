@@ -8,7 +8,6 @@ import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
 import { MetricsGenerator, MetricsGeneratorData } from '../../src/generator/MetricsGenerator';
 import { Clock } from '../../src/utils/Clock';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_TARGET = 'test-target';
@@ -46,8 +45,8 @@ const TEST_METADATA = {
   name: TEST_GENERATOR,
 };
 
-describeLeaks('metrics generator', async () => {
-  itLeaks('should succeed each tick', async () => {
+describe('metrics generator', async () => {
+  it('should succeed each tick', async () => {
     const { container, services } = await createServiceContainer();
     services.bind(INJECT_CLOCK).toInstance(await container.create(Clock, {}));
 
@@ -60,7 +59,7 @@ describeLeaks('metrics generator', async () => {
     expect(status).to.equal(0);
   });
 
-  itLeaks('should collect default metrics', async () => {
+  it('should collect default metrics', async () => {
     const { container, services } = await createServiceContainer();
     services.bind(INJECT_CLOCK).toInstance(await container.create(Clock, {}));
 
@@ -78,7 +77,7 @@ describeLeaks('metrics generator', async () => {
     expect(collector).to.have.been.calledWithMatch(match.has('timeout'));
   });
 
-  itLeaks('must have a frequency', async () => {
+  it('must have a frequency', async () => {
     const { container, services } = await createServiceContainer();
     services.bind(INJECT_CLOCK).toInstance(await container.create(Clock, {}));
 

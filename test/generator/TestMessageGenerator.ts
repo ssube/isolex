@@ -16,7 +16,6 @@ import { TransformModule } from '../../src/module/TransformModule';
 import { Service } from '../../src/Service';
 import { Clock } from '../../src/utils/Clock';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_SVC = 'some-service';
@@ -80,8 +79,8 @@ const TEST_CONFIG = {
   },
 };
 
-describeLeaks('message generator', async () => {
-  itLeaks('should notify target services', async () => {
+describe('message generator', async () => {
+  it('should notify target services', async () => {
     const sendMessage = spy();
     const bot = ineeda<Bot>({
       sendMessage,
@@ -109,7 +108,7 @@ describeLeaks('message generator', async () => {
     expect(sendMessage).to.have.callCount(1);
   });
 
-  itLeaks('should throw when transform body is missing', async () => {
+  it('should throw when transform body is missing', async () => {
     const sendMessage = spy();
     const bot = ineeda<Bot>({
       sendMessage,
@@ -141,7 +140,7 @@ describeLeaks('message generator', async () => {
     await interval.stop();
   });
 
-  itLeaks('should throw if not started', async () => {
+  it('should throw if not started', async () => {
     const sendMessage = spy();
     const bot = ineeda<Bot>({
       sendMessage,

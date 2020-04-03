@@ -3,10 +3,9 @@ import { ineeda } from 'ineeda';
 
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeLeaks('command', async () => {
-  itLeaks('should copy data', async () => {
+describe('command', async () => {
+  it('should copy data', async () => {
     const data = {
       test: ['1'],
     };
@@ -25,7 +24,7 @@ describeLeaks('command', async () => {
     expect(cmd.get('test')).to.deep.equal(['1']);
   });
 
-  itLeaks('should get args by name', async () => {
+  it('should get args by name', async () => {
     const data = {
       test: ['1'],
     };
@@ -40,7 +39,7 @@ describeLeaks('command', async () => {
     expect(cmd.get('test')).to.deep.equal(['1']);
   });
 
-  itLeaks('should convert itself to JSON', async () => {
+  it('should convert itself to JSON', async () => {
     const cmd = new Command({
       data: {},
       labels: {},
@@ -55,7 +54,7 @@ describeLeaks('command', async () => {
     expect(json).to.have.property('verb');
   });
 
-  itLeaks('should convert its context to JSON', async () => {
+  it('should convert its context to JSON', async () => {
     const cmd = new Command({
       context: new Context({
         channel: {

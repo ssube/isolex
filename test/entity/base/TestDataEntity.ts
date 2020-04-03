@@ -2,7 +2,6 @@ import { MissingKeyError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 
 import { DataEntity } from '../../../src/entity/base/DataEntity';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
 class TestEntity extends DataEntity<string> {
   public getDataStr() {
@@ -20,8 +19,8 @@ class TestEntity extends DataEntity<string> {
 }
 
 // tslint:disable:no-identical-functions
-describeLeaks('base data entity', async () => {
-  itLeaks('should sync string data to map', async () => {
+describe('base data entity', async () => {
+  it('should sync string data to map', async () => {
     const entity = new TestEntity({
       data: {},
       labels: {},
@@ -31,7 +30,7 @@ describeLeaks('base data entity', async () => {
     expect(entity.get('foo')).to.equal('bar');
   });
 
-  itLeaks('should sync map data to string', async () => {
+  it('should sync map data to string', async () => {
     const entity = new TestEntity({
       data: {
         foo: 'bar',
@@ -43,7 +42,7 @@ describeLeaks('base data entity', async () => {
     expect(entity.getDataStr()).to.include('bar');
   });
 
-  itLeaks('should check for key existence', async () => {
+  it('should check for key existence', async () => {
     const entity = new TestEntity({
       data: {
         foo: 'bar',
@@ -54,7 +53,7 @@ describeLeaks('base data entity', async () => {
     expect(entity.has('bar')).to.equal(false);
   });
 
-  itLeaks('should get an item', async () => {
+  it('should get an item', async () => {
     const entity = new TestEntity({
       data: {
         foo: 'bar',
@@ -64,7 +63,7 @@ describeLeaks('base data entity', async () => {
     expect(entity.get('foo')).to.equal('bar');
   });
 
-  itLeaks('should throw on missing items', async () => {
+  it('should throw on missing items', async () => {
     const entity = new TestEntity({
       data: {
         foo: 'bar',
@@ -74,7 +73,7 @@ describeLeaks('base data entity', async () => {
     expect(() => entity.get('bar')).to.throw(MissingKeyError);
   });
 
-  itLeaks('should get a default value', async () => {
+  it('should get a default value', async () => {
     const entity = new TestEntity({
       data: {
         foo: 'bar',

@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 
 import { User } from '../../../src/entity/auth/User';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
-describeLeaks('user entity', async () => {
-  itLeaks('should convert itself to JSON', async () => {
+describe('user entity', async () => {
+  it('should convert itself to JSON', async () => {
     const user = new User({
       locale: {
         date: '',

@@ -2,11 +2,10 @@ import { expect } from 'chai';
 import { stub } from 'sinon';
 
 import { RequestFactory } from '../../src/utils/Request';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
-describeLeaks('request factory', async () => {
-  itLeaks('should invoke request and return promise', async () => {
+describe('request factory', async () => {
+  it('should invoke request and return promise', async () => {
     const promise = stub().returns(Promise.resolve(true));
     const r = stub().returns({
       promise,

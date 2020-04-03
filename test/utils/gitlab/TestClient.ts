@@ -7,7 +7,6 @@ import { match, stub } from 'sinon';
 import { INJECT_REQUEST } from '../../../src/BaseService';
 import { GitlabClient, GitlabClientData } from '../../../src/utils/gitlab';
 import { RequestFactory } from '../../../src/utils/Request';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 import { createContainer } from '../../helpers/container';
 
 // tslint:disable:no-identical-functions
@@ -31,8 +30,8 @@ async function createClient() {
   return { client, create };
 }
 
-describeLeaks('gitlab client', async () => {
-  itLeaks('should cancel jobs', async () => {
+describe('gitlab client', async () => {
+  it('should cancel jobs', async () => {
     const { client, create } = await createClient();
     await client.cancelJob({
       group: 'test',
@@ -42,7 +41,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'POST'));
   });
 
-  itLeaks('should cancel pipelines', async () => {
+  it('should cancel pipelines', async () => {
     const { client, create } = await createClient();
     await client.cancelPipeline({
       group: 'test',
@@ -52,7 +51,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'POST'));
   });
 
-  itLeaks('should create pipelines', async () => {
+  it('should create pipelines', async () => {
     const { client, create } = await createClient();
     await client.createPipeline({
       group: 'test',
@@ -62,7 +61,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'POST'));
   });
 
-  itLeaks('should get single jobs', async () => {
+  it('should get single jobs', async () => {
     const { client, create } = await createClient();
     await client.getJob({
       group: 'test',
@@ -72,7 +71,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should get single pipelines', async () => {
+  it('should get single pipelines', async () => {
     const { client, create } = await createClient();
     await client.getPipeline({
       group: 'test',
@@ -82,7 +81,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should get single projects', async () => {
+  it('should get single projects', async () => {
     const { client, create } = await createClient();
     await client.getProject({
       group: 'test',
@@ -91,7 +90,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should list jobs for a project', async () => {
+  it('should list jobs for a project', async () => {
     const { client, create } = await createClient();
     await client.listJobs({
       group: 'test',
@@ -101,7 +100,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should list jobs for a pipeline', async () => {
+  it('should list jobs for a pipeline', async () => {
     const { client, create } = await createClient();
     await client.listJobs({
       group: 'test',
@@ -111,7 +110,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should list pipelines', async () => {
+  it('should list pipelines', async () => {
     const { client, create } = await createClient();
     await client.listPipelines({
       group: 'test',
@@ -120,7 +119,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should list projects', async () => {
+  it('should list projects', async () => {
     const { client, create } = await createClient();
     await client.listProjects({
       group: 'test',
@@ -128,7 +127,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'GET'));
   });
 
-  itLeaks('should retry jobs', async () => {
+  it('should retry jobs', async () => {
     const { client, create } = await createClient();
     await client.retryJob({
       group: 'test',
@@ -139,7 +138,7 @@ describeLeaks('gitlab client', async () => {
 
   });
 
-  itLeaks('should retry pipelines', async () => {
+  it('should retry pipelines', async () => {
     const { client, create } = await createClient();
     await client.retryPipeline({
       group: 'test',
@@ -149,7 +148,7 @@ describeLeaks('gitlab client', async () => {
     expect(create).to.have.been.calledOnceWith(match.has('method', 'POST'));
   });
 
-  itLeaks('should handle request errors', async () => {
+  it('should handle request errors', async () => {
     const { container } = await createContainer();
     const create = stub().throws(new InvalidArgumentError());
     const request = ineeda<RequestFactory>({

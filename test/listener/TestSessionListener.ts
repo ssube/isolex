@@ -9,7 +9,6 @@ import { Message } from '../../src/entity/Message';
 import { FetchOptions, ListenerData } from '../../src/listener';
 import { SessionListener } from '../../src/listener/SessionListener';
 import { Clock } from '../../src/utils/Clock';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 class StubSessionListener extends SessionListener<ListenerData> {
@@ -43,8 +42,8 @@ const TEST_METADATA = {
   name: 'test-listener',
 };
 
-describeLeaks('session listener', async () => {
-  itLeaks('should create a sesion with the current time', async () => {
+describe('session listener', async () => {
+  it('should create a sesion with the current time', async () => {
     const stubDate = stub(new Date());
     const clock = ineeda<Clock>({
       getDate: () => stubDate,
@@ -65,7 +64,7 @@ describeLeaks('session listener', async () => {
     expect(session.createdAt).to.equal(stubDate);
   });
 
-  itLeaks('should store the created sessions', async () => {
+  it('should store the created sessions', async () => {
     const stubDate = stub(new Date());
     const clock = ineeda<Clock>({
       getDate: () => stubDate,

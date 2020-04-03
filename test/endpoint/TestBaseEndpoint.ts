@@ -7,11 +7,10 @@ import { match, spy } from 'sinon';
 import { EndpointData, Handler } from '../../src/endpoint';
 import { BaseEndpoint, BaseEndpointOptions } from '../../src/endpoint/BaseEndpoint';
 import { CommandVerb } from '../../src/entity/Command';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeLeaks('base endpoint', async () => {
-  itLeaks('should bind handler methods', async () => {
+describe('base endpoint', async () => {
+  it('should bind handler methods', async () => {
     class SubEndpoint extends BaseEndpoint<EndpointData> {
       constructor(options: BaseEndpointOptions<EndpointData>) {
         super(options, 'isolex#/definitions/service-endpoint');
@@ -47,7 +46,7 @@ describeLeaks('base endpoint', async () => {
     expect(get).to.have.been.calledOnce.and.calledWithExactly('/test', match.func);
   });
 
-  itLeaks('should create a router if one is not provided', async () => {
+  it('should create a router if one is not provided', async () => {
     class SubEndpoint extends BaseEndpoint<EndpointData> {
       constructor(options: BaseEndpointOptions<EndpointData>) {
         super(options, 'isolex#/definitions/service-endpoint');

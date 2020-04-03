@@ -8,7 +8,6 @@ import { FilterBehavior } from '../../src/filter';
 import { CommandFilter, CommandFilterData } from '../../src/filter/CommandFilter';
 import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_FILTER_KIND = 'user-filter';
@@ -26,8 +25,8 @@ async function createFilter(data: CommandFilterData) {
   return { container, filter };
 }
 
-describeLeaks('command filter', async () => {
-  itLeaks('should allow matching commands', async () => {
+describe('command filter', async () => {
+  it('should allow matching commands', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {
@@ -45,7 +44,7 @@ describeLeaks('command filter', async () => {
     expect(result).to.equal(FilterBehavior.Allow);
   });
 
-  itLeaks('should ignore other entities', async () => {
+  it('should ignore other entities', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {
@@ -63,7 +62,7 @@ describeLeaks('command filter', async () => {
     expect(result).to.equal(FilterBehavior.Ignore);
   });
 
-  itLeaks('should drop other commands', async () => {
+  it('should drop other commands', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {
@@ -89,7 +88,7 @@ describeLeaks('command filter', async () => {
     expect(result).to.equal(FilterBehavior.Drop);
   });
 
-  itLeaks('should check command labels (#561)', async () => {
+  it('should check command labels (#561)', async () => {
     const { filter } = await createFilter({
       filters: [],
       match: {

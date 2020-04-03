@@ -11,7 +11,6 @@ import { Message } from '../../src/entity/Message';
 import { FilterBehavior } from '../../src/filter';
 import { ShellFilter, ShellFilterData } from '../../src/filter/ShellFilter';
 import { Clock } from '../../src/utils/Clock';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createChild } from '../helpers/child';
 import { createService, createServiceContainer } from '../helpers/container';
 
@@ -28,8 +27,8 @@ const TEST_CONFIG: ShellFilterData = {
 };
 const TEST_FILTER = 'test-filter';
 
-describeLeaks('shell filter', async () => {
-  itLeaks('should execute the given command', async () => {
+describe('shell filter', async () => {
+  it('should execute the given command', async () => {
     const { container } = await createServiceContainer();
     const { child, end, write } = createChild(0);
 
@@ -55,7 +54,7 @@ describeLeaks('shell filter', async () => {
     expect(write).to.have.been.calledBefore(end);
   });
 
-  itLeaks('should reject the value when command exits with error', async () => {
+  it('should reject the value when command exits with error', async () => {
     const { container } = await createServiceContainer();
     const { child } = createChild(1);
 
@@ -77,7 +76,7 @@ describeLeaks('shell filter', async () => {
     expect(result).to.equal(FilterBehavior.Drop);
   });
 
-  itLeaks('should reject the value when command writes an error', async () => {
+  it('should reject the value when command writes an error', async () => {
     const { container } = await createServiceContainer();
     const child = createChild(0, Buffer.from('this is an error'));
 
@@ -99,7 +98,7 @@ describeLeaks('shell filter', async () => {
     expect(result).to.equal(FilterBehavior.Drop);
   });
 
-  itLeaks('should gracefully handle missing stdin', async () => {
+  it('should gracefully handle missing stdin', async () => {
     const { container } = await createServiceContainer();
     const { stdout } = createChild(0);
 
@@ -136,7 +135,7 @@ describeLeaks('shell filter', async () => {
     expect(result).to.equal(FilterBehavior.Allow);
   });
 
-  itLeaks('should collect output from child', async () => {
+  it('should collect output from child', async () => {
     const { stderr, stdin } = createChild(0);
 
     const TEST_OUTPUT = 'hello world';
@@ -153,7 +152,7 @@ describeLeaks('shell filter', async () => {
     expect(result.stdout).to.equal(TEST_OUTPUT);
   });
 
-  itLeaks('should handle error events from child', async () => {
+  it('should handle error events from child', async () => {
     const { stderr, stdin, stdout } = createChild(0);
 
     const child = ineeda<ChildProcessWithoutNullStreams>({
@@ -168,7 +167,7 @@ describeLeaks('shell filter', async () => {
     return expect(waitForChild(child)).to.eventually.be.rejectedWith(ChildProcessError);
   });
 
-  itLeaks('should ignore exit status passed as error event', async () => {
+  it('should ignore exit status passed as error event', async () => {
     const { stderr, stdin, stdout } = createChild(0);
 
     const child = ineeda<ChildProcessWithoutNullStreams>({

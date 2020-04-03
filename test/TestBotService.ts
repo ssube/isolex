@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { MissingValueError } from 'noicejs';
 
 import { BotService, BotServiceData, BotServiceOptions } from '../src/BotService';
-import { describeLeaks, itLeaks } from './helpers/async';
 import { createContainer } from './helpers/container';
 
 class ConcreteBotService extends BotService<BotServiceData> {
@@ -11,13 +10,13 @@ class ConcreteBotService extends BotService<BotServiceData> {
   }
 }
 
-describeLeaks('bot service', async () => {
-  itLeaks('should check for a bot', async () => {
+describe('bot service', async () => {
+  it('should check for a bot', async () => {
     const { container } = await createContainer();
     return expect(container.create(ConcreteBotService)).to.eventually.be.rejectedWith(MissingValueError);
   });
 
-  itLeaks('should load filters');
-  itLeaks('should check filters');
-  itLeaks('should check scoped grants');
+  it('should load filters');
+  it('should check filters');
+  it('should check scoped grants');
 });

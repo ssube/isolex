@@ -7,11 +7,10 @@ import { INJECT_BOT } from '../../src/BotService';
 import { CommandController } from '../../src/controller/CommandController';
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
-describeLeaks('command controller', async () => {
-  itLeaks('should execute the next command', async () => {
+describe('command controller', async () => {
+  it('should execute the next command', async () => {
     const executeCommand = spy();
     const bot = ineeda<Bot>({
       async executeCommand() {
@@ -46,6 +45,6 @@ describeLeaks('command controller', async () => {
     expect(executeCommand).to.have.callCount(1);
   });
 
-  itLeaks('should filter out entities');
-  itLeaks('should transform command data');
+  it('should filter out entities');
+  it('should transform command data');
 });

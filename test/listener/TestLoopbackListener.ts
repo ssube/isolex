@@ -11,7 +11,6 @@ import { Message } from '../../src/entity/Message';
 import { LoopbackListener } from '../../src/listener/LoopbackListener';
 import { Service } from '../../src/Service';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_METADATA = {
@@ -24,8 +23,8 @@ const TEST_TARGET = {
   name: 'test-target',
 };
 
-describeLeaks('loopback listener', async () => {
-  itLeaks('should send messages to the bot', async () => {
+describe('loopback listener', async () => {
+  it('should send messages to the bot', async () => {
     const { container, services } = await createServiceContainer();
 
     const svc = ineeda<Service>(TEST_TARGET);
@@ -81,7 +80,7 @@ describeLeaks('loopback listener', async () => {
         .and(match.has('type', msgOptions.type)));
   });
 
-  itLeaks('should throw when fetching messages', async () => {
+  it('should throw when fetching messages', async () => {
     const { container, services } = await createServiceContainer();
 
     const svc = ineeda<Service>(TEST_TARGET);
@@ -110,7 +109,7 @@ describeLeaks('loopback listener', async () => {
     })).to.eventually.be.rejectedWith(NotImplementedError);
   });
 
-  itLeaks('should throw when creating sessions', async () => {
+  it('should throw when creating sessions', async () => {
     const { container, services } = await createServiceContainer();
 
     const svc = ineeda<Service>(TEST_TARGET);
@@ -137,7 +136,7 @@ describeLeaks('loopback listener', async () => {
     await expect(listener.createSession('test', ineeda<User>())).to.eventually.be.rejectedWith(NotImplementedError);
   });
 
-  itLeaks('should not provide sessions', async () => {
+  it('should not provide sessions', async () => {
     const { container, services } = await createServiceContainer();
 
     const svc = ineeda<Service>(TEST_TARGET);

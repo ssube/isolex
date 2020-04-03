@@ -5,13 +5,12 @@ import { JsonWebTokenError } from 'jsonwebtoken';
 
 import { Token, TokenOptions } from '../../../src/entity/auth/Token';
 import { User } from '../../../src/entity/auth/User';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
 const TEST_SECRET = 'test-secret';
 const TEST_BACKDATE = 1_000;
 
-describeLeaks('token entity', async () => {
-  itLeaks('should copy options', async () => {
+describe('token entity', async () => {
+  it('should copy options', async () => {
     const testProps = {
       audience: ['test'],
       expiresAt: new Date(),
@@ -28,7 +27,7 @@ describeLeaks('token entity', async () => {
     expect(token).to.deep.include(testProps);
   });
 
-  itLeaks('should sign tokens', async () => {
+  it('should sign tokens', async () => {
     const token = new Token({
       audience: ['test'],
       createdAt: new Date(),
@@ -44,7 +43,7 @@ describeLeaks('token entity', async () => {
     expect(signed).to.match(/[-_a-zA-Z0-9]+\.[-_a-zA-Z0-9]+\.[-_a-zA-Z0-9]+/);
   });
 
-  itLeaks('should convert itself to json', async () => {
+  it('should convert itself to json', async () => {
     const token = new Token({
       audience: ['test'],
       createdAt: new Date(),
@@ -61,7 +60,7 @@ describeLeaks('token entity', async () => {
     expect(json).to.have.property('subject');
   });
 
-  itLeaks('should check grants', async () => {
+  it('should check grants', async () => {
     const token = new Token({
       audience: ['test'],
       createdAt: new Date(),
@@ -76,7 +75,7 @@ describeLeaks('token entity', async () => {
     expect(token.checkGrants(['test:foo'])).to.equal(true);
   });
 
-  itLeaks('should issue sessions with a user', async () => {
+  it('should issue sessions with a user', async () => {
     const user = ineeda<User>();
     const token = new Token({
       audience: [],
@@ -92,7 +91,7 @@ describeLeaks('token entity', async () => {
     expect(session.user).to.equal(user);
   });
 
-  itLeaks('should not issue sessions without a user', async () => {
+  it('should not issue sessions without a user', async () => {
     const token = new Token({
       audience: [],
       data: {},

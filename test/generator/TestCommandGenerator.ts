@@ -8,13 +8,12 @@ import { CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
 import { CommandGenerator } from '../../src/generator/CommandGenerator';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_SVC = 'some-service';
 
-describeLeaks('command generator', async () => {
-  itLeaks('should notify target services', async () => {
+describe('command generator', async () => {
+  it('should notify target services', async () => {
     const { container } = await createServiceContainer();
     const executeCommand = spy();
     const interval = await createService(container, CommandGenerator, {

@@ -2,7 +2,6 @@ import { expect } from 'chai';
 
 import { BaseCommand } from '../../../src/entity/base/BaseCommand';
 import { CommandVerb } from '../../../src/entity/Command';
-import { describeLeaks, itLeaks } from '../../helpers/async';
 
 class TestCommand extends BaseCommand {
   public toJSON(): object {
@@ -11,8 +10,8 @@ class TestCommand extends BaseCommand {
 }
 
 // tslint:disable:no-identical-functions
-describeLeaks('base command', async () => {
-  itLeaks('should get head from each key', async () => {
+describe('base command', async () => {
+  it('should get head from each key', async () => {
     const cmd = new TestCommand({
       data: {
         foo: ['1', '2'],
@@ -24,7 +23,7 @@ describeLeaks('base command', async () => {
     expect(cmd.getHead('foo')).to.equal('1');
   });
 
-  itLeaks('should convert head to a number', async () => {
+  it('should convert head to a number', async () => {
     const cmd = new TestCommand({
       data: {
         foo: ['1', '2'],
@@ -36,7 +35,7 @@ describeLeaks('base command', async () => {
     expect(cmd.getNumber('foo')).to.equal(1);
   });
 
-  itLeaks('should get a default value when key is missing', async () => {
+  it('should get a default value when key is missing', async () => {
     const cmd = new TestCommand({
       data: {
         foo: ['1', '2'],
@@ -48,7 +47,7 @@ describeLeaks('base command', async () => {
     expect(cmd.getHeadOrDefault('bar', '3')).to.equal('3');
   });
 
-  itLeaks('should get a default number when key is missing', async () => {
+  it('should get a default number when key is missing', async () => {
     const cmd = new TestCommand({
       data: {
         foo: ['1', '2'],
@@ -60,7 +59,7 @@ describeLeaks('base command', async () => {
     expect(cmd.getHeadOrNumber('bar', 3)).to.equal(3);
   });
 
-  itLeaks('should get a number when key exists', async () => {
+  it('should get a number when key exists', async () => {
     const cmd = new TestCommand({
       data: {
         foo: ['1', '2'],
@@ -72,7 +71,7 @@ describeLeaks('base command', async () => {
     expect(cmd.getHeadOrNumber('foo', 3)).to.equal(1);
   });
 
-  itLeaks('should get a default number when value is NaN', async () => {
+  it('should get a default number when value is NaN', async () => {
     const cmd = new TestCommand({
       data: {
         foo: ['definitely not a number', 'also not a number'],

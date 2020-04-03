@@ -6,7 +6,6 @@ import { spy } from 'sinon';
 
 import { ServiceModule } from '../../src/module/ServiceModule';
 import { Service, ServiceEvent } from '../../src/Service';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer, createServiceContainer } from '../helpers/container';
 
 const TEST_SERVICE_NAME = 'test-service';
@@ -36,8 +35,8 @@ async function createModule() {
 }
 
 /* eslint-disable @typescript-eslint/unbound-method */
-describeLeaks('DI modules', async () => {
-  describeLeaks('service module', async () => {
+describe('DI modules', async () => {
+  describe('service module', async () => {
     it('should notify child services of events', async () => {
       const { module, svc } = await createModule();
       const notify = svc.notify = spy();
@@ -64,21 +63,21 @@ describeLeaks('DI modules', async () => {
       await defer(50);
     });
 
-    itLeaks('should create and save child services', async () => {
+    it('should create and save child services', async () => {
       const { metadata, module, svc } = await createModule();
       const next = module.getService(metadata);
 
       expect(svc).to.equal(next);
     });
 
-    itLeaks('should list created services', async () => {
+    it('should list created services', async () => {
       const { metadata, module } = await createModule();
       const tag = `${metadata.kind}:${metadata.name}`;
       const existing = module.listServices();
       expect(existing.has(tag)).to.equal(true);
     });
 
-    itLeaks('should warn when adding duplicate services', async () => {
+    it('should warn when adding duplicate services', async () => {
       const { services } = await createServiceContainer();
 
       const warn = spy();

@@ -2,12 +2,11 @@ import { expect } from 'chai';
 
 import { Message } from '../../src/entity/Message';
 import { TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
 const TEST_BODY = 'test body';
 
-describeLeaks('message entity', async () => {
-  itLeaks('should convert itself to JSON', async () => {
+describe('message entity', async () => {
+  it('should convert itself to JSON', async () => {
     const msg = new Message({
       body: TEST_BODY,
       labels: {},

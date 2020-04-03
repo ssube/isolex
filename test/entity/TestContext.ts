@@ -9,10 +9,9 @@ import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
 import { Context, redirectService, redirectServiceRoute } from '../../src/entity/Context';
 import { Listener } from '../../src/listener';
 import { ServiceModule } from '../../src/module/ServiceModule';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeLeaks('context entity', async () => {
-  itLeaks('should allow matching permissions', async () => {
+describe('context entity', async () => {
+  it('should allow matching permissions', async () => {
     const grants = ['foo:bar', 'if:else,elif:end'];
     const context = new Context({
       channel: {
@@ -40,7 +39,7 @@ describeLeaks('context entity', async () => {
     ])).to.equal(true);
   });
 
-  itLeaks('should deny missing permissions', async () => {
+  it('should deny missing permissions', async () => {
     const grants = ['foo:bin', 'if:else,elif:end'];
     const context = new Context({
       channel: {
@@ -68,7 +67,7 @@ describeLeaks('context entity', async () => {
     ]), 'if:if:end grant').to.equal(false);
   });
 
-  itLeaks('should get grants from every role', async () => {
+  it('should get grants from every role', async () => {
     const context = new Context({
       channel: {
         id: '',
@@ -93,7 +92,7 @@ describeLeaks('context entity', async () => {
     expect(context.getGrants()).to.deep.equal(['a', 'b', 'c']);
   });
 
-  itLeaks('should get grants when there are no roles', async () => {
+  it('should get grants when there are no roles', async () => {
     const context = new Context({
       channel: {
         id: '',
@@ -112,7 +111,7 @@ describeLeaks('context entity', async () => {
     expect(context.getGrants()).to.deep.equal([]);
   });
 
-  itLeaks('should get user id when a user exists', async () => {
+  it('should get user id when a user exists', async () => {
     const user = new User({
       locale: LOCALE_DEFAULT,
       name: 'user',
@@ -131,7 +130,7 @@ describeLeaks('context entity', async () => {
     expect(context.getUserId()).to.equal('user');
   });
 
-  itLeaks('should get uid when no user exists', async () => {
+  it('should get uid when no user exists', async () => {
     const context = new Context({
       channel: {
         id: '',
@@ -143,7 +142,7 @@ describeLeaks('context entity', async () => {
     expect(context.getUserId()).to.equal('uid');
   });
 
-  itLeaks('should get roles when no user exists', async () => {
+  it('should get roles when no user exists', async () => {
     const context = new Context({
       channel: {
         id: '',
@@ -155,7 +154,7 @@ describeLeaks('context entity', async () => {
     expect(context.getGrants()).to.deep.equal([]);
   });
 
-  itLeaks('should convert itself to JSON', async () => {
+  it('should convert itself to JSON', async () => {
     const context = new Context({
       channel: {
         id: '',
@@ -171,7 +170,7 @@ describeLeaks('context entity', async () => {
     expect(json).to.have.property('uid');
   });
 
-  itLeaks('should not permit grants when the token rejects them', async () => {
+  it('should not permit grants when the token rejects them', async () => {
     const context = new Context({
       channel: {
         id: '',
@@ -197,9 +196,9 @@ const TARGET_SERVICE = {
   name: 'test-target',
 };
 
-describeLeaks('redirect helpers', async () => {
-  describeLeaks('redirect route', async () => {
-    itLeaks('should return the original source when source is set', async () => {
+describe('redirect helpers', async () => {
+  describe('redirect route', async () => {
+    it('should return the original source when source is set', async () => {
       const original = ineeda<Context>({
         source: ineeda<Listener>(),
         target: ineeda<Listener>(),
@@ -212,7 +211,7 @@ describeLeaks('redirect helpers', async () => {
       expect(redirectServiceRoute(original, route, sm)).to.equal(original.source);
     });
 
-    itLeaks('should return the original target when target is set', async () => {
+    it('should return the original target when target is set', async () => {
       const original = ineeda<Context>({
         source: ineeda<Listener>(),
         target: ineeda<Listener>(),
@@ -225,15 +224,15 @@ describeLeaks('redirect helpers', async () => {
       expect(redirectServiceRoute(original, route, sm)).to.equal(original.target);
     });
 
-    itLeaks('should look up a service when service is set');
+    it('should look up a service when service is set');
 
-    itLeaks('should return undefined when nothing is set', async () => {
+    it('should return undefined when nothing is set', async () => {
       expect(redirectServiceRoute(ineeda<Context>(), {}, ineeda<ServiceModule>())).to.equal(undefined);
     });
   });
 
-  describeLeaks('redirect service', async () => {
-    itLeaks('should return forced listener', async () => {
+  describe('redirect service', async () => {
+    it('should return forced listener', async () => {
       const original = new Context({
         channel: {
           id: '',
@@ -255,7 +254,7 @@ describeLeaks('redirect helpers', async () => {
       }, ineeda<ServiceModule>(), 'source')).to.equal(original.target);
     });
 
-    itLeaks('should return original listener', async () => {
+    it('should return original listener', async () => {
       const original = new Context({
         channel: {
           id: '',
@@ -272,7 +271,7 @@ describeLeaks('redirect helpers', async () => {
       }, ineeda<ServiceModule>(), 'source')).to.equal(original.source);
     });
 
-    itLeaks('should return default listener', async () => {
+    it('should return default listener', async () => {
       const source = ineeda<Listener>();
       const target = ineeda<Listener>();
       const original = new Context({
@@ -296,7 +295,7 @@ describeLeaks('redirect helpers', async () => {
       }), 'source')).to.equal(target);
     });
 
-    itLeaks('should throw when no listener is available', async () => {
+    it('should throw when no listener is available', async () => {
       const original = new Context({
         channel: {
           id: '',

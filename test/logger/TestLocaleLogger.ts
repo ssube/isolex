@@ -4,14 +4,13 @@ import { spy } from 'sinon';
 
 import { INJECT_LOGGER } from '../../src/BaseService';
 import { LocaleLogger } from '../../src/logger/LocaleLogger';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createContainer } from '../helpers/container';
 
 /* tslint:disable:no-unbound-method */
 const LOG_ARGS = ['test'];
 
-describeLeaks('locale logger', async () => {
-  itLeaks('should forward error messages', async () => {
+describe('locale logger', async () => {
+  it('should forward error messages', async () => {
     const { container, module } = await createContainer();
     const error = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({
@@ -23,7 +22,7 @@ describeLeaks('locale logger', async () => {
     expect(error).to.have.callCount(1);
   });
 
-  itLeaks('should forward debug messages', async () => {
+  it('should forward debug messages', async () => {
     const { container, module } = await createContainer();
     const debug = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({
@@ -35,7 +34,7 @@ describeLeaks('locale logger', async () => {
     expect(debug).to.have.callCount(1);
   });
 
-  itLeaks('should forward warn messages', async () => {
+  it('should forward warn messages', async () => {
     const { container, module } = await createContainer();
     const warn = spy();
     module.bind(INJECT_LOGGER).toInstance(spyLogger({

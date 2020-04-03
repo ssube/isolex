@@ -3,14 +3,13 @@ import { expect } from 'chai';
 
 import { BotData } from '../../src/Bot';
 import { loadModules } from '../../src/module';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
-describeLeaks('main module helper', async () => {
-  itLeaks('should instatiate preset modules');
-  itLeaks('should append passed modules');
+describe('main module helper', async () => {
+  it('should instatiate preset modules');
+  it('should append passed modules');
 });
 
-describeLeaks('load plugin module helper', async () => {
+describe('load plugin module helper', async () => {
   xit('should load a plugin module', async () => {
     const data = {
       modules: [{
@@ -28,7 +27,7 @@ describeLeaks('load plugin module helper', async () => {
     expect(modules.length).to.equal(1);
   });
 
-  itLeaks('should handle errors while loading plugin modules', async () => {
+  it('should handle errors while loading plugin modules', async () => {
     const data = {
       modules: [{
         export: 'default',

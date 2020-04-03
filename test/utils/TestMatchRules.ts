@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 import { MatchRule, MatchRules, RuleOperator } from '../../src/utils/MatchRules';
-import { describeLeaks, itLeaks } from '../helpers/async';
 
 function createMatch(rule: Partial<MatchRule>): MatchRules {
   return new MatchRules({
@@ -14,9 +13,9 @@ function createMatch(rule: Partial<MatchRule>): MatchRules {
   });
 }
 
-describeLeaks('match utility', async () => {
-  describeLeaks('every operator', async () => {
-    itLeaks('should match a single string to itself', async () => {
+describe('match utility', async () => {
+  describe('every operator', async () => {
+    it('should match a single string to itself', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }],
@@ -27,7 +26,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(true);
     });
 
-    itLeaks('should reject a one:many match', async () => {
+    it('should reject a one:many match', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
@@ -38,7 +37,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(false);
     });
 
-    itLeaks('should reject a single string when negated', async () => {
+    it('should reject a single string when negated', async () => {
       const match = createMatch({
         negate: true,
         operator: RuleOperator.Every,
@@ -55,8 +54,8 @@ describeLeaks('match utility', async () => {
     });
   });
 
-  describeLeaks('type checks', async () => {
-    itLeaks('should reject a single string', async () => {
+  describe('type checks', async () => {
+    it('should reject a single string', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
@@ -65,7 +64,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(false);
     });
 
-    itLeaks('should reject matched values that are not strings', async () => {
+    it('should reject matched values that are not strings', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'foo' }],
@@ -77,7 +76,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(false);
     });
 
-    itLeaks('should match string values', async () => {
+    it('should match string values', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'foo' }],
@@ -87,7 +86,7 @@ describeLeaks('match utility', async () => {
       }, 'bar')).to.equal(true);
     });
 
-    itLeaks('should match regexp values', async () => {
+    it('should match regexp values', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'foo' }],
@@ -97,7 +96,7 @@ describeLeaks('match utility', async () => {
       }, 'bar')).to.equal(true);
     });
 
-    itLeaks('should reject unmatched values', async () => {
+    it('should reject unmatched values', async () => {
       const match = createMatch({
         operator: RuleOperator.Every,
         values: [{ string: 'bar' }, { string: 'foo' }],
@@ -109,8 +108,8 @@ describeLeaks('match utility', async () => {
     });
   });
 
-  describeLeaks('any operator', async () => {
-    itLeaks('should match a single string to itself', async () => {
+  describe('any operator', async () => {
+    it('should match a single string to itself', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
         values: [{ string: 'bar' }],
@@ -121,7 +120,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(true);
     });
 
-    itLeaks('should match a single string to many', async () => {
+    it('should match a single string to many', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
         values: [{ string: 'bar' }, { string: 'bin' }, { string: 'baz' }],
@@ -132,7 +131,7 @@ describeLeaks('match utility', async () => {
       expect(results.matched).to.equal(true);
     });
 
-    itLeaks('should match a single string to any when negated', async () => {
+    it('should match a single string to any when negated', async () => {
       const match = createMatch({
         negate: true,
         operator: RuleOperator.Any,
@@ -149,8 +148,8 @@ describeLeaks('match utility', async () => {
     });
   });
 
-  describeLeaks('match removal', async () => {
-    itLeaks('should remove string matches', async () => {
+  describe('match removal', async () => {
+    it('should remove string matches', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
         values: [{ string: 'bar' }],
@@ -160,7 +159,7 @@ describeLeaks('match utility', async () => {
       expect(removed).to.equal('foo  bin');
     });
 
-    itLeaks('should remove multiple string matches', async () => {
+    it('should remove multiple string matches', async () => {
       const match = new MatchRules({
         rules: [{
           key: 'foo',
@@ -183,7 +182,7 @@ describeLeaks('match utility', async () => {
       expect(removed).to.equal('foo  ');
     });
 
-    itLeaks('should remove regexp matches', async () => {
+    it('should remove regexp matches', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
         values: [{ regexp: /\b\d{2,4}\b/g }],
@@ -193,7 +192,7 @@ describeLeaks('match utility', async () => {
       expect(removed).to.equal('1    12345');
     });
 
-    itLeaks('should only remove matches', async () => {
+    it('should only remove matches', async () => {
       const match = createMatch({
         operator: RuleOperator.Any,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

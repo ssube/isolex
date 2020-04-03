@@ -12,7 +12,6 @@ import { MimeTypeError } from '../../src/error/MimeTypeError';
 import { ArgsParser } from '../../src/parser/ArgsParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
-import { describeLeaks, itLeaks } from '../helpers/async';
 import { createService, createServiceContainer } from '../helpers/container';
 
 const TEST_CONFIG = {
@@ -49,8 +48,8 @@ const TEST_STORAGE = ineeda<Storage>({
   },
 });
 
-describeLeaks('args parser', async () => {
-  itLeaks('should parse a message body', async () => {
+describe('args parser', async () => {
+  it('should parse a message body', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       data: TEST_CONFIG,
@@ -70,7 +69,7 @@ describeLeaks('args parser', async () => {
     });
   });
 
-  itLeaks('should prompt to complete missing fields', async () => {
+  it('should prompt to complete missing fields', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -99,7 +98,7 @@ describeLeaks('args parser', async () => {
     expect(cmd.getHead('foo')).to.equal('1');
   });
 
-  itLeaks('should complete a fragment', async () => {
+  it('should complete a fragment', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
@@ -133,7 +132,7 @@ describeLeaks('args parser', async () => {
     expect(cmd.getHead('bar')).to.equal('2');
   });
 
-  itLeaks('should reject messages with other types', async () => {
+  it('should reject messages with other types', async () => {
     const { container } = await createServiceContainer();
     const svc = await createService(container, ArgsParser, {
       [INJECT_STORAGE]: TEST_STORAGE,
