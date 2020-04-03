@@ -1,10 +1,14 @@
 import { NotFoundError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 import { Token, TokenOptions } from '../../../src/entity/auth/Token';
 import { User } from '../../../src/entity/auth/User';
 import { describeLeaks, itLeaks } from '../../helpers/async';
+
+const TEST_SECRET = 'test-secret';
+const TEST_BACKDATE = 1_000;
 
 describeLeaks('token entity', async () => {
   itLeaks('should copy options', async () => {
@@ -99,5 +103,41 @@ describeLeaks('token entity', async () => {
       subject: '',
     });
     expect(() => token.session()).to.throw(NotFoundError);
+  });
+});
+
+describe('verify token static method', async () => {
+  it('should verify complete tokens', async () => {
+    const token = new Token({
+      audience: ['test'],
+      data: {},
+      expiresAt: new Date(Date.now() + TEST_BACKDATE),
+      grants: [],
+      issuer: 'test',
+      labels: {},
+      subject: 'test',
+    });
+    token.id = 'test';
+    const jwt = token.sign(TEST_SECRET);
+
+    expect(Token.verify(jwt, TEST_SECRET, {})).to.deep.include({
+      iss: 'test',
+    });
+  });
+
+  it('should reject expired tokens', async () => {
+    const token = new Token({
+      audience: ['test'],
+      data: {},
+      expiresAt: new Date(Date.now() - TEST_BACKDATE),
+      grants: [],
+      issuer: 'test',
+      labels: {},
+      subject: 'test',
+    });
+    token.id = 'test';
+    const jwt = token.sign(TEST_SECRET);
+
+    expect(() => Token.verify(jwt, TEST_SECRET, {})).to.throw(JsonWebTokenError);
   });
 });
