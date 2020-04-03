@@ -21,7 +21,7 @@ describeLeaks('request factory', async () => {
     expect(r).to.have.callCount(1);
   });
 
-  itLeaks('should default to network requests', async () => {
+  xit('should default to network requests', async () => {
     const { container } = await createContainer();
     const rf = await container.create(RequestFactory, {});
 
