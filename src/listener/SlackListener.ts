@@ -14,6 +14,8 @@ import { createServiceCounter, incrementServiceCounter, StringCounter } from '..
 import { TYPE_TEXT } from '../utils/Mime';
 import { SessionListener } from './SessionListener';
 
+export const INJECT_SLACK_LOGGER = Symbol('inject-slack-logger');
+
 export interface SlackListenerData extends ListenerData {
   fetch: {
     window: number;
@@ -22,6 +24,10 @@ export interface SlackListenerData extends ListenerData {
     bot: string;
     web: string;
   };
+}
+
+export interface SlackListenerOptions extends BotServiceOptions<SlackListenerData> {
+  [INJECT_SLACK_LOGGER]?: SlackLogger;
 }
 
 export interface SlackReaction {
@@ -48,18 +54,24 @@ export interface SlackSearchResults extends WebAPICallResult {
   messages: Array<SlackMessage>;
 }
 
-@Inject(INJECT_CLOCK, INJECT_METRICS)
+@Inject(INJECT_CLOCK, INJECT_METRICS, {
+  contract: SlackLogger,
+  name: INJECT_SLACK_LOGGER,
+})
 export class SlackListener extends SessionListener<SlackListenerData> implements Listener {
   protected readonly container: Container;
   protected readonly onCounter: StringCounter;
   protected readonly sendCounter: StringCounter;
+  protected readonly slackLogger: SlackLogger;
   protected rtmClient?: RTMClient;
   protected webClient?: WebClient;
 
-  constructor(options: BotServiceOptions<SlackListenerData>) {
+  constructor(options: SlackListenerOptions) {
     super(options, 'isolex#/definitions/service-listener-slack');
 
     this.container = options.container;
+    this.slackLogger = mustExist(options[INJECT_SLACK_LOGGER]);
+
     const metrics = mustExist(options[INJECT_METRICS]);
     this.onCounter = createServiceCounter(metrics, {
       help: 'events received from slack client',
@@ -108,9 +120,8 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
   public async start() {
     await super.start();
 
-    const logger = await this.container.create(SlackLogger);
-    this.rtmClient = new RTMClient(this.data.token.bot, { logger });
-    this.webClient = new WebClient(this.data.token.web, { logger });
+    this.rtmClient = new RTMClient(this.data.token.bot, { logger: this.slackLogger });
+    this.webClient = new WebClient(this.data.token.web, { logger: this.slackLogger });
 
     this.rtmClient.on('message', (msg) => {
       this.countEvent('message');
