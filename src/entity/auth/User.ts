@@ -81,7 +81,7 @@ export class User extends BaseEntity implements UserOptions {
 
   @BeforeInsert()
   @BeforeUpdate()
-  protected syncRoles() {
+  public syncRoles() {
     this.roleNames = this.roles.map((it) => it.name);
   }
 }

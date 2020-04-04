@@ -82,4 +82,12 @@ describe('base data entity', async () => {
     });
     expect(entity.getOrDefault('bar', 'default')).to.equal('default');
   });
+
+  it('should serialize to a string', async () => {
+    const entity = new TestEntity({
+      data: {},
+      labels: {},
+    });
+    expect(entity.toString()).to.equal('{}');
+  });
 });
