@@ -20,7 +20,7 @@ describe('storage service', async () => {
       data: {
         migrate: false,
         orm: {
-          database: 'out/test.db',
+          database: './out/test.db',
           type: 'sqlite',
         },
       },
@@ -37,7 +37,7 @@ describe('storage service', async () => {
       data: {
         migrate: false,
         orm: {
-          database: 'test.db',
+          database: './out/test.db',
           type: 'sqlite',
         },
       },

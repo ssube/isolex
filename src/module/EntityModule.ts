@@ -11,12 +11,14 @@ import { Counter } from '../entity/misc/Counter';
 import { Keyword } from '../entity/misc/Keyword';
 import { Tick } from '../entity/Tick';
 
+export const INJECT_ENTITIES = Symbol('inject-entities');
+
 export class EntityModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
     await super.configure(options);
   }
 
-  @Provides('entities')
+  @Provides(INJECT_ENTITIES)
   public async createEntities(): Promise<Array<Function>> {
     return [
       Command,

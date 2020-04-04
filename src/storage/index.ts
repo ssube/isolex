@@ -5,7 +5,11 @@ import { Connection, ConnectionOptions, createConnection, Repository } from 'typ
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
 import { BaseEntity } from '../entity/base/BaseEntity';
 import { StorageLogger } from '../logger/StorageLogger';
+import { INJECT_ENTITIES } from '../module/EntityModule';
+import { INJECT_MIGRATIONS } from '../module/MigrationModule';
 import { ServiceLifecycle } from '../Service';
+
+export const INJECT_STORAGE_LOGGER = Symbol('inject-storage-logger');
 
 export interface StorageData extends BaseServiceData {
   migrate: boolean;
@@ -14,8 +18,9 @@ export interface StorageData extends BaseServiceData {
 
 export interface StorageOptions extends BaseServiceOptions<StorageData> {
   data: StorageData;
-  entities: Array<Function>;
-  migrations: Array<Function>;
+  [INJECT_ENTITIES]?: Array<Function>;
+  [INJECT_MIGRATIONS]?: Array<Function>;
+  [INJECT_STORAGE_LOGGER]?: StorageLogger;
 }
 
 /**
@@ -25,32 +30,35 @@ export interface StorageOptions extends BaseServiceOptions<StorageData> {
 /* eslint-disable-next-line @typescript-eslint/type-annotation-spacing */
 export type EntityBase<T> = Function | (new () => T);
 
-@Inject('entities', 'migrations')
+@Inject(INJECT_ENTITIES, INJECT_MIGRATIONS, {
+  contract: StorageLogger,
+  name: INJECT_STORAGE_LOGGER,
+})
 export class Storage extends BaseService<StorageData> implements ServiceLifecycle {
   protected connection?: Connection;
   protected container: Container;
   protected entities: Array<Function>;
   protected migrations: Array<Function>;
+  protected storageLogger: StorageLogger;
 
   constructor(options: StorageOptions) {
     super(options, 'isolex#/definitions/service-storage');
 
     this.container = options.container;
-    this.entities = options.entities;
-    this.migrations = options.migrations;
+    this.entities = mustExist(options[INJECT_ENTITIES]);
+    this.migrations = mustExist(options[INJECT_MIGRATIONS]);
+    this.storageLogger = mustExist(options[INJECT_STORAGE_LOGGER]);
   }
 
   public async start(): Promise<void> {
     this.logger.debug(this.data, 'starting storage');
-    const storageLogger = await this.container.create(StorageLogger);
-
     this.logger.info('connecting to storage');
 
     try {
       this.connection = await createConnection({
         ...this.data.orm,
         entities: this.entities,
-        logger: storageLogger,
+        logger: this.storageLogger,
         migrations: this.migrations,
       });
 

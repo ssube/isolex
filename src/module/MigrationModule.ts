@@ -15,11 +15,13 @@ import { Dates0001546236755 } from '../migration/0001546236755-Dates';
 import { FragmentUser0001546283532 } from '../migration/0001546283532-FragmentUser';
 import { UserLocale0001548049058 } from '../migration/0001548049058-UserLocale';
 
+export const INJECT_MIGRATIONS = Symbol('inject-migrations');
+
 export class MigrationModule extends Module {
   public async configure(options: ModuleOptions): Promise<void> {
     await super.configure(options);
 
-    this.bind('migrations').toInstance([
+    this.bind(INJECT_MIGRATIONS).toInstance([
       CreateContext0001544311178,
       CreateCommand0001544311565,
       CreateMessage0001544311687,
