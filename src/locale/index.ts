@@ -1,11 +1,13 @@
 import { mustExist } from '@apextoaster/js-utils';
 import i18n, { ResourceLanguage, TFunction, TOptions } from 'i18next';
-import { Container } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
 import { LocaleLogger } from '../logger/LocaleLogger';
 import { ServiceLifecycle } from '../Service';
 import * as LOCALE_GLOBAL from './en.yml';
+
+export const INJECT_LOCALE_LOGGER = Symbol('inject-locale-logger');
 
 export interface LocaleData extends BaseServiceData {
   lang: string;
@@ -13,13 +15,19 @@ export interface LocaleData extends BaseServiceData {
 
 export interface LocaleOptions extends BaseServiceOptions<LocaleData> {
   data: LocaleData;
+  [INJECT_LOCALE_LOGGER]?: LocaleLogger;
 }
 
 export type TranslateOptions = TOptions;
 
+@Inject({
+  contract: LocaleLogger,
+  name: INJECT_LOCALE_LOGGER,
+})
 export class Locale extends BaseService<LocaleData> implements ServiceLifecycle {
   protected readonly container: Container;
   protected readonly data: LocaleData;
+  protected readonly localeLogger: LocaleLogger;
 
   protected translator?: TFunction;
 
@@ -28,11 +36,11 @@ export class Locale extends BaseService<LocaleData> implements ServiceLifecycle 
 
     this.container = options.container;
     this.data = options.data;
+    this.localeLogger = mustExist(options[INJECT_LOCALE_LOGGER]);
   }
 
   public async start() {
-    const logger = await this.container.create(LocaleLogger);
-    this.translator = await i18n.use(logger).init({
+    this.translator = await i18n.use(this.localeLogger).init({
       debug: true,
       lng: this.data.lang,
       resources: {
