@@ -5,7 +5,7 @@ import passport from 'passport';
 import { match, spy } from 'sinon';
 
 import { EndpointData, Handler } from '../../src/endpoint';
-import { BaseEndpoint, BaseEndpointOptions } from '../../src/endpoint/BaseEndpoint';
+import { BaseEndpoint, BaseEndpointOptions, registerHandlers } from '../../src/endpoint/BaseEndpoint';
 import { CommandVerb } from '../../src/entity/Command';
 import { createService, createServiceContainer } from '../helpers/container';
 
@@ -69,5 +69,36 @@ describe('base endpoint', async () => {
       passport: ineeda<passport.Authenticator>(),
     });
     expect(router).to.be.an.instanceOf(Function);
+  });
+});
+
+describe('register handler helper', async () => {
+  describe('register each verb', async () => {
+    const VERBS: Array<[CommandVerb, string]> = [
+      [CommandVerb.Create, 'post'],
+      [CommandVerb.Delete, 'delete'],
+      [CommandVerb.Get, 'get'],
+      [CommandVerb.Help, 'options'],
+      [CommandVerb.List, 'head'],
+      [CommandVerb.Update, 'put'],
+    ];
+
+    for (const [verb, method] of VERBS) {
+      it(`should bind ${verb} to ${method}`, async () => {
+        const register = spy();
+        const router = ineeda<Router>({
+          [method]: register,
+        });
+        const handler = spy();
+        const result = registerHandlers(router, {
+          grants: [],
+          path: '/',
+          verb,
+        }, [
+          handler,
+        ]);
+        expect(register).to.have.callCount(1);
+      });
+    }
   });
 });

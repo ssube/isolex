@@ -129,7 +129,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
   }
 }
 
-function registerHandlers(router: Router, metadata: HandlerMetadata, handlers: Array<RequestHandler>): Router {
+export function registerHandlers(router: Router, metadata: HandlerMetadata, handlers: Array<RequestHandler>): Router {
   switch (metadata.verb) {
     case CommandVerb.Create:
       return router.post(metadata.path, ...handlers);
