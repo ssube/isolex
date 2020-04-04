@@ -1,5 +1,5 @@
 import { mustExist } from '@apextoaster/js-utils';
-import { BaseOptions, Container } from 'noicejs';
+import { Container, Inject } from 'noicejs';
 import { Connection, ConnectionOptions, createConnection, Repository } from 'typeorm';
 
 import { BaseService, BaseServiceData, BaseServiceOptions } from '../BaseService';
@@ -14,6 +14,8 @@ export interface StorageData extends BaseServiceData {
 
 export interface StorageOptions extends BaseServiceOptions<StorageData> {
   data: StorageData;
+  entities: Array<Function>;
+  migrations: Array<Function>;
 }
 
 /**
@@ -23,30 +25,33 @@ export interface StorageOptions extends BaseServiceOptions<StorageData> {
 /* eslint-disable-next-line @typescript-eslint/type-annotation-spacing */
 export type EntityBase<T> = Function | (new () => T);
 
+@Inject('entities', 'migrations')
 export class Storage extends BaseService<StorageData> implements ServiceLifecycle {
   protected connection?: Connection;
   protected container: Container;
+  protected entities: Array<Function>;
+  protected migrations: Array<Function>;
 
   constructor(options: StorageOptions) {
     super(options, 'isolex#/definitions/service-storage');
 
     this.container = options.container;
+    this.entities = options.entities;
+    this.migrations = options.migrations;
   }
 
   public async start(): Promise<void> {
     this.logger.debug(this.data, 'starting storage');
     const storageLogger = await this.container.create(StorageLogger);
-    const entities = await this.container.create<Array<Function>, BaseOptions>('entities');
-    const migrations = await this.container.create<Array<Function>, BaseOptions>('migrations');
 
     this.logger.info('connecting to storage');
 
     try {
       this.connection = await createConnection({
         ...this.data.orm,
-        entities,
+        entities: this.entities,
         logger: storageLogger,
-        migrations,
+        migrations: this.migrations,
       });
 
       if (this.data.migrate) {
