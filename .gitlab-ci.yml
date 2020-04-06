@@ -33,43 +33,19 @@ build-node:
       - out/cache
       - out/tmp
 
-build-image-alpine-branch:
+build-image-alpine:
   extends:
     - .build-docker
   stage: image
-  except:
-    - tags
   script:
     - ./scripts/docker-build.sh --push --default
   variables:
     IMAGE_ARCH: alpine
 
-build-image-alpine-tag:
-  extends:
-    - .build-docker
-  stage: image
-  only:
-    - tags
-  script:
-    - ./scripts/docker-build.sh --push --default
-  variables:
-    IMAGE_ARCH: alpine
-
-build-image-stretch-branch:
+build-image-stretch:
   stage: image
   extends: [.build-docker]
   except:
-    - tags
-  script:
-    - ./scripts/docker-build.sh --push
-  variables:
-    IMAGE_ARCH: stretch
-
-build-image-stretch-tag:
-  stage: image
-  extends:
-    - .build-docker
-  only:
     - tags
   script:
     - ./scripts/docker-build.sh --push
@@ -150,9 +126,9 @@ sonar-success:
   script:
     - make node_modules
     - sonar-scanner
-        -Dsonar.projectKey=ssube_isolex
+        -Dsonar.projectKey=${CI_PROJECT_NAMESPACE}_${CI_PROJECT_NAME}
         -Dsonar.projectVersion=${CI_COMMIT_REF_SLUG}
-        -Dsonar.organization=ssube-github
+        -Dsonar.organization=${CI_PROJECT_NAMESPACE}-github
         -Dsonar.sources=src/,test/
         -Dsonar.host.url=https://sonarcloud.io
         -Dsonar.login=${SONAR_SECRET}
