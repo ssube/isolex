@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.10.2](https://github.com/ssube/isolex/compare/v0.10.1...v0.10.2) (2020-04-17)
+
+
+### Features
+
+* switch utils to js-utils ([58c0680](https://github.com/ssube/isolex/commit/58c0680c338c1b14c001e9869c3bf903616be89b))
+
+
+### Bug Fixes
+
+* **storage:** inject entities, migrations in ctor ([6474c83](https://github.com/ssube/isolex/commit/6474c8366d480f49ba3a7c576ee271322c7b7096))
+* **test:** cover echo controller errors, network requests ([d33c359](https://github.com/ssube/isolex/commit/d33c359cc7d486d97d4a71ebf0342f2c86293615))
+* **test:** cover endpoint registration helper ([00cd874](https://github.com/ssube/isolex/commit/00cd8741d1226a969d7ace4308ceed46936795cf))
+* **test:** cover role entity, user serialization ([5c75044](https://github.com/ssube/isolex/commit/5c750449a2a3538c71aeeb4d82ddd132daab7de9))
+* **test:** cover session listener, some match and match branches ([06ffb42](https://github.com/ssube/isolex/commit/06ffb421a8f3da5e74a055f95673d1e3d49c1d96))
+* **test:** cover storage service ([d1b0947](https://github.com/ssube/isolex/commit/d1b094740542cdc118df5e3a2f4aa7cf339755cf))
+* **test:** cover token issuance and verification ([1bd0c8b](https://github.com/ssube/isolex/commit/1bd0c8b1b81585c8478e8846a7f05dc5efbbe465))
+* **test:** make token-session errors more specific ([18d4ff1](https://github.com/ssube/isolex/commit/18d4ff183e876c146779f17a39d9a1c686abbbc0))
+
 ### [0.10.1](https://github.com/ssube/isolex/compare/v0.10.0...v0.10.1) (2020-03-21)
 
 
