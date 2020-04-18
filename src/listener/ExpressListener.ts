@@ -1,5 +1,5 @@
 import { doesExist, mustExist } from '@apextoaster/js-utils';
-import express, { Request, Response } from 'express';
+import express, { Request, RequestHandler, Response } from 'express';
 import http from 'http';
 import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
@@ -165,7 +165,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     let app = express();
 
     if (doesExist(this.passport)) {
-      app = app.use(this.passport.initialize());
+      app = app.use(this.passport.initialize() as RequestHandler);
     }
 
     app = app.use((req, res, next) => {
