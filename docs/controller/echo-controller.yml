@@ -3,6 +3,7 @@ metadata:
   name: test-echo-controller
 data:
   redirect:
+    defaults: {}
     forces:
       target:
         source: false

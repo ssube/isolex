@@ -19,6 +19,7 @@ data:
         service:
           kind: discord-listener
           name: test-discord
+    forces: {}
   transforms:
     - metadata:
         kind: template-transform

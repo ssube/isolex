@@ -2,4 +2,6 @@ metadata:
   kind: user-controller
   name: default-user
 data:
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}

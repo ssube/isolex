@@ -2,4 +2,6 @@ metadata:
   kind: random-controller
   name: test-random
 data:
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}

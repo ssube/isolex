@@ -7,4 +7,6 @@ data:
     labels: {}
     noun: echo
     verb: create
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}

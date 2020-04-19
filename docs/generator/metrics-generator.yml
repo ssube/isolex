@@ -16,4 +16,5 @@ data:
         service:
           kind: discord-listener
           name: test-discord
+    forces: {}
   timeout: 100ms

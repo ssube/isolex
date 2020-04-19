@@ -27,6 +27,7 @@ data:
         service:
           kind: discord-listener
           name: test-discord
+    forces: {}
   token:
     audience: test-audience
     issuer: !env ISOLEX_TOKEN_ISSUER

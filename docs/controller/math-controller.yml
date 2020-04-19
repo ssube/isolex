@@ -16,4 +16,6 @@ data:
   math:
     matrix: Array
     number: number
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}

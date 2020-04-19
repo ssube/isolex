@@ -16,5 +16,6 @@ data:
         service: &target
           kind: discord-listener
           name: test-discord
+    forces: {}
   services:
     - *target

@@ -8,4 +8,6 @@ data:
       - time
       - weather
     mode: include
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}

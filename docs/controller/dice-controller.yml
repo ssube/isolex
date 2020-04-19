@@ -2,4 +2,6 @@ metadata:
   kind: dice-controller
   name: test-dice
 data:
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}

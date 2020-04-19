@@ -16,5 +16,6 @@ data:
         service: &github-metadata
           kind: github-listener
           name: test-github
+    forces: {}
   services:
     - *github-metadata

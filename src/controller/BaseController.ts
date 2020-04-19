@@ -169,6 +169,11 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   }
 
   protected async reply(baseCtx: Context, body: string): Promise<void> {
+    this.logger.debug({
+      original: baseCtx,
+      redirect: this.data.redirect,
+    }, 'preparing context redirect');
+
     const context = redirectContext(baseCtx, this.data.redirect, this.services);
     const msg = new Message({
       body,

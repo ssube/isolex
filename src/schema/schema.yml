@@ -150,6 +150,9 @@ definitions:
   entity-context-redirect:
     type: object
     additionalProperties: false
+    required:
+      - defaults
+      - forces
     properties:
       defaults:
         allOf:

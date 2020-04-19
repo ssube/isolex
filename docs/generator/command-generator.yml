@@ -19,3 +19,4 @@ data:
         service:
           kind: discord-listener
           name: test-discord
+    forces: {}

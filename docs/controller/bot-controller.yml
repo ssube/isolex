@@ -3,7 +3,9 @@ metadata:
   name: default-bot
 data:
   filters: []
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}
   transforms:
     - metadata:
         kind: template-transform

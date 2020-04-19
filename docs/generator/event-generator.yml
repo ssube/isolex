@@ -16,5 +16,6 @@ data:
         service: &discord-metadata
           kind: discord-listener
           name: test-discord
+    forces: {}
   services:
     - *discord-metadata

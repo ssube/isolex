@@ -2,4 +2,6 @@ metadata:
   kind: sed-controller
   name: test-sed
 data:
-  redirect: {}
+  redirect:
+    defaults: {}
+    forces: {}
