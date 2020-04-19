@@ -116,7 +116,7 @@
     "shiro-trie": "0.4.9",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
-    "source-map-support": "0.5.16",
+    "source-map-support": "0.5.17",
     "split-string": "6.1.0",
     "standard-version": "7.1.0",
     "tslint": "6.1.1",
