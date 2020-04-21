@@ -22,7 +22,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@kubernetes/client-node": "0.11.1",
+    "@kubernetes/client-node": "0.11.2",
     "aws-sdk": "2.659.0",
     "discord.js": "11.6.4",
     "shelljs": "^0.8.3",
