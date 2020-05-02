@@ -58,7 +58,7 @@
     "@types/request-promise-native": "1.0.17",
     "@types/sinon-chai": "3.2.4",
     "@types/source-map-support": "0.5.1",
-    "@types/uuid": "7.0.2",
+    "@types/uuid": "7.0.3",
     "@types/websocket": "1.0.0",
     "@types/ws": "7.2.4",
     "@types/yargs-parser": "15.0.0",
