@@ -4000,10 +4000,10 @@ matched@^1.0.2:
     is-valid-glob "^1.0.0"
     resolve-dir "^1.0.0"
 
-mathjs@6.6.4:
-  version "6.6.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.6.4.tgz#f3217dc17eec9e7ebb7a3b2966c06a6061197ae7"
-  integrity sha512-fvmP89ujJbDAC8ths7FZh7PWdA71dfA5WJVAzJbQhSDCHK1aBk8WRf1XcTw51ERs+sKx9nYBGsRshqmb/oe8Ag==
+mathjs@6.6.5:
+  version "6.6.5"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-6.6.5.tgz#6bbad1fa3ac09e8f7106ef64af8d3908f877b8e8"
+  integrity sha512-jvRqk7eoEHBcx/lskmy05m+8M7xDHAJcJzRJoqIsqExtlTHPDQO0Zv85g5F0rasDAXF+DLog/70hcqCJijSzPQ==
   dependencies:
     complex.js "^2.0.11"
     decimal.js "^10.2.0"

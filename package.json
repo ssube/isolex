@@ -90,7 +90,7 @@
     "jsonpath-plus": "4.0.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",
-    "mathjs": "6.6.4",
+    "mathjs": "6.6.5",
     "mocha": "7.1.2",
     "node-emoji": "1.10.0",
     "noicejs": "3.0.1",
