@@ -5502,10 +5502,10 @@ rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.6.0, rollup-pluginutils@^2.7.1,
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@2.8.2:
-  version "2.8.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup/-/rollup-2.8.2.tgz#08427a8eb118e6e4ac8d80eba22774bc1d059c81"
-  integrity sha512-LRzMcB8V1M69pSvf6uCbR+W9OPCy5FuxcIwqioWg5RKidrrqKbzjJF9pEGXceaMVkbptNFZgIVJlUokCU0sfng==
+rollup@2.11.0:
+  version "2.11.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup/-/rollup-2.11.0.tgz#a46265f8291c71fee6dea3cccb5ac8e8b343e59c"
+  integrity sha512-VIUTZJ/wmqtNBKwa0N6MgC2SOUZoruX3HO0UFRf2Ilv/xtswXw+lQ9COUPytRFMmGst/5+En23ZpVK64AI83Cw==
   optionalDependencies:
     fsevents "~2.1.2"
 
