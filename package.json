@@ -27,7 +27,7 @@
     "discord.js": "11.6.4",
     "shelljs": "^0.8.3",
     "sqlite3": "4.1.1",
-    "typeorm": "0.2.24"
+    "typeorm": "0.2.25"
   },
   "devDependencies": {
     "@apextoaster/js-utils": "0.1.7",
