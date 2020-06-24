@@ -67,7 +67,7 @@
     "@typescript-eslint/parser": "2.34.0",
     "ajv": "6.12.2",
     "bufferutil": "4.0.1",
-    "bunyan": "1.8.12",
+    "bunyan": "1.8.13",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "cron": "1.8.2",
