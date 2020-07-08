@@ -2328,10 +2328,10 @@ eslint-plugin-chai-expect-keywords@2.0.1:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect-keywords/-/eslint-plugin-chai-expect-keywords-2.0.1.tgz#f64978abaeec4e81246730316c1803dc52c2eb08"
   integrity sha512-FemUdTwTKoyZoayxJsgQ+i0iqld1l9davDIjIqZJ6Ord972AI5uBVknAJKKCRnZ+Xo/5CImZNWuZ0WNOIoZ6LQ==
 
-eslint-plugin-chai-expect@2.1.0:
-  version "2.1.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect/-/eslint-plugin-chai-expect-2.1.0.tgz#9dd1d8e5a80543fdec956f6aef7f83f2241ca92b"
-  integrity sha512-rd0/4mjMV6c3i0o4DKkWI4uaFN9DK707kW+/fDphaDI6HVgxXnhML9Xgt5vHnTXmSSnDhupuCFBgsEAEpchXmQ==
+eslint-plugin-chai-expect@2.2.0:
+  version "2.2.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/eslint-plugin-chai-expect/-/eslint-plugin-chai-expect-2.2.0.tgz#ff41fb00067fe6ff26e72b04ab1011ecaf3cb249"
+  integrity sha512-ExTJKhgeYMfY8wDj3UiZmgpMKJOUHGNHmWMlxT49JUDB1vTnw0sSNfXJSxnX+LcebyBD/gudXzjzD136WqPJrQ==
 
 eslint-plugin-chai@0.0.1:
   version "0.0.1"
