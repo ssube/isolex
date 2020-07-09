@@ -9,6 +9,8 @@ import replace from 'rollup-plugin-replace';
 import typescript from 'rollup-plugin-typescript2';
 import yaml from 'rollup-plugin-yaml';
 
+const flag_debug = process.env['DEBUG'] === 'TRUE';
+
 const external = require('./rollup-external.json').names;
 const globals = require('./rollup-globals.json');
 const metadata = require('../package.json');
@@ -21,6 +23,13 @@ const stubs = stubNames.reduce((p, c) => (p[c] = passStub, p), {});
 const rootPath = process.env['ROOT_PATH'];
 const targetPath = process.env['TARGET_PATH'];
 
+const testModules = [
+	'chai',
+	'chai-as-promised',
+	'sinon',
+	'sinon-chai',
+];
+
 const bundle = {
 	external,
 	input: {
@@ -31,24 +40,45 @@ const bundle = {
 		],
 	},
 	manualChunks(id) {
+		if (id.includes(`${sep}test${sep}`)) {
+			return 'test';
+		}
+
 		if (id.match(/commonjs-external/i) || id.match(/commonjsHelpers/)) {
 			return 'vendor';
 		}
 
-		if (id.includes(`${sep}node_modules${sep}`) || id.includes(`${sep}noicejs${sep}`)) {
+		if (id.match(/node-resolve:/)) {
 			return 'vendor';
 		}
 
-		if (id.includes(`${sep}test${sep}`)) {
+		if (testModules.some(mod => id.includes(`${sep}${mod}${sep}`))) {
+			console.log(id, 'belongs to test chunk');
 			return 'test';
+		}
+
+		if (id.includes(`${sep}node_modules${sep}`)) {
+			return 'vendor';
 		}
 
 		if (id.includes(`${sep}src${sep}index`)) {
 			return 'index';
 		}
 
-		if (id.includes(`${sep}src${sep}`)) {
+		if (id.includes(`${sep}src${sep}`) || id.includes(`${sep}rules${sep}`)) {
 			return 'main';
+		}
+
+		if (id.includes(process.env['HOME'])) {
+			return 'linked';
+		}
+
+		if (id.length === 30 && id.match(/^[a-f0-9]+$/)) {
+			return 'vendor';
+		}
+
+		if (flag_debug) {
+			console.log('file does not belong to any chunk:', id);
 		}
 
 		return 'nochunk';
