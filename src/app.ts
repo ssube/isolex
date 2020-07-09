@@ -1,4 +1,4 @@
-import { removePid, signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP, writePid } from '@apextoaster/js-utils';
+import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '@apextoaster/js-utils';
 import { BaseOptions, Container, Logger } from 'noicejs';
 import yargs from 'yargs-parser';
 
@@ -10,6 +10,7 @@ import { BotModule } from './module/BotModule';
 import { ServiceModule } from './module/ServiceModule';
 import { Schema } from './schema';
 import { ServiceEvent } from './Service';
+import { removePid, writePid } from './utils/PidFile';
 import { VERSION_INFO } from './version';
 
 export interface CreateOptions {
