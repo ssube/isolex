@@ -1,6 +1,6 @@
 import { doesExist, NotFoundError } from '@apextoaster/js-utils';
 import { CONFIG_SCHEMA, includeSchema } from '@apextoaster/js-yaml-schema';
-import { readFile } from 'fs';
+import { readFile, existsSync, readFileSync, realpathSync } from 'fs';
 import { safeLoad } from 'js-yaml';
 import { isString } from 'lodash';
 import { join } from 'path';
@@ -10,9 +10,12 @@ import { BotDefinition } from '../Bot';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 
-includeSchema.schema = CONFIG_SCHEMA;
+const readFileAsync = promisify(readFile);
 
-const readFileSync = promisify(readFile);
+includeSchema.exists = existsSync;
+includeSchema.read = readFileSync;
+includeSchema.resolve = realpathSync;
+includeSchema.schema = CONFIG_SCHEMA;
 
 /**
  * With the given name, generate all potential config paths in their complete, absolute form.
@@ -63,7 +66,7 @@ export async function readConfig(path: string): Promise<string | undefined> {
   try {
     // need to await this read to catch the error, need to catch the error to check the code
     /* eslint-disable-next-line sonarjs/prefer-immediate-return */
-    const data = await readFileSync(path, {
+    const data = await readFileAsync(path, {
       encoding: 'utf-8',
     });
     return data;

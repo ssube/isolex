@@ -54,6 +54,7 @@
   ],
   "node_modules/js-yaml/index.js": [
     "DEFAULT_SAFE_SCHEMA",
+    "SAFE_SCHEMA",
     "safeLoad",
     "Schema",
     "Type"
