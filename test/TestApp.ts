@@ -1,10 +1,4 @@
-import {
-  defer,
-  getTestLogger,
-  SIGNAL_RELOAD,
-  SIGNAL_RESET,
-  SIGNAL_STOP,
-} from '@apextoaster/js-utils';
+import { defer, getTestLogger, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP, timeout } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
 import { defaultTo } from 'lodash';
@@ -19,7 +13,7 @@ import { serviceSpy } from './helpers/container';
 const MAX_SIGNAL_TIME = 100; // ms
 const MAX_START_TIME = 750; // ms
 
-const MAIN_START_TIME = 4000; // ms
+const MAIN_START_TIME = 1000; // ms
 const MAIN_STOP_TIME = 500;
 
 const TEST_SERVICE = 'test-service';
@@ -218,8 +212,7 @@ describe('main', async () => {
     await defer(MAIN_START_TIME);
 
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
-    const timeout = defer(MAIN_STOP_TIME);
-    const status = await Promise.race([pendingStatus, timeout]);
+    const status = await timeout(MAIN_STOP_TIME, pendingStatus);
 
     expect(status).to.equal(ExitStatus.Success, 'exit status should be set and successful');
   });

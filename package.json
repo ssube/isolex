@@ -30,8 +30,8 @@
     "typeorm": "0.2.25"
   },
   "devDependencies": {
-    "@apextoaster/js-yaml-schema": "0.3.1-0",
     "@apextoaster/js-utils": "0.2.0",
+    "@apextoaster/js-yaml-schema": "0.3.1-0",
     "@istanbuljs/nyc-config-typescript": "1.0.1",
     "@microsoft/api-documenter": "7.8.21",
     "@microsoft/api-extractor": "7.9.1",
@@ -50,6 +50,7 @@
     "@types/lodash": "4.14.157",
     "@types/mathjs": "6.0.5",
     "@types/mocha": "7.0.2",
+    "@types/mock-fs": "^4.10.0",
     "@types/node-emoji": "1.8.1",
     "@types/passport": "1.0.4",
     "@types/passport-jwt": "3.0.3",
@@ -92,6 +93,7 @@
     "lodash": "4.17.19",
     "mathjs": "6.6.5",
     "mocha": "8.0.1",
+    "mock-fs": "^4.12.0",
     "node-emoji": "1.10.0",
     "noicejs": "3.0.1",
     "nyc": "15.1.0",

@@ -1,11 +1,19 @@
 import { Dict, doesExist, getHeadOrDefault } from '@apextoaster/js-utils';
 import { Column } from 'typeorm';
 
-import { CommandVerb } from '../../entity/Command';
 import { DataEntity, DataEntityOptions } from '../base/DataEntity';
 
 export type CommandValue = Array<string>;
 export type CommandData = Dict<CommandValue>;
+
+export enum CommandVerb {
+  Create = 'create',
+  Delete = 'delete',
+  Get = 'get',
+  Help = 'help',
+  List = 'list',
+  Update = 'update',
+}
 
 export interface BaseCommandOptions extends DataEntityOptions<CommandValue> {
   noun: string;

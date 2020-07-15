@@ -5,16 +5,9 @@ import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Context, GRAPH_OUTPUT_CONTEXT } from '../entity/Context';
 import { GRAPH_INPUT_NAME_MULTI_VALUE_PAIR, GRAPH_INPUT_NAME_VALUE_PAIR } from '../schema/graph/input/Pairs';
 import { GRAPH_OUTPUT_NAME_MULTI_VALUE_PAIR, GRAPH_OUTPUT_NAME_VALUE_PAIR } from '../schema/graph/output/Pairs';
-import { BaseCommand, BaseCommandOptions } from './base/BaseCommand';
+import { BaseCommand, BaseCommandOptions, CommandVerb } from './base/BaseCommand';
 
-export enum CommandVerb {
-  Create = 'create',
-  Delete = 'delete',
-  Get = 'get',
-  Help = 'help',
-  List = 'list',
-  Update = 'update',
-}
+export { CommandVerb } from './base/BaseCommand';
 
 export interface CommandOptions extends BaseCommandOptions {
   context?: Context;

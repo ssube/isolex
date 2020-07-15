@@ -5,7 +5,7 @@ import { stub } from 'sinon';
 import { CronInterval } from '../../../src/utils/interval/CronInterval';
 import { createServiceContainer } from '../../helpers/container';
 
-const CRON_TIMEOUT = 1200;
+const CRON_TIMEOUT = 1_000;
 
 describe('cron interval', async () => {
   it('should call the tick function', async () => {

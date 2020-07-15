@@ -29,6 +29,9 @@ data:
     - !include ../docs/controller/user-controller.yml
   endpoints:
     - !include ../docs/endpoint/echo-endpoint.yml
+    - !include ../docs/endpoint/graph-endpoint.yml
+    - !include ../docs/endpoint/health-endpoint.yml
+    - !include ../docs/endpoint/metrics-endpoint.yml
   generators:
     - !include ../docs/generator/metrics-generator.yml
   listeners:
