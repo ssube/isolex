@@ -12,6 +12,8 @@
     "sinon-chai",
     "snekfetch",
     "sshpk",
+    "source-map",
+    "source-map-support",
     "xmlbuilder"
   ]
 }
