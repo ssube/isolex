@@ -92,7 +92,7 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.19",
     "mathjs": "7.1.0",
-    "mocha": "8.0.1",
+    "mocha": "8.1.0",
     "mock-fs": "4.12.0",
     "node-emoji": "1.10.0",
     "noicejs": "3.0.1",
