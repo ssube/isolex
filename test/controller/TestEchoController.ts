@@ -85,7 +85,7 @@ describe('echo controller', async () => {
     const msg = 'hello world';
     module.bind('test-transform').toInstance(ineeda<Transform>({
       check: () => Promise.resolve(true),
-      transform: (c: Command, type: string, data: object) => Promise.resolve({
+      transform: (c: Command, type: string, data: Record<string, unknown>) => Promise.resolve({
         body: [msg],
       }),
     }));

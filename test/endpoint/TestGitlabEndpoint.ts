@@ -9,6 +9,8 @@ import { GitlabEndpoint, GitlabEndpointData } from '../../src/endpoint/GitlabEnd
 import { CommandVerb } from '../../src/entity/Command';
 import { createEndpoint } from '../helpers/request';
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 const TEST_DATA: GitlabEndpointData = {
   defaultCommand: {
     data: {},

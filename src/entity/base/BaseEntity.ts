@@ -24,6 +24,7 @@ export abstract class BaseEntity implements BaseEntityOptions {
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public abstract toJSON(): object;
 
   public toString(): string {

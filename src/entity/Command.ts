@@ -40,6 +40,7 @@ export class Command extends BaseCommand implements CommandOptions {
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public toJSON(): object {
     const result: Dict<unknown> = {
       data: Array.from(this.data),

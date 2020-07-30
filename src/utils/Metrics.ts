@@ -27,7 +27,7 @@ export function createServiceCounter(registry: Registry, config: Partial<Counter
   });
 }
 
-export function incrementServiceCounter(svc: Service, counter: StringCounter, data: object) {
+export function incrementServiceCounter(svc: Service, counter: StringCounter, data: Record<string, string | undefined>) {
   counter.inc({
     ...data,
     serviceId: svc.id,

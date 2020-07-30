@@ -35,5 +35,6 @@ export abstract class LabelEntity extends BaseEntity {
     this.labelStr = JSON.stringify(Array.from(this.labels));
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public abstract toJSON(): object;
 }

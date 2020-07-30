@@ -7,6 +7,8 @@ import { Context } from '../../entity/Context';
 import { GithubClient, GithubClientData } from '../../utils/github';
 import { BaseController, BaseControllerOptions, ErrorReplyType } from '../BaseController';
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 export const NOUN_PULL_REQUEST = 'github-pull-request';
 
 export interface GithubPullControllerData extends ControllerData {

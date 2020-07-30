@@ -28,7 +28,7 @@ const TEST_METADATA = {
 
 export async function createEndpoint<
   TEndpoint extends BaseEndpoint<EndpointData>,
-  TData extends EndpointData & object
+  TData extends EndpointData
 >(
   epType: Constructor<TEndpoint, BaseEndpointOptions<TData>>,
   botReady: boolean,
@@ -51,7 +51,7 @@ export async function createEndpoint<
       });
     },
     getRepository() {
-      return ineeda<Repository<{}>>({
+      return ineeda<Repository<EndpointData>>({
         async save() {
           return ineeda<Context>();
         },

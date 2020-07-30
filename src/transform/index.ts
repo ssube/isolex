@@ -8,6 +8,7 @@ import { Service, ServiceDefinition } from '../Service';
 import { TemplateScope } from '../utils/Template';
 
 // @TODO: fix these good
+/* eslint-disable-next-line @typescript-eslint/ban-types */
 export type TransformInput = object;
 export type TransformOutput = TemplateScope;
 

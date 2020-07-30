@@ -51,7 +51,8 @@ export class Fragment extends BaseCommand implements FragmentOptions {
     }
   }
 
-  public toJSON() {
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
+  public toJSON(): object {
     return {
       data: this.data,
       id: this.id,

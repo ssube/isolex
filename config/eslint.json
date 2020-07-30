@@ -35,7 +35,6 @@
                 }
             }
         ],
-        "@typescript-eslint/class-name-casing": "error",
         "@typescript-eslint/consistent-type-assertions": "error",
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -61,7 +60,6 @@
                 "SwitchCase": 1
             }
         ],
-        "@typescript-eslint/interface-name-prefix": "error",
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {
@@ -87,6 +85,60 @@
                     "public-instance-method",
                     "protected-instance-method"
                 ]
+            }
+        ],
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "default",
+                "format": [
+                    "camelCase"
+                ],
+                "leadingUnderscore": "forbid",
+                "trailingUnderscore": "forbid"
+            },
+            {
+                "selector": "variable",
+                "format": [
+                    "camelCase",
+                    "UPPER_CASE"
+                ],
+                "leadingUnderscore": "forbid",
+                "trailingUnderscore": "forbid"
+            },
+            {
+                "selector": "typeLike",
+                "format": [
+                    "PascalCase"
+                ],
+                "leadingUnderscore": "forbid",
+                "trailingUnderscore": "forbid"
+            },
+            {
+                "selector": "interface",
+                "format": [
+                    "PascalCase"
+                ],
+                "leadingUnderscore": "forbid",
+                "trailingUnderscore": "forbid"
+            },
+            {
+                "selector": "function",
+                "format": [
+                    "camelCase",
+                    "PascalCase"
+                ],
+                "leadingUnderscore": "forbid",
+                "trailingUnderscore": "forbid"
+            },
+            {
+                "selector": "enumMember",
+                "format": [
+                    "PascalCase",
+		    "UPPER_CASE"
+                ],
+                "leadingUnderscore": "forbid",
+                "trailingUnderscore": "forbid"
             }
         ],
         "@typescript-eslint/no-empty-function": "error",

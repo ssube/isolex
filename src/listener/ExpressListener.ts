@@ -95,6 +95,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     return [];
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public traceRequest(req: Request, res: Response, next: Function) {
     this.logger.debug({ req, res }, 'handling request');
     this.requestCounter.inc({

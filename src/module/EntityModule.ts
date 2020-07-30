@@ -19,6 +19,7 @@ export class EntityModule extends Module {
   }
 
   @Provides(INJECT_ENTITIES)
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public async createEntities(): Promise<Array<Function>> {
     return [
       Command,
