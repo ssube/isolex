@@ -35,6 +35,7 @@ export class Tick extends BaseEntity {
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public toJSON(): object {
     return {
       createdAt: this.createdAt,

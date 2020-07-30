@@ -1,3 +1,5 @@
+import { makeDict } from '@apextoaster/js-utils';
+
 import { CheckRBAC, Controller, ControllerData, Handler } from '.';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
 import { Context } from '../entity/Context';
@@ -19,7 +21,7 @@ export class CommandController extends BaseController<CommandControllerData> imp
   @Handler(NOUN_COMMAND, CommandVerb.Create)
   @CheckRBAC()
   public async createCommand(cmd: Command, ctx: Context): Promise<void> {
-    const data = await applyTransforms(this.transforms, cmd, TYPE_JSON, cmd.data);
+    const data = await applyTransforms(this.transforms, cmd, TYPE_JSON, makeDict(cmd.data));
     this.logger.debug({ data }, 'creating next command');
     const next = new Command({
       context: ctx,

@@ -13,6 +13,8 @@ import { ServiceModule } from '../../module/ServiceModule';
 import { GRAPH_OUTPUT_SERVICE, ServiceMetadata } from '../../Service';
 import { Storage } from '../../storage';
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 const GRAPH_INPUT_COMMAND_LIST = new GraphQLList(GRAPH_INPUT_COMMAND);
 const GRAPH_INPUT_MESSAGE_LIST = new GraphQLList(GRAPH_INPUT_MESSAGE);
 const GRAPH_OUTPUT_COMMAND_LIST = new GraphQLList(GRAPH_OUTPUT_COMMAND);

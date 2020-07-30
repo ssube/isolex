@@ -13,7 +13,7 @@ class TestEntity extends DataEntity<string> {
     this.labelStr = str;
   }
 
-  public toJSON(): object {
+  public toJSON() {
     return {};
   }
 }

@@ -4,6 +4,8 @@ import Ajv from 'ajv';
 import { SCHEMA_KEYWORD_REGEXP } from './keyword/Regexp';
 import * as SCHEMA_GLOBAL from './schema.yml';
 
+export type SchemaDef = Record<string, unknown>;
+
 export interface SchemaResult {
   errors: Array<string>;
   valid: boolean;
@@ -22,9 +24,9 @@ export class Schema {
 
   protected compiler: Ajv.Ajv;
 
-  private readonly children: Map<string, object>;
+  private readonly children: Map<string, SchemaDef>;
 
-  constructor(schema: object = SCHEMA_GLOBAL) {
+  constructor(schema: SchemaDef = SCHEMA_GLOBAL) {
     this.children = new Map();
     this.compiler = new Ajv({
       allErrors: true,
@@ -40,7 +42,7 @@ export class Schema {
     this.addSchema('isolex', schema);
   }
 
-  public addSchema(name: string, schema: object) {
+  public addSchema(name: string, schema: SchemaDef) {
     if (!this.children.has(name)) {
       this.children.set(name, schema);
       this.compiler.addSchema(schema, name);

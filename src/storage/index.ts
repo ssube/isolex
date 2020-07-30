@@ -9,6 +9,8 @@ import { INJECT_ENTITIES } from '../module/EntityModule';
 import { INJECT_MIGRATIONS } from '../module/MigrationModule';
 import { ServiceLifecycle } from '../Service';
 
+/* eslint-disable @typescript-eslint/ban-types */
+
 export const INJECT_STORAGE_LOGGER = Symbol('inject-storage-logger');
 
 export interface StorageData extends BaseServiceData {

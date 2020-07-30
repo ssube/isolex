@@ -65,5 +65,6 @@ export abstract class BaseCommand extends DataEntity<CommandValue> {
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public abstract toJSON(): object;
 }

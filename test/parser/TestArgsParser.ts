@@ -63,6 +63,7 @@ describe('args parser', async () => {
       type: TYPE_TEXT,
     }));
     expect(data.data).to.deep.equal({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
       _: [],
       bar: ['2'],
       foo: ['1'],

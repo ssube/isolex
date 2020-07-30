@@ -71,6 +71,7 @@ export class User extends BaseEntity implements UserOptions {
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public toJSON(): object {
     return {
       id: this.id,

@@ -58,6 +58,7 @@ export class Message extends LabelEntity implements MessageEntityOptions {
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public toJSON(): object {
     const context = doesExist(this.context) ? this.context.toJSON() : {};
     return {

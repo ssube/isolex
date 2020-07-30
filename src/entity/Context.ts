@@ -170,6 +170,7 @@ export class Context extends BaseEntity implements ContextOptions, ContextRoute 
     }
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public toJSON(): object {
     return {
       channel: this.channel,

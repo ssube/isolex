@@ -144,6 +144,7 @@ export class Token extends DataEntity<Array<string>> implements TokenOptions {
     });
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public toJSON(): object {
     return {
       audience: this.audience,

@@ -8,6 +8,8 @@ import { Context } from '../entity/Context';
 import { RequestFactory } from '../utils/Request';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 export interface WeatherControllerData extends ControllerData {
   api: {
     key: string;

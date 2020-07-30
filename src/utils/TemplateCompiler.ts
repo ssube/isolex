@@ -54,6 +54,7 @@ export class TemplateCompiler {
     return parts.join('');
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public formatJSON(value: object): hbs.SafeString {
     return new Handlebars.SafeString(JSON.stringify(value));
   }

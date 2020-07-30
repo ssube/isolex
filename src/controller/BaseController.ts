@@ -13,7 +13,7 @@ import { Listener } from '../listener';
 import { Locale, TranslateOptions } from '../locale';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
-import { applyTransforms, extractBody, Transform, TransformData } from '../transform';
+import { applyTransforms, extractBody, Transform, TransformData, TransformInput } from '../transform';
 import { TYPE_JSON, TYPE_TEXT } from '../utils/Mime';
 
 export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command, ctx: Context) => Promise<void>;
@@ -144,7 +144,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     return false;
   }
 
-  protected async transformJSON(cmd: Command, data: object, ctx?: Context): Promise<void> {
+  protected async transformJSON(cmd: Command, data: TransformInput, ctx?: Context): Promise<void> {
     this.logger.debug({ data }, 'transforming json body');
 
     const result = await applyTransforms(this.transforms, cmd, TYPE_JSON, data);

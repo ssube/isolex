@@ -60,6 +60,7 @@ export interface HandlerOptions {
   rbac?: RBACOptions;
 }
 
+/* eslint-disable-next-line @typescript-eslint/ban-types */
 export function getHandlerOptions(target: Function): HandlerOptions | undefined {
   if (!Reflect.hasMetadata(SYMBOL_HANDLER, target)) {
     return;

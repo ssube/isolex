@@ -15,7 +15,8 @@ import { TemplateScope } from '../utils/Template';
 import { BaseEndpointOptions, STATUS_NOTFOUND, STATUS_SUCCESS } from './BaseEndpoint';
 import { HookEndpoint, HookEndpointData } from './HookEndpoint';
 
-/* eslint-disable @typescript-eslint/no-explicit-any, camelcase */
+/* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any, camelcase */
+
 export interface GitlabBaseWebhook {
   object_kind: string;
 }

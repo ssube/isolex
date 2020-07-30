@@ -13,7 +13,8 @@ import { Transform } from '../../../src/transform';
 import { GithubClient } from '../../../src/utils/github';
 import { createService, createServiceContainer } from '../../helpers/container';
 
-/* eslint-disable @typescript-eslint/no-explicit-any, camelcase */
+/* eslint-disable @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any, camelcase */
+
 const TEST_TRANSFORM = 'test-transform';
 
 interface ClientResponse<T> {

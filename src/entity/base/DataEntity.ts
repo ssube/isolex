@@ -57,5 +57,6 @@ export abstract class DataEntity<TVal> extends LabelEntity {
     return getOrDefault(this.data, key, defaultValue);
   }
 
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   public abstract toJSON(): object;
 }

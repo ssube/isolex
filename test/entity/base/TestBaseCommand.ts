@@ -4,7 +4,7 @@ import { BaseCommand } from '../../../src/entity/base/BaseCommand';
 import { CommandVerb } from '../../../src/entity/Command';
 
 class TestCommand extends BaseCommand {
-  public toJSON(): object {
+  public toJSON() {
     return {};
   }
 }
