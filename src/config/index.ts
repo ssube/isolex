@@ -1,6 +1,6 @@
-import { doesExist, NotFoundError } from '@apextoaster/js-utils';
+import { doesExist, InvalidArgumentError, isNil, NotFoundError } from '@apextoaster/js-utils';
 import { CONFIG_SCHEMA, includeSchema } from '@apextoaster/js-yaml-schema';
-import { readFile, existsSync, readFileSync, realpathSync } from 'fs';
+import { existsSync, readFile, readFileSync, realpathSync } from 'fs';
 import { safeLoad } from 'js-yaml';
 import { isString } from 'lodash';
 import { join } from 'path';
@@ -53,9 +53,15 @@ export async function loadConfig(name: string, ...extras: Array<string>): Promis
   for (const p of paths) {
     const data = await readConfig(p);
     if (doesExist(data)) {
-      return safeLoad(data, {
+      const config = safeLoad(data, {
         schema: CONFIG_SCHEMA,
       });
+
+      if (isNil(config) || typeof config !== 'object') {
+        throw new InvalidArgumentError('loaded config was not an object');
+      }
+
+      return config as BotDefinition;
     }
   }
 
