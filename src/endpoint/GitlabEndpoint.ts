@@ -1,6 +1,5 @@
 import { mustExist } from '@apextoaster/js-utils';
 import { Request, Response } from 'express';
-import { isString } from 'lodash';
 import { Inject } from 'noicejs';
 
 import { Endpoint, Handler } from '.';
@@ -250,7 +249,8 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     const txData = await applyTransforms(this.transforms, msg, TYPE_JSON, data);
     this.logger.debug({ data, txData }, 'applied transforms');
 
-    if (Array.isArray(txData) || isString(txData)) {
+    /* eslint-disable-next-line @typescript-eslint/tslint/config */
+    if (Array.isArray(txData) || typeof txData === 'string') {
       this.logger.warn({ data: txData }, 'transforms did not return object');
     }
 

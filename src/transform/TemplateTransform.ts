@@ -1,5 +1,4 @@
 import { makeDict, mustExist } from '@apextoaster/js-utils';
-import { isString } from 'lodash';
 import { BaseError, Inject } from 'noicejs';
 
 import { Transform, TransformData } from '.';
@@ -39,7 +38,8 @@ export class TemplateTransform extends BaseTransform<TemplateTransformData> impl
       this.logger.debug({ key, scope }, 'rendering template with scope');
       const result = template.render(scope);
       this.logger.debug({ key, result }, 'rendered template with scope');
-      if (!isString(result)) {
+      /* eslint-disable-next-line @typescript-eslint/tslint/config */
+      if (typeof result !== 'string') {
         throw new BaseError('template did not return string');
       }
       out.set(key, [result]);

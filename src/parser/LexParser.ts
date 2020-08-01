@@ -1,6 +1,6 @@
-import { doesExist, InvalidArgumentError, leftPad, makeMap, mustExist } from '@apextoaster/js-utils';
+import { doesExist, InvalidArgumentError, isNil, leftPad, makeMap, mustExist } from '@apextoaster/js-utils';
 import AWS from 'aws-sdk';
-import { isNil, isString, kebabCase } from 'lodash';
+import { kebabCase } from 'lodash';
 import { MissingValueError } from 'noicejs';
 
 import { Parser, ParserData, ParserOutput } from '.';
@@ -127,29 +127,29 @@ export class LexParser extends BaseParser<LexParserData> implements Parser {
   protected postText(params: AWS.LexRuntime.PostTextRequest): Promise<AWS.LexRuntime.PostTextResponse> {
     return new Promise((res, rej) => {
       this.lex.postText(params, (err, reply) => {
-        if (isNil(err)) {
-          res(reply);
-        } else {
+        if (doesExist(err)) {
           rej(err);
+        } else {
+          res(reply);
         }
       });
     });
   }
 
   protected validateResponse(post: AWS.LexRuntime.PostTextResponse): CommandOptions {
-    if (!isString(post.dialogState) || post.dialogState === '') {
+    if (typeof post.dialogState !== 'string' || post.dialogState === '') {
       const msg = 'lex parsed message without state';
       this.logger.warn({ post }, msg);
       throw new MissingValueError(msg);
     }
 
-    if (!isString(post.intentName) || post.intentName === '') {
+    if (typeof post.intentName !== 'string' || post.intentName === '') {
       const msg = 'lex parsed message without intent';
       this.logger.warn({ post }, msg);
       throw new MissingValueError(msg);
     }
 
-    if (post.dialogState === 'ElicitSlot' && !isString(post.slotToElicit)) {
+    if (post.dialogState === 'ElicitSlot' && isNil(post.slotToElicit)) {
       const msg = 'lex parsed message without slot to elicit';
       this.logger.warn({ post }, msg);
       throw new MissingValueError(msg);

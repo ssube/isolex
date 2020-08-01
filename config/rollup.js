@@ -152,6 +152,7 @@ const bundle = {
 				join('**', '*.ts'),
 			],
 			throwOnError: true,
+			useEslintrc: false,
 		}),
 		typescript({
 			cacheRoot: join(targetPath, 'cache', 'rts2'),

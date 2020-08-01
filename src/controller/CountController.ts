@@ -1,5 +1,4 @@
-import { mustExist } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { doesExist, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 
@@ -79,14 +78,14 @@ export class CountController extends BaseController<CountControllerData> impleme
       },
     });
 
-    if (isNil(counter)) {
+    if (doesExist(counter)) {
+      return counter;
+    } else {
       return new Counter({
         count: Number(this.data.default.count),
         name,
         roomId,
       });
-    } else {
-      return counter;
     }
   }
 

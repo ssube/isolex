@@ -1,6 +1,5 @@
-import { makeMap, mustExist } from '@apextoaster/js-utils';
+import { isNil, makeMap, mustExist } from '@apextoaster/js-utils';
 import { safeLoad } from 'js-yaml';
-import { isObject } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { Parser, ParserData, ParserOutput } from '.';
@@ -33,7 +32,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
     }
 
     const parsed = safeLoad(msg.body);
-    if (!isObject(parsed)) {
+    if (isNil(parsed)) {
       throw new BaseError('parsed value must be an object');
     }
 

@@ -1,5 +1,5 @@
-import { InvalidArgumentError, mustExist } from '@apextoaster/js-utils';
-import { defaultTo, isNil } from 'lodash';
+import { InvalidArgumentError, isNil, mustExist } from '@apextoaster/js-utils';
+import { defaultTo } from 'lodash';
 import { Inject } from 'noicejs';
 import { collectDefaultMetrics, Registry } from 'prom-client';
 

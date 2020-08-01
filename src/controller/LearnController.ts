@@ -1,5 +1,4 @@
-import { Checklist, ChecklistOptions, mustExist } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { Checklist, ChecklistOptions, isNil, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import { Repository } from 'typeorm';
 

@@ -1,4 +1,4 @@
-import { doesExist, InvalidArgumentError, mustExist, NotFoundError } from '@apextoaster/js-utils';
+import { doesExist, InvalidArgumentError, isNil, mustExist, NotFoundError } from '@apextoaster/js-utils';
 import {
   Channel,
   ChannelLogsQueryOptions,
@@ -11,7 +11,6 @@ import {
   User,
 } from 'discord.js';
 import escape from 'escape-html';
-import { isNil } from 'lodash';
 import emoji from 'node-emoji';
 import { Inject } from 'noicejs';
 

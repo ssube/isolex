@@ -8,14 +8,7 @@
   "node_modules/lodash/lodash.js": [
     "defaultTo",
     "flatten",
-    "isBoolean",
     "isEmpty",
-    "isFunction",
-    "isMap",
-    "isNil",
-    "isNumber",
-    "isObject",
-    "isString",
     "kebabCase",
     "trim"
   ],

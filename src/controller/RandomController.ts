@@ -1,5 +1,4 @@
-import { countOf } from '@apextoaster/js-utils';
-import { isNil, isNumber } from 'lodash';
+import { countOf, isNil } from '@apextoaster/js-utils';
 import { max, min, random, randomInt } from 'mathjs';
 import { Inject } from 'noicejs';
 
@@ -54,14 +53,6 @@ export class RandomController extends BaseController<RandomControllerData> imple
   }
 
   private getRandomValue(precision: number, minVal: number, maxVal?: number): string {
-    if (!isNumber(minVal)) {
-      return `Provided value: ${minVal} is not a number!`;
-    }
-
-    if (!isNumber(maxVal)) {
-      return `Provided value: ${maxVal} is not a number!`;
-    }
-
     const minimum = isNil(maxVal) ? min(minVal, 0) : min(minVal, maxVal);
     const maximum = isNil(maxVal) ? max(minVal, 0) : max(minVal, maxVal);
 

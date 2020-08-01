@@ -1,7 +1,6 @@
-import { doesExist, mustExist, NotFoundError } from '@apextoaster/js-utils';
+import { doesExist, isNil, mustExist, NotFoundError } from '@apextoaster/js-utils';
 import { RTMClient, WebAPICallResult, WebClient } from '@slack/client';
 import escape from 'escape-html';
-import { isNil } from 'lodash';
 import { find as findEmoji } from 'node-emoji';
 import { BaseError, Container, Inject } from 'noicejs';
 

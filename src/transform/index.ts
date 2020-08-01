@@ -1,5 +1,4 @@
 import { defaultWhen, entriesOf, makeDict, mergeMap } from '@apextoaster/js-utils';
-import { isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { BotServiceData } from '../BotService';
@@ -51,7 +50,8 @@ export function extractBody(data: TransformOutput): string {
   }
 
   const [body] = data.body;
-  if (!isString(body)) {
+  /* eslint-disable-next-line @typescript-eslint/tslint/config */
+  if (typeof body !== 'string') {
     throw new BaseError('final transform did not return a string');
   }
 

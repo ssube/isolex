@@ -1,5 +1,4 @@
-import { doesExist, getOrDefault, makeMap, MapLike, MissingKeyError } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { doesExist, getOrDefault, isNil, makeMap, MapLike, MissingKeyError } from '@apextoaster/js-utils';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column } from 'typeorm';
 
 import { LabelEntity, LabelEntityOptions } from '../base/LabelEntity';

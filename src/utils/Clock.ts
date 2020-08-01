@@ -1,4 +1,4 @@
-import { isNil } from 'lodash';
+import { isNil } from '@apextoaster/js-utils';
 import { BaseOptions } from 'noicejs';
 
 export const NOW_TO_SECONDS = 1000;

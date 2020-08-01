@@ -1,4 +1,4 @@
-import { isNil } from 'lodash';
+import { isNil } from '@apextoaster/js-utils';
 import {
   all as allFactories,
   ConfigOptions,

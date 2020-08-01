@@ -1,6 +1,6 @@
-import { doesExist, mustCoalesce, mustExist, NotFoundError, Optional } from '@apextoaster/js-utils';
+import { doesExist, isNil, mustCoalesce, mustExist, NotFoundError, Optional } from '@apextoaster/js-utils';
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
-import { flatten, isNil } from 'lodash';
+import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie, ShiroTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';

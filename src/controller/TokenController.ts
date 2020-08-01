@@ -1,5 +1,4 @@
-import { mustExist } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { doesExist, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 import { Equal, LessThan, Repository } from 'typeorm';
 
@@ -100,10 +99,10 @@ export class TokenController extends BaseController<TokenControllerData> impleme
         }));
       }
     } else {
-      if (isNil(ctx.token)) {
-        return this.reply(ctx, this.translate(ctx, 'get.missing'));
-      } else {
+      if (doesExist(ctx.token)) {
         return this.reply(ctx, ctx.token.toString());
+      } else {
+        return this.reply(ctx, this.translate(ctx, 'get.missing'));
       }
     }
   }

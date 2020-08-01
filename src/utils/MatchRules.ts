@@ -1,6 +1,5 @@
 import { doesExist } from '@apextoaster/js-utils';
 import { JSONPath } from 'jsonpath-plus';
-import { isString } from 'lodash';
 
 export interface MatchData {
   rules: Array<MatchRule>;
@@ -42,7 +41,7 @@ export class MatchRules {
       matched: true,
     };
 
-    if (isString(data)) {
+    if (typeof data === 'string') {
       results.matched = false;
       return results;
     }
@@ -71,7 +70,8 @@ export class MatchRules {
 
     let match = true;
     for (const value of values) {
-      if (!isString(value)) {
+      /* eslint-disable-next-line @typescript-eslint/tslint/config */
+      if (typeof value !== 'string') {
         match = false;
         continue;
       }

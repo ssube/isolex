@@ -1,5 +1,4 @@
-import { doesExist, getMethods, mustCoalesce, mustExist } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { doesExist, getMethods, isNil, mustCoalesce, mustExist } from '@apextoaster/js-utils';
 import { Inject, MissingValueError } from 'noicejs';
 
 import { Controller, ControllerData, getHandlerOptions, HandlerOptions } from '.';

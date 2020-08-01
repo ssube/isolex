@@ -1,5 +1,4 @@
-import { doesExist, mustExist } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { doesExist, isNil, mustExist } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '.';

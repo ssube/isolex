@@ -1,5 +1,4 @@
 import { Dict, makeDict, makeMap, mustExist } from '@apextoaster/js-utils';
-import { isNumber, isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
@@ -115,14 +114,15 @@ export function buildValueSchema(defaultValue: CollectValue) {
     };
   }
 
-  if (isString(defaultValue)) {
+  if (typeof defaultValue === 'string') {
     return {
       default: defaultValue,
       type: 'string',
     };
   }
 
-  if (isNumber(defaultValue)) {
+  /* eslint-disable-next-line @typescript-eslint/tslint/config */
+  if (typeof defaultValue === 'number') {
     return {
       default: defaultValue,
       type: 'number',

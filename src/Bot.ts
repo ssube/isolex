@@ -1,5 +1,4 @@
-import { ExternalModule, filterNil, mustExist, mustFind } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { ExternalModule, filterNil, isNil, mustExist, mustFind } from '@apextoaster/js-utils';
 import { Container, Inject, LogLevel } from 'noicejs';
 import { Registry } from 'prom-client';
 import { Subject } from 'rxjs';

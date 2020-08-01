@@ -1,5 +1,4 @@
-import { ArrayMapper, ArrayMapperOptions, mustExist } from '@apextoaster/js-utils';
-import { isNil } from 'lodash';
+import { ArrayMapper, ArrayMapperOptions, isNil, mustExist } from '@apextoaster/js-utils';
 import { BaseError } from 'noicejs';
 
 import { Parser, ParserData, ParserOutput } from '.';

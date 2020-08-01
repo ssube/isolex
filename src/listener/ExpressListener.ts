@@ -1,7 +1,6 @@
-import { doesExist, mustExist } from '@apextoaster/js-utils';
+import { doesExist, isNil, mustExist } from '@apextoaster/js-utils';
 import express, { Request, RequestHandler, Response } from 'express';
 import http from 'http';
-import { isNil } from 'lodash';
 import { Container, Inject } from 'noicejs';
 import passport from 'passport';
 import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
