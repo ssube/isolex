@@ -30,6 +30,7 @@
     "typeorm": "0.2.25"
   },
   "devDependencies": {
+    "@apextoaster/js-config": "^0.1.1",
     "@apextoaster/js-utils": "0.2.1",
     "@apextoaster/js-yaml-schema": "0.3.1",
     "@istanbuljs/nyc-config-typescript": "1.0.1",

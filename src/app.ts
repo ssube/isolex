@@ -1,9 +1,12 @@
+import { loadConfig } from '@apextoaster/js-config';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '@apextoaster/js-utils';
+import { CONFIG_SCHEMA, includeSchema } from '@apextoaster/js-yaml-schema';
+import { existsSync, readFileSync, realpathSync } from 'fs';
 import { BaseOptions, Container, Logger } from 'noicejs';
+import { join } from 'path';
 import yargs from 'yargs-parser';
 
 import { Bot, BotDefinition } from './Bot';
-import { loadConfig } from './config';
 import { BunyanLogger } from './logger/BunyanLogger';
 import { loadModules, mainModules } from './module';
 import { BotModule } from './module/BotModule';
@@ -17,6 +20,14 @@ export interface CreateOptions {
   config: BotDefinition;
   logger: Logger;
 }
+
+export const CONFIG_ENV = 'ISOLEX_HOME';
+
+includeSchema.exists = existsSync;
+includeSchema.join = join;
+includeSchema.read = readFileSync;
+includeSchema.resolve = realpathSync;
+includeSchema.schema = CONFIG_SCHEMA;
 
 // main arguments
 const CONFIG_ARGS_NAME = 'config-name';
@@ -34,7 +45,7 @@ const MAIN_ARGS: yargs.Options = {
 
 export async function main(argv: Array<string>): Promise<ExitStatus> {
   const args = yargs(argv, MAIN_ARGS);
-  const config = await loadConfig(args[CONFIG_ARGS_NAME], ...args[CONFIG_ARGS_PATH]);
+  const config = loadConfig<BotDefinition>(args[CONFIG_ARGS_NAME], ...args[CONFIG_ARGS_PATH]);
 
   const logger = BunyanLogger.create(config.data.logger);
   logger.info(VERSION_INFO, 'version info');
