@@ -1,5 +1,5 @@
 import { Config } from '@apextoaster/js-config';
-import { createSchema } from '@apextoaster/js-yaml-schema';
+import { createSchema, IncludeOptions } from '@apextoaster/js-yaml-schema';
 import Ajv from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
 import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
@@ -26,13 +26,27 @@ export const MAIN_ARGS: yargs.Options = {
   envPrefix: 'isolex',
 };
 
+export const INCLUDE_OPTIONS: IncludeOptions = {
+  exists: existsSync,
+  join,
+  read: readFileSync,
+  resolve: realpathSync,
+  schema: DEFAULT_SAFE_SCHEMA,
+};
+
+export const SCHEMA_OPTIONS: Ajv.Options = {
+  allErrors: true,
+  coerceTypes: 'array',
+  missingRefs: 'fail',
+  removeAdditional: 'failing',
+  schemaId: 'auto',
+  useDefaults: true,
+  verbose: true,
+};
+
 export function initConfig(paths: Array<string>, filename: string) {
   const include = {
-    exists: existsSync,
-    join,
-    read: readFileSync,
-    resolve: realpathSync,
-    schema: DEFAULT_SAFE_SCHEMA,
+    ...INCLUDE_OPTIONS,
   };
 
   createSchema({
@@ -40,13 +54,7 @@ export function initConfig(paths: Array<string>, filename: string) {
   });
 
   const schema = new Ajv({
-    allErrors: true,
-    coerceTypes: 'array',
-    missingRefs: 'fail',
-    removeAdditional: 'failing',
-    schemaId: 'auto',
-    useDefaults: true,
-    verbose: true,
+    ...SCHEMA_OPTIONS,
   });
 
   schema.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
