@@ -1,4 +1,5 @@
 import { Config } from '@apextoaster/js-config';
+import { doesExist } from '@apextoaster/js-utils';
 import { createSchema, IncludeOptions } from '@apextoaster/js-yaml-schema';
 import Ajv from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
@@ -44,7 +45,7 @@ export const SCHEMA_OPTIONS: Ajv.Options = {
   verbose: true,
 };
 
-export function initConfig(paths: Array<string>, filename: string) {
+export function initConfig(extras: Array<string>, filename: string) {
   const include = {
     ...INCLUDE_OPTIONS,
   };
@@ -62,6 +63,12 @@ export function initConfig(paths: Array<string>, filename: string) {
     $id: 'isolex',
     schema: SCHEMA_GLOBAL,
   });
+
+  const paths = [...extras];
+  const altHome = process.env[CONFIG_ENV];
+  if (doesExist(altHome)) {
+    paths.push(altHome);
+  }
 
   const config = new Config<BotDefinition>({
     key: '',
