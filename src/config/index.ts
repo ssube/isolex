@@ -5,27 +5,12 @@ import Ajv from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
 import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
 import { join } from 'path';
-import yargs from 'yargs-parser';
 
-import { BotDefinition } from './Bot';
-import { SCHEMA_KEYWORD_REGEXP } from './schema/keyword/Regexp';
-import * as SCHEMA_GLOBAL from './schema/schema.yml';
+import { BotDefinition } from '../Bot';
+import { SCHEMA_KEYWORD_REGEXP } from '../schema/keyword/Regexp';
+import * as SCHEMA_GLOBAL from '../schema/schema.yml';
 
-export const CONFIG_ENV = 'ISOLEX_HOME';
-
-// main arguments
-export const CONFIG_ARGS_NAME = 'config-name';
-export const CONFIG_ARGS_PATH = 'config-path';
-export const MAIN_ARGS: yargs.Options = {
-  array: [CONFIG_ARGS_PATH],
-  boolean: ['test'],
-  count: ['v'],
-  default: {
-    [CONFIG_ARGS_NAME]: '.isolex.yml',
-    [CONFIG_ARGS_PATH]: [],
-  },
-  envPrefix: 'isolex',
-};
+export const CONFIG_ENV_HOME = 'ISOLEX_HOME';
 
 export const INCLUDE_OPTIONS: IncludeOptions = {
   exists: existsSync,
@@ -65,7 +50,7 @@ export function initConfig(extras: Array<string>, filename: string) {
   });
 
   const paths = [...extras];
-  const altHome = process.env[CONFIG_ENV];
+  const altHome = process.env[CONFIG_ENV_HOME];
   if (doesExist(altHome)) {
     paths.push(altHome);
   }

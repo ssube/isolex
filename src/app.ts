@@ -3,7 +3,8 @@ import { BaseOptions, Container, Logger } from 'noicejs';
 import yargs from 'yargs-parser';
 
 import { Bot, BotDefinition } from './Bot';
-import { CONFIG_ARGS_NAME, CONFIG_ARGS_PATH, initConfig, MAIN_ARGS } from './config';
+import { initConfig } from './config';
+import { CONFIG_ARGS, CONFIG_ARGS_NAME, CONFIG_ARGS_PATH } from './config/args';
 import { BunyanLogger } from './logger/BunyanLogger';
 import { loadModules, mainModules } from './module';
 import { BotModule } from './module/BotModule';
@@ -19,7 +20,7 @@ export interface CreateOptions {
 }
 
 export async function main(argv: Array<string>): Promise<ExitStatus> {
-  const args = yargs(argv, MAIN_ARGS);
+  const args = yargs(argv, CONFIG_ARGS);
   const config = initConfig(args[CONFIG_ARGS_PATH], args[CONFIG_ARGS_NAME]);
 
   const logger = BunyanLogger.create(config.data.logger);
