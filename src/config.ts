@@ -1,4 +1,5 @@
 import { Config } from '@apextoaster/js-config';
+import { createSchema } from '@apextoaster/js-yaml-schema';
 import Ajv from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
 import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
@@ -25,7 +26,7 @@ export const MAIN_ARGS: yargs.Options = {
   envPrefix: 'isolex',
 };
 
-export function initConfig(root: string, filename: string) {
+export function initConfig(paths: Array<string>, filename: string) {
   const include = {
     exists: existsSync,
     join,
@@ -33,6 +34,10 @@ export function initConfig(root: string, filename: string) {
     resolve: realpathSync,
     schema: DEFAULT_SAFE_SCHEMA,
   };
+
+  createSchema({
+    include,
+  });
 
   const schema = new Ajv({
     allErrors: true,
@@ -57,7 +62,7 @@ export function initConfig(root: string, filename: string) {
       include,
       key: '',
       name: filename,
-      paths: [root],
+      paths,
       type: 'file',
     }],
   });

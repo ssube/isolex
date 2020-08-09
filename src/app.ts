@@ -20,7 +20,7 @@ export interface CreateOptions {
 
 export async function main(argv: Array<string>): Promise<ExitStatus> {
   const args = yargs(argv, MAIN_ARGS);
-  const config = initConfig(args[CONFIG_ARGS_NAME], args[CONFIG_ARGS_PATH]);
+  const config = initConfig(args[CONFIG_ARGS_PATH], args[CONFIG_ARGS_NAME]);
 
   const logger = BunyanLogger.create(config.data.logger);
   logger.info(VERSION_INFO, 'version info');
