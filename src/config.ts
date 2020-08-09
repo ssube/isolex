@@ -1,7 +1,13 @@
-import { CONFIG_SCHEMA, includeOptions } from '@apextoaster/js-yaml-schema';
+import { Config } from '@apextoaster/js-config';
+import Ajv from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
+import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
 import { join } from 'path';
 import yargs from 'yargs-parser';
+
+import { BotDefinition } from './Bot';
+import { SCHEMA_KEYWORD_REGEXP } from './schema/keyword/Regexp';
+import * as SCHEMA_GLOBAL from './schema/schema.yml';
 
 export const CONFIG_ENV = 'ISOLEX_HOME';
 
@@ -19,10 +25,42 @@ export const MAIN_ARGS: yargs.Options = {
   envPrefix: 'isolex',
 };
 
-export function initConfig() {
-  includeOptions.exists = existsSync;
-  includeOptions.join = join;
-  includeOptions.read = readFileSync;
-  includeOptions.resolve = realpathSync;
-  includeOptions.schema = CONFIG_SCHEMA;
+export function initConfig(root: string, filename: string) {
+  const include = {
+    exists: existsSync,
+    join,
+    read: readFileSync,
+    resolve: realpathSync,
+    schema: DEFAULT_SAFE_SCHEMA,
+  };
+
+  const schema = new Ajv({
+    allErrors: true,
+    coerceTypes: 'array',
+    missingRefs: 'fail',
+    removeAdditional: 'failing',
+    schemaId: 'auto',
+    useDefaults: true,
+    verbose: true,
+  });
+
+  schema.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
+  schema.addSchema({
+    $id: 'isolex',
+    schema: SCHEMA_GLOBAL,
+  });
+
+  const config = new Config<BotDefinition>({
+    key: '',
+    schema,
+    sources: [{
+      include,
+      key: '',
+      name: filename,
+      paths: [root],
+      type: 'file',
+    }],
+  });
+
+  return config.getData();
 }

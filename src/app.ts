@@ -1,4 +1,3 @@
-import { loadConfig } from '@apextoaster/js-config';
 import { signal, SIGNAL_RELOAD, SIGNAL_RESET, SIGNAL_STOP } from '@apextoaster/js-utils';
 import { BaseOptions, Container, Logger } from 'noicejs';
 import yargs from 'yargs-parser';
@@ -20,10 +19,8 @@ export interface CreateOptions {
 }
 
 export async function main(argv: Array<string>): Promise<ExitStatus> {
-  initConfig();
-
   const args = yargs(argv, MAIN_ARGS);
-  const config = loadConfig<BotDefinition>(args[CONFIG_ARGS_NAME], ...args[CONFIG_ARGS_PATH]);
+  const config = initConfig(args[CONFIG_ARGS_NAME], args[CONFIG_ARGS_PATH]);
 
   const logger = BunyanLogger.create(config.data.logger);
   logger.info(VERSION_INFO, 'version info');
