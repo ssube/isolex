@@ -12,7 +12,7 @@ data:
           name: slack-isolex
 
   filters:
-    - !include ../docs/filter/shell-filter-github.yml
+    - !include ./docs/filter/shell-filter-github.yml
 
   transforms:
     - metadata:

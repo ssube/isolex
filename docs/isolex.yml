@@ -15,48 +15,48 @@ data:
             - isolex
             - isolex-test
   controllers:
-    - !include ../docs/controller/account-controller.yml
-    - !include ../docs/controller/bot-controller.yml
-    - !include ../docs/controller/command-controller.yml
-    - !include ../docs/controller/completion-controller.yml
-    - !include ../docs/controller/dice-controller.yml
-    - !include ../docs/controller/echo-controller.yml
-    - !include ../docs/controller/github/commit-controller.yml
-    - !include ../docs/controller/github/pull-controller.yml
-    - !include ../docs/controller/github/endpoint/pull-controller.yml
-    - !include ../docs/controller/gitlab/ci-controller.yml
-    - !include ../docs/controller/gitlab/endpoint/push-controller.yml
-    - !include ../docs/controller/kubernetes/apps-controller.yml
-    - !include ../docs/controller/kubernetes/core-controller.yml
-    - !include ../docs/controller/learn-controller.yml
-    - !include ../docs/controller/math-controller.yml
-    - !include ../docs/controller/random-controller.yml
-    - !include ../docs/controller/reaction-controller.yml
-    - !include ../docs/controller/search-controller-mdn.yml
-    - !include ../docs/controller/sed-controller.yml
-    - !include ../docs/controller/time-controller.yml
-    - !include ../docs/controller/token-controller.yml
-    - !include ../docs/controller/user-controller.yml
-    - !include ../docs/controller/weather-controller-owm.yml
+    - !include ./docs/controller/account-controller.yml
+    - !include ./docs/controller/bot-controller.yml
+    - !include ./docs/controller/command-controller.yml
+    - !include ./docs/controller/completion-controller.yml
+    - !include ./docs/controller/dice-controller.yml
+    - !include ./docs/controller/echo-controller.yml
+    - !include ./docs/controller/github/commit-controller.yml
+    - !include ./docs/controller/github/pull-controller.yml
+    - !include ./docs/controller/github/endpoint/pull-controller.yml
+    - !include ./docs/controller/gitlab/ci-controller.yml
+    - !include ./docs/controller/gitlab/endpoint/push-controller.yml
+    - !include ./docs/controller/kubernetes/apps-controller.yml
+    - !include ./docs/controller/kubernetes/core-controller.yml
+    - !include ./docs/controller/learn-controller.yml
+    - !include ./docs/controller/math-controller.yml
+    - !include ./docs/controller/random-controller.yml
+    - !include ./docs/controller/reaction-controller.yml
+    - !include ./docs/controller/search-controller-mdn.yml
+    - !include ./docs/controller/sed-controller.yml
+    - !include ./docs/controller/time-controller.yml
+    - !include ./docs/controller/token-controller.yml
+    - !include ./docs/controller/user-controller.yml
+    - !include ./docs/controller/weather-controller-owm.yml
   endpoints:
-    - !include ../docs/endpoint/echo-endpoint.yml
-    - !include ../docs/endpoint/github-endpoint.yml
-    - !include ../docs/endpoint/gitlab-endpoint.yml
-    - !include ../docs/endpoint/graph-endpoint.yml
-    - !include ../docs/endpoint/health-endpoint.yml
-    - !include ../docs/endpoint/metrics-endpoint.yml
+    - !include ./docs/endpoint/echo-endpoint.yml
+    - !include ./docs/endpoint/github-endpoint.yml
+    - !include ./docs/endpoint/gitlab-endpoint.yml
+    - !include ./docs/endpoint/graph-endpoint.yml
+    - !include ./docs/endpoint/health-endpoint.yml
+    - !include ./docs/endpoint/metrics-endpoint.yml
   generators:
-    # !include ../docs/generator/command-generator.yml
-    # !include ../docs/generator/cron-generator.yml
-    # !include ../docs/generator/event-generator.yml
-    - !include ../docs/generator/github-listener-generator.yml
-    # !include ../docs/generator/message-generator.yml
-    - !include ../docs/generator/metrics-generator.yml
+    # !include ./docs/generator/command-generator.yml
+    # !include ./docs/generator/cron-generator.yml
+    # !include ./docs/generator/event-generator.yml
+    - !include ./docs/generator/github-listener-generator.yml
+    # !include ./docs/generator/message-generator.yml
+    - !include ./docs/generator/metrics-generator.yml
   listeners:
-    - !include ../docs/listener/discord-listener.yml
-    - !include ../docs/listener/express-listener.yml
-    - !include ../docs/listener/github-listener.yml
-    - !include ../docs/listener/slack-listener.yml
+    - !include ./docs/listener/discord-listener.yml
+    - !include ./docs/listener/express-listener.yml
+    - !include ./docs/listener/github-listener.yml
+    - !include ./docs/listener/slack-listener.yml
   locale:
     metadata:
       kind: locale
@@ -70,18 +70,18 @@ data:
     - require: isolex-oot-example
       export: example-module
   parsers:
-    - !include ../docs/parser/args-parser.yml
-    - !include ../docs/parser/args-parser-complete.yml
-    - !include ../docs/parser/args-parser-join.yml
-    - !include ../docs/parser/args-parser-login.yml
-    - !include ../docs/parser/args-parser-k8s.yml
-    - !include ../docs/parser/echo-parser-react.yml
-    - !include ../docs/parser/lex-parser.yml
-    - !include ../docs/parser/split-parser-help.yml
-    - !include ../docs/parser/split-parser-learn.yml
-    - !include ../docs/parser/split-parser-math.yml
-    - !include ../docs/parser/split-parser-sed.yml
-    - !include ../docs/parser/yaml-parser.yml
+    - !include ./docs/parser/args-parser.yml
+    - !include ./docs/parser/args-parser-complete.yml
+    - !include ./docs/parser/args-parser-join.yml
+    - !include ./docs/parser/args-parser-login.yml
+    - !include ./docs/parser/args-parser-k8s.yml
+    - !include ./docs/parser/echo-parser-react.yml
+    - !include ./docs/parser/lex-parser.yml
+    - !include ./docs/parser/split-parser-help.yml
+    - !include ./docs/parser/split-parser-learn.yml
+    - !include ./docs/parser/split-parser-math.yml
+    - !include ./docs/parser/split-parser-sed.yml
+    - !include ./docs/parser/yaml-parser.yml
   process:
     pid:
       file: ./out/isolex.pid
