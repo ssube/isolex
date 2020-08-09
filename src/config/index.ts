@@ -30,19 +30,13 @@ export const SCHEMA_OPTIONS: Ajv.Options = {
   verbose: true,
 };
 
-export function initConfig(extras: Array<string>, filename: string) {
-  const include = {
-    ...INCLUDE_OPTIONS,
-  };
-
+export function initConfig(extras: Array<string>, name: string) {
+  const include = {...INCLUDE_OPTIONS};
   createSchema({
     include,
   });
 
-  const schema = new Ajv({
-    ...SCHEMA_OPTIONS,
-  });
-
+  const schema = new Ajv({...SCHEMA_OPTIONS});
   schema.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
   schema.addSchema({
     $id: 'isolex',
@@ -61,7 +55,7 @@ export function initConfig(extras: Array<string>, filename: string) {
     sources: [{
       include,
       key: '',
-      name: filename,
+      name,
       paths,
       type: 'file',
     }],
