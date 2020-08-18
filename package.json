@@ -50,7 +50,7 @@
     "@types/jsonwebtoken": "8.5.0",
     "@types/lodash": "4.14.159",
     "@types/mathjs": "6.0.5",
-    "@types/mocha": "8.0.1",
+    "@types/mocha": "8.0.3",
     "@types/mock-fs": "4.10.0",
     "@types/node-emoji": "1.8.1",
     "@types/passport": "1.0.4",
