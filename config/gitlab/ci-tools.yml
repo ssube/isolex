@@ -1,8 +1,16 @@
-.build-curl:
+.build-base:
   image: apextoaster/base:1.2
   tags:
     - platform:k8s
     - runner:shared
+
+.build-aws:
+  extends:
+    - .build-base
+
+.build-curl:
+  extends:
+    - .build-base
 
 .build-climate:
   image: apextoaster/code-climate:0.6
@@ -16,7 +24,7 @@
     GIT_COMMIT_SHA: "${CI_COMMIT_SHA}"
 
 .build-codecov:
-  image: apextoaster/codecov:3.1
+  image: apextoaster/codecov:3.7
   tags:
     - platform:k8s
     - runner:shared
@@ -44,7 +52,7 @@
     DOCKER_HOST: tcp://localhost:2375
 
 .build-node:
-  image: apextoaster/node:12.16
+  image: apextoaster/node:12.18
   tags:
     - platform:k8s
     - runner:shared
@@ -54,7 +62,7 @@
     - echo "${NPM_SECRET}" | base64 -d > ${HOME}/.npmrc
 
 .build-sonar:
-  image: apextoaster/sonar-scanner:3.3
+  image: apextoaster/sonar-scanner:4.4
   tags:
     - platform:k8s
     - runner:shared
