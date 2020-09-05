@@ -300,20 +300,15 @@
                 "allowForLoopAfterthoughts": true
             }
         ],
-        "no-redeclare": "error",
         "no-restricted-syntax": [
             "error",
             "ForInStatement"
         ],
         "no-return-await": "error",
         "no-sequences": "error",
-        "no-shadow": [
-            "error",
-            {
-                "hoist": "all"
-            }
-        ],
         "no-sparse-arrays": "error",
+	"@typescript-eslint/no-redeclare": ["error"],
+	"@typescript-eslint/no-shadow": ["error"],
         "no-template-curly-in-string": "error",
         "no-throw-literal": "error",
         "no-trailing-spaces": "error",

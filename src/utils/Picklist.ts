@@ -11,7 +11,7 @@ export interface PicklistOptions<T> {
 }
 
 export class Picklist<T> implements PicklistOptions<T> {
-  public static create<T>(...items: Array<T>): Picklist<T> {
+  public static create<TValue>(...items: Array<TValue>): Picklist<TValue> {
     return new Picklist({
       data: items.map((it) => ({
         value: it,
