@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import expressGraphQl from 'express-graphql';
+import { graphqlHTTP } from 'express-graphql';
 
 import { EndpointData, RouterOptions } from '.';
 import { GraphSchema, GraphSchemaData } from '../schema/graph';
@@ -22,7 +22,7 @@ export class GraphEndpoint extends BaseEndpoint<GraphEndpointData> {
     this.logger.debug({ data: this.data, graph: this.data.graph }, 'graph create router');
     const graph = await this.services.createService<GraphSchema, GraphSchemaData>(this.data.graph);
 
-    return router.use(expressGraphQl({
+    return router.use(graphqlHTTP({
       graphiql: this.data.graphiql,
       schema: graph.schema,
     }));
