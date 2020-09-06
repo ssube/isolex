@@ -1,6 +1,6 @@
 import { makeMap, mustExist, normalizeMap, pushMergeMap } from '@apextoaster/js-utils';
 import { Inject } from 'noicejs';
-import yargs from 'yargs-parser';
+import yargsParser from 'yargs-parser';
 
 import { Parser, ParserData, ParserOutput } from '.';
 import { BotServiceOptions } from '../BotService';
@@ -17,7 +17,8 @@ export interface ArgsParserData extends ParserData {
   args: {
     array?: Array<string>;
     boolean?: Array<string>;
-    configuration?: Partial<yargs.Configuration>;
+    // TODO: list proper options for this
+    configuration?: Record<string, boolean>;
     count?: Array<string>;
     default?: Array<string>;
     number?: Array<string>;
@@ -62,7 +63,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
 
   protected async decodeBody(body: string): Promise<ParserOutput> {
     return {
-      data: normalizeMap(yargs(body, this.data.args)),
+      data: normalizeMap(yargsParser(body, this.data.args)),
     };
   }
 

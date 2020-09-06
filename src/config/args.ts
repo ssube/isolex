@@ -1,9 +1,7 @@
-import yargs from 'yargs-parser';
-
 // main arguments
 export const CONFIG_ARGS_NAME = 'config-name';
 export const CONFIG_ARGS_PATH = 'config-path';
-export const CONFIG_ARGS: yargs.Options = {
+export const CONFIG_ARGS = {
   array: [CONFIG_ARGS_PATH],
   boolean: ['test'],
   count: ['v'],
