@@ -135,8 +135,7 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     return this.services.listServices();
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  protected createMutation() {
+  protected createMutation(): GraphQLObjectType {
     return new GraphQLObjectType({
       fields: {
         executeCommands: {
@@ -144,7 +143,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
             commands: { type: GRAPH_INPUT_COMMAND_LIST },
             context: { type: GRAPH_INPUT_CONTEXT },
           },
-          resolve: (_, args: any, req: express.Request) => this.executeCommands(args, req),
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          resolve: (_: unknown, args: any, req: express.Request) => this.executeCommands(args, req),
           type: GRAPH_OUTPUT_COMMAND_LIST,
         },
         sendMessages: {
@@ -152,7 +152,8 @@ export class GraphSchema extends BotService<GraphSchemaData> {
             context: { type: GRAPH_INPUT_CONTEXT },
             messages: { type: GRAPH_INPUT_MESSAGE_LIST },
           },
-          resolve: (_, args: any, req: express.Request) => this.sendMessages(args, req),
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          resolve: (_: unknown, args: any, req: express.Request) => this.sendMessages(args, req),
           type: GRAPH_OUTPUT_MESSAGE_LIST,
         },
       },
@@ -160,32 +161,36 @@ export class GraphSchema extends BotService<GraphSchemaData> {
     });
   }
 
-  protected createQuery() {
+  protected createQuery(): GraphQLObjectType {
     return new GraphQLObjectType({
       fields: {
         command: {
           args: {
             id: { type: GraphQLString },
           },
-          resolve: (_, args: any, req: express.Request) => this.getCommand(args, req),
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          resolve: (_: unknown, args: any, req: express.Request) => this.getCommand(args, req),
           type: GRAPH_OUTPUT_COMMAND,
         },
         message: {
           args: {
             id: { type: GraphQLString },
           },
-          resolve: (_, args: any, req: express.Request) => this.getMessage(args, req),
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          resolve: (_: unknown, args: any, req: express.Request) => this.getMessage(args, req),
           type: GRAPH_OUTPUT_MESSAGE,
         },
         service: {
           args: {
             id: { type: GraphQLString },
           },
-          resolve: (_, args: any, req: express.Request) => this.getService(args, req),
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          resolve: (_: unknown, args: any, req: express.Request) => this.getService(args, req),
           type: GRAPH_OUTPUT_SERVICE,
         },
         services: {
-          resolve: (_, args: any, req: express.Request) => this.getServices(args, req),
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          resolve: (_: unknown, args: any, req: express.Request) => this.getServices(args, req),
           type: GRAPH_OUTPUT_SERVICE_LIST,
         },
       },
