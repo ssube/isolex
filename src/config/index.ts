@@ -36,9 +36,9 @@ export function initConfig(extras: Array<string>, name: string) {
     include,
   });
 
-  const schema = new Ajv({...SCHEMA_OPTIONS});
-  schema.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
-  schema.addSchema({
+  const validator = new Ajv({...SCHEMA_OPTIONS});
+  validator.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
+  validator.addSchema({
     $id: 'isolex',
     schema: SCHEMA_GLOBAL,
   });
@@ -51,14 +51,13 @@ export function initConfig(extras: Array<string>, name: string) {
 
   const config = new Config<BotDefinition>({
     key: '',
-    schema,
     sources: [{
       include,
-      key: '',
       name,
       paths,
       type: 'file',
     }],
+    validator,
   });
 
   return config.getData();
