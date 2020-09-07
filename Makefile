@@ -46,7 +46,7 @@ NODE_DEBUG ?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
 NODE_INFO := $(shell node -v)
 
 # Tool options
-COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap
+COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap=false
 MOCHA_OPTS  ?= --check-leaks --colors --sort --ui bdd
 RELEASE_OPTS ?= --commit-all
 
@@ -95,7 +95,7 @@ build: ## builds, bundles, and tests the application
 build: build-bundle build-docs
 
 build-bundle: node_modules
-	$(NODE_BIN)/rollup --config $(CONFIG_PATH)/rollup.js
+	$(NODE_BIN)/rollup --config $(CONFIG_PATH)/rollup/config.js
 	sed -i '1s;^;#! /usr/bin/env node\n\n;' $(TARGET_PATH)/index.js
 
 build-docs: ## generate html docs

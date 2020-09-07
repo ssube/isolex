@@ -1,4 +1,4 @@
-export NODE_OPTIONS ?= --max-old-space-size=8000
+export NODE_OPTIONS ?= --max-old-space-size=12000
 
 MOCHA_LONG_OPTS := $(MOCHA_OPTS) --timeout 60000 --retries 3 --forbid-only
 

@@ -1,0 +1,49 @@
+{
+  "chunks": [
+    {
+      "name": "index",
+      "includes": [
+        "/src/index"
+      ],
+      "match": []
+    },
+    {
+      "name": "test",
+      "includes": [
+        "/test/"
+      ],
+      "match": [
+        "node_modules/chai",
+        "node_modules/chai-as-promised",
+        "node_modules/sinon",
+        "node_modules/sinon-chai"
+      ]
+    },
+    {
+      "name": "vendor",
+      "includes": [
+        "node_modules/"
+      ],
+      "match": [
+        "commonjs-external",
+        "commonjsHelpers",
+        "node-resolve:"
+      ]
+    },
+    {
+      "name": "main",
+      "includes": [
+        "/src/",
+        "/rules/"
+      ],
+      "match": []
+    },
+    {
+      "name": "virtual",
+      "includes": [],
+      "match": [
+        "virtual:"
+      ]
+    }
+  ]
+}
