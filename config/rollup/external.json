@@ -7,13 +7,17 @@
     "chai-as-promised",
     "discord.js",
     "ecc-jsb",
+    "mock-fs",
+    "readable-stream",
     "shelljs",
     "sinon",
     "sinon-chai",
     "snekfetch",
+    "sqlite3",
     "sshpk",
     "source-map",
     "source-map-support",
+    "typeorm",
     "xmlbuilder"
   ]
 }
