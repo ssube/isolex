@@ -5801,6 +5801,13 @@ rollup-plugin-eslint@7.0.0:
     eslint "^6.0.0"
     rollup-pluginutils "^2.7.1"
 
+rollup-plugin-json@^4.0.0:
+  version "4.0.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-json/-/rollup-plugin-json-4.0.0.tgz#a18da0a4b30bf5ca1ee76ddb1422afbb84ae2b9e"
+  integrity sha512-hgb8N7Cgfw5SZAkb3jf0QXii6QX/FOkiIq2M7BAQIEydjHvTyxXHQiIzZaTFgx1GK0cRCHOCBHIyEkkLdWKxow==
+  dependencies:
+    rollup-pluginutils "^2.5.0"
+
 rollup-plugin-node-externals@2.2.0:
   version "2.2.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-node-externals/-/rollup-plugin-node-externals-2.2.0.tgz#23946e8c0fdd0e321cc3f225d4cebc3d819d17c4"
@@ -5848,7 +5855,17 @@ rollup-plugin-visualizer@^4.1.1:
     source-map "^0.7.3"
     yargs "^15.0.0"
 
-rollup-pluginutils@^2.7.1, rollup-pluginutils@^2.8.1:
+rollup-plugin-yaml@2.0.0:
+  version "2.0.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-yaml/-/rollup-plugin-yaml-2.0.0.tgz#80a67b59e00f010f5f2a2bb6fa70aad4718f85f8"
+  integrity sha512-aBfREZIkvKjfwHbcpqVsst0iB2PvsdEpvGNw02N2kQ8rOP7ZClZDpxwylkpcmO9/xgD2uInA/AY3mGursT37zw==
+  dependencies:
+    js-yaml "^3.13.1"
+    rollup-plugin-json "^4.0.0"
+    rollup-pluginutils "^2.8.2"
+    tosource "^1.0.0"
+
+rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.7.1, rollup-pluginutils@^2.8.1, rollup-pluginutils@^2.8.2:
   version "2.8.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-pluginutils/-/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
   integrity sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==
