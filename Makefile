@@ -46,7 +46,7 @@ NODE_DEBUG ?= --inspect-brk=$(DEBUG_BIND):$(DEBUG_PORT) --nolazy
 NODE_INFO := $(shell node -v)
 
 # Tool options
-COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap=false --cwd $(TARGET_PATH)
+COVER_OPTS	?= --reporter=lcov --reporter=text-summary --reporter=html --report-dir="$(TARGET_PATH)/coverage" --exclude-after-remap=false
 MOCHA_OPTS  ?= --check-leaks --colors --sort --ui bdd
 RELEASE_OPTS ?= --commit-all
 
