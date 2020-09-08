@@ -436,7 +436,7 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@rollup/plugin-commonjs@^15.0.0":
+"@rollup/plugin-commonjs@15.0.0":
   version "15.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-commonjs/-/plugin-commonjs-15.0.0.tgz#690d15a9d54ba829db93555bff9b98ff34e08574"
   integrity sha512-8uAdikHqVyrT32w1zB9VhW6uGwGjhKgnDNP4pQJsjdnyF4FgCj6/bmv24c7v2CuKhq32CcyCwRzMPEElaKkn0w==
@@ -449,14 +449,14 @@
     magic-string "^0.25.7"
     resolve "^1.17.0"
 
-"@rollup/plugin-json@^4.1.0":
+"@rollup/plugin-json@4.1.0":
   version "4.1.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-json/-/plugin-json-4.1.0.tgz#54e09867ae6963c593844d8bd7a9c718294496f3"
   integrity sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==
   dependencies:
     "@rollup/pluginutils" "^3.0.8"
 
-"@rollup/plugin-multi-entry@^4.0.0":
+"@rollup/plugin-multi-entry@4.0.0":
   version "4.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-multi-entry/-/plugin-multi-entry-4.0.0.tgz#8e105f16ec1bb26639eb3302c8db5665f44b9939"
   integrity sha512-1Sw86rwFxrNS7ECY3iSZ7T940xKnruNGpmQDgSDVTp+VTa1g5cPXNzBgp+IoOer41CiVeGFLwYwvicVoJLHEDQ==
@@ -464,7 +464,7 @@
     "@rollup/plugin-virtual" "^2.0.3"
     matched "^5.0.0"
 
-"@rollup/plugin-node-resolve@^9.0.0":
+"@rollup/plugin-node-resolve@9.0.0":
   version "9.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-node-resolve/-/plugin-node-resolve-9.0.0.tgz#39bd0034ce9126b39c1699695f440b4b7d2b62e6"
   integrity sha512-gPz+utFHLRrd41WMP13Jq5mqqzHL3OXrfj3/MkSyB6UBIcuNt9j60GCbarzMzdf1VHFpOxfQh/ez7wyadLMqkg==
@@ -476,7 +476,7 @@
     is-module "^1.0.0"
     resolve "^1.17.0"
 
-"@rollup/plugin-replace@^2.3.3":
+"@rollup/plugin-replace@2.3.3":
   version "2.3.3"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-replace/-/plugin-replace-2.3.3.tgz#cd6bae39444de119f5d905322b91ebd4078562e7"
   integrity sha512-XPmVXZ7IlaoWaJLkSCDaa0Y6uVo5XQYHhiMFzOd5qSv5rE+t/UJToPIOE56flKIxBFQI27ONsxb7dqHnwSsjKQ==
@@ -489,7 +489,7 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-virtual/-/plugin-virtual-2.0.3.tgz#0afc88d75c1e1378ab290b8e9898d4edb5be0d74"
   integrity sha512-pw6ziJcyjZtntQ//bkad9qXaBx665SgEL8C8KI5wO8G5iU5MPxvdWrQyVaAvjojGm9tJoS8M9Z/EEepbqieYmw==
 
-"@rollup/plugin-yaml@^2.1.1":
+"@rollup/plugin-yaml@2.1.1":
   version "2.1.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rollup/plugin-yaml/-/plugin-yaml-2.1.1.tgz#6c864adee22004eb325d53bc4ee5553828e056d8"
   integrity sha512-CnGD3dbDhP+JeKFX7kJuaBOa7jVzXpl3G8lXp1hasB87cDYOz7qNWd4cFPmYbxMsT/8OCVsceIpRtQ+cj9uxBw==
@@ -5815,7 +5815,7 @@ rollup-plugin-node-externals@2.2.0:
   dependencies:
     find-up "^4.1.0"
 
-rollup-plugin-serve@^1.0.4:
+rollup-plugin-serve@1.0.4:
   version "1.0.4"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-serve/-/rollup-plugin-serve-1.0.4.tgz#17665974185f9007ecaeb0835c4e89612e04d234"
   integrity sha512-74Gh47+dGKhmy04MIu9deXwn8VGlWsk93HcGIbO+NCdZ9roRXVO7y4l/9MLAAujuYpzsWCopHHZT8/6PSRzGLg==
@@ -5823,7 +5823,7 @@ rollup-plugin-serve@^1.0.4:
     mime ">=2.4.6"
     opener "1"
 
-rollup-plugin-terser@^7.0.2:
+rollup-plugin-terser@7.0.2:
   version "7.0.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-terser/-/rollup-plugin-terser-7.0.2.tgz#e8fbba4869981b2dc35ae7e8a502d5c6c04d324d"
   integrity sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==
@@ -5844,7 +5844,7 @@ rollup-plugin-typescript2@0.27.2:
     resolve "1.17.0"
     tslib "2.0.1"
 
-rollup-plugin-visualizer@^4.1.1:
+rollup-plugin-visualizer@4.1.1:
   version "4.1.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-visualizer/-/rollup-plugin-visualizer-4.1.1.tgz#b8b18db0aa4b0e3b2af583399fa9d7e3f5a61808"
   integrity sha512-aQBukhj8T+1BcOjD/5xB3+mZSSzHIVT+WpQDDEVpmPCkILVX0J7NPOuKEvKIXU+iZLvF7B5/wJA4+wxuH7FNew==
