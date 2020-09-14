@@ -12,6 +12,9 @@ data:
   projects:
     - owner: ssube
       project: isolex
+      authors:
+        # renovate-bot
+        - ssube
       checks:
         - app: codeclimate
           conclusion: success

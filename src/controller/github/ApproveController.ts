@@ -1,4 +1,5 @@
-import { doesExist, mustExist, mustFind } from '@apextoaster/js-utils';
+import { mustExist, mustFind } from '@apextoaster/js-utils';
+import { isNil } from 'lodash';
 import { Container } from 'noicejs';
 
 import { CheckRBAC, Controller, ControllerData, Handler } from '..';
@@ -12,6 +13,7 @@ export const NOUN_APPROVE = 'github-approve';
 export interface GithubApproveControllerData extends ControllerData {
   client: GithubClientData;
   projects: Array<{
+    authors: Array<string>;
     checks: Array<{
       app: string;
       conclusion: string;
@@ -63,36 +65,45 @@ export class GithubApproveController extends BaseController<GithubApproveControl
 
     const checkPromise = client.checks.listForRef(options);
     const statusPromise = client.repos.getCombinedStatusForRef(options);
-    const [checks, status] = await Promise.all([checkPromise, statusPromise]);
+    const [checkData, statusData] = await Promise.all([checkPromise, statusPromise]);
 
-    const checkData = checks.data.check_runs.map((it) => ({
+    const checks = checkData.data.check_runs.map((it) => ({
       app: it.app.slug,
       conclusion: it.conclusion,
       name: it.name,
       status: it.status,
     }));
-    const statusData = status.data.statuses.map((it) => ({
+    const statuses = statusData.data.statuses.map((it) => ({
       app: it.context,
       conclusion: it.state,
       name: it.context,
       status: it.state,
     }));
-
-    const results = [...checkData, ...statusData];
+    const results = [...checks, ...statuses];
 
     const projectData = this.data.projects.find((it) => it.owner === owner && it.project === project);
-    if (doesExist(projectData)) {
-      const checkResults = projectData.checks.map((check) => {
-        const result = mustFind(results, (r) => r.app === check.app && r.name === check.name);
-        return check.conclusion === result.conclusion && check.status === result.status;
-      });
-
-      return this.reply(ctx, JSON.stringify({
-        checks,
-        results: checkResults,
-      }));
-    } else {
+    if (isNil(projectData)) {
       return this.reply(ctx, `project not found\n${JSON.stringify(results)}`);
+    }
+
+    const author = pull.data.user.login;
+    if (!projectData.authors.includes(author)) {
+      return this.reply(ctx, `request author not trusted: ${author}`);
+    }
+
+    const checkStatus = projectData.checks.map((check) => {
+      const result = mustFind(results, (r) => r.app === check.app && r.name === check.name);
+      return {
+        name: check.name,
+        status: check.conclusion === result.conclusion && check.status === result.status,
+      };
+    });
+
+    if (checkStatus.every((cr) => cr.status)) {
+      return this.reply(ctx, 'all checks passed!');
+    } else {
+      const errors = checkStatus.filter((cr) => !cr.status);
+      return this.reply(ctx, `some checks failed:\n${JSON.stringify(errors)}`);
     }
   }
 }
