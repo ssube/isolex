@@ -10,16 +10,36 @@ import { BaseController, BaseControllerOptions } from '../BaseController';
 
 export const NOUN_APPROVE = 'github-approve';
 
+export interface ProjectRef {
+  owner: string;
+  ref: string;
+  repo: string;
+}
+
+export interface CheckData {
+  app: string;
+  conclusion: string;
+  name: string;
+  status: string;
+}
+
+export interface CheckStatus {
+  app: string;
+  name: string;
+  status: boolean;
+}
+
+export interface RefResult {
+  checks: Array<CheckStatus>;
+  errors: Array<CheckStatus>;
+  success: boolean;
+}
+
 export interface GithubApproveControllerData extends ControllerData {
   client: GithubClientData;
   projects: Array<{
     authors: Array<string>;
-    checks: Array<{
-      app: string;
-      conclusion: string;
-      name: string;
-      status: string;
-    }>;
+    checks: Array<CheckData>;
     owner: string;
     project: string;
   }>;
@@ -63,6 +83,26 @@ export class GithubApproveController extends BaseController<GithubApproveControl
       repo: project,
     };
 
+    const checkStatus = await this.checkRef(options, pull.data.user.login);
+    if (checkStatus.success) {
+      return this.reply(ctx, 'all checks passed!');
+    } else {
+      const errors = checkStatus.errors.map((err) => {
+        if (err.app !== err.name) {
+          return `${err.app}/${err.name}`;
+        } else {
+          return err.name;
+        }
+      }).sort();
+
+      const body = ['some checks failed', ...errors].join('\n- ');
+      return this.reply(ctx, body);
+    }
+  }
+
+  public async checkRef(options: ProjectRef, author: string): Promise<RefResult> {
+    const client = mustExist(this.client).client;
+
     const checkPromise = client.checks.listForRef(options);
     const statusPromise = client.repos.getCombinedStatusForRef(options);
     const [checkData, statusData] = await Promise.all([checkPromise, statusPromise]);
@@ -83,29 +123,45 @@ export class GithubApproveController extends BaseController<GithubApproveControl
     const results = [...checks, ...statuses];
     this.logger.debug({ results, options }, 'collected request results');
 
-    const projectData = this.data.projects.find((it) => it.owner === owner && it.project === project);
+    const projectData = this.data.projects.find((it) => it.owner === options.owner && it.project === options.repo);
     if (isNil(projectData)) {
-      return this.reply(ctx, `project not found\n${JSON.stringify(results)}`);
+      return {
+        checks: [],
+        errors: [{
+          app: 'meta',
+          name: 'project not found',
+          status: false,
+        }],
+        success: false,
+      };
     }
 
-    const author = pull.data.user.login;
     if (!projectData.authors.includes(author)) {
-      return this.reply(ctx, `request author not trusted: ${author}`);
+      return {
+        checks: [],
+        errors: [{
+          app: 'meta',
+          name: 'author not trusted',
+          status: false,
+        }],
+        success: false,
+      };
     }
 
-    const checkStatus = projectData.checks.map((check) => {
+    const status = projectData.checks.map((check) => {
       const result = results.find((r) => r.app === check.app && r.name === check.name);
       return {
+        app: check.app,
         name: check.name,
         status: doesExist(result) && check.conclusion === result.conclusion && check.status === result.status,
       };
     });
+    const errors = status.filter((it) => !it.status);
 
-    if (checkStatus.every((cr) => cr.status)) {
-      return this.reply(ctx, 'all checks passed!');
-    } else {
-      const errors = checkStatus.filter((cr) => !cr.status);
-      return this.reply(ctx, `some checks failed:\n\`${JSON.stringify(errors)}\``);
-    }
+    return {
+      checks: status,
+      errors,
+      success: errors.length === 0,
+    };
   }
 }
