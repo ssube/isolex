@@ -1,4 +1,4 @@
-import { mustExist, mustFind } from '@apextoaster/js-utils';
+import { doesExist, mustExist } from '@apextoaster/js-utils';
 import { isNil } from 'lodash';
 import { Container } from 'noicejs';
 
@@ -79,7 +79,9 @@ export class GithubApproveController extends BaseController<GithubApproveControl
       name: it.context,
       status: it.state,
     }));
+
     const results = [...checks, ...statuses];
+    this.logger.debug({ results, options }, 'collected request results');
 
     const projectData = this.data.projects.find((it) => it.owner === owner && it.project === project);
     if (isNil(projectData)) {
@@ -92,10 +94,10 @@ export class GithubApproveController extends BaseController<GithubApproveControl
     }
 
     const checkStatus = projectData.checks.map((check) => {
-      const result = mustFind(results, (r) => r.app === check.app && r.name === check.name);
+      const result = results.find((r) => r.app === check.app && r.name === check.name);
       return {
         name: check.name,
-        status: check.conclusion === result.conclusion && check.status === result.status,
+        status: doesExist(result) && check.conclusion === result.conclusion && check.status === result.status,
       };
     });
 
@@ -103,7 +105,7 @@ export class GithubApproveController extends BaseController<GithubApproveControl
       return this.reply(ctx, 'all checks passed!');
     } else {
       const errors = checkStatus.filter((cr) => !cr.status);
-      return this.reply(ctx, `some checks failed:\n${JSON.stringify(errors)}`);
+      return this.reply(ctx, `some checks failed:\n\`${JSON.stringify(errors)}\``);
     }
   }
 }

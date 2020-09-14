@@ -13,12 +13,20 @@ data:
     - owner: ssube
       project: isolex
       authors:
-        # renovate-bot
+        - 'renovate[bot]'
         - ssube
       checks:
         - app: codeclimate
           conclusion: success
           name: codeclimate
+          status: success
+        - app: codecov/patch
+          conclusion: success
+          name: codecov/patch
+          status: success
+        - app: codecov/project
+          conclusion: success
+          name: codecov/project
           status: success
         - app: gitlab/build
           conclusion: success
