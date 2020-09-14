@@ -7,6 +7,7 @@ import { CompletionController } from '../controller/CompletionController';
 import { CountController } from '../controller/CountController';
 import { DiceController } from '../controller/DiceController';
 import { EchoController } from '../controller/EchoController';
+import { GithubApproveController } from '../controller/github/ApproveController';
 import { GithubCommitController } from '../controller/github/CommitController';
 import { GithubPullController } from '../controller/github/PullController';
 import { GitlabCIController } from '../controller/gitlab/CIController';
@@ -50,6 +51,7 @@ export class ControllerModule extends BaseModule {
     this.bindService(WeatherController);
 
     // github controllers
+    this.bindService(GithubApproveController);
     this.bindService(GithubCommitController);
     this.bindService(GithubPullController);
 

@@ -1,0 +1,29 @@
+metadata:
+  kind: github-approve-controller
+  name: test-approve-controller
+data:
+  client:
+    agent: ssube/isolex/controller/github/approve
+    app:
+      id: !env ISOLEX_GITHUB_APP_ID
+      key: !env ISOLEX_GITHUB_APP_KEY
+    installation:
+      id: !env ISOLEX_GITHUB_APP_INSTALLATION
+  projects:
+    - owner: ssube
+      project: isolex
+      checks:
+        - app: codeclimate
+          conclusion: success
+          name: codeclimate
+          status: success
+        - app: gitlab/build
+          conclusion: success
+          name: gitlab/build
+          status: success
+
+  filters: []
+  redirect:
+    defaults: {}
+    forces: {}
+  transforms: []

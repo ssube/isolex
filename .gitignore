@@ -7,10 +7,12 @@ temp/
 
 # types
 *.bak
+*.dot
 *.pid
 *.swp
 *.tmp
 
+noname.*.png
 report.*.json
 package-lock.json
 yarn-error.log
