@@ -34,7 +34,7 @@
     "@apextoaster/js-utils": "0.2.1",
     "@apextoaster/js-yaml-schema": "0.4.0-3",
     "@istanbuljs/nyc-config-typescript": "1.0.1",
-    "@microsoft/api-documenter": "7.8.46",
+    "@microsoft/api-documenter": "7.8.48",
     "@microsoft/api-extractor": "7.9.15",
     "@octokit/app": "4.2.1",
     "@octokit/rest": "16.43.2",
