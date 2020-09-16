@@ -32,7 +32,7 @@ export interface CheckStatus {
 export interface RefResult {
   checks: Array<CheckStatus>;
   errors: Array<CheckStatus>;
-  success: boolean;
+  status: boolean;
 }
 
 export interface GithubApproveControllerData extends ControllerData {
@@ -84,7 +84,7 @@ export class GithubApproveController extends BaseController<GithubApproveControl
     };
 
     const checkStatus = await this.checkRef(options, pull.data.user.login);
-    if (checkStatus.success) {
+    if (checkStatus.status) {
       return this.reply(ctx, 'all checks passed!');
     }
 
@@ -133,7 +133,7 @@ export class GithubApproveController extends BaseController<GithubApproveControl
     return {
       checks,
       errors,
-      success: errors.length === 0,
+      status: errors.length === 0,
     };
   }
 
@@ -168,6 +168,6 @@ export function errorResult(status: CheckStatus): RefResult {
   return {
     checks: [],
     errors: [status],
-    success: false,
+    status: false,
   };
 }
