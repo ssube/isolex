@@ -82,12 +82,14 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
   @CheckRBAC()
   public async updateRequest(cmd: Command, ctx: Context): Promise<void> {
     const action = cmd.getHead('action');
-    if (action === 'merge') {
-      return this.mergeRequest(cmd, ctx);
-    } else if (action === 'approve') {
-      return this.approveRequest(cmd, ctx);
-    } else {
-      return this.errorReply(ctx, ErrorReplyType.Unknown, 'unknown');
+
+    switch (action) {
+      case 'merge':
+        return this.mergeRequest(cmd, ctx);
+      case 'approve':
+        return this.approveRequest(cmd, ctx);
+      default:
+        return this.errorReply(ctx, ErrorReplyType.Unknown, 'unknown');
     }
   }
 

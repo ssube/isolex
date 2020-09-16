@@ -157,8 +157,9 @@ describe('app bot stuff', async () => {
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
     const status = await pendingStatus;
 
+    const EXPECTED_SIGNALS = 3;
     expect(status).to.equal(ExitStatus.Success);
-    expect(spies.notify).to.have.callCount(3)
+    expect(spies.notify).to.have.callCount(EXPECTED_SIGNALS)
       .and.been.calledWith(ServiceEvent.Start)
       .and.been.calledWith(ServiceEvent.Reset)
       .and.been.calledWith(ServiceEvent.Stop);
@@ -186,8 +187,9 @@ describe('app bot stuff', async () => {
     process.kill(process.pid, SIGNAL_STOP); // ask it to stop
     const status = await pendingStatus;
 
+    const EXPECTED_SIGNALS = 3;
     expect(status).to.equal(ExitStatus.Success);
-    expect(spies.notify).to.have.callCount(3)
+    expect(spies.notify).to.have.callCount(EXPECTED_SIGNALS)
       .and.been.calledWith(ServiceEvent.Start)
       .and.been.calledWith(ServiceEvent.Reload)
       .and.been.calledWith(ServiceEvent.Stop);

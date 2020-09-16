@@ -5,7 +5,19 @@ import { ConsoleLogger, Container } from 'noicejs';
 import { BotModule } from '../../src/module/BotModule';
 import { Cooldown, CooldownOptions } from '../../src/utils/Cooldown';
 
-const COOLDOWN_STEPS = [10, 10 + 2, 10 + 2 + 4, 10 + 2 + 4 + 8];
+/* eslint-disable no-magic-numbers */
+const COOLDOWN_STEPS = [
+  10,
+  12, /* 10 + 2 */
+  16, /* 10 + 2 + 4 */
+  24, /* 10 + 2 + 4 + 8 */
+];
+/* eslint-enable */
+const COOLDOWN_DATA = {
+  base: 20,
+  grow: 0,
+};
+const TEST_DELAY = 50;
 
 async function createCooldown(options: Partial<CooldownOptions>) {
   const ctr = Container.from(new BotModule({
@@ -35,28 +47,24 @@ describe('utils', async () => {
     });
 
     it('should stop a pending timer', async () => {
-      const cd = await createCooldown({
-        base: 5000,
-        grow: 0,
-      });
+      const cd = await createCooldown(COOLDOWN_DATA);
 
       await cd.start();
       await cd.stop();
     });
 
     it('should track ticks', async () => {
-      const cd = await createCooldown({
-        base: 20,
-        grow: 0,
-      });
+      const cd = await createCooldown(COOLDOWN_DATA);
 
       await cd.start();
-      await defer(50);
+      await defer(TEST_DELAY);
       await cd.stop();
-      expect(cd.getTicks()).to.equal(3);
 
-      await defer(50);
-      expect(cd.getTicks()).to.equal(3);
+      const EXPECTED_TICKS = 3;
+      expect(cd.getTicks()).to.equal(EXPECTED_TICKS);
+
+      await defer(TEST_DELAY);
+      expect(cd.getTicks()).to.equal(EXPECTED_TICKS);
     });
 
     it('should always have a stream', async () => {

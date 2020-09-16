@@ -8,6 +8,7 @@ import { ServiceModule } from '../../src/module/ServiceModule';
 import { Service, ServiceEvent } from '../../src/Service';
 import { createContainer, createServiceContainer } from '../helpers/container';
 
+const TEST_DELAY = 50;
 const TEST_SERVICE_NAME = 'test-service';
 
 async function createModule() {
@@ -60,7 +61,7 @@ describe('DI modules', async () => {
       expect(stop).to.have.callCount(1);
       expect(module.size).to.equal(0);
 
-      await defer(50);
+      await defer(TEST_DELAY);
     });
 
     it('should create and save child services', async () => {

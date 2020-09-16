@@ -61,7 +61,7 @@ describe('completion helper', async () => {
         },
       });
       expect(result.complete).to.equal(false);
-      if (!result.complete) {
+      if (result.complete === false) {
         expect(result.fragment.getHead('key')).to.equal('fin');
         expect(result.fragment.getHead('parser')).to.equal('test');
       }

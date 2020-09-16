@@ -21,6 +21,8 @@ const DEC_VALUE = 3.2;
 const INT_VALUE = 1.0;
 const NIL_RESULT = 'nil result';
 
+/* eslint-disable no-magic-numbers */
+
 describe('math utils', () => {
   describe('clamp', () => {
     it('should return values within the range', () => {

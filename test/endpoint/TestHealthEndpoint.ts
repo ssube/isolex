@@ -20,7 +20,8 @@ function createRequest() {
 describe('health endpoint', async () => {
   it('should have paths', async () => {
     const endpoint = await createEndpoint(HealthEndpoint, false, false);
-    expect(endpoint.paths.length).to.equal(3);
+    const EXPECTED_PATHS = 3;
+    expect(endpoint.paths.length).to.equal(EXPECTED_PATHS);
     expect(endpoint.paths).to.include('/health');
   });
 
@@ -34,8 +35,10 @@ describe('health endpoint', async () => {
       passport: ineeda<passport.Authenticator>(),
       router,
     });
+
+    const EXPECTED_CALLS = 2;
     expect(result).to.equal(router, 'must return the passed router');
-    expect(get).to.have.callCount(2);
+    expect(get).to.have.callCount(EXPECTED_CALLS);
   });
 
   describe('liveness route', async () => {

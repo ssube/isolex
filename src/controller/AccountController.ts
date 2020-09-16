@@ -80,7 +80,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
 
   @Handler(NOUN_ACCOUNT, CommandVerb.Create)
   public async createAccount(cmd: Command, ctx: Context): Promise<void> {
-    if (!this.data.join.allow && !this.checkGrants(ctx, 'account:create')) {
+    if (this.data.join.allow === false && this.checkGrants(ctx, 'account:create') === false) {
       return this.errorReply(ctx, ErrorReplyType.GrantMissing);
     }
 

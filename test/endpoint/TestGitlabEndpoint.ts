@@ -44,7 +44,9 @@ const TEST_EVENTS = [{
 describe('gitlab endpoint', async () => {
   it('should have paths', async () => {
     const endpoint = await createEndpoint(GitlabEndpoint, false, false, TEST_DATA);
-    expect(endpoint.paths.length).to.equal(3);
+
+    const EXPECTED_CALLS = 3;
+    expect(endpoint.paths.length).to.equal(EXPECTED_CALLS);
     expect(endpoint.paths).to.include('/gitlab');
   });
 

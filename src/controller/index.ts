@@ -62,7 +62,7 @@ export interface HandlerOptions {
 
 /* eslint-disable-next-line @typescript-eslint/ban-types */
 export function getHandlerOptions(target: Function): HandlerOptions | undefined {
-  if (!Reflect.hasMetadata(SYMBOL_HANDLER, target)) {
+  if (Reflect.hasMetadata(SYMBOL_HANDLER, target) === false) {
     return;
   }
 

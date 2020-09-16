@@ -16,6 +16,7 @@ import { Schema } from '../src/schema';
 import { ServiceEvent } from '../src/Service';
 import { createContainer } from './helpers/container';
 
+const TEST_DELAY = 50; // TODO: why do these need a delay?
 const TEST_CONFIG: BotData = {
   controllers: [],
   endpoints: [],
@@ -139,7 +140,7 @@ describe('bot service', async () => {
       noun: 'test',
       verb: CommandVerb.Create,
     }));
-    await defer(50);
+    await defer(TEST_DELAY);
     await bot.stop();
     expect(results.length).to.equal(0);
   });
@@ -160,7 +161,7 @@ describe('bot service', async () => {
     });
     await bot.start();
     const results = await bot.sendMessage();
-    await defer(50);
+    await defer(TEST_DELAY);
     await bot.stop();
     expect(results.length).to.equal(0);
   });

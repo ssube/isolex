@@ -50,7 +50,9 @@ describe('template compiler', async () => {
     it('should trim strings to length', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
-      expect(compiler.formatTrim('hello world', 6, '!')).to.equal('hello!');
+
+      const REMOVE_CHARS = 6;
+      expect(compiler.formatTrim('hello world', REMOVE_CHARS, '!')).to.equal('hello!');
     });
   });
 

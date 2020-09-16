@@ -80,7 +80,7 @@ export class ArgsParser extends BaseParser<ArgsParserData> implements Parser {
   protected validate(data: Map<string, Array<string>>): Array<string> {
     const missing = [];
     for (const req of this.data.args.required) {
-      if (!data.has(req)) {
+      if (data.has(req) === false) {
         missing.push(req);
       }
     }

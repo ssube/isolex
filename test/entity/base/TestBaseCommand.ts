@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
 
 import { BaseCommand } from '../../../src/entity/base/BaseCommand';
 import { CommandVerb } from '../../../src/entity/Command';
@@ -56,7 +57,9 @@ describe('base command', async () => {
       noun: '',
       verb: CommandVerb.Create,
     });
-    expect(cmd.getHeadOrNumber('bar', 3)).to.equal(3);
+
+    const EXPECTED_VALUE = 3;
+    expect(cmd.getHeadOrNumber('bar', EXPECTED_VALUE)).to.equal(EXPECTED_VALUE);
   });
 
   it('should get a number when key exists', async () => {
@@ -68,7 +71,10 @@ describe('base command', async () => {
       noun: '',
       verb: CommandVerb.Create,
     });
-    expect(cmd.getHeadOrNumber('foo', 3)).to.equal(1);
+
+    const EXPECTED_VALUE = 1;
+    const DEFAULT_VALUE = 3;
+    expect(cmd.getHeadOrNumber('foo', DEFAULT_VALUE)).to.equal(EXPECTED_VALUE);
   });
 
   it('should get a default number when value is NaN', async () => {
@@ -80,6 +86,8 @@ describe('base command', async () => {
       noun: '',
       verb: CommandVerb.Create,
     });
-    expect(cmd.getHeadOrNumber('foo', 3)).to.equal(3);
+
+    const EXPECTED_VALUE = 3;
+    expect(cmd.getHeadOrNumber('foo', EXPECTED_VALUE)).to.equal(EXPECTED_VALUE);
   });
 });

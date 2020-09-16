@@ -136,8 +136,8 @@ export class Context extends BaseEntity implements ContextOptions, ContextRoute 
    * grants on a user).
    */
   public checkGrants(checks: Array<string>): boolean {
-    if (doesExist(this.token) && !this.token.checkGrants(checks)) {
-      return false;
+    if (doesExist(this.token)) {
+      return this.token.checkGrants(checks);
     }
 
     const trie = this.buildTrie();

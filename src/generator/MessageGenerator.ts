@@ -42,7 +42,7 @@ export class MessageGenerator extends BaseGenerator<MessageGeneratorData> {
   }
 
   public async tick(context: Context, next: Tick, last?: Tick): Promise<number> {
-    if (!this.started) {
+    if (this.started === false) {
       throw new NotInitializedError('message interval has not been started');
     }
 

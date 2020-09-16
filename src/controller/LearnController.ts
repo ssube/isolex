@@ -36,7 +36,7 @@ export class LearnController extends BaseController<LearnControllerData> impleme
     const noun = cmd.getHead('future-noun');
     const verb = cmd.getHead('future-verb') as CommandVerb;
 
-    if (!this.checkNoun.check(noun)) {
+    if (this.checkNoun.check(noun) === false) {
       return this.errorReply(ctx, ErrorReplyType.InvalidNoun);
     }
 

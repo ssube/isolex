@@ -45,7 +45,7 @@ export async function applyTransforms(
 }
 
 export function extractBody(data: TransformOutput): string {
-  if (!Array.isArray(data.body)) {
+  if (Array.isArray(data.body) === false) {
     throw new BaseError('final transform did not return body array');
   }
 

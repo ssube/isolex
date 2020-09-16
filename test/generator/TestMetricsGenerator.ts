@@ -10,6 +10,7 @@ import { MetricsGenerator, MetricsGeneratorData } from '../../src/generator/Metr
 import { Clock } from '../../src/utils/Clock';
 import { createService, createServiceContainer } from '../helpers/container';
 
+const TEST_DELAY = 50;
 const TEST_TARGET = 'test-target';
 const TEST_GENERATOR = 'metrics-generator';
 const TEST_DATA: MetricsGeneratorData = {
@@ -70,7 +71,7 @@ describe('metrics generator', async () => {
       metadata: TEST_METADATA,
     });
     await interval.start();
-    await defer(50);
+    await defer(TEST_DELAY);
     await interval.stop();
 
     expect(collector).to.have.been.calledWithMatch(match.has('register'));

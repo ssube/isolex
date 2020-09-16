@@ -11,6 +11,17 @@ export type RandomControllerData = ControllerData;
 
 export const NOUN_RANDOM = 'random';
 
+/* eslint-disable no-magic-numbers */
+export enum RollType {
+  RANDOM = 0,
+  FLOOR = 1,
+  RANGE = 2,
+}
+/* eslint-enable */
+
+export const RANDOM_FLOOR = 1;
+export const RANDOM_CEIL = 6;
+
 @Inject()
 export class RandomController extends BaseController<RandomControllerData> implements Controller {
   constructor(options: BaseControllerOptions<RandomControllerData>) {
@@ -21,6 +32,8 @@ export class RandomController extends BaseController<RandomControllerData> imple
   @CheckRBAC()
   public async getRandom(cmd: Command, ctx: Context): Promise<void> {
     const args = cmd.data.get('args');
+
+    /* eslint-disable-next-line no-restricted-syntax */
     if (!Array.isArray(args)) {
       return this.reply(ctx, 'no arguments were provided!');
     }
@@ -29,16 +42,16 @@ export class RandomController extends BaseController<RandomControllerData> imple
 
     this.logger.debug({ max, min }, 'computing random');
     switch (args.length) {
-      case 0: {
+      case RollType.RANDOM: {
         const result = this.getRandomDefault();
         return this.reply(ctx, `The result of your roll is: ${result}`);
       }
-      case 1: {
+      case RollType.FLOOR: {
         const precision = this.getPrecision(minVal);
         const result = this.getRandomValue(precision, minVal);
         return this.reply(ctx, `The result of your roll is: ${result}`);
       }
-      case 2: {
+      case RollType.RANGE: {
         const precision = this.getPrecision(minVal, maxVal);
         const result = this.getRandomValue(precision, minVal, maxVal);
         return this.reply(ctx, `The result of your roll is: ${result}`);
@@ -49,7 +62,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
   }
 
   private getRandomDefault(): number {
-    return randomInt(1, 6);
+    return randomInt(RANDOM_FLOOR, RANDOM_CEIL);
   }
 
   private getRandomValue(precision: number, minVal: number, maxVal?: number): string {

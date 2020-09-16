@@ -234,7 +234,7 @@ export class Bot extends BaseService<BotData> implements Service {
       }
     }
 
-    if (!handled) {
+    if (handled === false) {
       this.logger.warn({ cmd }, 'command was rejected by every controller (unhandled command)');
     }
   }
@@ -294,7 +294,7 @@ export class Bot extends BaseService<BotData> implements Service {
       }
     }
 
-    if (!matched) {
+    if (matched === false) {
       this.logger.debug({ msg }, 'incoming message was not matched by any parsers');
     }
 

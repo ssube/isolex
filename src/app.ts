@@ -29,7 +29,7 @@ export async function main(argv: Array<string>): Promise<ExitStatus> {
 
   const schema = new Schema();
   const result = schema.match(config);
-  if (!result.valid) {
+  if (result.valid === false) {
     logger.error({ errors: result.errors }, 'config failed to validate');
     return ExitStatus.Error;
   }

@@ -107,7 +107,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       oldest: oldest.toString(),
     }) as SlackSearchResults;
 
-    if (!search.ok) {
+    if (search.ok === false) {
       throw new NotFoundError('message not found for reaction');
     }
 
@@ -210,7 +210,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
       oldest: reaction.item.ts,
     }) as SlackSearchResults;
 
-    if (!search.ok) {
+    if (search.ok === false) {
       throw new NotFoundError('message not found for reaction');
     }
 

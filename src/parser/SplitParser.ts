@@ -59,7 +59,7 @@ export class SplitParser extends BaseParser<SplitParserData> implements Parser {
   }
 
   public split(msg: string): Array<string> {
-    return this.splitBody(msg).map((it) => this.trim(it)).filter((it) => !isEmpty(it));
+    return this.splitBody(msg).map((it) => this.trim(it)).filter((it) => isEmpty(it) === false);
   }
 
   public splitBody(msg: string): Array<string> {

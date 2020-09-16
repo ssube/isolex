@@ -53,7 +53,7 @@ export class MatchRules {
         path: rule.key,
       });
 
-      if (!this.matchRule(rule, values)) {
+      if (this.matchRule(rule, values) === false) {
         results.errors.push(rule.key);
         results.matched = false;
       }
@@ -95,7 +95,7 @@ export class MatchRules {
 
   public matchRuleAny(rule: MatchRule, value: string): boolean {
     if (rule.negate === true) {
-      return rule.values.some((it) => !this.matchValue(it, value));
+      return rule.values.some((it) => this.matchValue(it, value) === false);
     } else {
       return rule.values.some((it) => this.matchValue(it, value));
     }
@@ -103,7 +103,7 @@ export class MatchRules {
 
   public matchRuleEvery(rule: MatchRule, value: string): boolean {
     if (rule.negate === true) {
-      return rule.values.every((it) => !this.matchValue(it, value));
+      return rule.values.every((it) => this.matchValue(it, value) === false);
     } else {
       return rule.values.every((it) => this.matchValue(it, value));
     }

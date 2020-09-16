@@ -35,6 +35,7 @@ describe('apply transforms helper', async () => {
       bar: 3,
       foo: 'str',
     };
+    const expected = 9;
     const output = await applyTransforms([
       ineeda<Transform>({
         check: () => Promise.resolve(true),
@@ -44,12 +45,12 @@ describe('apply transforms helper', async () => {
         check: () => Promise.resolve(true),
         transform: (entity: unknown, type: unknown, data: any) => ({
           ...data,
-          bar: 9,
+          bar: expected,
         }),
       }),
     ], ineeda<Message>({}), TYPE_TEXT, input);
 
-    expect(output.bar).to.equal(9, 'must replace bar with value from second transform');
+    expect(output.bar).to.equal(expected, 'must replace bar with value from second transform');
     expect(output.foo).to.equal(input.foo, 'must retain foo');
   });
 
@@ -100,7 +101,7 @@ describe('entity data helper', async () => {
   });
 
   it('should throw on unknown entities', async () => {
-    expect(() => entityData(3 as any)).to.throw(InvalidArgumentError);
+    expect(() => entityData(Math.random() as any)).to.throw(InvalidArgumentError);
     expect(() => entityData('test' as any)).to.throw(InvalidArgumentError);
   });
 });
@@ -114,7 +115,7 @@ describe('extract body helper', async () => {
 
   it('should throw if body values are not strings', async () => {
     expect(() => extractBody({
-      body: [1, 2, 3] as any,
+      body: [1, 0, -1] as any,
     })).to.throw(BaseError);
   });
 

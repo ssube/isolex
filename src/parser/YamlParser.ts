@@ -27,7 +27,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
   }
 
   public async decode(msg: Message): Promise<ParserOutput> {
-    if (!YAML_TYPES.has(msg.type)) {
+    if (YAML_TYPES.has(msg.type) === false) {
       throw new MimeTypeError(`body type (${msg.type}) must be one of ${YAML_TYPES.values()}`);
     }
 

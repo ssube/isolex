@@ -27,7 +27,9 @@ describe('graph endpoint', async () => {
       graph: TEST_SCHEMA,
       graphiql: true,
     });
-    expect(endpoint.paths.length).to.equal(3);
+
+    const EXPECTED_ENDPOINTS = 3;
+    expect(endpoint.paths.length).to.equal(EXPECTED_ENDPOINTS);
     expect(endpoint.paths).to.include('/graph');
   });
 

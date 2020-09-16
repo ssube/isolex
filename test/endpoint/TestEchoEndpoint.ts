@@ -12,7 +12,9 @@ import { createEndpoint } from '../helpers/request';
 describe('echo endpoint', async () => {
   it('should have paths', async () => {
     const endpoint = await createEndpoint(EchoEndpoint, false, false);
-    expect(endpoint.paths.length).to.equal(3);
+
+    const EXPECTED_ENDPOINTS = 3;
+    expect(endpoint.paths.length).to.equal(EXPECTED_ENDPOINTS);
     expect(endpoint.paths).to.include('/echo');
   });
 

@@ -61,7 +61,7 @@ export abstract class BotService<TData extends BotServiceData> extends BaseServi
       const result = await filter.check(value);
       this.logger.debug({ filter: filter.name, result }, 'checked filter');
 
-      if (!checkFilter(result, this.data.strict)) {
+      if (checkFilter(result, this.data.strict) === false) {
         return false;
       }
     }

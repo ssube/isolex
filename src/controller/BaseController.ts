@@ -64,12 +64,13 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   public async check(cmd: Command): Promise<boolean> {
     this.logger.debug({ controllerId: this.id, noun: cmd.noun, verb: cmd.verb }, 'checking command');
 
-    if (!this.nouns.has(cmd.noun)) {
+    if (this.nouns.has(cmd.noun) === false) {
       this.logger.debug({ noun: cmd.noun }, 'command noun not present');
       return false;
     }
 
-    if (!await this.checkFilters(cmd, this.filters)) {
+    const filtered = await this.checkFilters(cmd, this.filters);
+    if (filtered === false) {
       this.logger.debug('command failed filters');
       return false;
     }
@@ -99,7 +100,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
   protected async invokeHandler(cmd: Command, options: HandlerOptions, handler: HandlerMethod): Promise<void> {
     const ctx = mustExist(cmd.context);
     const allowed = await this.checkHandlerGrants(ctx, options);
-    if (!allowed) {
+    if (allowed === false) {
       this.logger.warn({ cmd, options }, 'handler access denied');
       return;
     }

@@ -43,12 +43,12 @@ export class Schema {
   }
 
   public addSchema(name: string, schema: SchemaDef) {
-    if (!this.children.has(name)) {
-      this.children.set(name, schema);
-      this.compiler.addSchema(schema, name);
-    } else {
+    if (this.children.has(name)) {
       throw new InvalidArgumentError('schema name already exists');
     }
+
+    this.children.set(name, schema);
+    this.compiler.addSchema(schema, name);
   }
 
   public match(value: unknown, ref = 'isolex#'): SchemaResult {

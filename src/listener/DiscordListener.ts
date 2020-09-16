@@ -109,6 +109,8 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
 
   public async fetch(options: FetchOptions): Promise<Array<Message>> {
     const channel = this.client.channels.get(options.channel);
+
+    /* eslint-disable-next-line no-restricted-syntax */
     if (!DiscordListener.isTextChannel(channel)) {
       throw new InvalidArgumentError('channel is not a text channel');
     }
@@ -181,6 +183,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       return;
     }
 
+    /* eslint-disable-next-line no-restricted-syntax */
     if (!DiscordListener.isTextChannel(channel)) {
       this.logger.warn('channel is not a text channel');
       return;

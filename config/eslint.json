@@ -50,13 +50,13 @@
             "error",
             2,
             {
-                "ObjectExpression": "first",
                 "FunctionDeclaration": {
                     "parameters": "first"
                 },
                 "FunctionExpression": {
                     "parameters": "first"
                 },
+                "ObjectExpression": "first",
                 "SwitchCase": 1
             }
         ],
@@ -90,54 +90,54 @@
         "@typescript-eslint/naming-convention": [
             "error",
             {
-                "selector": "default",
                 "format": [
                     "camelCase"
                 ],
                 "leadingUnderscore": "forbid",
+                "selector": "default",
                 "trailingUnderscore": "forbid"
             },
             {
-                "selector": "variable",
                 "format": [
                     "camelCase",
                     "UPPER_CASE"
                 ],
                 "leadingUnderscore": "forbid",
+                "selector": "variable",
                 "trailingUnderscore": "forbid"
             },
             {
+                "format": [
+                    "PascalCase"
+                ],
+                "leadingUnderscore": "forbid",
                 "selector": "typeLike",
+                "trailingUnderscore": "forbid"
+            },
+            {
                 "format": [
                     "PascalCase"
                 ],
                 "leadingUnderscore": "forbid",
-                "trailingUnderscore": "forbid"
-            },
-            {
                 "selector": "interface",
-                "format": [
-                    "PascalCase"
-                ],
-                "leadingUnderscore": "forbid",
                 "trailingUnderscore": "forbid"
             },
             {
-                "selector": "function",
                 "format": [
                     "camelCase",
                     "PascalCase"
                 ],
                 "leadingUnderscore": "forbid",
+                "selector": "function",
                 "trailingUnderscore": "forbid"
             },
             {
-                "selector": "enumMember",
                 "format": [
                     "PascalCase",
-		    "UPPER_CASE"
+                    "UPPER_CASE"
                 ],
                 "leadingUnderscore": "forbid",
+                "selector": "enumMember",
                 "trailingUnderscore": "forbid"
             }
         ],
@@ -150,8 +150,13 @@
         "@typescript-eslint/no-misused-new": "error",
         "@typescript-eslint/no-namespace": "error",
         "@typescript-eslint/no-non-null-assertion": "error",
-        "no-param-reassign": "error",
         "@typescript-eslint/no-parameter-properties": "error",
+        "@typescript-eslint/no-redeclare": [
+            "error"
+        ],
+        "@typescript-eslint/no-shadow": [
+            "error"
+        ],
         "@typescript-eslint/no-this-alias": "error",
         "@typescript-eslint/no-unnecessary-type-arguments": "error",
         "@typescript-eslint/no-use-before-declare": "off",
@@ -159,6 +164,7 @@
         "@typescript-eslint/prefer-for-of": "error",
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/prefer-namespace-keyword": "error",
+        "@typescript-eslint/prefer-readonly": "error",
         "@typescript-eslint/quotes": [
             "error",
             "single",
@@ -171,12 +177,75 @@
             "error",
             "always"
         ],
-        "space-in-parens": [
-            "error",
-            "never"
-        ],
         "@typescript-eslint/strict-boolean-expressions": "error",
         "@typescript-eslint/triple-slash-reference": "error",
+        "@typescript-eslint/tslint/config": [
+            "error",
+            {
+                "rules": {
+                    "ban": [
+                        true,
+                        {
+                            "message": "use lodash isString",
+                            "name": [
+                                "util",
+                                "isString"
+                            ]
+                        },
+                        {
+                            "message": "use lodash isNil",
+                            "name": [
+                                "util",
+                                "isNullOrUndefined"
+                            ]
+                        }
+                    ],
+                    "import-spacing": true,
+                    "jsdoc-format": [
+                        true,
+                        "check-multiline-start"
+                    ],
+                    "no-boolean-literal-compare": false,
+                    "no-dynamic-delete": true,
+                    "no-inferred-empty-object-type": true,
+                    "no-reference-import": true,
+                    "object-literal-sort-keys": true,
+                    "one-line": [
+                        true,
+                        "check-catch",
+                        "check-else",
+                        "check-finally",
+                        "check-open-brace",
+                        "check-whitespace"
+                    ],
+                    "prefer-switch": true,
+                    "strict-type-predicates": true,
+                    "trailing-comma": [
+                        true,
+                        {
+                            "esSpecCompliant": true,
+                            "multiline": {
+                                "arrays": "always",
+                                "functions": "never",
+                                "object": "always"
+                            },
+                            "singleline": "never"
+                        }
+                    ],
+                    "whitespace": [
+                        true,
+                        "check-branch",
+                        "check-decl",
+                        "check-operator",
+                        "check-separator",
+                        "check-type",
+                        "check-typecast",
+                        "check-type-operator",
+                        "check-rest-spread"
+                    ]
+                }
+            }
+        ],
         "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/unbound-method": "error",
         "@typescript-eslint/unified-signatures": "error",
@@ -246,6 +315,10 @@
             "error",
             500
         ],
+        "max-params": [
+            "error",
+            4
+        ],
         "new-parens": "error",
         "no-bitwise": "off",
         "no-caller": "error",
@@ -263,30 +336,14 @@
         "no-magic-numbers": [
             "error",
             {
+                "ignoreArrayIndexes": true,
                 "ignore": [
-                    -3,
-                    -2,
                     -1,
                     0,
                     1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    7,
-                    8,
-                    9,
                     10,
-                    20,
-                    30,
-                    40,
-                    50,
-                    60,
-                    70,
-                    80,
-                    90,
-                    100
+                    100,
+                    1000
                 ]
             }
         ],
@@ -294,6 +351,7 @@
         "no-new-func": "error",
         "no-new-wrappers": "error",
         "no-null/no-null": "error",
+        "no-param-reassign": "error",
         "no-plusplus": [
             "error",
             {
@@ -302,13 +360,16 @@
         ],
         "no-restricted-syntax": [
             "error",
-            "ForInStatement"
+            "ForInStatement",
+            "WithStatement",
+            "MemberExpression[optional=true]",
+            "IfStatement[alternate.type='IfStatement']",
+            "UnaryExpression[operator='!']",
+            "BinaryExpression[operator='!=='][right.value=true]"
         ],
         "no-return-await": "error",
         "no-sequences": "error",
         "no-sparse-arrays": "error",
-	"@typescript-eslint/no-redeclare": ["error"],
-	"@typescript-eslint/no-shadow": ["error"],
         "no-template-curly-in-string": "error",
         "no-throw-literal": "error",
         "no-trailing-spaces": "error",
@@ -320,10 +381,6 @@
         "no-useless-constructor": "error",
         "no-var": "error",
         "no-void": "error",
-        "max-params": [
-            "error",
-            4
-        ],
         "object-shorthand": "error",
         "one-var": [
             "error",
@@ -331,25 +388,13 @@
         ],
         "prefer-const": "error",
         "prefer-object-spread": "error",
-        "@typescript-eslint/prefer-readonly": "error",
         "quote-props": [
             "error",
             "consistent-as-needed"
         ],
         "radix": "error",
-        "space-before-function-paren": [
-            "error",
-            {
-                "anonymous": "never",
-                "asyncArrow": "always",
-                "named": "never"
-            }
-        ],
-        "spaced-comment": "error",
-        "use-isnan": "error",
-        "valid-typeof": "off",
-        "sonarjs/max-switch-cases": "error",
         "sonarjs/cognitive-complexity": "error",
+        "sonarjs/max-switch-cases": "error",
         "sonarjs/no-all-duplicated-branches": "error",
         "sonarjs/no-collapsible-if": "error",
         "sonarjs/no-collection-size-mischeck": "error",
@@ -365,72 +410,20 @@
         "sonarjs/no-same-line-conditional": "error",
         "sonarjs/no-useless-catch": "error",
         "sonarjs/prefer-immediate-return": "error",
-        "@typescript-eslint/tslint/config": [
+        "space-before-function-paren": [
             "error",
             {
-                "rules": {
-                    "ban": [
-                        true,
-                        {
-                            "message": "use lodash isString",
-                            "name": [
-                                "util",
-                                "isString"
-                            ]
-                        },
-                        {
-                            "message": "use lodash isNil",
-                            "name": [
-                                "util",
-                                "isNullOrUndefined"
-                            ]
-                        }
-                    ],
-                    "import-spacing": true,
-                    "jsdoc-format": [
-                        true,
-                        "check-multiline-start"
-                    ],
-                    "no-boolean-literal-compare": true,
-                    "no-dynamic-delete": true,
-                    "no-inferred-empty-object-type": true,
-                    "no-reference-import": true,
-                    "object-literal-sort-keys": true,
-                    "one-line": [
-                        true,
-                        "check-catch",
-                        "check-else",
-                        "check-finally",
-                        "check-open-brace",
-                        "check-whitespace"
-                    ],
-                    "prefer-switch": true,
-                    "strict-type-predicates": true,
-                    "trailing-comma": [
-                        true,
-                        {
-                            "esSpecCompliant": true,
-                            "multiline": {
-                                "arrays": "always",
-                                "functions": "never",
-                                "object": "always"
-                            },
-                            "singleline": "never"
-                        }
-                    ],
-                    "whitespace": [
-                        true,
-                        "check-branch",
-                        "check-decl",
-                        "check-operator",
-                        "check-separator",
-                        "check-type",
-                        "check-typecast",
-                        "check-type-operator",
-                        "check-rest-spread"
-                    ]
-                }
+                "anonymous": "never",
+                "asyncArrow": "always",
+                "named": "never"
             }
-        ]
+        ],
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "spaced-comment": "error",
+        "use-isnan": "error",
+        "valid-typeof": "off"
     }
 }

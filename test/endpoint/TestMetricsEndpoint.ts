@@ -21,7 +21,9 @@ function createRequest() {
 describe('metrics endpoint', async () => {
   it('should have paths', async () => {
     const endpoint = await createEndpoint(MetricsEndpoint, false, false);
-    expect(endpoint.paths.length).to.equal(3);
+
+    const EXPECTED_PATHS = 3;
+    expect(endpoint.paths.length).to.equal(EXPECTED_PATHS);
     expect(endpoint.paths).to.include('/metrics');
   });
 

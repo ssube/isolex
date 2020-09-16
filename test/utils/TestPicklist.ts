@@ -69,15 +69,20 @@ describe('pick list', async () => {
       }],
     });
 
-    for (let i = 0; i < PICK_REPS; i += 2) {
+    const PICK_STEP = 2;
+    for (let i = 0; i < PICK_REPS; i += PICK_STEP) {
       const puck = list.pick(PICK_COUNT);
-      expect(puck).to.have.property('length', 3);
+
+      const EXPECTED_LENGTH = 3;
+      expect(puck).to.have.property('length', EXPECTED_LENGTH);
       expect(puck).to.deep.equal(['x', 'x', 'x']);
     }
   });
 
   it('should convert a list', async () => {
     const list = Picklist.create('x', 'y', 'z');
-    expect(list.length).to.equal(3);
+
+    const EXPECTED_LENGTH = 3;
+    expect(list.length).to.equal(EXPECTED_LENGTH);
   });
 });
