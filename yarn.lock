@@ -5811,7 +5811,7 @@ rollup-plugin-eslint@7.0.0:
     eslint "^6.0.0"
     rollup-pluginutils "^2.7.1"
 
-rollup-plugin-graph@^2.0.0:
+rollup-plugin-graph@2.0.0:
   version "2.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-graph/-/rollup-plugin-graph-2.0.0.tgz#f93702c8104ceaf80871c9efc990be381c03fb2f"
   integrity sha512-0onCt3IIH8pQCQ0PAIH1aeXc0zMm29x+yviSjobkloVav2TK7gBRNZjhL9x/40sc4YAmLIpwnwPZLvuZ7u5q8A==
