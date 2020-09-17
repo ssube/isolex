@@ -16,18 +16,14 @@ data:
         - 'renovate[bot]'
         - ssube
       checks:
-        - app: codeclimate
-          conclusion: success
-          name: codeclimate
-          status: success
-        - app: codecov/patch
+        - app: codecov
           conclusion: success
           name: codecov/patch
-          status: success
-        - app: codecov/project
+          status: completed
+        - app: codecov
           conclusion: success
           name: codecov/project
-          status: success
+          status: completed
         - app: gitlab/build
           conclusion: success
           name: gitlab/build

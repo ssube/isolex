@@ -81,6 +81,18 @@ function pullResponse(pulls: Array<unknown>): ClientResponse<Octokit.PullsGetRes
   return pullGetter;
 }
 
+function reviewResponse(): ClientResponse<Octokit.PullsCreateReviewParams> {
+  const createReview: ClientResponse<Octokit.PullsCreateReviewParams> = () => Promise.resolve({
+    [Symbol.iterator]: undefined as any,
+    data: {} as any,
+    headers: {} as any,
+    status: STATUS_SUCCESS,
+  });
+  createReview.endpoint = undefined;
+
+  return createReview;
+}
+
 function statusResponse(statuses: Array<unknown>): ClientResponse<Octokit.ReposGetCombinedStatusForRefResponse> {
   const getCombinedStatusForRef: ClientResponse<Octokit.ReposGetCombinedStatusForRefResponse> = () => Promise.resolve({
     [Symbol.iterator]: undefined as any,
@@ -104,11 +116,13 @@ function statusResponse(statuses: Array<unknown>): ClientResponse<Octokit.ReposG
 describe('github approve controller', async () => {
   it('should reply with approval when checks pass', async () => {
     const { container, services } = await createServiceContainer();
+    const createReview = reviewResponse();
     const pullGetter = pullResponse([]);
 
     services.bind(GithubClient).toInstance(ineeda<GithubClient>({
       client: {
         pulls: {
+          createReview,
           get: pullGetter,
         },
       },
@@ -148,11 +162,13 @@ describe('github approve controller', async () => {
 
   it('should reply with errors when checks fail', async () => {
     const { container, services } = await createServiceContainer();
+    const createReview = reviewResponse();
     const pullGetter = pullResponse([]);
 
     services.bind(GithubClient).toInstance(ineeda<GithubClient>({
       client: {
         pulls: {
+          createReview,
           get: pullGetter,
         },
       },

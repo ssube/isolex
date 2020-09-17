@@ -70,21 +70,25 @@ export class GithubApproveController extends BaseController<GithubApproveControl
     const request = cmd.getHeadOrNumber('request', 0);
 
     const client = mustExist(this.client).client;
-    const pull = await client.pulls.get({
+    const options = {
       owner,
       /* eslint-disable-next-line camelcase, @typescript-eslint/naming-convention */
       pull_number: request,
       repo: project,
-    });
+    };
 
-    const options = {
+    const pull = await client.pulls.get(options);
+    const checkStatus = await this.checkRef({
       owner,
       ref: pull.data.head.sha,
       repo: project,
-    };
+    }, pull.data.user.login);
 
-    const checkStatus = await this.checkRef(options, pull.data.user.login);
     if (checkStatus.status) {
+      await client.pulls.createReview({
+        ...options,
+        event: 'APPROVE',
+      });
       return this.reply(ctx, 'all checks passed!');
     }
 
