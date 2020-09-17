@@ -15,7 +15,6 @@
     "snekfetch",
     "sqlite3",
     "sshpk",
-    "source-map",
     "source-map-support",
     "typeorm",
     "xmlbuilder"
