@@ -1,0 +1,5 @@
+minApprovals:
+  MEMBER: 1
+mergeMethod: rebase
+blockingLabels:
+  - status/blocked
