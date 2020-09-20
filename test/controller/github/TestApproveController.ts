@@ -143,7 +143,7 @@ describe('github approve controller', async () => {
     }));
 
     await ctrl.start();
-    await ctrl.approveRequest(new Command({
+    await ctrl.approveRefOrRequest(new Command({
       data: {
         owner: ['foo'],
         project: ['bar'],
@@ -189,7 +189,7 @@ describe('github approve controller', async () => {
     }));
 
     await ctrl.start();
-    await ctrl.approveRequest(new Command({
+    await ctrl.approveRefOrRequest(new Command({
       data: {
         owner: ['foo'],
         project: ['bar'],

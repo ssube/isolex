@@ -45,6 +45,13 @@ export interface GithubApproveControllerData extends ControllerData {
   }>;
 }
 
+export interface PullRequest {
+  owner: string;
+  /* eslint-disable-next-line camelcase, @typescript-eslint/naming-convention */
+  pull_number: number;
+  repo: string;
+}
+
 export class GithubApproveController extends BaseController<GithubApproveControllerData> implements Controller {
   protected client?: GithubClient;
   protected readonly container: Container;
@@ -64,24 +71,53 @@ export class GithubApproveController extends BaseController<GithubApproveControl
 
   @Handler(NOUN_APPROVE, CommandVerb.Create)
   @CheckRBAC()
-  public async approveRequest(cmd: Command, ctx: Context): Promise<void> {
+  public async approveRefOrRequest(cmd: Command, ctx: Context): Promise<void> {
     const owner = cmd.getHeadOrDefault('owner', ctx.name);
-    const project = cmd.getHead('project');
+    const repo = cmd.getHead('project');
     const request = cmd.getHeadOrNumber('request', 0);
 
-    const client = mustExist(this.client).client;
-    const options = {
-      owner,
-      /* eslint-disable-next-line camelcase, @typescript-eslint/naming-convention */
-      pull_number: request,
-      repo: project,
-    };
+    if (request === 0) {
+      const head = cmd.getHead('head');
+      const client = mustExist(this.client).client;
+      const pulls = await client.pulls.list({
+        head,
+        owner,
+        repo,
+      });
+      this.logger.debug({
+        head,
+        owner,
+        pulls: pulls.data.length,
+        repo,
+      }, 'approving multiple pull requests for branch');
 
+      for (const p of pulls.data) {
+        await this.approveRequest(ctx, {
+          owner,
+          /* eslint-disable-next-line camelcase, @typescript-eslint/naming-convention */
+          pull_number: p.number,
+          repo,
+        });
+      }
+    } else {
+      const options = {
+        owner,
+        /* eslint-disable-next-line camelcase, @typescript-eslint/naming-convention */
+        pull_number: request,
+        repo,
+      };
+      this.logger.debug(options, 'approving single pull request');
+      await this.approveRequest(ctx, options);
+    }
+  }
+
+  public async approveRequest(ctx: Context, options: PullRequest): Promise<void> {
+    const client = mustExist(this.client).client;
     const pull = await client.pulls.get(options);
     const checkStatus = await this.checkRef({
-      owner,
+      owner: options.owner,
       ref: pull.data.head.sha,
-      repo: project,
+      repo: options.repo,
     }, pull.data.user.login);
 
     if (checkStatus.status) {
@@ -133,6 +169,12 @@ export class GithubApproveController extends BaseController<GithubApproveControl
       };
     });
     const errors = checks.filter((it) => it.status === false);
+    const status = errors.length === 0;
+
+    this.logger.debug({
+      errors,
+      status,
+    }, 'tested check results for ref');
 
     return {
       checks,
@@ -162,7 +204,7 @@ export class GithubApproveController extends BaseController<GithubApproveControl
     }));
 
     const results = [...checks, ...statuses];
-    this.logger.debug({ results, options }, 'collected request results');
+    this.logger.debug({ results, options }, 'collected check results');
 
     return results;
   }
