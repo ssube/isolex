@@ -10,7 +10,6 @@ import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import visualizer from 'rollup-plugin-visualizer';
-import graph from 'rollup-plugin-graph';
 
 const { chunkMap } = require('./map.js');
 const { plugins } = require('./project.js');
@@ -101,7 +100,6 @@ const bundle = {
 				'application/javascript': ['mjs'],
 			},
 		}) : undefined),
-		graph({ prune: false }),
 	],
 };
 
