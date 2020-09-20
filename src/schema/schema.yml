@@ -921,7 +921,7 @@ definitions:
               $ref: "#/definitions/service-metadata"
           limit:
             type: string
-            pattern: "^\\d+[kmg]?$"
+            pattern: "^\\d+([kmg]b)?$"
           listen:
             type: object
             properties:
