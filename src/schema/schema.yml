@@ -913,12 +913,15 @@ definitions:
       - $ref: "#/definitions/service-listener"
       - type: object
         additionalProperties: true
-        required: [endpoints, listen, redirect, token]
+        required: [endpoints, limit, listen, redirect, token]
         properties:
           endpoints:
             type: array
             items:
               $ref: "#/definitions/service-metadata"
+          limit:
+            type: string
+            pattern: "^\\d+[kmg]?$"
           listen:
             type: object
             properties:

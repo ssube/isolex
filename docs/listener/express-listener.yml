@@ -17,6 +17,7 @@ data:
       name: test-health-endpoint
     - kind: metrics-endpoint
       name: test-metrics-endpoint
+  limit: 1m
   listen:
     port: 4000
     address: "0.0.0.0"

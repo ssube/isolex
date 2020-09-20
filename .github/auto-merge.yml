@@ -1,5 +1,7 @@
-minApprovals:
-  MEMBER: 1
-mergeMethod: rebase
 blockingLabels:
   - status/blocked
+maxRequestedChanges:
+  COLLABORATOR: 0
+mergeMethod: rebase
+minApprovals:
+  MEMBER: 1

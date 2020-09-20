@@ -24,6 +24,7 @@ import { SessionListener } from './SessionListener';
 
 export interface ExpressListenerData extends ListenerData {
   endpoints: Array<ServiceMetadata>;
+  limit: string;
   listen: {
     address: string;
     port: number;
@@ -163,6 +164,10 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
   protected async setupExpress(): Promise<express.Express> {
     let app = express();
+
+    app = app.use(express.json({
+      limit: this.data.limit,
+    }));
 
     if (doesExist(this.passport)) {
       app = app.use(this.passport.initialize() as RequestHandler);
