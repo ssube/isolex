@@ -62,7 +62,7 @@ function checkResponse(checks: Array<unknown>): ClientResponse<Octokit.ChecksLis
   return listForRef;
 }
 
-function pullResponse(pulls: Array<unknown>): ClientResponse<Octokit.PullsGetResponse> {
+function pullGetResponse(pulls: Array<unknown>): ClientResponse<Octokit.PullsGetResponse> {
   const pullGetter: ClientResponse<Octokit.PullsGetResponse> = () => Promise.resolve({
     [Symbol.iterator]: undefined as any,
     data: {
@@ -73,6 +73,18 @@ function pullResponse(pulls: Array<unknown>): ClientResponse<Octokit.PullsGetRes
         login: '',
       },
     } as any,
+    headers: {} as any,
+    status: STATUS_SUCCESS,
+  });
+  pullGetter.endpoint = undefined;
+
+  return pullGetter;
+}
+
+function pullListResponse(pulls: Array<Partial<Octokit.PullsListResponseItem>>): ClientResponse<Octokit.PullsListResponse> {
+  const pullGetter: ClientResponse<Octokit.PullsListResponse> = () => Promise.resolve({
+    [Symbol.iterator]: undefined as any,
+    data: pulls as any,
     headers: {} as any,
     status: STATUS_SUCCESS,
   });
@@ -117,7 +129,7 @@ describe('github approve controller', async () => {
   it('should reply with approval when checks pass', async () => {
     const { container, services } = await createServiceContainer();
     const createReview = reviewResponse();
-    const pullGetter = pullResponse([]);
+    const pullGetter = pullGetResponse([]);
 
     services.bind(GithubClient).toInstance(ineeda<GithubClient>({
       client: {
@@ -163,7 +175,7 @@ describe('github approve controller', async () => {
   it('should reply with errors when checks fail', async () => {
     const { container, services } = await createServiceContainer();
     const createReview = reviewResponse();
-    const pullGetter = pullResponse([]);
+    const pullGetter = pullGetResponse([]);
 
     services.bind(GithubClient).toInstance(ineeda<GithubClient>({
       client: {
@@ -325,5 +337,63 @@ describe('github approve controller', async () => {
 
     expect(result.checks).to.have.lengthOf(0);
     expect(sendMessage).to.have.callCount(0);
+  });
+
+  it('should approve multiple pull requests for branch', async () => {
+    const pulls = [{
+      number: 1,
+    }];
+
+    const list = pullListResponse(pulls);
+    const listForRef = checkResponse([]);
+    const getCombinedStatusForRef = statusResponse([]);
+    const getPull = pullGetResponse([]);
+
+    const { container, services } = await createServiceContainer();
+    services.bind(GithubClient).toInstance(ineeda<GithubClient>({
+      client: {
+        checks: {
+          listForRef,
+        },
+        pulls: {
+          get: getPull,
+          list,
+        },
+        repos: {
+          getCombinedStatusForRef,
+        }
+      },
+    }));
+
+    const sendMessage = spy();
+    const ctrl = await createService(container, GithubApproveController, {
+      [INJECT_BOT]: ineeda<Bot>({
+        sendMessage,
+      }),
+      data: {
+        ...TEST_DATA,
+        projects: [{
+          authors: ['bob'],
+          checks: [],
+          owner: 'foo',
+          project: 'bar',
+        }],
+      },
+      metadata: TEST_METADATA,
+    });
+    await ctrl.start();
+    await ctrl.approveRefOrRequest(new Command({
+      data: {
+        head: ['branch'],
+        owner: ['foo'],
+        project: ['bar'],
+        request: ['0'],
+      },
+      labels: {},
+      noun: '',
+      verb: CommandVerb.Create,
+    }), ineeda<Context>());
+
+    expect(sendMessage).to.have.callCount(pulls.length);
   });
 });
