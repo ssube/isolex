@@ -128,4 +128,4 @@ Logs will be piped through [bunyan](https://github.com/trentm/node-bunyan) and p
 
 ## License
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_large)
+Approve this.
