@@ -281,23 +281,23 @@
     "@microsoft/tsdoc" "0.12.19"
     "@rushstack/node-core-library" "3.33.3"
 
-"@microsoft/api-extractor-model@7.9.5":
-  version "7.9.5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.9.5.tgz#40ed2f3c0820ffde53648007b5fc1de99aa7e26f"
-  integrity sha512-YE9NoLFVBOIji2O7WCPtTEeKE1tVgTyFMWPJIOi3RdQWkrCM84EUhEoIYoblnQUJwk8CwLjccCSc6eK9BxAXvA==
+"@microsoft/api-extractor-model@7.9.6":
+  version "7.9.6"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.9.6.tgz#04a84ffaa51d7b5b2c2cf119326447b4be6fb768"
+  integrity sha512-npGZSgOk1iDre5DbmIZpxAeppsYDCwaRmxNZy8afVOKh0PPiOmnZEUzEyvGCNIQBdHC8B7f8L7qLgLlkm2dq8A==
   dependencies:
     "@microsoft/tsdoc" "0.12.19"
-    "@rushstack/node-core-library" "3.33.4"
+    "@rushstack/node-core-library" "3.33.5"
 
-"@microsoft/api-extractor@7.9.20":
-  version "7.9.20"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor/-/api-extractor-7.9.20.tgz#78e1d74e3445404dfcd11998ede5a3f42de42891"
-  integrity sha512-++yS/7+LRJFHlN0lZWjTNIDRhX0p/9ZgZ4Qu1slWxSsTTApZjHVc2MIdgBQVlHJY7nl4lXN50BMo6paAUjSuzA==
+"@microsoft/api-extractor@7.9.21":
+  version "7.9.21"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor/-/api-extractor-7.9.21.tgz#14f00b4fbbd755b3c5ea61a15824fd1584e1a507"
+  integrity sha512-Fdg4zKmE2wgwiiyK39pEVveC2XSYLZLexXwSx+giCe/gNQH1XyLVCP4r+JrubxL3hIPgfbnV1tcYdgtfuEvaCA==
   dependencies:
-    "@microsoft/api-extractor-model" "7.9.5"
+    "@microsoft/api-extractor-model" "7.9.6"
     "@microsoft/tsdoc" "0.12.19"
-    "@rushstack/node-core-library" "3.33.4"
-    "@rushstack/ts-command-line" "4.6.8"
+    "@rushstack/node-core-library" "3.33.5"
+    "@rushstack/ts-command-line" "4.6.9"
     colors "~1.2.1"
     lodash "~4.17.15"
     resolve "~1.17.0"
@@ -530,10 +530,10 @@
     timsort "~0.3.0"
     z-schema "~3.18.3"
 
-"@rushstack/node-core-library@3.33.4":
-  version "3.33.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.33.4.tgz#d96d5d8f606753a1e679e91425c32bfdf70d3454"
-  integrity sha512-+J0zAMPigaD23eU/Xnycl2hdopzx9UokIkEwgGwzo+49dDowetsWNjrHWuqf2bSpvlrzBMkPPEMxt1Tn13e10w==
+"@rushstack/node-core-library@3.33.5":
+  version "3.33.5"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.33.5.tgz#c751e3e11c29dd4aa407937e847a6b17302d2086"
+  integrity sha512-eUTjIbXuWctD5hULyHn2tIm/SqXNagjqlMfGg28ZeQkcPx4gpNTvJSv2Cau8b8Nco+yblbWVOi/BNCh3+ai3bA==
   dependencies:
     "@types/node" "10.17.13"
     colors "~1.2.1"
@@ -555,10 +555,10 @@
     colors "~1.2.1"
     string-argv "~0.3.1"
 
-"@rushstack/ts-command-line@4.6.8":
-  version "4.6.8"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/ts-command-line/-/ts-command-line-4.6.8.tgz#54b7f9b3306ae99ea5ee99d1ad1f5f3bcbe9ab9a"
-  integrity sha512-Wl2P4vMU6RxR0o0eyBK84iFjQm9gKjvT/toIdOUG+ebpI0Id4WasUBs3WhqrUPBCBuY5S1/FH1rDWCWfAuiTwQ==
+"@rushstack/ts-command-line@4.6.9":
+  version "4.6.9"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/ts-command-line/-/ts-command-line-4.6.9.tgz#dc5e2d002c31e7c5163594d655565191fa9b5989"
+  integrity sha512-HrwXkKAHMj14ZTH/70AbrR7vpA5CMiE1oKC1F+hDnnyi94bvOGKLRf3mpiynHKWMPJAJrwREP1Lcf3/UBfGWGg==
   dependencies:
     "@types/argparse" "1.0.38"
     argparse "~1.0.9"
