@@ -4288,10 +4288,10 @@ matched@^5.0.0:
     glob "^7.1.6"
     picomatch "^2.2.1"
 
-mathjs@7.2.0:
-  version "7.2.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-7.2.0.tgz#9b8ce58fdf65eeff208d6883eff774773d30be80"
-  integrity sha512-9UBMWBB94eyrxX8gskBzkVJZBEig2BUL8CBglQoRW4X/ljdW6hBVm8sT6Jp1MhyEp+2flKJo81qwml6twScxFw==
+mathjs@7.3.0:
+  version "7.3.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-7.3.0.tgz#02bce1341e7b7c839f91dc9d552e23e026de5288"
+  integrity sha512-6PwW9yYyL9iDtgDYN2Dyjc2t+ZIlbGkKxm5RZk+PDv6Hc1lEtGF0axMf9mirZTKU4o31a3m2CpnC+d1hXTUo0g==
   dependencies:
     complex.js "^2.0.11"
     decimal.js "^10.2.0"
