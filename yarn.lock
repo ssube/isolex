@@ -881,10 +881,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mocha/-/mocha-8.0.3.tgz#51b21b6acb6d1b923bbdc7725c38f9f455166402"
   integrity sha512-vyxR57nv8NfcU0GZu8EUXZLTbCMupIUwy95LJ6lllN+JRPG25CwMHoB1q5xKh8YKhQnHYRAn4yW2yuHbf/5xgg==
 
-"@types/mock-fs@4.10.0":
-  version "4.10.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mock-fs/-/mock-fs-4.10.0.tgz#460061b186993d76856f669d5317cda8a007c24b"
-  integrity sha512-FQ5alSzmHMmliqcL36JqIA4Yyn9jyJKvRSGV3mvPh108VFatX7naJDzSG4fnFQNZFq9dIx0Dzoe6ddflMB2Xkg==
+"@types/mock-fs@4.13.0":
+  version "4.13.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mock-fs/-/mock-fs-4.13.0.tgz#b8b01cd2db588668b2532ecd21b1babd3fffb2c0"
+  integrity sha512-FUqxhURwqFtFBCuUj3uQMp7rPSQs//b3O9XecAVxhqS9y4/W8SIJEZFq2mmpnFVZBXwR/2OyPLE97CpyYiB8Mw==
   dependencies:
     "@types/node" "*"
 
