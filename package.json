@@ -79,7 +79,7 @@
     "chai-as-promised": "7.1.1",
     "cron": "1.8.2",
     "escape-html": "1.0.3",
-    "eslint": "7.10.0",
+    "eslint": "7.11.0",
     "eslint-plugin-chai": "0.0.1",
     "eslint-plugin-chai-expect": "2.2.0",
     "eslint-plugin-chai-expect-keywords": "2.0.1",
