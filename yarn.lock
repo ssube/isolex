@@ -2490,11 +2490,6 @@ escalade@^3.0.2:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/escalade/-/escalade-3.1.0.tgz#e8e2d7c7a8b76f6ee64c2181d6b8151441602d4e"
   integrity sha512-mAk+hPSO8fLDkhV7V0dXazH5pDc6MrjBTPyD3VeKzxnVFjH1MIxbCdqGZB9O8+EwWakZs3ZCbDS4IpRt79V1ig==
 
-escape-goat@^2.0.0:
-  version "2.1.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/escape-goat/-/escape-goat-2.1.1.tgz#1b2dc77003676c457ec760b2dc68edb648188675"
-  integrity sha512-8/uIhbG12Csjy2JEW7D9pHbreaVaS/OpN3ycnyvElTdwM5n6GY6W6e2IPemfvGZeUMqZ9A/3GqIZMgKnBhAw/Q==
-
 escape-html@1.0.3, escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
@@ -5396,13 +5391,6 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pupa@^2.0.0:
-  version "2.0.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/pupa/-/pupa-2.0.1.tgz#dbdc9ff48ffbea4a26a069b6f9f7abb051008726"
-  integrity sha512-hEJH0s8PXLY/cdXh66tNEQGndDrIKNqNC5xmrysZy3i5C3oEoLna7YAOad+7u125+zH1HNXUmGEkrhb3c2VriA==
-  dependencies:
-    escape-goat "^2.0.0"
-
 q@^1.5.1:
   version "1.5.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
@@ -5858,16 +5846,15 @@ rollup-plugin-typescript2@0.28.0:
     resolve "1.17.0"
     tslib "2.0.1"
 
-rollup-plugin-visualizer@4.1.1:
-  version "4.1.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-visualizer/-/rollup-plugin-visualizer-4.1.1.tgz#b8b18db0aa4b0e3b2af583399fa9d7e3f5a61808"
-  integrity sha512-aQBukhj8T+1BcOjD/5xB3+mZSSzHIVT+WpQDDEVpmPCkILVX0J7NPOuKEvKIXU+iZLvF7B5/wJA4+wxuH7FNew==
+rollup-plugin-visualizer@4.1.2:
+  version "4.1.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-visualizer/-/rollup-plugin-visualizer-4.1.2.tgz#d94202e3aa06e96007eecde84cca4864273fc14f"
+  integrity sha512-GdUYsbMSsIC7aXKMObNHHxu2CWyIem3uVGZJPx78e3W+TX7T7+dTj7kVTy4TMbBd2vFtVQ2E0PnwQfqYoY0sMw==
   dependencies:
     nanoid "^3.0.1"
     open "^7.0.3"
-    pupa "^2.0.0"
     source-map "^0.7.3"
-    yargs "^15.0.0"
+    yargs "^16.0.3"
 
 rollup-plugin-yaml@2.0.0:
   version "2.0.0"
