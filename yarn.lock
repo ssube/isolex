@@ -852,10 +852,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/lodash/-/lodash-4.14.163.tgz#6026f73c8267a0b7d41c7c8aadacfa2a5255774f"
   integrity sha512-BeZM/FZaV53emqyHxn9L39Oz6XbHMBRLA1b1quROku48J/1kYYxPmVOJ/qSQheb81on4BI7H6QDo6bkUuRaDNQ==
 
-"@types/mathjs@6.0.6":
-  version "6.0.6"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mathjs/-/mathjs-6.0.6.tgz#47cc33adb7eeec58f657465017594a2cdc84eead"
-  integrity sha512-FGXJ5r51lmHkoDNNyjNw01gShCR7vMQRTyCLVj7XD8C51bTC+elc7BZBcfcsv5SeQQOVirEY6hbo5ZWvjIF79Q==
+"@types/mathjs@6.0.7":
+  version "6.0.7"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mathjs/-/mathjs-6.0.7.tgz#89299b8e0dd369c970ee8f477ba2cd2527c56cd0"
+  integrity sha512-UPpG34wVjlr8uSijJ747q0SmC459t294xm/3Ed8GAnqM/I2K786WgCLQ4BO4lIsM07Gj1UhO7x0n0TSfqO0DNQ==
   dependencies:
     decimal.js "^10.0.0"
 
