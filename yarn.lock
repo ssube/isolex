@@ -265,26 +265,18 @@
     underscore "^1.9.1"
     ws "^7.3.1"
 
-"@microsoft/api-documenter@7.9.16":
-  version "7.9.16"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.9.16.tgz#2a065e3e4e9607362a50148c6923693cbdcb283a"
-  integrity sha512-AXHU28Adc838bichygUC+1YrmO1ocbihFtPTeMY+TajFz6AwMjSIS2Av7anLSR6BINh52h605v9InkpjStaTOw==
+"@microsoft/api-documenter@7.9.19":
+  version "7.9.19"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.9.19.tgz#0d7d0f6de35e1a5afc02afa79c79f8b36bab6614"
+  integrity sha512-2j8u43U5DAGo/hgsL5bSMUvMkYPpxyLiOBY8hF2q4jE8bqjDr3gfpkF5OGINl7DZctQiM2TwhW2hukmIH6AmyA==
   dependencies:
-    "@microsoft/api-extractor-model" "7.10.3"
+    "@microsoft/api-extractor-model" "7.10.5"
     "@microsoft/tsdoc" "0.12.19"
-    "@rushstack/node-core-library" "3.34.3"
-    "@rushstack/ts-command-line" "4.7.3"
+    "@rushstack/node-core-library" "3.34.5"
+    "@rushstack/ts-command-line" "4.7.4"
     colors "~1.2.1"
     js-yaml "~3.13.1"
     resolve "~1.17.0"
-
-"@microsoft/api-extractor-model@7.10.3":
-  version "7.10.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.10.3.tgz#f687f324e940bd71e3e73b5b262a54594b0ea61c"
-  integrity sha512-etP4NbZpj+zPCuO3YYigIYXkXq5zYhfE3vo/hrCj1OOd/159HDbSHnEQrNWRVy5TR79RAzHvkYAwtLYKeYP8Ag==
-  dependencies:
-    "@microsoft/tsdoc" "0.12.19"
-    "@rushstack/node-core-library" "3.34.3"
 
 "@microsoft/api-extractor-model@7.10.5":
   version "7.10.5"
@@ -526,21 +518,6 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.34.3":
-  version "3.34.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.34.3.tgz#a59a1e452dcc79bd4e5f0840b4e9603551668f85"
-  integrity sha512-WNXHEk5/uoZsbrKzGpYUzDDymJvZarRkByab4uS1fbEcTSDFSVB9e0rREzCkU9yDAQlRutbFwiTXLu3LVR5F6w==
-  dependencies:
-    "@types/node" "10.17.13"
-    colors "~1.2.1"
-    fs-extra "~7.0.1"
-    import-lazy "~4.0.0"
-    jju "~1.4.0"
-    resolve "~1.17.0"
-    semver "~7.3.0"
-    timsort "~0.3.0"
-    z-schema "~3.18.3"
-
 "@rushstack/node-core-library@3.34.5":
   version "3.34.5"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.34.5.tgz#ccd4316aed1651742b9bee97fc18b4236f4722b4"
@@ -564,16 +541,6 @@
     "@types/node" "10.17.13"
     resolve "~1.17.0"
     strip-json-comments "~3.1.1"
-
-"@rushstack/ts-command-line@4.7.3":
-  version "4.7.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/ts-command-line/-/ts-command-line-4.7.3.tgz#fa72c637d70aa29c201f8f016f7db626f2d23a2c"
-  integrity sha512-8FNrUSbMgKLgRVcsg1STsIC2xAdyes7qJtVwg36hSnBAMZgCCIM+Z36nnxyrnYTS/6qwiXv7fwVaUxXH+SyiAQ==
-  dependencies:
-    "@types/argparse" "1.0.38"
-    argparse "~1.0.9"
-    colors "~1.2.1"
-    string-argv "~0.3.1"
 
 "@rushstack/ts-command-line@4.7.4":
   version "4.7.4"
