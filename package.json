@@ -38,7 +38,7 @@
     "@microsoft/api-extractor": "7.11.0",
     "@octokit/app": "4.2.1",
     "@octokit/rest": "16.43.2",
-    "@rollup/plugin-commonjs": "15.1.0",
+    "@rollup/plugin-commonjs": "16.0.0",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-multi-entry": "4.0.0",
     "@rollup/plugin-node-resolve": "9.0.0",
