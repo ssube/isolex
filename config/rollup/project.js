@@ -1,10 +1,23 @@
 const { join } = require('path');
+const alias = require('rollup-plugin-alias');
 const replace = require('@rollup/plugin-replace');
 
 const metadata = require('../../package.json');
 
 module.exports = {
 	plugins: [
+		alias({
+			resolve: ['.tsx', '.ts'],
+			entries: {
+				'uuid/v4': join('.', 'node_modules', 'uuid', 'dist', 'esm-node', 'v4.js'),
+			},
+		}),
+		alias({
+			resolve: ['.tsx', '.ts'],
+			entries: {
+				'uuid': join('.', 'node_modules', 'uuid', 'dist', 'esm-node', 'index.js'),
+			},
+		}),
 		replace({
 			include: join('node_modules', 'universal-user-agent', '**'),
 			values: {
