@@ -1,5 +1,5 @@
 .build-base:
-  image: apextoaster/base:1.2
+  image: docker.artifacts.apextoaster.com/apextoaster/base:1.2
   tags:
     - platform:k8s
     - runner:shared
@@ -13,7 +13,7 @@
     - .build-base
 
 .build-climate:
-  image: apextoaster/code-climate:0.6
+  image: docker.artifacts.apextoaster.com/apextoaster/code-climate:0.6
   tags:
     - platform:k8s
     - runner:shared
@@ -24,16 +24,16 @@
     GIT_COMMIT_SHA: "${CI_COMMIT_SHA}"
 
 .build-codecov:
-  image: apextoaster/codecov:3.7
+  image: docker.artifacts.apextoaster.com/apextoaster/codecov:3.7
   tags:
     - platform:k8s
     - runner:shared
   allow_failure: false
 
 .build-docker:
-  image: apextoaster/docker:18.09
+  image: docker.artifacts.apextoaster.com/apextoaster/docker:18.09
   services:
-    - apextoaster/docker-dind:18.09
+    - docker.artifacts.apextoaster.com/apextoaster/docker-dind:18.09
   tags:
     - platform:k8s
     - runner:shared
@@ -52,7 +52,7 @@
     DOCKER_HOST: tcp://localhost:2375
 
 .build-node:
-  image: apextoaster/node:12.18
+  image: docker.artifacts.apextoaster.com/apextoaster/node:12.18
   tags:
     - platform:k8s
     - runner:shared
@@ -62,7 +62,7 @@
     - echo "${NPM_SECRET}" | base64 -d > ${HOME}/.npmrc
 
 .build-sonar:
-  image: apextoaster/sonar-scanner:4.4
+  image: docker.artifacts.apextoaster.com/apextoaster/sonar-scanner:4.4
   tags:
     - platform:k8s
     - runner:shared
