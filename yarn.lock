@@ -857,10 +857,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@4.14.163":
-  version "4.14.163"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/lodash/-/lodash-4.14.163.tgz#6026f73c8267a0b7d41c7c8aadacfa2a5255774f"
-  integrity sha512-BeZM/FZaV53emqyHxn9L39Oz6XbHMBRLA1b1quROku48J/1kYYxPmVOJ/qSQheb81on4BI7H6QDo6bkUuRaDNQ==
+"@types/lodash@4.14.166":
+  version "4.14.166"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/lodash/-/lodash-4.14.166.tgz#07e7f2699a149219dbc3c35574f126ec8737688f"
+  integrity sha512-A3YT/c1oTlyvvW/GQqG86EyqWNrT/tisOIh2mW3YCgcx71TNjiTZA3zYZWA5BCmtsOTXjhliy4c4yEkErw6njA==
 
 "@types/mathjs@6.0.7":
   version "6.0.7"
@@ -969,10 +969,10 @@
   dependencies:
     "@types/request" "*"
 
-"@types/request-promise@4.1.46":
-  version "4.1.46"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/request-promise/-/request-promise-4.1.46.tgz#37df6efae984316dfbfbbe8fcda37f3ba52822f2"
-  integrity sha512-3Thpj2Va5m0ji3spaCk8YKrjkZyZc6RqUVOphA0n/Xet66AW/AiOAs5vfXhQIL5NmkaO7Jnun7Nl9NEjJ2zBaw==
+"@types/request-promise@4.1.47":
+  version "4.1.47"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/request-promise/-/request-promise-4.1.47.tgz#62f58a52476ef6cfe4f38d689cb826959a33a268"
+  integrity sha512-eRSZhAS8SMsrWOM8vbhxFGVZhTbWSJvaRKyufJTdIf4gscUouQvOBlfotPSPHbMR3S7kfkyKbhb1SWPmQdy3KQ==
   dependencies:
     "@types/bluebird" "*"
     "@types/request" "*"
