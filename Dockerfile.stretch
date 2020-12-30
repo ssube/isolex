@@ -1,4 +1,4 @@
-FROM apextoaster/node:12.18
+FROM apextoaster/node:12.20
 
 # install sqlite tools
 RUN apt-get update \
