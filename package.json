@@ -55,7 +55,7 @@
     "@types/js-yaml": "3.12.5",
     "@types/jsonwebtoken": "8.5.0",
     "@types/lodash": "4.14.166",
-    "@types/mathjs": "6.0.7",
+    "@types/mathjs": "6.0.9",
     "@types/mocha": "8.2.0",
     "@types/mock-fs": "4.13.0",
     "@types/node-emoji": "1.8.1",
