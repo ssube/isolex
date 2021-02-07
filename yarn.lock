@@ -265,14 +265,14 @@
     underscore "^1.9.1"
     ws "^7.3.1"
 
-"@microsoft/api-documenter@7.12.5":
-  version "7.12.5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.12.5.tgz#dc12c11b2dcac868f4f7ee8e50d2ce49641a0e02"
-  integrity sha512-Mrogwtt2WJiXharHxF52XnIHU8iM+YcmfHxWcnYyO9IXVqovQDK4xSYa22V9WRbGtjmxUH9sFBOcdvSsF6JHUA==
+"@microsoft/api-documenter@7.12.7":
+  version "7.12.7"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.12.7.tgz#7b1742999bc083a237f78e658b3351e92012b3f7"
+  integrity sha512-GD3Z52yzDz8ZN3efB0mL2ogXLoL/I/cpoZmwLm8KiXL6o5g9K25fQ7HrFt4fvk9XTvcYX/EvZw4TBjrWz7cj5A==
   dependencies:
-    "@microsoft/api-extractor-model" "7.12.1"
+    "@microsoft/api-extractor-model" "7.12.2"
     "@microsoft/tsdoc" "0.12.24"
-    "@rushstack/node-core-library" "3.35.2"
+    "@rushstack/node-core-library" "3.36.0"
     "@rushstack/ts-command-line" "4.7.8"
     colors "~1.2.1"
     js-yaml "~3.13.1"
@@ -285,6 +285,14 @@
   dependencies:
     "@microsoft/tsdoc" "0.12.24"
     "@rushstack/node-core-library" "3.35.2"
+
+"@microsoft/api-extractor-model@7.12.2":
+  version "7.12.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.12.2.tgz#d48b35e8ed20643b1c19d7a4f80c90c42dc7d1d8"
+  integrity sha512-EU+U09Mj65zUH0qwPF4PFJiL6Y+PQQE/RRGEHEDGJJzab/mRQDpKOyrzSdb00xvcd/URehIHJqC55cY2Y4jGOA==
+  dependencies:
+    "@microsoft/tsdoc" "0.12.24"
+    "@rushstack/node-core-library" "3.36.0"
 
 "@microsoft/api-extractor@7.12.1":
   version "7.12.1"
@@ -522,6 +530,21 @@
   version "3.35.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.35.2.tgz#21ca879b5051a5ebafa952fafcd648a07a142bcb"
   integrity sha512-SPd0uG7mwsf3E30np9afCUhtaM1SBpibrbxOXPz82KWV6SQiPUtXeQfhXq9mSnGxOb3WLWoSDe7AFxQNex3+kQ==
+  dependencies:
+    "@types/node" "10.17.13"
+    colors "~1.2.1"
+    fs-extra "~7.0.1"
+    import-lazy "~4.0.0"
+    jju "~1.4.0"
+    resolve "~1.17.0"
+    semver "~7.3.0"
+    timsort "~0.3.0"
+    z-schema "~3.18.3"
+
+"@rushstack/node-core-library@3.36.0":
+  version "3.36.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.36.0.tgz#95dace39d763c8695d6607c421f95c6ac65b0ed4"
+  integrity sha512-bID2vzXpg8zweXdXgQkKToEdZwVrVCN9vE9viTRk58gqzYaTlz4fMId6V3ZfpXN6H0d319uGi2KDlm+lUEeqCg==
   dependencies:
     "@types/node" "10.17.13"
     colors "~1.2.1"
