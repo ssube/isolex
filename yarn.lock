@@ -858,10 +858,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
 
-"@types/mathjs@6.0.9":
-  version "6.0.9"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mathjs/-/mathjs-6.0.9.tgz#39d05a208565295427565f7b6f148d1e1a59fcd9"
-  integrity sha512-u93l9ZU0DhbT+gGtrP12/jPhx/X2eshLiv1if97qC7Nuld4/kxS+1WoyIM7NC5b5XiwvATWDTHsI8LvcPBWxcA==
+"@types/mathjs@6.0.11":
+  version "6.0.11"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/mathjs/-/mathjs-6.0.11.tgz#bf24c1ed875252274008d2c373bad07e0348adfb"
+  integrity sha512-q9B8ZreO41L38iTY76bCZEtAqzeRs4mNIOZpZ1sLSlcYgvgfFrnf8y8qfmas0tVWrsODjmQbQJFD6RJJJCqJbQ==
   dependencies:
     decimal.js "^10.0.0"
 
@@ -4386,10 +4386,10 @@ matched@^5.0.0:
     glob "^7.1.6"
     picomatch "^2.2.1"
 
-mathjs@8.1.1:
-  version "8.1.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-8.1.1.tgz#89d6f2fc4a90e9038db3690678a9e1ce563e15ea"
-  integrity sha512-b3TX3EgiZObujjwb8lZnTDLUuivC2jar4ZBjmGJ4stFYCDXx/DNwx5yry5t/z65p9mvejyZel1qoeR05KtChcQ==
+mathjs@9.3.0:
+  version "9.3.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-9.3.0.tgz#59cc43b536b22616197e56da303604b430daa6ac"
+  integrity sha512-0kYW+TXgB8lCqUj5wHR2hqAO2twSbPRelSFgRJXiwAx4nM6FrIb43Jd6XhW7sVbwYB+9HCNiyg5Kn8VYeB7ilg==
   dependencies:
     complex.js "^2.0.11"
     decimal.js "^10.2.1"
