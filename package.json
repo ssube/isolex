@@ -96,7 +96,7 @@
     "js-yaml": "3.14.1",
     "jsonpath-plus": "4.0.0",
     "jsonwebtoken": "8.5.1",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "mathjs": "8.1.1",
     "mocha": "8.3.2",
     "mock-fs": "4.13.0",
@@ -136,7 +136,7 @@
     "yargs-parser": "19.0.4"
   },
   "resolutions": {
-    "**/lodash": "4.17.20"
+    "**/lodash": "4.17.21"
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript"
