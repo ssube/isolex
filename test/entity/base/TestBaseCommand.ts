@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
 
 import { BaseCommand } from '../../../src/entity/base/BaseCommand';
 import { CommandVerb } from '../../../src/entity/Command';

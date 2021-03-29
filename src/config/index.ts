@@ -3,7 +3,7 @@ import { doesExist } from '@apextoaster/js-utils';
 import { createSchema, IncludeOptions } from '@apextoaster/js-yaml-schema';
 import Ajv from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
-import { DEFAULT_SAFE_SCHEMA } from 'js-yaml';
+import { DEFAULT_SCHEMA } from 'js-yaml';
 import { join } from 'path';
 
 import { BotDefinition } from '../Bot';
@@ -17,7 +17,7 @@ export const INCLUDE_OPTIONS: IncludeOptions = {
   join,
   read: readFileSync,
   resolve: realpathSync,
-  schema: DEFAULT_SAFE_SCHEMA,
+  schema: DEFAULT_SCHEMA,
 };
 
 export const SCHEMA_OPTIONS: Ajv.Options = {
@@ -32,9 +32,10 @@ export const SCHEMA_OPTIONS: Ajv.Options = {
 
 export function initConfig(extras: Array<string>, name: string) {
   const include = {...INCLUDE_OPTIONS};
-  createSchema({
+  const schema = createSchema({
     include,
   });
+  include.schema = schema;
 
   const validator = new Ajv({...SCHEMA_OPTIONS});
   validator.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
