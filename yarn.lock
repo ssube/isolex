@@ -5969,10 +5969,10 @@ rollup-plugin-typescript2@0.30.0:
     resolve "1.20.0"
     tslib "2.1.0"
 
-rollup-plugin-visualizer@5.0.4:
-  version "5.0.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.0.4.tgz#fd4c104e310033412aa8d99c811e73a7710a2c11"
-  integrity sha512-K/pFyP70k5ZcSIMH8kSWQOgT2kY3QaoMSPOG4onE8p2FBcUM/klCb7uIZMiocrl8DchCpq+mvDHOlLCx/R+Edg==
+rollup-plugin-visualizer@5.1.0:
+  version "5.1.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.1.0.tgz#488eb77dd5f86721fa83596669088ff4a6ba1b0f"
+  integrity sha512-wRTHR3q6HRqMsGPBpZRnyqO6TNcoGle7UDc9u+A6R7gF2qDtdjZ+NvWCpscMm6q6U6NVNjnPHkXpUZdy9DO4qw==
   dependencies:
     nanoid "^3.1.22"
     open "^7.4.2"
