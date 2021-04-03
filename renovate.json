@@ -4,5 +4,9 @@
     ":semanticCommitTypeAll(update)",
     ":semanticCommitScopeDisabled"
   ],
-  "branchPrefix": "update/"
+  "branchPrefix": "update/",
+  "packageRules": [{
+    "matchPackageNames": ["aws-sdk"],
+    "extends": ["schedule:earlyMondays"]
+  }]
 }
