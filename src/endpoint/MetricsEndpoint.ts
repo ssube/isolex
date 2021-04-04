@@ -31,7 +31,9 @@ export class MetricsEndpoint extends BaseEndpoint<MetricsEndpointData> {
   public async getIndex(req: Request, res: Response): Promise<void> {
     this.logger.debug('metrics endpoint get index');
 
+    const metrics = await this.metrics.metrics();
+
     res.set('Content-Type', this.metrics.contentType);
-    res.end(this.metrics.metrics());
+    res.end(metrics);
   }
 }
