@@ -51,9 +51,9 @@ export function initConfig(extras: Array<string>, name: string) {
   }
 
   const config = new Config<BotDefinition>({
+    include,
     key: '',
     sources: [{
-      include,
       name,
       paths,
       type: 'file',
