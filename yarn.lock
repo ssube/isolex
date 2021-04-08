@@ -271,12 +271,12 @@
     underscore "^1.9.1"
     ws "^7.3.1"
 
-"@microsoft/api-documenter@7.12.17":
-  version "7.12.17"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.12.17.tgz#f7ea35bce4a9b8fbd1556d7f8dc433678a846b1e"
-  integrity sha512-7VwOKAgAVWsONa6ZUGYdeDRMpnTmOFB3dy5fIaBzs0Ny+KW4xU7nVIjE1g3SOvjBv37WVlRP23iTa3eLXiz9Mg==
+"@microsoft/api-documenter@7.12.20":
+  version "7.12.20"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.12.20.tgz#9e274060a4bb1d7015e1e21930541db48002f1f6"
+  integrity sha512-DR1bZ96qSuJKuJtUlqSPET9kpksqwBeFFX6AvdXTO8oXOkTK7AZq1vetwdzMfIZvMBZH+Sssw8ki7rfMzhxgNQ==
   dependencies:
-    "@microsoft/api-extractor-model" "7.12.3"
+    "@microsoft/api-extractor-model" "7.12.4"
     "@microsoft/tsdoc" "0.12.24"
     "@rushstack/node-core-library" "3.36.1"
     "@rushstack/ts-command-line" "4.7.9"
@@ -288,6 +288,14 @@
   version "7.12.3"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.12.3.tgz#bc21f2f4bf005b753b151c674752d84c676b17b0"
   integrity sha512-lLy1UDJOkk7nuhSdAqjlULSd/yWNrSqDnUduwPwtmUoOX3QIfeDhlV5bKmq5Tw6RBq3ydgjasThyxfj1Og15MA==
+  dependencies:
+    "@microsoft/tsdoc" "0.12.24"
+    "@rushstack/node-core-library" "3.36.1"
+
+"@microsoft/api-extractor-model@7.12.4":
+  version "7.12.4"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.12.4.tgz#3837d6a253e6e1f9bce71b59f414ba91b9f7a62d"
+  integrity sha512-uTLpqr48g3ICFMadIE2rQvEhA/y4Ez3m2KqQ9qtsr/weIJ/64LI+ItZTKrrKHAxP7tLgGv0FodLsy5E7cyJy/A==
   dependencies:
     "@microsoft/tsdoc" "0.12.24"
     "@rushstack/node-core-library" "3.36.1"
