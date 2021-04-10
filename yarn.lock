@@ -4070,10 +4070,10 @@ jsonparse@^1.2.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
   integrity sha1-P02uSpH6wxX3EGL4UhzCOfE2YoA=
 
-jsonpath-plus@5.0.4:
-  version "5.0.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/jsonpath-plus/-/jsonpath-plus-5.0.4.tgz#3b8ce2ea6904ee6c6750ed027fe8df31789b62e3"
-  integrity sha512-w3pI3PewtwIrrGRCFvTkCkKu8IrOwjsqoYRxvxuXQjPB0udEtAuBY0B6/SEztsxMmuIHVHGFQ0knVnTCPW9qYw==
+jsonpath-plus@5.0.6:
+  version "5.0.6"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/jsonpath-plus/-/jsonpath-plus-5.0.6.tgz#f8374b76b9f390496cb583ad67141090183a3c09"
+  integrity sha512-SZQLxQSlAQW+n2j0LTB+6mgL+EkPVOdetIHXMJ8dfHes9sFB9iRUHnYHq2KSqMKXxpZszmPMmRx6uCrn0e359A==
 
 jsonpath-plus@^0.19.0:
   version "0.19.0"
