@@ -243,10 +243,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
-"@kubernetes/client-node@0.14.1":
-  version "0.14.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@kubernetes/client-node/-/client-node-0.14.1.tgz#4090df8aae0a685291b6ae70a661046aa7509a47"
-  integrity sha512-t4qOhRFarIpJCixMGSJRjZudins7TP+i3h9msuqkQ9r5zHvCZP6c6RcmuSlDBnf5Ds/UAVrcOlMQs730l9Y5Eg==
+"@kubernetes/client-node@0.14.3":
+  version "0.14.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@kubernetes/client-node/-/client-node-0.14.3.tgz#5ed9b88873419080547f22cb74eb502bf6671fca"
+  integrity sha512-9hHGDNm2JEFQcRTpDxVoAVr0fowU+JH/l5atCXY9VXwvFM18pW5wr2LzLP+Q2Rh+uQv7Moz4gEjEKSCgVKykEQ==
   dependencies:
     "@types/js-yaml" "^3.12.1"
     "@types/node" "^10.12.0"
