@@ -10,8 +10,6 @@ import { Tick } from '../../src/entity/Tick';
 import { CommandGenerator } from '../../src/generator/CommandGenerator';
 import { createService, createServiceContainer } from '../helpers/container';
 
-const TEST_SVC = 'some-service';
-
 describe('command generator', async () => {
   it('should notify target services', async () => {
     const { container } = await createServiceContainer();
@@ -26,8 +24,10 @@ describe('command generator', async () => {
             id: '',
             thread: '',
           },
-          name: '',
-          uid: '',
+          sourceUser: {
+            name: '',
+            uid: '',
+          },
         },
         defaultCommand: {
           data: {},
@@ -43,11 +43,8 @@ describe('command generator', async () => {
           defaults: {},
           forces: {
             target: {
-              service: {
-                kind: 'test-service',
-                name: 'test-target',
-              },
-              source: false,
+              kind: 'test-service',
+              name: 'test-target',
             },
           },
         },

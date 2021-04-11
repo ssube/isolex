@@ -84,7 +84,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
       return this.errorReply(ctx, ErrorReplyType.GrantMissing);
     }
 
-    const name = cmd.getHeadOrDefault('name', ctx.name);
+    const name = cmd.getHeadOrDefault('name', ctx.sourceUser.name);
     const existing = await this.userRepository.count({ name });
     if (existing > 0) {
       return this.reply(ctx, this.translate(ctx, 'account-create.exists', {
@@ -157,7 +157,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
     this.logger.debug({ user }, 'logging in user');
 
     const source = this.getSourceOrFail(ctx);
-    const session = await source.createSession(ctx.uid, user);
+    const session = await source.createSession(ctx.sourceUser.uid, user);
     this.logger.debug({ session, user }, 'created session');
     return this.reply(ctx, this.translate(ctx, 'session-create.success'));
   }
@@ -166,7 +166,7 @@ export class AccountController extends BaseController<AccountControllerData> imp
   @CheckRBAC()
   public async getSession(cmd: Command, ctx: Context): Promise<void> {
     const source = this.getSourceOrFail(ctx);
-    const session = source.getSession(ctx.uid);
+    const session = source.getSession(ctx.sourceUser.uid);
 
     if (isNil(session)) {
       throw new BaseError('source does not have session for uid');

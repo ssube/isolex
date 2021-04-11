@@ -1,10 +1,10 @@
-import Ajv from 'ajv';
+import { FuncKeywordDefinition } from 'ajv';
 
 export interface SchemaOptions {
   flags: string;
 }
 
-export const SCHEMA_KEYWORD_REGEXP: Ajv.KeywordDefinition = {
+export const SCHEMA_KEYWORD_REGEXP: FuncKeywordDefinition = {
   compile(schema: boolean | SchemaOptions) {
     if (typeof schema === 'boolean') {
       return (data: unknown) => (data instanceof RegExp) === schema;
@@ -12,6 +12,7 @@ export const SCHEMA_KEYWORD_REGEXP: Ajv.KeywordDefinition = {
       return (data: RegExp) => data.flags === schema.flags;
     }
   },
+  keyword: 'regexp',
   metaSchema: {
     oneOf: [{
       type: 'boolean',

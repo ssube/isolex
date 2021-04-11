@@ -24,10 +24,8 @@ data:
   redirect:
     defaults:
       target:
-        source: false
-        service:
-          kind: discord-listener
-          name: test-discord
+        kind: discord-listener
+        name: test-discord
     forces: {}
   token:
     audience: test-audience

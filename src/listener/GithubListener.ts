@@ -129,8 +129,10 @@ export class GithubListener extends SessionListener<GithubListenerData> {
         id: `${repo.owner}/${repo.repo}`,
         thread,
       },
-      name: msg.user.login,
-      uid,
+      sourceUser: {
+        name: msg.user.login,
+        uid,
+      },
     });
 
     const session = await this.getSession(uid);

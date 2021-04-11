@@ -152,9 +152,11 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
         id: '',
         thread: '',
       },
-      name: token.user.name,
+      sourceUser: {
+        name: token.user.name,
+        uid,
+      },
       token,
-      uid,
       user: token.user,
     });
     this.logger.debug({ context, token }, 'created context for token');
@@ -217,14 +219,14 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     auth.serializeUser((ctx: Context, done) => {
       this.logger.debug({ ctx }, 'serializing request context');
       /* eslint-disable-next-line no-null/no-null */
-      done(null, ctx.uid);
+      done(null, ctx.sourceUser.uid);
     });
 
     // grab existing session
     auth.deserializeUser((ctx: Context, done) => {
       this.logger.debug({ ctx }, 'deserializing request context');
       /* eslint-disable-next-line no-null/no-null */
-      done(null, this.sessions.get(ctx.uid));
+      done(null, this.sessions.get(ctx.sourceUser.uid));
     });
 
     return auth;

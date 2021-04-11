@@ -230,8 +230,10 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
         id: channel,
         thread: ts,
       },
-      name: uid,
-      uid,
+      sourceUser: {
+        name: uid,
+        uid,
+      }
     });
     const session = await this.getSession(uid);
     if (doesExist(session)) {

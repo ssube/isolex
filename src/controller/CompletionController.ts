@@ -5,9 +5,10 @@ import { Repository } from 'typeorm';
 import { INJECT_STORAGE } from '../BotService';
 import { CheckRBAC, Controller, ControllerData, Handler } from '../controller';
 import { Command, CommandVerb } from '../entity/Command';
-import { Context, redirectContext } from '../entity/Context';
+import { Context } from '../entity/Context';
 import { Fragment } from '../entity/Fragment';
 import { Parser } from '../parser';
+import { redirectContext } from '../utils/ContextRedirect';
 import { BaseController, BaseControllerOptions } from './BaseController';
 
 export const NOUN_FRAGMENT = 'fragment';
@@ -83,7 +84,7 @@ export class CompletionController extends BaseController<CompletionControllerDat
 
   protected async createContext(maybeCtx?: Context) {
     const ctx = mustExist(maybeCtx);
-    return redirectContext(ctx, this.data.redirect, this.services);
+    return redirectContext(ctx, this.data.redirect);
   }
 
   protected async getFragment(ctx: Context, id: string): Promise<Fragment> {

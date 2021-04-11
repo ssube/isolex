@@ -61,8 +61,10 @@ describe('command', async () => {
           id: '',
           thread: '',
         },
-        name: '',
-        uid: '',
+        sourceUser: {
+          name: '',
+          uid: '',
+        },
       }),
       data: {},
       labels: {},

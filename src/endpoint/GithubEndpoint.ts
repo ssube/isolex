@@ -81,8 +81,10 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.check_run.head_sha,
       },
-      name: data.sender.login,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: data.sender.login,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(ctx, data, 'check_run');
@@ -98,8 +100,10 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.check_suite.head_sha,
       },
-      name: data.sender.login,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: data.sender.login,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(ctx, data, 'check_suite');
@@ -115,8 +119,10 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.pull_request.number,
       },
-      name: data.sender.login,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: data.sender.login,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(ctx, data, 'pull_request_review');
@@ -132,8 +138,10 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.sha,
       },
-      name: data.sender.login,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: data.sender.login,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(ctx, data, 'status');

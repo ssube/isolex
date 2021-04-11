@@ -1,10 +1,7 @@
-import { InvalidArgumentError } from '@apextoaster/js-utils';
-import Ajv from 'ajv';
+import Ajv, { ErrorObject, SchemaObject } from 'ajv';
 
 import { SCHEMA_KEYWORD_REGEXP } from './keyword/Regexp';
-import * as SCHEMA_GLOBAL from './schema.yml';
-
-export type SchemaDef = Record<string, unknown>;
+import SCHEMA_GLOBAL from './schema.yml';
 
 export interface SchemaResult {
   errors: Array<string>;
@@ -12,47 +9,32 @@ export interface SchemaResult {
 }
 
 export class Schema {
-  public static formatError(err: Ajv.ErrorObject): string {
+  public static formatError(err: ErrorObject): string {
     switch (err.keyword) {
       case 'additionalProperties':
-        const params = err.params as Ajv.AdditionalPropertiesParams;
-        return `${err.message}: ${params.additionalProperty} at ${err.dataPath} not expected in ${err.schemaPath}`;
+        return `${err.message}: ${err.params.additionalProperty} at ${err.instancePath} not expected in ${err.schemaPath}`;
       default:
-        return `${err.message} at ${err.schemaPath} (${err.dataPath})`;
+        return `${err.message} at ${err.schemaPath} (${err.instancePath})`;
     }
   }
 
-  protected compiler: Ajv.Ajv;
+  protected validator: Ajv;
 
-  private readonly children: Map<string, SchemaDef>;
-
-  constructor(schema: SchemaDef = SCHEMA_GLOBAL) {
-    this.children = new Map();
-    this.compiler = new Ajv({
+  constructor(schema: SchemaObject = (SCHEMA_GLOBAL as SchemaObject)) {
+    this.validator = new Ajv({
       allErrors: true,
       coerceTypes: 'array',
-      missingRefs: 'fail',
+      keywords: [
+        SCHEMA_KEYWORD_REGEXP,
+      ],
       removeAdditional: 'failing',
-      schemaId: 'auto',
       useDefaults: true,
       verbose: true,
-    });
-    this.compiler.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
-
-    this.addSchema('isolex', schema);
-  }
-
-  public addSchema(name: string, schema: SchemaDef) {
-    if (this.children.has(name)) {
-      throw new InvalidArgumentError('schema name already exists');
-    }
-
-    this.children.set(name, schema);
-    this.compiler.addSchema(schema, name);
+    }).addSchema(schema, 'isolex');
   }
 
   public match(value: unknown, ref = 'isolex#'): SchemaResult {
-    const valid = this.compiler.validate({ $ref: ref }, value);
+    const valid = this.validator.validate({ $ref: ref }, value);
     if (valid === true) {
       return {
         errors: [],
@@ -67,8 +49,8 @@ export class Schema {
   }
 
   public getErrors(): Array<string> {
-    if (Array.isArray(this.compiler.errors)) {
-      return this.compiler.errors.map((it) => Schema.formatError(it));
+    if (Array.isArray(this.validator.errors)) {
+      return this.validator.errors.map((it) => Schema.formatError(it));
     } else {
       return [];
     }

@@ -6,9 +6,10 @@ import { Equal, FindManyOptions, Repository } from 'typeorm';
 import { Generator, GeneratorData } from '.';
 import { INJECT_CLOCK, INJECT_MATH } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_STORAGE } from '../BotService';
-import { Context, redirectContext } from '../entity/Context';
+import { Context } from '../entity/Context';
 import { Tick } from '../entity/Tick';
 import { Clock } from '../utils/Clock';
+import { redirectContext } from '../utils/ContextRedirect';
 import { Interval } from '../utils/interval';
 import { CronInterval } from '../utils/interval/CronInterval';
 import { TimeInterval } from '../utils/interval/TimeInterval';
@@ -116,7 +117,7 @@ export abstract class BaseGenerator<TData extends GeneratorData> extends BotServ
    */
   protected async createContext(): Promise<Context> {
     const base = new Context(this.data.context);
-    const ctx = redirectContext(base, this.data.redirect, this.services);
+    const ctx = redirectContext(base, this.data.redirect);
     return this.contextRepository.save(ctx);
   }
 }

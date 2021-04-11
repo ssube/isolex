@@ -113,8 +113,10 @@ describe('github commit controller', async () => {
       getHead: () => '',
       getHeadOrDefault: () => '',
     }), ineeda<Context>({
-      name: 'test',
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
     }));
 
     expect(sendMessage).to.have.callCount(1);

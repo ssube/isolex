@@ -26,8 +26,10 @@ describe('event generator', async () => {
             id: '',
             thread: '',
           },
-          name: '',
-          uid: '',
+          sourceUser: {
+            name: '',
+            uid: '',
+          },
         },
         filters: [],
         frequency: {
@@ -37,11 +39,8 @@ describe('event generator', async () => {
           defaults: {},
           forces: {
             target: {
-              service: {
-                kind: 'test-service',
-                name: 'test-target',
-              },
-              source: false,
+              kind: 'test-service',
+              name: 'test-target',
             },
           },
         },

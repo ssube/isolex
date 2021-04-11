@@ -1,5 +1,6 @@
 import { isNil, makeMap, mustExist } from '@apextoaster/js-utils';
 import { load } from 'js-yaml';
+import { isString } from 'lodash';
 import { BaseError } from 'noicejs';
 
 import { Parser, ParserData, ParserOutput } from '.';
@@ -32,7 +33,7 @@ export class YamlParser extends BaseParser<YamlParserData> implements Parser {
     }
 
     const parsed = load(msg.body);
-    if (isNil(parsed)) {
+    if (isNil(parsed) || isString(parsed)) {
       throw new BaseError('parsed value must be an object');
     }
 

@@ -6,10 +6,8 @@ data:
     defaults: {}
     forces:
       target:
-        source: false
-        service:
-          kind: discord-listener
-          name: test-discord
+        kind: discord-listener
+        name: test-discord
 
   filters: []
   transforms: []

@@ -75,7 +75,7 @@ export class UserController extends BaseController<UserControllerData> implement
   @Handler(NOUN_USER, CommandVerb.Create)
   @CheckRBAC()
   public async createUser(cmd: Command, ctx: Context): Promise<void> {
-    const name = cmd.getHeadOrDefault('name', ctx.name);
+    const name = cmd.getHeadOrDefault('name', ctx.sourceUser.name);
     const roleNames = cmd.getOrDefault('roles', []);
     this.logger.debug({ name, roles: roleNames }, 'creating user');
 
@@ -112,7 +112,7 @@ export class UserController extends BaseController<UserControllerData> implement
   @Handler(NOUN_USER, CommandVerb.Update)
   @CheckRBAC()
   public async updateUser(cmd: Command, ctx: Context): Promise<void> {
-    const name = cmd.getHeadOrDefault('name', ctx.name);
+    const name = cmd.getHeadOrDefault('name', ctx.sourceUser.name);
     this.logger.debug({ name }, 'updating user');
 
     const user = await this.userRepository.findOneOrFail({

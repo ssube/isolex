@@ -1,14 +1,12 @@
 import { NotFoundError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
-import { stub } from 'sinon';
 
 import { Role } from '../../src/entity/auth/Role';
 import { Token } from '../../src/entity/auth/Token';
 import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
-import { Context, redirectService, redirectServiceRoute } from '../../src/entity/Context';
+import { Context } from '../../src/entity/Context';
 import { Listener } from '../../src/listener';
-import { ServiceModule } from '../../src/module/ServiceModule';
 
 describe('context entity', async () => {
   it('should allow matching permissions', async () => {
@@ -18,9 +16,11 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
       source: ineeda<Listener>(),
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
       user: new User({
         locale: LOCALE_DEFAULT,
         name: 'test',
@@ -46,9 +46,11 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
       source: ineeda<Listener>(),
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
       user: new User({
         locale: LOCALE_DEFAULT,
         name: 'test',
@@ -73,9 +75,11 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
       source: ineeda<Listener>(),
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
       user: new User({
         locale: LOCALE_DEFAULT,
         name: 'test',
@@ -98,9 +102,11 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
       source: ineeda<Listener>(),
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
       user: new User({
         locale: LOCALE_DEFAULT,
         name: 'test',
@@ -123,23 +129,27 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
-      uid: 'uid',
+      sourceUser: {
+        name: 'test',
+        uid: 'uid',
+      },
       user,
     });
     expect(context.getUserId()).to.equal('user');
   });
 
-  it('should get uid when no user exists', async () => {
+  it('should throw on get user ID when no user exists', async () => {
     const context = new Context({
       channel: {
         id: '',
         thread: '',
       },
-      name: 'test',
-      uid: 'uid',
+      sourceUser: {
+        name: 'test',
+        uid: 'uid',
+      },
     });
-    expect(context.getUserId()).to.equal('uid');
+    expect(() => context.getUserId()).to.throw(NotFoundError);
   });
 
   it('should get roles when no user exists', async () => {
@@ -148,8 +158,10 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
-      uid: 'uid',
+      sourceUser: {
+        name: 'test',
+        uid: 'uid',
+      },
     });
     expect(context.getGrants()).to.deep.equal([]);
   });
@@ -160,14 +172,15 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
-      uid: 'uid',
+      sourceUser: {
+        name: 'test',
+        uid: 'uid',
+      },
     });
     const json = context.toJSON();
     expect(json).to.have.property('channel');
     expect(json).to.have.property('id');
-    expect(json).to.have.property('name');
-    expect(json).to.have.property('uid');
+    expect(json).to.have.property('sourceUser');
   });
 
   it('should not permit grants when the token rejects them', async () => {
@@ -176,8 +189,10 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
-      uid: 'uid',
+      sourceUser: {
+        name: 'test',
+        uid: 'uid',
+      },
     });
     context.token = ineeda<Token>({
       checkGrants: () => false,
@@ -197,118 +212,7 @@ const TARGET_SERVICE = {
 };
 
 describe('redirect helpers', async () => {
-  describe('redirect route', async () => {
-    it('should return the original source when source is set', async () => {
-      const original = ineeda<Context>({
-        source: ineeda<Listener>(),
-        target: ineeda<Listener>(),
-      });
-      const route = {
-        source: true,
-        target: false,
-      };
-      const sm = ineeda<ServiceModule>();
-      expect(redirectServiceRoute(original, route, sm)).to.equal(original.source);
-    });
-
-    it('should return the original target when target is set', async () => {
-      const original = ineeda<Context>({
-        source: ineeda<Listener>(),
-        target: ineeda<Listener>(),
-      });
-      const route = {
-        source: false,
-        target: true,
-      };
-      const sm = ineeda<ServiceModule>();
-      expect(redirectServiceRoute(original, route, sm)).to.equal(original.target);
-    });
-
-    it('should look up a service when service is set');
-
-    it('should return undefined when nothing is set', async () => {
-      expect(redirectServiceRoute(ineeda<Context>(), {}, ineeda<ServiceModule>())).to.equal(undefined);
-    });
-  });
-
-  describe('redirect service', async () => {
-    it('should return forced listener', async () => {
-      const original = new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
-        name: '',
-        source: ineeda<Listener>(),
-        target: ineeda<Listener>(),
-        uid: '',
-      });
-
-      expect(redirectService(original, {
-        defaults: {},
-        forces: {
-          source: {
-            target: true,
-          },
-        },
-      }, ineeda<ServiceModule>(), 'source')).to.equal(original.target);
-    });
-
-    it('should return original listener', async () => {
-      const original = new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
-        name: '',
-        source: ineeda<Listener>(),
-        uid: '',
-      });
-
-      expect(redirectService(original, {
-        defaults: {},
-        forces: {},
-      }, ineeda<ServiceModule>(), 'source')).to.equal(original.source);
-    });
-
-    it('should return default listener', async () => {
-      const source = ineeda<Listener>();
-      const target = ineeda<Listener>();
-      const original = new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
-        name: '',
-        uid: '',
-      });
-
-      expect(redirectService(original, {
-        defaults: {
-          source: {
-            service: TARGET_SERVICE,
-          },
-        },
-        forces: {},
-      }, ineeda<ServiceModule>({
-        getService: stub().withArgs(SOURCE_SERVICE).returns(source).withArgs(TARGET_SERVICE).returns(target),
-      }), 'source')).to.equal(target);
-    });
-
-    it('should throw when no listener is available', async () => {
-      const original = new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
-        name: '',
-        uid: '',
-      });
-
-      expect(() => redirectService(original, {
-        defaults: {},
-        forces: {},
-      }, ineeda<ServiceModule>(), 'source')).to.throw(NotFoundError);
-    });
-  });
+  xit('should replace the target with the source when loopback is set');
+  xit('should always set the forced target');
+  xit('should set the default target when none is provided');
 });

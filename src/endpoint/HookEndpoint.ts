@@ -6,7 +6,7 @@ import { Endpoint, EndpointData, HandlerMetadata, RouterOptions } from '.';
 import { INJECT_STORAGE } from '../BotService';
 import { User } from '../entity/auth/User';
 import { UserRepository } from '../entity/auth/UserRepository';
-import { ChannelData } from '../entity/Context';
+import { ContextChannel } from '../entity/Context';
 import { Storage } from '../storage';
 import { BaseEndpoint, BaseEndpointOptions } from './BaseEndpoint';
 
@@ -42,12 +42,14 @@ export class HookEndpoint<TData extends HookEndpointData> extends BaseEndpoint<T
     ];
   }
 
-  protected async createHookContext(channel: ChannelData) {
+  protected async createHookContext(channel: ContextChannel) {
     const user = mustExist(this.hookUser);
     return this.createContext({
       channel,
-      name: user.name,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: user.name,
+        uid: this.data.hookUser,
+      },
       user,
     });
   }

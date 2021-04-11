@@ -40,8 +40,11 @@ export class TemplateCompiler {
     });
   }
 
+  /**
+   * @todo: move to each listener, since they may have different formats
+   */
   public formatContext(context: Context): string {
-    return `@${context.name}`;
+    return `@${context.sourceUser.name}`;
   }
 
   public formatEntries(map: Map<string, string>, block: Handlebars.HelperOptions): string {

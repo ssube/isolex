@@ -40,10 +40,7 @@ describe('loopback listener', async () => {
         redirect: {
           defaults: {},
           forces: {
-            target: {
-              service: TEST_TARGET,
-              source: false,
-            }
+            target: TEST_TARGET,
           }
         },
         strict: false,
@@ -53,8 +50,10 @@ describe('loopback listener', async () => {
     await listener.start();
 
     const ctxOptions = {
-      name: 'test-user',
-      uid: 'test-uid',
+      sourceUser: {
+        name: 'test-user',
+        uid: 'test-uid',
+      },
     };
     const msgOptions = {
       body: 'test-body',
@@ -92,10 +91,7 @@ describe('loopback listener', async () => {
         redirect: {
           defaults: {},
           forces: {
-            target: {
-              service: TEST_TARGET,
-              source: false,
-            }
+            target: TEST_TARGET,
           }
         },
         strict: false,
@@ -121,10 +117,7 @@ describe('loopback listener', async () => {
         redirect: {
           defaults: {},
           forces: {
-            target: {
-              service: TEST_TARGET,
-              source: false,
-            }
+            target: TEST_TARGET,
           }
         },
         strict: false,
@@ -148,10 +141,7 @@ describe('loopback listener', async () => {
         redirect: {
           defaults: {},
           forces: {
-            target: {
-              service: TEST_TARGET,
-              source: false,
-            }
+            target: TEST_TARGET,
           }
         },
         strict: false,

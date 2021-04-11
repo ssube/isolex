@@ -19,8 +19,10 @@ const TEST_DATA: MetricsGeneratorData = {
       id: '',
       thread: '',
     },
-    name: '',
-    uid: '',
+    sourceUser: {
+      name: '',
+      uid: '',
+    },
   },
   filters: [],
   frequency: {
@@ -30,11 +32,8 @@ const TEST_DATA: MetricsGeneratorData = {
     defaults: {},
     forces: {
       target: {
-        service: {
-          kind: TEST_TARGET,
-          name: TEST_TARGET,
-        },
-        source: false,
+        kind: TEST_TARGET,
+        name: TEST_TARGET,
       },
     }
   },

@@ -72,7 +72,7 @@ export class GithubApproveController extends BaseController<GithubApproveControl
   @Handler(NOUN_APPROVE, CommandVerb.Create)
   @CheckRBAC()
   public async approveRefOrRequest(cmd: Command, ctx: Context): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const repo = cmd.getHead('project');
     const request = cmd.getHeadOrNumber('request', 0);
 

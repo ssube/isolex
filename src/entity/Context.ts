@@ -1,26 +1,28 @@
-import { doesExist, isNil, mustCoalesce, mustExist, NotFoundError, Optional } from '@apextoaster/js-utils';
+import { doesExist, isNil, NotFoundError } from '@apextoaster/js-utils';
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
 import { flatten } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie, ShiroTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Listener } from '../listener';
-import { ServiceModule } from '../module/ServiceModule';
 import { Parser } from '../parser';
 import { ServiceMetadata } from '../Service';
 import { Token } from './auth/Token';
 import { GRAPH_OUTPUT_USER, User } from './auth/User';
 import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
 
-export interface ChannelData {
+/**
+ * Listener-specific channel.
+ */
+export interface ContextChannel {
   id: string;
   thread: string;
 }
 
-export interface ContextData {
-  channel: ChannelData;
-
+/**
+ * Listener-specific user.
+ */
+export interface ContextUser {
   /**
    * User's display name.
    */
@@ -32,12 +34,14 @@ export interface ContextData {
   uid: string;
 }
 
-export interface ContextRoute {
-  source?: Listener;
-  target?: Listener;
+export interface ContextData {
+  channel: ContextChannel;
+  source?: ServiceMetadata;
+  sourceUser: ContextUser;
+  target?: ServiceMetadata;
 }
 
-export interface ContextOptions extends BaseEntityOptions, ContextData, ContextRoute {
+export interface ContextOptions extends BaseEntityOptions, ContextData {
   parser?: Parser;
 
   token?: Token;
@@ -48,57 +52,48 @@ export interface ContextOptions extends BaseEntityOptions, ContextData, ContextR
   user?: User;
 }
 
-export interface ListenerRedirect {
-  source?: boolean;
-  service?: ServiceMetadata;
-  target?: boolean;
-}
-
-export interface ContextRedirectStage extends ContextData {
-  source?: ListenerRedirect;
-  target?: ListenerRedirect;
+interface ContextRoute {
+  channel?: ContextChannel;
+  loopback?: boolean;
+  target?: ServiceMetadata;
 }
 
 export interface ContextRedirect {
-  defaults: Partial<ContextRedirectStage>;
-  forces: Partial<ContextRedirectStage>;
+  defaults: ContextRoute;
+  forces: ContextRoute;
 }
 
 export const TABLE_CONTEXT = 'context';
 
 @Entity(TABLE_CONTEXT)
-export class Context extends BaseEntity implements ContextOptions, ContextRoute {
+export class Context extends BaseEntity implements ContextOptions {
   @Column('simple-json')
-  public channel: ChannelData;
+  public channel: ContextChannel;
 
   @PrimaryGeneratedColumn('uuid')
   public id?: string;
 
-  @Column()
-  public name: string;
-
   public parser?: Parser;
 
-  public source?: Listener;
+  public source?: ServiceMetadata;
 
-  public target?: Listener;
+  public target?: ServiceMetadata;
 
   public token?: Token;
 
-  @Column()
-  public uid: string;
-
   public user?: User;
+
+  public sourceUser: ContextUser;
 
   constructor(options: ContextOptions) {
     super(options);
 
     if (doesExist(options)) {
-      if (isNil(options.name)) {
+      if (isNil(options.sourceUser.name)) {
         throw new MissingValueError('name must be specified in context options');
       }
 
-      if (isNil(options.uid)) {
+      if (isNil(options.sourceUser.uid)) {
         throw new MissingValueError('uid must be specified in context options');
       }
 
@@ -106,20 +101,27 @@ export class Context extends BaseEntity implements ContextOptions, ContextRoute 
         id: options.channel.id,
         thread: options.channel.thread,
       };
-      this.name = options.name;
       this.parser = options.parser;
+      this.token = options.token;
+      this.user = options.user;
+
+      // TODO: these should be taken from options.user or removed entirely
+      this.sourceUser = {
+        ...options.sourceUser,
+      };
+
+      // TODO: what are these for? entity should not link services
       this.source = options.source;
       this.target = options.target;
-      this.token = options.token;
-      this.uid = options.uid;
-      this.user = options.user;
     } else {
       this.channel = {
         id: '',
         thread: '',
       };
-      this.name = '';
-      this.uid = '';
+      this.sourceUser = {
+        name: '',
+        uid: '',
+      };
     }
   }
 
@@ -158,15 +160,13 @@ export class Context extends BaseEntity implements ContextOptions, ContextRoute 
   }
 
   /**
-   * Get a unique and hopefully persistent user ID.
-   *
-   * If this context does not have a logged in user, default to the listener-provided UID.
+   * Get the authenticated user's ID.
    */
   public getUserId(): string {
     if (doesExist(this.user) && doesExist(this.user.id)) {
       return this.user.id;
     } else {
-      return this.uid;
+      throw new NotFoundError();
     }
   }
 
@@ -175,92 +175,10 @@ export class Context extends BaseEntity implements ContextOptions, ContextRoute 
     return {
       channel: this.channel,
       id: this.id,
-      name: this.name,
-      uid: this.uid,
+      sourceUser: this.sourceUser,
       user: this.user,
     };
   }
-}
-
-export function extractRedirect(stage: Optional<Partial<ContextRedirectStage>>): Partial<ContextData> {
-  if (isNil(stage)) {
-    return {};
-  }
-
-  const {
-    channel,
-    name,
-    uid,
-  } = stage;
-
-  return {
-    channel,
-    name,
-    uid,
-  };
-}
-
-export function redirectServiceRoute(original: Context, route: ListenerRedirect, services: ServiceModule): Listener | undefined {
-  if (route.source === true) {
-    return mustExist(original.source);
-  }
-
-  if (route.target === true) {
-    return mustExist(original.target);
-  }
-
-  if (doesExist(route.service)) {
-    return services.getService<Listener>(route.service);
-  }
-
-  return undefined;
-}
-
-export function redirectService(original: Context, redirect: ContextRedirect, services: ServiceModule, key: 'source' | 'target'): Listener {
-  // check forces
-  const forces = redirect.forces[key];
-  if (doesExist(forces)) {
-    const forced = redirectServiceRoute(original, forces, services);
-    if (doesExist(forced)) {
-      return forced;
-    }
-  }
-
-  // check original
-  const originalListener = original[key];
-  if (doesExist(originalListener)) {
-    return originalListener;
-  }
-
-  // check defaults
-  const defaults = redirect.defaults[key];
-  if (doesExist(defaults)) {
-    const defaulted = redirectServiceRoute(original, defaults, services);
-    if (doesExist(defaulted)) {
-      return defaulted;
-    }
-  }
-
-  throw new NotFoundError();
-}
-
-export function redirectContext(original: Context, redirect: ContextRedirect, services: ServiceModule): Context {
-  const channel = mustCoalesce(redirect.forces.channel, original.channel, redirect.defaults.channel);
-  const name = mustCoalesce(redirect.forces.name, original.name, redirect.defaults.name);
-  const uid = mustCoalesce(redirect.forces.uid, original.uid, redirect.defaults.uid);
-  const user = original.user;
-  // loop up source and target services, user
-  const source = redirectService(original, redirect, services, 'source');
-  const target = redirectService(original, redirect, services, 'target');
-
-  return new Context({
-    channel,
-    name,
-    source,
-    target,
-    uid,
-    user,
-  });
 }
 
 export const GRAPH_INPUT_CHANNEL = new GraphQLInputObjectType({

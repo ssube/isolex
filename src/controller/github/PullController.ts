@@ -35,7 +35,7 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
   @Handler(NOUN_PULL_REQUEST, CommandVerb.Delete)
   @CheckRBAC()
   public async deleteRequest(cmd: Command, ctx: Context): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getNumber('number');
 
@@ -53,7 +53,7 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
   @Handler(NOUN_PULL_REQUEST, CommandVerb.Get)
   @CheckRBAC()
   public async getRequest(cmd: Command, ctx: Context): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getNumber('number');
 
@@ -68,7 +68,7 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
   @Handler(NOUN_PULL_REQUEST, CommandVerb.List)
   @CheckRBAC()
   public async listRequests(cmd: Command, ctx: Context): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const project = cmd.getHead('project');
 
     const response = await mustExist(this.client).client.pulls.list({
@@ -95,7 +95,7 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
 
   protected async mergeRequest(cmd: Command, ctx: Context): Promise<void> {
     const message = cmd.getHead('message');
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getNumber('number');
 
@@ -112,7 +112,7 @@ export class GithubPullController extends BaseController<GithubPullControllerDat
   }
 
   protected async approveRequest(cmd: Command, ctx: Context): Promise<void> {
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const project = cmd.getHead('project');
     const requestNumber = cmd.getNumber('number');
 

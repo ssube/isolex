@@ -9,12 +9,8 @@ data:
       channel:
         id: "440715367019446274"
         thread: ""
-      name: svc
-      uid: svc
       target:
-        source: false
-        service:
-          kind: discord-listener
-          name: test-discord
+        kind: discord-listener
+        name: test-discord
     forces: {}
   timeout: 100ms

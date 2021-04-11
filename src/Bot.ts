@@ -252,7 +252,8 @@ export class Bot extends BaseService<BotData> implements Service {
     if (isNil(context.target)) {
       return this.findMessageTarget(msg);
     } else {
-      return this.sendMessageTarget(msg, context.target);
+      const target = this.services.getService<Listener>(context.target);
+      return this.sendMessageTarget(msg, target);
     }
   }
 

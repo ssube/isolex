@@ -1,14 +1,13 @@
 import { Config } from '@apextoaster/js-config';
 import { doesExist } from '@apextoaster/js-utils';
 import { createSchema, IncludeOptions } from '@apextoaster/js-yaml-schema';
-import Ajv from 'ajv';
+import Ajv, { Options as AjvOptions, SchemaObject } from 'ajv';
 import { existsSync, readFileSync, realpathSync } from 'fs';
 import { DEFAULT_SCHEMA } from 'js-yaml';
 import { join } from 'path';
 
 import { BotDefinition } from '../Bot';
-import { SCHEMA_KEYWORD_REGEXP } from '../schema/keyword/Regexp';
-import * as SCHEMA_GLOBAL from '../schema/schema.yml';
+import SCHEMA_GLOBAL from '../schema/schema.yml';
 
 export const CONFIG_ENV_HOME = 'ISOLEX_HOME';
 
@@ -20,29 +19,27 @@ export const INCLUDE_OPTIONS: IncludeOptions = {
   schema: DEFAULT_SCHEMA,
 };
 
-export const SCHEMA_OPTIONS: Ajv.Options = {
+export const SCHEMA_OPTIONS: AjvOptions = {
   allErrors: true,
   coerceTypes: 'array',
-  missingRefs: 'fail',
   removeAdditional: 'failing',
-  schemaId: 'auto',
   useDefaults: true,
   verbose: true,
 };
 
 export function initConfig(extras: Array<string>, name: string) {
-  const include = {...INCLUDE_OPTIONS};
+  const include = { ...INCLUDE_OPTIONS };
   const schema = createSchema({
     include,
   });
   include.schema = schema;
 
-  const validator = new Ajv({...SCHEMA_OPTIONS});
-  validator.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
-  validator.addSchema({
-    $id: 'isolex',
-    schema: SCHEMA_GLOBAL,
-  });
+  const ajv = new Ajv(SCHEMA_OPTIONS);
+  // validator.addKeyword('regexp', SCHEMA_KEYWORD_REGEXP);
+
+  const validator = ajv.addSchema(SCHEMA_GLOBAL as SchemaObject, 'isolex');
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  validator.validate = (() => true) as any;
 
   const paths = [...extras];
   const altHome = process.env[CONFIG_ENV_HOME];

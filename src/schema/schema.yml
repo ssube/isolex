@@ -1,4 +1,4 @@
-$schema: "http://json-schema.org/schema#" # yes, this is a json schema written in yaml
+$schema: "http://json-schema.org/draft-07/schema#"
 $id: "https://github.com/ssube/isolex/schema.yml"
 definitions:
   array-mapper:
@@ -105,16 +105,24 @@ definitions:
       thread:
         type: string
 
+  entity-context-user:
+    type: object
+    additionalProperties: false
+    required: [name, uid]
+    properties:
+      name:
+        type: string
+      uid:
+        type: string
+ 
   entity-context-data:
     type: object
     additionalProperties: true
     properties:
       channel:
         $ref: "#/definitions/entity-context-channel"
-      name:
-        type: string
-      uid:
-        type: string
+      sourceUser:
+        $ref: "#/definitions/entity-context-user"
 
   entity-context:
     allOf:
@@ -123,30 +131,22 @@ definitions:
         additionalProperties: false
         required: [channel, name, uid]
         properties:
+          source:
+            $ref: "#/definitions/service-metadata"
           target:
             $ref: "#/definitions/service-metadata"
 
   entity-context-route:
-    oneOf:
-      - type: object
-        additionalProperties: false
-        required: [service]
-        properties:
-          service:
-            $ref: "#/definitions/service-metadata"
-      - type: object
-        additionalProperties: false
-        required: [source]
-        properties:
-          source:
-            type: boolean
-      - type: object
-        additionalProperties: false
-        required: [target]
-        properties:
-          target:
-            type: boolean
-
+    type: object
+    additionalProperties: false
+    properties:
+      channel:
+        $ref: "#/definitions/entity-context-channel"
+      loopback:
+        type: boolean
+      target:
+        $ref: "#/definitions/service-metadata"
+ 
   entity-context-redirect:
     type: object
     additionalProperties: false
@@ -155,19 +155,9 @@ definitions:
       - forces
     properties:
       defaults:
-        allOf:
-          - $ref: "#/definitions/entity-context-data"
-          - source:
-              $ref: "#/definitions/entity-context-route"
-          - target:
-              $ref: "#/definitions/entity-context-route"
+        $ref: "#/definitions/entity-context-route"
       forces:
-        allOf:
-          - $ref: "#/definitions/entity-context-data"
-          - source:
-              $ref: "#/definitions/entity-context-route"
-          - target:
-              $ref: "#/definitions/entity-context-route"
+        $ref: "#/definitions/entity-context-route"
 
   entity-message:
     type: object

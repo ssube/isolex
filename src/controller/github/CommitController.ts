@@ -36,7 +36,7 @@ export class GithubCommitController extends BaseController<GithubCommitControlle
   @CheckRBAC()
   public async getCommit(cmd: Command, ctx: Context): Promise<void> {
     const client = mustExist(this.client).client;
-    const owner = cmd.getHeadOrDefault('owner', ctx.name);
+    const owner = cmd.getHeadOrDefault('owner', ctx.sourceUser.name);
     const project = cmd.getHead('project');
     const ref = cmd.getHead('ref');
 

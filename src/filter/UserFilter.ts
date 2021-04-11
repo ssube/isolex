@@ -19,12 +19,12 @@ export class UserFilter extends BaseFilter<UserFilterData> implements Filter {
   public async check(value: FilterValue): Promise<FilterBehavior> {
     const context = mustExist(value.context);
 
-    if (this.list.check(context.uid) === false) {
+    if (this.list.check(context.sourceUser.uid) === false) {
       this.logger.debug({ context }, 'filter ignoring user id');
       return FilterBehavior.Drop;
     }
 
-    if (this.list.check(context.name) === false) {
+    if (this.list.check(context.sourceUser.name) === false) {
       this.logger.debug({ context }, 'filter ignoring user name');
       return FilterBehavior.Drop;
     }

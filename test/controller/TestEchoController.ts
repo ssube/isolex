@@ -25,11 +25,8 @@ const TEST_DATA = {
     defaults: {},
     forces: {
       target: {
-        service: {
-          kind: TEST_LISTENER,
-          name: TEST_LISTENER,
-        },
-        source: false,
+        kind: TEST_LISTENER,
+        name: TEST_LISTENER,
       },
     },
   },
@@ -101,11 +98,8 @@ describe('echo controller', async () => {
           defaults: {},
           forces: {
             target: {
-              service: {
-                kind: TEST_LISTENER,
-                name: TEST_LISTENER,
-              },
-              source: false,
+              kind: TEST_LISTENER,
+              name: TEST_LISTENER,
             },
           },
         },
@@ -132,8 +126,10 @@ describe('echo controller', async () => {
       context: ineeda<Context>({
         checkGrants: () => true,
         getGrants: () => ['*:test'],
-        name: 'test-user',
-        uid: 'test-user',
+        sourceUser: {
+          name: 'test-user',
+          uid: 'test-user',
+        },
         user: ineeda<User>(),
       }),
       data: {},

@@ -226,8 +226,10 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
         id: msg.channel.id,
         thread: msg.id,
       },
-      name: msg.author.username,
-      uid: msg.author.id,
+      sourceUser: {
+        name: msg.author.username,
+        uid: msg.author.id,
+      },
     };
 
     const session = await this.getSession(msg.author.id);
@@ -261,8 +263,10 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     const msgContext = mustExist(msg.context);
     msg.context = await this.createContext({
       ...msgContext,
-      name: user.username,
-      uid: user.id,
+      sourceUser: {
+        name: user.username,
+        uid: user.id,
+      },
     });
 
     return msg;

@@ -64,8 +64,10 @@ describe('regex parser', async () => {
           id: 'test',
           thread: 'test',
         },
-        name: 'test',
-        uid: 'test',
+        sourceUser: {
+          name: 'test',
+          uid: 'test',
+        },
       }),
       labels: {},
       reactions: [],

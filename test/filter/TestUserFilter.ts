@@ -70,8 +70,10 @@ describe('user filter', async () => {
 
     const cmd = new Command({
       context: ineeda<Context>({
-        name: 'in',
-        uid: 'out',
+        sourceUser: {
+          name: 'in',
+          uid: 'out',
+        },
       }),
       data: {},
       labels: {},
@@ -94,8 +96,10 @@ describe('user filter', async () => {
 
     const cmd = new Command({
       context: ineeda<Context>({
-        name: 'out',
-        uid: 'in',
+        sourceUser: {
+          name: 'out',
+          uid: 'in',
+        },
       }),
       data: {},
       labels: {},

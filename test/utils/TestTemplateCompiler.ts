@@ -15,8 +15,10 @@ describe('template compiler', async () => {
           id: '',
           thread: '',
         },
-        name: 'foo',
-        uid: '',
+        sourceUser: {
+          name: 'foo',
+          uid: '',
+        },
       });
       expect(compiler.formatContext(ctx)).to.equal('@foo');
     });

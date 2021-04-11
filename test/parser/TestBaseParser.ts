@@ -93,8 +93,10 @@ describe('base parser', async () => {
         id: '',
         thread: '',
       },
-      name: 'test',
-      uid: '0',
+      sourceUser: {
+        name: 'test',
+        uid: '0',
+      },
       user: ineeda<User>(),
     }), new Fragment({
       data: {},

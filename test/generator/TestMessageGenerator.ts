@@ -29,8 +29,10 @@ const TEST_CONFIG = {
         id: '',
         thread: '',
       },
-      name: '',
-      uid: '',
+      sourceUser: {
+        name: '',
+        uid: '',
+      },
     },
     defaultMessage: {
       body: '',
@@ -46,11 +48,8 @@ const TEST_CONFIG = {
       defaults: {},
       forces: {
         target: {
-          service: {
-            kind: TEST_SVC2,
-            name: TEST_TARGET,
-          },
-          source: false,
+          kind: TEST_SVC2,
+          name: TEST_TARGET,
         },
       },
     },

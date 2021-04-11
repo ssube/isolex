@@ -57,8 +57,10 @@ describe('yaml parser', async () => {
           id: 'test',
           thread: 'test',
         },
-        name: 'test',
-        uid: 'test',
+        sourceUser: {
+          name: 'test',
+          uid: 'test',
+        },
       }),
       labels: {},
       reactions: [],
@@ -102,7 +104,16 @@ describe('yaml parser', async () => {
 
     const msg = new Message({
       body: '"test"',
-      context: ineeda<Context>(),
+      context: ineeda<Context>({
+        channel: {
+          id: '',
+          thread: '',
+        },
+        sourceUser: {
+          name: '',
+          uid: '',
+        },
+      }),
       labels: {},
       reactions: [],
       type: TYPE_YAML,

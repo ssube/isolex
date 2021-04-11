@@ -5,7 +5,7 @@ import { Inject } from 'noicejs';
 import { Endpoint, Handler } from '.';
 import { INJECT_METRICS } from '../BaseService';
 import { Command, CommandOptions, CommandVerb } from '../entity/Command';
-import { ChannelData, Context } from '../entity/Context';
+import { ContextChannel, Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { applyTransforms } from '../transform';
 import { createServiceCounter, incrementServiceCounter, StringCounter } from '../utils/Metrics';
@@ -162,8 +162,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project_name,
         thread: data.ref,
       },
-      name: user.name,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: user.name,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
@@ -181,8 +183,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.id,
         thread: data.object_attributes.id,
       },
-      name: user.name,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: user.name,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
@@ -200,8 +204,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.id,
         thread: data.object_attributes.id,
       },
-      name: user.name,
-      uid: this.data.hookUser,
+      sourceUser: {
+        name: user.name,
+        uid: this.data.hookUser,
+      },
       user,
     });
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
@@ -217,8 +223,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.web_url,
         thread: data.object_attributes.ref,
       },
-      name: data.user.name,
-      uid: data.user.username,
+      sourceUser: {
+        name: data.user.name,
+        uid: data.user.username,
+      },
       user: mustExist(this.hookUser),
     });
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
@@ -234,8 +242,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.web_url,
         thread: data.ref,
       },
-      name: data.user_name,
-      uid: data.user_username,
+      sourceUser: {
+        name: data.user_name,
+        uid: data.user_username,
+      },
       user: mustExist(this.hookUser),
     });
     const cmd = await this.createHookCommand(cmdCtx, txData, data.object_kind);
@@ -257,7 +267,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
     return txData;
   }
 
-  protected getHookChannel(data: GitlabWebhook): ChannelData {
+  protected getHookChannel(data: GitlabWebhook): ContextChannel {
     return {
       id: data.object_kind,
       thread: '',

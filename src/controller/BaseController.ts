@@ -6,13 +6,14 @@ import { INJECT_SERVICES } from '../BaseService';
 import { BotService, BotServiceOptions, INJECT_LOCALE } from '../BotService';
 import { User } from '../entity/auth/User';
 import { Command } from '../entity/Command';
-import { Context, redirectContext } from '../entity/Context';
+import { Context } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { Listener } from '../listener';
 import { Locale, TranslateOptions } from '../locale';
 import { ServiceModule } from '../module/ServiceModule';
 import { ServiceDefinition } from '../Service';
 import { applyTransforms, extractBody, Transform, TransformData, TransformInput } from '../transform';
+import { redirectContext } from '../utils/ContextRedirect';
 import { TYPE_JSON, TYPE_TEXT } from '../utils/Mime';
 
 export type HandlerMethod = (this: BaseController<ControllerData>, cmd: Command, ctx: Context) => Promise<void>;
@@ -174,7 +175,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
       redirect: this.data.redirect,
     }, 'preparing context redirect');
 
-    const context = redirectContext(baseCtx, this.data.redirect, this.services);
+    const context = redirectContext(baseCtx, this.data.redirect);
     const msg = new Message({
       body,
       context,
@@ -190,7 +191,7 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     if (isNil(source)) {
       throw new MissingValueError('context source must not be nil');
     }
-    return source;
+    return this.services.getService(source);
   }
 
   protected getUserOrFail(ctx: Context): User {

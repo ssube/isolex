@@ -3,9 +3,10 @@ import { mustExist, NotImplementedError } from '@apextoaster/js-utils';
 import { FetchOptions, Listener, ListenerData } from '.';
 import { BotServiceOptions } from '../BotService';
 import { User } from '../entity/auth/User';
-import { ContextRedirect, redirectContext } from '../entity/Context';
+import { ContextRedirect } from '../entity/Context';
 import { Message } from '../entity/Message';
 import { Session } from '../entity/Session';
+import { redirectContext } from '../utils/ContextRedirect';
 import { BaseListener } from './BaseListener';
 
 export interface LoopbackListenerData extends ListenerData {
@@ -22,7 +23,7 @@ export class LoopbackListener extends BaseListener<LoopbackListenerData> impleme
 
     const outCtx = await this.createContext(ctx);
     const outMsg = new Message(msg);
-    outMsg.context = redirectContext(outCtx, this.data.redirect, this.services);
+    outMsg.context = redirectContext(outCtx, this.data.redirect);
 
     await this.bot.receive(outMsg);
   }

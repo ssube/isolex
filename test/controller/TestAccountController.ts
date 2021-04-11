@@ -61,8 +61,10 @@ describe('account controller', async () => {
       get: () => tvals,
     }), ineeda<Context>({
       checkGrants,
-      name: 'test',
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
     }));
 
     expect(checkGrants).to.have.callCount(tvals.length);
@@ -86,8 +88,10 @@ describe('account controller', async () => {
       get: () => tvals,
     }), ineeda<Context>({
       listGrants,
-      name: 'test',
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
     }));
 
     expect(listGrants).to.have.callCount(tvals.length);
@@ -121,8 +125,10 @@ describe('account controller', async () => {
     });
 
     const context = ineeda<Context>({
-      name: 'test',
-      uid: 'test',
+      sourceUser: {
+        name: 'test',
+        uid: 'test',
+      },
       user: {
         locale: {
           lang: 'test',
