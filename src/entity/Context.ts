@@ -38,7 +38,7 @@ export interface ContextData {
   channel: ContextChannel;
   source: ServiceMetadata;
   sourceUser: ContextUser;
-  target?: ServiceMetadata; // TODO: used at all?
+  target?: ServiceMetadata;
 }
 
 export interface ContextOptions extends BaseEntityOptions, ContextData {
@@ -61,6 +61,26 @@ interface ContextRoute {
 export interface ContextRedirect {
   defaults: ContextRoute;
   forces: ContextRoute;
+}
+
+export function checkUser(user: ContextUser) {
+  if (isString(user.name) === false || user.name === '') {
+    throw new MissingValueError('user name must be specified in context options');
+  }
+
+  if (isString(user.uid) === false || user.uid === '') {
+    throw new MissingValueError('user UID must be specified in context options');
+  }
+}
+
+export function checkChannel(channel: ContextChannel) {
+  if (isString(channel.id) === false || channel.id === '') {
+    throw new MissingValueError('channel ID must be specified in context options');
+  }
+
+  if (isString(channel.thread) === false || channel.thread === '') {
+    throw new MissingValueError('channel thread be specified in context options');
+  }
 }
 
 export const TABLE_CONTEXT = 'context';
@@ -89,13 +109,7 @@ export class Context extends BaseEntity implements ContextOptions {
     super(options);
 
     if (doesExist(options)) {
-      if (isString(options.sourceUser.name) === false || options.sourceUser.name === '') {
-        throw new MissingValueError('name must be specified in context options');
-      }
-
-      if (isString(options.sourceUser.uid) === false || options.sourceUser.uid === '') {
-        throw new MissingValueError('uid must be specified in context options');
-      }
+      checkUser(options.sourceUser);
 
       this.channel = {
         id: options.channel.id,

@@ -93,11 +93,7 @@ export abstract class BaseEndpoint<TData extends EndpointData> extends BotServic
   }
 
   protected async createContext(options: ContextOptions): Promise<Context> {
-    const ctx = await this.contextRepository.save(new Context({
-      ...options,
-      source: this.getMetadata(),
-      // TODO: does this need target?
-    }));
+    const ctx = await this.contextRepository.save(new Context(options));
     this.logger.debug({ ctx }, 'endpoint saved new context');
     return ctx;
   }
