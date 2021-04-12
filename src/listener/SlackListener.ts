@@ -230,6 +230,7 @@ export class SlackListener extends SessionListener<SlackListenerData> implements
         id: channel,
         thread: ts,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: uid,
         uid,

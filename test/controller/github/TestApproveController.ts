@@ -9,13 +9,12 @@ import { GithubApproveController } from '../../../src/controller/github/ApproveC
 import { STATUS_SUCCESS } from '../../../src/endpoint/BaseEndpoint';
 import { Command, CommandVerb } from '../../../src/entity/Command';
 import { Context } from '../../../src/entity/Context';
-import { Transform } from '../../../src/transform';
 import { GithubClient } from '../../../src/utils/github';
 import { createService, createServiceContainer } from '../../helpers/container';
+import { getTestContextData } from '../../helpers/context';
 
 /* eslint-disable @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any, camelcase */
 
-const TEST_TRANSFORM = 'test-transform';
 const TEST_DATA = {
   client: {
     agent: '',
@@ -70,7 +69,7 @@ function pullGetResponse(pulls: Array<unknown>): ClientResponse<Octokit.PullsGet
         sha: '',
       },
       user: {
-        login: '',
+        login: 'test',
       },
     } as any,
     headers: {} as any,
@@ -164,7 +163,7 @@ describe('github approve controller', async () => {
       labels: {},
       noun: '',
       verb: CommandVerb.Create,
-    }), ineeda<Context>());
+    }), new Context(getTestContextData()));
 
     expect(sendMessage).to.have.callCount(1);
     expect(sendMessage).to.have.been.calledWithMatch({
@@ -210,7 +209,7 @@ describe('github approve controller', async () => {
       labels: {},
       noun: '',
       verb: CommandVerb.Create,
-    }), ineeda<Context>());
+    }), new Context(getTestContextData()));
 
     expect(sendMessage).to.have.callCount(1);
     expect(sendMessage).to.have.been.calledWithMatch({
@@ -392,7 +391,7 @@ describe('github approve controller', async () => {
       labels: {},
       noun: '',
       verb: CommandVerb.Create,
-    }), ineeda<Context>());
+    }), new Context(getTestContextData()));
 
     expect(sendMessage).to.have.callCount(pulls.length);
   });

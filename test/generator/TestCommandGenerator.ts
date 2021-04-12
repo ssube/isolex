@@ -9,6 +9,7 @@ import { Context } from '../../src/entity/Context';
 import { Tick } from '../../src/entity/Tick';
 import { CommandGenerator } from '../../src/generator/CommandGenerator';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 describe('command generator', async () => {
   it('should notify target services', async () => {
@@ -19,16 +20,7 @@ describe('command generator', async () => {
         executeCommand,
       }),
       data: {
-        context: {
-          channel: {
-            id: '',
-            thread: '',
-          },
-          sourceUser: {
-            name: '',
-            uid: '',
-          },
-        },
+        context: getTestContextData(),
         defaultCommand: {
           data: {},
           labels: {},

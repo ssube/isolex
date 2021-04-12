@@ -46,6 +46,7 @@ export class HookEndpoint<TData extends HookEndpointData> extends BaseEndpoint<T
     const user = mustExist(this.hookUser);
     return this.createContext({
       channel,
+      source: this.getMetadata(),
       sourceUser: {
         name: user.name,
         uid: this.data.hookUser,

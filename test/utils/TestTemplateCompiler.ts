@@ -4,23 +4,15 @@ import { stub } from 'sinon';
 import { Context } from '../../src/entity/Context';
 import { TemplateCompiler, testEq } from '../../src/utils/TemplateCompiler';
 import { createContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 describe('template compiler', async () => {
   describe('format context helper', async () => {
     it('should prefix a name', async () => {
       const { container } = await createContainer();
       const compiler = await container.create(TemplateCompiler);
-      const ctx = new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
-        sourceUser: {
-          name: 'foo',
-          uid: '',
-        },
-      });
-      expect(compiler.formatContext(ctx)).to.equal('@foo');
+      const ctx = new Context(getTestContextData());
+      expect(compiler.formatContext(ctx)).to.equal('@test');
     });
   });
 

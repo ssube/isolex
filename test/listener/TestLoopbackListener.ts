@@ -12,6 +12,7 @@ import { LoopbackListener } from '../../src/listener/LoopbackListener';
 import { Service } from '../../src/Service';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_METADATA = {
   kind: 'loopback-listener',
@@ -62,10 +63,7 @@ describe('loopback listener', async () => {
 
     const msg = new Message({
       context: new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
+        ...getTestContextData(),
         ...ctxOptions,
       }),
       labels: {},

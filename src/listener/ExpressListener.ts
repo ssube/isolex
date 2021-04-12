@@ -152,6 +152,7 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
         id: '',
         thread: '',
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: token.user.name,
         uid,

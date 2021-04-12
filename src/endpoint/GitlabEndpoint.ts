@@ -162,6 +162,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project_name,
         thread: data.ref,
       },
+      source: {
+        kind: this.kind,
+        name: this.name,
+      },
       sourceUser: {
         name: user.name,
         uid: this.data.hookUser,
@@ -182,6 +186,10 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
       channel: {
         id: data.project.id,
         thread: data.object_attributes.id,
+      },
+      source: {
+        kind: this.kind,
+        name: this.name,
       },
       sourceUser: {
         name: user.name,
@@ -204,6 +212,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.id,
         thread: data.object_attributes.id,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: user.name,
         uid: this.data.hookUser,
@@ -223,6 +232,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.web_url,
         thread: data.object_attributes.ref,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: data.user.name,
         uid: data.user.username,
@@ -242,6 +252,7 @@ export class GitlabEndpoint extends HookEndpoint<GitlabEndpointData> implements 
         id: data.project.web_url,
         thread: data.ref,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: data.user_name,
         uid: data.user_username,

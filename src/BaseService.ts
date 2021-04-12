@@ -7,7 +7,7 @@ import { SchemaError } from './error/SchemaError';
 import { serviceLogger } from './logger';
 import { ServiceModule } from './module/ServiceModule';
 import { Schema } from './schema';
-import { Service, ServiceDefinition, ServiceEvent } from './Service';
+import { Service, ServiceDefinition, ServiceEvent, ServiceMetadata } from './Service';
 import { Clock } from './utils/Clock';
 import { JsonPath } from './utils/JsonPath';
 import { MathFactory } from './utils/Math';
@@ -94,5 +94,12 @@ export abstract class BaseService<TData extends BaseServiceData> implements Serv
     } else {
       return this.id;
     }
+  }
+
+  public getMetadata(): ServiceMetadata {
+    return {
+      kind: this.kind,
+      name: this.name,
+    };
   }
 }

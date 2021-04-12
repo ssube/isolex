@@ -12,6 +12,7 @@ import { RegexParser } from '../../src/parser/RegexParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_CONFIG = {
   dataMapper: {
@@ -59,16 +60,7 @@ describe('regex parser', async () => {
     const body = '0123456789 abcdefghij';
     const [cmd] = await svc.parse(new Message({
       body,
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        sourceUser: {
-          name: 'test',
-          uid: 'test',
-        },
-      }),
+      context: new Context(getTestContextData()),
       labels: {},
       reactions: [],
       type: TYPE_TEXT,

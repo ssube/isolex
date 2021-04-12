@@ -45,8 +45,8 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
   protected async createContext(options: ContextOptions): Promise<Context> {
     const ctx = await this.contextRepository.save(new Context({
       ...options,
-      source: this,
-      target: this,
+      source: this.getMetadata(),
+      target: this.getMetadata(),
     }));
     this.logger.debug({ ctx }, 'listener saved new context');
     return ctx;

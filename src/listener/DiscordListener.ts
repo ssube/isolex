@@ -226,6 +226,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
         id: msg.channel.id,
         thread: msg.id,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: msg.author.username,
         uid: msg.author.id,

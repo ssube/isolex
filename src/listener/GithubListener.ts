@@ -129,6 +129,7 @@ export class GithubListener extends SessionListener<GithubListenerData> {
         id: `${repo.owner}/${repo.repo}`,
         thread,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: msg.user.login,
         uid,

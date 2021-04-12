@@ -19,7 +19,7 @@ const TEST_DATA: GitlabEndpointData = {
     verb: CommandVerb.Create,
   },
   filters: [],
-  hookUser: '',
+  hookUser: 'test',
   strict: false,
   transforms: [],
 };
@@ -34,10 +34,19 @@ const TEST_EVENTS = [{
   data: {},
   name: 'note',
 }, {
-  data: {},
+  data: {
+    user: {
+      name: 'test',
+      username: 'test',
+    },
+  },
   name: 'pipeline',
 }, {
-  data: {},
+  data: {
+    /* eslint-disable camelcase */
+    user_name: 'test',
+    user_username: 'test',
+  },
   name: 'push',
 }];
 

@@ -14,6 +14,7 @@ import { TransformModule } from '../../src/module/TransformModule';
 import { Transform } from '../../src/transform';
 import { RequestFactory } from '../../src/utils/Request';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 describe('weather controller', async () => {
   it('should send a message', async () => {
@@ -76,6 +77,7 @@ describe('weather controller', async () => {
 
     const cmd = new Command({
       context: ineeda<Context>({
+        ...getTestContextData(),
         checkGrants: () => true,
         getGrants: () => ['*:test'],
         user: ineeda<User>(),

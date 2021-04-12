@@ -1,6 +1,6 @@
-import { doesExist, isNil, NotFoundError } from '@apextoaster/js-utils';
+import { doesExist, NotFoundError } from '@apextoaster/js-utils';
 import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString } from 'graphql';
-import { flatten } from 'lodash';
+import { flatten, isString } from 'lodash';
 import { MissingValueError } from 'noicejs';
 import { newTrie, ShiroTrie } from 'shiro-trie';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
@@ -36,9 +36,9 @@ export interface ContextUser {
 
 export interface ContextData {
   channel: ContextChannel;
-  source?: ServiceMetadata;
+  source: ServiceMetadata;
   sourceUser: ContextUser;
-  target?: ServiceMetadata;
+  target?: ServiceMetadata; // TODO: used at all?
 }
 
 export interface ContextOptions extends BaseEntityOptions, ContextData {
@@ -75,7 +75,9 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public parser?: Parser;
 
-  public source?: ServiceMetadata;
+  public source: ServiceMetadata;
+
+  public sourceUser: ContextUser;
 
   public target?: ServiceMetadata;
 
@@ -83,17 +85,15 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public user?: User;
 
-  public sourceUser: ContextUser;
-
   constructor(options: ContextOptions) {
     super(options);
 
     if (doesExist(options)) {
-      if (isNil(options.sourceUser.name)) {
+      if (isString(options.sourceUser.name) === false || options.sourceUser.name === '') {
         throw new MissingValueError('name must be specified in context options');
       }
 
-      if (isNil(options.sourceUser.uid)) {
+      if (isString(options.sourceUser.uid) === false || options.sourceUser.uid === '') {
         throw new MissingValueError('uid must be specified in context options');
       }
 
@@ -102,21 +102,22 @@ export class Context extends BaseEntity implements ContextOptions {
         thread: options.channel.thread,
       };
       this.parser = options.parser;
-      this.token = options.token;
-      this.user = options.user;
 
-      // TODO: these should be taken from options.user or removed entirely
+      this.source = options.source;
       this.sourceUser = {
         ...options.sourceUser,
       };
-
-      // TODO: what are these for? entity should not link services
-      this.source = options.source;
       this.target = options.target;
+      this.token = options.token;
+      this.user = options.user;
     } else {
       this.channel = {
         id: '',
         thread: '',
+      };
+      this.source = {
+        kind: '',
+        name: '',
       };
       this.sourceUser = {
         name: '',

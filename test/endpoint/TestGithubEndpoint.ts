@@ -17,7 +17,7 @@ const TEST_DATA: GithubEndpointData = {
     verb: CommandVerb.Get,
   },
   filters: [],
-  hookUser: '',
+  hookUser: 'test',
   secret: '',
   strict: false,
   transforms: [],
@@ -71,6 +71,12 @@ describe('github endpoint', async () => {
 
       const sendStatus = spy();
       await endpoint.postWebhook(ineeda<Request>({
+        body: {
+          sender: {
+            /* eslint-disable-next-line */
+            login: 'test' as any,
+          },
+        },
         header: stub().withArgs('X-GitHub-Event').returns('pull_request_review'),
       }), ineeda<Response>({
         sendStatus,
@@ -85,6 +91,12 @@ describe('github endpoint', async () => {
 
       const sendStatus = spy();
       await endpoint.postWebhook(ineeda<Request>({
+        body: {
+          sender: {
+            /* eslint-disable-next-line */
+            login: 'test' as any,
+          },
+        },
         header: stub().withArgs('X-GitHub-Event').returns('status'),
       }), ineeda<Response>({
         sendStatus,

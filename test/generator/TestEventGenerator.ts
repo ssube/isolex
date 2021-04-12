@@ -7,6 +7,7 @@ import { Tick } from '../../src/entity/Tick';
 import { EventGenerator } from '../../src/generator/EventGenerator';
 import { Service } from '../../src/Service';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_SVC = 'some-service';
 
@@ -21,16 +22,7 @@ describe('event generator', async () => {
     }));
     const interval = await createService(container, EventGenerator, {
       data: {
-        context: {
-          channel: {
-            id: '',
-            thread: '',
-          },
-          sourceUser: {
-            name: '',
-            uid: '',
-          },
-        },
+        context: getTestContextData(),
         filters: [],
         frequency: {
           time: '30s',

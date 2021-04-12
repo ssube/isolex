@@ -81,6 +81,7 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.check_run.head_sha,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: data.sender.login,
         uid: this.data.hookUser,
@@ -100,6 +101,7 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.check_suite.head_sha,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: data.sender.login,
         uid: this.data.hookUser,
@@ -119,6 +121,7 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.pull_request.number,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: data.sender.login,
         uid: this.data.hookUser,
@@ -138,6 +141,7 @@ export class GithubEndpoint extends HookEndpoint<GithubEndpointData> {
         id: data.repository.full_name,
         thread: data.sha,
       },
+      source: this.getMetadata(),
       sourceUser: {
         name: data.sender.login,
         uid: this.data.hookUser,

@@ -12,6 +12,7 @@ import { YamlParser } from '../../src/parser/YamlParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_YAML } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_CONFIG = {
   defaultCommand: {
@@ -52,16 +53,7 @@ describe('yaml parser', async () => {
 
     const [cmd] = await svc.parse(new Message({
       body: '{foo: ["1"], bar: ["2"]}',
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        sourceUser: {
-          name: 'test',
-          uid: 'test',
-        },
-      }),
+      context: new Context(getTestContextData()),
       labels: {},
       reactions: [],
       type: TYPE_YAML,

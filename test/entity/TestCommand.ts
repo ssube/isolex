@@ -3,6 +3,7 @@ import { ineeda } from 'ineeda';
 
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
+import { getTestContextData } from '../helpers/context';
 
 describe('command', async () => {
   it('should copy data', async () => {
@@ -56,16 +57,7 @@ describe('command', async () => {
 
   it('should convert its context to JSON', async () => {
     const cmd = new Command({
-      context: new Context({
-        channel: {
-          id: '',
-          thread: '',
-        },
-        sourceUser: {
-          name: '',
-          uid: '',
-        },
-      }),
+      context: new Context(getTestContextData()),
       data: {},
       labels: {},
       noun: 'test',

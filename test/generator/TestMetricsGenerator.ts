@@ -9,21 +9,13 @@ import { Tick } from '../../src/entity/Tick';
 import { MetricsGenerator, MetricsGeneratorData } from '../../src/generator/MetricsGenerator';
 import { Clock } from '../../src/utils/Clock';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_DELAY = 50;
 const TEST_TARGET = 'test-target';
 const TEST_GENERATOR = 'metrics-generator';
 const TEST_DATA: MetricsGeneratorData = {
-  context: {
-    channel: {
-      id: '',
-      thread: '',
-    },
-    sourceUser: {
-      name: '',
-      uid: '',
-    },
-  },
+  context: getTestContextData(),
   filters: [],
   frequency: {
     time: '100ms',

@@ -1,12 +1,18 @@
 import { NotFoundError } from '@apextoaster/js-utils';
 import { expect } from 'chai';
 import { ineeda } from 'ineeda';
+import { MissingValueError } from 'noicejs';
 
 import { Role } from '../../src/entity/auth/Role';
 import { Token } from '../../src/entity/auth/Token';
 import { LOCALE_DEFAULT, User } from '../../src/entity/auth/User';
 import { Context } from '../../src/entity/Context';
 import { Listener } from '../../src/listener';
+
+const SOURCE_SERVICE = {
+  kind: 'test-source',
+  name: 'test-source',
+};
 
 describe('context entity', async () => {
   it('should allow matching permissions', async () => {
@@ -129,6 +135,7 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
+      source: SOURCE_SERVICE,
       sourceUser: {
         name: 'test',
         uid: 'uid',
@@ -144,6 +151,7 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
+      source: SOURCE_SERVICE,
       sourceUser: {
         name: 'test',
         uid: 'uid',
@@ -158,6 +166,7 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
+      source: SOURCE_SERVICE,
       sourceUser: {
         name: 'test',
         uid: 'uid',
@@ -172,6 +181,7 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
+      source: SOURCE_SERVICE,
       sourceUser: {
         name: 'test',
         uid: 'uid',
@@ -189,6 +199,7 @@ describe('context entity', async () => {
         id: '',
         thread: '',
       },
+      source: SOURCE_SERVICE,
       sourceUser: {
         name: 'test',
         uid: 'uid',
@@ -199,12 +210,35 @@ describe('context entity', async () => {
     });
     expect(context.checkGrants(['test'])).to.equal(false);
   });
-});
 
-const SOURCE_SERVICE = {
-  kind: 'test-source',
-  name: 'test-source',
-};
+  it('should throw when created with a nameless source user', () => {
+    expect(() => new Context({
+      channel: {
+        id: '',
+        thread: '',
+      },
+      source: SOURCE_SERVICE,
+      sourceUser: {
+        name: '',
+        uid: 'test',
+      },
+    })).to.throw(MissingValueError);
+  });
+
+  it('should throw when created with an unidentified source user', () => {
+    expect(() => new Context({
+      channel: {
+        id: '',
+        thread: '',
+      },
+      source: SOURCE_SERVICE,
+      sourceUser: {
+        name: 'test',
+        uid: '',
+      },
+    })).to.throw(MissingValueError);
+  });
+});
 
 const TARGET_SERVICE = {
   kind: 'test-target',

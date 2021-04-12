@@ -11,6 +11,7 @@ import { Context } from '../../src/entity/Context';
 import { Locale } from '../../src/locale';
 import { Schema } from '../../src/schema';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_DATA = {
   filters: [],
@@ -60,11 +61,8 @@ describe('account controller', async () => {
     await ctrl.getGrant(ineeda<Command>({
       get: () => tvals,
     }), ineeda<Context>({
+      ...getTestContextData(),
       checkGrants,
-      sourceUser: {
-        name: 'test',
-        uid: 'test',
-      },
     }));
 
     expect(checkGrants).to.have.callCount(tvals.length);
@@ -125,10 +123,7 @@ describe('account controller', async () => {
     });
 
     const context = ineeda<Context>({
-      sourceUser: {
-        name: 'test',
-        uid: 'test',
-      },
+      ...getTestContextData(),
       user: {
         locale: {
           lang: 'test',

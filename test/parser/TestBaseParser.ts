@@ -12,6 +12,7 @@ import { ParserData, ParserOutput } from '../../src/parser';
 import { BaseParser } from '../../src/parser/BaseParser';
 import { Storage } from '../../src/storage';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_PARSER = 'test-parser';
 
@@ -89,14 +90,7 @@ describe('base parser', async () => {
       },
     });
     const results = await parser.complete(new Context({
-      channel: {
-        id: '',
-        thread: '',
-      },
-      sourceUser: {
-        name: 'test',
-        uid: '0',
-      },
+      ...getTestContextData(),
       user: ineeda<User>(),
     }), new Fragment({
       data: {},

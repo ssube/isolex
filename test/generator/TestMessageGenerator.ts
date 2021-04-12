@@ -17,6 +17,7 @@ import { Service } from '../../src/Service';
 import { Clock } from '../../src/utils/Clock';
 import { TYPE_TEXT } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_SVC = 'some-service';
 const TEST_SVC2 = 'test-service';
@@ -24,16 +25,7 @@ const TEST_TARGET = 'test-target';
 
 const TEST_CONFIG = {
   data: {
-    context: {
-      channel: {
-        id: '',
-        thread: '',
-      },
-      sourceUser: {
-        name: '',
-        uid: '',
-      },
-    },
+    context: getTestContextData(),
     defaultMessage: {
       body: '',
       labels: {},

@@ -13,6 +13,7 @@ import { ArgsParser } from '../../src/parser/ArgsParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_CONFIG = {
   args: {
@@ -80,16 +81,7 @@ describe('args parser', async () => {
 
     const commands = await svc.parse(new Message({
       body: '--foo=1',
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        sourceUser: {
-          name: 'test',
-          uid: 'test',
-        },
-      }),
+      context: new Context(getTestContextData()),
       labels: {},
       reactions: [],
       type: TYPE_TEXT,
@@ -109,16 +101,7 @@ describe('args parser', async () => {
       metadata: TEST_METADATA,
     });
 
-    const commands = await svc.complete(new Context({
-      channel: {
-        id: 'test',
-        thread: 'test',
-      },
-      sourceUser: {
-        name: 'test',
-        uid: 'test',
-      },
-    }), new Fragment({
+    const commands = await svc.complete(new Context(getTestContextData()), new Fragment({
       data: {
         foo: ['1'],
       },

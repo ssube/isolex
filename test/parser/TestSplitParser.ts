@@ -12,6 +12,7 @@ import { Storage } from '../../src/storage';
 import { RuleOperator } from '../../src/utils/MatchRules';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_CONFIG = {
   dataMapper: {
@@ -67,16 +68,7 @@ describe('split parser', async () => {
 
     const commands = await svc.parse(new Message({
       body: 'test message',
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        sourceUser: {
-          name: 'test',
-          uid: 'test',
-        },
-      }),
+      context: new Context(getTestContextData()),
       labels: {},
       reactions: [],
       type: TYPE_TEXT,
@@ -100,16 +92,7 @@ describe('split parser', async () => {
 
     const commands = await svc.parse(new Message({
       body: 'test (message group) [second group] bits "third group"',
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        sourceUser: {
-          name: 'test',
-          uid: 'test',
-        },
-      }),
+      context: new Context(getTestContextData()),
       labels: {},
       reactions: [],
       type: TYPE_TEXT,

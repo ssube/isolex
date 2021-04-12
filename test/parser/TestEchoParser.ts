@@ -11,6 +11,7 @@ import { EchoParser } from '../../src/parser/EchoParser';
 import { Storage } from '../../src/storage';
 import { TYPE_JPEG, TYPE_TEXT } from '../../src/utils/Mime';
 import { createService, createServiceContainer } from '../helpers/container';
+import { getTestContextData } from '../helpers/context';
 
 const TEST_CONFIG = {
   dataMapper: {
@@ -61,16 +62,7 @@ describe('echo parser', async () => {
 
     const [cmd] = await svc.parse(new Message({
       body: 'test message',
-      context: new Context({
-        channel: {
-          id: 'test',
-          thread: 'test',
-        },
-        sourceUser: {
-          name: 'test',
-          uid: 'test',
-        },
-      }),
+      context: new Context(getTestContextData()),
       labels: {},
       reactions: [],
       type: TYPE_TEXT,
