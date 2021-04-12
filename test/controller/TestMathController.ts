@@ -5,15 +5,15 @@ import { createStubInstance } from 'sinon';
 import { INJECT_LOGGER, INJECT_SCHEMA } from '../../src/BaseService';
 import { Bot } from '../../src/Bot';
 import { INJECT_BOT } from '../../src/BotService';
-import { DiceController } from '../../src/controller/DiceController';
+import { MathController } from '../../src/controller/MathController';
 import { Command, CommandVerb } from '../../src/entity/Command';
 import { Context } from '../../src/entity/Context';
 import { Locale } from '../../src/locale';
 import { createService, createServiceContainer, createTestOptions } from '../helpers/container';
 import { getTestContextData } from '../helpers/context';
 
-describe('dice controller', async () => {
-  it('should roll dice', async () => {
+describe('math controller', async () => {
+  it('should calculate sums', async () => {
     const testOptions = createTestOptions();
     const { container } = await createServiceContainer();
     const locale = await container.create(Locale, {
@@ -32,10 +32,24 @@ describe('dice controller', async () => {
     botStub.getLocale.returns(locale);
     const bot = botStub as unknown as Bot;
 
-    const controller = await createService(container, DiceController, {
+    const controller = await createService(container, MathController, {
       [INJECT_BOT]: bot,
       data: {
         filters: [],
+        format: {
+          list: {
+            join: ',',
+          },
+          node: {
+            implicit: 'keep',
+            parenthesis: 'keep',
+          },
+          number: {},
+        },
+        math: {
+          matrix: 'Array',
+          number: 'number',
+        },
         redirect: {
           defaults: {},
           forces: {},
@@ -44,17 +58,16 @@ describe('dice controller', async () => {
         transforms: [],
       },
       metadata: {
-        kind: 'dice-controller',
-        name: 'test_dice',
+        kind: 'math-controller',
+        name: 'test_math',
       },
     });
 
     const ctx = new Context(getTestContextData());
-    await controller.createRoll(new Command({
+    await controller.createMath(new Command({
       context: ctx,
       data: {
-        count: ['1'],
-        sides: ['1'],
+        expr: ['1+1'],
       },
       labels: {},
       noun: '',
