@@ -14,6 +14,7 @@ import { CreateTick0001546063195 } from '../migration/0001546063195-CreateTick';
 import { Dates0001546236755 } from '../migration/0001546236755-Dates';
 import { FragmentUser0001546283532 } from '../migration/0001546283532-FragmentUser';
 import { UserLocale0001548049058 } from '../migration/0001548049058-UserLocale';
+import { ContextUser0001618702349 } from '../migration/0001618702349-ContextUser';
 
 export const INJECT_MIGRATIONS = Symbol('inject-migrations');
 
@@ -36,6 +37,7 @@ export class MigrationModule extends Module {
       Dates0001546236755,
       FragmentUser0001546283532,
       UserLocale0001548049058,
+      ContextUser0001618702349,
     ]);
   }
 }

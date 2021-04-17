@@ -97,6 +97,7 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public source: ServiceMetadata;
 
+  @Column('simple-json')
   public sourceUser: ContextUser;
 
   public target?: ServiceMetadata;
