@@ -241,7 +241,7 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
     this.logger.debug({
       context: contextData,
       session,
-    }, 'converted message options')
+    }, 'converted message options');
 
     const context = await this.createContext(contextData);
     return new Message({
