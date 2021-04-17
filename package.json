@@ -93,7 +93,7 @@
     "handlebars": "4.7.7",
     "i18next": "20.2.1",
     "ineeda": "0.12.0-alpha.0",
-    "js-yaml": "4.0.0",
+    "js-yaml": "4.1.0",
     "jsonpath-plus": "5.0.7",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
