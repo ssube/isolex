@@ -23,4 +23,3 @@ export class ContextUser0001618702349 implements MigrationInterface {
     await query.addColumn(TABLE_CONTEXT, new TableColumn(COLUMN_UID));
   }
 }
-

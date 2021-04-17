@@ -9,7 +9,6 @@ import { eslint } from 'rollup-plugin-eslint';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
-import visualizer from 'rollup-plugin-visualizer';
 
 const { chunkMap } = require('./map.js');
 const { plugins } = require('./project.js');
@@ -83,10 +82,6 @@ const bundle = {
 		typescript({
 			cacheRoot: join(targetPath, 'cache', 'rts2'),
 			rollupCommonJSResolveHack: true,
-		}),
-		visualizer({
-			filename: join(rootPath, 'out', 'bundle-graph.html'),
-			sourcemap: true,
 		}),
 		(flag_serve ? serve({
 			host: '0.0.0.0',
