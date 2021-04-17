@@ -3720,11 +3720,6 @@ is-date-object@^1.0.1:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/is-date-object/-/is-date-object-1.0.2.tgz#bda736f2cd8fd06d32844e7743bfa7494c3bfd7e"
   integrity sha512-USlDT524woQ08aoZFzh3/Z6ch9Y/EWXEHQ/AaRN0SkKq4t2Jw2R2339tSXmwuVoY7LLlBCbOIlx2myP/L5zk0g==
 
-is-docker@^2.0.0:
-  version "2.1.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/is-docker/-/is-docker-2.1.1.tgz#4125a88e44e450d384e09047ede71adc2d144156"
-  integrity sha512-ZOoqiXfEwtGknTiuDEy8pN2CfE3TxMHprvNer1mXiqwkOT77Rw3YVrUQ52EqAOU3QAWDQ+bQdx7HJzrv7LS2Hw==
-
 is-extglob@^2.1.1:
   version "2.1.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
@@ -3846,13 +3841,6 @@ is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
-
-is-wsl@^2.1.1:
-  version "2.2.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/is-wsl/-/is-wsl-2.2.0.tgz#74a4c76e77ca9fd3f932f290c17ea326cd157271"
-  integrity sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==
-  dependencies:
-    is-docker "^2.0.0"
 
 isarray@0.0.1:
   version "0.0.1"
@@ -4711,11 +4699,6 @@ nanoid@3.1.20:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/nanoid/-/nanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
   integrity sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
 
-nanoid@^3.1.22:
-  version "3.1.22"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/nanoid/-/nanoid-3.1.22.tgz#b35f8fb7d151990a8aebd5aa5015c03cf726f844"
-  integrity sha512-/2ZUaJX2ANuLtTvqTlgqBQNJoQO398KyJgZloL0PZkC0dpysjncRUPsFe3DUPzz/y3h+u7C46np8RMuvF3jsSQ==
-
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -5030,14 +5013,6 @@ onetime@^5.1.0:
   integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
   dependencies:
     mimic-fn "^2.1.0"
-
-open@^7.4.2:
-  version "7.4.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/open/-/open-7.4.2.tgz#b8147e26dcf3e426316c730089fd71edd29c2321"
-  integrity sha512-MVHddDVweXZF3awtlAS+6pgKLlm/JgxZ90+/NBurBoQctVOOB/zDdVjcyPzQ+0laDGbsWgrRkflI65sQeOgT9Q==
-  dependencies:
-    is-docker "^2.0.0"
-    is-wsl "^2.1.1"
 
 opener@1:
   version "1.5.2"
@@ -5986,16 +5961,6 @@ rollup-plugin-typescript2@0.30.0:
     resolve "1.20.0"
     tslib "2.1.0"
 
-rollup-plugin-visualizer@5.3.1:
-  version "5.3.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.3.1.tgz#bbad89c77b6e7d53430a8c3ab328b726f59e4182"
-  integrity sha512-OydbL5VGYk8J2vk6ZkQq9WVOVqF2Ek3scPUlZ25iJOiZcARECfoMj+ihYe2bEp56d1+u7r2RrvJBqLIrd6XBnw==
-  dependencies:
-    nanoid "^3.1.22"
-    open "^7.4.2"
-    source-map "^0.7.3"
-    yargs "^16.2.0"
-
 rollup-plugin-yaml@2.0.0:
   version "2.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/rollup-plugin-yaml/-/rollup-plugin-yaml-2.0.0.tgz#80a67b59e00f010f5f2a2bb6fa70aad4718f85f8"
@@ -6270,11 +6235,6 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
-
-source-map@^0.7.3:
-  version "0.7.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
-  integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
 
 sourcemap-codec@^1.4.4:
   version "1.4.8"
