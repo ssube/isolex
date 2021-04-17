@@ -238,6 +238,11 @@ export class DiscordListener extends SessionListener<DiscordListenerData> implem
       contextData.user = session.user;
     }
 
+    this.logger.debug({
+      context: contextData,
+      session,
+    }, 'converted message options')
+
     const context = await this.createContext(contextData);
     return new Message({
       body: msg.content,
