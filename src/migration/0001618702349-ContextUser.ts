@@ -9,7 +9,6 @@ const COLUMN_SOURCE = new TableColumn({
 });
 
 const COLUMN_TARGET = new TableColumn({
-  default: null,
   name: 'target',
   type: 'varchar',
 });

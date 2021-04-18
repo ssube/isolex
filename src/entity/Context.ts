@@ -103,10 +103,7 @@ export class Context extends BaseEntity implements ContextOptions {
   @Column(JSON_COLUMN)
   public sourceUser: ContextUser;
 
-  @Column({
-    default: null,
-    name: JSON_COLUMN,
-  })
+  @Column(JSON_COLUMN)
   public target?: ServiceMetadata;
 
   public token?: Token;
