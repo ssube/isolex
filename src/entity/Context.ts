@@ -95,11 +95,13 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public parser?: Parser;
 
+  @Column('simple-json')
   public source: ServiceMetadata;
 
   @Column('simple-json')
   public sourceUser: ContextUser;
 
+  @Column('simple-json')
   public target?: ServiceMetadata;
 
   public token?: Token;
