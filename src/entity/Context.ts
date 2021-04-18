@@ -198,7 +198,9 @@ export class Context extends BaseEntity implements ContextOptions {
     return {
       channel: this.channel,
       id: this.id,
+      source: this.source,
       sourceUser: this.sourceUser,
+      target: this.target,
       user: this.user,
     };
   }
