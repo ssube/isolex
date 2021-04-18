@@ -29,7 +29,11 @@ export abstract class BaseListener<TData extends ListenerData> extends BotServic
   public async check(msg: Message): Promise<boolean> {
     const ctx = mustExist(msg.context);
     if (doesExist(ctx.target)) {
-      return ctx.target.id === this.id;
+      if (doesExist(ctx.target.id)) {
+        return ctx.target.id === this.id;
+      } else {
+        return ctx.target.kind === this.kind && ctx.target.name === this.name;
+      }
     }
 
     return false;
