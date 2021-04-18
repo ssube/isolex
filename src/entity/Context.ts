@@ -11,6 +11,8 @@ import { Token } from './auth/Token';
 import { GRAPH_OUTPUT_USER, User } from './auth/User';
 import { BaseEntity, BaseEntityOptions } from './base/BaseEntity';
 
+const JSON_COLUMN = 'simple-json';
+
 /**
  * Listener-specific channel.
  */
@@ -87,7 +89,7 @@ export const TABLE_CONTEXT = 'context';
 
 @Entity(TABLE_CONTEXT)
 export class Context extends BaseEntity implements ContextOptions {
-  @Column('simple-json')
+  @Column(JSON_COLUMN)
   public channel: ContextChannel;
 
   @PrimaryGeneratedColumn('uuid')
@@ -95,13 +97,16 @@ export class Context extends BaseEntity implements ContextOptions {
 
   public parser?: Parser;
 
-  @Column('simple-json')
+  @Column(JSON_COLUMN)
   public source: ServiceMetadata;
 
-  @Column('simple-json')
+  @Column(JSON_COLUMN)
   public sourceUser: ContextUser;
 
-  @Column('simple-json')
+  @Column({
+    default: null,
+    name: JSON_COLUMN,
+  })
   public target?: ServiceMetadata;
 
   public token?: Token;
