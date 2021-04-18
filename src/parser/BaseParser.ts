@@ -58,7 +58,6 @@ export abstract class BaseParser<TData extends ParserData> extends BotService<TD
     return this.contextRepository.save(new Context({
       ...baseContext,
       parser: this,
-      source: this.getMetadata(),
     }));
   }
 

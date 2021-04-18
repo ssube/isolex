@@ -191,7 +191,11 @@ export abstract class BaseController<TData extends ControllerData> extends BotSe
     if (isNil(source)) {
       throw new MissingValueError('context source must not be nil');
     }
-    return this.services.getService(source);
+    const sourceSvc = this.services.getService<Listener>(source);
+    if (isNil(sourceSvc)) {
+      throw new MissingValueError('context source service could not be found');
+    }
+    return sourceSvc;
   }
 
   protected getUserOrFail(ctx: Context): User {
