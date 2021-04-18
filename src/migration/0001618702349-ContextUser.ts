@@ -9,8 +9,8 @@ const COLUMN_SOURCE = new TableColumn({
 });
 
 const COLUMN_TARGET = new TableColumn({
-  name: 'target',
   isNullable: true,
+  name: 'target',
   type: 'varchar',
 });
 
