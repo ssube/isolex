@@ -72,7 +72,7 @@
     "@typescript-eslint/eslint-plugin": "4.22.1",
     "@typescript-eslint/eslint-plugin-tslint": "4.22.1",
     "@typescript-eslint/parser": "4.22.1",
-    "ajv": "8.2.0",
+    "ajv": "8.3.0",
     "bufferutil": "4.0.3",
     "bunyan": "1.8.15",
     "chai": "4.3.4",
