@@ -54,7 +54,7 @@
     "@types/express-serve-static-core": "4.17.19",
     "@types/js-yaml": "4.0.1",
     "@types/jsonwebtoken": "8.5.1",
-    "@types/lodash": "4.14.168",
+    "@types/lodash": "4.14.169",
     "@types/mathjs": "6.0.11",
     "@types/mocha": "8.2.2",
     "@types/mock-fs": "4.13.0",
