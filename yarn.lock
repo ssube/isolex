@@ -271,27 +271,18 @@
     underscore "^1.9.1"
     ws "^7.3.1"
 
-"@microsoft/api-documenter@7.13.5":
-  version "7.13.5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.13.5.tgz#847a678ac3f18e61ea19ee046b7d8786abc4f0d0"
-  integrity sha512-wLyGu+EzdzeeDU7Xpsy8hdhtkzf9N/CL3tE51M8PQWiTAvNJOImMpNokK1kpDwbCW3h1BNAZZB/e3VGcyeqd1Q==
+"@microsoft/api-documenter@7.13.16":
+  version "7.13.16"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.13.16.tgz#67e2f10d5a1a877f5477ca94c00bedba5441c33d"
+  integrity sha512-y1dSp4udGAeZG6SU7eElai9pl/hz/CNv6b+GbLUrtFID5RKsFy9SyROQ7s5luN7wXF3DasdNthW5XJjOwK6vZw==
   dependencies:
-    "@microsoft/api-extractor-model" "7.13.0"
+    "@microsoft/api-extractor-model" "7.13.3"
     "@microsoft/tsdoc" "0.13.2"
-    "@rushstack/node-core-library" "3.36.2"
+    "@rushstack/node-core-library" "3.39.0"
     "@rushstack/ts-command-line" "4.7.10"
     colors "~1.2.1"
     js-yaml "~3.13.1"
     resolve "~1.17.0"
-
-"@microsoft/api-extractor-model@7.13.0":
-  version "7.13.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.13.0.tgz#11327c1ab32939a375596859a27ec256eb17d68e"
-  integrity sha512-HnIbXpNiF/a+tTnGVJFq4aaxWEGI5XN7vpm1YjNLc+CY5C0s/bdT0LV9o9NzWSpQdHVUaYhQEVLviaDpusu6dg==
-  dependencies:
-    "@microsoft/tsdoc" "0.13.2"
-    "@microsoft/tsdoc-config" "~0.15.2"
-    "@rushstack/node-core-library" "3.36.2"
 
 "@microsoft/api-extractor-model@7.13.2":
   version "7.13.2"
@@ -301,6 +292,15 @@
     "@microsoft/tsdoc" "0.13.2"
     "@microsoft/tsdoc-config" "~0.15.2"
     "@rushstack/node-core-library" "3.38.0"
+
+"@microsoft/api-extractor-model@7.13.3":
+  version "7.13.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.13.3.tgz#ac01c064c5af520d3661c85d7e5ef95e1ca8ab92"
+  integrity sha512-uXilAhu2GcvyY/0NwVRk3AN7TFYjkPnjHLV2UywTTz9uglS+Af0YjNrCy+aaK8qXtfbFWdBzkH9N2XU8/YBeRQ==
+  dependencies:
+    "@microsoft/tsdoc" "0.13.2"
+    "@microsoft/tsdoc-config" "~0.15.2"
+    "@rushstack/node-core-library" "3.39.0"
 
 "@microsoft/api-extractor@7.15.2":
   version "7.15.2"
@@ -553,10 +553,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.36.2":
-  version "3.36.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.36.2.tgz#ba00d313577f9b06d5aafaa29da0d94e594874c0"
-  integrity sha512-5J8xSY/PuCKR+yfxS497l0PP43kBUeD86S4eS3RzrmMle04J4522MWal8mk1T1EIDpYpgi8qScannU9oVxoStA==
+"@rushstack/node-core-library@3.38.0":
+  version "3.38.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.38.0.tgz#da1cc87f9ad141b06d4ce7c8eafb09b542c10e75"
+  integrity sha512-cmvl0yQx8sSmbuXwiRYJi8TO+jpTtrLJQ8UmFHhKvgPVJAW8cV8dnpD1Xx/BvTGrJZ2XtRAIkAhBS9okBnap4w==
   dependencies:
     "@types/node" "10.17.13"
     colors "~1.2.1"
@@ -568,10 +568,10 @@
     timsort "~0.3.0"
     z-schema "~3.18.3"
 
-"@rushstack/node-core-library@3.38.0":
-  version "3.38.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.38.0.tgz#da1cc87f9ad141b06d4ce7c8eafb09b542c10e75"
-  integrity sha512-cmvl0yQx8sSmbuXwiRYJi8TO+jpTtrLJQ8UmFHhKvgPVJAW8cV8dnpD1Xx/BvTGrJZ2XtRAIkAhBS9okBnap4w==
+"@rushstack/node-core-library@3.39.0":
+  version "3.39.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.39.0.tgz#38928946d15ae89b773386cf97433d0d1ec83b93"
+  integrity sha512-kgu3+7/zOBkZU0+NdJb1rcHcpk3/oTjn5c8cg5nUTn+JDjEw58yG83SoeJEcRNNdl11dGX0lKG2PxPsjCokZOQ==
   dependencies:
     "@types/node" "10.17.13"
     colors "~1.2.1"
