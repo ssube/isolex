@@ -72,6 +72,15 @@
         "schedule:earlyMondays"
       ],
       "groupName": "rollup-plugins"
+    },
+    {
+      "matchPackagePrefixes": [
+        "@octokit"
+      ],
+      "extends": [
+        "schedule:earlyMondays"
+      ],
+      "groupName": "octokit"
     }
   ]
 }
