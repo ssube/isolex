@@ -1,4 +1,4 @@
-FROM docker.artifacts.apextoaster.com/node:12-alpine
+FROM docker.artifacts.apextoaster.com/apextoaster/node:12.22
 
 # install jq, sqlite cli
 RUN apk add bash curl jq sqlite
