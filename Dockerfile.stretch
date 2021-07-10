@@ -1,4 +1,4 @@
-FROM docker.artifacts.apextoaster.com/library/node:12
+FROM docker.artifacts.apextoaster.com/library/node:16
 
 # install sqlite tools
 RUN apt-get update \
