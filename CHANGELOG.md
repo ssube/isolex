@@ -2,6 +2,83 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.11.0](https://github.com/ssube/isolex/compare/v0.10.2...v0.11.0) (2021-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* includes all breaking changes to document parsing
+from js-yaml v4, and include type/schema changes from js-yaml-schema,
+which may impact parsing of the config file or YAML commands.
+* **schema:** service redirect must have both the `defaults` and
+`forces` top-level keys, which may be empty. `redirect: {}` should
+be replaced with `redirect: {defaults: {}, forces: {}}`.
+
+### Features
+
+* **build:** add auto-merge config ([c49eba7](https://github.com/ssube/isolex/commit/c49eba7f0f2d13419e3fc00b9b5135fa1b6a680f))
+* **build:** upgrade to node 12 ([7ff5218](https://github.com/ssube/isolex/commit/7ff52182f2facf5bd7a4c248ca1778904c74e1fb))
+* **controller/github:** approve pulls by branch name ([dace0f7](https://github.com/ssube/isolex/commit/dace0f71fb3427a8eb97ac72b9b41b93653c6aba))
+* **controller/github:** check request authors, define approve ctrl schema ([9e42b36](https://github.com/ssube/isolex/commit/9e42b364faaa61b9e2ac778f143238b9c42ee4c6))
+* **controller/github:** request approval controller ([7ef781e](https://github.com/ssube/isolex/commit/7ef781e04341d2a65d04dce7cb9356edec9f0035))
+* **entity:** migrate user name/uid to sourceUser ([b25f8cf](https://github.com/ssube/isolex/commit/b25f8cf203e3b8b46719f251f512bc490d4b9667))
+* **listener/express:** make body size limit configurable ([34a2990](https://github.com/ssube/isolex/commit/34a29905e752f3caa21f5a8d2723200101f27deb))
+* switch to js-config library for loading ([c2fbe5d](https://github.com/ssube/isolex/commit/c2fbe5db6eebd559c8b0751508e3c504b31e8b51))
+
+
+### Bug Fixes
+
+* **build:** build images from cached version ([24cf3b8](https://github.com/ssube/isolex/commit/24cf3b837c3ee67b2aeb9b16987a9a51375de197))
+* **build:** correct base image name ([fdd79c4](https://github.com/ssube/isolex/commit/fdd79c433d5ffde2fde672a8b298f87282101681))
+* **build:** correct lcov paths ([53af23b](https://github.com/ssube/isolex/commit/53af23b05b769ec77f9419fc78c58c1fcdf9636b))
+* **build:** externalize source map modules to fix requires ([5e6ecc9](https://github.com/ssube/isolex/commit/5e6ecc9b918f485197fb42b06042ed95d0ab2ab5))
+* **build:** remove reference to visualizer plugin ([3fd2201](https://github.com/ssube/isolex/commit/3fd220184e9eb5ce28c7aeba063bd24ed4e2ec7d))
+* **build:** remove test files from coverage ([d8a7e85](https://github.com/ssube/isolex/commit/d8a7e85158533e414194a2f971c47f819a9ad3f3))
+* **build:** use library node as base image ([256144b](https://github.com/ssube/isolex/commit/256144b85615d73ebba0bdee94e79e5fc2e2d9a2))
+* reduce renovate noise, automerge test deps ([1477bd9](https://github.com/ssube/isolex/commit/1477bd945484ee1e0bf8d04427e38e8c382ab77b))
+* schedule octokit updates ([a3795e2](https://github.com/ssube/isolex/commit/a3795e2dcfd5b4f1229899994ed8a8c7e2728c3a))
+* **build:** restrict aws-sdk updates to Monday ([a675093](https://github.com/ssube/isolex/commit/a675093b7680968cf8a281c66f98cc768a97d010))
+* **build:** update eslint for typescript-eslint 4 rules ([d7c67b9](https://github.com/ssube/isolex/commit/d7c67b91c589203e621bb9aefea39220a89ab732))
+* **build:** use images from nexus ([10e93a3](https://github.com/ssube/isolex/commit/10e93a31714a2dc4141817c3ea948264b6eaed4e))
+* **config:** add mock libs to test chunk ([f59a347](https://github.com/ssube/isolex/commit/f59a347184b1753d58172acdc2895b707e4fd4c2))
+* **config:** attempt to load config from ISOLEX_HOME dir if set ([6bbfcf1](https://github.com/ssube/isolex/commit/6bbfcf1972df7eeec3576c3646ae2c61b077e71b))
+* **config:** instantiate config schema before loading ([0d47f4b](https://github.com/ssube/isolex/commit/0d47f4b6643f755764e721b669c57972c507ce83))
+* **config:** set up include options for config lib ([2744bf3](https://github.com/ssube/isolex/commit/2744bf3566ba3fe31ceb02afcb6ef7bdb1f02d3a))
+* **config:** stricter type check for loaded config ([c86158d](https://github.com/ssube/isolex/commit/c86158d4e3344feb42233c6827a6a8bcf9d287cc))
+* **config:** update lint to naming-convention rule ([64e1e64](https://github.com/ssube/isolex/commit/64e1e645c82c7874b335d12ee7c191c0c0140c73))
+* **config:** update options for config lib ([460435a](https://github.com/ssube/isolex/commit/460435a4834116c9275255872fec075cfceccdaf))
+* **controller/github:** include details of missing checks ([c9906e6](https://github.com/ssube/isolex/commit/c9906e67de3b4aacb76ccb54765a85a2ebc3c4a8))
+* **docs:** partial config paths to match resolver ([27d1f4d](https://github.com/ssube/isolex/commit/27d1f4d2765ba87bda2c1dcf6cdc530d92d3f214))
+* **endpoint:** use async rendering for metrics ([3b7ed69](https://github.com/ssube/isolex/commit/3b7ed69abfb1ce248b01fd10c3e305550d19b514))
+* **entity:** add source and target to context logging ([6861807](https://github.com/ssube/isolex/commit/6861807516026e2a4449e9c6b4ae1d363ac32edc))
+* **listener:** add debug logs for Discord message sessions ([156d93d](https://github.com/ssube/isolex/commit/156d93dd7310303c724e6bb1c954a43e44d99aed))
+* **listener:** match outgoing message by target metadata when ID is missing ([893d4a6](https://github.com/ssube/isolex/commit/893d4a64416b77e9bce61bf1e3ae7ebe7c8d6873))
+* **migration:** include context source, target columns ([3017aff](https://github.com/ssube/isolex/commit/3017affabca7fc901552ae7d66d898677454ea40))
+* **migration:** make context target a nullable column ([f7b8d94](https://github.com/ssube/isolex/commit/f7b8d94f3440327acc651546aee76f1c049e4192))
+* **migration:** remove default null on context target ([b87f60f](https://github.com/ssube/isolex/commit/b87f60fe35c2ab4fed1b2345023ac0e024cf41c5))
+* **parser:** keep original context source when parsing ([002ab03](https://github.com/ssube/isolex/commit/002ab0389f75d3d9f138887b97a1bd9df4667c39))
+* **schema:** add byte suffix to express limit ([4f14a09](https://github.com/ssube/isolex/commit/4f14a09fa6839008ec37f5e56ea6ff1eb6b71cd0))
+* **schema:** make redirect defaults/forces fields required ([6d4db51](https://github.com/ssube/isolex/commit/6d4db514316ca7f546e0b36977a52a83ac822129))
+* **security:** pin ini package to patched version ([18dde28](https://github.com/ssube/isolex/commit/18dde286de85be7ae2113b52df6ee44d679c140a))
+* **test:** cover storage connection error handling ([d319348](https://github.com/ssube/isolex/commit/d319348a66120ebb500f2e05dfb11c4c5003473a))
+* **tests:** cover dice ctrl ([4048708](https://github.com/ssube/isolex/commit/40487080cc7869e8d858f1e73ca8c93ca2fd822d))
+* **tests:** cover math ctrl ([1a2ed0c](https://github.com/ssube/isolex/commit/1a2ed0c37fa29ca5344ada1b0c2a660708b922cc))
+* copy pid utils from lib ([25d4b64](https://github.com/ssube/isolex/commit/25d4b640ab3531368008ac63a9f7805648b78309))
+* make context source required, add test helper for context data ([88b0c85](https://github.com/ssube/isolex/commit/88b0c8538d899c9a8db62bffd3c63fd3ebbe15aa))
+* place bundled chunks better, esp test deps ([f9e17e2](https://github.com/ssube/isolex/commit/f9e17e2ed64d25c023a81fe658006c73b52ae481))
+* set up include schema for js-yaml-schema update ([f832cf4](https://github.com/ssube/isolex/commit/f832cf4812afeffac0e61ee2804adbc212d515c2))
+* switch to instantiated config, load from args ([9dbd35b](https://github.com/ssube/isolex/commit/9dbd35b174c68f4eabec119137666a5996d9c976))
+* unnecessary source-map extern ([afbb134](https://github.com/ssube/isolex/commit/afbb1341c24a20c75f3aef52cca555397eb6e11e))
+* uuid lib crypto imports ([b3a9da9](https://github.com/ssube/isolex/commit/b3a9da997fe1fb122e692a7eb03b5b08ee5a5843))
+* **test:** cover github approval ctrl ([6033009](https://github.com/ssube/isolex/commit/6033009e126d96b6abeb9d7ffdb9141f2462a727))
+* **test:** include pidfile tests, fix main test timeout ([bc2c6bc](https://github.com/ssube/isolex/commit/bc2c6bc495c94f49fc214375fd9d2a1b16ced5f5))
+* type errors caused by express-serve-static-core ([6851a80](https://github.com/ssube/isolex/commit/6851a80edd5f7ca87e62d842f19d244a09dbbb52))
+
+
+### update
+
+* js-yaml and js-yaml-schema ([1012269](https://github.com/ssube/isolex/commit/1012269ced4173c14235879b405ae55b86c0e267))
+
 ### [0.10.2](https://github.com/ssube/isolex/compare/v0.10.1...v0.10.2) (2020-04-17)
 
 
