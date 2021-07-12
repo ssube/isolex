@@ -101,7 +101,7 @@
     "mocha": "9.0.2",
     "mock-fs": "5.0.0",
     "node-emoji": "1.10.0",
-    "noicejs": "3.3.0",
+    "noicejs": "4.0.0",
     "nyc": "15.1.0",
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
