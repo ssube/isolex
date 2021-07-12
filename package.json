@@ -68,7 +68,7 @@
     "@types/source-map-support": "0.5.4",
     "@types/uuid": "8.3.1",
     "@types/websocket": "1.0.3",
-    "@types/ws": "7.4.5",
+    "@types/ws": "7.4.6",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/eslint-plugin-tslint": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
@@ -131,7 +131,7 @@
     "typescript": "4.3.5",
     "utf-8-validate": "5.0.5",
     "uuid": "8.3.2",
-    "ws": "7.5.0",
+    "ws": "7.5.3",
     "yargs-parser": "19.0.4"
   },
   "resolutions": {
