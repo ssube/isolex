@@ -60,7 +60,7 @@
     "@types/mock-fs": "4.13.1",
     "@types/node-emoji": "1.8.1",
     "@types/passport": "1.0.4",
-    "@types/passport-jwt": "3.0.5",
+    "@types/passport-jwt": "3.0.6",
     "@types/request": "2.48.6",
     "@types/request-promise": "4.1.48",
     "@types/request-promise-native": "1.0.18",
