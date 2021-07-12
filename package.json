@@ -48,7 +48,7 @@
     "@types/bunyan": "1.8.7",
     "@types/chai": "4.2.21",
     "@types/chai-as-promised": "7.1.4",
-    "@types/cron": "1.7.2",
+    "@types/cron": "1.7.3",
     "@types/escape-html": "1.0.1",
     "@types/express": "4.17.12",
     "@types/express-serve-static-core": "4.17.24",
