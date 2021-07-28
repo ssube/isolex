@@ -67,7 +67,7 @@
     "@types/sinon-chai": "3.2.5",
     "@types/source-map-support": "0.5.4",
     "@types/uuid": "8.3.1",
-    "@types/websocket": "1.0.3",
+    "@types/websocket": "1.0.4",
     "@types/ws": "7.4.7",
     "@typescript-eslint/eslint-plugin": "4.28.5",
     "@typescript-eslint/eslint-plugin-tslint": "4.28.5",
