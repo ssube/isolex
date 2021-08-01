@@ -1,4 +1,4 @@
-import { countOf, isNil } from '@apextoaster/js-utils';
+import { lengthOf, isNone } from '@apextoaster/js-utils';
 import { max, min, random, randomInt } from 'mathjs';
 import { Inject } from 'noicejs';
 
@@ -66,8 +66,8 @@ export class RandomController extends BaseController<RandomControllerData> imple
   }
 
   private getRandomValue(precision: number, minVal: number, maxVal?: number): string {
-    const minimum = isNil(maxVal) ? min(minVal, 0) : min(minVal, maxVal);
-    const maximum = isNil(maxVal) ? max(minVal, 0) : max(minVal, maxVal);
+    const minimum = isNone(maxVal) ? min(minVal, 0) : min(minVal, maxVal);
+    const maximum = isNone(maxVal) ? max(minVal, 0) : max(minVal, maxVal);
 
     this.logger.debug({ precision }, 'getting random value');
     if (precision === 0) {
@@ -81,7 +81,7 @@ export class RandomController extends BaseController<RandomControllerData> imple
   private getPrecision(...values: Array<number>) {
     return values.map((value) => {
       const parts = value.toString().split('.');
-      return countOf(parts[1]);
+      return lengthOf(parts[1]);
     }).reduce((previous, current) => {
       this.logger.debug({ previous, current }, 'calculating precision');
       return max(current, previous);

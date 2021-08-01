@@ -1,4 +1,4 @@
-import { ExternalModule, filterNil, isNil, mustExist, mustFind } from '@apextoaster/js-utils';
+import { ExternalModule, removeNone, isNone, mustExist, mustFind } from '@apextoaster/js-utils';
 import { Container, Inject, LogLevel } from 'noicejs';
 import { Registry } from 'prom-client';
 import { Subject } from 'rxjs';
@@ -197,7 +197,7 @@ export class Bot extends BaseService<BotData> implements Service {
       this.outgoing.next(msg);
       results.push(msg);
     }
-    return filterNil(results);
+    return removeNone(results);
   }
 
   public async executeCommand(...commands: Array<Command>): Promise<Array<Command>> {
@@ -208,7 +208,7 @@ export class Bot extends BaseService<BotData> implements Service {
       this.commands.next(cmd);
       results.push(cmd);
     }
-    return filterNil(results);
+    return removeNone(results);
   }
 
   /**
@@ -249,7 +249,7 @@ export class Bot extends BaseService<BotData> implements Service {
     });
 
     const context = mustExist(msg.context);
-    if (isNil(context.target)) {
+    if (isNone(context.target)) {
       return this.findMessageTarget(msg);
     } else {
       const target = this.services.getService<Listener>(context.target);
