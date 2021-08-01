@@ -7,10 +7,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@apextoaster/js-config/-/js-config-0.2.0-3.tgz#077b9916fcf6541af038ddb9bd585026c4c4c08a"
   integrity sha512-mcsbrWmKJ0tTcsX0v0BU4+VMlvQKsZ+A6zCUcD7rxyTu43w5+gbx8M94mMpA1hhCkC9Q12aKUl+8vgqXhUCOmw==
 
-"@apextoaster/js-utils@0.3.0":
-  version "0.3.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@apextoaster/js-utils/-/js-utils-0.3.0.tgz#c592732d22c95c9df6b97447da641047b4f69e01"
-  integrity sha512-CUJk4N/69XtiLMz4KFR9kXIvX2tqCqeqGd6Pa+LQ1u0iGD7IOZVJej0Dkr2qFeWwsPamS+XwwSvs8JV02m8/FA==
+"@apextoaster/js-utils@0.4.0":
+  version "0.4.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@apextoaster/js-utils/-/js-utils-0.4.0.tgz#2fc1b83af1a4196ea2487d261c9bf6a6d922e814"
+  integrity sha512-vJHsEK5jFVSUQi8cNb5GhsQMEPyedBxGgxh6/s99GHGiQOMWZtkkNacjagOPGUGPqHymybthrqAhHkLlLQCkSw==
 
 "@apextoaster/js-yaml-schema@0.4.0-4":
   version "0.4.0-4"
