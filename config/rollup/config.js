@@ -19,10 +19,16 @@ const flag_serve = flag_devel || process.env['SERVE'] === 'TRUE';
 
 const metadata = require('../../package.json');
 const chunks = require('./chunks.json').chunks;
-const external = require('./external.json').names;
+const externalNames = require('./external.json').names;
 
 const rootPath = process.env['ROOT_PATH'];
 const targetPath = process.env['TARGET_PATH'];
+
+const external = [
+	...externalNames,
+	...Object.keys(metadata.dependencies),
+].sort();
+console.log('external dependencies:', external);
 
 const bundle = {
 	external,

@@ -22,9 +22,6 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@apextoaster/js-config": "0.2.0-3",
-    "@apextoaster/js-utils": "0.4.0",
-    "@apextoaster/js-yaml-schema": "0.5.0",
     "@kubernetes/client-node": "0.15.0",
     "@octokit/app": "4.3.0",
     "@octokit/rest": "16.43.2",
@@ -67,6 +64,9 @@
     "yargs-parser": "19.0.4"
   },
   "devDependencies": {
+    "@apextoaster/js-config": "0.2.0-3",
+    "@apextoaster/js-utils": "0.4.0",
+    "@apextoaster/js-yaml-schema": "0.5.0",
     "@istanbuljs/nyc-config-typescript": "1.0.1",
     "@microsoft/api-documenter": "7.13.33",
     "@microsoft/api-extractor": "7.18.4",
