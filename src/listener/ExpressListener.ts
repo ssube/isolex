@@ -37,6 +37,10 @@ export interface ExpressListenerData extends ListenerData {
   };
 }
 
+export interface ExpressListenerUser extends Express.User {
+  ctx: Context;
+}
+
 @Inject(INJECT_CLOCK, INJECT_METRICS, INJECT_STORAGE)
 export class ExpressListener extends SessionListener<ExpressListenerData> implements Listener {
   protected readonly container: Container;
@@ -217,17 +221,41 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
     }));
 
     // sessions are saved when created and keyed by uid, so pass that
-    auth.serializeUser((ctx: Context, done) => {
+    auth.serializeUser<string>((user: Express.User, done) => {
+      const ctx = (user as ExpressListenerUser).ctx;
+
       this.logger.debug({ ctx }, 'serializing request context');
       /* eslint-disable-next-line no-null/no-null */
       done(null, ctx.sourceUser.uid);
     });
 
     // grab existing session
-    auth.deserializeUser((ctx: Context, done) => {
-      this.logger.debug({ ctx }, 'deserializing request context');
-      /* eslint-disable-next-line no-null/no-null */
-      done(null, this.sessions.get(ctx.sourceUser.uid));
+    auth.deserializeUser<string>(async (uid: string, done) => {
+      this.logger.debug({ uid }, 'deserializing request context');
+
+      const session = this.sessions.get(uid);
+      if (doesExist(session)) {
+        const user: ExpressListenerUser = {
+          ctx: await this.createContext({
+            channel: {
+              id: '',
+              thread: '',
+            },
+            source: this.getMetadata(),
+            sourceUser: {
+              name: session.user.name,
+              uid,
+            },
+            token: undefined,
+            user: session.user,
+          }),
+        };
+
+        /* eslint-disable-next-line no-null/no-null */
+        done(null, user);
+      } else {
+        done(new Error('session not found'));
+      }
     });
 
     return auth;
@@ -236,9 +264,9 @@ export class ExpressListener extends SessionListener<ExpressListenerData> implem
 
 export function getRequestContext(req: Request): Context {
   /* eslint-disable-next-line no-null/no-null, @typescript-eslint/no-explicit-any */
-  const user = req.user as any;
+  const user = req.user as ExpressListenerUser;
   if (doesExist(user)) {
-    return user;
+    return user.ctx;
   } else {
     throw new SessionRequiredError();
   }
