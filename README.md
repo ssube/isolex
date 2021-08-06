@@ -29,7 +29,7 @@ The [getting started guide](./docs/getting-started.md) has more information on u
 
 [![Pipeline status](https://img.shields.io/gitlab/pipeline/ssube/isolex.svg?gitlab_url=https%3A%2F%2Fgit.apextoaster.com&logo=gitlab)](https://git.apextoaster.com/ssube/isolex/commits/master)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ssube_isolex&metric=ncloc)](https://sonarcloud.io/dashboard?id=ssube_isolex)
-[![Test coverage](https://codecov.io/gh/ssube/isolex/branch/master/graph/badge.svg)](https://codecov.io/gh/ssube/isolex)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/5d4326d6f68a2fa137cd/test_coverage)](https://codeclimate.com/github/ssube/isolex/test_coverage)
 [![MIT license](https://img.shields.io/github/license/ssube/isolex.svg)](https://github.com/ssube/isolex/blob/master/LICENSE.md)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fssube%2Fisolex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fssube%2Fisolex?ref=badge_shield)
 
