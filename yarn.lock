@@ -271,12 +271,12 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
-"@kubernetes/client-node@0.15.0":
-  version "0.15.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@kubernetes/client-node/-/client-node-0.15.0.tgz#aa5cfcfa9ba3055fe0b510c430d19bbda715d8e7"
-  integrity sha512-AnEcsWWadl5IWOzzvO/gWpTnJb1d1CzA/rbV/qK1c0fD1SOxTDPj6jFllyQ9icGDfCgNw3TafZftmuepm6z9JA==
+"@kubernetes/client-node@0.15.1":
+  version "0.15.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@kubernetes/client-node/-/client-node-0.15.1.tgz#617357873d20de348a99227f3b699c2adb765152"
+  integrity sha512-j3o5K4TWkdrX2yDndbEZcDxhgea6O2JKnesWoYCJ64WtMn2GbQXGBOnkn2i0WT2MugGbLR+qCm8Y3oHWBApaTA==
   dependencies:
-    "@types/js-yaml" "^3.12.1"
+    "@types/js-yaml" "^4.0.1"
     "@types/node" "^10.12.0"
     "@types/request" "^2.47.1"
     "@types/stream-buffers" "^3.0.3"
@@ -286,7 +286,7 @@
     byline "^5.0.0"
     execa "5.0.0"
     isomorphic-ws "^4.0.1"
-    js-yaml "^3.13.1"
+    js-yaml "^4.1.0"
     jsonpath-plus "^0.19.0"
     openid-client "^4.1.1"
     request "^2.88.0"
@@ -880,15 +880,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/js-yaml@4.0.2":
+"@types/js-yaml@4.0.2", "@types/js-yaml@^4.0.1":
   version "4.0.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/js-yaml/-/js-yaml-4.0.2.tgz#4117a7a378593a218e9d6f0ef44ce6d5d9edf7fa"
   integrity sha512-KbeHS/Y4R+k+5sWXEYzAZKuB1yQlZtEghuhRxrVRLaqhtoG5+26JwQsa4HyS3AWX8v1Uwukma5HheduUDskasA==
-
-"@types/js-yaml@^3.12.1":
-  version "3.12.5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/js-yaml/-/js-yaml-3.12.5.tgz#136d5e6a57a931e1cce6f9d8126aa98a9c92a6bb"
-  integrity sha512-JCcp6J0GV66Y4ZMDAQCXot4xprYB+Zfd3meK9+INSJeVZwJmHAW30BBEEkPzXswMXuiyReUGOP3GxrADc9wPww==
 
 "@types/json-schema@^7.0.7":
   version "7.0.7"
@@ -4207,7 +4202,7 @@ js-tokens@^4.0.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-js-yaml@4.1.0:
+js-yaml@4.1.0, js-yaml@^4.1.0:
   version "4.1.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
