@@ -3797,10 +3797,10 @@ human-signals@^2.1.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-i18next@21.2.2:
-  version "21.2.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/i18next/-/i18next-21.2.2.tgz#3eb71f4263410af30fc6a5d9fb4d7397b2250944"
-  integrity sha512-CxSmVUPs6UPeTY3AKL7TWWeM37A8opzVXgLR9oMCMncxmkKg6irJfmoeHKNH+uV0jfmS4DQgR7+RkLfQ6QrZVw==
+i18next@21.2.3:
+  version "21.2.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/i18next/-/i18next-21.2.3.tgz#58730f8b391a3ea880ccbab7052de6012cae40b1"
+  integrity sha512-aOYql7b9dvcSlkp9mDBFiLPv3+3TVAbXM06lgGL8xWCf5yd0QlgQvvvyCin24WR4EMl4eiu+vijKdblYKs3kfw==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
