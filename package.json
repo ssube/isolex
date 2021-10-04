@@ -27,7 +27,7 @@
     "@octokit/rest": "16.43.2",
     "@slack/client": "5.0.2",
     "ajv": "8.6.3",
-    "aws-sdk": "2.995.0",
+    "aws-sdk": "2.999.0",
     "bufferutil": "4.0.4",
     "bunyan": "1.8.15",
     "cron": "1.8.2",
