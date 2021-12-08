@@ -77,7 +77,7 @@
     "@rollup/plugin-replace": "2.4.2",
     "@rollup/plugin-yaml": "3.1.0",
     "@types/bunyan": "1.8.8",
-    "@types/chai": "4.2.22",
+    "@types/chai": "4.3.0",
     "@types/chai-as-promised": "7.1.4",
     "@types/cron": "1.7.3",
     "@types/escape-html": "1.0.1",
