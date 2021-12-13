@@ -292,37 +292,37 @@
     underscore "^1.9.1"
     ws "^7.3.1"
 
-"@microsoft/api-documenter@7.13.72":
-  version "7.13.72"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.13.72.tgz#df70f1031aabec5f95e83a1fa90611063b8fc25e"
-  integrity sha512-QWqN2K/Vh6E6C/77ZHU6LeCpO3JXaVt32g9DgWjDItl+siXjVRPCJnLIiXC4N+XphISqTmRmzkX/Um4dsoK/Lg==
+"@microsoft/api-documenter@7.13.76":
+  version "7.13.76"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-documenter/-/api-documenter-7.13.76.tgz#d334eca4170e291823da48796a31412bd92dee40"
+  integrity sha512-OW8CvnP6OMQOiPP+xstiqjfv+KgI52xyRTd4uBStqxpRJoHDGYdl4/fzx7Y9iNui+tOhUxiSfOOI9YhQqVBCyg==
   dependencies:
-    "@microsoft/api-extractor-model" "7.13.18"
+    "@microsoft/api-extractor-model" "7.15.1"
     "@microsoft/tsdoc" "0.13.2"
-    "@rushstack/node-core-library" "3.44.1"
+    "@rushstack/node-core-library" "3.44.2"
     "@rushstack/ts-command-line" "4.10.5"
     colors "~1.2.1"
     js-yaml "~3.13.1"
     resolve "~1.17.0"
 
-"@microsoft/api-extractor-model@7.13.18":
-  version "7.13.18"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.13.18.tgz#f60f037c4ae3678924145b4321bb97d0939b0b30"
-  integrity sha512-Oo9hhidRk9bFa17xkdNWso0Ry/wW6jlxD+5N2ilk1CnvZ50s6SLbZpFQJmVownM2tkHc1REdyEeQSyoApSB6Hw==
+"@microsoft/api-extractor-model@7.15.1":
+  version "7.15.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor-model/-/api-extractor-model-7.15.1.tgz#e52d68676e846d8b86e3b18e2654af39fba6e4a1"
+  integrity sha512-DWfS1o3oMY0mzdO3OuQbD/9vzn80jwM6tFd7XbiYnkpxwhD83LMGXz7NZWwSh+IaA+9w3LF4w62fT31Qq+dAMw==
   dependencies:
     "@microsoft/tsdoc" "0.13.2"
     "@microsoft/tsdoc-config" "~0.15.2"
-    "@rushstack/node-core-library" "3.44.1"
+    "@rushstack/node-core-library" "3.44.2"
 
-"@microsoft/api-extractor@7.18.21":
-  version "7.18.21"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor/-/api-extractor-7.18.21.tgz#6a6d151b764c2f30d51097cd3da33ca42efd01f6"
-  integrity sha512-jRtT4ZPCUOVYlNjxsszXJQdXFu8lmdkSz8wZNVQzBkBFh5kn8Ej66p8b/KecQKpVnzUcTgPOKr1RcWR+0Fmgew==
+"@microsoft/api-extractor@7.19.2":
+  version "7.19.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@microsoft/api-extractor/-/api-extractor-7.19.2.tgz#8c546003523163c1432f6e19506065f790d6182c"
+  integrity sha512-LxSa9lwp7eYtM4i5y/1n79QpotPKlmpCrVQbkb0LAHE1sCRHpZDTb6p3cMJthDhYPMjAYKOLfq639GwtZrg23Q==
   dependencies:
-    "@microsoft/api-extractor-model" "7.13.18"
+    "@microsoft/api-extractor-model" "7.15.1"
     "@microsoft/tsdoc" "0.13.2"
     "@microsoft/tsdoc-config" "~0.15.2"
-    "@rushstack/node-core-library" "3.44.1"
+    "@rushstack/node-core-library" "3.44.2"
     "@rushstack/rig-package" "0.3.6"
     "@rushstack/ts-command-line" "4.10.5"
     colors "~1.2.1"
@@ -330,7 +330,7 @@
     resolve "~1.17.0"
     semver "~7.3.0"
     source-map "~0.6.1"
-    typescript "~4.4.2"
+    typescript "~4.5.2"
 
 "@microsoft/tsdoc-config@~0.15.2":
   version "0.15.2"
@@ -565,10 +565,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rushstack/node-core-library@3.44.1":
-  version "3.44.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.44.1.tgz#5a66016e227e3227ded3fe798aa6045f6c9f9a28"
-  integrity sha512-qK2BKuRoy6Vh83qjXxilafsUJ1soXzEX0rtkxmAC+GsKOdEVav74Df5859bvY2Ap0JNnYfGfXukX/8o3vqODyw==
+"@rushstack/node-core-library@3.44.2":
+  version "3.44.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@rushstack/node-core-library/-/node-core-library-3.44.2.tgz#4fcd8f76887ae5968f2796f633a7e48f5ebd2271"
+  integrity sha512-lQ8Ct267UKkNSJSDxpBWn7SyyITWQ9l3Xqww0V+YY0rMt02r9eiGvwwPaU1ugJW7IMVo6r/HXvgbmpOSPyzGyg==
   dependencies:
     "@types/node" "12.20.24"
     colors "~1.2.1"
@@ -578,7 +578,7 @@
     resolve "~1.17.0"
     semver "~7.3.0"
     timsort "~0.3.0"
-    z-schema "~3.18.3"
+    z-schema "~5.0.2"
 
 "@rushstack/rig-package@0.3.6":
   version "0.3.6"
@@ -4509,7 +4509,7 @@ lodash.flattendeep@^4.4.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
-lodash.get@^4.0.0, lodash.get@^4.4.2:
+lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
@@ -4524,7 +4524,7 @@ lodash.isboolean@^3.0.3:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz#6c2e171db2a257cd96802fd43b01b20d5f5870f6"
   integrity sha1-bC4XHbKiV82WgC/UOwGyDV9YcPY=
 
-lodash.isequal@^4.0.0:
+lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
   integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
@@ -7203,10 +7203,10 @@ typescript@4.3.5:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
   integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
 
-typescript@~4.4.2:
-  version "4.4.3"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/typescript/-/typescript-4.4.3.tgz#bdc5407caa2b109efd4f82fe130656f977a29324"
-  integrity sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==
+typescript@~4.5.2:
+  version "4.5.3"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/typescript/-/typescript-4.5.3.tgz#afaa858e68c7103317d89eb90c5d8906268d353c"
+  integrity sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ==
 
 uglify-js@^3.1.4:
   version "3.10.3"
@@ -7310,10 +7310,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-validator@^8.0.0:
-  version "8.2.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/validator/-/validator-8.2.0.tgz#3c1237290e37092355344fef78c231249dab77b9"
-  integrity sha512-Yw5wW34fSv5spzTXNkokD6S6/Oq92d8q/t14TqsS3fAiA1RYnxSFSIZ+CY3n6PGGRCq5HhJTSepQvFUS2QUDxA==
+validator@^13.7.0:
+  version "13.7.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/validator/-/validator-13.7.0.tgz#4f9658ba13ba8f3d82ee881d3516489ea85c0857"
+  integrity sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==
 
 vary@~1.1.2:
   version "1.1.2"
@@ -7574,14 +7574,14 @@ yargs@^17.0.1:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-z-schema@~3.18.3:
-  version "3.18.4"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/z-schema/-/z-schema-3.18.4.tgz#ea8132b279533ee60be2485a02f7e3e42541a9a2"
-  integrity sha512-DUOKC/IhbkdLKKiV89gw9DUauTV8U/8yJl1sjf6MtDmzevLKOF2duNJ495S3MFVjqZarr+qNGCPbkg4mu4PpLw==
+z-schema@~5.0.2:
+  version "5.0.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/z-schema/-/z-schema-5.0.2.tgz#f410394b2c9fcb9edaf6a7511491c0bb4e89a504"
+  integrity sha512-40TH47ukMHq5HrzkeVE40Ad7eIDKaRV2b+Qpi2prLc9X9eFJFzV7tMe5aH12e6avaSS/u5l653EQOv+J9PirPw==
   dependencies:
-    lodash.get "^4.0.0"
-    lodash.isequal "^4.0.0"
-    validator "^8.0.0"
+    lodash.get "^4.4.2"
+    lodash.isequal "^4.5.0"
+    validator "^13.7.0"
   optionalDependencies:
     commander "^2.7.1"
 
