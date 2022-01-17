@@ -84,7 +84,7 @@
     "@types/express": "4.17.13",
     "@types/express-serve-static-core": "4.17.28",
     "@types/js-yaml": "4.0.5",
-    "@types/jsonwebtoken": "8.5.6",
+    "@types/jsonwebtoken": "8.5.8",
     "@types/lodash": "4.14.178",
     "@types/mathjs": "9.4.1",
     "@types/mocha": "9.0.0",
