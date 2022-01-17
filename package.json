@@ -105,7 +105,7 @@
     "@typescript-eslint/parser": "5.9.1",
     "chai": "4.3.4",
     "chai-as-promised": "7.1.1",
-    "eslint": "8.6.0",
+    "eslint": "8.7.0",
     "eslint-plugin-chai": "0.0.1",
     "eslint-plugin-chai-expect": "3.0.0",
     "eslint-plugin-chai-expect-keywords": "2.1.0",
