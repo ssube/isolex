@@ -103,7 +103,7 @@
     "@typescript-eslint/eslint-plugin": "5.10.1",
     "@typescript-eslint/eslint-plugin-tslint": "5.10.1",
     "@typescript-eslint/parser": "5.10.1",
-    "chai": "4.3.4",
+    "chai": "4.3.5",
     "chai-as-promised": "7.1.1",
     "eslint": "8.7.0",
     "eslint-plugin-chai": "0.0.1",
