@@ -105,7 +105,11 @@ export async function runBot(options: CreateOptions, bot: Bot): Promise<ExitStat
   try {
     await handleSignals(bot, logger);
   } catch (err) {
-    logger.error(err, 'error running bot');
+    if (err instanceof Error) {
+      logger.error(err, 'error running bot');
+    } else {
+      logger.error('unknown error running bot');
+    }
     status = ExitStatus.Error;
   }
   await removePid(config.data.process.pid.file);
