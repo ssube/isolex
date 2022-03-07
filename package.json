@@ -57,7 +57,7 @@
     "shelljs": "0.8.5",
     "sqlite3": "5.0.2",
     "split-string": "6.1.0",
-    "typeorm": "0.2.44",
+    "typeorm": "0.2.45",
     "utf-8-validate": "5.0.8",
     "uuid": "8.3.2",
     "ws": "8.5.0",
