@@ -172,10 +172,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.16.5":
-  version "7.16.5"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@babel/runtime/-/runtime-7.16.5.tgz#7f3e34bf8bdbbadf03fbb7b1ea0d929569c9487a"
-  integrity sha512-TXWihFIS3Pyv5hzR7j6ihmeLkZfrXGxAr5UfSl8CHf+6q/wpiYDkUau0czckpYG8QmnCIuPpdLtuA9VmuGGyMA==
+"@babel/runtime@^7.17.2":
+  version "7.17.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@babel/runtime/-/runtime-7.17.2.tgz#66f68591605e59da47523c631416b18508779941"
+  integrity sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -3292,10 +3292,10 @@ fraction.js@^4.1.1:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/fraction.js/-/fraction.js-4.1.1.tgz#ac4e520473dae67012d618aab91eda09bcb400ff"
   integrity sha512-MHOhvvxHTfRFpF1geTK9czMIZ6xclsEor2wkIGYYq+PxcQqT7vStJqjhe6S1TenZrMZzo+wlqOufBDVepUEgPg==
 
-fraction.js@^4.1.2:
-  version "4.1.2"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/fraction.js/-/fraction.js-4.1.2.tgz#13e420a92422b6cf244dff8690ed89401029fbe8"
-  integrity sha512-o2RiJQ6DZaR/5+Si0qJUIy637QMRudSi9kU/FFzx9EZazrIdnBgpU+3sEWCxAVhH2RtxW2Oz+T4p2o8uOPVcgA==
+fraction.js@^4.2.0:
+  version "4.2.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/fraction.js/-/fraction.js-4.2.0.tgz#448e5109a313a3527f5a3ab2119ec4cf0e0e2950"
+  integrity sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==
 
 fresh@0.5.2:
   version "0.5.2"
@@ -4750,16 +4750,16 @@ mathjs@*:
     tiny-emitter "^2.1.0"
     typed-function "^2.0.0"
 
-mathjs@10.1.0:
-  version "10.1.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-10.1.0.tgz#87e3e5ec73d9d36bd5d72731ab6d7a10d14f5b32"
-  integrity sha512-TrpZAR3H9jR0Cv6cnzT+TZhE40Xs2SCaLf/qm2WcWm2tui69Gas/bC/ct5ZLZNWnWvNvJ7H2uHvuRDDl151PHA==
+mathjs@10.4.0:
+  version "10.4.0"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/mathjs/-/mathjs-10.4.0.tgz#7fa5d352c496cfd4ba1324b564b1948d49d6e10d"
+  integrity sha512-2zVrKvORwxeWbewweD5NDxkTgAMvqkwmMljHUPhDPJtX4sGJEL6ugFXQN597rhH9RGtnMxNzz/+hPGIr9UEWrg==
   dependencies:
-    "@babel/runtime" "^7.16.5"
+    "@babel/runtime" "^7.17.2"
     complex.js "^2.0.15"
     decimal.js "^10.3.1"
     escape-latex "^1.2.0"
-    fraction.js "^4.1.2"
+    fraction.js "^4.2.0"
     javascript-natural-sort "^0.7.1"
     seedrandom "^3.0.5"
     tiny-emitter "^2.1.0"
