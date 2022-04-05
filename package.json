@@ -136,7 +136,7 @@
   },
   "resolutions": {
     "**/lodash": "4.17.21",
-    "**/ini": "2.0.0"
+    "**/ini": "3.0.0"
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript"
