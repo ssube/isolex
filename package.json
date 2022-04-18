@@ -55,7 +55,7 @@
     "rxjs": "7.5.5",
     "shiro-trie": "0.4.10",
     "shelljs": "0.8.5",
-    "sqlite3": "5.0.2",
+    "sqlite3": "5.0.4",
     "split-string": "6.1.0",
     "typeorm": "0.2.45",
     "utf-8-validate": "5.0.9",
