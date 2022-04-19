@@ -653,10 +653,17 @@
   dependencies:
     type-detect "4.0.8"
 
-"@sinonjs/fake-timers@>=5", "@sinonjs/fake-timers@^9.0.0":
+"@sinonjs/fake-timers@>=5":
   version "9.0.0"
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@sinonjs/fake-timers/-/fake-timers-9.0.0.tgz#6854809cd058c6e25b3da2fa063153eaea4ffc72"
   integrity sha512-+shXA2X7KNP7H7qNbQTJ3SA+NQc0pZDSBrdvFSRwF8sAo/ohw+ZQFD8Moc+gnz51+1eRXtEQBpKWPiQ4jsRC/w==
+  dependencies:
+    "@sinonjs/commons" "^1.7.0"
+
+"@sinonjs/fake-timers@^9.1.2":
+  version "9.1.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@sinonjs/fake-timers/-/fake-timers-9.1.2.tgz#4eaab737fab77332ab132d396a3c0d364bd0ea8c"
+  integrity sha512-BPS4ynJW/o92PUR4wgriz2Ud5gpST5vz6GQfMixEDK0Z8ZCUv2M7SkBLykH56T++Xs+8ln9zTGbOvNGIe02/jw==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
@@ -823,10 +830,10 @@
   resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/chai/-/chai-4.2.12.tgz#6160ae454cd89dae05adc3bb97997f488b608201"
   integrity sha512-aN5IAC8QNtSUdQzxu7lGBgYAOuU1tmRU4c9dIq5OKGf/SBVjXo+ffM2wEjudAWbgpOhy60nLoAGH1xm8fpCKFQ==
 
-"@types/chai@4.3.0":
-  version "4.3.0"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/chai/-/chai-4.3.0.tgz#23509ebc1fa32f1b4d50d6a66c4032d5b8eaabdc"
-  integrity sha512-/ceqdqeRraGolFTcfoXNiqjyQhZzbINDngeoAq9GoHa8PPK1yNzTaxWjA6BFWp5Ua9JpXEMSS4s5i9tS0hOJtw==
+"@types/chai@4.3.1":
+  version "4.3.1"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/@types/chai/-/chai-4.3.1.tgz#e2c6e73e0bdeb2521d00756d099218e9f5d90a04"
+  integrity sha512-/zPMqDkzSZ8t3VtxOa4KPq7uzzW978M9Tvh+j7GHKuo6k6GTLxPJ4J5gE5cjfJ26pnXst0N5Hax8Sr0T2Mi9zQ==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -6686,13 +6693,13 @@ sinon-chai@3.7.0:
   resolved "https://artifacts.apextoaster.com/repository/group-npm/sinon-chai/-/sinon-chai-3.7.0.tgz#cfb7dec1c50990ed18c153f1840721cf13139783"
   integrity sha512-mf5NURdUaSdnatJx3uhoBOrY9dtL19fiOtAdT1Azxg3+lNJFiuN0uzaU3xX1LeAfL17kHQhTAJgpsfhbMJMY2g==
 
-sinon@13.0.1:
-  version "13.0.1"
-  resolved "https://artifacts.apextoaster.com/repository/group-npm/sinon/-/sinon-13.0.1.tgz#2a568beca2084c48985dd98e276e065c81738e3c"
-  integrity sha512-8yx2wIvkBjIq/MGY1D9h1LMraYW+z1X0mb648KZnKSdvLasvDu7maa0dFaNYdTDczFgbjNw2tOmWdTk9saVfwQ==
+sinon@13.0.2:
+  version "13.0.2"
+  resolved "https://artifacts.apextoaster.com/repository/group-npm/sinon/-/sinon-13.0.2.tgz#c6a8ddd655dc1415bbdc5ebf0e5b287806850c3a"
+  integrity sha512-KvOrztAVqzSJWMDoxM4vM+GPys1df2VBoXm+YciyB/OLMamfS3VXh3oGh5WtrAGSzrgczNWFFY22oKb7Fi5eeA==
   dependencies:
     "@sinonjs/commons" "^1.8.3"
-    "@sinonjs/fake-timers" "^9.0.0"
+    "@sinonjs/fake-timers" "^9.1.2"
     "@sinonjs/samsam" "^6.1.1"
     diff "^5.0.0"
     nise "^5.1.1"
