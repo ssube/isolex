@@ -30,7 +30,7 @@
     "aws-sdk": "2.1111.0",
     "bufferutil": "4.0.6",
     "bunyan": "1.8.15",
-    "cron": "1.8.2",
+    "cron": "1.8.3",
     "discord.js": "11.6.4",
     "escape-html": "1.0.3",
     "express": "4.18.0",
