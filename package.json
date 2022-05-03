@@ -60,7 +60,7 @@
     "typeorm": "0.2.45",
     "utf-8-validate": "5.0.9",
     "uuid": "8.3.2",
-    "ws": "8.5.0",
+    "ws": "8.6.0",
     "yargs-parser": "19.0.4"
   },
   "devDependencies": {
