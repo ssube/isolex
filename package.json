@@ -61,7 +61,7 @@
     "utf-8-validate": "5.0.9",
     "uuid": "8.3.2",
     "ws": "8.6.0",
-    "yargs-parser": "19.0.4"
+    "yargs-parser": "21.0.1"
   },
   "devDependencies": {
     "@apextoaster/js-config": "0.2.0-3",
