@@ -35,7 +35,7 @@
     "escape-html": "1.0.3",
     "express": "4.18.1",
     "express-graphql": "0.12.0",
-    "graphql": "16.5.0",
+    "graphql": "16.8.1",
     "handlebars": "4.7.7",
     "i18next": "21.8.2",
     "js-yaml": "4.1.0",
