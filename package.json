@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@kubernetes/client-node": "0.16.3",
-    "@octokit/app": "4.3.0",
+    "@octokit/app": "10.0.0",
     "@octokit/rest": "16.43.2",
     "@slack/client": "5.0.2",
     "ajv": "8.11.0",
@@ -31,7 +31,7 @@
     "bufferutil": "4.0.6",
     "bunyan": "1.8.15",
     "cron": "2.0.0",
-    "discord.js": "11.6.4",
+    "discord.js": "13.14.0",
     "escape-html": "1.0.3",
     "express": "4.18.1",
     "express-graphql": "0.12.0",
