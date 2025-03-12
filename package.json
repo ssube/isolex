@@ -54,7 +54,7 @@
     "request-promise-native": "1.0.9",
     "rxjs": "7.5.5",
     "shiro-trie": "0.4.10",
-    "shelljs": "0.8.5",
+    "shelljs": "0.9.0",
     "sqlite3": "5.0.8",
     "split-string": "6.1.0",
     "typeorm": "0.2.45",
